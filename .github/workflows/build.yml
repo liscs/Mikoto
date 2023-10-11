@@ -1,0 +1,16 @@
+name: CI
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-dotnet@v3
+    - run: dotnet build
+    - uses: actions/upload-artifact@master
+      with:
+        path: MisakaTranslator-WPF/bin

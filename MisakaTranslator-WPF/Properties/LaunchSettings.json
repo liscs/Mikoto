@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "MisakaTranslator (Unpackage)": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    },
+    "MisakaTranslator (Package)": {
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
+    }
+  }
+}

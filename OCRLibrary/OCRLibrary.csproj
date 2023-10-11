@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWin32>true</UseWin32>
+    <UseWinRT>true</UseWinRT>
+  </PropertyGroup>
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netframework'))">
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
+    <PackageReference Include="System.Text.Json" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TesseractOCR" Version="5.2.14" Aliases="Tesseract" />
+  </ItemGroup>
+
+</Project>

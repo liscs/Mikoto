@@ -1,0 +1,81 @@
+﻿<Window x:Class="MisakaTranslator_WPF.TranslateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:local="clr-namespace:MisakaTranslator_WPF"
+        mc:Ignorable="d"
+        WindowStyle="None" AllowsTransparency="True"
+        Title="TranslateWindow" Height="450" MinHeight="32" Width="800" MinWidth="384"
+        Closing="Window_Closing" Loaded="TransWin_Loaded"
+        hc:WindowAttach.IsDragElement="True">
+    <Window.BorderBrush>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="Red" Offset="0"/>
+            <GradientStop Color="Yellow" Offset="0.25" />
+            <GradientStop Color="GreenYellow" Offset="0.5" />
+            <GradientStop Color="DeepSkyBlue" Offset="0.75" />
+            <GradientStop Color="BlueViolet" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.BorderBrush>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" />
+    </WindowChrome.WindowChrome>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="TitleBar" Grid.Row="0" Height="32">
+            <Grid.Resources>
+                <Style TargetType="StackPanel">
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="Orientation" Value="Horizontal" />
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Height" Value="32" />
+                    <Setter Property="Width" Value="32" />
+                    <Setter Property="FontSize" Value="16" />
+                    <Setter Property="Foreground" Value="PapayaWhip" />
+                </Style>
+                <Style TargetType="ToggleButton">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Height" Value="32" />
+                    <Setter Property="Width" Value="32" />
+                    <Setter Property="FontSize" Value="16" />
+                    <Setter Property="Foreground" Value="PapayaWhip" />
+                </Style>
+            </Grid.Resources>
+            <StackPanel HorizontalAlignment="Left">
+                <ToggleButton fa:Awesome.Content="MousePointer" Name="LockButton" IsChecked="True" Click="Lock_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_Lock}" />
+                <ToggleButton fa:Awesome.Content="Expand" Name="ChangeSizeButton" Click="ChangeSize_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_ChangeSize}" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center">
+                <Button fa:Awesome.Content="Pause" Name="PauseButton" Click="Pause_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_Pause}" />
+                <Button fa:Awesome.Content="Repeat" Click="RenewOCR_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_RenewOCR}" />
+                <Button fa:Awesome.Content="EyeSlash" Name="ShowSourceButton" Click="ShowSource_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_ShowSource}" />
+                <Button fa:Awesome.Content="History" Click="History_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_History}" />
+                <Button fa:Awesome.Content="Edit" Click="AddNoun_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_AddNounTrans}" />
+                <Button fa:Awesome.Content="UserPlus" Click="ArtificialTransAdd_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_ATadd}" />
+                <Button fa:Awesome.Content="Cog" Click="Settings_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_Settings}" />
+                <Button fa:Awesome.Content="Microphone" Click="TTS_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_TTS}" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right">
+                <Button fa:Awesome.Content="WindowMinimize" Click="Min_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_Min}" />
+                <Button fa:Awesome.Content="WindowCloseOutline" Click="Exit_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_Exit}" />
+            </StackPanel>
+        </Grid>
+        <StackPanel Grid.Row="1" Margin="10" Orientation="Vertical">
+            <WrapPanel x:Name="SourceTextPanel" Margin="10,0,10,5" Orientation="Horizontal" Background="Transparent"></WrapPanel>
+            <hc:OutlineText Text="等待源文本" Fill="White" Stroke="Beige" StrokeThickness="1" Name="FirstTransText" Margin="10,0,10,5" TextWrapping="Wrap" StrokePosition="Outside"></hc:OutlineText>
+            <hc:OutlineText Text="" Fill="White" Stroke="Beige" StrokeThickness="1" Name="SecondTransText" Margin="10,0,10,0" TextWrapping="Wrap" StrokePosition="Outside"></hc:OutlineText>
+        </StackPanel>
+    </Grid>
+</Window>
