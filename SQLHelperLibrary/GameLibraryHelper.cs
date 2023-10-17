@@ -58,7 +58,7 @@ namespace SQLHelperLibrary
         /// <summary>
         /// 特殊码值，仅在hook模式有效
         /// </summary>
-        public string Hookcode { get; set; }
+        public string HookCode { get; set; }
 
         /// <summary>
         /// 用户自定的特殊码值，如果用户这一项不是自定义的，那么应该为'NULL'，仅在hook模式有效，注意下次开启游戏时这里就需要注入一下
@@ -161,7 +161,7 @@ namespace SQLHelperLibrary
                 gameInfo.RepairFunc = gameI[6];
                 gameInfo.RepairParamA = gameI[7];
                 gameInfo.RepairParamB = gameI[8];
-                gameInfo.Hookcode = gameI[9];
+                gameInfo.HookCode = gameI[9];
                 gameInfo.IsMultiHook = Convert.ToBoolean(gameI[10]);
                 gameInfo.Isx64 = Convert.ToBoolean(gameI[11]);
                 gameInfo.HookCodeCustom = gameI[12];
@@ -202,7 +202,7 @@ namespace SQLHelperLibrary
                 RepairFunc = ls[6],
                 RepairParamA = ls[7],
                 RepairParamB = ls[8],
-                Hookcode = ls[9],
+                HookCode = ls[9],
                 IsMultiHook = Convert.ToBoolean(ls[10]),
                 Isx64 = Convert.ToBoolean(ls[11]),
                 HookCodeCustom = ls[12]

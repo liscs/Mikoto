@@ -288,6 +288,8 @@
     <sys:String x:Key="TransWinSettingsWin_FontName">字体</sys:String>
     <sys:String x:Key="TransWinSettingsWin_BtnChooseColor">选择颜色</sys:String>
     <sys:String x:Key="TransWinSettingsWin_srcSetNotice">源文本区域设置完成需要刷新才能看到效果！</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_enableWhiteStroke">启用白色描边</sys:String>
+
 
     <sys:String x:Key="AddOptWin_Introduce">请输入您要添加进词库的单词，该单词之后在提交翻译前将被直接从原句中替换。</sys:String>
     <sys:String x:Key="AddOptWin_beforeBox">原单词</sys:String>

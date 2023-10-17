@@ -255,7 +255,7 @@ namespace MisakaTranslator_WPF {
                 HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
                 return;
             }
-            Common.textHooker.HookCodeList.Add(gameInfoList[gid].Hookcode);
+            Common.textHooker.HookCodeList.Add(gameInfoList[gid].HookCode);
             Common.textHooker.HookCode_Custom = gameInfoList[gid].HookCodeCustom;
 
             if (gameInfoList[gid].IsMultiHook) {

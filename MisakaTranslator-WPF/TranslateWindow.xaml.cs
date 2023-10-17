@@ -466,7 +466,7 @@ namespace MisakaTranslator_WPF
                         }
                         textBlock.Text = mwi[i].Word;
 
-                        if (Common.appSettings.TF_Hirakana)
+                        if (Common.appSettings.TF_Hiragana)
                         {
                             textBlock.Tag = mwi[i].HiraKana;
                         }
@@ -523,7 +523,7 @@ namespace MisakaTranslator_WPF
                             superScript.FontFamily = fontFamily;
                         }
 
-                        if (Common.appSettings.TF_Hirakana)
+                        if (Common.appSettings.TF_Hiragana)
                         {
                             superScript.Text = mwi[i].HiraKana;
                         }

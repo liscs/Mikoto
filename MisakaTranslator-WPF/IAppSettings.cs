@@ -394,6 +394,12 @@ namespace MisakaTranslator_WPF
             set;
         }
 
+        [Option(Alias = "TranslateFormSettings.firstWhiteStrokeIsChecked", DefaultValue = false)]
+        bool TF_firstWhiteStrokeIsChecked {
+            get;
+            set;
+        }
+
         [Option(Alias = "TranslateFormSettings.isKanaShow", DefaultValue = true)]
         bool TF_isKanaShow
         {
@@ -401,13 +407,13 @@ namespace MisakaTranslator_WPF
             set;
         }
 
-        [Option(Alias ="TranslateFromSetting.isDropShaow",DefaultValue = true)]
+        [Option(Alias = "TranslateFromSetting.isDropShadow", DefaultValue = true)]
         bool TF_DropShadow 
         {   get;
             set;
         }
         [Option(Alias = "TranslateFromSetting.isUseHiragana", DefaultValue = true)]
-        bool TF_Hirakana
+        bool TF_Hiragana
         {
             get;
             set;
