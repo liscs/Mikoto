@@ -258,11 +258,11 @@ namespace MisakaTranslator_WPF {
             Common.textHooker.HookCodeList.Add(gameInfoList[gid].HookCode);
             Common.textHooker.HookCode_Custom = gameInfoList[gid].HookCodeCustom;
 
-            if (gameInfoList[gid].IsMultiHook) {
-                var ggw = new GameGuideWindow(3);
-                ggw.Show();
-            }
-            else {
+            //if (gameInfoList[gid].IsMultiHook) {
+            //    var ggw = new GameGuideWindow(3);
+            //    ggw.Show();
+            //}
+            //else {
                 //无重复码。直接进游戏
                 Common.textHooker.MisakaCodeList = null;
                 //2020-06-08 大部分情况无重复码的游戏不会hook到很多，不进行去多余hook
@@ -274,7 +274,7 @@ namespace MisakaTranslator_WPF {
 
                 var tw = new TranslateWindow();
                 tw.Show();
-            }
+            //}
         }
 
         private void CloseDrawerBtn_Click(object sender, RoutedEventArgs e) {

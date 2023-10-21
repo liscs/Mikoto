@@ -1,17 +1,8 @@
-﻿using HandyControl.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace MisakaTranslator_WPF {
     /// <summary>
@@ -79,14 +70,14 @@ namespace MisakaTranslator_WPF {
                 Common.appSettings.TF_secondTransTextSize = secondFontSize.Value;
             };
 
-            firstWhiteStrokeCheckBox.Checked += delegate {
-                translateWin.FirstTransText.Stroke = Brushes.White;
-                Common.appSettings.TF_firstWhiteStrokeIsChecked = true;
+            firstWhiteStrokeCheckBox.Click += delegate {
+                translateWin.FirstTransText.Stroke = (bool)firstWhiteStrokeCheckBox.IsChecked ? Brushes.White : Brushes.Black;
+                Common.appSettings.TF_firstWhiteStrokeIsChecked = (bool)firstWhiteStrokeCheckBox.IsChecked;
             };
 
-            firstWhiteStrokeCheckBox.Unchecked += delegate {
-                translateWin.FirstTransText.Stroke = Brushes.Black;
-                Common.appSettings.TF_firstWhiteStrokeIsChecked = false;
+            secondWhiteStrokeCheckBox.Click += delegate {
+                translateWin.SecondTransText.Stroke = (bool)secondWhiteStrokeCheckBox.IsChecked ? Brushes.White : Brushes.Black;
+                Common.appSettings.TF_secondWhiteStrokeIsChecked = (bool)secondWhiteStrokeCheckBox.IsChecked;
             };
 
             DropShadowCheckBox.Click += delegate {

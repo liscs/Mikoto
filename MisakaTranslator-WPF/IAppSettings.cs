@@ -338,6 +338,12 @@ namespace MisakaTranslator_WPF
             set;
         }
 
+        [Option(Alias = "TranslateFormSettings.showSourceText", DefaultValue = true)]
+        bool TF_showSourceText {
+            get;
+            set;
+        }
+
         [Option(Alias = "TranslateFormSettings.srcTextFont", DefaultValue = "微软雅黑")]
         string TF_srcTextFont
         {
@@ -359,14 +365,14 @@ namespace MisakaTranslator_WPF
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.firstTransTextSize", DefaultValue = "15")]
+        [Option(Alias = "TranslateFormSettings.firstTransTextSize", DefaultValue = "22")]
         double TF_firstTransTextSize
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.firstTransTextColor", DefaultValue = "#ff000000")]
+        [Option(Alias = "TranslateFormSettings.firstTransTextColor", DefaultValue = "#ffFFFFFF")]
         string TF_firstTransTextColor
         {
             get;
@@ -380,14 +386,14 @@ namespace MisakaTranslator_WPF
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.secondTransTextSize", DefaultValue = "15")]
+        [Option(Alias = "TranslateFormSettings.secondTransTextSize", DefaultValue = "22")]
         double TF_secondTransTextSize
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.secondTransTextColor", DefaultValue = "#ff000000")]
+        [Option(Alias = "TranslateFormSettings.secondTransTextColor", DefaultValue = "#ffFFFFFF")]
         string TF_secondTransTextColor
         {
             get;
@@ -396,6 +402,12 @@ namespace MisakaTranslator_WPF
 
         [Option(Alias = "TranslateFormSettings.firstWhiteStrokeIsChecked", DefaultValue = false)]
         bool TF_firstWhiteStrokeIsChecked {
+            get;
+            set;
+        }
+
+        [Option(Alias = "TranslateFormSettings.secondWhiteStrokeIsChecked", DefaultValue = false)]
+        bool TF_secondWhiteStrokeIsChecked {
             get;
             set;
         }

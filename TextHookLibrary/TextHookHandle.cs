@@ -134,17 +134,13 @@ namespace TextHookLibrary {
         /// 初始化Textractor,建立CLI与本软件间的通信
         /// </summary>
         /// <returns>成功返回真，失败返回假</returns>
-        public bool Init(string path)
-        {
-            if(!File.Exists(path))
-            {
+        public bool Init(string path) {
+            if (!File.Exists(path)) {
                 return false;
             }
 
-            ProcessTextractor = new Process()
-            {
-                StartInfo = new ProcessStartInfo()
-                {
+            ProcessTextractor = new Process() {
+                StartInfo = new ProcessStartInfo() {
                     FileName = path,
                     CreateNoWindow = true,
                     UseShellExecute = false,
@@ -159,8 +155,7 @@ namespace TextHookLibrary {
             };
 
             ProcessTextractor.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
-            try
-            {
+            try {
 #if NETFRAMEWORK
                 // .NET Framework根据Console.InputEncoding编码在Start()中创建输入流
                 Console.InputEncoding = new UnicodeEncoding(false, false);
@@ -174,9 +169,7 @@ namespace TextHookLibrary {
 #endif
                 ProcessTextractor.BeginOutputReadLine();
                 return res;
-            }
-            catch (System.ComponentModel.Win32Exception)
-            {
+            } catch (System.ComponentModel.Win32Exception) {
                 ProcessTextractor.Dispose();
                 ProcessTextractor = null;
                 return false;
@@ -201,8 +194,12 @@ namespace TextHookLibrary {
         public async Task DetachProcess(int pid) {
             if (!ProcessHelper.IsProcessRunning(pid))
                 return;
-            await ProcessTextractor.StandardInput.WriteLineAsync("detach -P" + pid);
-            await ProcessTextractor.StandardInput.FlushAsync();
+            try {
+                await ProcessTextractor.StandardInput.WriteLineAsync("detach -P" + pid);
+                await ProcessTextractor.StandardInput.FlushAsync();
+            }
+            //kill已经退出的进程会抛异常，无需处理
+            catch { }
         }
 
         /// <summary>
@@ -236,18 +233,19 @@ namespace TextHookLibrary {
             if (ProcessTextractor != null && ProcessTextractor.HasExited == false) {
                 if (HandleMode == 1 && ProcessHelper.IsProcessRunning(GamePID)) {
                     await DetachProcess(GamePID);
-                }
-                else if (HandleMode == 2) {
+                } else if (HandleMode == 2) {
                     foreach (var item in PossibleGameProcessList.ToList())
                         if (PossibleGameProcessList[item.Key] == true) {
-                            if(ProcessHelper.IsProcessRunning(item.Key.Id))
+                            if (ProcessHelper.IsProcessRunning(item.Key.Id))
                                 await DetachProcess(item.Key.Id);
                             PossibleGameProcessList[item.Key] = false;
                         }
                 }
-                ProcessTextractor.Kill();
+                //kill已经退出的进程会抛异常，无需处理
+                try {
+                    ProcessTextractor.Kill();
+                } catch { }
             }
-
             ProcessTextractor = null;
         }
 
@@ -257,20 +255,17 @@ namespace TextHookLibrary {
         public async Task StartHook(bool AutoHook = false) {
             if (HandleMode == 1) {
                 await AttachProcess(GamePID);
-            }
-            else if (HandleMode == 2) {
+            } else if (HandleMode == 2) {
                 //不管是否进行智能注入，为了保证再次开启游戏时某些用户自定义特殊码能直接导入，这里强制让游戏ID为最大进程ID
                 GamePID = MaxMemoryProcess.Id;
 
                 if (AutoHook == false) {
                     //不进行智能注入
-                    foreach (var item in PossibleGameProcessList.ToList())
-                    {
+                    foreach (var item in PossibleGameProcessList.ToList()) {
                         await AttachProcess(item.Key.Id);
                         PossibleGameProcessList[item.Key] = true;
                     }
-                }
-                else {
+                } else {
                     await AttachProcess(MaxMemoryProcess.Id);
                 }
             }
@@ -297,8 +292,7 @@ namespace TextHookLibrary {
                             e.Index = TextractorFun_Index_List[data.MisakaHookCode];
                             e.Data = data;
                             HFSevent?.Invoke(this, e);
-                        }
-                        else {
+                        } else {
                             TextractorFun_Index_List.Add(data.MisakaHookCode, listIndex);
                             HookSelectRecvEventArgs e = new HookSelectRecvEventArgs();
                             e.Index = TextractorFun_Index_List[data.MisakaHookCode];
@@ -315,8 +309,7 @@ namespace TextHookLibrary {
                                     Data = data
                                 };
                                 HFRSevent?.Invoke(this, e);
-                            }
-                            else {
+                            } else {
                                 TextractorFun_Re_Index_List.Add(data.MisakaHookCode, listIndex_Re);
                                 HookSelectRecvEventArgs e = new HookSelectRecvEventArgs {
                                     Index = TextractorFun_Index_List[data.MisakaHookCode],
@@ -410,8 +403,7 @@ namespace TextHookLibrary {
             int locB = Text.IndexOf(back, locA + 1);
             if (locA < 0 || locB < 0) {
                 return null;
-            }
-            else {
+            } else {
                 locA = locA + front.Length;
                 locB = locB - locA;
                 if (locA < 0 || locB < 0) {
@@ -458,8 +450,7 @@ namespace TextHookLibrary {
 
 
                 return thd;
-            }
-            else {
+            } else {
                 return null;
             }
 
@@ -477,8 +468,7 @@ namespace TextHookLibrary {
 
             try {
                 await DetachProcessByHookAddress(pid, GetHookAddressByMisakaCode(misakacode));
-            }
-            catch (System.InvalidOperationException) {
+            } catch (System.InvalidOperationException) {
                 return;
             }
 
