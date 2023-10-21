@@ -3,6 +3,8 @@
   <br>
 </h1>
 
+![image](https://github.com/liscs/MisakaTranslator/assets/70057922/ab207328-31c8-401c-9e84-bacaea02c513)
+
 <p align="center">
   <b>Galgame/文字游戏/漫画多语种实时机翻工具</b>
   <br>
