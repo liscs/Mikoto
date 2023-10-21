@@ -6,20 +6,17 @@ using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.Input.KeyboardAndMouse;
 
-namespace KeyboardMouseHookLibrary
-{
+namespace KeyboardMouseHookLibrary {
 
     //代码来源：https://www.cnblogs.com/margin-gu/p/5887853.html
 
-    public class GlobalHotKey
-    {
+    public class GlobalHotKey {
         private int _keyId = 10;     //区分不同的快捷键
         private readonly Dictionary<int, HotKeyCallBackHandler> _keymap = new Dictionary<int, HotKeyCallBackHandler>();   //每一个key对于一个处理函数
         public delegate void HotKeyCallBackHandler();
 
         //注册快捷键
-        internal bool RegisterGlobalHotKey(HWND hWnd, HOT_KEY_MODIFIERS modifiers, Keys vk, HotKeyCallBackHandler callBack)
-        {
+        internal bool RegisterGlobalHotKey(HWND hWnd, HOT_KEY_MODIFIERS modifiers, Keys vk, HotKeyCallBackHandler callBack) {
             int id = _keyId++;
             bool registerHotkeyResult = PInvoke.RegisterHotKey(hWnd, id, modifiers, (uint)vk);
             _keymap[id] = callBack;
@@ -27,12 +24,9 @@ namespace KeyboardMouseHookLibrary
         }
 
         // 注销快捷键
-        public void UnRegisterGlobalHotKey(IntPtr hWnd, HotKeyCallBackHandler callBack)
-        {
-            foreach (KeyValuePair<int, HotKeyCallBackHandler> var in _keymap)
-            {
-                if (var.Value == callBack)
-                {
+        public void UnRegisterGlobalHotKey(IntPtr hWnd, HotKeyCallBackHandler callBack) {
+            foreach (KeyValuePair<int, HotKeyCallBackHandler> var in _keymap) {
+                if (var.Value == callBack) {
                     PInvoke.UnregisterHotKey((HWND)hWnd, var.Key);
                     return;
                 }
@@ -40,10 +34,8 @@ namespace KeyboardMouseHookLibrary
         }
 
         // 快捷键消息处理
-        public void ProcessHotKey(Message m)
-        {
-            if (m.Msg == 0x312)
-            {
+        public void ProcessHotKey(Message m) {
+            if (m.Msg == 0x312) {
                 int id = m.WParam.ToInt32();
                 if (_keymap.TryGetValue(id, out HotKeyCallBackHandler callback))
                     callback();
@@ -56,16 +48,13 @@ namespace KeyboardMouseHookLibrary
         /// <param name="str"></param>
         /// <param name="handle"></param>
         /// <param name="callback"></param>
-        public bool RegisterHotKeyByStr(string str, IntPtr handle, HotKeyCallBackHandler callback)
-        {
+        public bool RegisterHotKeyByStr(string str, IntPtr handle, HotKeyCallBackHandler callback) {
             if (str == "")
                 return false;
             HOT_KEY_MODIFIERS modifiers = 0;
             Keys vk = Keys.None;
-            foreach (string value in str.Split('+'))
-            {
-                switch (value.Trim())
-                {
+            foreach (string value in str.Split('+')) {
+                switch (value.Trim()) {
                     case "Ctrl":
                         modifiers = HOT_KEY_MODIFIERS.MOD_CONTROL;
                         break;
@@ -75,13 +64,12 @@ namespace KeyboardMouseHookLibrary
                     case "Shift":
                         modifiers = HOT_KEY_MODIFIERS.MOD_SHIFT;
                         break;
-                    default:
-                    {
-                        string pattern = Regex.IsMatch(value, @"[0-9]") ?  "D" + value.Trim() : value.Trim();
-                        if (!Enum.TryParse<Keys>(pattern, out vk))
-                            return false;
-                        break;
-                    }
+                    default: {
+                            string pattern = Regex.IsMatch(value, @"[0-9]") ? "D" + value.Trim() : value.Trim();
+                            if (!Enum.TryParse<Keys>(pattern, out vk))
+                                return false;
+                            break;
+                        }
                 }
             }
 

@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace OCRLibrary
-{
-    public abstract class OCREngine
-    {
+namespace OCRLibrary {
+    public abstract class OCREngine {
         protected string errorInfo;
         private IntPtr WinHandle;
         private Rectangle OCRArea;
@@ -25,11 +20,9 @@ namespace OCRLibrary
         /// OCR处理，根据设定的截图区域自动截图后识别
         /// </summary>
         /// <returns>返回识别结果，如果为空可通过GetLastError得到错误提示</returns>
-        public Task<string> OCRProcessAsync()
-        {
+        public Task<string> OCRProcessAsync() {
             Bitmap img = ScreenCapture.GetWindowRectCapture(WinHandle, OCRArea, isAllWin);
-            if (img == null)
-            {
+            if (img == null) {
                 errorInfo = "未设置截图区域";
                 return null;
             }
@@ -43,8 +36,7 @@ namespace OCRLibrary
         /// <param name="handle">(窗口模式)窗口句柄</param>
         /// <param name="rec">截图区域</param>
         /// <param name="isAllWin">是否全屏截取</param>
-        public void SetOCRArea(IntPtr handle, Rectangle rec, bool AllWin)
-        {
+        public void SetOCRArea(IntPtr handle, Rectangle rec, bool AllWin) {
             WinHandle = handle;
             OCRArea = rec;
             isAllWin = AllWin;
@@ -54,8 +46,7 @@ namespace OCRLibrary
         /// 得到OCR区域截图
         /// </summary>
         /// <returns></returns>
-        public Bitmap GetOCRAreaCap()
-        {
+        public Bitmap GetOCRAreaCap() {
             return ScreenCapture.GetWindowRectCapture(WinHandle, OCRArea, isAllWin);
         }
 
@@ -69,8 +60,7 @@ namespace OCRLibrary
         /// 设置OCR图像预处理方法
         /// </summary>
         /// <param name="imgProc">指定处理方法 ImgFunc_NoDeal=不处理 ImgFunc_OTSU=OTSU二值化处理</param>
-        public void SetOCRSourceImgProc(string imgProc)
-        {
+        public void SetOCRSourceImgProc(string imgProc) {
             this.imgProc = imgProc;
         }
 
@@ -84,9 +74,8 @@ namespace OCRLibrary
         /// <summary>
         /// 返回最后一次错误的ID或原因
         /// </summary>
-        public string GetLastError()
-        {
-             return errorInfo;
+        public string GetLastError() {
+            return errorInfo;
         }
     }
 }

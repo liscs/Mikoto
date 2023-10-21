@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Speech.Synthesis;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TTSHelperLibrary
-{
-    public class TextSpeechHelper
-    {
+namespace TTSHelperLibrary {
+    public class TextSpeechHelper {
         private SpeechSynthesizer synth;
-        
+
         public TextSpeechHelper() {
             synth = new SpeechSynthesizer();
         }
@@ -26,17 +20,13 @@ namespace TTSHelperLibrary
         public List<string> GetAllTTSEngine() {
             List<string> res = new List<string>();
 
-            foreach (InstalledVoice iv in synth.GetInstalledVoices())
-            {
+            foreach (InstalledVoice iv in synth.GetInstalledVoices()) {
                 res.Add(iv.VoiceInfo.Name);
             }
 
-            if (res.Count > 0)
-            {
+            if (res.Count > 0) {
                 return res;
-            }
-            else
-            {
+            } else {
                 return null;
             }
         }
@@ -53,8 +43,7 @@ namespace TTSHelperLibrary
         /// 设置TTS语音的语速
         /// </summary>
         /// <param name="ra">语速的值 -10~10之间 值越小速度越慢</param>
-        public void SetRate(int ra)
-        {
+        public void SetRate(int ra) {
             synth.Rate = ra;
         }
 

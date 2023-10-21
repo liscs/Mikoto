@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TranslatorLibrary
-{
+namespace TranslatorLibrary {
     //参考方法来源：https://www.lgztx.com/?p=220
 
-    public class KingsoftFastAITTranslator : ITranslator
-    {
+    public class KingsoftFastAITTranslator : ITranslator {
         const string DEFAULT_DIC = "DCT";
 
         int buffersize = 0x4f4;
@@ -20,7 +16,7 @@ namespace TranslatorLibrary
 
         [DllImport("JPNSCHSDK.dll", EntryPoint = "StartSession")]
         internal static extern int StartSession_JPNSCH(
-            [MarshalAs(UnmanagedType.LPWStr)]  string dicpath,
+            [MarshalAs(UnmanagedType.LPWStr)] string dicpath,
             IntPtr bufferStart,
             IntPtr bufferStop,
             [MarshalAs(UnmanagedType.LPWStr)] string app
@@ -47,7 +43,7 @@ namespace TranslatorLibrary
         [DllImport("JPNSCHSDK.dll", EntryPoint = "SetBasicDictPathW")]
         internal static extern int SetBasicDictPathW_JPNSCH(
             int key,
-            [MarshalAs(UnmanagedType.LPWStr)]  string fr
+            [MarshalAs(UnmanagedType.LPWStr)] string fr
             );
 
         [DllImport("JPNSCHSDK.dll", EntryPoint = "SetProfDictPathW")]
@@ -62,7 +58,7 @@ namespace TranslatorLibrary
 
         [DllImport("EngSChSDK.dll", EntryPoint = "StartSession")]
         internal static extern int StartSession_EngSCh(
-            [MarshalAs(UnmanagedType.LPWStr)]  string dicpath,
+            [MarshalAs(UnmanagedType.LPWStr)] string dicpath,
             IntPtr bufferStart,
             IntPtr bufferStop,
             [MarshalAs(UnmanagedType.LPWStr)] string app
@@ -89,7 +85,7 @@ namespace TranslatorLibrary
         [DllImport("EngSChSDK.dll", EntryPoint = "SetBasicDictPathW")]
         internal static extern int SetBasicDictPathW_EngSCh(
             int key,
-            [MarshalAs(UnmanagedType.LPWStr)]  string fr
+            [MarshalAs(UnmanagedType.LPWStr)] string fr
             );
 
         [DllImport("EngSChSDK.dll", EntryPoint = "SetProfDictPathW")]
@@ -103,83 +99,77 @@ namespace TranslatorLibrary
         public string FilePath;//文件路径
         private string errorInfo;//错误信息
 
-        public string GetLastError()
-        {
+        public string GetLastError() {
             return errorInfo;
         }
 
-        public Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
-        {
-            if (FilePath == "" || desLang != "zh")
-            {
+        public Task<string> TranslateAsync(string sourceText, string desLang, string srcLang) {
+            if (FilePath == "" || desLang != "zh") {
                 return Task.FromResult<string>(null);
+
+                /* 项目“TranslatorLibrary (netcoreapp7.0-windows10.0.22621.0)”的未合并的更改
+                在此之前:
+                            }
+
+
+                            IntPtr buffer = Marshal.AllocHGlobal(buffersize);
+                在此之后:
+                            }
+
+
+                            IntPtr buffer = Marshal.AllocHGlobal(buffersize);
+                */
             }
 
-            
+
             IntPtr buffer = Marshal.AllocHGlobal(buffersize);
             StringBuilder to = new StringBuilder(0x400);
             string path = Environment.CurrentDirectory;
 
-            if (srcLang == "en")
-            {
-                
+            if (srcLang == "en") {
+
                 Environment.CurrentDirectory = FilePath + "\\GTS\\EnglishSChinese\\";
 
                 string dicPath = FilePath + "\\GTS\\EnglishSChinese\\" + DEFAULT_DIC;
-                try
-                {
+                try {
                     StartSession_EngSCh(dicPath, buffer, buffer + buffersize, "DCT");//return 0 成功
                     OpenEngine_EngSCh(key); //return 0 成功
                     SetBasicDictPathW_EngSCh(key, dicPath);//return 0 成功
                     SimpleTransSentM_EngSCh(key, sourceText, to, 0x28, 0x4);//return 0 成功
-                }
-                catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     Environment.CurrentDirectory = path;
                     errorInfo = ex.Message;
                     return Task.FromResult<string>(null);
-                }
-                finally
-                {
+                } finally {
                     CloseEngineM_EngSCh(key);
                     EndSession_EngSCh();
                     Marshal.FreeHGlobal(buffer);
                 }
-            }
-            else if (srcLang == "jp")
-            {
+            } else if (srcLang == "jp") {
                 Environment.CurrentDirectory = FilePath + "\\GTS\\JapaneseSChinese\\";
                 string dicPath = FilePath + "\\GTS\\JapaneseSChinese\\" + DEFAULT_DIC;
-                try
-                {
+                try {
                     StartSession_JPNSCH(dicPath, buffer, buffer + buffersize, "DCT");//return 0 成功
                     OpenEngine_JPNSCH(key); //return 0 成功
                     SetBasicDictPathW_JPNSCH(key, dicPath);//return 0 成功
                     SimpleTransSentM_JPNSCH(key, sourceText, to, 0x28, 0x4);//return 0 成功
-                }
-                catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     Environment.CurrentDirectory = path;
                     errorInfo = ex.Message;
                     return Task.FromResult<string>(null);
-                }
-                finally
-                {
+                } finally {
                     CloseEngineM_JPNSCH(key);
                     EndSession_JPNSCH();
                     Marshal.FreeHGlobal(buffer);
                 }
-            }
-            else
-            {
+            } else {
                 return Task.FromResult<string>(null);
             }
             Environment.CurrentDirectory = path;
             return Task.FromResult(to.ToString());
         }
 
-        public void TranslatorInit(string param1, string param2 = "")
-        {
+        public void TranslatorInit(string param1, string param2 = "") {
             FilePath = param1;
         }
     }

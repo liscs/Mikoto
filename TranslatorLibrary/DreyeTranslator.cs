@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TranslatorLibrary
-{
+namespace TranslatorLibrary {
     //参考方法：https://www.lgztx.com/?p=209
 
-    public class DreyeTranslator : ITranslator
-    {
+    public class DreyeTranslator : ITranslator {
         const int EC_DAT = 1;   //英中
         const int CE_DAT = 2;   //中英
         const int CJ_DAT = 3;   //中日
@@ -49,19 +45,16 @@ namespace TranslatorLibrary
         public string FilePath;//文件路径
         private string errorInfo;//错误信息
 
-        public string GetLastError()
-        {
+        public string GetLastError() {
             return errorInfo;
         }
 
-        public Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
-        {
-            if (FilePath == "")
-            {
+        public Task<string> TranslateAsync(string sourceText, string desLang, string srcLang) {
+            if (FilePath == "") {
                 return Task.FromResult<string>(null);
             }
 
-            Encoding shiftjis = Encoding.GetEncoding("shift-jis"); 
+            Encoding shiftjis = Encoding.GetEncoding("shift-jis");
             Encoding gbk = Encoding.GetEncoding("gbk");
             Encoding utf8 = Encoding.GetEncoding("utf-8");
             string currentpath = Environment.CurrentDirectory;
@@ -69,10 +62,8 @@ namespace TranslatorLibrary
             string ret;
 
             if (desLang == "zh") {
-                if (srcLang == "jp")
-                {
-                    try
-                    {
+                if (srcLang == "jp") {
+                    try {
                         Directory.SetCurrentDirectory(workingDirectory);
                         MTInitCJ(JC_DAT); //返回值为-255
                         byte[] src = shiftjis.GetBytes(sourceText);
@@ -80,18 +71,13 @@ namespace TranslatorLibrary
                         TranTextFlowCJ(src, buffer, 3000, JC_DAT);
                         ret = gbk.GetString(buffer);
                         MTEndCJ();
-                    }
-                    catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
                         Environment.CurrentDirectory = currentpath;
                         errorInfo = ex.Message;
                         return Task.FromResult<string>(null);
                     }
-                }
-                else if (srcLang == "en")
-                {
-                    try
-                    {
+                } else if (srcLang == "en") {
+                    try {
                         Directory.SetCurrentDirectory(workingDirectory);
                         MTInitEC(EC_DAT); //返回值为-255
                         byte[] src = utf8.GetBytes(sourceText);
@@ -99,21 +85,16 @@ namespace TranslatorLibrary
                         TranTextFlowEC(src, buffer, 3000, EC_DAT);
                         ret = gbk.GetString(buffer);
                         MTEndEC();
-                    }
-                    catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
                         Environment.CurrentDirectory = currentpath;
                         errorInfo = ex.Message;
                         return Task.FromResult<string>(null);
                     }
-                }
-                else {
+                } else {
                     errorInfo = "语言不支持";
                     return Task.FromResult<string>(null);
                 }
-            }
-            else
-            {
+            } else {
                 errorInfo = "语言不支持";
                 return Task.FromResult<string>(null);
             }
@@ -121,8 +102,7 @@ namespace TranslatorLibrary
             return Task.FromResult(ret);
         }
 
-        public void TranslatorInit(string param1, string param2 = "")
-        {
+        public void TranslatorInit(string param1, string param2 = "") {
             FilePath = param1;
         }
     }

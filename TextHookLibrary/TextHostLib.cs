@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TextHookLibrary
-{
-    public class TextHostLib
-    {
+namespace TextHookLibrary {
+    public class TextHostLib {
         public delegate void ProcessEvent(Int32 processId);
         public delegate void OnCreateThreadFunc(Int64 threadId,
             UInt32 processId,

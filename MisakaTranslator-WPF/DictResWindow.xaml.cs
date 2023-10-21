@@ -1,58 +1,49 @@
 ﻿using DictionaryHelperLibrary;
 using HandyControl.Controls;
-using MecabHelperLibrary;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using TTSHelperLibrary;
 
-namespace MisakaTranslator_WPF
-{
+namespace MisakaTranslator_WPF {
     /// <summary>
     /// DictResWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class DictResWindow : System.Windows.Window
-    {
+    public partial class DictResWindow : System.Windows.Window {
         private string sourceWord;
         private TextSpeechHelper _textSpeechHelper;
         private IDict _dict;
 
-        public DictResWindow(string word,string kana = "----", TextSpeechHelper tsh = null)
-        {
+        public DictResWindow(string word, string kana = "----", TextSpeechHelper tsh = null) {
             sourceWord = word;
             InitializeComponent();
-            if (tsh == null)
-            {
+            if (tsh == null) {
                 _textSpeechHelper = new TextSpeechHelper();
-            }
-            else {
+            } else {
                 _textSpeechHelper = tsh;
-            }
-            
 
-            if (Common.appSettings.ttsVoice == "")
-            {
-                Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoTTS_Hint"].ToString());
+                /* 项目“MisakaTranslator-WPF (netcoreapp7.0-windows10.0.22621.0)”的未合并的更改
+                在此之前:
+                            }
+
+
+                            if (Common.appSettings.ttsVoice == "")
+                在此之后:
+                            }
+
+
+                            if (Common.appSettings.ttsVoice == "")
+                */
             }
-            else
-            {
+
+
+            if (Common.appSettings.ttsVoice == "") {
+                Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoTTS_Hint"].ToString());
+            } else {
                 _textSpeechHelper.SetTTSVoice(Common.appSettings.ttsVoice);
                 _textSpeechHelper.SetVolume(Common.appSettings.ttsVolume);
                 _textSpeechHelper.SetRate(Common.appSettings.ttsRate);
             }
 
-            if (Common.appSettings.xxgPath != string.Empty)
-            {
+            if (Common.appSettings.xxgPath != string.Empty) {
                 _dict = new XxgJpzhDict();
                 _dict.DictInit(Common.appSettings.xxgPath, string.Empty);
             }
@@ -60,7 +51,7 @@ namespace MisakaTranslator_WPF
             string ret = _dict.SearchInDict(sourceWord);
 
             SourceWord.Text = sourceWord;
-            
+
             Kana.Text = kana;
 
             this.Topmost = true;
@@ -72,13 +63,11 @@ namespace MisakaTranslator_WPF
             _dict = null;
         }
 
-        private void TTS_Btn_Click(object sender, RoutedEventArgs e)
-        {
+        private void TTS_Btn_Click(object sender, RoutedEventArgs e) {
             _textSpeechHelper.SpeakAsync(sourceWord);
         }
 
-        private void Search_Btn_Click(object sender, RoutedEventArgs e)
-        {
+        private void Search_Btn_Click(object sender, RoutedEventArgs e) {
             System.Diagnostics.Process.Start("https://www.baidu.com/s?wd=" + sourceWord);
         }
     }

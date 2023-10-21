@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OCRLibrary
-{
-    public static class OCRCommon
-    {
+namespace OCRLibrary {
+    public static class OCRCommon {
         public static List<string> lstOCR = new List<string>()
         {
             "BaiduOCR",
@@ -14,23 +12,18 @@ namespace OCRLibrary
             "TesseractCli"
         };
 
-        static OCRCommon()
-        {
-            if (Environment.OSVersion.Version.Build >= 10240)
-            {
+        static OCRCommon() {
+            if (Environment.OSVersion.Version.Build >= 10240) {
                 lstOCR.Add("WindowsOCR");
             }
         }
 
-        public static List<string> GetOCRList()
-        {
+        public static List<string> GetOCRList() {
             return lstOCR;
         }
 
-        public static OCREngine OCRAuto(string ocr)
-        {
-            switch (ocr)
-            {
+        public static OCREngine OCRAuto(string ocr) {
+            switch (ocr) {
                 case "BaiduOCR":
                     return new BaiduGeneralOCR();
                 case "BaiduFanyiOCR":
@@ -48,8 +41,7 @@ namespace OCRLibrary
             }
         }
 
-        public static System.Text.Json.JsonSerializerOptions JsonOP = new()
-        {
+        public static System.Text.Json.JsonSerializerOptions JsonOP = new() {
             IncludeFields = true
         };
     }

@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net;
 
-namespace TranslatorLibrary
-{
-    public static class CommonFunction
-    {
+namespace TranslatorLibrary {
+    public static class CommonFunction {
         public static Dictionary<string, string> lstLanguage = new Dictionary<string, string>() {
             { "中文" , "zh" },
             { "English" , "en" },
@@ -20,7 +17,7 @@ namespace TranslatorLibrary
             { "Français" , "fr" }
         };
 
-        public static Dictionary<string,string> lstTranslator = new Dictionary<string, string>() {
+        public static Dictionary<string, string> lstTranslator = new Dictionary<string, string>() {
             { "无翻译" , "NoTranslator"},
             { "百度翻译" , "BaiduTranslator" },
             // { "腾讯翻译君" , "TencentFYJTranslator" },
@@ -46,8 +43,7 @@ namespace TranslatorLibrary
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static string EncryptString(string str)
-        {
+        public static string EncryptString(string str) {
             MD5 md5 = MD5.Create();
             // 将字符串转换成字节数组
             byte[] byteOld = Encoding.UTF8.GetBytes(str);
@@ -56,8 +52,7 @@ namespace TranslatorLibrary
             md5.Dispose();
             // 将加密结果转换为字符串
             StringBuilder sb = new StringBuilder();
-            foreach (byte b in byteNew)
-            {
+            foreach (byte b in byteNew) {
                 // 将字节转换成16进制表示的字符串，
                 sb.Append(b.ToString("x2"));
             }
@@ -69,8 +64,7 @@ namespace TranslatorLibrary
         /// 计算时间戳
         /// </summary>
         /// <returns></returns>
-        public static string GetTimeStamp()
-        {
+        public static string GetTimeStamp() {
             return DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
         }
 
@@ -88,7 +82,7 @@ namespace TranslatorLibrary
         /// <param name="TranslatorValue"></param>
         /// <returns></returns>
         public static int GetTranslatorIndex(string TranslatorValue) {
-            for (int i = 0;i < lstTranslator.Count;i++) {
+            for (int i = 0; i < lstTranslator.Count; i++) {
                 var kvp = lstTranslator.ElementAt(i);
                 if (kvp.Value == TranslatorValue) {
                     return i;
@@ -101,22 +95,18 @@ namespace TranslatorLibrary
         /// <summary>
         /// 获得HttpClinet单例，第一次调用自动初始化
         /// </summary>
-        public static HttpClient GetHttpClient()
-        {
+        public static HttpClient GetHttpClient() {
             if (HC == null)
                 lock (typeof(CommonFunction))
-                    if (HC == null)
-                    {
+                    if (HC == null) {
                         HC = new HttpClient() { Timeout = TimeSpan.FromSeconds(8) };
                         HC.DefaultRequestHeaders.UserAgent.ParseAdd("MisakaTranslator");
                         ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12; // For FX4.7
                     }
             return HC;
         }
-        public static void SetHttpProxiedClient(string addr)
-        {
-            if (HC == null)
-            {
+        public static void SetHttpProxiedClient(string addr) {
+            if (HC == null) {
                 var px = new WebProxy() { Address = new Uri(addr), UseDefaultCredentials = true };
                 var ph = new HttpClientHandler() { Proxy = px };
                 HC = new HttpClient(ph) { Timeout = TimeSpan.FromSeconds(8) };
@@ -126,8 +116,7 @@ namespace TranslatorLibrary
 
         public static Random RD = new Random();
 
-        public static System.Text.Json.JsonSerializerOptions JsonOP = new()
-        {
+        public static System.Text.Json.JsonSerializerOptions JsonOP = new() {
             IncludeFields = true
         };
     }

@@ -1,25 +1,18 @@
 extern alias Tesseract;
 using tesseract = Tesseract.TesseractOCR;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace OCRLibrary
-{
-    public class TesseractOCR : OCREngine
-    {
+namespace OCRLibrary {
+    public class TesseractOCR : OCREngine {
         private string srcLangCode;  //OCR识别语言 jpn=日语 eng=英语
         private tesseract.Engine engine;
 
-        public override Task<string> OCRProcessAsync(Bitmap img)
-        {
-            try
-            {
+        public override Task<string> OCRProcessAsync(Bitmap img) {
+            try {
                 var stream = new MemoryStream();
                 img.Save(stream, ImageFormat.Bmp);
                 var pix = tesseract.Pix.Image.LoadFromMemory(stream);
@@ -27,33 +20,37 @@ namespace OCRLibrary
                 var recog = engine.Process(pix);
                 string text = recog.Text;
                 stream.Dispose();
+
+                /* 项目“OCRLibrary (netframework4.7.2)”的未合并的更改
+                在此之前:
+                                recog.Dispose();
+
+                                return Task.FromResult(text);
+                在此之后:
+                                recog.Dispose();
+
+                                return Task.FromResult(text);
+                */
                 recog.Dispose();
-                
+
                 return Task.FromResult(text);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 errorInfo = ex.Message;
                 return Task.FromResult<string>(null);
             }
         }
 
-        public override bool OCR_Init(string param1 = "", string param2 = "")
-        {
-            try
-            {
+        public override bool OCR_Init(string param1 = "", string param2 = "") {
+            try {
                 engine = new tesseract.Engine(Environment.CurrentDirectory + "\\tessdata", srcLangCode);
                 return true;
-            }
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
                 errorInfo = ex.Message;
                 return false;
             }
         }
 
-        public override void SetOCRSourceLang(string lang)
-        {
+        public override void SetOCRSourceLang(string lang) {
             srcLangCode = lang;
         }
     }

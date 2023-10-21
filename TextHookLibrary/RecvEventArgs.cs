@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TextHookLibrary
-{
+namespace TextHookLibrary {
     /// <summary>
     /// TextHook数据结构体
     /// </summary>
-    public class TextHookData{
+    public class TextHookData {
         /// <summary>
         /// 游戏进程ID
         /// </summary>
@@ -43,7 +38,7 @@ namespace TextHookLibrary
         public string Data { set; get; }
     }
 
-    
+
     /// <summary>
     /// Hook功能选择界面提供的数据收到事件，满足条件：任何一个不重复的输出都将触发此事件
     /// </summary>
@@ -63,18 +58,27 @@ namespace TextHookLibrary
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
+
+    /* 项目“TextHookLibrary (netframework4.7.2)”的未合并的更改
+    在此之前:
+        public delegate void SolvedDataRecvEventHandler(object sender, SolvedDataRecvEventArgs e);
+
+        public class HookSelectRecvEventArgs : EventArgs
+    在此之后:
+        public delegate void SolvedDataRecvEventHandler(object sender, SolvedDataRecvEventArgs e);
+
+        public class HookSelectRecvEventArgs : EventArgs
+    */
     public delegate void SolvedDataRecvEventHandler(object sender, SolvedDataRecvEventArgs e);
-    
-    public class HookSelectRecvEventArgs : EventArgs
-    {
+
+    public class HookSelectRecvEventArgs : EventArgs {
         //方法序号（仅在HookFunSelectDataRecvEventHandler和HookFunReSelectDataRecvEventHandler事件中有效）
         //这个序号可以直接用于ListView
-        public int Index { get; set;}
+        public int Index { get; set; }
         public TextHookData Data { get; set; }
     }
 
-    public class SolvedDataRecvEventArgs : EventArgs
-    {
+    public class SolvedDataRecvEventArgs : EventArgs {
         public TextHookData Data { get; set; }
     }
 }

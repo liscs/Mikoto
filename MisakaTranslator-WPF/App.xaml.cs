@@ -1,24 +1,19 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace MisakaTranslator_WPF
-{
-    public partial class App
-    {
-        public App()
-        {
+namespace MisakaTranslator_WPF {
+    public partial class App {
+        public App() {
             //注册开始和退出事件
             this.Startup += App_Startup;
             this.Exit += App_Exit;
         }
 
-        private void App_Startup(object sender, StartupEventArgs e)
-        {
+        private void App_Startup(object sender, StartupEventArgs e) {
             //UI线程未捕获异常处理事件
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
             //Task线程内未捕获异常处理事件
@@ -27,8 +22,7 @@ namespace MisakaTranslator_WPF
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
 
-        private void App_Exit(object sender, ExitEventArgs e)
-        {
+        private void App_Exit(object sender, ExitEventArgs e) {
             //程序退出时检查是否断开Hook
             DoHookCheck();
 
@@ -38,8 +32,7 @@ namespace MisakaTranslator_WPF
         /// <summary>
         /// UI线程未捕获异常处理事件
         /// </summary>
-        private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-        {
+        private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e) {
             MisakaTranslator_WPF.MainWindow.Instance.CloseNotifyIcon();
             string fn = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
             PrintErrorMessageToFile(fn, e.Exception, 0);
@@ -51,16 +44,12 @@ namespace MisakaTranslator_WPF
         /// <summary>
         /// 非UI线程未捕获异常处理事件
         /// </summary>
-        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
+        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
             MisakaTranslator_WPF.MainWindow.Instance.CloseNotifyIcon();
             string fn = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-            if (e.ExceptionObject is Exception exception)
-            {
+            if (e.ExceptionObject is Exception exception) {
                 PrintErrorMessageToFile(fn, exception, 1);
-            }
-            else
-            {
+            } else {
                 PrintErrorMessageToFile(fn, null, 1, e.ExceptionObject.ToString());
             }
 
@@ -72,8 +61,7 @@ namespace MisakaTranslator_WPF
         /// <summary>
         /// Task线程内未捕获异常处理事件
         /// </summary>
-        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
-        {
+        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e) {
             MisakaTranslator_WPF.MainWindow.Instance.CloseNotifyIcon();
             string fn = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
             PrintErrorMessageToFile(fn, e.Exception, 2);
@@ -90,10 +78,8 @@ namespace MisakaTranslator_WPF
         /// <param name="e">异常</param>
         /// <param name="exceptionThread">异常线程</param>
         /// <param name="errorMessage">错误消息</param>
-        private static void PrintErrorMessageToFile(string fileName, Exception e, int exceptionThread, string errorMessage = null)
-        {
-            if (!Directory.Exists($"{Environment.CurrentDirectory}\\logs"))
-            {
+        private static void PrintErrorMessageToFile(string fileName, Exception e, int exceptionThread, string errorMessage = null) {
+            if (!Directory.Exists($"{Environment.CurrentDirectory}\\logs")) {
                 Directory.CreateDirectory($"{Environment.CurrentDirectory}\\logs");
             }
             FileStream fs = new FileStream($"{Environment.CurrentDirectory}\\logs\\{fileName}.txt", FileMode.Create);
@@ -107,17 +93,13 @@ namespace MisakaTranslator_WPF
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             sw.WriteLine("MisakaTranslatorVersion:" + version.ToString());
 
-            if (errorMessage != null)
-            {
+            if (errorMessage != null) {
                 sw.WriteLine("==============Exception Info================");
                 sw.WriteLine("ExceptionType:" + "Non UI Thread But not Exception");
                 sw.WriteLine("ErrorMessage:" + errorMessage);
-            }
-            else
-            {
+            } else {
                 sw.WriteLine("==============Exception Info================");
-                switch (exceptionThread)
-                {
+                switch (exceptionThread) {
                     case 0:
                         sw.WriteLine("ExceptionType:" + "UI Thread");
                         break;
@@ -133,7 +115,7 @@ namespace MisakaTranslator_WPF
                 sw.WriteLine("ExceptionSource:" + e.Source);
                 sw.WriteLine("ExceptionMessage:" + e.Message);
                 sw.WriteLine("ExceptionStackTrace:" + e.StackTrace);
-                if(e.InnerException != null)
+                if (e.InnerException != null)
                     sw.WriteLine("InnerExceptionStackTrace:" + e.InnerException);
             }
 
@@ -147,8 +129,7 @@ namespace MisakaTranslator_WPF
         /// 执行Hook是否完全卸载的检查
         /// </summary>
         public void DoHookCheck() {
-            if (Common.textHooker != null)
-            {
+            if (Common.textHooker != null) {
                 Common.textHooker = null;
                 GC.Collect();
             }

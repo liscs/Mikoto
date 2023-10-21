@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DictionaryHelperLibrary
-{
-    public interface IDict
-    {
+﻿namespace DictionaryHelperLibrary {
+    public interface IDict {
         /// <summary>
         /// 字典API初始化
         /// </summary>
@@ -27,6 +19,6 @@ namespace DictionaryHelperLibrary
         /// </summary>
         /// <returns></returns>
         string GetLastError();
-        
+
     }
 }

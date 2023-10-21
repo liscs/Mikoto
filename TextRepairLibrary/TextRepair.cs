@@ -1,17 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using IronPython.Hosting;
 
-namespace TextRepairLibrary
-{
-    public class TextRepair
-    {
+namespace TextRepairLibrary {
+    public class TextRepair {
         public static int SingleWordRepeatTimes;
         public static int SentenceRepeatFindCharNum;
         public static string regexPattern;
@@ -27,23 +22,18 @@ namespace TextRepairLibrary
             { "用户自定义DLL(见说明)" , "RepairFun_Custom" }
         };
 
-        static TextRepair()
-        {
-            try
-            {
+        static TextRepair() {
+            try {
                 string[] handlers = Directory.GetFiles("textRepairPlugins");
-                foreach(var handler in handlers)
-                {
+                foreach (var handler in handlers) {
                     string stem = Path.GetFileNameWithoutExtension(handler);
                     string ext = Path.GetExtension(handler);
-                    if (ext != ".py" || stem == "__init__")
-                    {
+                    if (ext != ".py" || stem == "__init__") {
                         continue;
                     }
                     lstRepairFun.Add("用户自定义Python2脚本: " + stem, "#" + stem);
                 }
-            }
-            catch { }
+            } catch { }
         }
 
 
@@ -53,31 +43,26 @@ namespace TextRepairLibrary
         /// <param name="functionName">提供方法函数名</param>
         /// <param name="sourceText">源文本</param>
         /// <returns></returns>
-        public static string RepairFun_Auto(string functionName,string sourceText) {
-            if (functionName.StartsWith("#"))
-            {
+        public static string RepairFun_Auto(string functionName, string sourceText) {
+            if (functionName.StartsWith("#")) {
                 return RepairFun_PythonScript(functionName.Substring(1), sourceText);
             }
             Type t = typeof(TextRepair);//括号中的为所要使用的函数所在的类的类名
             MethodInfo mt = t.GetMethod(functionName);
-            if (mt != null)
-            {
+            if (mt != null) {
                 string str = (string)mt.Invoke(null, new object[] { sourceText });
                 return str;
-            }
-            else
-            {
+            } else {
                 return "该方法处理错误！";
             }
         }
-        
+
 
         /// <summary>
         /// 无处理方式
         /// </summary>
         /// <returns></returns>
-        public static string RepairFun_NoDeal(string source)
-        {
+        public static string RepairFun_NoDeal(string source) {
             return source;
         }
 
@@ -87,10 +72,8 @@ namespace TextRepairLibrary
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string RepairFun_RemoveSingleWordRepeat(string source)
-        {
-            if (source == "")
-            {
+        public static string RepairFun_RemoveSingleWordRepeat(string source) {
+            if (source == "") {
                 return "";
             }
 
@@ -98,37 +81,27 @@ namespace TextRepairLibrary
             int flag = 0;
             string ret = "";
 
-            if (repeatTimes <= 2)
-            {
+            if (repeatTimes <= 2) {
                 //未设置固定重复次数时，逢重复就删
-                for (int i = 1; i < source.Length; i++)
-                {
-                    if (source[i] != source[flag])
-                    {
+                for (int i = 1; i < source.Length; i++) {
+                    if (source[i] != source[flag]) {
                         ret += source[flag];
                         flag = i;
                     }
                 }
                 ret += source[source.Length - 1];
-            }
-            else
-            {
+            } else {
                 //设置了固定重复次数且重复次数大于等于3的情况
 
                 int r = 0;
-                for (int i = 1; i < source.Length; i++)
-                {
-                    if (source[i] == source[flag])
-                    {
+                for (int i = 1; i < source.Length; i++) {
+                    if (source[i] == source[flag]) {
                         r++;
-                        if (r > repeatTimes)
-                        {
+                        if (r > repeatTimes) {
                             ret += source[i];
                             r = 0;
                         }
-                    }
-                    else
-                    {
+                    } else {
                         ret += source[flag];
                         flag = i;
                         r = 0;
@@ -145,28 +118,24 @@ namespace TextRepairLibrary
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string RepairFun_RemoveSentenceRepeat(string source)
-        {
+        public static string RepairFun_RemoveSentenceRepeat(string source) {
             int findNum = SentenceRepeatFindCharNum;
 
-            if (source == "" || source.Length < findNum)
-            {
+            if (source == "" || source.Length < findNum) {
                 return "";
             }
-            
+
             char[] arr = source.ToCharArray();
             Array.Reverse(arr);
             string text = new string(arr);
 
             string cmp = "";
-            for (int i = 1; i <= findNum; i++)
-            {
+            for (int i = 1; i <= findNum; i++) {
                 cmp = cmp + text[i];
             }
 
             int pos = text.IndexOf(cmp, findNum);
-            if (pos == -1)
-            {
+            if (pos == -1) {
                 return "句子去重出错";
             }
 
@@ -184,8 +153,7 @@ namespace TextRepairLibrary
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string RepairFun_RemoveLetterNumber(string source)
-        {
+        public static string RepairFun_RemoveLetterNumber(string source) {
             string strRemoved = Regex.Replace(source, "[a-z]", "", RegexOptions.IgnoreCase);
             strRemoved = Regex.Replace(strRemoved, "[0-9]", "", RegexOptions.IgnoreCase);
             return strRemoved;
@@ -214,20 +182,17 @@ namespace TextRepairLibrary
             return Regex.Replace(source, regexPattern, regexReplacement);
         }
 
-        
+
         /// <summary>
         /// 用户自定义方法
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string RepairFun_Custom(string source)
-        {
-            if (source == "")
-            {
+        public static string RepairFun_Custom(string source) {
+            if (source == "") {
                 return "";
             }
-            try
-            {
+            try {
                 Assembly asb = Assembly.LoadFrom(Environment.CurrentDirectory + "\\UserCustomRepairRepeat.dll");
                 Type t = asb.GetType("UserCustomRepairRepeat.RepairRepeat");//获取类名 命名空间+类名
                 object o = Activator.CreateInstance(t);
@@ -238,8 +203,7 @@ namespace TextRepairLibrary
                 };
                 var ret = method.Invoke(o, obj);
                 return (string)ret;
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 return e.Message;
             }
         }
@@ -249,10 +213,8 @@ namespace TextRepairLibrary
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string RepairFun_PythonScript(string handler, string source)
-        {
-            if (source == "")
-            {
+        public static string RepairFun_PythonScript(string handler, string source) {
+            if (source == "") {
                 return "";
             }
 
@@ -264,12 +226,9 @@ namespace TextRepairLibrary
             Microsoft.Scripting.Hosting.ScriptScope scope = pythonEngine.CreateScope();
             scope.SetVariable("SourceStr", source);
 
-            try
-            {
+            try {
                 pythonScript.Execute(scope);
-            } 
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 return e.Message;
             }
             return (string)scope.GetVariable("ResultStr");

@@ -156,14 +156,11 @@ namespace MisakaTranslator_WPF {
         private WeakReference<SettingsWindow> _settingsWindow;
 
         private void SettingsBtn_Click(object sender, RoutedEventArgs e) {
-            if(_settingsWindow != null && _settingsWindow.TryGetTarget(out var sw))
-            {
+            if (_settingsWindow != null && _settingsWindow.TryGetTarget(out var sw)) {
                 sw.Show();
                 sw.WindowState = WindowState.Normal;
                 sw.Activate();
-            }
-            else
-            {
+            } else {
                 sw = new SettingsWindow();
                 _settingsWindow = new WeakReference<SettingsWindow>(sw);
                 sw.Show();
@@ -199,8 +196,7 @@ namespace MisakaTranslator_WPF {
             GameNameTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_GameName"].ToString() + gameInfoList[gid].GameName;
             if (gameInfoList[gid].TransMode == 1) {
                 TransModeTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_TransMode"].ToString() + "Hook";
-            }
-            else {
+            } else {
                 TransModeTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_TransMode"].ToString() + "OCR";
             }
 
@@ -218,8 +214,7 @@ namespace MisakaTranslator_WPF {
             if (pidList.Count == 0) {
                 HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
                 return;
-            }
-            else {
+            } else {
                 var pid = pidList[0].Id;
                 pidList.Clear();
                 pidList = ProcessHelper.FindSameNameProcess(pid);
@@ -250,8 +245,7 @@ namespace MisakaTranslator_WPF {
 
             Common.textHooker = pidList.Count == 1 ? new TextHookHandle(pidList[0].Id) : new TextHookHandle(pidList);
 
-            if (!Common.textHooker.Init(gameInfoList[gid].Isx64 ? Common.appSettings.Textractor_Path64 : Common.appSettings.Textractor_Path32))
-            {
+            if (!Common.textHooker.Init(gameInfoList[gid].Isx64 ? Common.appSettings.Textractor_Path64 : Common.appSettings.Textractor_Path32)) {
                 HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
                 return;
             }
@@ -263,17 +257,17 @@ namespace MisakaTranslator_WPF {
             //    ggw.Show();
             //}
             //else {
-                //无重复码。直接进游戏
-                Common.textHooker.MisakaCodeList = null;
-                //2020-06-08 大部分情况无重复码的游戏不会hook到很多，不进行去多余hook
-                //Common.textHooker.DetachUnrelatedHookWhenDataRecv = Convert.ToBoolean(Common.appSettings.AutoDetach);
-                await Common.textHooker.StartHook(Convert.ToBoolean(Common.appSettings.AutoHook));
+            //无重复码。直接进游戏
+            Common.textHooker.MisakaCodeList = null;
+            //2020-06-08 大部分情况无重复码的游戏不会hook到很多，不进行去多余hook
+            //Common.textHooker.DetachUnrelatedHookWhenDataRecv = Convert.ToBoolean(Common.appSettings.AutoDetach);
+            await Common.textHooker.StartHook(Convert.ToBoolean(Common.appSettings.AutoHook));
 
-                await Task.Delay(3000);
-                Common.textHooker.Auto_AddHookToGame();
+            await Task.Delay(3000);
+            Common.textHooker.Auto_AddHookToGame();
 
-                var tw = new TranslateWindow();
-                tw.Show();
+            var tw = new TranslateWindow();
+            tw.Show();
             //}
         }
 
@@ -369,8 +363,7 @@ namespace MisakaTranslator_WPF {
             var res = GetGameListHasProcessGame_PID_ID();
             if (res == -1) {
                 Growl.ErrorGlobal(Application.Current.Resources["MainWindow_AutoStartError_Hint"].ToString());
-            }
-            else {
+            } else {
                 await StartTranslateByGid(res);
             }
         }
@@ -441,8 +434,7 @@ namespace MisakaTranslator_WPF {
             }
         }
 
-        private void LanguageBtn_Click(object sender, RoutedEventArgs e)
-        {
+        private void LanguageBtn_Click(object sender, RoutedEventArgs e) {
             LanguageContextMenu.IsOpen = true;
         }
     }

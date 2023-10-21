@@ -27,12 +27,10 @@
 
                     <hc:NumericUpDown Name="sourceFontSize" Minimum="8" hc:InfoElement.Title="{StaticResource TransWinSettingsWin_FontSize}" Margin="10" Style="{StaticResource NumericUpDownExtend}"/>
 					<CheckBox Name="DropShadowCheckBox" Content="{StaticResource TransWinSettingsWin_DropShadowCbox}" Margin="10" HorizontalAlignment="Left"/>
+                    
                     <CheckBox Name="KanaCheckBox" Content="{StaticResource TransWinSettingsWin_KanaCbox}" Margin="10" HorizontalAlignment="Left"/>
-					
-					<CheckBox Name="HirakanaCheckBox" Content="{StaticResource TransWinSettingsWin_HirakanaCbox}" Margin="10" HorizontalAlignment="Left"/>
-					
-				
-					<CheckBox Name="KanaBoldCheckBox" Content="{StaticResource TransWinSettingsWin_KanaBoldCbox}" Margin="10" HorizontalAlignment="Left"/>
+                    <CheckBox Name="HirakanaCheckBox" Content="{StaticResource TransWinSettingsWin_HirakanaCbox}" Margin="10" HorizontalAlignment="Left"/>
+                    <CheckBox Name="KanaBoldCheckBox" Content="{StaticResource TransWinSettingsWin_KanaBoldCbox}" Margin="10" HorizontalAlignment="Left"/>
                     <CheckBox Name="ColorfulCheckBox" Content="{StaticResource TransWinSettingsWin_ColorfulCbox}" Margin="10" HorizontalAlignment="Left"/>
 
                     <TextBlock Text="{StaticResource TransWinSettingsWin_srcSetNotice}" Margin="10" HorizontalAlignment="Center"/>

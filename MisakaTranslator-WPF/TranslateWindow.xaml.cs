@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -70,7 +68,7 @@ namespace MisakaTranslator_WPF {
 
             _gameTextHistory = new Queue<string>();
 
-            this.Topmost = true;
+            Topmost = true;
             UI_Init();
             IsOCRingFlag = false;
 
@@ -384,8 +382,6 @@ namespace MisakaTranslator_WPF {
                 //2.5 清除面板
                 Application.Current.Dispatcher.Invoke(() => {
                     SourceTextPanel.Children.Clear();
-                    FirstTransText.Text = "";
-                    SecondTransText.Text = "";
                 });
 
                 _currentsrcText = repairedText;
@@ -679,7 +675,9 @@ namespace MisakaTranslator_WPF {
             try {
                 //System.InvalidOperationException:“关闭 Window 之后，无法设置 Visibility，也无法调用 Show、ShowDialogor 或 WindowInteropHelper.EnsureHandle。”
                 Common.mainWin.Visibility = Visibility.Visible;
-            } catch { }
+            } catch (Exception ex) {
+                Common.WhiteExceptionLog(ex);
+            }
         }
 
         private void Settings_Item_Click(object sender, RoutedEventArgs e) {

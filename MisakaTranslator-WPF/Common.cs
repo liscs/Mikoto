@@ -1,25 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using KeyboardMouseHookLibrary;
 using OCRLibrary;
-using SQLHelperLibrary;
 using TextHookLibrary;
 using TextRepairLibrary;
 
-namespace MisakaTranslator_WPF
-{
-    public class Common
-    {
+namespace MisakaTranslator_WPF {
+    public class Common {
         public static IAppSettings appSettings; //应用设置
         public static IRepeatRepairSettings repairSettings; //去重方法参数
 
@@ -47,19 +42,15 @@ namespace MisakaTranslator_WPF
         /// 导出Textractor历史记录，返回是否成功的结果
         /// </summary>
         /// <returns></returns>
-        public static bool ExportTextractorHistory()
-        {
-            try
-            {
-                if (textHooker != null)
-                {
+        public static bool ExportTextractorHistory() {
+            try {
+                if (textHooker != null) {
                     FileStream fs = new FileStream("TextractorOutPutHistory.txt", FileMode.Create);
                     StreamWriter sw = new StreamWriter(fs);
 
                     sw.WriteLine("=================以下是Textractor的历史输出记录================");
                     string[] history = textHooker.TextractorOutPutHistory.ToArray();
-                    for (int i = 0; i < history.Length; i++)
-                    {
+                    for (int i = 0; i < history.Length; i++) {
                         sw.WriteLine(history[i]);
                     }
 
@@ -68,14 +59,10 @@ namespace MisakaTranslator_WPF
                     fs.Close();
 
                     return true;
-                }
-                else
-                {
+                } else {
                     return false;
                 }
-            }
-            catch (System.NullReferenceException)
-            {
+            } catch (System.NullReferenceException) {
                 return false;
             }
         }
@@ -83,8 +70,7 @@ namespace MisakaTranslator_WPF
         /// <summary>
         /// 文本去重方法初始化
         /// </summary>
-        public static void RepairFuncInit()
-        {
+        public static void RepairFuncInit() {
             TextRepair.SingleWordRepeatTimes = repairSettings.SingleWordRepeatTimes;
             TextRepair.SentenceRepeatFindCharNum = repairSettings.SentenceRepeatFindCharNum;
             TextRepair.regexPattern = repairSettings.Regex;
@@ -94,8 +80,7 @@ namespace MisakaTranslator_WPF
         /// <summary>
         /// 全局OCR
         /// </summary>
-        public static void GlobalOCR()
-        {
+        public static void GlobalOCR() {
             BitmapImage img = ImageProcFunc.ImageToBitmapImage(ScreenCapture.GetAllWindow());
             ScreenCaptureWindow scw = new ScreenCaptureWindow(img, 2);
             scw.Width = img.Width;
@@ -110,8 +95,7 @@ namespace MisakaTranslator_WPF
         /// 获取DPI缩放倍数
         /// </summary>
         /// <returns>DPI缩放倍数</returns>
-        public static double GetScale()
-        {
+        public static double GetScale() {
             if (scale == 0)
                 scale = Graphics.FromHwnd(new WindowInteropHelper(mainWin).Handle).DpiX / 96;
             return scale;
@@ -129,8 +113,7 @@ namespace MisakaTranslator_WPF
 
             string strResult = "";
 
-            try
-            {
+            try {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 //声明一个HttpWebRequest请求
                 request.Timeout = 30000;
@@ -141,9 +124,7 @@ namespace MisakaTranslator_WPF
                 Encoding encoding = Encoding.GetEncoding("GB2312");
                 StreamReader streamReader = new StreamReader(streamReceive, encoding);
                 strResult = streamReader.ReadToEnd();
-            }
-            catch
-            {
+            } catch {
                 return null;
             }
 
@@ -154,11 +135,9 @@ namespace MisakaTranslator_WPF
                     return null;
                 }
 
-                if (currentVersion == newVersion)
-                {
+                if (currentVersion == newVersion) {
                     return null;
-                }
-                else {
+                } else {
                     string downloadPath = GetMiddleStr(strResult, "DownloadPath[", "]");
                     return new List<string>() {
                         newVersion,downloadPath
@@ -176,17 +155,42 @@ namespace MisakaTranslator_WPF
         /// <param name="preStr"></param>
         /// <param name="nextStr"></param>
         /// <returns></returns>
-        public static string GetMiddleStr(string oldStr, string preStr, string nextStr)
-        {
-            try
-            {
+        public static string GetMiddleStr(string oldStr, string preStr, string nextStr) {
+            try {
                 string tempStr = oldStr.Substring(oldStr.IndexOf(preStr) + preStr.Length);
                 tempStr = tempStr.Substring(0, tempStr.IndexOf(nextStr));
                 return tempStr;
-            }
-            catch (Exception) {
+            } catch (Exception) {
                 return null;
             }
         }
+
+        /// <summary>
+        /// 写异常Log
+        /// </summary>
+        /// <param name="exception"></param>
+        public static void WhiteExceptionLog(Exception exception) {
+            if (!Directory.Exists($"{Environment.CurrentDirectory}\\logs")) {
+                Directory.CreateDirectory($"{Environment.CurrentDirectory}\\logs");
+            }
+            FileStream fs = new FileStream($"{Environment.CurrentDirectory}\\logs\\excption log.txt", FileMode.Append);
+
+            StreamWriter sw = new StreamWriter(fs);
+
+            sw.WriteLine("==============System Info================");
+            sw.WriteLine("System:" + Environment.OSVersion);
+            sw.WriteLine("CurrentTime:" + DateTime.Now.ToString("g"));
+            sw.WriteLine("dotNetVersion:" + Environment.Version);
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            sw.WriteLine("MisakaTranslatorVersion:" + version.ToString());
+
+            sw.WriteLine("==============Exception Info================");
+            sw.WriteLine(exception.ToString());
+
+            sw.Flush();
+            sw.Close();
+            fs.Close();
+        }
+
     }
 }

@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 
-namespace MisakaTranslator_WPF.GuidePages
-{
-    public class PageChangeRoutedEventArgs : RoutedEventArgs
-    {
+namespace MisakaTranslator_WPF.GuidePages {
+    public class PageChangeRoutedEventArgs : RoutedEventArgs {
         public PageChangeRoutedEventArgs(RoutedEvent routedEvent, object source) : base(routedEvent, source) { }
 
         /// <summary>
@@ -23,15 +16,14 @@ namespace MisakaTranslator_WPF.GuidePages
         public object ExtraArgs;
     }
 
-    public class PageChange
-    {
+    public class PageChange {
         public string XamlPath;
 
         //声明和注册路由事件
         public static readonly RoutedEvent PageChangeRoutedEvent =
             EventManager.RegisterRoutedEvent("PageChange", RoutingStrategy.Bubble, typeof(EventHandler<PageChangeRoutedEventArgs>), typeof(PageChange));
-        
+
     }
 
-    
+
 }

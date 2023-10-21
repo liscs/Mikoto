@@ -3,21 +3,15 @@ using SQLitePCL;
 using System;
 using System.Collections.Generic;
 
-namespace SQLHelperLibrary
-{
-    public class SQLHelper
-    {
+namespace SQLHelperLibrary {
+    public class SQLHelper {
         private readonly string _mDbConnectionString;
         private string _errorInfo;//最后一次错误信息
 
-        static SQLHelper()
-        {
-            if (Environment.OSVersion.Version.Build >= 10586)
-            {
+        static SQLHelper() {
+            if (Environment.OSVersion.Version.Build >= 10586) {
                 raw.SetProvider(new SQLite3Provider_winsqlite3());
-            }
-            else
-            {
+            } else {
                 raw.SetProvider(new SQLite3Provider_e_sqlite3());
             }
         }
@@ -26,8 +20,7 @@ namespace SQLHelperLibrary
         /// 初始化
         /// </summary>
         /// <param name="dataSource">数据库文件路径</param>
-        public SQLHelper(string dataSource)
-        {
+        public SQLHelper(string dataSource) {
             _mDbConnectionString = "Filename=" + dataSource;
         }
 
@@ -36,21 +29,15 @@ namespace SQLHelperLibrary
         /// </summary>
         /// <param name="sql">SQL语句</param>
         /// <returns>返回影响的结果数</returns>
-        public int ExecuteSql(string sql)
-        {
-            using (var mDbConnection = new SqliteConnection(_mDbConnectionString))
-            {
-                try
-                {
+        public int ExecuteSql(string sql) {
+            using (var mDbConnection = new SqliteConnection(_mDbConnectionString)) {
+                try {
                     mDbConnection.Open();
-                    using (var command = new SqliteCommand(sql, mDbConnection))
-                    {
+                    using (var command = new SqliteCommand(sql, mDbConnection)) {
                         var res = command.ExecuteNonQuery();
                         return res;
                     }
-                }
-                catch (SqliteException ex)
-                {
+                } catch (SqliteException ex) {
                     _errorInfo = ex.Message;
                     return -1;
                 }
@@ -63,22 +50,15 @@ namespace SQLHelperLibrary
         /// <param name="sql"></param>
         /// <param name="columns">结果应包含的列数</param>
         /// <returns></returns>
-        public List<string> ExecuteReader_OneLine(string sql, int columns)
-        {
-            using (var mDbConnection = new SqliteConnection(_mDbConnectionString))
-            {
-                try
-                {
+        public List<string> ExecuteReader_OneLine(string sql, int columns) {
+            using (var mDbConnection = new SqliteConnection(_mDbConnectionString)) {
+                try {
                     mDbConnection.Open();
-                    using (var cmd = new SqliteCommand(sql, mDbConnection))
-                    {
-                        using (var myReader = cmd.ExecuteReader())
-                        {
+                    using (var cmd = new SqliteCommand(sql, mDbConnection)) {
+                        using (var myReader = cmd.ExecuteReader()) {
                             var ret = new List<string>();
-                            while (myReader.Read())
-                            {
-                                for (var i = 0; i < columns; i++)
-                                {
+                            while (myReader.Read()) {
+                                for (var i = 0; i < columns; i++) {
                                     ret.Add(myReader[i].ToString());
                                 }
                             }
@@ -86,9 +66,7 @@ namespace SQLHelperLibrary
                         }
                     }
 
-                }
-                catch (SqliteException e)
-                {
+                } catch (SqliteException e) {
                     _errorInfo = e.Message;
                     return null;
                 }
@@ -101,23 +79,16 @@ namespace SQLHelperLibrary
         /// <param name="sql"></param>
         /// <param name="columns">结果应包含的列数</param>
         /// <returns></returns>
-        public List<List<string>> ExecuteReader(string sql, int columns)
-        {
-            using (var mDbConnection = new SqliteConnection(_mDbConnectionString))
-            {
-                try
-                {
+        public List<List<string>> ExecuteReader(string sql, int columns) {
+            using (var mDbConnection = new SqliteConnection(_mDbConnectionString)) {
+                try {
                     mDbConnection.Open();
-                    using (var cmd = new SqliteCommand(sql, mDbConnection))
-                    {
-                        using (var myReader = cmd.ExecuteReader())
-                        {
+                    using (var cmd = new SqliteCommand(sql, mDbConnection)) {
+                        using (var myReader = cmd.ExecuteReader()) {
                             var ret = new List<List<string>>();
-                            while (myReader.Read())
-                            {
+                            while (myReader.Read()) {
                                 var lst = new List<string>();
-                                for (var i = 0; i < columns; i++)
-                                {
+                                for (var i = 0; i < columns; i++) {
                                     lst.Add(myReader[i].ToString());
                                 }
                                 ret.Add(lst);
@@ -127,9 +98,7 @@ namespace SQLHelperLibrary
                         }
                     }
 
-                }
-                catch (SqliteException e)
-                {
+                } catch (SqliteException e) {
                     _errorInfo = e.Message;
                     return null;
                 }
@@ -141,8 +110,7 @@ namespace SQLHelperLibrary
         /// 获取最后一次失败原因
         /// </summary>
         /// <returns></returns>
-        public string GetLastError()
-        {
+        public string GetLastError() {
             return _errorInfo;
         }
     }

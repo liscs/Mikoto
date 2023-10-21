@@ -2,26 +2,19 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
-namespace TransOptimizationLibrary
-{
-    public class NounTransOptimization
-    {
+namespace TransOptimizationLibrary {
+    public class NounTransOptimization {
         public SQLHelper sqlite;
         private string srcLangCode;
         private string dstLangCode;
         public string PeopleChatName;//显示在结果中的对话人名 以 人名：对话 的形式展示
 
-        public NounTransOptimization(string gameName,string srcL,string dstL) {
-            if (File.Exists(Environment.CurrentDirectory + "\\TransOptimization\\Misaka_" + gameName + ".sqlite") == false)
-            {
+        public NounTransOptimization(string gameName, string srcL, string dstL) {
+            if (File.Exists(Environment.CurrentDirectory + "\\TransOptimization\\Misaka_" + gameName + ".sqlite") == false) {
                 CreateNewNounTransDB(gameName);
-            }
-            else {
+            } else {
                 sqlite = new SQLHelper(Environment.CurrentDirectory + "\\TransOptimization\\Misaka_" + gameName + ".sqlite");
             }
             srcLangCode = srcL;
@@ -46,7 +39,7 @@ namespace TransOptimizationLibrary
             }
 
             //直接替换
-            for (int i = 0;i < lst.Count;i++) {
+            for (int i = 0; i < lst.Count; i++) {
                 List<string> l = lst[i];
 
                 if (l[2] == "1") {
@@ -54,11 +47,9 @@ namespace TransOptimizationLibrary
 
                     if (text.StartsWith(l[0])) {
                         //出现在首部
-                        text = text.Remove(0,l[0].Length);
+                        text = text.Remove(0, l[0].Length);
                         PeopleChatName = l[1];
-                    }
-                    else if (text.EndsWith(l[0]))
-                    {
+                    } else if (text.EndsWith(l[0])) {
                         //出现在尾部
                         int pos = text.LastIndexOf(l[0]);
                         if (pos > 0) {
@@ -68,7 +59,7 @@ namespace TransOptimizationLibrary
                     }
                 }
 
-                text = text.Replace(l[0],l[1]);
+                text = text.Replace(l[0], l[1]);
             }
             return text;
         }
@@ -81,19 +72,16 @@ namespace TransOptimizationLibrary
         /// <param name="userTrans">用户定义的翻译结果</param>
         /// <param name="machineTrans">机器翻译的结果（可空）</param>
         /// <returns>添加结果，如果已存在则失败</returns>
-        public bool AddNounTrans(string source,int type,string userTrans,string machineTrans = "") {
+        public bool AddNounTrans(string source, int type, string userTrans, string machineTrans = "") {
             string sql =
                 $"INSERT INTO NounTransOpt VALUES('{source}','{srcLangCode}',{type},'{userTrans}','{dstLangCode}','{machineTrans}');";
-            if (sqlite.ExecuteSql(sql) > 0)
-            {
+            if (sqlite.ExecuteSql(sql) > 0) {
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
-        
+
         /// <summary>
         /// (未实现)替换通过Mecab分词得到的名词
         /// </summary>
@@ -103,7 +91,7 @@ namespace TransOptimizationLibrary
             return text;
 
         }
-        
+
         /// <summary>
         /// 新建一个名词翻译数据库（一个游戏一个库）
         /// </summary>
