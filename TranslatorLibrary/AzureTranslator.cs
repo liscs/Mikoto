@@ -25,6 +25,14 @@ namespace TranslatorLibrary {
                 errorInfo = "Param Missing";
                 return null;
             }
+            if (desLang == "kr")
+                desLang = "ko";
+            if (srcLang == "kr")
+                srcLang = "ko";
+            if (desLang == "jp")
+                desLang = "ja";
+            if (srcLang == "jp")
+                srcLang = "ja";
 
             // Input and output languages are defined as parameters.
             string route = $"/translate?api-version=3.0&from={srcLang}&to={desLang}";
@@ -46,29 +54,34 @@ namespace TranslatorLibrary {
                 HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
                 // Read response as a string.
                 string result = await response.Content.ReadAsStringAsync();
-                try {
-                    oinfo = System.Text.Json.JsonSerializer.Deserialize<List<AzureTransOutInfo>>(result, CommonFunction.JsonOP).ElementAt(0);
-                } catch {
-                    return null;
+                if (response.StatusCode == HttpStatusCode.OK) {
+                    try {
+                        oinfo = System.Text.Json.JsonSerializer.Deserialize<List<AzureTransOutInfo>>(result, CommonFunction.JsonOP).ElementAt(0);
+                    } catch (Exception ex) {
+                        errorInfo = ex.Message;
+                        return null;
+                    }
+                    if (oinfo.translations.Length == 0)
+                        return "";
+                    else if (oinfo.translations.Length == 1)
+                        return oinfo.translations[0].text;
+                    else {
+                        var sb2 = new StringBuilder();
+                        foreach (var entry in oinfo.translations)
+                            sb2.AppendLine(entry.text);
+                        return sb2.ToString();
+                    }
+                } else {
+                    try {
+                        oinfo = System.Text.Json.JsonSerializer.Deserialize<AzureTransOutInfo>(result, CommonFunction.JsonOP);
+                        errorInfo = $"ErrorCode: {oinfo.error.code}, Message: {oinfo.error.message}";
+                        return null;
+                    } catch (Exception ex) {
+                        errorInfo = ex.Message;
+                        return null;
+                    }
                 }
             }
-
-            if (oinfo.error.code == null) {
-                if (oinfo.translations.Length == 0)
-                    return "";
-                else if (oinfo.translations.Length == 1)
-                    return oinfo.translations[0].text;
-                else {
-                    var sb2 = new StringBuilder();
-                    foreach (var entry in oinfo.translations)
-                        sb2.AppendLine(entry.text);
-                    return sb2.ToString();
-                }
-            } else {
-                errorInfo = $"ErrorCode: {oinfo.error.code}, Message: {oinfo.error.message}";
-                return errorInfo;
-            }
-
         }
 
         public void TranslatorInit(string param1, string param2) {
@@ -124,7 +137,7 @@ namespace TranslatorLibrary {
         public string to;
     }
     struct AzureErrorResult {
-        public string code;
+        public Int32 code;
         public string message;
     }
 }

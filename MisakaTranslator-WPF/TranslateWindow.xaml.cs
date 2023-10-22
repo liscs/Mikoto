@@ -254,6 +254,10 @@ namespace MisakaTranslator_WPF {
                     ChatGPTTranslator chatgpt = new ChatGPTTranslator();
                     chatgpt.TranslatorInit(Common.appSettings.ChatGPTapiKey, Common.appSettings.ChatGPTapiUrl);
                     return chatgpt;
+                case "AzureTranslator":
+                    AzureTranslator azure = new AzureTranslator();
+                    azure.TranslatorInit(Common.appSettings.AzureSecretKey, Common.appSettings.AzureLocation);
+                    return azure;
                 case "ArtificialTranslator":
                     ArtificialTranslator at = new ArtificialTranslator();
                     at.TranslatorInit(Common.appSettings.ArtificialPatchPath);
