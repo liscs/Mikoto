@@ -66,7 +66,6 @@ namespace TranslatorLibrary {
                     errorInfo = "Unknown error";
                     return null;
                 }
-                return null;
             }
         }
 

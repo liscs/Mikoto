@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -258,7 +259,7 @@ namespace MisakaTranslator_WPF {
             //}
             //else {
             //无重复码。直接进游戏
-            Common.textHooker.MisakaCodeList = null;
+            Common.textHooker.MisakaCodeList.Add(gameInfoList[gid].MisakaHookCode);
             //2020-06-08 大部分情况无重复码的游戏不会hook到很多，不进行去多余hook
             //Common.textHooker.DetachUnrelatedHookWhenDataRecv = Convert.ToBoolean(Common.appSettings.AutoDetach);
             await Common.textHooker.StartHook(Convert.ToBoolean(Common.appSettings.AutoHook));

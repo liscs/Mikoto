@@ -80,36 +80,10 @@ namespace MisakaTranslator_WPF.GuidePages.Hook {
                     Common.textHooker.DetachUnrelatedHooks(pid, usedHook);
                 }
 
-                int sum = 0;
-                for (int i = 0; i < lstData.Count; i++) {
-                    if (lstData[i].HookCode == lstData[HookFunListView.SelectedIndex].HookCode) {
-                        sum++;
-                    }
-
-                    if (sum >= 2) {
-                        //往数据库写信息，下一次游戏启动需要重新选方法
-                        if (Common.GameID != -1) {
-                            GameLibraryHelper.sqlHelper.ExecuteSql(
-                                $"UPDATE game_library SET isMultiHook = '{"True"}' WHERE gameid = {Common.GameID};");
-                        }
-
-                        break;
-                    }
-                }
-
-                //不满足的游戏也应该记录一下
-                if (sum <= 1) {
-                    if (Common.GameID != -1) {
-                        GameLibraryHelper.sqlHelper.ExecuteSql(
-                            $"UPDATE game_library SET isMultiHook = '{"False"}' WHERE gameid = {Common.GameID};");
-                    }
-                }
-
                 if (Common.GameID != -1) {
                     GameLibraryHelper.sqlHelper.ExecuteSql($"UPDATE game_library SET transmode = {"1"} WHERE gameid = {Common.GameID};");
-                    GameLibraryHelper.sqlHelper.ExecuteSql(
-                        $"UPDATE game_library SET hookcode = '{lstData[HookFunListView.SelectedIndex].HookCode}' WHERE gameid = {Common.GameID};");
-
+                    GameLibraryHelper.sqlHelper.ExecuteSql($"UPDATE game_library SET hookcode = '{lstData[HookFunListView.SelectedIndex].HookCode}' WHERE gameid = {Common.GameID};");
+                    GameLibraryHelper.sqlHelper.ExecuteSql($"UPDATE game_library SET misakahookcode = '{lstData[HookFunListView.SelectedIndex].MisakaHookCode}' WHERE gameid = {Common.GameID};");
                     if (LastCustomHookCode != "NULL") {
                         MessageBoxResult result = HandyControl.Controls.MessageBox.Show(
                             Application.Current.Resources["ChooseHookFuncPage_MBOX_hookcodeConfirm_left"] + "\n" + LastCustomHookCode + "\n" + Application.Current.Resources["ChooseHookFuncPage_MBOX_hookcodeConfirm_right"],

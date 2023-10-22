@@ -69,6 +69,8 @@ namespace SQLHelperLibrary {
         /// 检查是否是64位应用程序
         /// </summary>
         public bool Isx64 { get; set; }
+
+        public string MisakaHookCode { get; set; }
     }
 
     public static class GameLibraryHelper {
@@ -78,7 +80,7 @@ namespace SQLHelperLibrary {
         /// 创建一个新游戏列表库
         /// </summary>
         static GameLibraryHelper() {
-            var id = sqlHelper.ExecuteSql("CREATE TABLE IF NOT EXISTS game_library(gameid INTEGER PRIMARY KEY AUTOINCREMENT,gamename TEXT,gamefilepath TEXT,transmode INTEGER,src_lang TEXT,dst_lang TEXT,repair_func TEXT,repair_param_a TEXT,repair_param_b TEXT,hookcode TEXT,isMultiHook TEXT,isx64 TEXT,hookcode_custom TEXT);");
+            var id = sqlHelper.ExecuteSql("CREATE TABLE IF NOT EXISTS game_library(gameid INTEGER PRIMARY KEY AUTOINCREMENT,gamename TEXT,gamefilepath TEXT,transmode INTEGER,src_lang TEXT,dst_lang TEXT,repair_func TEXT,repair_param_a TEXT,repair_param_b TEXT,hookcode TEXT,isMultiHook TEXT,isx64 TEXT,hookcode_custom TEXT,misakahookcode TEXT);");
             if (id == -1) {
                 MessageBox.Show($"初始化游戏库发生错误，数据库错误代码:\n{sqlHelper.GetLastError()}");
                 throw new Exception(sqlHelper.GetLastError());
@@ -102,7 +104,7 @@ namespace SQLHelperLibrary {
 
             if (ls.Count == 0) {
                 var sql =
-                    $"INSERT INTO game_library VALUES(NULL,'{Path.GetFileNameWithoutExtension(gamePath)}','{gamePath}',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);";
+                    $"INSERT INTO game_library VALUES(NULL,'{Path.GetFileNameWithoutExtension(gamePath)}','{gamePath}',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);";
                 sqlHelper.ExecuteSql(sql);
                 ls = sqlHelper.ExecuteReader_OneLine(
                     $"SELECT gameid FROM game_library WHERE gamefilepath = '{gamePath}';", 1);
@@ -115,7 +117,7 @@ namespace SQLHelperLibrary {
         /// 得到游戏库中所有游戏的信息
         /// </summary>
         public static List<GameInfo> GetAllGameLibrary() {
-            var ls = sqlHelper.ExecuteReader("SELECT * FROM game_library;", 13);
+            var ls = sqlHelper.ExecuteReader("SELECT * FROM game_library;", 14);
 
             if (ls == null) {
                 MessageBox.Show($"数据库访问时发生错误，错误代码:\n{sqlHelper.GetLastError()}", "数据库错误");
@@ -131,7 +133,7 @@ namespace SQLHelperLibrary {
             foreach (var gameI in ls) {
                 var gameInfo = new GameInfo();
 
-                if (gameI[4] == "" || gameI[5] == "" || gameI[6] == "" || gameI[9] == "" || gameI[10] == "" || gameI[11] == "") {
+                if (gameI[4] == "" || gameI[5] == "" || gameI[6] == "" || gameI[9] == ""|| gameI[11] == "") {
                     //没有完整走完导航的游戏，这时就不需要显示这个库
                     continue;
                 }
@@ -146,9 +148,9 @@ namespace SQLHelperLibrary {
                 gameInfo.RepairParamA = gameI[7];
                 gameInfo.RepairParamB = gameI[8];
                 gameInfo.HookCode = gameI[9];
-                gameInfo.IsMultiHook = Convert.ToBoolean(gameI[10]);
                 gameInfo.Isx64 = Convert.ToBoolean(gameI[11]);
                 gameInfo.HookCodeCustom = gameI[12];
+                gameInfo.MisakaHookCode = gameI[13];
 
                 ret.Add(gameInfo);
             }
@@ -162,7 +164,7 @@ namespace SQLHelperLibrary {
         /// <param name="gameID"></param>
         /// <returns></returns>
         public static GameInfo GetGameInfoByID(int gameID) {
-            var ls = sqlHelper.ExecuteReader_OneLine($"SELECT * FROM game_library WHERE gameid = {gameID};", 13);
+            var ls = sqlHelper.ExecuteReader_OneLine($"SELECT * FROM game_library WHERE gameid = {gameID};", 14);
 
             if (ls == null) {
                 MessageBox.Show($"数据库访问时发生错误，错误代码:\n{sqlHelper.GetLastError()}", "数据库错误");
@@ -186,8 +188,9 @@ namespace SQLHelperLibrary {
                 HookCode = ls[9],
                 IsMultiHook = Convert.ToBoolean(ls[10]),
                 Isx64 = Convert.ToBoolean(ls[11]),
-                HookCodeCustom = ls[12]
-            };
+                HookCodeCustom = ls[12],
+                MisakaHookCode = ls[13]
+        };
 
             return gameInfo;
         }
