@@ -64,6 +64,7 @@
     <sys:String x:Key="SettingsMenu_DictSettings_xxgrz">小学馆日中</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_DeepL">DeepL</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_ChatGPT">ChatGPT</sys:String>
+    <sys:String x:Key="SettingsMenu_TranslatorSettings_Azure">Azure</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_IBM">IBM</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Yandex">Yandex</sys:String>
 
@@ -74,6 +75,7 @@
     <sys:String x:Key="API_testDstLang">目标文本语言</sys:String>
     <sys:String x:Key="API_testTransBtn">测试翻译</sys:String>
     <sys:String x:Key="API_docBtn">错误码说明(API文档)</sys:String>
+    <sys:String x:Key="API_langCode">语言代码查询</sys:String>
     <sys:String x:Key="API_billBtn">额度查询</sys:String>
 
     <sys:String x:Key="GeneralTransSettingsPage_Introduce">在这里进行所有翻译选项的通用设置，一个实时翻译窗口最多支持两个不同来源的翻译;您可以指定翻译过程中用到的API及显示顺序和是否使用分行翻译;更多关于翻译文本个性化的选项在实时翻译窗口中进行设置;公共接口有额度限制无法频繁使用。</sys:String>
@@ -83,6 +85,10 @@
     <sys:String x:Key="GeneralTransSettingsPage_EachRowTransCheckBox">使用分行翻译</sys:String>
     <sys:String x:Key="GeneralTransSettingsPage_TransSourceHint">注意：如果同时使用多个在线API，可能会影响效率</sys:String>
     <sys:String x:Key="GeneralTransSettingsPage_EachRowTransHint">不使用分行翻译时，软件会将读取到的文本合并成一句话翻译，对于部分游戏可以提高翻译质量。</sys:String>
+
+    <sys:String x:Key="AzureTransSettingsPage_Introduce">Azure翻译简介</sys:String>
+    <sys:String x:Key="AzureTransSettingsPage_secretKey">AzureAPI 密钥</sys:String>
+    <sys:String x:Key="AzureTransSettingsPage_location">AzureAPI 位置/区域</sys:String>
 
     <sys:String x:Key="BaiduTransSettingsPage_Introduce">百度翻译API支持28种语言互译，对英语、日语、汉语的互译支持较好，需要联网使用；您需要先申请百度翻译API并开通翻译服务，获取appID和密钥后填入下方相应位置并进行测试认证，注意本项与百度智能云OCR不在同一个地方注册；如果认证出现错误，请根据错误码至百度翻译API官方获取解决办法；百度翻译API部分版本可能会产生某些费用，您可以使用额度查询按钮进入控制台确认。</sys:String>
     <sys:String x:Key="BaiduTransSettingsPage_appID">百度翻译API appID</sys:String>

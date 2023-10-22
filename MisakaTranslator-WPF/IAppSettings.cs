@@ -56,6 +56,18 @@ namespace MisakaTranslator_WPF {
             set;
         }
 
+        [Option(Alias = "AzureTranslator.secretKey", DefaultValue = "")]
+        string AzureSecretKey {
+            get;
+            set;
+        }
+
+        [Option(Alias = "AzureTranslator.location", DefaultValue = "")]
+        string AzureLocation {
+            get;
+            set;
+        }
+
         [Option(Alias = "BaiduTranslator.appID", DefaultValue = "")]
         string BDappID {
             get;

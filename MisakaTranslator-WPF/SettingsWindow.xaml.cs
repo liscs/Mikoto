@@ -36,6 +36,10 @@ namespace MisakaTranslator_WPF {
             this.SettingFrame.Navigate(new Uri("SettingsPages/TranslatorPages/ChatGPTTransSettingsPage.xaml", UriKind.Relative));
         }
 
+        private void Item_AzureTrans_Selected(object sender, RoutedEventArgs e) {
+            this.SettingFrame.Navigate(new Uri("SettingsPages/TranslatorPages/AzureTransSettingsPage.xaml", UriKind.Relative));
+        }
+
         private void Item_FYJTrans_Selected(object sender, RoutedEventArgs e) {
             this.SettingFrame.Navigate(new Uri("SettingsPages/TranslatorPages/TencentFYJTransSettingsPage.xaml", UriKind.Relative));
         }
