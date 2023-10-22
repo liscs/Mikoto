@@ -14,9 +14,3 @@
   <br>
   <br>
 </p>
-
-<p align="center">
-  <a href="/README.md">中文</a> •
-  <a href="/README_EN.md">English</a>
-</p>
-
