@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Windows;
 
-namespace MisakaTranslator_WPF.GuidePages {
-    public class PageChangeRoutedEventArgs : RoutedEventArgs {
+namespace MisakaTranslator_WPF.GuidePages
+{
+    public class PageChangeRoutedEventArgs : RoutedEventArgs
+    {
         public PageChangeRoutedEventArgs(RoutedEvent routedEvent, object source) : base(routedEvent, source) { }
 
         /// <summary>
@@ -16,7 +18,8 @@ namespace MisakaTranslator_WPF.GuidePages {
         public object ExtraArgs;
     }
 
-    public class PageChange {
+    public class PageChange
+    {
         public string XamlPath;
 
         //声明和注册路由事件

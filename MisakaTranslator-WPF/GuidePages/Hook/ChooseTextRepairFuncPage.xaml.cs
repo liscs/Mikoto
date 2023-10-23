@@ -7,14 +7,17 @@ using System.Windows.Controls;
 using TextHookLibrary;
 using TextRepairLibrary;
 
-namespace MisakaTranslator_WPF.GuidePages.Hook {
+namespace MisakaTranslator_WPF.GuidePages.Hook
+{
     /// <summary>
     /// ChooseTextRepairFuncPage.xaml 的交互逻辑
     /// </summary>
-    public partial class ChooseTextRepairFuncPage : Page {
+    public partial class ChooseTextRepairFuncPage : Page
+    {
         private List<string> lstRepairFun = TextRepair.lstRepairFun.Keys.ToList();
 
-        public ChooseTextRepairFuncPage() {
+        public ChooseTextRepairFuncPage()
+        {
             InitializeComponent();
 
             RepairFuncCombox.ItemsSource = lstRepairFun;
@@ -23,16 +26,20 @@ namespace MisakaTranslator_WPF.GuidePages.Hook {
             Common.textHooker.Sevent += DataRecvEventHandler;
         }
 
-        public void DataRecvEventHandler(object sender, SolvedDataRecvEventArgs e) {
-            Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+        public void DataRecvEventHandler(object sender, SolvedDataRecvEventArgs e)
+        {
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            {
                 sourceTextBox.Text = e.Data.Data;
                 repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]], sourceTextBox.Text);
 
             }));
         }
 
-        private void RepairFuncCombox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            switch (TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]]) {
+        private void RepairFuncCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])
+            {
                 case "RepairFun_RemoveSingleWordRepeat":
                     Single_InputDrawer.IsOpen = true;
                     break;
@@ -47,14 +54,17 @@ namespace MisakaTranslator_WPF.GuidePages.Hook {
             repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]], sourceTextBox.Text);
         }
 
-        private void ConfirmBtn_Click(object sender, RoutedEventArgs e) {
+        private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
+        {
             Common.textHooker.Sevent -= DataRecvEventHandler;
 
             Common.UsingRepairFunc = TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]];
 
             //写入数据库的去重方法
-            if (Common.GameID != -1) {
-                switch (TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]]) {
+            if (Common.GameID != -1)
+            {
+                switch (TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])
+                {
                     case "RepairFun_RemoveSingleWordRepeat":
                         GameLibraryHelper.sqlHelper.ExecuteSql(
                             $"UPDATE game_library SET repair_func = '{Common.UsingRepairFunc}',repair_param_a = '{Common.repairSettings.SingleWordRepeatTimes}' WHERE gameid = {Common.GameID};");
@@ -81,7 +91,8 @@ namespace MisakaTranslator_WPF.GuidePages.Hook {
             this.RaiseEvent(args);
         }
 
-        private void SingleConfirm_Click(object sender, RoutedEventArgs e) {
+        private void SingleConfirm_Click(object sender, RoutedEventArgs e)
+        {
             if (!int.TryParse(Single_TextBox.Text, out int times))
                 return;
             Common.repairSettings.SingleWordRepeatTimes = times;
@@ -90,7 +101,8 @@ namespace MisakaTranslator_WPF.GuidePages.Hook {
             Single_InputDrawer.IsOpen = false;
         }
 
-        private void SentenceConfirm_Click(object sender, RoutedEventArgs e) {
+        private void SentenceConfirm_Click(object sender, RoutedEventArgs e)
+        {
             if (!int.TryParse(Sentence_TextBox.Text, out int num))
                 return;
             Common.repairSettings.SentenceRepeatFindCharNum = num;
@@ -99,7 +111,8 @@ namespace MisakaTranslator_WPF.GuidePages.Hook {
             Sentence_InputDrawer.IsOpen = false;
         }
 
-        private void RegexConfirm_Click(object sender, RoutedEventArgs e) {
+        private void RegexConfirm_Click(object sender, RoutedEventArgs e)
+        {
             Common.repairSettings.Regex = Regex_TextBox.Text;
             Common.repairSettings.Regex_Replace = Replace_TextBox.Text;
             Common.RepairFuncInit();
@@ -107,7 +120,8 @@ namespace MisakaTranslator_WPF.GuidePages.Hook {
             Regex_InputDrawer.IsOpen = false;
         }
 
-        private void ExitBtn_Click(object sender, RoutedEventArgs e) {
+        private void ExitBtn_Click(object sender, RoutedEventArgs e)
+        {
             Single_InputDrawer.IsOpen = false;
             Sentence_InputDrawer.IsOpen = false;
             Regex_InputDrawer.IsOpen = false;

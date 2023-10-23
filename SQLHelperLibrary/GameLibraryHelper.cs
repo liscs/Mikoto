@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace SQLHelperLibrary {
-    public class GameInfo {
+namespace SQLHelperLibrary
+{
+    public class GameInfo
+    {
         /// <summary>
         /// 游戏名（非进程名，但在游戏名未知的情况下先使用进程名替代）
         /// </summary>
@@ -73,15 +75,18 @@ namespace SQLHelperLibrary {
         public string MisakaHookCode { get; set; }
     }
 
-    public static class GameLibraryHelper {
+    public static class GameLibraryHelper
+    {
         public static readonly SQLHelper sqlHelper = new($"{Environment.CurrentDirectory}\\MisakaGameLibrary.sqlite");
 
         /// <summary>
         /// 创建一个新游戏列表库
         /// </summary>
-        static GameLibraryHelper() {
+        static GameLibraryHelper()
+        {
             var id = sqlHelper.ExecuteSql("CREATE TABLE IF NOT EXISTS game_library(gameid INTEGER PRIMARY KEY AUTOINCREMENT,gamename TEXT,gamefilepath TEXT,transmode INTEGER,src_lang TEXT,dst_lang TEXT,repair_func TEXT,repair_param_a TEXT,repair_param_b TEXT,hookcode TEXT,isMultiHook TEXT,isx64 TEXT,hookcode_custom TEXT,misakahookcode TEXT);");
-            if (id == -1) {
+            if (id == -1)
+            {
                 MessageBox.Show($"初始化游戏库发生错误，数据库错误代码:\n{sqlHelper.GetLastError()}");
                 throw new Exception(sqlHelper.GetLastError());
             }
@@ -93,16 +98,19 @@ namespace SQLHelperLibrary {
         /// </summary>
         /// <param name="gamePath"></param>
         /// <returns>返回游戏ID</returns>
-        public static int GetGameID(string gamePath) {
+        public static int GetGameID(string gamePath)
+        {
             var ls = sqlHelper.ExecuteReader_OneLine(
                 $"SELECT gameid FROM game_library WHERE gamefilepath = '{gamePath}';", 1);
 
-            if (ls == null) {
+            if (ls == null)
+            {
                 MessageBox.Show($"数据库访问时发生错误，错误代码:\n{sqlHelper.GetLastError()}", "数据库错误");
                 return -1;
             }
 
-            if (ls.Count == 0) {
+            if (ls.Count == 0)
+            {
                 var sql =
                     $"INSERT INTO game_library VALUES(NULL,'{Path.GetFileNameWithoutExtension(gamePath)}','{gamePath}',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);";
                 sqlHelper.ExecuteSql(sql);
@@ -116,24 +124,29 @@ namespace SQLHelperLibrary {
         /// <summary>
         /// 得到游戏库中所有游戏的信息
         /// </summary>
-        public static List<GameInfo> GetAllGameLibrary() {
+        public static List<GameInfo> GetAllGameLibrary()
+        {
             var ls = sqlHelper.ExecuteReader("SELECT * FROM game_library;", 14);
 
-            if (ls == null) {
+            if (ls == null)
+            {
                 MessageBox.Show($"数据库访问时发生错误，错误代码:\n{sqlHelper.GetLastError()}", "数据库错误");
                 return null;
             }
 
-            if (ls.Count == 0) {
+            if (ls.Count == 0)
+            {
                 return null;
             }
 
             var ret = new List<GameInfo>();
 
-            foreach (var gameI in ls) {
+            foreach (var gameI in ls)
+            {
                 var gameInfo = new GameInfo();
 
-                if (gameI[4] == "" || gameI[5] == "" || gameI[6] == "" || gameI[9] == ""|| gameI[11] == "") {
+                if (gameI[4] == "" || gameI[5] == "" || gameI[6] == "" || gameI[9] == "" || gameI[11] == "")
+                {
                     //没有完整走完导航的游戏，这时就不需要显示这个库
                     continue;
                 }
@@ -163,19 +176,23 @@ namespace SQLHelperLibrary {
         /// </summary>
         /// <param name="gameID"></param>
         /// <returns></returns>
-        public static GameInfo GetGameInfoByID(int gameID) {
+        public static GameInfo GetGameInfoByID(int gameID)
+        {
             var ls = sqlHelper.ExecuteReader_OneLine($"SELECT * FROM game_library WHERE gameid = {gameID};", 14);
 
-            if (ls == null) {
+            if (ls == null)
+            {
                 MessageBox.Show($"数据库访问时发生错误，错误代码:\n{sqlHelper.GetLastError()}", "数据库错误");
                 return null;
             }
 
-            if (ls.Count == 0) {
+            if (ls.Count == 0)
+            {
                 return null;
             }
 
-            GameInfo gameInfo = new GameInfo {
+            GameInfo gameInfo = new GameInfo
+            {
                 GameID = int.Parse(ls[0]),
                 GameName = ls[1],
                 FilePath = ls[2],
@@ -190,7 +207,7 @@ namespace SQLHelperLibrary {
                 Isx64 = Convert.ToBoolean(ls[11]),
                 HookCodeCustom = ls[12],
                 MisakaHookCode = ls[13]
-        };
+            };
 
             return gameInfo;
         }
@@ -200,7 +217,8 @@ namespace SQLHelperLibrary {
         /// </summary>
         /// <param name="gameID"></param>
         /// <returns></returns>
-        public static bool DeleteGameByID(int gameID) {
+        public static bool DeleteGameByID(int gameID)
+        {
             var ret = sqlHelper.ExecuteSql($"DELETE FROM game_library WHERE gameid = {gameID};");
             return ret != -1;
         }
@@ -211,7 +229,8 @@ namespace SQLHelperLibrary {
         /// <param name="gameID"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static bool UpdateGameNameByID(int gameID, string name) {
+        public static bool UpdateGameNameByID(int gameID, string name)
+        {
             var ret = sqlHelper.ExecuteSql($"UPDATE game_library SET gamename = '{name}' WHERE gameid = {gameID};");
             return ret != -1;
         }

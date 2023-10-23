@@ -1,21 +1,26 @@
-﻿using System.Text.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace TranslatorLibrary {
+namespace TranslatorLibrary
+{
     // 此公共API无法使用了，官方推出了需注册的V2，看社区来更新吧。目前在CommonFunction中注释掉了从界面上设置本API的途径
-    public class AlapiTranslator : ITranslator {
+    public class AlapiTranslator : ITranslator
+    {
         private string errorInfo;//错误信息
 
-        public string GetLastError() {
+        public string GetLastError()
+        {
             return errorInfo;
         }
 
-        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang) {
-            if (sourceText == "" || desLang == "" || srcLang == "") {
+        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        {
+            if (sourceText == "" || desLang == "" || srcLang == "")
+            {
                 errorInfo = "Param Missing";
                 return null;
             }
@@ -40,49 +45,64 @@ namespace TranslatorLibrary {
                 .Append("&to=").Append(desLang);
 
             var hc = CommonFunction.GetHttpClient();
-            try {
+            try
+            {
                 retString = await hc.GetStringAsync(url.ToString());
-            } catch (System.Net.Http.HttpRequestException ex) {
+            }
+            catch (System.Net.Http.HttpRequestException ex)
+            {
                 errorInfo = ex.Message;
                 return null;
-            } catch (System.Threading.Tasks.TaskCanceledException ex) {
+            }
+            catch (System.Threading.Tasks.TaskCanceledException ex)
+            {
                 errorInfo = ex.Message;
                 return null;
             }
 
             AliapiTransResult oinfo = JsonSerializer.Deserialize<AliapiTransResult>(retString);
 
-            if (oinfo.msg == "success") {
+            if (oinfo.msg == "success")
+            {
                 //得到翻译结果
-                if (oinfo.data.trans_result.Count == 1) {
+                if (oinfo.data.trans_result.Count == 1)
+                {
                     return string.Join("", oinfo.data.trans_result.Select(x => x.dst));
-                } else {
+                }
+                else
+                {
                     errorInfo = "UnknownError";
                     return null;
                 }
-            } else {
+            }
+            else
+            {
                 errorInfo = "Error:" + oinfo.msg;
                 return null;
             }
         }
 
-        public void TranslatorInit(string param1 = "", string param2 = "") {
+        public void TranslatorInit(string param1 = "", string param2 = "")
+        {
             //不用初始化
         }
 
-        class AliapiTransResult {
+        class AliapiTransResult
+        {
             public int code { get; set; }
             public string msg { get; set; }
             public AliapiTransData data { get; set; }
         }
 
-        class AliapiTransData {
+        class AliapiTransData
+        {
             public string from { get; set; }
             public string to { get; set; }
             public List<AliapiTransResData> trans_result { get; set; }
         }
 
-        class AliapiTransResData {
+        class AliapiTransResData
+        {
             public string src { get; set; }
             public string dst { get; set; }
         }

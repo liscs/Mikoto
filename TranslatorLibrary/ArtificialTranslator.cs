@@ -4,44 +4,58 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TranslatorLibrary {
+namespace TranslatorLibrary
+{
     /*
      * 来源：https://github.com/jsc723/MisakaPatcher/blob/master/TranslatorLibrary/LocalTranslator.cs
      */
-    public class ArtificialTranslator : ITranslator {
-        private class CursorPriorityQueue {
-            public class CPQComparator : IComparer<(int, double)> {
+    public class ArtificialTranslator : ITranslator
+    {
+        private class CursorPriorityQueue
+        {
+            public class CPQComparator : IComparer<(int, double)>
+            {
                 // Call CaseInsensitiveComparer.Compare with the parameters reversed.
-                int IComparer<(int, double)>.Compare((int, double) x, (int, double) y) {
+                int IComparer<(int, double)>.Compare((int, double) x, (int, double) y)
+                {
                     int r1 = x.Item2.CompareTo(y.Item2);
-                    if (r1 != 0) {
+                    if (r1 != 0)
+                    {
                         return r1;
-                    } else {
+                    }
+                    else
+                    {
                         return y.Item1.CompareTo(x.Item1);
                     }
                 }
             }
             SortedSet<(int, double)> nextCursorsSet = new SortedSet<(int, double)>(new CPQComparator());
             int maxSize;
-            public CursorPriorityQueue(int maxSize) {
+            public CursorPriorityQueue(int maxSize)
+            {
                 this.maxSize = maxSize;
             }
-            public bool Add(int i, double p) {
-                if (nextCursorsSet.Count < maxSize) {
+            public bool Add(int i, double p)
+            {
+                if (nextCursorsSet.Count < maxSize)
+                {
                     bool result = nextCursorsSet.Add((i, p));
                     return result;
                 }
                 var m = nextCursorsSet.Min;
-                if (p > m.Item2) {
+                if (p > m.Item2)
+                {
                     nextCursorsSet.Remove(m);
                     return nextCursorsSet.Add((i, p));
                 }
                 return false;
             }
-            public IEnumerable<int> Indices() {
+            public IEnumerable<int> Indices()
+            {
                 return nextCursorsSet.Select(i => i.Item1);
             }
-            public IEnumerable<double> Values() {
+            public IEnumerable<double> Values()
+            {
                 return nextCursorsSet.Select(i => i.Item2);
             }
         }
@@ -51,7 +65,8 @@ namespace TranslatorLibrary {
         /// </summary>
         /// <param name="param1">参数一 汉化补丁路径</param>
         /// <param name="param2">参数二 不使用</param>
-        public void TranslatorInit(string patchPath, string param2 = "") {
+        public void TranslatorInit(string patchPath, string param2 = "")
+        {
             /*
              * 汉化补丁格式，只支持单个文本文件：
              * 
@@ -73,33 +88,46 @@ namespace TranslatorLibrary {
                 
                 
              */
-            if (System.IO.File.Exists(patchPath) == false) {
+            if (System.IO.File.Exists(patchPath) == false)
+            {
                 throw new Exception("Patch File is not Exists.");
             }
 
             string[] lines = System.IO.File.ReadAllLines(patchPath);
             string temp = "";
             bool jp = true, first = true;
-            void add() {
-                if (!first) {
+            void add()
+            {
+                if (!first)
+                {
                     if (jp) jp_text.Add(temp);
                     else cn_text.Add(temp);
-                } else {
+                }
+                else
+                {
                     first = false;
                 }
                 temp = "";
             }
 
-            foreach (string line in lines) {
-                if (line == "\n" || line == "\r\n" || line.StartsWith("#")) {
+            foreach (string line in lines)
+            {
+                if (line == "\n" || line == "\r\n" || line.StartsWith("#"))
+                {
                     //pass
-                } else if (line.StartsWith("<j>")) {
+                }
+                else if (line.StartsWith("<j>"))
+                {
                     add();
                     jp = true;
-                } else if (line.StartsWith("<c>")) {
+                }
+                else if (line.StartsWith("<c>"))
+                {
                     add();
                     jp = false;
-                } else {
+                }
+                else
+                {
                     temp += line;
                 }
             }
@@ -169,21 +197,25 @@ namespace TranslatorLibrary {
          * 
          */
         #endregion
-        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang) {
+        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        {
             //sourceText = addNoise(addNoise2(sourceText)); //The translator is able to find the correct match on hook mode under a high noise
             Console.WriteLine(String.Format("Input:{0}", sourceText));
-            if (jp_text.Count == 0) {
+            if (jp_text.Count == 0)
+            {
                 return "No translation available";
             }
 
-            if (sourceText.Length >= R_MAX_LEN) {
+            if (sourceText.Length >= R_MAX_LEN)
+            {
                 sourceText = sourceText.Substring(0, R_MAX_LEN - 1);
             }
 
             double pMostLikelyPrevCursor = possibleCursors.Count == 0 ? 1.0 / pTransitionNext : possibleCursors.Max(i => i.Value);
             CursorPriorityQueue nextCursorsPQ = new CursorPriorityQueue(MAX_CURSOR);
 
-            for (int i = 0; i < jp_text.Count; i++) {
+            for (int i = 0; i < jp_text.Count; i++)
+            {
                 double s = ComputeSimilarity(sourceText, jp_text[i]);
                 if (possibleCursors.ContainsKey(i - 1)) // [Case 1]
                 {
@@ -204,18 +236,24 @@ namespace TranslatorLibrary {
 
             possibleCursors.Clear();
 
-            for (int i = 0; i < z_softmax.Count; i++) {
+            for (int i = 0; i < z_softmax.Count; i++)
+            {
                 int j = nextCursorsIdx[i];
-                if (possibleCursors.ContainsKey(j)) {
+                if (possibleCursors.ContainsKey(j))
+                {
                     possibleCursors[j] = Math.Max(possibleCursors[j], z_softmax[i]);
-                } else {
+                }
+                else
+                {
                     possibleCursors[j] = z_softmax[i];
                 }
             }
             int maxI = 0;
             double maxP = 0.0;
-            foreach (int k in possibleCursors.Keys) {
-                if (maxP < possibleCursors[k]) {
+            foreach (int k in possibleCursors.Keys)
+            {
+                if (maxP < possibleCursors[k])
+                {
                     maxP = possibleCursors[k];
                     maxI = k;
                 }
@@ -232,15 +270,18 @@ namespace TranslatorLibrary {
 
         int addNoiseState = 0;
         //for test
-        private string addNoise(string input) {
+        private string addNoise(string input)
+        {
             if (addNoiseState++ % 2 == 0)
                 return input;
             return "";
         }
         //for test
-        private string addNoise2(string input) {
+        private string addNoise2(string input)
+        {
             StringBuilder result = new StringBuilder(input);
-            for (int i = 0; i < input.Length; i++) {
+            for (int i = 0; i < input.Length; i++)
+            {
                 if (random.NextDouble() < 0.5)
                     result[i] = 'A';
             }
@@ -252,7 +293,8 @@ namespace TranslatorLibrary {
         /// 返回最后一次错误的ID或原因
         /// </summary>
         /// <returns></returns>
-        public string GetLastError() {
+        public string GetLastError()
+        {
             return "last error";
         }
 
@@ -262,12 +304,15 @@ namespace TranslatorLibrary {
         /// <param name="first"></param>
         /// <param name="second"></param>
         /// <returns></returns>
-        private double ComputeSimilarity(string first, string second) {
-            if (first.Length >= R_MAX_LEN) {
+        private double ComputeSimilarity(string first, string second)
+        {
+            if (first.Length >= R_MAX_LEN)
+            {
                 first = first.Substring(0, R_MAX_LEN - 1);
             }
 
-            if (second.Length >= R_MAX_LEN) {
+            if (second.Length >= R_MAX_LEN)
+            {
                 second = second.Substring(0, R_MAX_LEN - 1);
             }
             int d = ComputeDistance(first, second);
@@ -282,12 +327,15 @@ namespace TranslatorLibrary {
         /// <param name="first"></param>
         /// <param name="second"></param>
         /// <returns></returns>
-        private int ComputeDistance(string first, string second) {
-            if (first.Length == 0) {
+        private int ComputeDistance(string first, string second)
+        {
+            if (first.Length == 0)
+            {
                 return second.Length;
             }
 
-            if (second.Length == 0) {
+            if (second.Length == 0)
+            {
                 return first.Length;
             }
 
@@ -296,14 +344,17 @@ namespace TranslatorLibrary {
             var current = 1;
             var previous = 0;
 
-            for (var i = 0; i <= second.Length; i++) {
+            for (var i = 0; i <= second.Length; i++)
+            {
                 r[previous, i] = i;
             }
 
-            for (var i = 0; i < first.Length; i++) {
+            for (var i = 0; i < first.Length; i++)
+            {
                 r[current, 0] = i + 1;
 
-                for (var j = 1; j <= second.Length; j++) {
+                for (var j = 1; j <= second.Length; j++)
+                {
                     var cost = (second[j - 1] == first[i]) ? 0 : 1;
                     r[current, j] = Min(
                         r[previous, j] + 1,
@@ -319,13 +370,15 @@ namespace TranslatorLibrary {
         private static int Min(int e1, int e2, int e3) =>
             Math.Min(Math.Min(e1, e2), e3);
 
-        private static double Sigmoid(double x) {
+        private static double Sigmoid(double x)
+        {
             //Boost x > 0.7, suppress x < 0.7, please plot the curve to visualize
             double k = System.Math.Exp(-15.0 * (x - 0.7));
             return 1.0 / (1.0 + k);
         }
 
-        private static double LengthAdjust(double x) {
+        private static double LengthAdjust(double x)
+        {
             const double offset = 0.00055277; //k(0)
             double k = System.Math.Exp(-0.5 * (x - 15));
             return (1.0 / (1.0 + k) - offset) / (1.0 - offset);

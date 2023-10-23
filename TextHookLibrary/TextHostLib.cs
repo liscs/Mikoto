@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace TextHookLibrary {
-    public class TextHostLib {
+namespace TextHookLibrary
+{
+    public class TextHostLib
+    {
         public delegate void ProcessEvent(Int32 processId);
         public delegate void OnCreateThreadFunc(Int64 threadId,
             UInt32 processId,

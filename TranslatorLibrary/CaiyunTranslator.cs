@@ -1,21 +1,26 @@
-﻿using System.Text.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Net.Http;
 
-namespace TranslatorLibrary {
-    public class CaiyunTranslator : ITranslator {
+namespace TranslatorLibrary
+{
+    public class CaiyunTranslator : ITranslator
+    {
         public string caiyunToken;//彩云小译 令牌
         private string errorInfo;//错误信息
 
-        public string GetLastError() {
+        public string GetLastError()
+        {
             return errorInfo;
         }
 
-        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang) {
-            if (sourceText == "" || desLang == "" || srcLang == "") {
+        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        {
+            if (sourceText == "" || desLang == "" || srcLang == "")
+            {
                 errorInfo = "Param Missing";
                 return null;
             }
@@ -44,37 +49,51 @@ namespace TranslatorLibrary {
             var hc = CommonFunction.GetHttpClient();
             var req = new StringContent(jsonParam, null, "application/json");
             req.Headers.Add("X-Authorization", "token " + caiyunToken);
-            try {
+            try
+            {
                 retString = await (await hc.PostAsync(url, req)).Content.ReadAsStringAsync();
-            } catch (System.Net.Http.HttpRequestException ex) {
+            }
+            catch (System.Net.Http.HttpRequestException ex)
+            {
                 errorInfo = ex.Message;
                 return null;
-            } catch (System.Threading.Tasks.TaskCanceledException ex) {
+            }
+            catch (System.Threading.Tasks.TaskCanceledException ex)
+            {
                 errorInfo = ex.Message;
                 return null;
-            } finally {
+            }
+            finally
+            {
                 req.Dispose();
             }
 
             CaiyunTransResult oinfo;
-            try {
+            try
+            {
                 oinfo = JsonSerializer.Deserialize<CaiyunTransResult>(retString, CommonFunction.JsonOP);
-            } catch {
+            }
+            catch
+            {
                 errorInfo = "JsonConvert Error";
                 return null;
             }
 
-            if (oinfo.target?.Length >= 1) {
+            if (oinfo.target?.Length >= 1)
+            {
                 //得到翻译结果
                 return string.Join("", oinfo.target.Select(x => Regex.Unescape(x)));
-            } else {
+            }
+            else
+            {
                 errorInfo = "ErrorInfo:" + oinfo.message;
                 return null;
             }
 
         }
 
-        public void TranslatorInit(string param1, string param2 = "") {
+        public void TranslatorInit(string param1, string param2 = "")
+        {
             caiyunToken = param1;
         }
 
@@ -83,7 +102,8 @@ namespace TranslatorLibrary {
         /// 彩云小译API申请地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_allpyAPI() {
+        public static string GetUrl_allpyAPI()
+        {
             return "https://dashboard.caiyunapp.com/user/sign_in/";
         }
 
@@ -91,7 +111,8 @@ namespace TranslatorLibrary {
         /// 彩云小译API额度查询地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_bill() {
+        public static string GetUrl_bill()
+        {
             return "https://dashboard.caiyunapp.com/";
         }
 
@@ -99,13 +120,15 @@ namespace TranslatorLibrary {
         /// 彩云小译API文档地址（错误代码）
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_Doc() {
+        public static string GetUrl_Doc()
+        {
             return "https://fanyi.caiyunapp.com/#/api";
         }
     }
 
 #pragma warning disable 0649
-    struct CaiyunTransResult {
+    struct CaiyunTransResult
+    {
         public string message;
         public double confidence;
         public int rc;

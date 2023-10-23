@@ -6,14 +6,17 @@ using Windows.Win32.Foundation;
 using Windows.Win32.Graphics.Gdi;
 using Windows.Win32.UI.WindowsAndMessaging;
 
-namespace OCRLibrary {
-    public class ScreenCapture {
+namespace OCRLibrary
+{
+    public class ScreenCapture
+    {
         /// <summary>
         /// 根据窗口HWND截取窗口
         /// </summary>
         /// <param name="handle"></param>
         /// <returns></returns>
-        public static Bitmap GetWindowCapture(IntPtr handle) {
+        public static Bitmap GetWindowCapture(IntPtr handle)
+        {
             // get te hDC of the target window
             HDC hdcSrc = PInvoke.GetWindowDC((HWND)handle);
             PInvoke.ShowWindow((HWND)handle, SHOW_WINDOW_CMD.SW_SHOWNA);
@@ -49,7 +52,8 @@ namespace OCRLibrary {
         /// <param name="rec"></param>
         /// <param name="isAllWin">是否是全屏截屏</param>
         /// <returns></returns>
-        public static Bitmap GetWindowRectCapture(IntPtr handle, Rectangle rec, bool isAllWin) {
+        public static Bitmap GetWindowRectCapture(IntPtr handle, Rectangle rec, bool isAllWin)
+        {
             if (rec.Width == 0 || rec.Height == 0)
                 return null;
 
@@ -61,7 +65,8 @@ namespace OCRLibrary {
         /// 全屏截屏
         /// </summary>
         /// <returns></returns>
-        public static Bitmap GetAllWindow() {
+        public static Bitmap GetAllWindow()
+        {
             int w = Screen.PrimaryScreen.Bounds.Width;
             int h = Screen.PrimaryScreen.Bounds.Height;
 

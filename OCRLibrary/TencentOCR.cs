@@ -1,23 +1,27 @@
 using System;
 using System.Drawing;
 using System.IO;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Security.Cryptography;
 using System.Linq;
-using System.Web;
+using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
+using System.Web;
 
-namespace OCRLibrary {
-    public class TencentOCR : OCREngine {
+namespace OCRLibrary
+{
+    public class TencentOCR : OCREngine
+    {
         public string SecretId;
         public string SecretKey;
         private string langCode;
         static int SessionUuid = 0;
 
-        public override async Task<string> OCRProcessAsync(Bitmap img) {
-            if (img == null || langCode == null || langCode == "") {
+        public override async Task<string> OCRProcessAsync(Bitmap img)
+        {
+            if (img == null || langCode == null || langCode == "")
+            {
                 errorInfo = "Param Missing";
                 return null;
             }
@@ -65,42 +69,52 @@ namespace OCRLibrary {
             request.Timeout = 8000;
             request.UserAgent = "MisakaTranslator";
 
-            try {
-                using (var resp = await request.GetResponseAsync()) {
+            try
+            {
+                using (var resp = await request.GetResponseAsync())
+                {
                     string retStr = new StreamReader(resp.GetResponseStream()).ReadToEnd();
                     var result = JsonSerializer.Deserialize<Result>(retStr, OCRCommon.JsonOP).Response;
-                    if (result.Error != null) {
+                    if (result.Error != null)
+                    {
                         errorInfo = result.Error?.Code + " " + result.Error?.Message;
                         return null;
                     }
 
                     return String.Join("\n", result.ImageRecord?.Value.Select(x => x.TargetText));
                 }
-            } catch (WebException ex) {
+            }
+            catch (WebException ex)
+            {
                 errorInfo = ex.Message;
                 return null;
             }
         }
 
-        public override bool OCR_Init(string param1, string param2) {
+        public override bool OCR_Init(string param1, string param2)
+        {
             SecretId = param1;
             SecretKey = param2;
             return true;
         }
 
-        public static string GetUrl_allpyAPI() {
+        public static string GetUrl_allpyAPI()
+        {
             return "https://cloud.tencent.com/product/tmt";
         }
 
-        public static string GetUrl_bill() {
+        public static string GetUrl_bill()
+        {
             return "https://console.cloud.tencent.com/tmt";
         }
 
-        public static string GetUrl_Doc() {
+        public static string GetUrl_Doc()
+        {
             return "https://cloud.tencent.com/document/product/551/17232";
         }
 
-        public override void SetOCRSourceLang(string lang) {
+        public override void SetOCRSourceLang(string lang)
+        {
             if (lang == "jpn")
                 langCode = "ja";
             else if (lang == "eng")
@@ -110,10 +124,12 @@ namespace OCRLibrary {
         }
 
 #pragma warning disable 0649
-        struct Result {
+        struct Result
+        {
             public Response Response;
         }
-        struct Response {
+        struct Response
+        {
             public string SessionUuid;
             public string Source;
             public string Target;
@@ -121,15 +137,18 @@ namespace OCRLibrary {
             public Record? ImageRecord;
             public Error? Error;
         }
-        struct Record {
+        struct Record
+        {
             public ItemValue[] Value;
         }
-        struct ItemValue {
+        struct ItemValue
+        {
             public string SourceText;
             public string TargetText;
             public int X, Y, W, H;
         }
-        struct Error {
+        struct Error
+        {
             public string Code, Message;
         }
     }

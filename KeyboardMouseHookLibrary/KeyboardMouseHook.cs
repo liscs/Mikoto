@@ -2,7 +2,8 @@
 using System.Diagnostics;
 using System.Drawing;
 
-namespace KeyboardMouseHookLibrary {
+namespace KeyboardMouseHookLibrary
+{
     /// <summary>
     /// 鼠标动作事件
     /// </summary>
@@ -17,23 +18,28 @@ namespace KeyboardMouseHookLibrary {
     public delegate void KeyboardEventHandler(object sender);
 
 
-    public class KeyboardMouseHook {
+    public class KeyboardMouseHook
+    {
         Process processMonitor;
 
         public event MouseButtonEventHandler OnMouseActivity;
         public event KeyboardEventHandler onKeyboardActivity;
 
 
-        public KeyboardMouseHook() {
+        public KeyboardMouseHook()
+        {
 
         }
 
-        ~KeyboardMouseHook() {
+        ~KeyboardMouseHook()
+        {
             Stop();
         }
 
-        public void Stop() {
-            if (processMonitor != null) {
+        public void Stop()
+        {
+            if (processMonitor != null)
+            {
                 processMonitor.Kill();
                 processMonitor.Close();
                 processMonitor = null;
@@ -46,13 +52,17 @@ namespace KeyboardMouseHookLibrary {
         /// <param name="isMouse">是否是鼠标hook</param>
         /// <param name="keyCode">要捕获动作的键值，当捕获鼠标时，1代表左键，2代表右键</param>
         /// <returns></returns>
-        public bool Start(bool isMouse, int keyCode) {
+        public bool Start(bool isMouse, int keyCode)
+        {
             processMonitor = new Process();
             processMonitor.StartInfo.FileName = "KeyboardMouseMonitor.exe";
             //加额外参数
-            if (isMouse) {
+            if (isMouse)
+            {
                 processMonitor.StartInfo.Arguments = "1 " + keyCode;
-            } else {
+            }
+            else
+            {
                 processMonitor.StartInfo.Arguments = "2 " + keyCode;
 
                 /* 项目“KeyboardMouseHookLibrary (netcoreapp7.0-windows10.0.22621.0)”的未合并的更改
@@ -87,34 +97,46 @@ namespace KeyboardMouseHookLibrary {
             processMonitor.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
 
 
-            try {
+            try
+            {
                 bool res = processMonitor.Start();
                 processMonitor.BeginOutputReadLine();
                 return res;
-            } catch (System.ComponentModel.Win32Exception ex) {
+            }
+            catch (System.ComponentModel.Win32Exception ex)
+            {
                 return false;
             }
         }
 
-        void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine) {
+        void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
+        {
             string output = outLine.Data;
 
             Console.WriteLine(output);
 
-            if (output == "hookFailed") {
+            if (output == "hookFailed")
+            {
                 processMonitor.Kill();
                 processMonitor.Close();
                 processMonitor = null;
                 throw new Exception("注册键鼠钩子失败！");
-            } else if (output == "KeyboardAction") {
+            }
+            else if (output == "KeyboardAction")
+            {
                 onKeyboardActivity?.Invoke(this);
-            } else {
-                if (output != null) {
+            }
+            else
+            {
+                if (output != null)
+                {
                     string[] res = output.Split(' ');
 
-                    if (res.Length == 3) {
+                    if (res.Length == 3)
+                    {
 
-                        Point pt = new() {
+                        Point pt = new()
+                        {
                             X = int.Parse(res[1]),
                             Y = int.Parse(res[2])
                         };

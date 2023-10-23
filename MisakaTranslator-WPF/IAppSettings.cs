@@ -1,402 +1,471 @@
 ﻿using Config.Net;
 
-namespace MisakaTranslator_WPF {
-    public interface IAppSettings {
+namespace MisakaTranslator_WPF
+{
+    public interface IAppSettings
+    {
         [Option(Alias = "Software.OnCloseMainWindow", DefaultValue = "Exit")]
-        string OnClickCloseButton {
+        string OnClickCloseButton
+        {
             get;
             set;
         }
 
         [Option(Alias = "Globalization.Language", DefaultValue = "zh-CN")]
-        string AppLanguage {
+        string AppLanguage
+        {
             get;
             set;
         }
 
         [Option(Alias = "Textractor.AutoHook", DefaultValue = "False")]
-        string AutoHook {
+        string AutoHook
+        {
             get;
             set;
         }
 
         [Option(Alias = "Textractor.AutoDetach", DefaultValue = "True")]
-        string AutoDetach {
+        string AutoDetach
+        {
             get;
             set;
         }
 
         [Option(Alias = "JBeijing.JBJCTDllPath", DefaultValue = "")]
-        string JBJCTDllPath {
+        string JBJCTDllPath
+        {
             get;
             set;
         }
 
         [Option(Alias = "KingsoftFastAIT.KingsoftFastAITPath", DefaultValue = "")]
-        string KingsoftFastAITPath {
+        string KingsoftFastAITPath
+        {
             get;
             set;
         }
 
         [Option(Alias = "Dreye.DreyePath", DefaultValue = "")]
-        string DreyePath {
+        string DreyePath
+        {
             get;
             set;
         }
 
         [Option(Alias = "TencentOldTranslator.SecretId", DefaultValue = "")]
-        string TXOSecretId {
+        string TXOSecretId
+        {
             get;
             set;
         }
 
         [Option(Alias = "TencentOldTranslator.SecretKey", DefaultValue = "")]
-        string TXOSecretKey {
+        string TXOSecretKey
+        {
             get;
             set;
         }
 
         [Option(Alias = "AzureTranslator.secretKey", DefaultValue = "")]
-        string AzureSecretKey {
+        string AzureSecretKey
+        {
             get;
             set;
         }
 
         [Option(Alias = "AzureTranslator.location", DefaultValue = "")]
-        string AzureLocation {
+        string AzureLocation
+        {
             get;
             set;
         }
 
         [Option(Alias = "BaiduTranslator.appID", DefaultValue = "")]
-        string BDappID {
+        string BDappID
+        {
             get;
             set;
         }
 
         [Option(Alias = "BaiduTranslator.secretKey", DefaultValue = "")]
-        string BDsecretKey {
+        string BDsecretKey
+        {
             get;
             set;
         }
 
         [Option(Alias = "DeepLTranslator.secretKey", DefaultValue = "")]
-        string DeepLsecretKey {
+        string DeepLsecretKey
+        {
             get;
             set;
         }
 
         [Option(Alias = "TencentTranslator.appID", DefaultValue = "")]
-        string TXappID {
+        string TXappID
+        {
             get;
             set;
         }
 
         [Option(Alias = "TencentTranslator.appKey", DefaultValue = "")]
-        string TXappKey {
+        string TXappKey
+        {
             get;
             set;
         }
 
         [Option(Alias = "CaiyunTranslator.caiyunToken", DefaultValue = "")]
-        string CaiyunToken {
+        string CaiyunToken
+        {
             get;
             set;
         }
 
         [Option(Alias = "ChatGPTTranslator.apiKey", DefaultValue = "")]
-        string ChatGPTapiKey {
+        string ChatGPTapiKey
+        {
             get;
             set;
         }
 
         [Option(Alias = "ChatGPTTranslator.apiUrl", DefaultValue = "https://api.openai.com/v1/chat/completions")]
-        string ChatGPTapiUrl {
+        string ChatGPTapiUrl
+        {
             get;
             set;
         }
 
         [Option(Alias = "XiaoniuTranslator.xiaoniuApiKey", DefaultValue = "")]
-        string xiaoniuApiKey {
+        string xiaoniuApiKey
+        {
             get;
             set;
         }
 
         [Option(Alias = "IBMTranslator.IBMApiKey", DefaultValue = "")]
-        string IBMApiKey {
+        string IBMApiKey
+        {
             get;
             set;
         }
 
         [Option(Alias = "IBMTranslator.IBMURL", DefaultValue = "")]
-        string IBMURL {
+        string IBMURL
+        {
             get;
             set;
         }
 
         [Option(Alias = "YandexTranslator.YandexApiKey", DefaultValue = "")]
-        string YandexApiKey {
+        string YandexApiKey
+        {
             get;
             set;
         }
 
         [Option(Alias = "YoudaoZhiyun.YDZYAppId", DefaultValue = "")]
-        string YDZYAppId {
+        string YDZYAppId
+        {
             get;
             set;
         }
 
         [Option(Alias = "YoudaoZhiyun.YDZYAppSecret", DefaultValue = "")]
-        string YDZYAppSecret {
+        string YDZYAppSecret
+        {
             get;
             set;
         }
 
         [Option(Alias = "Translate_All.HttpProxy", DefaultValue = "")]
-        string HttpProxy {
+        string HttpProxy
+        {
             get;
             set;
         }
 
         [Option(Alias = "Translate_All.EachRowTrans", DefaultValue = true)]
-        bool EachRowTrans {
+        bool EachRowTrans
+        {
             get;
             set;
         }
 
         [Option(Alias = "Translate_All.FirstTranslator", DefaultValue = "NoTranslate")]
-        string FirstTranslator {
+        string FirstTranslator
+        {
             get;
             set;
         }
 
         [Option(Alias = "Translate_All.SecondTranslator", DefaultValue = "NoTranslate")]
-        string SecondTranslator {
+        string SecondTranslator
+        {
             get;
             set;
         }
 
         [Option(Alias = "Translate_All.TransLimitNums", DefaultValue = 100)]
-        int TransLimitNums {
+        int TransLimitNums
+        {
             get;
             set;
         }
 
         [Option(Alias = "OCR_All.OCRsource", DefaultValue = "BaiduOCR")]
-        string OCRsource {
+        string OCRsource
+        {
             get;
             set;
         }
 
         [Option(Alias = "OCR_All.GlobalOCRHotkey", DefaultValue = "Ctrl + Alt + Q")]
-        string GlobalOCRHotkey {
+        string GlobalOCRHotkey
+        {
             get;
             set;
         }
 
         [Option(Alias = "OCR_All.GlobalOCRLang", DefaultValue = "jpn")]
-        string GlobalOCRLang {
+        string GlobalOCRLang
+        {
             get;
             set;
         }
 
         [Option(Alias = "BaiduOCR.APIKEY", DefaultValue = "")]
-        string BDOCR_APIKEY {
+        string BDOCR_APIKEY
+        {
             get;
             set;
         }
 
         [Option(Alias = "BaiduOCR.SecretKey", DefaultValue = "")]
-        string BDOCR_SecretKey {
+        string BDOCR_SecretKey
+        {
             get;
             set;
         }
 
         [Option(Alias = "TesseractCli.Path", DefaultValue = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe")]
-        string TesseractCli_Path {
+        string TesseractCli_Path
+        {
             get;
             set;
         }
 
         [Option(Alias = "TesseractCli.Mode", DefaultValue = "jpn")]
-        string TesseractCli_Mode {
+        string TesseractCli_Mode
+        {
             get;
             set;
         }
 
         [Option(Alias = "TesseractCli.Args", DefaultValue = "")]
-        string TesseractCli_Args {
+        string TesseractCli_Args
+        {
             get;
             set;
         }
 
         [Option(Alias = "LE.LEPath", DefaultValue = "")]
-        string LEPath {
+        string LEPath
+        {
             get;
             set;
         }
 
         [Option(Alias = "XxgJpZhDict.xxgPath", DefaultValue = "")]
-        string xxgPath {
+        string xxgPath
+        {
             get;
             set;
         }
 
         [Option(Alias = "TTS.Voice", DefaultValue = "")]
-        string ttsVoice {
+        string ttsVoice
+        {
             get;
             set;
         }
 
         [Option(Alias = "TTS.volume", DefaultValue = "80")]
-        int ttsVolume {
+        int ttsVolume
+        {
             get;
             set;
         }
 
         [Option(Alias = "TTS.rate", DefaultValue = "0")]
-        int ttsRate {
+        int ttsRate
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.opacity", DefaultValue = "100")]
-        double TF_Opacity {
+        double TF_Opacity
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.backColor", DefaultValue = "#7f000000")]
-        string TF_BackColor {
+        string TF_BackColor
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.SizeW", DefaultValue = "0")]
-        string TF_SizeW {
+        string TF_SizeW
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.SizeH", DefaultValue = "0")]
-        string TF_SizeH {
+        string TF_SizeH
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.LocX", DefaultValue = "-1")]
-        string TF_LocX {
+        string TF_LocX
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.LocY", DefaultValue = "-1")]
-        string TF_LocY {
+        string TF_LocY
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.showSourceText", DefaultValue = true)]
-        bool TF_showSourceText {
+        bool TF_showSourceText
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.srcTextFont", DefaultValue = "微软雅黑")]
-        string TF_srcTextFont {
+        string TF_srcTextFont
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.srcTextSize", DefaultValue = "15")]
-        double TF_srcTextSize {
+        double TF_srcTextSize
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.firstTransTextFont", DefaultValue = "微软雅黑")]
-        string TF_firstTransTextFont {
+        string TF_firstTransTextFont
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.firstTransTextSize", DefaultValue = "22")]
-        double TF_firstTransTextSize {
+        double TF_firstTransTextSize
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.firstTransTextColor", DefaultValue = "#ffFFFFFF")]
-        string TF_firstTransTextColor {
+        string TF_firstTransTextColor
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.secondTransTextFont", DefaultValue = "微软雅黑")]
-        string TF_secondTransTextFont {
+        string TF_secondTransTextFont
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.secondTransTextSize", DefaultValue = "22")]
-        double TF_secondTransTextSize {
+        double TF_secondTransTextSize
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.secondTransTextColor", DefaultValue = "#ffFFFFFF")]
-        string TF_secondTransTextColor {
+        string TF_secondTransTextColor
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.firstWhiteStrokeIsChecked", DefaultValue = false)]
-        bool TF_firstWhiteStrokeIsChecked {
+        bool TF_firstWhiteStrokeIsChecked
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.secondWhiteStrokeIsChecked", DefaultValue = false)]
-        bool TF_secondWhiteStrokeIsChecked {
+        bool TF_secondWhiteStrokeIsChecked
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFormSettings.isKanaShow", DefaultValue = true)]
-        bool TF_isKanaShow {
+        bool TF_isKanaShow
+        {
             get;
             set;
         }
 
         [Option(Alias = "TranslateFromSetting.isDropShadow", DefaultValue = true)]
-        bool TF_DropShadow {
+        bool TF_DropShadow
+        {
             get;
             set;
         }
         [Option(Alias = "TranslateFromSetting.isUseHiragana", DefaultValue = true)]
-        bool TF_Hiragana {
+        bool TF_Hiragana
+        {
             get;
             set;
         }
         [Option(Alias = "TranslateFromSetting.isSuperBold", DefaultValue = true)]
-        bool TF_SuperBold {
+        bool TF_SuperBold
+        {
             get;
             set;
         }
         [Option(Alias = "TranslateFromSetting.isColorful", DefaultValue = true)]
-        bool TF_Colorful {
+        bool TF_Colorful
+        {
             get;
             set;
         }
 
         [Option(Alias = "ArtificialTrans.patchPath", DefaultValue = "")]
-        string ArtificialPatchPath {
+        string ArtificialPatchPath
+        {
             get;
             set;
         }
 
         [Option(Alias = "ArtificialTrans.ATon", DefaultValue = false)]
-        bool ATon {
+        bool ATon
+        {
             get;
             set;
         }
@@ -404,7 +473,8 @@ namespace MisakaTranslator_WPF {
         #region 界面设置
         #region 前景色设置
         [Option(Alias = "Appearance.Foreground", DefaultValue = "#ffcccc")]
-        string ForegroundHex {
+        string ForegroundHex
+        {
             get;
             set;
         }
@@ -424,27 +494,32 @@ namespace MisakaTranslator_WPF {
         string Textractor_Path64 { get; set; }
     }
 
-    public interface IRepeatRepairSettings {
+    public interface IRepeatRepairSettings
+    {
         [Option(Alias = "RepairFun_RemoveSingleWordRepeat.RepeatTimes", DefaultValue = 0)]
-        int SingleWordRepeatTimes {
+        int SingleWordRepeatTimes
+        {
             get;
             set;
         }
 
         [Option(Alias = "RepairFun_RemoveSentenceRepeat.FindCharNum", DefaultValue = 4)]
-        int SentenceRepeatFindCharNum {
+        int SentenceRepeatFindCharNum
+        {
             get;
             set;
         }
 
         [Option(Alias = "RepairFun_Regex.Regex", DefaultValue = "")]
-        string Regex {
+        string Regex
+        {
             get;
             set;
         }
 
         [Option(Alias = "RepairFun_Regex.Replace", DefaultValue = "")]
-        string Regex_Replace {
+        string Regex_Replace
+        {
             get;
             set;
         }

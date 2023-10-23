@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MecabHelperLibrary {
-    public struct MecabWordInfo {
+namespace MecabHelperLibrary
+{
+    public struct MecabWordInfo
+    {
 
         /// <summary>
         /// 单词
@@ -42,26 +44,33 @@ namespace MecabHelperLibrary {
         public string Feature;
     }
 
-    public class MecabHelper : IDisposable {
+    public class MecabHelper : IDisposable
+    {
         private readonly MeCabTagger Tagger;
 
         public bool EnableMecab { get; protected set; }
 
-        public MecabHelper(string dicPath) {
-            try {
+        public MecabHelper(string dicPath)
+        {
+            try
+            {
                 Tagger = MeCabTagger.Create(
-                    new MeCabParam() {
+                    new MeCabParam()
+                    {
                         DicDir = dicPath
                     }
                 );
                 EnableMecab = true;
-            } catch {
+            }
+            catch
+            {
                 Tagger = null;
                 EnableMecab = false;
             }
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Tagger?.Dispose();
         }
 
@@ -70,15 +79,20 @@ namespace MecabHelperLibrary {
         /// </summary>
         /// <param name="sentence"></param>
         /// <returns></returns>
-        public List<MecabWordInfo> SentenceHandle(string sentence) {
+        public List<MecabWordInfo> SentenceHandle(string sentence)
+        {
             List<MecabWordInfo> ret = new List<MecabWordInfo>();
-            if (EnableMecab) {
-                foreach (var node in Tagger.ParseToNodes(sentence)) {
-                    if (node.CharType > 0) {
+            if (EnableMecab)
+            {
+                foreach (var node in Tagger.ParseToNodes(sentence))
+                {
+                    if (node.CharType > 0)
+                    {
                         var features = node.Feature.Split(',');
 
 
-                        MecabWordInfo mwi = new MecabWordInfo {
+                        MecabWordInfo mwi = new MecabWordInfo
+                        {
                             Word = node.Surface,
                             PartOfSpeech = features[0],
                             Description = features[1],
@@ -87,7 +101,8 @@ namespace MecabHelperLibrary {
 
                         //加这一步是为了防止乱码进入分词导致无法读取假名
                         //以及助词一般不需要注音
-                        if (features.Length >= 8 & mwi.PartOfSpeech != "助詞") {
+                        if (features.Length >= 8 & mwi.PartOfSpeech != "助詞")
+                        {
                             mwi.HiraKana = KataganaToHiragana(features[7]);
                             mwi.Romaji = HiraganaToAlphabet(mwi.HiraKana);
                             mwi.Kana = features[7];
@@ -96,19 +111,24 @@ namespace MecabHelperLibrary {
                         ret.Add(mwi);
                     }
                 }
-            } else {
+            }
+            else
+            {
                 ret.Add(new MecabWordInfo { Word = sentence });
             }
             return ret;
         }
 
-        static string KataganaToHiragana(string s) {
+        static string KataganaToHiragana(string s)
+        {
             StringBuilder sb = new StringBuilder();
             char[] target = s.ToCharArray();
             char c;
-            for (int i = 0; i < target.Length; i++) {
+            for (int i = 0; i < target.Length; i++)
+            {
                 c = target[i];
-                if (c >= 'ァ' && c <= 'ヴ') { // 筛选平假名范围内的字符
+                if (c >= 'ァ' && c <= 'ヴ')
+                { // 筛选平假名范围内的字符
                     c = (char)(c - 0x0060);  // 平假名转换为片假名
                 }
                 sb.Append(c);
@@ -116,8 +136,10 @@ namespace MecabHelperLibrary {
             return sb.ToString();
         }
 
-        static string HiraganaToAlphabet1(string s) {
-            switch (s) {
+        static string HiraganaToAlphabet1(string s)
+        {
+            switch (s)
+            {
                 case "あ": return "a";
                 case "い": return "i";
                 case "う": return "u";
@@ -286,13 +308,17 @@ namespace MecabHelperLibrary {
             }
         }
 
-        static string HiraganaToAlphabet(string s1) {
+        static string HiraganaToAlphabet(string s1)
+        {
             string s2 = "";
-            for (int i = 0; i < s1.Length; i++) {
+            for (int i = 0; i < s1.Length; i++)
+            {
 
-                if (i + 1 < s1.Length) {
+                if (i + 1 < s1.Length)
+                {
                     // 有「っ」的情况下
-                    if (s1.Substring(i, 1).CompareTo("っ") == 0) {
+                    if (s1.Substring(i, 1).CompareTo("っ") == 0)
+                    {
                         s2 += HiraganaToAlphabet1(s1.Substring(i + 1, 1)).Substring(0, 1);
                         continue;
                     }
@@ -300,7 +326,8 @@ namespace MecabHelperLibrary {
 
                     // 出现其他小假名的情况
                     string s3 = HiraganaToAlphabet1(s1.Substring(i, 2));
-                    if (s3.CompareTo("*") != 0) {
+                    if (s3.CompareTo("*") != 0)
+                    {
                         s2 += s3;
                         i++;
                         continue;

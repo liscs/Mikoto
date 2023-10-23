@@ -1,33 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
+﻿using ArtificialTransHelperLibrary;
 using DictionaryHelperLibrary;
 using FontAwesome.WPF;
 using HandyControl.Controls;
 using KeyboardMouseHookLibrary;
 using MecabHelperLibrary;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
 using TextHookLibrary;
 using TextRepairLibrary;
 using TranslatorLibrary;
 using TransOptimizationLibrary;
 using TTSHelperLibrary;
-using ArtificialTransHelperLibrary;
-using System.Windows.Controls.Primitives;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
 
-namespace MisakaTranslator_WPF {
+namespace MisakaTranslator_WPF
+{
     /// <summary>
     /// TranslateWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class TranslateWindow {
+    public partial class TranslateWindow
+    {
         public System.Windows.Threading.DispatcherTimer dtimer;//定时器 定时刷新位置
 
         private ArtificialTransHelper _artificialTransHelper;
@@ -58,10 +61,11 @@ namespace MisakaTranslator_WPF {
 
         private HWND winHandle;//窗口句柄，用于设置活动窗口，以达到全屏状态下总在最前的目的
 
-        private System.Windows.Media.Effects.DropShadowEffect DropShadow = new System.Windows.Media.Effects.DropShadowEffect();
+        private DropShadowEffect DropShadow = new DropShadowEffect();
 
 
-        public TranslateWindow() {
+        public TranslateWindow()
+        {
             InitializeComponent();
 
             _isShowSource = true;
@@ -74,26 +78,32 @@ namespace MisakaTranslator_WPF {
 
 
             _mecabHelper = new MecabHelper(Common.appSettings.Mecab_dicPath);
-            if (!_mecabHelper.EnableMecab && Common.appSettings.Mecab_dicPath != string.Empty) {
+            if (!_mecabHelper.EnableMecab && Common.appSettings.Mecab_dicPath != string.Empty)
+            {
                 Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoMeCab_Hint"].ToString());
             }
 
             _textSpeechHelper = new TextSpeechHelper();
-            if (Common.appSettings.ttsVoice == "") {
+            if (Common.appSettings.ttsVoice == "")
+            {
                 Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoTTS_Hint"].ToString());
-            } else {
+            }
+            else
+            {
                 _textSpeechHelper.SetTTSVoice(Common.appSettings.ttsVoice);
                 _textSpeechHelper.SetVolume(Common.appSettings.ttsVolume);
                 _textSpeechHelper.SetRate(Common.appSettings.ttsRate);
             }
 
-            if (Common.appSettings.xxgPath != string.Empty) {
+            if (Common.appSettings.xxgPath != string.Empty)
+            {
                 _dict = new XxgJpzhDict();
                 _dict.DictInit(Common.appSettings.xxgPath, string.Empty);
             }
 
             IsNotPausedFlag = true;
-            if (Common.appSettings.HttpProxy != "") {
+            if (Common.appSettings.HttpProxy != "")
+            {
                 CommonFunction.SetHttpProxiedClient(Common.appSettings.HttpProxy);
             }
             _translator1 = TranslatorAuto(Common.appSettings.FirstTranslator);
@@ -104,9 +114,12 @@ namespace MisakaTranslator_WPF {
 
             _artificialTransHelper = new ArtificialTransHelper(Convert.ToString(Common.GameID));
 
-            if (Common.transMode == 1) {
+            if (Common.transMode == 1)
+            {
                 Common.textHooker.Sevent += TranslateEventHook;
-            } else if (Common.transMode == 2) {
+            }
+            else if (Common.transMode == 2)
+            {
                 MouseKeyboardHook_Init();
             }
 
@@ -116,25 +129,34 @@ namespace MisakaTranslator_WPF {
         /// <summary>
         /// 键盘鼠标钩子初始化
         /// </summary>
-        private void MouseKeyboardHook_Init() {
-            if (hook == null) {
+        private void MouseKeyboardHook_Init()
+        {
+            if (hook == null)
+            {
                 hook = new KeyboardMouseHook();
                 bool r = false;
 
-                if (Common.UsingHotKey.IsMouse) {
+                if (Common.UsingHotKey.IsMouse)
+                {
                     hook.OnMouseActivity += Hook_OnMouseActivity;
-                    if (Common.UsingHotKey.MouseButton == System.Windows.Forms.MouseButtons.Left) {
+                    if (Common.UsingHotKey.MouseButton == System.Windows.Forms.MouseButtons.Left)
+                    {
                         r = hook.Start(true, 1);
-                    } else if (Common.UsingHotKey.MouseButton == System.Windows.Forms.MouseButtons.Right) {
+                    }
+                    else if (Common.UsingHotKey.MouseButton == System.Windows.Forms.MouseButtons.Right)
+                    {
                         r = hook.Start(true, 2);
                     }
-                } else {
+                }
+                else
+                {
                     hook.onKeyboardActivity += Hook_OnKeyBoardActivity;
                     int keycode = (int)Common.UsingHotKey.KeyCode;
                     r = hook.Start(false, keycode);
                 }
 
-                if (!r) {
+                if (!r)
+                {
                     Growl.ErrorGlobal(Application.Current.Resources["Hook_Error_Hint"].ToString());
                 }
             }
@@ -145,12 +167,16 @@ namespace MisakaTranslator_WPF {
         /// <summary>
         /// UI方面的初始化
         /// </summary>
-        private void UI_Init() {
+        private void UI_Init()
+        {
 
             _isShowSource = Common.appSettings.TF_showSourceText;
-            if (_isShowSource) {
+            if (_isShowSource)
+            {
                 ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Eye);
-            } else {
+            }
+            else
+            {
                 ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.EyeSlash);
             }
 
@@ -171,7 +197,8 @@ namespace MisakaTranslator_WPF {
 
             this.Background = (Brush)brushConverter.ConvertFromString(Common.appSettings.TF_BackColor);
 
-            if (int.Parse(Common.appSettings.TF_LocX) != -1 && int.Parse(Common.appSettings.TF_SizeW) != 0) {
+            if (int.Parse(Common.appSettings.TF_LocX) != -1 && int.Parse(Common.appSettings.TF_SizeW) != 0)
+            {
                 this.Left = int.Parse(Common.appSettings.TF_LocX);
                 this.Top = int.Parse(Common.appSettings.TF_LocY);
                 this.Width = int.Parse(Common.appSettings.TF_SizeW);
@@ -188,8 +215,10 @@ namespace MisakaTranslator_WPF {
         /// </summary>
         /// <param name="translator"></param>
         /// <returns></returns>
-        public static ITranslator TranslatorAuto(string translator) {
-            switch (translator) {
+        public static ITranslator TranslatorAuto(string translator)
+        {
+            switch (translator)
+            {
                 case "BaiduTranslator":
                     BaiduTranslator bd = new BaiduTranslator();
                     bd.TranslatorInit(Common.appSettings.BDappID, Common.appSettings.BDsecretKey);
@@ -270,7 +299,8 @@ namespace MisakaTranslator_WPF {
         /// <summary>
         /// 键盘点击事件
         /// </summary>
-        void Hook_OnKeyBoardActivity(object sender) {
+        void Hook_OnKeyBoardActivity(object sender)
+        {
             TranslateEventOcr();
         }
 
@@ -279,9 +309,11 @@ namespace MisakaTranslator_WPF {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Hook_OnMouseActivity(object sender, System.Drawing.Point e) {
+        private void Hook_OnMouseActivity(object sender, System.Drawing.Point e)
+        {
             if (Common.isAllWindowCap && Process.GetCurrentProcess().Id != FindWindowInfo.GetProcessIDByHWND(FindWindowInfo.GetWindowHWND(e))
-                || Common.OCRWinHwnd == FindWindowInfo.GetWindowHWND(e)) {
+                || Common.OCRWinHwnd == FindWindowInfo.GetWindowHWND(e))
+            {
                 TranslateEventOcr();
             }
         }
@@ -290,14 +322,16 @@ namespace MisakaTranslator_WPF {
         /// OCR事件
         /// </summary>
         /// <param name="isRenew">是否是重新获取翻译</param>
-        private async void TranslateEventOcr(bool isRenew = false) {
+        private async void TranslateEventOcr(bool isRenew = false)
+        {
             if (!IsNotPausedFlag && IsOCRingFlag)
                 return;
 
             IsOCRingFlag = true;
 
             string srcText = null;
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 3; i++)
+            {
                 // 重新OCR不需要等待
                 if (!isRenew)
                     await Task.Delay(Common.UsingOCRDelay);
@@ -308,10 +342,12 @@ namespace MisakaTranslator_WPF {
                     break;
             }
 
-            if (!string.IsNullOrEmpty(srcText)) {
+            if (!string.IsNullOrEmpty(srcText))
+            {
                 if (Common.appSettings.OCRsource == "BaiduFanyiOCR" || Common.appSettings.OCRsource == "TencentOCR")
                     Application.Current.Dispatcher.Invoke(() => { FirstTransText.Text = srcText; });
-                else {
+                else
+                {
                     if (!Common.appSettings.EachRowTrans) // 不启用分行翻译
                         if (Common.UsingSrcLang == "en")
                             srcText = srcText.Replace("\n", " ").Replace("\r", " ");
@@ -320,7 +356,8 @@ namespace MisakaTranslator_WPF {
 
                     TranslateText(srcText, isRenew);
                 }
-            } else if (!string.IsNullOrEmpty(Common.ocr.GetLastError()))
+            }
+            else if (!string.IsNullOrEmpty(Common.ocr.GetLastError()))
                 Growl.WarningGlobal(Common.appSettings.OCRsource + " Error: " + Common.ocr.GetLastError());
             else
                 Growl.WarningGlobal("[OCR]自动识别三次均为空，请自行刷新！");
@@ -328,23 +365,32 @@ namespace MisakaTranslator_WPF {
             IsOCRingFlag = false;
         }
 
-        private void DictArea_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
-            if (_dict != null) {
-                if (e.ClickCount == 2) {
+        private void DictArea_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_dict != null)
+            {
+                if (e.ClickCount == 2)
+                {
                     //双击事件
                     TextBlock textBlock = sender as TextBlock;
 
                     string ret = _dict.SearchInDict(textBlock.Text);
-                    if (ret != null) {
-                        if (ret == string.Empty) {
+                    if (ret != null)
+                    {
+                        if (ret == string.Empty)
+                        {
                             Growl.ErrorGlobal(Application.Current.Resources["TranslateWin_DictError_Hint"] + _dict.GetLastError());
-                        } else {
+                        }
+                        else
+                        {
                             dtimer.Stop();
                             DictResWindow _dictResWindow = new DictResWindow(textBlock.Text, (string)textBlock.Tag, _textSpeechHelper);
                             _dictResWindow.ShowDialog();
                             dtimer.Start();
                         }
-                    } else {
+                    }
+                    else
+                    {
                         Growl.ErrorGlobal(Application.Current.Resources["TranslateWin_DictError_Hint"] + _dict.GetLastError());
                     }
                 }
@@ -355,7 +401,8 @@ namespace MisakaTranslator_WPF {
         /// <summary>
         /// Hook模式下调用的事件
         /// </summary>
-        public void TranslateEventHook(object sender, SolvedDataRecvEventArgs e) {
+        public void TranslateEventHook(object sender, SolvedDataRecvEventArgs e)
+        {
             //1.得到原句
             string source = e.Data.Data;
             if (source == null && e.Data.HookFunc == "Clipboard")
@@ -379,12 +426,15 @@ namespace MisakaTranslator_WPF {
         /// </summary>
         /// <param name="repairedText">原文</param>
         /// <param name="isRenew">是否是重新获取翻译</param>
-        private void TranslateText(string repairedText, bool isRenew = false) {
+        private void TranslateText(string repairedText, bool isRenew = false)
+        {
             //补充:如果去重之后的文本长度超过指定值（默认100），直接不翻译、不显示
             //补充2：如果去重后文本长度为0，则不翻译不显示
-            if (repairedText.Length != 0 && repairedText.Length <= Common.appSettings.TransLimitNums) {
+            if (repairedText.Length != 0 && repairedText.Length <= Common.appSettings.TransLimitNums)
+            {
                 //2.5 清除面板
-                Application.Current.Dispatcher.Invoke(() => {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
                     SourceTextPanel.Children.Clear();
                 });
 
@@ -394,8 +444,8 @@ namespace MisakaTranslator_WPF {
                 UpdateSource(repairedText);
 
                 // 分别获取两个翻译结果
-                TranslateApiSubmitASync(repairedText, 1, isRenew);
-                TranslateApiSubmitASync(repairedText, 2, isRenew);
+                _ = TranslateApiSubmitASync(repairedText, 1, isRenew);
+                _ = TranslateApiSubmitASync(repairedText, 2, isRenew);
             }
         }
 
@@ -404,34 +454,43 @@ namespace MisakaTranslator_WPF {
         /// 注意执行过程中调用了StackPanel等UI组件，必须交回主线程才能执行。
         /// </summary>
         /// <param name="repairedText">原文</param>
-        private void UpdateSource(string repairedText) {
-            if (_isShowSource) {
+        private void UpdateSource(string repairedText)
+        {
+            if (_isShowSource)
+            {
                 // 使用BeginInvoke，在更新原文时可以去获取翻译
-                Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+                Application.Current.Dispatcher.BeginInvoke(() =>
+                {
                     //3.分词
                     var mwi = _mecabHelper.SentenceHandle(repairedText);
                     //分词后结果显示
-                    for (int i = 0; i < mwi.Count; i++) {
+                    for (int i = 0; i < mwi.Count; i++)
+                    {
                         StackPanel stackPanel = new StackPanel();
                         stackPanel.Orientation = Orientation.Vertical;
                         stackPanel.Margin = new Thickness(10, 0, 0, 10);
 
-                        System.Windows.Controls.TextBox textBlock = new() {
+                        System.Windows.Controls.TextBox textBlock = new()
+                        {
                             IsReadOnly = true,
                             Background = new SolidColorBrush(Colors.Transparent),
                             BorderBrush = new SolidColorBrush(Colors.Transparent),
                             Padding = new Thickness(0),
                             Margin = new Thickness(0)
                         };
-                        if (!string.IsNullOrEmpty(SourceTextFont)) {
+                        if (!string.IsNullOrEmpty(SourceTextFont))
+                        {
                             FontFamily fontFamily = new FontFamily(SourceTextFont);
                             textBlock.FontFamily = fontFamily;
                         }
                         textBlock.Text = mwi[i].Word;
 
-                        if (Common.appSettings.TF_Hiragana) {
+                        if (Common.appSettings.TF_Hiragana)
+                        {
                             textBlock.Tag = mwi[i].HiraKana;
-                        } else {
+                        }
+                        else
+                        {
                             textBlock.Tag = mwi[i].Kana;
                         }
                         //选择平假名或者片假名
@@ -444,13 +503,16 @@ namespace MisakaTranslator_WPF {
                         //根据不同词性跟字体上色
 
 
-                        if (Common.appSettings.TF_DropShadow) {
+                        if (Common.appSettings.TF_DropShadow)
+                        {
                             textBlock.Effect = DropShadow;
                             //加入原文的阴影
                         }
 
-                        if (Common.appSettings.TF_Colorful) {
-                            switch (mwi[i].PartOfSpeech) {
+                        if (Common.appSettings.TF_Colorful)
+                        {
+                            switch (mwi[i].PartOfSpeech)
+                            {
                                 case "名詞":
                                     textBlock.Foreground = Brushes.AliceBlue;
                                     break;
@@ -467,19 +529,25 @@ namespace MisakaTranslator_WPF {
                                     textBlock.Foreground = Brushes.White;
                                     break;
                             }
-                        } else {
+                        }
+                        else
+                        {
                             textBlock.Foreground = Brushes.White;
                         }
 
                         TextBlock superScript = new TextBlock();//假名或注释等的上标标签
-                        if (!string.IsNullOrEmpty(SourceTextFont)) {
+                        if (!string.IsNullOrEmpty(SourceTextFont))
+                        {
                             FontFamily fontFamily = new FontFamily(SourceTextFont);
                             superScript.FontFamily = fontFamily;
                         }
 
-                        if (Common.appSettings.TF_Hiragana) {
+                        if (Common.appSettings.TF_Hiragana)
+                        {
                             superScript.Text = mwi[i].HiraKana;
-                        } else {
+                        }
+                        else
+                        {
                             superScript.Text = mwi[i].Kana;
                         }
                         //选择平假名或者片假名
@@ -487,19 +555,24 @@ namespace MisakaTranslator_WPF {
                         superScript.Margin = new Thickness(0, 0, 0, 2);
                         superScript.HorizontalAlignment = HorizontalAlignment.Center;
 
-                        if (Common.appSettings.TF_DropShadow) {
+                        if (Common.appSettings.TF_DropShadow)
+                        {
                             superScript.Effect = DropShadow;
                             //加入注音的阴影
                         }
 
-                        if ((double)SourceTextFontSize - 6.5 > 0) {
+                        if ((double)SourceTextFontSize - 6.5 > 0)
+                        {
                             superScript.FontSize = (double)SourceTextFontSize - 6.5;
-                            if (Common.appSettings.TF_SuperBold) {
+                            if (Common.appSettings.TF_SuperBold)
+                            {
                                 superScript.FontWeight = FontWeights.Bold;
                                 //注音加粗
                             }
 
-                        } else {
+                        }
+                        else
+                        {
                             superScript.FontSize = 1;
                         }
                         superScript.Background = Brushes.Transparent;
@@ -508,16 +581,19 @@ namespace MisakaTranslator_WPF {
 
 
                         //是否打开假名标注
-                        if (Common.appSettings.TF_isKanaShow) {
+                        if (Common.appSettings.TF_isKanaShow)
+                        {
                             stackPanel.Children.Add(textBlock);
                             SourceTextPanel.Children.Add(stackPanel);
-                        } else {
+                        }
+                        else
+                        {
                             textBlock.Margin = new Thickness(10, 0, 0, 10);
                             SourceTextPanel.Children.Add(textBlock);
                         }
 
                     }
-                }));
+                });
             }
         }
 
@@ -527,27 +603,37 @@ namespace MisakaTranslator_WPF {
         /// <param name="repairedText">原文</param>
         /// <param name="tranResultIndex">翻译框序号</param>
         /// <param name="isRenew">是否是重新获取翻译</param>
-        private async Task TranslateApiSubmitASync(string repairedText, int tranResultIndex, bool isRenew = false) {
+        private async Task TranslateApiSubmitASync(string repairedText, int tranResultIndex, bool isRenew = false)
+        {
             //4.翻译前预处理 
             string beforeString = _beforeTransHandle.AutoHandle(repairedText);
 
             //5.提交翻译 
             string transRes = string.Empty;
-            if (tranResultIndex == 1) {
-                if (_translator1 != null) {
+            if (tranResultIndex == 1)
+            {
+                if (_translator1 != null)
+                {
                     transRes = await _translator1.TranslateAsync(beforeString, Common.UsingDstLang, Common.UsingSrcLang);
-                    if (transRes == null) {
-                        Application.Current.Dispatcher.Invoke(() => {
+                    if (transRes == null)
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
                             Growl.WarningGlobal(_translator1.GetType().Name + ": " + _translator1.GetLastError());
                         });
                         return;
                     }
                 }
-            } else if (tranResultIndex == 2) {
-                if (_translator2 != null) {
+            }
+            else if (tranResultIndex == 2)
+            {
+                if (_translator2 != null)
+                {
                     transRes = await _translator2.TranslateAsync(beforeString, Common.UsingDstLang, Common.UsingSrcLang);
-                    if (transRes == null) {
-                        Application.Current.Dispatcher.Invoke(() => {
+                    if (transRes == null)
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
                             Growl.WarningGlobal(_translator2.GetType().Name + ": " + _translator2.GetLastError());
                         });
                         return;
@@ -559,24 +645,33 @@ namespace MisakaTranslator_WPF {
             string afterString = _afterTransHandle.AutoHandle(transRes);
 
             //7.翻译结果显示到窗口上 
-            switch (tranResultIndex) {
+            switch (tranResultIndex)
+            {
                 case 1:
-                    Application.Current.Dispatcher.Invoke(() => {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
                         FirstTransText.Text = afterString;
-                        if (Common.appSettings.TF_DropShadow) {
+                        if (Common.appSettings.TF_DropShadow)
+                        {
                             FirstTransText.Effect = DropShadow;
-                        } else {
+                        }
+                        else
+                        {
                             FirstTransText.Effect = null;
                         }
                         //添加第一翻译源的阴影
                     });
                     break;
                 case 2:
-                    Application.Current.Dispatcher.Invoke(() => {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
                         SecondTransText.Text = afterString;
-                        if (Common.appSettings.TF_DropShadow) {
+                        if (Common.appSettings.TF_DropShadow)
+                        {
                             SecondTransText.Effect = DropShadow;
-                        } else {
+                        }
+                        else
+                        {
                             SecondTransText.Effect = null;
                         }
                         //添加第二翻译源的阴影
@@ -584,20 +679,26 @@ namespace MisakaTranslator_WPF {
                     break;
             }
 
-            if (!isRenew) {
-                lock (_saveTransResultLock) {
+            if (!isRenew)
+            {
+                lock (_saveTransResultLock)
+                {
                     //8.翻译结果记录到队列
                     // todo: 这是比较粗暴地添加历史记录，可以优化（时间排序等）
-                    if (_gameTextHistory.Count > 10) {
+                    if (_gameTextHistory.Count > 10)
+                    {
                         _gameTextHistory.Dequeue();
                     }
                     _gameTextHistory.Enqueue(repairedText + "\n" + afterString);
 
                     //9.翻译原句和结果记录到数据库 
-                    if (Common.appSettings.ATon) {
+                    if (Common.appSettings.ATon)
+                    {
                         bool addRes = _artificialTransHelper.AddTrans(repairedText, afterString);
-                        if (addRes == false) {
-                            Application.Current.Dispatcher.Invoke(() => {
+                        if (addRes == false)
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
                                 HandyControl.Data.GrowlInfo growlInfo = new HandyControl.Data.GrowlInfo();
                                 growlInfo.Message = Application.Current.Resources["ArtificialTransAdd_Error_Hint"].ToString();
                                 growlInfo.WaitTime = 2;
@@ -610,34 +711,49 @@ namespace MisakaTranslator_WPF {
         }
 
 
-        private void ChangeSize_Item_Click(object sender, RoutedEventArgs e) {
-            if ((bool)(sender as ToggleButton).IsChecked) {
+        private void ChangeSize_Item_Click(object sender, RoutedEventArgs e)
+        {
+            if ((bool)(sender as ToggleButton).IsChecked)
+            {
                 this.BorderThickness = new(3);
                 this.ResizeMode = ResizeMode.CanResizeWithGrip;
                 Growl.InfoGlobal(Application.Current.Resources["TranslateWin_DragBox_Hint"].ToString());
-            } else {
+            }
+            else
+            {
                 this.BorderThickness = new(0);
                 this.ResizeMode = ResizeMode.CanResize;
             }
         }
 
-        private void Exit_Item_Click(object sender, RoutedEventArgs e) {
+        private void Exit_Item_Click(object sender, RoutedEventArgs e)
+        {
             this.Close();
         }
 
 
-        private void Pause_Item_Click(object sender, RoutedEventArgs e) {
-            if (Common.transMode == 1) {
-                if (Common.textHooker.Pause) {
+        private void Pause_Item_Click(object sender, RoutedEventArgs e)
+        {
+            if (Common.transMode == 1)
+            {
+                if (Common.textHooker.Pause)
+                {
                     PauseButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.Pause);
-                } else {
+                }
+                else
+                {
                     PauseButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.Play);
                 }
                 Common.textHooker.Pause = !Common.textHooker.Pause;
-            } else {
-                if (IsNotPausedFlag) {
+            }
+            else
+            {
+                if (IsNotPausedFlag)
+                {
                     PauseButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.Play);
-                } else {
+                }
+                else
+                {
                     PauseButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.Pause);
                 }
                 IsNotPausedFlag = !IsNotPausedFlag;
@@ -645,28 +761,35 @@ namespace MisakaTranslator_WPF {
 
         }
 
-        private void ShowSource_Item_Click(object sender, RoutedEventArgs e) {
+        private void ShowSource_Item_Click(object sender, RoutedEventArgs e)
+        {
             _isShowSource = !_isShowSource;
-            if (_isShowSource) {
+            if (_isShowSource)
+            {
                 ShowSourceButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.Eye);
-            } else {
+            }
+            else
+            {
                 ShowSourceButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.EyeSlash);
             }
             Common.appSettings.TF_showSourceText = _isShowSource;
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
             Common.appSettings.TF_LocX = Convert.ToString((int)this.Left);
             Common.appSettings.TF_LocY = Convert.ToString((int)this.Top);
             Common.appSettings.TF_SizeW = Convert.ToString((int)this.ActualWidth);
             Common.appSettings.TF_SizeH = Convert.ToString((int)this.ActualHeight);
 
-            if (hook != null) {
+            if (hook != null)
+            {
                 hook.Stop();
                 hook = null;
             }
 
-            if (Common.textHooker != null) {
+            if (Common.textHooker != null)
+            {
                 Common.textHooker.Sevent -= TranslateEventHook;
                 Common.textHooker.StopHook();
                 Common.textHooker = null;
@@ -676,25 +799,31 @@ namespace MisakaTranslator_WPF {
 
             _mecabHelper.Dispose();
 
-            try {
+            try
+            {
                 //System.InvalidOperationException:“关闭 Window 之后，无法设置 Visibility，也无法调用 Show、ShowDialogor 或 WindowInteropHelper.EnsureHandle。”
                 Common.mainWin.Visibility = Visibility.Visible;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Common.WhiteExceptionLog(ex);
             }
         }
 
-        private void Settings_Item_Click(object sender, RoutedEventArgs e) {
+        private void Settings_Item_Click(object sender, RoutedEventArgs e)
+        {
             dtimer.Stop();
             TransWinSettingsWindow twsw = new TransWinSettingsWindow(this);
             twsw.Show();
         }
 
-        private void History_Item_Click(object sender, RoutedEventArgs e) {
+        private void History_Item_Click(object sender, RoutedEventArgs e)
+        {
             var textbox = new HandyControl.Controls.TextBox();
             string his = string.Empty;
             string[] history = _gameTextHistory.ToArray();
-            for (int i = history.Length - 1; i > 0; i--) {
+            for (int i = history.Length - 1; i > 0; i--)
+            {
                 his += history[i] + "\n";
                 his += "==================================\n";
             }
@@ -703,7 +832,8 @@ namespace MisakaTranslator_WPF {
             textbox.TextWrapping = TextWrapping.Wrap;
             textbox.TextAlignment = TextAlignment.Left;
             textbox.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
-            var window = new PopupWindow {
+            var window = new PopupWindow
+            {
                 PopupElement = textbox,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
                 BorderThickness = new Thickness(0, 0, 0, 0),
@@ -720,40 +850,52 @@ namespace MisakaTranslator_WPF {
             dtimer.Start();
         }
 
-        private void AddNoun_Item_Click(object sender, RoutedEventArgs e) {
+        private void AddNoun_Item_Click(object sender, RoutedEventArgs e)
+        {
             dtimer.Stop();
             AddOptWindow win = new AddOptWindow(_currentsrcText);
             win.ShowDialog();
             dtimer.Start();
         }
 
-        private void RenewOCR_Item_Click(object sender, RoutedEventArgs e) {
-            if (Common.transMode == 2) {
+        private void RenewOCR_Item_Click(object sender, RoutedEventArgs e)
+        {
+            if (Common.transMode == 2)
+            {
                 TranslateEventOcr(true);
-            } else {
-                TranslateApiSubmitASync(_currentsrcText, 1, true);
-                TranslateApiSubmitASync(_currentsrcText, 2, true);
+            }
+            else
+            {
+                _ = TranslateApiSubmitASync(_currentsrcText, 1, true);
+                _ = TranslateApiSubmitASync(_currentsrcText, 2, true);
             }
         }
 
-        private void Min_Item_Click(object sender, RoutedEventArgs e) {
+        private void Min_Item_Click(object sender, RoutedEventArgs e)
+        {
             this.WindowState = WindowState.Minimized;
         }
 
-        private void Lock_Item_Click(object sender, RoutedEventArgs e) {
-            if (!(bool)(sender as ToggleButton).IsChecked) {
+        private void Lock_Item_Click(object sender, RoutedEventArgs e)
+        {
+            if (!(bool)(sender as ToggleButton).IsChecked)
+            {
                 this.Background = new SolidColorBrush(Colors.Transparent);
-            } else {
+            }
+            else
+            {
                 BrushConverter brushConverter = new();
                 this.Background = (Brush)brushConverter.ConvertFromString(Common.appSettings.TF_BackColor);
             }
         }
 
-        private void TTS_Item_Click(object sender, RoutedEventArgs e) {
+        private void TTS_Item_Click(object sender, RoutedEventArgs e)
+        {
             _textSpeechHelper.SpeakAsync(_currentsrcText);
         }
 
-        private void TransWin_Loaded(object sender, RoutedEventArgs e) {
+        private void TransWin_Loaded(object sender, RoutedEventArgs e)
+        {
             winHandle = (HWND)new WindowInteropHelper(this).Handle;//记录翻译窗口句柄
 
             dtimer = new System.Windows.Threading.DispatcherTimer();
@@ -764,14 +906,17 @@ namespace MisakaTranslator_WPF {
             Common.mainWin.Visibility = Visibility.Collapsed;
         }
 
-        void dtimer_Tick(object sender, EventArgs e) {
-            if (this.WindowState != WindowState.Minimized) {
+        void dtimer_Tick(object sender, EventArgs e)
+        {
+            if (this.WindowState != WindowState.Minimized)
+            {
                 //定时刷新窗口到顶层
                 PInvoke.SetWindowPos(winHandle, HWND.HWND_TOPMOST, 0, 0, 0, 0, SET_WINDOW_POS_FLAGS.SWP_NOSIZE | SET_WINDOW_POS_FLAGS.SWP_NOMOVE);
             }
         }
 
-        private void ArtificialTransAdd_Item_Click(object sender, RoutedEventArgs e) {
+        private void ArtificialTransAdd_Item_Click(object sender, RoutedEventArgs e)
+        {
             dtimer.Stop();
             ArtificialTransAddWindow win = new ArtificialTransAddWindow(_currentsrcText, FirstTransText.Text, SecondTransText.Text);
             win.ShowDialog();

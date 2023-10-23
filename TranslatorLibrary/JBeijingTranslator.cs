@@ -2,8 +2,10 @@
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-namespace TranslatorLibrary {
-    public class JBeijingTranslator : ITranslator {
+namespace TranslatorLibrary
+{
+    public class JBeijingTranslator : ITranslator
+    {
         /*
          * 根据猜测得到的DLL函数 来源 https://github.com/Artikash/VNR-Core/blob/6ed038bda9dcd35696040bd45d31afa6a30e8978/py/libs/jbeijing/jbjct.py
         int __cdecl JC_Transfer_Unicode(
@@ -35,14 +37,17 @@ namespace TranslatorLibrary {
         public string JBJCTDllPath;//DLL路径
         private string errorInfo;//错误信息
 
-        public string GetLastError() {
+        public string GetLastError()
+        {
             return errorInfo;
         }
 
-        public Task<string> TranslateAsync(string sourceText, string desLang, string srcLang) {
+        public Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        {
             string JBeijingTranslatorPath = JBJCTDllPath;
 
-            if (JBeijingTranslatorPath == "") {
+            if (JBeijingTranslatorPath == "")
+            {
                 return Task.FromResult<string>(null);
             }
 
@@ -63,9 +68,12 @@ namespace TranslatorLibrary {
             int p1 = 1500;
             int p2 = 1500;
 
-            try {
+            try
+            {
                 int a = JC_Transfer_Unicode(0, 932, 936, 1, 1, jp, jp2, ref p1, jp3, ref p2);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 errorInfo = ex.Message;
                 return Task.FromResult<string>(null);
             }
@@ -81,7 +89,8 @@ namespace TranslatorLibrary {
             return Task.FromResult(ret);
         }
 
-        public void TranslatorInit(string param1, string param2 = "") {
+        public void TranslatorInit(string param1, string param2 = "")
+        {
             JBJCTDllPath = param1;
         }
     }

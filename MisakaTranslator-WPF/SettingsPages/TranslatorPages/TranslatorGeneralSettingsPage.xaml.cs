@@ -4,14 +4,17 @@ using System.Windows;
 using System.Windows.Controls;
 using TranslatorLibrary;
 
-namespace MisakaTranslator_WPF.SettingsPages {
+namespace MisakaTranslator_WPF.SettingsPages
+{
     /// <summary>
     /// TranslatorGeneralSettingsPage.xaml 的交互逻辑
     /// </summary>
-    public partial class TranslatorGeneralSettingsPage : Page {
+    public partial class TranslatorGeneralSettingsPage : Page
+    {
         private List<string> TranslatorList;
 
-        public TranslatorGeneralSettingsPage() {
+        public TranslatorGeneralSettingsPage()
+        {
             InitializeComponent();
             TranslatorList = CommonFunction.GetTranslatorList();
             FirstTransCombox.ItemsSource = TranslatorList;
@@ -28,25 +31,30 @@ namespace MisakaTranslator_WPF.SettingsPages {
             TransLimitBox.ValueChanged += TransLimitBox_ValueChanged;
         }
 
-        private void FirstTransCombox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private void FirstTransCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             Common.appSettings.FirstTranslator = CommonFunction.lstTranslator[(string)FirstTransCombox.SelectedValue];
         }
 
-        private void SecondTransCombox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private void SecondTransCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             Common.appSettings.SecondTranslator = CommonFunction.lstTranslator[(string)SecondTransCombox.SelectedValue];
         }
 
-        private void EachRowTransCheckBox_Click(object sender, RoutedEventArgs e) {
+        private void EachRowTransCheckBox_Click(object sender, RoutedEventArgs e)
+        {
             Common.appSettings.EachRowTrans = EachRowTransCheckBox.IsChecked ?? false;
         }
 
-        private void HttpProxyBox_LostFocus(object sender, RoutedEventArgs e) {
+        private void HttpProxyBox_LostFocus(object sender, RoutedEventArgs e)
+        {
             string text = HttpProxyBox.Text.Trim();
             try { new Uri(text); } catch (UriFormatException) { HandyControl.Controls.Growl.Error("Proxy url unsupported."); return; };
             Common.appSettings.HttpProxy = text;
         }
 
-        private void TransLimitBox_ValueChanged(object sender, HandyControl.Data.FunctionEventArgs<double> e) {
+        private void TransLimitBox_ValueChanged(object sender, HandyControl.Data.FunctionEventArgs<double> e)
+        {
             Common.appSettings.TransLimitNums = (int)TransLimitBox.Value;
         }
     }

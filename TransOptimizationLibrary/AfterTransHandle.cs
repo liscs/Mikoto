@@ -1,9 +1,11 @@
-﻿namespace TransOptimizationLibrary {
-    public class AfterTransHandle {
-        NounTransOptimization nto;
+﻿namespace TransOptimizationLibrary
+{
+    public class AfterTransHandle
+    {
         BeforeTransHandle bth;
 
-        public AfterTransHandle(BeforeTransHandle b) {
+        public AfterTransHandle(BeforeTransHandle b)
+        {
             bth = b;
         }
 
@@ -12,13 +14,16 @@
         /// </summary>
         /// <param name="text">通过翻译接口翻译后的句子</param>
         /// <returns>处理后句子</returns>
-        public string AutoHandle(string text) {
-            if (text == null || text == "") {
+        public string AutoHandle(string text)
+        {
+            if (text == null || text == "")
+            {
                 return "";
             }
 
             //目前只支持名词的预处理，处理后检查是否有对话人名，如果有则加上
-            if (bth.GetPeopleChatName() != "") {
+            if (bth.GetPeopleChatName() != "")
+            {
                 text = bth.GetPeopleChatName() + "： " + text;
             }
 

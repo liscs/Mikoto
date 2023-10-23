@@ -1,18 +1,22 @@
-﻿using System.Text.Json;
-using System;
+﻿using System;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace TranslatorLibrary {
-    public class XiaoniuTranslator : ITranslator {
+namespace TranslatorLibrary
+{
+    public class XiaoniuTranslator : ITranslator
+    {
         public string apiKey;//小牛翻译API 的APIKEY
         private string errorInfo;//错误信息
 
-        public string GetLastError() {
+        public string GetLastError()
+        {
             return errorInfo;
         }
 
-        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang) {
+        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        {
             if (desLang == "kr")
                 desLang = "ko";
             if (srcLang == "kr")
@@ -36,31 +40,45 @@ namespace TranslatorLibrary {
             string url = sb.ToString();
 
             var hc = CommonFunction.GetHttpClient();
-            try {
+            try
+            {
                 retString = await hc.GetStringAsync(url);
-            } catch (System.Net.Http.HttpRequestException ex) {
+            }
+            catch (System.Net.Http.HttpRequestException ex)
+            {
                 errorInfo = ex.Message;
                 return null;
-            } catch (System.Threading.Tasks.TaskCanceledException ex) {
+            }
+            catch (System.Threading.Tasks.TaskCanceledException ex)
+            {
                 errorInfo = ex.Message;
                 return null;
             }
 
             XiaoniuTransOutInfo oinfo = JsonSerializer.Deserialize<XiaoniuTransOutInfo>(retString, CommonFunction.JsonOP);
 
-            if (oinfo.error_code == null || oinfo.error_code == "52000") {
+            if (oinfo.error_code == null || oinfo.error_code == "52000")
+            {
                 //得到翻译结果
-                if (oinfo.tgt_text != null) {
+                if (oinfo.tgt_text != null)
+                {
                     return oinfo.tgt_text;
-                } else {
+                }
+                else
+                {
                     errorInfo = "UnknownError";
                     return null;
                 }
-            } else {
-                if (oinfo.error_msg != null) {
+            }
+            else
+            {
+                if (oinfo.error_msg != null)
+                {
                     errorInfo = "ErrorID:" + oinfo.error_msg;
                     return null;
-                } else {
+                }
+                else
+                {
                     errorInfo = "UnknownError";
                     return null;
                 }
@@ -68,7 +86,8 @@ namespace TranslatorLibrary {
 
         }
 
-        public void TranslatorInit(string param1, string param2 = "") {
+        public void TranslatorInit(string param1, string param2 = "")
+        {
             //第二参数无用
             apiKey = param1;
         }
@@ -77,7 +96,8 @@ namespace TranslatorLibrary {
         /// 小牛翻译API申请地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_allpyAPI() {
+        public static string GetUrl_allpyAPI()
+        {
             return "https://niutrans.com/API";
         }
 
@@ -85,7 +105,8 @@ namespace TranslatorLibrary {
         /// 小牛翻译API额度查询地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_bill() {
+        public static string GetUrl_bill()
+        {
             return "https://niutrans.com/cloud/console/statistics/free";
         }
 
@@ -93,7 +114,8 @@ namespace TranslatorLibrary {
         /// 小牛翻译API文档地址（错误代码）
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_Doc() {
+        public static string GetUrl_Doc()
+        {
             return "https://niutrans.com/documents/develop/develop_text/free#error";
         }
 
@@ -101,7 +123,8 @@ namespace TranslatorLibrary {
     }
 
 #pragma warning disable 0649
-    struct XiaoniuTransOutInfo {
+    struct XiaoniuTransOutInfo
+    {
         public string from;
         public string to;
         public string src_text;

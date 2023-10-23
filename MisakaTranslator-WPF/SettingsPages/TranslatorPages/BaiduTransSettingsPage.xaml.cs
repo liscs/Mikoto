@@ -2,22 +2,27 @@
 using System.Windows.Controls;
 using TranslatorLibrary;
 
-namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages {
+namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
+{
     /// <summary>
     /// BaiduTransSettingsPage.xaml 的交互逻辑
     /// </summary>
-    public partial class BaiduTransSettingsPage : Page {
-        public BaiduTransSettingsPage() {
+    public partial class BaiduTransSettingsPage : Page
+    {
+        public BaiduTransSettingsPage()
+        {
             InitializeComponent();
             BDTransAppIDBox.Text = Common.appSettings.BDappID;
             BDTransSecretKeyBox.Text = Common.appSettings.BDsecretKey;
         }
 
-        private async void AuthTestBtn_Click(object sender, RoutedEventArgs e) {
+        private async void AuthTestBtn_Click(object sender, RoutedEventArgs e)
+        {
             Common.appSettings.BDappID = BDTransAppIDBox.Text;
             Common.appSettings.BDsecretKey = BDTransSecretKeyBox.Text;
 
-            if (BDTransAppIDBox.Text.Length == 24) {
+            if (BDTransAppIDBox.Text.Length == 24)
+            {
                 HandyControl.Controls.Growl.Error($"百度翻译{Application.Current.Resources["APITest_Error_Hint"]}\nDo not use ai.baidu.com endpoint.");
                 return;
             }
@@ -25,33 +30,43 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages {
             ITranslator BDTrans = new BaiduTranslator();
             BDTrans.TranslatorInit(BDTransAppIDBox.Text, BDTransSecretKeyBox.Text);
 
-            if (await BDTrans.TranslateAsync("apple", "zh", "en") != null) {
+            if (await BDTrans.TranslateAsync("apple", "zh", "en") != null)
+            {
                 HandyControl.Controls.Growl.Success($"百度翻译{Application.Current.Resources["APITest_Success_Hint"]}");
-            } else {
+            }
+            else
+            {
                 HandyControl.Controls.Growl.Error($"百度翻译{Application.Current.Resources["APITest_Error_Hint"]}\n{BDTrans.GetLastError()}");
             }
         }
 
-        private void ApplyBtn_Click(object sender, RoutedEventArgs e) {
+        private void ApplyBtn_Click(object sender, RoutedEventArgs e)
+        {
             System.Diagnostics.Process.Start(BaiduTranslator.GetUrl_allpyAPI());
         }
 
-        private void DocBtn_Click(object sender, RoutedEventArgs e) {
+        private void DocBtn_Click(object sender, RoutedEventArgs e)
+        {
             System.Diagnostics.Process.Start(BaiduTranslator.GetUrl_Doc());
         }
 
-        private void BillBtn_Click(object sender, RoutedEventArgs e) {
+        private void BillBtn_Click(object sender, RoutedEventArgs e)
+        {
             System.Diagnostics.Process.Start(BaiduTranslator.GetUrl_bill());
         }
 
-        private async void TransTestBtn_Click(object sender, RoutedEventArgs e) {
+        private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
+        {
             ITranslator BDTrans = new BaiduTranslator();
             BDTrans.TranslatorInit(Common.appSettings.BDappID, Common.appSettings.BDsecretKey);
             string res = await BDTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
-            if (res != null) {
+            if (res != null)
+            {
                 HandyControl.Controls.MessageBox.Show(res, Application.Current.Resources["MessageBox_Result"].ToString());
-            } else {
+            }
+            else
+            {
                 HandyControl.Controls.Growl.Error(
                     $"百度翻译{Application.Current.Resources["APITest_Error_Hint"]}\n{BDTrans.GetLastError()}");
             }

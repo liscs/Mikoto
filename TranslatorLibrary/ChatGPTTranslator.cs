@@ -1,5 +1,5 @@
-﻿using System.Text.Json;
-using System.Net.Http;
+﻿using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 /*
@@ -7,8 +7,10 @@ using System.Threading.Tasks;
  * Author: bychv
  * API version: v1
  */
-namespace TranslatorLibrary {
-    public class ChatGPTTranslator : ITranslator {
+namespace TranslatorLibrary
+{
+    public class ChatGPTTranslator : ITranslator
+    {
         public static readonly string SIGN_UP_URL = "https://platform.openai.com";
         public static readonly string BILL_URL = "https://platform.openai.com/account/usage";
         public static readonly string DOCUMENT_URL = "https://platform.openai.com/docs/introduction/overview";
@@ -18,14 +20,17 @@ namespace TranslatorLibrary {
         private string apiUrl; //ChatGPT翻译API的URL
         private string errorInfo; //错误信息
 
-        public string GetLastError() {
+        public string GetLastError()
+        {
             return errorInfo;
         }
 
-        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang) {
+        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        {
             string q = sourceText;
 
-            if (sourceText == "" || desLang == "" || srcLang == "") {
+            if (sourceText == "" || desLang == "" || srcLang == "")
+            {
                 errorInfo = "Param Missing";
                 return null;
             }
@@ -34,49 +39,67 @@ namespace TranslatorLibrary {
             var hc = CommonFunction.GetHttpClient();
             var req = new StringContent(jsonParam, null, "application/json");
             hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
-            try {
+            try
+            {
                 retString = await (await hc.PostAsync(apiUrl, req)).Content.ReadAsStringAsync();
-            } catch (System.Net.Http.HttpRequestException ex) {
+            }
+            catch (System.Net.Http.HttpRequestException ex)
+            {
                 errorInfo = ex.Message;
                 return null;
-            } catch (System.Threading.Tasks.TaskCanceledException ex) {
+            }
+            catch (System.Threading.Tasks.TaskCanceledException ex)
+            {
                 errorInfo = ex.Message;
                 return null;
-            } finally {
+            }
+            finally
+            {
                 req.Dispose();
             }
 
             ChatResponse oinfo;
 
-            try {
+            try
+            {
                 oinfo = JsonSerializer.Deserialize<ChatResponse>(retString, CommonFunction.JsonOP);
-            } catch {
+            }
+            catch
+            {
                 errorInfo = "JsonConvert Error";
                 return null;
             }
 
-            try {
+            try
+            {
                 return oinfo.choices[0].message.content;
-            } catch {
-                try {
+            }
+            catch
+            {
+                try
+                {
                     var err = JsonSerializer.Deserialize<ChatResErr>(retString, CommonFunction.JsonOP);
                     errorInfo = err.error.message;
                     return null;
-                } catch {
+                }
+                catch
+                {
                     errorInfo = "Unknown error";
                     return null;
                 }
             }
         }
 
-        public void TranslatorInit(string param1, string param2) {
+        public void TranslatorInit(string param1, string param2)
+        {
             apiKey = param1;
             apiUrl = param2;
         }
     }
 
 #pragma warning disable 0649
-    public struct ChatResponse {
+    public struct ChatResponse
+    {
         public string id;
         public string _object;
         public int created;
@@ -85,28 +108,33 @@ namespace TranslatorLibrary {
         public ChatChoice[] choices;
     }
 
-    public struct ChatUsage {
+    public struct ChatUsage
+    {
         public int prompt_tokens;
         public int completion_tokens;
         public int total_tokens;
     }
 
-    public struct ChatChoice {
+    public struct ChatChoice
+    {
         public ChatMessage message;
         public string finish_reason;
         public int index;
     }
 
-    public struct ChatMessage {
+    public struct ChatMessage
+    {
         public string role;
         public string content;
     }
 
-    public struct ChatResErr {
+    public struct ChatResErr
+    {
         public ChatError error;
     }
 
-    public struct ChatError {
+    public struct ChatError
+    {
         public string message;
         public string type;
         public object param;

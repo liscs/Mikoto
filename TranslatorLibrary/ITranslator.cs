@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
 
-namespace TranslatorLibrary {
-    public interface ITranslator {
+namespace TranslatorLibrary
+{
+    public interface ITranslator
+    {
         /// <summary>
         /// 翻译API初始化
         /// </summary>

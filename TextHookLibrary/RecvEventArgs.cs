@@ -1,10 +1,12 @@
 ﻿using System;
 
-namespace TextHookLibrary {
+namespace TextHookLibrary
+{
     /// <summary>
     /// TextHook数据结构体
     /// </summary>
-    public class TextHookData {
+    public class TextHookData
+    {
         /// <summary>
         /// 游戏进程ID
         /// </summary>
@@ -71,14 +73,16 @@ namespace TextHookLibrary {
     */
     public delegate void SolvedDataRecvEventHandler(object sender, SolvedDataRecvEventArgs e);
 
-    public class HookSelectRecvEventArgs : EventArgs {
+    public class HookSelectRecvEventArgs : EventArgs
+    {
         //方法序号（仅在HookFunSelectDataRecvEventHandler和HookFunReSelectDataRecvEventHandler事件中有效）
         //这个序号可以直接用于ListView
         public int Index { get; set; }
         public TextHookData Data { get; set; }
     }
 
-    public class SolvedDataRecvEventArgs : EventArgs {
+    public class SolvedDataRecvEventArgs : EventArgs
+    {
         public TextHookData Data { get; set; }
     }
 }

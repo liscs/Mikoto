@@ -3,12 +3,15 @@ using System.Drawing;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 
-namespace KeyboardMouseHookLibrary {
-    public class FindWindowInfo {
+namespace KeyboardMouseHookLibrary
+{
+    public class FindWindowInfo
+    {
         /// <summary>
         /// 获取指定坐标处窗口的句柄
         /// </summary>
-        public static IntPtr GetWindowHWND(Point point) {
+        public static IntPtr GetWindowHWND(Point point)
+        {
             return PInvoke.WindowFromPoint(point);
         }
 
@@ -17,9 +20,11 @@ namespace KeyboardMouseHookLibrary {
         /// </summary>
         /// <param name="hwnd"></param>
         /// <returns></returns>
-        public static unsafe string GetWindowName(IntPtr hwnd) {
+        public static unsafe string GetWindowName(IntPtr hwnd)
+        {
             Span<char> name = stackalloc char[PInvoke.GetWindowTextLength((HWND)hwnd) + 1];
-            fixed (char* pName = name) {
+            fixed (char* pName = name)
+            {
                 PInvoke.GetWindowText((HWND)hwnd, pName, name.Length);
             }
             return name.ToString();
@@ -30,9 +35,11 @@ namespace KeyboardMouseHookLibrary {
         /// </summary>
         /// <param name="hwnd"></param>
         /// <returns></returns>
-        public static unsafe string GetWindowClassName(IntPtr hwnd) {
+        public static unsafe string GetWindowClassName(IntPtr hwnd)
+        {
             Span<char> name = stackalloc char[256];
-            fixed (char* pName = name) {
+            fixed (char* pName = name)
+            {
                 name = name.Slice(0, PInvoke.GetClassName((HWND)hwnd, pName, 256) + 1);
             }
             return name.ToString();
@@ -43,7 +50,8 @@ namespace KeyboardMouseHookLibrary {
         /// </summary>
         /// <param name="hwnd"></param>
         /// <returns></returns>
-        public static unsafe uint GetProcessIDByHWND(IntPtr hWnd) {
+        public static unsafe uint GetProcessIDByHWND(IntPtr hWnd)
+        {
             uint result;
             PInvoke.GetWindowThreadProcessId((HWND)hWnd, &result);
             return result;

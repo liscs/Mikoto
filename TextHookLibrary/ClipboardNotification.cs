@@ -3,20 +3,25 @@ using System.Windows.Forms;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 
-namespace TextHookLibrary {
-    public class ClipboardNotification {
+namespace TextHookLibrary
+{
+    public class ClipboardNotification
+    {
         HWND winHandle;
         HWND ClipboardViewerNext;
 
-        public ClipboardNotification(IntPtr winH) {
+        public ClipboardNotification(IntPtr winH)
+        {
             winHandle = (HWND)winH;
         }
 
-        public void RegisterClipboardViewer() {
+        public void RegisterClipboardViewer()
+        {
             ClipboardViewerNext = PInvoke.SetClipboardViewer(winHandle);
         }
 
-        public void UnregisterClipboardViewer() {
+        public void UnregisterClipboardViewer()
+        {
             PInvoke.ChangeClipboardChain(winHandle, ClipboardViewerNext);
         }
     }
@@ -31,36 +36,45 @@ namespace TextHookLibrary {
     /// <summary>
     /// 使用一个隐藏窗口来接受窗口消息,对外就是剪贴板监视类
     /// </summary>
-    public class ClipboardMonitor : Form {
+    public class ClipboardMonitor : Form
+    {
         public event ClipboardUpdateEventHandler onClipboardUpdate;
         private IntPtr hWnd;
         public ClipboardNotification cn;
 
-        public ClipboardMonitor(ClipboardUpdateEventHandler onClipboardUpdate) {
+        public ClipboardMonitor(ClipboardUpdateEventHandler onClipboardUpdate)
+        {
             this.onClipboardUpdate = onClipboardUpdate;
             this.hWnd = this.Handle;
             cn = new ClipboardNotification(hWnd);
             cn.RegisterClipboardViewer();
         }
 
-        ~ClipboardMonitor() {
+        ~ClipboardMonitor()
+        {
             cn.UnregisterClipboardViewer();
         }
 
-        protected override void WndProc(ref Message m) {
-            switch ((int)m.Msg) {
+        protected override void WndProc(ref Message m)
+        {
+            switch ((int)m.Msg)
+            {
                 case 0x308: //WM_DRAWCLIPBOARD
                     {
                         IDataObject iData = Clipboard.GetDataObject();
-                        if (iData != null) {
+                        if (iData != null)
+                        {
                             string str = (string)iData.GetData(DataFormats.UnicodeText);
                             this.onClipboardUpdate(str);
-                        } else {
+                        }
+                        else
+                        {
                             this.onClipboardUpdate("剪贴板更新失败 ClipBoard Update Failed");
                         }
                         break;
                     }
-                default: {
+                default:
+                    {
                         base.WndProc(ref m);
                         break;
                     }

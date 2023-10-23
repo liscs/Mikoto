@@ -7,51 +7,66 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace MisakaTranslator_WPF.GuidePages.OCR {
+namespace MisakaTranslator_WPF.GuidePages.OCR
+{
     /// <summary>
     /// ChooseOCRAreaPage.xaml 的交互逻辑
     /// </summary>
-    public partial class ChooseOCRAreaPage : Page {
+    public partial class ChooseOCRAreaPage : Page
+    {
         bool isAllWin;
         IntPtr SelectedHwnd;
         System.Drawing.Rectangle OCRArea;
         GlobalHook hook;
         bool IsChoosingWin;
 
-        public ChooseOCRAreaPage() {
+        public ChooseOCRAreaPage()
+        {
             InitializeComponent();
 
             Common.ocr = OCRCommon.OCRAuto(Common.appSettings.OCRsource);
 
             //初始化钩子对象
-            if (hook == null) {
+            if (hook == null)
+            {
                 hook = new GlobalHook();
                 hook.OnMouseActivity += new System.Windows.Forms.MouseEventHandler(Hook_OnMouseActivity);
             }
 
         }
 
-        private void AllWinCheckBox_Click(object sender, RoutedEventArgs e) {
-            if ((bool)AllWinCheckBox.IsChecked) {
+        private void AllWinCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if ((bool)AllWinCheckBox.IsChecked)
+            {
                 ChooseWinBtn.Visibility = Visibility.Hidden;
                 WinNameTag.Visibility = Visibility.Hidden;
-            } else {
+            }
+            else
+            {
                 ChooseWinBtn.Visibility = Visibility.Visible;
                 WinNameTag.Visibility = Visibility.Visible;
             }
             isAllWin = (bool)AllWinCheckBox.IsChecked;
         }
 
-        private void ChooseWinBtn_Click(object sender, RoutedEventArgs e) {
+        private void ChooseWinBtn_Click(object sender, RoutedEventArgs e)
+        {
 
-            if (IsChoosingWin == false) {
+            if (IsChoosingWin == false)
+            {
                 bool r = hook.Start(Process.GetCurrentProcess().MainModule.ModuleName);
-                if (r) {
+                if (r)
+                {
                     IsChoosingWin = true;
-                } else {
+                }
+                else
+                {
                     Growl.Error(Application.Current.Resources["Hook_Error_Hint"].ToString());
                 }
-            } else if (IsChoosingWin == true) {
+            }
+            else if (IsChoosingWin == true)
+            {
                 hook.Stop();
                 IsChoosingWin = false;
             }
@@ -60,14 +75,17 @@ namespace MisakaTranslator_WPF.GuidePages.OCR {
         /// <summary>
         /// 鼠标点击事件
         /// </summary>
-        void Hook_OnMouseActivity(object sender, System.Windows.Forms.MouseEventArgs e) {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left) {
+        void Hook_OnMouseActivity(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
                 SelectedHwnd = FindWindowInfo.GetWindowHWND(new System.Drawing.Point(e.X, e.Y));
                 string gameName = FindWindowInfo.GetWindowName(SelectedHwnd);
                 uint pid = FindWindowInfo.GetProcessIDByHWND(SelectedHwnd);
                 string className = FindWindowInfo.GetWindowClassName(SelectedHwnd);
 
-                if (Process.GetCurrentProcess().Id != pid) {
+                if (Process.GetCurrentProcess().Id != pid)
+                {
                     WinNameTag.Text = $"[实时] {gameName} - {pid} - {className}";
                 }
                 hook.Stop();
@@ -75,7 +93,8 @@ namespace MisakaTranslator_WPF.GuidePages.OCR {
             }
         }
 
-        private void RenewAreaBtn_Click(object sender, RoutedEventArgs e) {
+        private void RenewAreaBtn_Click(object sender, RoutedEventArgs e)
+        {
             OCRArea = ScreenCaptureWindow.OCRArea;
             Common.ocr.SetOCRArea(SelectedHwnd, OCRArea, isAllWin);
             OCRAreaPicBox.Source = ImageProcFunc.ImageToBitmapImage(
@@ -84,16 +103,21 @@ namespace MisakaTranslator_WPF.GuidePages.OCR {
             GC.Collect();
         }
 
-        private void ChooseAreaBtn_Click(object sender, RoutedEventArgs e) {
-            if (!isAllWin && SelectedHwnd == IntPtr.Zero) {
+        private void ChooseAreaBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isAllWin && SelectedHwnd == IntPtr.Zero)
+            {
                 HandyControl.Controls.Growl.Error(Application.Current.Resources["ChooseOCRAreaPage_NextErrorHint"].ToString());
                 return;
             }
             BitmapImage img;
 
-            if (isAllWin) {
+            if (isAllWin)
+            {
                 img = ImageProcFunc.ImageToBitmapImage(ScreenCapture.GetAllWindow());
-            } else {
+            }
+            else
+            {
                 img = ImageProcFunc.ImageToBitmapImage(ScreenCapture.GetWindowCapture(SelectedHwnd));
             }
 
@@ -109,7 +133,8 @@ namespace MisakaTranslator_WPF.GuidePages.OCR {
             ConfirmBtn.IsEnabled = true;
         }
 
-        private void ConfirmBtn_Click(object sender, RoutedEventArgs e) {
+        private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
+        {
             Common.isAllWindowCap = isAllWin;
             Common.OCRWinHwnd = SelectedHwnd;
             Common.ocr.SetOCRArea(SelectedHwnd, OCRArea, isAllWin);

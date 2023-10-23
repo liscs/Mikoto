@@ -1,29 +1,31 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Interop;
-using System.Windows.Media;
 using Config.Net;
 using HandyControl.Controls;
 using KeyboardMouseHookLibrary;
 using OCRLibrary;
 using SQLHelperLibrary;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Interop;
+using System.Windows.Media;
 using TextHookLibrary;
 
-namespace MisakaTranslator_WPF {
-    public partial class MainWindow {
+namespace MisakaTranslator_WPF
+{
+    public partial class MainWindow
+    {
         private List<GameInfo> gameInfoList;
         private int gid; //当前选中的顺序，并非游戏ID
         private IntPtr hwnd;
 
         public static MainWindow Instance { get; set; }
 
-        public MainWindow() {
+        public MainWindow()
+        {
             Instance = this;
             Common.mainWin = this;
 
@@ -37,11 +39,14 @@ namespace MisakaTranslator_WPF {
             this.SourceInitialized += new EventHandler(MainWindow_SourceInitialized);
         }
 
-        private static void InitializeLanguage() {
+        private static void InitializeLanguage()
+        {
             var appResource = Application.Current.Resources.MergedDictionaries;
             Common.appSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\settings\\settings.ini").Build();
-            foreach (var item in appResource) {
-                if (item.Source.ToString().Contains("lang") && item.Source.ToString() != $@"lang/{Common.appSettings.AppLanguage}.xaml") {
+            foreach (var item in appResource)
+            {
+                if (item.Source.ToString().Contains("lang") && item.Source.ToString() != $@"lang/{Common.appSettings.AppLanguage}.xaml")
+                {
                     appResource.Remove(item);
                     break;
                 }
@@ -49,11 +54,13 @@ namespace MisakaTranslator_WPF {
         }
 
         //按下快捷键时被调用的方法
-        public void CallBack() {
+        public void CallBack()
+        {
             Common.GlobalOCR();
         }
 
-        private void Initialize(IAppSettings settings) {
+        private void Initialize(IAppSettings settings)
+        {
             this.Resources["Foreground"] = (SolidColorBrush)(new BrushConverter().ConvertFrom(settings.ForegroundHex));
             gameInfoList = GameLibraryHelper.GetAllGameLibrary();
             Common.repairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Environment.CurrentDirectory + "\\settings\\RepairSettings.ini").Build();
@@ -66,25 +73,30 @@ namespace MisakaTranslator_WPF {
         /// <summary>
         /// 游戏库瀑布流初始化
         /// </summary>
-        private void GameLibraryPanel_Init() {
+        private void GameLibraryPanel_Init()
+        {
             Random random = new Random();
             var bushLst = new List<SolidColorBrush>
                 {
-                    System.Windows.Media.Brushes.CornflowerBlue,
-                    System.Windows.Media.Brushes.IndianRed,
-                    System.Windows.Media.Brushes.Orange,
-                    System.Windows.Media.Brushes.ForestGreen
+                    Brushes.CornflowerBlue,
+                    Brushes.IndianRed,
+                    Brushes.Orange,
+                    Brushes.ForestGreen
                 };
-            if (gameInfoList != null) {
-                for (var i = 0; i < gameInfoList.Count; i++) {
-                    var tb = new TextBlock() {
+            if (gameInfoList != null)
+            {
+                for (var i = 0; i < gameInfoList.Count; i++)
+                {
+                    var tb = new TextBlock()
+                    {
                         Text = gameInfoList[i].GameName,
-                        Foreground = System.Windows.Media.Brushes.White,
+                        Foreground = Brushes.White,
                         VerticalAlignment = VerticalAlignment.Bottom,
                         HorizontalAlignment = HorizontalAlignment.Left,
                         Margin = new Thickness(3)
                     };
-                    var ico = new System.Windows.Controls.Image() {
+                    var ico = new Image()
+                    {
                         Source = ImageProcFunc.ImageToBitmapImage(ImageProcFunc.GetAppIcon(gameInfoList[i].FilePath)),
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Center,
@@ -94,7 +106,8 @@ namespace MisakaTranslator_WPF {
                     var gd = new Grid();
                     gd.Children.Add(ico);
                     gd.Children.Add(tb);
-                    var back = new Border() {
+                    var back = new Border()
+                    {
                         Name = "game" + i,
                         Width = 150,
                         Child = gd,
@@ -108,16 +121,18 @@ namespace MisakaTranslator_WPF {
                     GameLibraryPanel.Children.Add(back);
                 }
             }
-            var textBlock = new TextBlock() {
+            var textBlock = new TextBlock()
+            {
                 Text = Application.Current.Resources["MainWindow_ScrollViewer_AddNewGame"].ToString(),
-                Foreground = System.Windows.Media.Brushes.White,
+                Foreground = Brushes.White,
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(3)
             };
             var grid = new Grid();
             grid.Children.Add(textBlock);
-            var border = new Border() {
+            var border = new Border()
+            {
                 Name = "AddNewName",
                 Width = 150,
                 Child = grid,
@@ -131,16 +146,19 @@ namespace MisakaTranslator_WPF {
             GameLibraryPanel.Children.Add(border);
         }
 
-        private void Border_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+        private void Border_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
             AddNewGameDrawer.IsOpen = true;
         }
 
-        private void MainWindow_SourceInitialized(object sender, EventArgs e) {
+        private void MainWindow_SourceInitialized(object sender, EventArgs e)
+        {
             hwnd = new WindowInteropHelper(this).Handle;
             HwndSource.FromHwnd(hwnd)?.AddHook(WndProc);
             //注册热键
             Common.GlobalOCRHotKey = new GlobalHotKey();
-            if (Common.GlobalOCRHotKey.RegisterHotKeyByStr(Common.appSettings.GlobalOCRHotkey, hwnd, CallBack) == false) {
+            if (Common.GlobalOCRHotKey.RegisterHotKeyByStr(Common.appSettings.GlobalOCRHotkey, hwnd, CallBack) == false)
+            {
                 Growl.ErrorGlobal(Application.Current.Resources["MainWindow_GlobalOCRError_Hint"].ToString());
             }
             //解决UAC选择No后窗口会被Explorer覆盖 并通过TopMost调整窗口Z Order
@@ -149,55 +167,68 @@ namespace MisakaTranslator_WPF {
             base.Topmost = false;
         }
 
-        private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) {
+        private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
             Common.GlobalOCRHotKey.ProcessHotKey(System.Windows.Forms.Message.Create(hwnd, msg, wParam, lParam));
             return IntPtr.Zero;
         }
 
         private WeakReference<SettingsWindow> _settingsWindow;
 
-        private void SettingsBtn_Click(object sender, RoutedEventArgs e) {
-            if (_settingsWindow != null && _settingsWindow.TryGetTarget(out var sw)) {
+        private void SettingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (_settingsWindow != null && _settingsWindow.TryGetTarget(out var sw))
+            {
                 sw.Show();
                 sw.WindowState = WindowState.Normal;
                 sw.Activate();
-            } else {
+            }
+            else
+            {
                 sw = new SettingsWindow();
                 _settingsWindow = new WeakReference<SettingsWindow>(sw);
                 sw.Show();
             }
         }
 
-        private void HookGuideBtn_Click(object sender, RoutedEventArgs e) {
+        private void HookGuideBtn_Click(object sender, RoutedEventArgs e)
+        {
             var ggw = new GameGuideWindow(1);
             ggw.Show();
         }
 
-        private void OCRGuideBtn_Click(object sender, RoutedEventArgs e) {
+        private void OCRGuideBtn_Click(object sender, RoutedEventArgs e)
+        {
             var ggw = new GameGuideWindow(2);
             ggw.Show();
         }
 
-        private static void Border_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {
+        private static void Border_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
             var b = (Border)sender;
             b.BorderThickness = new Thickness(2);
         }
 
-        private static void Border_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e) {
+        private static void Border_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
             var b = (Border)sender;
             b.BorderThickness = new Thickness(0);
         }
 
-        private void Back_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+        private void Back_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
             var b = (Border)sender;
             var str = b.Name;
             var temp = str.Remove(0, 4);
             gid = int.Parse(temp);
 
             GameNameTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_GameName"].ToString() + gameInfoList[gid].GameName;
-            if (gameInfoList[gid].TransMode == 1) {
+            if (gameInfoList[gid].TransMode == 1)
+            {
                 TransModeTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_TransMode"].ToString() + "Hook";
-            } else {
+            }
+            else
+            {
                 TransModeTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_TransMode"].ToString() + "OCR";
             }
 
@@ -205,17 +236,21 @@ namespace MisakaTranslator_WPF {
             e.Handled = true;
         }
 
-        private async Task StartTranslateByGid(int gid) {
+        private async Task StartTranslateByGid(int gid)
+        {
             var pidList = new List<Process>();
 
             foreach (var (pid, path) in ProcessHelper.GetProcessesData(gameInfoList[gid].Isx64))
                 if (path == gameInfoList[gid].FilePath)
                     pidList.Add(Process.GetProcessById(pid));
 
-            if (pidList.Count == 0) {
+            if (pidList.Count == 0)
+            {
                 HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
                 return;
-            } else {
+            }
+            else
+            {
                 var pid = pidList[0].Id;
                 pidList.Clear();
                 pidList = ProcessHelper.FindSameNameProcess(pid);
@@ -227,7 +262,8 @@ namespace MisakaTranslator_WPF {
             Common.UsingSrcLang = gameInfoList[gid].SrcLang;
             Common.UsingRepairFunc = gameInfoList[gid].RepairFunc;
 
-            switch (Common.UsingRepairFunc) {
+            switch (Common.UsingRepairFunc)
+            {
                 case "RepairFun_RemoveSingleWordRepeat":
                     Common.repairSettings.SingleWordRepeatTimes = int.Parse(gameInfoList[gid].RepairParamA);
                     break;
@@ -246,37 +282,30 @@ namespace MisakaTranslator_WPF {
 
             Common.textHooker = pidList.Count == 1 ? new TextHookHandle(pidList[0].Id) : new TextHookHandle(pidList);
 
-            if (!Common.textHooker.Init(gameInfoList[gid].Isx64 ? Common.appSettings.Textractor_Path64 : Common.appSettings.Textractor_Path32)) {
+            if (!Common.textHooker.Init(gameInfoList[gid].Isx64 ? Common.appSettings.Textractor_Path64 : Common.appSettings.Textractor_Path32))
+            {
                 HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
                 return;
             }
             Common.textHooker.HookCodeList.Add(gameInfoList[gid].HookCode);
             Common.textHooker.HookCode_Custom = gameInfoList[gid].HookCodeCustom;
 
-            //if (gameInfoList[gid].IsMultiHook) {
-            //    var ggw = new GameGuideWindow(3);
-            //    ggw.Show();
-            //}
-            //else {
-            //无重复码。直接进游戏
             Common.textHooker.MisakaCodeList.Add(gameInfoList[gid].MisakaHookCode);
-            //2020-06-08 大部分情况无重复码的游戏不会hook到很多，不进行去多余hook
-            //Common.textHooker.DetachUnrelatedHookWhenDataRecv = Convert.ToBoolean(Common.appSettings.AutoDetach);
             await Common.textHooker.StartHook(Convert.ToBoolean(Common.appSettings.AutoHook));
 
             await Task.Delay(3000);
             Common.textHooker.Auto_AddHookToGame();
 
-            var tw = new TranslateWindow();
-            tw.Show();
-            //}
+            new TranslateWindow().Show();
         }
 
-        private void CloseDrawerBtn_Click(object sender, RoutedEventArgs e) {
+        private void CloseDrawerBtn_Click(object sender, RoutedEventArgs e)
+        {
             GameInfoDrawer.IsOpen = false;
         }
 
-        private async void StartBtn_Click(object sender, RoutedEventArgs e) {
+        private async void StartBtn_Click(object sender, RoutedEventArgs e)
+        {
             var res = Process.Start(gameInfoList[gid].FilePath);
             res?.WaitForInputIdle(5000);
             GameInfoDrawer.IsOpen = false;
@@ -287,8 +316,10 @@ namespace MisakaTranslator_WPF {
         /// <summary>
         /// 删除游戏按钮事件
         /// </summary>
-        private void DeleteGameBtn_Click(object sender, RoutedEventArgs e) {
-            if (HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_Drawer_DeleteGameConfirmBox"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) {
+        private void DeleteGameBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_Drawer_DeleteGameConfirmBox"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
                 GameLibraryHelper.DeleteGameByID(gameInfoList[gid].GameID);
                 var b = GameLibraryPanel.FindName($"game{gid}") as Border;
                 GameLibraryPanel.Children.Remove(b);
@@ -297,14 +328,16 @@ namespace MisakaTranslator_WPF {
 
         }
 
-        private void UpdateNameBtn_Click(object sender, RoutedEventArgs e) {
+        private void UpdateNameBtn_Click(object sender, RoutedEventArgs e)
+        {
             Dialog.Show(new GameNameDialog(gameInfoList, gid));
         }
 
         /*
          * 插眼
          */
-        private async void LEStartBtn_Click(object sender, RoutedEventArgs e) {
+        private async void LEStartBtn_Click(object sender, RoutedEventArgs e)
+        {
             var filepath = gameInfoList[gid].FilePath;
             var p = new ProcessStartInfo();
             var lePath = Common.appSettings.LEPath;
@@ -320,9 +353,11 @@ namespace MisakaTranslator_WPF {
             await StartTranslateByGid(gid);
         }
 
-        private void BlurWindow_Closing(object sender, CancelEventArgs e) {
+        private void BlurWindow_Closing(object sender, CancelEventArgs e)
+        {
             e.Cancel = true;
-            switch (Common.appSettings.OnClickCloseButton) {
+            switch (Common.appSettings.OnClickCloseButton)
+            {
                 case "Minimization":
                     Visibility = Visibility.Collapsed;
                     break;
@@ -334,8 +369,9 @@ namespace MisakaTranslator_WPF {
             }
         }
 
-        public void CloseNotifyIcon() {
-            Application.Current.Dispatcher.Invoke(() => NotifyIconContextContent.Dispose());
+        public void CloseNotifyIcon()
+        {
+            Application.Current.Dispatcher.Invoke(NotifyIconContextContent.Dispose);
         }
 
         private void ButtonPush_OnClick(object sender, RoutedEventArgs e) => NotifyIconContextContent.CloseContextControl();
@@ -345,9 +381,12 @@ namespace MisakaTranslator_WPF {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Language_MenuItem_Click(object sender, RoutedEventArgs e) {
-            if (sender is MenuItem menuItem) {
-                switch (menuItem.Tag) {
+        private void Language_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem menuItem)
+            {
+                switch (menuItem.Tag)
+                {
                     case "zh-cn":
                         Common.appSettings.AppLanguage = "zh-CN";
                         HandyControl.Controls.MessageBox.Show("语言配置已修改！重启软件后生效！", "提示");
@@ -360,11 +399,15 @@ namespace MisakaTranslator_WPF {
             }
         }
 
-        private async void AutoStart_BtnClick(object sender, RoutedEventArgs e) {
+        private async void AutoStart_BtnClick(object sender, RoutedEventArgs e)
+        {
             var res = GetGameListHasProcessGame_PID_ID();
-            if (res == -1) {
+            if (res == -1)
+            {
                 Growl.ErrorGlobal(Application.Current.Resources["MainWindow_AutoStartError_Hint"].ToString());
-            } else {
+            }
+            else
+            {
                 await StartTranslateByGid(res);
             }
         }
@@ -373,14 +416,15 @@ namespace MisakaTranslator_WPF {
         /// 寻找任何正在运行中的之前已保存过的游戏
         /// </summary>
         /// <returns>数组索引（非GameID），-1代表未找到</returns>
-        private int GetGameListHasProcessGame_PID_ID() {
-            var ret = new List<int>();
+        private int GetGameListHasProcessGame_PID_ID()
+        {
             gameInfoList = GameLibraryHelper.GetAllGameLibrary();
             if (gameInfoList == null)
                 return -1;
 
             foreach (var (_, path) in ProcessHelper.GetProcessesData(true))
-                for (int j = 0; j < gameInfoList.Count; j++) {
+                for (int j = 0; j < gameInfoList.Count; j++)
+                {
                     if (path == gameInfoList[j].FilePath)
                         return j;
                 }
@@ -388,7 +432,8 @@ namespace MisakaTranslator_WPF {
             return -1;
         }
 
-        private void ClipboardGuideBtn_Click(object sender, RoutedEventArgs e) {
+        private void ClipboardGuideBtn_Click(object sender, RoutedEventArgs e)
+        {
             Common.textHooker = new TextHookHandle();
             Common.GameID = 0;
             Common.transMode = 1;
@@ -403,19 +448,23 @@ namespace MisakaTranslator_WPF {
         }
 
 
-        private void BlurWindow_ContentRendered(object sender, EventArgs e) {
+        private void BlurWindow_ContentRendered(object sender, EventArgs e)
+        {
             List<string> res = Common.CheckUpdate();
-            if (res != null) {
+            if (res != null)
+            {
                 MessageBoxResult dr = HandyControl.Controls.MessageBox.Show(res[0] + "\n" + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);
 
-                if (dr == MessageBoxResult.OK) {
+                if (dr == MessageBoxResult.OK)
+                {
                     System.Diagnostics.Process.Start(res[1]);
                 }
 
             }
         }
 
-        private void ComicTransBtn_Click(object sender, RoutedEventArgs e) {
+        private void ComicTransBtn_Click(object sender, RoutedEventArgs e)
+        {
             var ctmw = new ComicTranslator.ComicTransMainWindow();
             ctmw.Show();
         }
@@ -423,8 +472,10 @@ namespace MisakaTranslator_WPF {
         /// <summary>
         /// 允许关闭全局通知。实际做法是新建了一个无关联的panel，那些通知本质上还是会生成。
         /// </summary>
-        void GrowlDisableSwitch() {
-            if (!Common.appSettings.GrowlEnabled) {
+        void GrowlDisableSwitch()
+        {
+            if (!Common.appSettings.GrowlEnabled)
+            {
                 Growl.InfoGlobal("将不会显示全局通知。"); // 必须先显示一句否则GrowlWindow是null
                 var gw = typeof(Growl).GetField("GrowlWindow", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic).GetValue(null);
                 var panel = gw.GetType().GetProperty("GrowlPanel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
@@ -435,7 +486,8 @@ namespace MisakaTranslator_WPF {
             }
         }
 
-        private void LanguageBtn_Click(object sender, RoutedEventArgs e) {
+        private void LanguageBtn_Click(object sender, RoutedEventArgs e)
+        {
             LanguageContextMenu.IsOpen = true;
         }
     }

@@ -3,18 +3,24 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace ArtificialTransHelperLibrary {
-    public class ArtificialTransHelper {
+namespace ArtificialTransHelperLibrary
+{
+    public class ArtificialTransHelper
+    {
         public SQLHelper sqlite;
 
-        public ArtificialTransHelper(string gameName) {
+        public ArtificialTransHelper(string gameName)
+        {
             if (!Directory.Exists(Environment.CurrentDirectory + "\\ArtificialTranslation"))
                 Directory.CreateDirectory(Environment.CurrentDirectory + "\\ArtificialTranslation");
 
 
-            if (File.Exists(Environment.CurrentDirectory + "\\ArtificialTranslation\\MisakaAT_" + gameName + ".sqlite") == false) {
+            if (File.Exists(Environment.CurrentDirectory + "\\ArtificialTranslation\\MisakaAT_" + gameName + ".sqlite") == false)
+            {
                 CreateNewNounTransDB(gameName);
-            } else {
+            }
+            else
+            {
                 sqlite = new SQLHelper(Environment.CurrentDirectory + "\\ArtificialTranslation\\MisakaAT_" + gameName + ".sqlite");
             }
         }
@@ -25,8 +31,10 @@ namespace ArtificialTransHelperLibrary {
         /// <param name="source"></param>
         /// <param name="Trans"></param>
         /// <returns></returns>
-        public bool AddTrans(string source, string Trans) {
-            if (source == null || source == "" || Trans == null) {
+        public bool AddTrans(string source, string Trans)
+        {
+            if (source == null || source == "" || Trans == null)
+            {
                 //空条目不添加，且返回假
                 return false;
             }
@@ -47,19 +55,24 @@ namespace ArtificialTransHelperLibrary {
 
             List<List<string>> ret = sqlite.ExecuteReader(sql, 4);
 
-            if (ret == null) {
+            if (ret == null)
+            {
                 return false;
             }
 
-            if (ret.Count > 0) {
+            if (ret.Count > 0)
+            {
                 return true;
             }
 
             sql =
                 $"INSERT INTO artificialtrans VALUES(NULL,'{source}','{Trans}',NULL);";
-            if (sqlite.ExecuteSql(sql) > 0) {
+            if (sqlite.ExecuteSql(sql) > 0)
+            {
                 return true;
-            } else {
+            }
+            else
+            {
                 return false;
             }
         }
@@ -70,12 +83,16 @@ namespace ArtificialTransHelperLibrary {
         /// <param name="source"></param>
         /// <param name="Trans"></param>
         /// <returns></returns>
-        public bool UpdateTrans(string source, string Trans) {
+        public bool UpdateTrans(string source, string Trans)
+        {
             string sql =
                 $"UPDATE artificialtrans SET userTrans = '{Trans}' WHERE source = '{source}';";
-            if (sqlite.ExecuteSql(sql) > 0) {
+            if (sqlite.ExecuteSql(sql) > 0)
+            {
                 return true;
-            } else {
+            }
+            else
+            {
                 return false;
             }
         }
@@ -84,7 +101,8 @@ namespace ArtificialTransHelperLibrary {
         /// 新建一个人工翻译数据库（一个游戏一个库）
         /// </summary>
         /// <param name="gameName"></param>
-        private void CreateNewNounTransDB(string gameName) {
+        private void CreateNewNounTransDB(string gameName)
+        {
             sqlite = new SQLHelper(Environment.CurrentDirectory + "\\ArtificialTranslation\\MisakaAT_" + gameName + ".sqlite");
             sqlite.ExecuteSql("CREATE TABLE artificialtrans(id INTEGER PRIMARY KEY AUTOINCREMENT,source TEXT,machineTrans TEXT,userTrans TEXT);");
         }
@@ -92,8 +110,10 @@ namespace ArtificialTransHelperLibrary {
         /// <summary>
         /// 将数据库内容按格式导出到文件以供他人使用
         /// </summary>
-        public static bool ExportDBtoFile(string FilePath, string DBPath) {
-            try {
+        public static bool ExportDBtoFile(string FilePath, string DBPath)
+        {
+            try
+            {
                 SQLHelper sqliteDB = new SQLHelper(DBPath);
 
                 //让没有直接被定义的用户翻译等于机器翻译
@@ -104,7 +124,8 @@ namespace ArtificialTransHelperLibrary {
                 FileStream fs = new FileStream(FilePath, FileMode.Create);
                 StreamWriter sw = new StreamWriter(fs);
 
-                for (int i = 0; i < ret.Count; i++) {
+                for (int i = 0; i < ret.Count; i++)
+                {
                     sw.WriteLine("<j>");
                     sw.WriteLine(ret[i][1]);
                     sw.WriteLine("<c>");
@@ -114,7 +135,9 @@ namespace ArtificialTransHelperLibrary {
                 sw.Flush();
                 sw.Close();
                 fs.Close();
-            } catch (Exception) {
+            }
+            catch (Exception)
+            {
                 return false;
             }
 

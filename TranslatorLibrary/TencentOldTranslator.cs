@@ -1,23 +1,28 @@
-﻿using System.Text.Json;
-using System;
+﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace TranslatorLibrary {
-    public class TencentOldTranslator : ITranslator {
+namespace TranslatorLibrary
+{
+    public class TencentOldTranslator : ITranslator
+    {
 
         private string errorInfo;//错误信息
         public string SecretId;//腾讯旧版API SecretId
         public string SecretKey;//腾讯旧版API SecretKey
 
-        public string GetLastError() {
+        public string GetLastError()
+        {
             return errorInfo;
         }
 
-        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang) {
-            if (sourceText == "" || desLang == "" || srcLang == "") {
+        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        {
+            if (sourceText == "" || desLang == "" || srcLang == "")
+            {
                 errorInfo = "Param Missing";
                 return null;
             }
@@ -63,29 +68,38 @@ namespace TranslatorLibrary {
 
             string retString;
             var hc = CommonFunction.GetHttpClient();
-            try {
+            try
+            {
                 retString = await hc.GetStringAsync(url + req);
-            } catch (System.Net.Http.HttpRequestException ex) {
+            }
+            catch (System.Net.Http.HttpRequestException ex)
+            {
                 errorInfo = ex.Message;
                 return null;
-            } catch (TaskCanceledException ex) {
+            }
+            catch (TaskCanceledException ex)
+            {
                 errorInfo = ex.Message;
                 return null;
             }
 
             TencentOldTransOutInfo oinfo = JsonSerializer.Deserialize<TencentOldTransOutInfo>(retString, CommonFunction.JsonOP);
 
-            if (oinfo.Response.Error == null) {
+            if (oinfo.Response.Error == null)
+            {
                 //得到翻译结果
                 return oinfo.Response.TargetText;
-            } else {
+            }
+            else
+            {
                 errorInfo = "ErrorID:" + oinfo.Response.Error.Value.Code + " ErrorInfo:" + oinfo.Response.Error.Value.Message;
                 return null;
             }
 
         }
 
-        public void TranslatorInit(string param1, string param2) {
+        public void TranslatorInit(string param1, string param2)
+        {
             SecretId = param1;
             SecretKey = param2;
         }
@@ -95,7 +109,8 @@ namespace TranslatorLibrary {
         /// 腾讯旧版翻译API申请地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_allpyAPI() {
+        public static string GetUrl_allpyAPI()
+        {
             return "https://cloud.tencent.com/product/tmt";
         }
 
@@ -103,7 +118,8 @@ namespace TranslatorLibrary {
         /// 腾讯旧版翻译API额度查询地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_bill() {
+        public static string GetUrl_bill()
+        {
             return "https://console.cloud.tencent.com/tmt";
         }
 
@@ -111,17 +127,20 @@ namespace TranslatorLibrary {
         /// 腾讯旧版翻译API文档地址（错误代码）
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_Doc() {
+        public static string GetUrl_Doc()
+        {
             return "https://cloud.tencent.com/document/api/551/15619";
         }
     }
 
 #pragma warning disable 0649
-    struct TencentOldTransOutInfo {
+    struct TencentOldTransOutInfo
+    {
         public TencentOldTransResult Response;
     }
 
-    struct TencentOldTransResult {
+    struct TencentOldTransResult
+    {
         public string RequestId;
         public string TargetText;
         public string Source;
@@ -129,7 +148,8 @@ namespace TranslatorLibrary {
         public TencentOldTransOutError? Error;
     }
 
-    struct TencentOldTransOutError {
+    struct TencentOldTransOutError
+    {
         public string Code;
         public string Message;
     }

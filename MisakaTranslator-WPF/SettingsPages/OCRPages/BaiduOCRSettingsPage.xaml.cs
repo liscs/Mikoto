@@ -1,23 +1,28 @@
-﻿using System.Windows;
+﻿using OCRLibrary;
+using System.Windows;
 using System.Windows.Controls;
-using OCRLibrary;
 
-namespace MisakaTranslator_WPF.SettingsPages.OCRPages {
+namespace MisakaTranslator_WPF.SettingsPages.OCRPages
+{
     /// <summary>
     /// BaiduOCRPage.xaml 的交互逻辑
     /// </summary>
-    public partial class BaiduOCRPage : Page {
-        public BaiduOCRPage() {
+    public partial class BaiduOCRPage : Page
+    {
+        public BaiduOCRPage()
+        {
             InitializeComponent();
             APIKEYBox.Text = Common.appSettings.BDOCR_APIKEY;
             SecretKeyBox.Text = Common.appSettings.BDOCR_SecretKey;
         }
 
-        private void AuthTestBtn_Click(object sender, RoutedEventArgs e) {
+        private void AuthTestBtn_Click(object sender, RoutedEventArgs e)
+        {
             Common.appSettings.BDOCR_APIKEY = APIKEYBox.Text;
             Common.appSettings.BDOCR_SecretKey = SecretKeyBox.Text;
 
-            if (APIKEYBox.Text.Length == 17) {
+            if (APIKEYBox.Text.Length == 17)
+            {
                 HandyControl.Controls.Growl.Error($"百度智能云OCR {Application.Current.Resources["APITest_Error_Hint"]}\nDo not use fanyi.baidu.com endpoint.");
                 return;
             }
@@ -26,22 +31,28 @@ namespace MisakaTranslator_WPF.SettingsPages.OCRPages {
 
             bool ret = bgocr.OCR_Init(APIKEYBox.Text, SecretKeyBox.Text);
 
-            if (ret == true) {
+            if (ret == true)
+            {
                 HandyControl.Controls.Growl.Success($"百度智能云OCR {Application.Current.Resources["APITest_Success_Hint"]}");
-            } else {
+            }
+            else
+            {
                 HandyControl.Controls.Growl.Error($"百度智能云OCR {Application.Current.Resources["APITest_Error_Hint"]}\n{bgocr.GetLastError()}");
             }
         }
 
-        private void ApplyBtn_Click(object sender, RoutedEventArgs e) {
+        private void ApplyBtn_Click(object sender, RoutedEventArgs e)
+        {
             System.Diagnostics.Process.Start(BaiduGeneralOCR.GetUrl_allpyAPI());
         }
 
-        private void DocBtn_Click(object sender, RoutedEventArgs e) {
+        private void DocBtn_Click(object sender, RoutedEventArgs e)
+        {
             System.Diagnostics.Process.Start(BaiduGeneralOCR.GetUrl_Doc());
         }
 
-        private void BillBtn_Click(object sender, RoutedEventArgs e) {
+        private void BillBtn_Click(object sender, RoutedEventArgs e)
+        {
             System.Diagnostics.Process.Start(BaiduGeneralOCR.GetUrl_bill());
         }
     }

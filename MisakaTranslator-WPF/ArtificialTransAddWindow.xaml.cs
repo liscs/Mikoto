@@ -2,14 +2,17 @@
 using System;
 using System.Windows;
 
-namespace MisakaTranslator_WPF {
+namespace MisakaTranslator_WPF
+{
     /// <summary>
     /// ArtificialTransAddWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class ArtificialTransAddWindow : Window {
+    public partial class ArtificialTransAddWindow : Window
+    {
         private string secondTransRes;
 
-        public ArtificialTransAddWindow(string src, string trans, string secondTrans) {
+        public ArtificialTransAddWindow(string src, string trans, string secondTrans)
+        {
             InitializeComponent();
 
             srcText.Text = src;
@@ -20,22 +23,28 @@ namespace MisakaTranslator_WPF {
             this.Topmost = true;
         }
 
-        private void ConfirmBtn_Click(object sender, RoutedEventArgs e) {
+        private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
+        {
             ArtificialTransHelper ath = new ArtificialTransHelper(Convert.ToString(Common.GameID));
 
             bool res = ath.UpdateTrans(srcText.Text, transText.Text);
-            if (res) {
+            if (res)
+            {
                 HandyControl.Controls.Growl.InfoGlobal(Application.Current.Resources["ArtificialTransWin_Success_Hint"].ToString());
-            } else {
+            }
+            else
+            {
                 HandyControl.Controls.Growl.ErrorGlobal(Application.Current.Resources["ArtificialTransWin_Error_Hint"].ToString());
             }
         }
 
-        private void ResetBtn_Click(object sender, RoutedEventArgs e) {
+        private void ResetBtn_Click(object sender, RoutedEventArgs e)
+        {
             transText.Text = "";
         }
 
-        private void SecondTransBtn_Click(object sender, RoutedEventArgs e) {
+        private void SecondTransBtn_Click(object sender, RoutedEventArgs e)
+        {
             transText.Text = secondTransRes;
         }
     }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
 
-namespace TransOptimizationLibrary {
-    public class BeforeTransHandle {
+namespace TransOptimizationLibrary
+{
+    public class BeforeTransHandle
+    {
 
 
         /* 项目“TransOptimizationLibrary (netframework4.7.2)”的未合并的更改
@@ -23,7 +25,8 @@ namespace TransOptimizationLibrary {
 
 
 
-        public BeforeTransHandle(string gameName, string srcLang, string dstLang) {
+        public BeforeTransHandle(string gameName, string srcLang, string dstLang)
+        {
             if (!Directory.Exists(Environment.CurrentDirectory + "\\TransOptimization"))
                 Directory.CreateDirectory(Environment.CurrentDirectory + "\\TransOptimization");
 
@@ -35,8 +38,10 @@ namespace TransOptimizationLibrary {
         /// </summary>
         /// <param name="text">Hook或OCR得到的原句</param>
         /// <returns>处理后句子</returns>
-        public string AutoHandle(string text) {
-            if (text == null || text == "") {
+        public string AutoHandle(string text)
+        {
+            if (text == null || text == "")
+            {
                 return "";
             }
 
@@ -49,7 +54,8 @@ namespace TransOptimizationLibrary {
         /// 显示在结果中的对话人名 以 人名：对话 的形式展示
         /// </summary>
         /// <returns></returns>
-        public string GetPeopleChatName() {
+        public string GetPeopleChatName()
+        {
             return nto.PeopleChatName;
         }
     }

@@ -1,15 +1,19 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
 
-namespace TranslatorLibrary {
-    public class GoogleCNTranslator : ITranslator {
+namespace TranslatorLibrary
+{
+    public class GoogleCNTranslator : ITranslator
+    {
         private string errorInfo;//错误信息
 
-        public string GetLastError() {
+        public string GetLastError()
+        {
             return errorInfo;
         }
 
-        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang) {
+        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        {
             if (desLang == "zh")
                 desLang = "zh-cn";
             if (srcLang == "zh")
@@ -31,22 +35,28 @@ namespace TranslatorLibrary {
 
             var hc = CommonFunction.GetHttpClient();
 
-            try {
+            try
+            {
                 var ResultHtml = await hc.GetStringAsync(googleTransUrl);
 
                 dynamic TempResult = System.Text.Json.JsonSerializer.Deserialize<dynamic>(ResultHtml, CommonFunction.JsonOP);
 
                 string ResultText = "";
 
-                for (int i = 0; i < TempResult[0].GetArrayLength(); i++) {
+                for (int i = 0; i < TempResult[0].GetArrayLength(); i++)
+                {
                     ResultText += TempResult[0][i][0];
                 }
 
                 return ResultText;
-            } catch (System.Net.Http.HttpRequestException ex) {
+            }
+            catch (System.Net.Http.HttpRequestException ex)
+            {
                 errorInfo = ex.Message;
                 return null;
-            } catch (System.Threading.Tasks.TaskCanceledException ex) {
+            }
+            catch (System.Threading.Tasks.TaskCanceledException ex)
+            {
                 errorInfo = ex.Message;
                 return null;
             }

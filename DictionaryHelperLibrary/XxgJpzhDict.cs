@@ -3,19 +3,23 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace DictionaryHelperLibrary {
+namespace DictionaryHelperLibrary
+{
     /// <summary>
     /// 小学馆日中词典
     /// </summary>
-    public class XxgJpzhDict : IDict {
+    public class XxgJpzhDict : IDict
+    {
         private SQLHelper _sqlHelper;
         private string _errorInfo;
 
-        public string GetLastError() {
+        public string GetLastError()
+        {
             return _errorInfo;
         }
 
-        public string SearchInDict(string sourceWord) {
+        public string SearchInDict(string sourceWord)
+        {
             var lst = _sqlHelper.ExecuteReader($"SELECT explanation FROM xiaoxueguanrizhong WHERE word LIKE '%{sourceWord}%';", 1);
 
             if (lst != null) return lst.Aggregate(string.Empty, (current, t) => current + t[0] + "\n");
@@ -24,7 +28,8 @@ namespace DictionaryHelperLibrary {
 
         }
 
-        public void DictInit(string param1, string param2) {
+        public void DictInit(string param1, string param2)
+        {
             _sqlHelper = new SQLHelper(param1);
         }
 
@@ -33,8 +38,10 @@ namespace DictionaryHelperLibrary {
         /// </summary>
         /// <param name="src"></param>
         /// <returns></returns>
-        public static string RemoveHTML(string src) {
-            if (src == null) {
+        public static string RemoveHTML(string src)
+        {
+            if (src == null)
+            {
                 return null;
             }
 
