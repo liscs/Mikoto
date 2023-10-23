@@ -52,47 +52,36 @@ namespace TranslatorLibrary
                 request.Headers.Add("Ocp-Apim-Subscription-Key", secretKey);
                 // location required if you're using a multi-service or regional (not global) resource.
                 request.Headers.Add("Ocp-Apim-Subscription-Region", location);
-
-                // Send the request and get response.
-                HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
-                // Read response as a string.
-                string result = await response.Content.ReadAsStringAsync();
-                if (response.StatusCode == HttpStatusCode.OK)
+                try
                 {
-                    try
+                    HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
+                    string result = await response.Content.ReadAsStringAsync();
+                    if (response.StatusCode == HttpStatusCode.OK)
                     {
                         oinfo = System.Text.Json.JsonSerializer.Deserialize<List<AzureTransOutInfo>>(result, CommonFunction.JsonOP).ElementAt(0);
+                        if (oinfo.translations.Length == 0)
+                            return string.Empty;
+                        else if (oinfo.translations.Length == 1)
+                            return oinfo.translations[0].text;
+                        else
+                        {
+                            var sb2 = new StringBuilder();
+                            foreach (var entry in oinfo.translations)
+                                sb2.AppendLine(entry.text);
+                            return sb2.ToString();
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        errorInfo = ex.Message;
-                        return null;
-                    }
-                    if (oinfo.translations.Length == 0)
-                        return "";
-                    else if (oinfo.translations.Length == 1)
-                        return oinfo.translations[0].text;
                     else
-                    {
-                        var sb2 = new StringBuilder();
-                        foreach (var entry in oinfo.translations)
-                            sb2.AppendLine(entry.text);
-                        return sb2.ToString();
-                    }
-                }
-                else
-                {
-                    try
                     {
                         oinfo = System.Text.Json.JsonSerializer.Deserialize<AzureTransOutInfo>(result, CommonFunction.JsonOP);
                         errorInfo = $"ErrorCode: {oinfo.error.code}, Message: {oinfo.error.message}";
                         return null;
                     }
-                    catch (Exception ex)
-                    {
-                        errorInfo = ex.Message;
-                        return null;
-                    }
+                }
+                catch (Exception ex)
+                {
+                    errorInfo = ex.Message;
+                    return null;
                 }
             }
         }

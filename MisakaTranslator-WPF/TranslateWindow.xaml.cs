@@ -738,7 +738,7 @@ namespace MisakaTranslator_WPF
             {
                 if (Common.textHooker.Pause)
                 {
-                    PauseButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.Pause);
+                    PauseButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Pause);
                 }
                 else
                 {

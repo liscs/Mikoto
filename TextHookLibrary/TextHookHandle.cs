@@ -466,8 +466,8 @@ namespace TextHookLibrary
             }
             else
             {
-                locA = locA + front.Length;
-                locB = locB - locA;
+                locA += front.Length;
+                locB -= locA;
                 if (locA < 0 || locB < 0)
                 {
                     return null;

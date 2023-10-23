@@ -53,12 +53,12 @@ namespace TranslatorLibrary
             {
                 retString = await (await hc.PostAsync(url, req)).Content.ReadAsStringAsync();
             }
-            catch (System.Net.Http.HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;
