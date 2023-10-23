@@ -118,14 +118,8 @@ namespace MisakaTranslator_WPF
         /// 检查软件更新
         /// </summary>
         /// <returns>如果已经是最新或获取更新失败，返回NULL，否则返回更新信息可直接显示</returns>
-<<<<<<< HEAD
         public static List<string> CheckUpdate() {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-=======
-        public static List<string> CheckUpdate()
-        {
-            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
->>>>>>> f8771e18479a33d7c5ae2bb2ddf86903e3182be6
             string currentVersion = version.ToString();
 
             string url = "https://hanmin0822.github.io/MisakaTranslator/index.html";
