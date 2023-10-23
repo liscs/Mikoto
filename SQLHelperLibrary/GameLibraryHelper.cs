@@ -72,6 +72,9 @@ namespace SQLHelperLibrary
         /// </summary>
         public bool Isx64 { get; set; }
 
+        /// <summary>
+        /// 包含hook地址信息的本软件特有的MisakaHookCode
+        /// </summary>
         public string MisakaHookCode { get; set; }
     }
 
@@ -203,7 +206,6 @@ namespace SQLHelperLibrary
                 RepairParamA = ls[7],
                 RepairParamB = ls[8],
                 HookCode = ls[9],
-                IsMultiHook = Convert.ToBoolean(ls[10]),
                 Isx64 = Convert.ToBoolean(ls[11]),
                 HookCodeCustom = ls[12],
                 MisakaHookCode = ls[13]

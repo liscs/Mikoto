@@ -312,9 +312,14 @@ namespace MisakaTranslator_WPF
             set;
         }
 
+<<<<<<< HEAD
+        [Option(Alias = "TranslateFormSettings.backColor", DefaultValue = "#4BFFFFFF")]
+        string TF_BackColor {
+=======
         [Option(Alias = "TranslateFormSettings.backColor", DefaultValue = "#7f000000")]
         string TF_BackColor
         {
+>>>>>>> f8771e18479a33d7c5ae2bb2ddf86903e3182be6
             get;
             set;
         }
@@ -361,9 +366,14 @@ namespace MisakaTranslator_WPF
             set;
         }
 
+<<<<<<< HEAD
+        [Option(Alias = "TranslateFormSettings.srcTextSize", DefaultValue = "26")]
+        double TF_srcTextSize {
+=======
         [Option(Alias = "TranslateFormSettings.srcTextSize", DefaultValue = "15")]
         double TF_srcTextSize
         {
+>>>>>>> f8771e18479a33d7c5ae2bb2ddf86903e3182be6
             get;
             set;
         }
@@ -375,9 +385,14 @@ namespace MisakaTranslator_WPF
             set;
         }
 
+<<<<<<< HEAD
+        [Option(Alias = "TranslateFormSettings.firstTransTextSize", DefaultValue = "30")]
+        double TF_firstTransTextSize {
+=======
         [Option(Alias = "TranslateFormSettings.firstTransTextSize", DefaultValue = "22")]
         double TF_firstTransTextSize
         {
+>>>>>>> f8771e18479a33d7c5ae2bb2ddf86903e3182be6
             get;
             set;
         }
@@ -396,9 +411,14 @@ namespace MisakaTranslator_WPF
             set;
         }
 
+<<<<<<< HEAD
+        [Option(Alias = "TranslateFormSettings.secondTransTextSize", DefaultValue = "30")]
+        double TF_secondTransTextSize {
+=======
         [Option(Alias = "TranslateFormSettings.secondTransTextSize", DefaultValue = "22")]
         double TF_secondTransTextSize
         {
+>>>>>>> f8771e18479a33d7c5ae2bb2ddf86903e3182be6
             get;
             set;
         }
