@@ -10,6 +10,7 @@ namespace TranslatorLibrary
 {
     public static class CommonFunction
     {
+        // TODO 搞成反射
         public static Dictionary<string, string> lstLanguage = new Dictionary<string, string>() {
             { "中文" , "zh" },
             { "English" , "en" },
@@ -34,8 +35,8 @@ namespace TranslatorLibrary
             { "金山快译" , "KingsoftFastAITTranslator" },
             { "译典通", "Dreye"},
             { "DeepL", "DeepLTranslator"},
-            {"ChatGPT","ChatGPTTranslator" },
-            {"Azure","AzureTranslator" },
+            { "ChatGPT", "ChatGPTTranslator" },
+            { "Azure", "AzureTranslator" },
             { "本地人工翻译(见说明)" , "ArtificialTranslator"}
         };
 

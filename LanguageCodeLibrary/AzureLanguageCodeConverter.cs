@@ -31,7 +31,7 @@ namespace LanguageCodeLibrary
                 case Language.Italian:
                     return "it";
                 default:
-                    throw new NotImplementedException();
+                    return "zh";
             }
         }
     }

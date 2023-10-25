@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace LanguageCodeLibrary
 {
-    public class BaiduLanguageCodeConverter : ILanguageCodeConverter
+    internal class DefaultLanguageCodeConverter : ILanguageCodeConverter
     {
         public string GetLanguageCode(Language language)
         {
