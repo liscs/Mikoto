@@ -561,9 +561,9 @@ namespace MisakaTranslator_WPF
                             //加入注音的阴影
                         }
 
-                        if ((double)SourceTextFontSize - 6.5 > 0)
+                        if (SourceTextFontSize - 6.5 > 0)
                         {
-                            superScript.FontSize = (double)SourceTextFontSize - 6.5;
+                            superScript.FontSize = SourceTextFontSize - 6.5;
                             if (Common.appSettings.TF_SuperBold)
                             {
                                 superScript.FontWeight = FontWeights.Bold;

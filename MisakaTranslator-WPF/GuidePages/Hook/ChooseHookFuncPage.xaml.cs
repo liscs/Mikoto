@@ -34,21 +34,8 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
         public void DataRecvEventHandler(object sender, HookSelectRecvEventArgs e)
         {
-
-
-            /* 项目“MisakaTranslator-WPF (netcoreapp7.0-windows10.0.22621.0)”的未合并的更改
-            在此之前:
-                        //加一步判断防止卡顿，部分不可能使用的方法刷新速度过快，在几秒之内就能刷新超过100个，这时候就停止对他们的刷新,直接卸载这个方法
-
-                        Application.Current.Dispatcher.BeginInvoke((Action)(() =>
-            在此之后:
-                        //加一步判断防止卡顿，部分不可能使用的方法刷新速度过快，在几秒之内就能刷新超过100个，这时候就停止对他们的刷新,直接卸载这个方法
-
-                        Application.Current.Dispatcher.BeginInvoke((Action)(() =>
-            */
             //加一步判断防止卡顿，部分不可能使用的方法刷新速度过快，在几秒之内就能刷新超过100个，这时候就停止对他们的刷新,直接卸载这个方法
-
-            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 if (e.Index < sum)
                 {
@@ -59,7 +46,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                     lstData.Add(e.Data);
                     sum++;
                 }
-            }), System.Windows.Threading.DispatcherPriority.DataBind);
+            }, System.Windows.Threading.DispatcherPriority.DataBind);
 
 
         }

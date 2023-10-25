@@ -32,7 +32,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
         public void DataRecvEventHandler(object sender, HookSelectRecvEventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 if (e.Index < sum)
                 {
@@ -43,7 +43,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                     lstData.Add(e.Data);
                     sum++;
                 }
-            }));
+            });
         }
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
@@ -55,7 +55,6 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
                 Common.textHooker.MisakaCodeList.Add(lstData[HookFunListView.SelectedIndex].MisakaHookCode);
 
-                //Common.textHooker.DetachUnrelatedHookWhenDataRecv = Convert.ToBoolean(Common.appSettings.AutoDetach);
                 //用户开启了自动卸载
                 if (Convert.ToBoolean(Common.appSettings.AutoDetach) == true)
                 {

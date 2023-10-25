@@ -369,22 +369,10 @@ namespace TextHookLibrary
                             }
                         }
 
-                        /*
-                        //使用了边Hook边卸载的情况
-                        //纠错：注意不能删misakacode不同的，因为地址可能相同，仅根据Hook特殊码来删就行了
-                        if (DetachUnrelatedHookWhenDataRecv == true)
-                        {
-                            if (HookCodeList[0] != data.HookCode)
-                            {
-                                DetachUnrelatedHookAsync(data.GamePID, data.MisakaHookCode);
-                            }
-
-                        }
-                        */
-
                         //文本去重窗口处理&游戏翻译窗口处理
                         //如果IsNeedReChooseHook=false则说明没有多重处理，不用再对比HookCodePlus
-                        if (HookCodeList.Count != 0 && HookCodeList.Contains(data.HookCode) && (MisakaCodeList == null || MisakaCodeList.Contains(data.MisakaHookCode)))
+                        // TODO 寻找更好的定位hook address的方法
+                        if (HookCodeList.Count != 0 && HookCodeList.Contains(data.HookCode) && MisakaCodeList[0].Substring(3) == data.MisakaHookCode.Substring(3))
                         {
                             SolvedDataRecvEventArgs e = new SolvedDataRecvEventArgs
                             {

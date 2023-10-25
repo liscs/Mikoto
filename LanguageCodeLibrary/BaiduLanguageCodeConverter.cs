@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LanguageCodeLibrary
+﻿namespace LanguageCodeLibrary
 {
     public class BaiduLanguageCodeConverter : ILanguageCodeConverter
     {

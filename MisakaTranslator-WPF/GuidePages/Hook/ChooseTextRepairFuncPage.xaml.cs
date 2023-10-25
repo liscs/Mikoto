@@ -1,5 +1,4 @@
 ﻿using SQLHelperLibrary;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -28,12 +27,12 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
         public void DataRecvEventHandler(object sender, SolvedDataRecvEventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 sourceTextBox.Text = e.Data.Data;
                 repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]], sourceTextBox.Text);
 
-            }));
+            });
         }
 
         private void RepairFuncCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)

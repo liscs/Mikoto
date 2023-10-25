@@ -57,7 +57,7 @@ namespace TextHookLibrary
 
         protected override void WndProc(ref Message m)
         {
-            switch ((int)m.Msg)
+            switch (m.Msg)
             {
                 case 0x308: //WM_DRAWCLIPBOARD
                     {

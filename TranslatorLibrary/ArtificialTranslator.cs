@@ -318,7 +318,7 @@ namespace TranslatorLibrary
             int d = ComputeDistance(first, second);
             double m = first.Length + second.Length + 1e-9;
 
-            return Sigmoid(1.0 - (double)d / m) * LengthAdjust(m);
+            return Sigmoid(1.0 - d / m) * LengthAdjust(m);
         }
 
         /// <summary>

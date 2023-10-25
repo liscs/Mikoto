@@ -313,7 +313,8 @@ namespace MisakaTranslator_WPF
         }
 
         [Option(Alias = "TranslateFormSettings.backColor", DefaultValue = "#4BFFFFFF")]
-        string TF_BackColor {
+        string TF_BackColor
+        {
             get;
             set;
         }
@@ -361,7 +362,8 @@ namespace MisakaTranslator_WPF
         }
 
         [Option(Alias = "TranslateFormSettings.srcTextSize", DefaultValue = "26")]
-        double TF_srcTextSize {
+        double TF_srcTextSize
+        {
             get;
             set;
         }
@@ -374,7 +376,8 @@ namespace MisakaTranslator_WPF
         }
 
         [Option(Alias = "TranslateFormSettings.firstTransTextSize", DefaultValue = "30")]
-        double TF_firstTransTextSize {
+        double TF_firstTransTextSize
+        {
             get;
             set;
         }
@@ -394,7 +397,8 @@ namespace MisakaTranslator_WPF
         }
 
         [Option(Alias = "TranslateFormSettings.secondTransTextSize", DefaultValue = "30")]
-        double TF_secondTransTextSize {
+        double TF_secondTransTextSize
+        {
             get;
             set;
         }
