@@ -3,12 +3,15 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class XiaoniuTranslator : ITranslator
     {
         public string apiKey;//小牛翻译API 的APIKEY
         private string errorInfo;//错误信息
+
+        public string TranslatorKey { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string TranslatorDisplayName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -49,7 +52,7 @@ namespace TranslatorLibrary
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;

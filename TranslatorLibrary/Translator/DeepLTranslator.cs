@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
  * Author: kjstart
  * API version: v2
  */
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class DeepLTranslator : ITranslator
     {
@@ -20,6 +19,9 @@ namespace TranslatorLibrary
 
         private string secretKey; //DeepL翻译API的秘钥
         private string errorInfo; //错误信息
+
+        public string TranslatorKey { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -64,12 +66,12 @@ namespace TranslatorLibrary
                     return null;
                 }
             }
-            catch (System.Net.Http.HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;
@@ -81,7 +83,7 @@ namespace TranslatorLibrary
             secretKey = param1;
         }
 
-        private string transformSrcLangKey(String langKey)
+        private string transformSrcLangKey(string langKey)
         {
             switch (langKey)
             {
@@ -104,7 +106,7 @@ namespace TranslatorLibrary
             return null;
         }
 
-        private string transformDesLangKey(String langKey)
+        private string transformDesLangKey(string langKey)
         {
             switch (langKey)
             {

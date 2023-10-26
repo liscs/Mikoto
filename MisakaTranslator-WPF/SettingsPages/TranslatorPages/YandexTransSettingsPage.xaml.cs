@@ -1,6 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
-using TranslatorLibrary;
+using TranslatorLibrary.Translator;
 
 namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
 {

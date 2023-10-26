@@ -10,6 +10,7 @@ using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using TranslatorLibrary;
+using TranslatorLibrary.Translator;
 using Windows.Win32;
 
 namespace MisakaTranslator_WPF.ComicTranslator

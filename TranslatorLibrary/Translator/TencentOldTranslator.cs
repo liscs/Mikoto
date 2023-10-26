@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class TencentOldTranslator : ITranslator
     {
@@ -13,6 +13,9 @@ namespace TranslatorLibrary
         private string errorInfo;//错误信息
         public string SecretId;//腾讯旧版API SecretId
         public string SecretKey;//腾讯旧版API SecretKey
+
+        public string TranslatorKey { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string TranslatorDisplayName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public string GetLastError()
         {

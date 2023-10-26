@@ -1,11 +1,14 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class GoogleCNTranslator : ITranslator
     {
         private string errorInfo;//错误信息
+
+        public string TranslatorKey { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -55,7 +58,7 @@ namespace TranslatorLibrary
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;

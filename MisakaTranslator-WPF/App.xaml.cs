@@ -30,8 +30,6 @@ namespace MisakaTranslator_WPF
         {
             //程序退出时检查是否断开Hook
             DoHookCheck();
-
-
         }
 
         /// <summary>

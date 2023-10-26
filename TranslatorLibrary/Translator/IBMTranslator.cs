@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class IBMTranslator : ITranslator
     {
@@ -13,6 +13,9 @@ namespace TranslatorLibrary
         public string URL;
 
         private string errorInfo;
+
+        public string TranslatorKey { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string TranslatorDisplayName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -52,12 +55,12 @@ namespace TranslatorLibrary
             {
                 resp = await hc.SendAsync(req);
             }
-            catch (System.Net.Http.HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;

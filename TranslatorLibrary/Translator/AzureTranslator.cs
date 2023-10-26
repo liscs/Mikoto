@@ -6,8 +6,9 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using TranslatorLibrary.lang;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class AzureTranslator : ITranslator
     {
@@ -19,6 +20,8 @@ namespace TranslatorLibrary
         private string errorInfo;//错误信息
         private readonly string endpoint = "https://api.cognitive.microsofttranslator.com";
 
+        public string TranslatorKey { get { return "Azure"; } set { TranslatorKey = value; } }
+        public string TranslatorDisplayName { get { return Strings.Azure; } set { TranslatorDisplayName = value; } }
 
         public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
@@ -148,7 +151,7 @@ namespace TranslatorLibrary
     }
     struct AzureErrorResult
     {
-        public Int32 code;
+        public int code;
         public string message;
     }
 }

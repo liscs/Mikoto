@@ -18,6 +18,7 @@ using System.Windows.Media.Effects;
 using TextHookLibrary;
 using TextRepairLibrary;
 using TranslatorLibrary;
+using TranslatorLibrary.Translator;
 using TransOptimizationLibrary;
 using TTSHelperLibrary;
 using Windows.Win32;
@@ -433,10 +434,7 @@ namespace MisakaTranslator_WPF
             if (repairedText.Length != 0 && repairedText.Length <= Common.appSettings.TransLimitNums)
             {
                 //2.5 清除面板
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    SourceTextPanel.Children.Clear();
-                });
+                Application.Current.Dispatcher.Invoke(SourceTextPanel.Children.Clear);
 
                 _currentsrcText = repairedText;
 
@@ -466,9 +464,11 @@ namespace MisakaTranslator_WPF
                     //分词后结果显示
                     for (int i = 0; i < mwi.Count; i++)
                     {
-                        StackPanel stackPanel = new StackPanel();
-                        stackPanel.Orientation = Orientation.Vertical;
-                        stackPanel.Margin = new Thickness(10, 0, 0, 10);
+                        StackPanel stackPanel = new StackPanel
+                        {
+                            Orientation = Orientation.Vertical,
+                            Margin = new Thickness(10, 0, 0, 10)
+                        };
 
                         System.Windows.Controls.TextBox textBlock = new()
                         {
@@ -561,9 +561,9 @@ namespace MisakaTranslator_WPF
                             //加入注音的阴影
                         }
 
-                        if ((double)SourceTextFontSize - 6.5 > 0)
+                        if (SourceTextFontSize - 6.5 > 0)
                         {
-                            superScript.FontSize = (double)SourceTextFontSize - 6.5;
+                            superScript.FontSize = SourceTextFontSize - 6.5;
                             if (Common.appSettings.TF_SuperBold)
                             {
                                 superScript.FontWeight = FontWeights.Bold;
@@ -742,7 +742,7 @@ namespace MisakaTranslator_WPF
                 }
                 else
                 {
-                    PauseButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.Play);
+                    PauseButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Play);
                 }
                 Common.textHooker.Pause = !Common.textHooker.Pause;
             }
@@ -750,11 +750,11 @@ namespace MisakaTranslator_WPF
             {
                 if (IsNotPausedFlag)
                 {
-                    PauseButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.Play);
+                    PauseButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Play);
                 }
                 else
                 {
-                    PauseButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.Pause);
+                    PauseButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Pause);
                 }
                 IsNotPausedFlag = !IsNotPausedFlag;
             }
@@ -766,11 +766,11 @@ namespace MisakaTranslator_WPF
             _isShowSource = !_isShowSource;
             if (_isShowSource)
             {
-                ShowSourceButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.Eye);
+                ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Eye);
             }
             else
             {
-                ShowSourceButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.EyeSlash);
+                ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.EyeSlash);
             }
             Common.appSettings.TF_showSourceText = _isShowSource;
         }

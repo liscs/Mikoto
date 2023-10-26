@@ -5,12 +5,15 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class CaiyunTranslator : ITranslator
     {
         public string caiyunToken;//彩云小译 令牌
         private string errorInfo;//错误信息
+
+        public string TranslatorKey { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public string GetLastError()
         {

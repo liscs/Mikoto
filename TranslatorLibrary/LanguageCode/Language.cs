@@ -1,4 +1,4 @@
-﻿namespace LanguageCodeLibrary
+﻿namespace TranslatorLibrary
 {
     public enum Language
     {

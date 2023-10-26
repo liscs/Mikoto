@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     // 点申请试用会跳转到腾讯云机器翻译，api.ai.qq.com的接口返回502 Bad Gateway
     // 目前在CommonFunction.cs和SettingsWindow.xaml中从界面上隐藏本项
@@ -12,6 +12,9 @@ namespace TranslatorLibrary
         private string errorInfo;//错误信息
         public string appId;//腾讯翻译君API APPID
         public string appKey;//腾讯翻译君API 密钥
+
+        public string TranslatorKey { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -56,7 +59,7 @@ namespace TranslatorLibrary
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;

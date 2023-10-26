@@ -5,12 +5,15 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     // 此公共API无法使用了，官方推出了需注册的V2，看社区来更新吧。目前在CommonFunction中注释掉了从界面上设置本API的途径
     public class AlapiTranslator : ITranslator
     {
         private string errorInfo;//错误信息
+
+        public string TranslatorKey { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -54,7 +57,7 @@ namespace TranslatorLibrary
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;

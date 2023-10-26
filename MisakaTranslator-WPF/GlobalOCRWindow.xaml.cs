@@ -2,6 +2,7 @@ extern alias Tesseract;
 using OCRLibrary;
 using System.Windows;
 using TranslatorLibrary;
+using TranslatorLibrary.Translator;
 
 namespace MisakaTranslator_WPF
 {

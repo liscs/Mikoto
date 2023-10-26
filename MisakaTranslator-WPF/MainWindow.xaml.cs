@@ -45,6 +45,7 @@ namespace MisakaTranslator_WPF
             Common.appSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\settings\\settings.ini").Build();
             foreach (var item in appResource)
             {
+                //卸载所有非当前语言的资源文件
                 if (item.Source.ToString().Contains("lang") && item.Source.ToString() != $@"lang/{Common.appSettings.AppLanguage}.xaml")
                 {
                     appResource.Remove(item);

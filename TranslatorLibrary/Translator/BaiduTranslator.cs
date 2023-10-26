@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class BaiduTranslator : ITranslator
     {
@@ -12,6 +12,9 @@ namespace TranslatorLibrary
         public string appId;//百度翻译API 的APP ID
         public string secretKey;//百度翻译API 的密钥
         private string errorInfo;//错误信息
+
+        public string TranslatorKey { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
         {

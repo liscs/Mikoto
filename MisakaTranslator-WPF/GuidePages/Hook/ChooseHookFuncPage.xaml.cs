@@ -29,26 +29,13 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             HookFunListView.ItemsSource = lstData;
             sum = 0;
             Common.textHooker.HFSevent += DataRecvEventHandler;
-            Common.textHooker.StartHook(Convert.ToBoolean(Common.appSettings.AutoHook));
+            _ = Common.textHooker.StartHook(Convert.ToBoolean(Common.appSettings.AutoHook));
         }
 
         public void DataRecvEventHandler(object sender, HookSelectRecvEventArgs e)
         {
-
-
-            /* 项目“MisakaTranslator-WPF (netcoreapp7.0-windows10.0.22621.0)”的未合并的更改
-            在此之前:
-                        //加一步判断防止卡顿，部分不可能使用的方法刷新速度过快，在几秒之内就能刷新超过100个，这时候就停止对他们的刷新,直接卸载这个方法
-
-                        Application.Current.Dispatcher.BeginInvoke((Action)(() =>
-            在此之后:
-                        //加一步判断防止卡顿，部分不可能使用的方法刷新速度过快，在几秒之内就能刷新超过100个，这时候就停止对他们的刷新,直接卸载这个方法
-
-                        Application.Current.Dispatcher.BeginInvoke((Action)(() =>
-            */
             //加一步判断防止卡顿，部分不可能使用的方法刷新速度过快，在几秒之内就能刷新超过100个，这时候就停止对他们的刷新,直接卸载这个方法
-
-            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 if (e.Index < sum)
                 {
@@ -59,7 +46,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                     lstData.Add(e.Data);
                     sum++;
                 }
-            }), System.Windows.Threading.DispatcherPriority.DataBind);
+            }, System.Windows.Threading.DispatcherPriority.DataBind);
 
 
         }
@@ -83,8 +70,10 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                 Common.textHooker.HookCodeList.Add(lstData[HookFunListView.SelectedIndex].HookCode);
                 Common.textHooker.MisakaCodeList.Add(lstData[HookFunListView.SelectedIndex].MisakaHookCode);
 
-                List<string> usedHook = new List<string>();
-                usedHook.Add(hookAdd);
+                List<string> usedHook = new List<string>
+                {
+                    hookAdd
+                };
 
                 //用户开启了自动卸载
                 if (Convert.ToBoolean(Common.appSettings.AutoDetach) == true)
@@ -121,13 +110,11 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                             //不记录特殊码，但也要写NULL
                             GameLibraryHelper.sqlHelper.ExecuteSql(
                                 $"UPDATE game_library SET hookcode_custom = '{"NULL"}' WHERE gameid = {Common.GameID};");
-
                         }
                     }
                     else
                     {
-                        GameLibraryHelper.sqlHelper.ExecuteSql(
-                            $"UPDATE game_library SET hookcode_custom = '{"NULL"}' WHERE gameid = {Common.GameID};");
+                        GameLibraryHelper.sqlHelper.ExecuteSql($"UPDATE game_library SET hookcode_custom = '{"NULL"}' WHERE gameid = {Common.GameID};");
                     }
 
                 }
@@ -151,7 +138,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
         {
             if (PIDTextBox.Text != "" && HookCodeTextBox.Text != "" && int.TryParse(PIDTextBox.Text, out int pid))
             {
-                Common.textHooker.AttachProcessByHookCode(pid, HookCodeTextBox.Text);
+                _ = Common.textHooker.AttachProcessByHookCode(pid, HookCodeTextBox.Text);
                 LastCustomHookCode = HookCodeTextBox.Text;
                 InputDrawer.IsOpen = false;
                 HandyControl.Controls.Growl.Info(Application.Current.Resources["ChooseHookFuncPage_HookApplyHint"].ToString());

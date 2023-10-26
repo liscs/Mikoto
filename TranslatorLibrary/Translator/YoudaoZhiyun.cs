@@ -7,13 +7,16 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class YoudaoZhiyun : ITranslator
     {
         private static readonly string TRANSLATE_API_URL = "https://openapi.youdao.com/api";
         private string appId, appSecret;
         private string errorInfo;
+
+        public string TranslatorKey { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string TranslatorDisplayName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
@@ -31,7 +34,7 @@ namespace TranslatorLibrary
             string sign = BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(appId + input + salt + curtime + appSecret))).Replace("-", "").ToLower();
             sha.Dispose();
 
-            Dictionary<String, String> dic = new Dictionary<String, String>
+            Dictionary<string, string> dic = new Dictionary<string, string>
             {
                 { "from", LangConversion(srcLang) },
                 { "to", LangConversion(desLang) },
@@ -70,12 +73,12 @@ namespace TranslatorLibrary
                     return null;
                 }
             }
-            catch (System.Net.Http.HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;

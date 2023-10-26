@@ -7,7 +7,7 @@ using System.Threading.Tasks;
  * Author: bychv
  * API version: v1
  */
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class ChatGPTTranslator : ITranslator
     {
@@ -19,6 +19,9 @@ namespace TranslatorLibrary
         private string apiKey; //ChatGPT翻译API的密钥
         private string apiUrl; //ChatGPT翻译API的URL
         private string errorInfo; //错误信息
+
+        public string TranslatorKey { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -43,12 +46,12 @@ namespace TranslatorLibrary
             {
                 retString = await (await hc.PostAsync(apiUrl, req)).Content.ReadAsStringAsync();
             }
-            catch (System.Net.Http.HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;
