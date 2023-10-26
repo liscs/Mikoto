@@ -20,7 +20,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             InitializeComponent();
             HookFunListView.ItemsSource = lstData;
             sum = 0;
-            Common.textHooker.HFRSevent += DataRecvEventHandler;
+            Common.textHooker.MeetHookCodeMessageReceived += FilterAndDisplayData;
             Common.textHooker.StartHook(Convert.ToBoolean(Common.appSettings.AutoHook));
             var task_1 = System.Threading.Tasks.Task.Run(async delegate
             {
@@ -30,9 +30,9 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
         }
 
-        public void DataRecvEventHandler(object sender, HookSelectRecvEventArgs e)
+        public void FilterAndDisplayData(object sender, HookReceivedEventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 if (e.Index < sum)
                 {
@@ -43,7 +43,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                     lstData.Add(e.Data);
                     sum++;
                 }
-            }));
+            });
         }
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
@@ -51,7 +51,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             if (HookFunListView.SelectedIndex != -1)
             {
                 //先关闭对本窗口的输出
-                Common.textHooker.HFRSevent -= DataRecvEventHandler;
+                Common.textHooker.MeetHookCodeMessageReceived -= FilterAndDisplayData;
 
                 Common.textHooker.MisakaCodeList.Add(lstData[HookFunListView.SelectedIndex].MisakaHookCode);
 

@@ -194,13 +194,13 @@ namespace MisakaTranslator_WPF
 
         private void HookGuideBtn_Click(object sender, RoutedEventArgs e)
         {
-            var ggw = new GameGuideWindow(1);
+            var ggw = new GameGuideWindow(Common.GuideMode.hook);
             ggw.Show();
         }
 
         private void OCRGuideBtn_Click(object sender, RoutedEventArgs e)
         {
-            var ggw = new GameGuideWindow(2);
+            var ggw = new GameGuideWindow(Common.GuideMode.ocr);
             ggw.Show();
         }
 
@@ -258,7 +258,7 @@ namespace MisakaTranslator_WPF
             }
 
             Common.GameID = gameInfoList[gid].GameID;
-            Common.transMode = 1;
+            Common.transMode = Common.TransMode.hook;
             Common.UsingDstLang = gameInfoList[gid].DstLang;
             Common.UsingSrcLang = gameInfoList[gid].SrcLang;
             Common.UsingRepairFunc = gameInfoList[gid].RepairFunc;
@@ -334,9 +334,6 @@ namespace MisakaTranslator_WPF
             Dialog.Show(new GameNameDialog(gameInfoList, gid));
         }
 
-        /*
-         * 插眼
-         */
         private async void LEStartBtn_Click(object sender, RoutedEventArgs e)
         {
             var filepath = gameInfoList[gid].FilePath;
@@ -437,14 +434,14 @@ namespace MisakaTranslator_WPF
         {
             Common.textHooker = new TextHookHandle();
             Common.GameID = 0;
-            Common.transMode = 1;
+            Common.transMode = Common.TransMode.hook;
             Common.textHooker.AddClipBoardThread();
 
             //剪贴板方式读取的特殊码和misakacode
             Common.textHooker.HookCodeList.Add("HB0@0");
             Common.textHooker.MisakaCodeList.Add("【0:-1:-1】");
 
-            var ggw = new GameGuideWindow(4);
+            var ggw = new GameGuideWindow(Common.GuideMode.clipboard);
             ggw.Show();
         }
 
@@ -458,7 +455,7 @@ namespace MisakaTranslator_WPF
 
                 if (dr == MessageBoxResult.OK)
                 {
-                    System.Diagnostics.Process.Start(res[1]);
+                    Process.Start(res[1]);
                 }
 
             }

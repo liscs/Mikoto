@@ -23,17 +23,17 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             RepairFuncCombox.ItemsSource = lstRepairFun;
             RepairFuncCombox.SelectedIndex = 0;
 
-            Common.textHooker.Sevent += DataRecvEventHandler;
+            Common.textHooker.MeetHookAddressMessageReceived += FilterAndDisplayData;
         }
 
-        public void DataRecvEventHandler(object sender, SolvedDataRecvEventArgs e)
+        public void FilterAndDisplayData(object sender, SolvedDataReceivedEventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 sourceTextBox.Text = e.Data.Data;
                 repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]], sourceTextBox.Text);
 
-            }));
+            });
         }
 
         private void RepairFuncCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -56,7 +56,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.textHooker.Sevent -= DataRecvEventHandler;
+            Common.textHooker.MeetHookAddressMessageReceived -= FilterAndDisplayData;
 
             Common.UsingRepairFunc = TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]];
 

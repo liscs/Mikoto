@@ -46,42 +46,30 @@ namespace TextHookLibrary
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    public delegate void HookFunSelectDataRecvEventHandler(object sender, HookSelectRecvEventArgs e);
+    public delegate void HookMessageReceivedEventHandler(object sender, HookReceivedEventArgs e);
 
     /// <summary>
     /// Hook功能重新选择界面提供的数据收到事件，满足条件：特殊码满足，但附加特殊码不重复的输出都将触发此事件
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    public delegate void HookFunReSelectDataRecvEventHandler(object sender, HookSelectRecvEventArgs e);
+    public delegate void MeetHookCodeMessageReceivedEventHandler(object sender, HookReceivedEventArgs e);
 
     /// <summary>
     /// 翻译界面或文本去重界面提供的数据收到事件，满足条件：特殊码满足，且附加特殊码满足或为NoMulti将触发此事件
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
+    public delegate void MeetHookAddressMessageReceivedEventHandler(object sender, SolvedDataReceivedEventArgs e);
 
-    /* 项目“TextHookLibrary (netframework4.7.2)”的未合并的更改
-    在此之前:
-        public delegate void SolvedDataRecvEventHandler(object sender, SolvedDataRecvEventArgs e);
-
-        public class HookSelectRecvEventArgs : EventArgs
-    在此之后:
-        public delegate void SolvedDataRecvEventHandler(object sender, SolvedDataRecvEventArgs e);
-
-        public class HookSelectRecvEventArgs : EventArgs
-    */
-    public delegate void SolvedDataRecvEventHandler(object sender, SolvedDataRecvEventArgs e);
-
-    public class HookSelectRecvEventArgs : EventArgs
+    public class HookReceivedEventArgs : EventArgs
     {
-        //方法序号（仅在HookFunSelectDataRecvEventHandler和HookFunReSelectDataRecvEventHandler事件中有效）
         //这个序号可以直接用于ListView
         public int Index { get; set; }
         public TextHookData Data { get; set; }
     }
 
-    public class SolvedDataRecvEventArgs : EventArgs
+    public class SolvedDataReceivedEventArgs : EventArgs
     {
         public TextHookData Data { get; set; }
     }

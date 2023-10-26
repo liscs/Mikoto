@@ -115,11 +115,11 @@ namespace MisakaTranslator_WPF
 
             _artificialTransHelper = new ArtificialTransHelper(Convert.ToString(Common.GameID));
 
-            if (Common.transMode == 1)
+            if (Common.transMode == Common.TransMode.hook)
             {
-                Common.textHooker.Sevent += TranslateEventHook;
+                Common.textHooker.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
             }
-            else if (Common.transMode == 2)
+            else if (Common.transMode == Common.TransMode.ocr)
             {
                 MouseKeyboardHook_Init();
             }
@@ -402,7 +402,7 @@ namespace MisakaTranslator_WPF
         /// <summary>
         /// Hook模式下调用的事件
         /// </summary>
-        public void TranslateEventHook(object sender, SolvedDataRecvEventArgs e)
+        public void ProcessAndDisplayTranslation(object sender, SolvedDataReceivedEventArgs e)
         {
             //1.得到原句
             string source = e.Data.Data;
@@ -734,7 +734,7 @@ namespace MisakaTranslator_WPF
 
         private void Pause_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (Common.transMode == 1)
+            if (Common.transMode == Common.TransMode.hook)
             {
                 if (Common.textHooker.Pause)
                 {
@@ -790,7 +790,7 @@ namespace MisakaTranslator_WPF
 
             if (Common.textHooker != null)
             {
-                Common.textHooker.Sevent -= TranslateEventHook;
+                Common.textHooker.MeetHookAddressMessageReceived -= ProcessAndDisplayTranslation;
                 Common.textHooker.StopHook();
                 Common.textHooker = null;
             }
@@ -860,7 +860,7 @@ namespace MisakaTranslator_WPF
 
         private void RenewOCR_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (Common.transMode == 2)
+            if (Common.transMode == Common.TransMode.ocr)
             {
                 TranslateEventOcr(true);
             }
