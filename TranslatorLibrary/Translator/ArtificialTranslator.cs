@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TranslatorLibrary.lang;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     /*
      * 来源：https://github.com/jsc723/MisakaPatcher/blob/master/TranslatorLibrary/LocalTranslator.cs
@@ -200,7 +201,7 @@ namespace TranslatorLibrary
         public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
             //sourceText = addNoise(addNoise2(sourceText)); //The translator is able to find the correct match on hook mode under a high noise
-            Console.WriteLine(String.Format("Input:{0}", sourceText));
+            Console.WriteLine(string.Format("Input:{0}", sourceText));
             if (jp_text.Count == 0)
             {
                 return "No translation available";
@@ -258,12 +259,12 @@ namespace TranslatorLibrary
                     maxI = k;
                 }
                 //For debug
-                Console.WriteLine(String.Format("{0}:{1}", k, jp_text[k]));
+                Console.WriteLine(string.Format("{0}:{1}", k, jp_text[k]));
                 Console.WriteLine(possibleCursors[k]);
             }
             if (possibleCursors.Count == 0)
                 return "无匹配文本";
-            Console.WriteLine(String.Format("[{0}:{1}]", maxI, jp_text[maxI]));
+            Console.WriteLine(string.Format("[{0}:{1}]", maxI, jp_text[maxI]));
             Console.WriteLine("------");
             return cn_text[maxI] == "" ? jp_text[maxI] : cn_text[maxI];
         }
@@ -355,7 +356,7 @@ namespace TranslatorLibrary
 
                 for (var j = 1; j <= second.Length; j++)
                 {
-                    var cost = (second[j - 1] == first[i]) ? 0 : 1;
+                    var cost = second[j - 1] == first[i] ? 0 : 1;
                     r[current, j] = Min(
                         r[previous, j] + 1,
                         r[current, j - 1] + 1,
@@ -373,20 +374,20 @@ namespace TranslatorLibrary
         private static double Sigmoid(double x)
         {
             //Boost x > 0.7, suppress x < 0.7, please plot the curve to visualize
-            double k = System.Math.Exp(-15.0 * (x - 0.7));
+            double k = Math.Exp(-15.0 * (x - 0.7));
             return 1.0 / (1.0 + k);
         }
 
         private static double LengthAdjust(double x)
         {
             const double offset = 0.00055277; //k(0)
-            double k = System.Math.Exp(-0.5 * (x - 15));
+            double k = Math.Exp(-0.5 * (x - 15));
             return (1.0 / (1.0 + k) - offset) / (1.0 - offset);
         }
 
 
-        private List<String> jp_text = new List<string>();
-        private List<String> cn_text = new List<string>();
+        private List<string> jp_text = new List<string>();
+        private List<string> cn_text = new List<string>();
         Random random = new Random();
         private int[,] r = new int[2, R_MAX_LEN];
         private const int R_MAX_LEN = 64;
@@ -396,5 +397,7 @@ namespace TranslatorLibrary
         private const double pTransitionNext = 1.0 - pTransitionSkip;
         private const double possibleCursorsThresh = 0.001;
         private Dictionary<int, double> possibleCursors = new Dictionary<int, double>();
+
+        public string TranslatorDisplayName { get { return Strings.ArtificialTranslator; } set => throw new NotImplementedException(); }
     }
 }

@@ -85,7 +85,7 @@ namespace MisakaTranslator_WPF
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 // Draw square
-                System.Windows.Point endP = e.GetPosition(inkCanvasMeasure);
+                Point endP = e.GetPosition(inkCanvasMeasure);
                 Point[] pointList = new Point[]
                     {
                         new Point(iniP.X, iniP.Y),

@@ -3,8 +3,9 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using TranslatorLibrary.lang;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     //参考方法：https://www.lgztx.com/?p=209
 
@@ -46,6 +47,8 @@ namespace TranslatorLibrary
 
         public string FilePath;//文件路径
         private string errorInfo;//错误信息
+
+        public string TranslatorDisplayName { get { return Strings.DreyeTranslator; } set => throw new NotImplementedException(); }
 
         public string GetLastError()
         {

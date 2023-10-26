@@ -2,12 +2,15 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
+using TranslatorLibrary.lang;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class YoudaoTranslator : ITranslator
     {
         private string errorInfo;//错误信息
+
+        public string TranslatorDisplayName { get { return Strings.YoudaoTranslator; } set => throw new System.NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -40,7 +43,7 @@ namespace TranslatorLibrary
             trans_type = trans_type.ToUpper();
             string url = "https://fanyi.youdao.com/translate?&doctype=json&type=" + trans_type + "&i=" + q;
 
-            var hc = CommonFunction.GetHttpClient();
+            var hc = TranslatorCommon.GetHttpClient();
             try
             {
                 retString = await hc.GetStringAsync(url);
@@ -50,7 +53,7 @@ namespace TranslatorLibrary
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;
@@ -59,7 +62,7 @@ namespace TranslatorLibrary
             YoudaoTransResult oinfo;
             try
             {
-                oinfo = JsonSerializer.Deserialize<YoudaoTransResult>(retString, CommonFunction.JsonOP);
+                oinfo = JsonSerializer.Deserialize<YoudaoTransResult>(retString, TranslatorCommon.JsonOP);
             }
             catch (JsonException)
             {

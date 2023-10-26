@@ -22,17 +22,17 @@ namespace TextHookLibrary
         /// <summary>
         /// Hook功能选择界面提供的数据收到事件
         /// </summary>
-        public event HookFunSelectDataRecvEventHandler HFSevent;
+        public event HookMessageReceivedEventHandler HookMessageReceived;
 
         /// <summary>
         /// Hook功能重新选择界面提供的数据收到事件
         /// </summary>
-        public event HookFunReSelectDataRecvEventHandler HFRSevent;
+        public event MeetHookCodeMessageReceivedEventHandler MeetHookCodeMessageReceived;
 
         /// <summary>
         /// 翻译界面或文本去重界面提供的数据收到事件
         /// </summary>
-        public event SolvedDataRecvEventHandler Sevent;
+        public event MeetHookAddressMessageReceivedEventHandler MeetHookAddressMessageReceived;
 
         /// <summary>
         /// 暂停Hook标志,为真时暂停获取文本
@@ -329,18 +329,18 @@ namespace TextHookLibrary
                         //Hook入口选择窗口处理
                         if (TextractorFun_Index_List.ContainsKey(data.MisakaHookCode) == true)
                         {
-                            HookSelectRecvEventArgs e = new HookSelectRecvEventArgs();
+                            HookReceivedEventArgs e = new HookReceivedEventArgs();
                             e.Index = TextractorFun_Index_List[data.MisakaHookCode];
                             e.Data = data;
-                            HFSevent?.Invoke(this, e);
+                            HookMessageReceived?.Invoke(this, e);
                         }
                         else
                         {
                             TextractorFun_Index_List.Add(data.MisakaHookCode, listIndex);
-                            HookSelectRecvEventArgs e = new HookSelectRecvEventArgs();
+                            HookReceivedEventArgs e = new HookReceivedEventArgs();
                             e.Index = TextractorFun_Index_List[data.MisakaHookCode];
                             e.Data = data;
-                            HFSevent?.Invoke(this, e);
+                            HookMessageReceived?.Invoke(this, e);
                             listIndex++;
                         }
 
@@ -349,36 +349,35 @@ namespace TextHookLibrary
                         {
                             if (TextractorFun_Re_Index_List.ContainsKey(data.MisakaHookCode) == true)
                             {
-                                HookSelectRecvEventArgs e = new HookSelectRecvEventArgs
+                                HookReceivedEventArgs e = new HookReceivedEventArgs
                                 {
                                     Index = TextractorFun_Index_List[data.MisakaHookCode],
                                     Data = data
                                 };
-                                HFRSevent?.Invoke(this, e);
+                                MeetHookCodeMessageReceived?.Invoke(this, e);
                             }
                             else
                             {
                                 TextractorFun_Re_Index_List.Add(data.MisakaHookCode, listIndex_Re);
-                                HookSelectRecvEventArgs e = new HookSelectRecvEventArgs
+                                HookReceivedEventArgs e = new HookReceivedEventArgs
                                 {
                                     Index = TextractorFun_Index_List[data.MisakaHookCode],
                                     Data = data
                                 };
-                                HFRSevent?.Invoke(this, e);
+                                MeetHookCodeMessageReceived?.Invoke(this, e);
                                 listIndex_Re++;
                             }
                         }
 
                         //文本去重窗口处理&游戏翻译窗口处理
-                        //如果IsNeedReChooseHook=false则说明没有多重处理，不用再对比HookCodePlus
-                        // TODO 寻找更好的定位hook address的方法
+                        // TODO 寻找更好的Hook Address确定方法
                         if (HookCodeList.Count != 0 && HookCodeList.Contains(data.HookCode) && MisakaCodeList[0].Substring(3) == data.MisakaHookCode.Substring(3))
                         {
-                            SolvedDataRecvEventArgs e = new SolvedDataRecvEventArgs
+                            SolvedDataReceivedEventArgs e = new SolvedDataReceivedEventArgs
                             {
                                 Data = data
                             };
-                            Sevent?.Invoke(this, e);
+                            MeetHookAddressMessageReceived?.Invoke(this, e);
                         }
 
                     }
@@ -564,7 +563,7 @@ namespace TextHookLibrary
         {
             if (Pause) // 暂停时什么也不做
                 return;
-            SolvedDataRecvEventArgs e = new SolvedDataRecvEventArgs
+            SolvedDataReceivedEventArgs e = new SolvedDataReceivedEventArgs
             {
                 Data = new TextHookData()
                 {
@@ -576,7 +575,7 @@ namespace TextHookLibrary
                     Data = ClipboardText
                 }
             };
-            Sevent?.Invoke(this, e);
+            MeetHookAddressMessageReceived?.Invoke(this, e);
         }
 
 

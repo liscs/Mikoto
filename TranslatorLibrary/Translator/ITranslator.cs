@@ -1,9 +1,14 @@
 ﻿using System.Threading.Tasks;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public interface ITranslator
     {
+        /// <summary>
+        /// 翻译器用于显示的本地化名称
+        /// </summary>
+        string TranslatorDisplayName { get; set; }
+
         /// <summary>
         /// 翻译API初始化
         /// </summary>

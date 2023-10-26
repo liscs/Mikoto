@@ -2,8 +2,9 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
+using TranslatorLibrary.lang;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class BaiduTranslator : ITranslator
     {
@@ -12,6 +13,8 @@ namespace TranslatorLibrary
         public string appId;//百度翻译API 的APP ID
         public string secretKey;//百度翻译API 的密钥
         private string errorInfo;//错误信息
+
+        public string TranslatorDisplayName { get { return Strings.BaiduTranslator; } set => throw new System.NotImplementedException(); }
 
         public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
@@ -35,9 +38,9 @@ namespace TranslatorLibrary
 
             string retString;
 
-            string salt = CommonFunction.RD.Next(100000).ToString();
+            string salt = TranslatorCommon.RD.Next(100000).ToString();
 
-            string sign = CommonFunction.EncryptString(appId + q + salt + secretKey);
+            string sign = TranslatorCommon.EncryptString(appId + q + salt + secretKey);
             var sb = new StringBuilder("https://api.fanyi.baidu.com/api/trans/vip/translate?")
                 .Append("q=").Append(HttpUtility.UrlEncode(q))
                 .Append("&from=").Append(srcLang)
@@ -47,7 +50,7 @@ namespace TranslatorLibrary
                 .Append("&sign=").Append(sign);
             string url = sb.ToString();
 
-            var hc = CommonFunction.GetHttpClient();
+            var hc = TranslatorCommon.GetHttpClient();
             try
             {
                 retString = await hc.GetStringAsync(url);
@@ -63,7 +66,7 @@ namespace TranslatorLibrary
                 return null;
             }
 
-            BaiduTransOutInfo oinfo = JsonSerializer.Deserialize<BaiduTransOutInfo>(retString, CommonFunction.JsonOP);
+            BaiduTransOutInfo oinfo = JsonSerializer.Deserialize<BaiduTransOutInfo>(retString, TranslatorCommon.JsonOP);
 
             if (oinfo.error_code == null || oinfo.error_code == "52000")
             {

@@ -4,13 +4,16 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using TranslatorLibrary.lang;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class CaiyunTranslator : ITranslator
     {
         public string caiyunToken;//彩云小译 令牌
         private string errorInfo;//错误信息
+
+        public string TranslatorDisplayName { get { return Strings.CaiyunTranslator; } set => throw new System.NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -46,7 +49,7 @@ namespace TranslatorLibrary
                 {"detect", true}
             });
 
-            var hc = CommonFunction.GetHttpClient();
+            var hc = TranslatorCommon.GetHttpClient();
             var req = new StringContent(jsonParam, null, "application/json");
             req.Headers.Add("X-Authorization", "token " + caiyunToken);
             try
@@ -71,7 +74,7 @@ namespace TranslatorLibrary
             CaiyunTransResult oinfo;
             try
             {
-                oinfo = JsonSerializer.Deserialize<CaiyunTransResult>(retString, CommonFunction.JsonOP);
+                oinfo = JsonSerializer.Deserialize<CaiyunTransResult>(retString, TranslatorCommon.JsonOP);
             }
             catch
             {

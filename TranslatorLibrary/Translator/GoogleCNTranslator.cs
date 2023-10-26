@@ -1,11 +1,14 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
+using TranslatorLibrary.lang;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class GoogleCNTranslator : ITranslator
     {
         private string errorInfo;//错误信息
+
+        public string TranslatorDisplayName { get { return Strings.GoogleCNTranslator; } set => throw new System.NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -33,13 +36,13 @@ namespace TranslatorLibrary
 
             string googleTransUrl = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&sl=" + srcLang + "&tl=" + desLang + "&q=" + HttpUtility.UrlEncode(sourceText);
 
-            var hc = CommonFunction.GetHttpClient();
+            var hc = TranslatorCommon.GetHttpClient();
 
             try
             {
                 var ResultHtml = await hc.GetStringAsync(googleTransUrl);
 
-                dynamic TempResult = System.Text.Json.JsonSerializer.Deserialize<dynamic>(ResultHtml, CommonFunction.JsonOP);
+                dynamic TempResult = System.Text.Json.JsonSerializer.Deserialize<dynamic>(ResultHtml, TranslatorCommon.JsonOP);
 
                 string ResultText = "";
 
@@ -55,7 +58,7 @@ namespace TranslatorLibrary
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;

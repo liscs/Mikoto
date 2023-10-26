@@ -28,11 +28,11 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
             HookFunListView.ItemsSource = lstData;
             sum = 0;
-            Common.textHooker.HFSevent += DataRecvEventHandler;
-            Common.textHooker.StartHook(Convert.ToBoolean(Common.appSettings.AutoHook));
+            Common.textHooker.HookMessageReceived += FilterAndDisplayData;
+            _ = Common.textHooker.StartHook(Convert.ToBoolean(Common.appSettings.AutoHook));
         }
 
-        public void DataRecvEventHandler(object sender, HookSelectRecvEventArgs e)
+        public void FilterAndDisplayData(object sender, HookReceivedEventArgs e)
         {
             //加一步判断防止卡顿，部分不可能使用的方法刷新速度过快，在几秒之内就能刷新超过100个，这时候就停止对他们的刷新,直接卸载这个方法
             Application.Current.Dispatcher.BeginInvoke(() =>
@@ -64,14 +64,16 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                 int pid = lstData[HookFunListView.SelectedIndex].GamePID;
 
                 //先关闭对本窗口的输出
-                Common.textHooker.HFSevent -= DataRecvEventHandler;
+                Common.textHooker.HookMessageReceived -= FilterAndDisplayData;
 
                 //先要将需要用到的方法注明，再进行后续卸载操作
                 Common.textHooker.HookCodeList.Add(lstData[HookFunListView.SelectedIndex].HookCode);
                 Common.textHooker.MisakaCodeList.Add(lstData[HookFunListView.SelectedIndex].MisakaHookCode);
 
-                List<string> usedHook = new List<string>();
-                usedHook.Add(hookAdd);
+                List<string> usedHook = new List<string>
+                {
+                    hookAdd
+                };
 
                 //用户开启了自动卸载
                 if (Convert.ToBoolean(Common.appSettings.AutoDetach) == true)
@@ -108,13 +110,11 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                             //不记录特殊码，但也要写NULL
                             GameLibraryHelper.sqlHelper.ExecuteSql(
                                 $"UPDATE game_library SET hookcode_custom = '{"NULL"}' WHERE gameid = {Common.GameID};");
-
                         }
                     }
                     else
                     {
-                        GameLibraryHelper.sqlHelper.ExecuteSql(
-                            $"UPDATE game_library SET hookcode_custom = '{"NULL"}' WHERE gameid = {Common.GameID};");
+                        GameLibraryHelper.sqlHelper.ExecuteSql($"UPDATE game_library SET hookcode_custom = '{"NULL"}' WHERE gameid = {Common.GameID};");
                     }
 
                 }
@@ -138,7 +138,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
         {
             if (PIDTextBox.Text != "" && HookCodeTextBox.Text != "" && int.TryParse(PIDTextBox.Text, out int pid))
             {
-                Common.textHooker.AttachProcessByHookCode(pid, HookCodeTextBox.Text);
+                _ = Common.textHooker.AttachProcessByHookCode(pid, HookCodeTextBox.Text);
                 LastCustomHookCode = HookCodeTextBox.Text;
                 InputDrawer.IsOpen = false;
                 HandyControl.Controls.Growl.Info(Application.Current.Resources["ChooseHookFuncPage_HookApplyHint"].ToString());
@@ -158,7 +158,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
         {
             if (e.Key == Key.Escape)
             {
-                Common.textHooker.HFSevent -= DataRecvEventHandler;
+                Common.textHooker.HookMessageReceived -= FilterAndDisplayData;
                 HandyControl.Controls.Growl.Warning(Application.Current.Resources["ChooseHookFuncPage_PauseHint"].ToString());
             }
 

@@ -6,8 +6,9 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using TranslatorLibrary.lang;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class AzureTranslator : ITranslator
     {
@@ -19,6 +20,7 @@ namespace TranslatorLibrary
         private string errorInfo;//错误信息
         private readonly string endpoint = "https://api.cognitive.microsofttranslator.com";
 
+        public string TranslatorDisplayName { get { return Strings.AzureTranslator; } set { TranslatorDisplayName = value; } }
 
         public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
@@ -58,7 +60,7 @@ namespace TranslatorLibrary
                     string result = await response.Content.ReadAsStringAsync();
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        oinfo = System.Text.Json.JsonSerializer.Deserialize<List<AzureTransOutInfo>>(result, CommonFunction.JsonOP).ElementAt(0);
+                        oinfo = System.Text.Json.JsonSerializer.Deserialize<List<AzureTransOutInfo>>(result, TranslatorCommon.JsonOP).ElementAt(0);
                         if (oinfo.translations.Length == 0)
                             return string.Empty;
                         else if (oinfo.translations.Length == 1)
@@ -73,7 +75,7 @@ namespace TranslatorLibrary
                     }
                     else
                     {
-                        oinfo = System.Text.Json.JsonSerializer.Deserialize<AzureTransOutInfo>(result, CommonFunction.JsonOP);
+                        oinfo = System.Text.Json.JsonSerializer.Deserialize<AzureTransOutInfo>(result, TranslatorCommon.JsonOP);
                         errorInfo = $"ErrorCode: {oinfo.error.code}, Message: {oinfo.error.message}";
                         return null;
                     }
@@ -148,7 +150,7 @@ namespace TranslatorLibrary
     }
     struct AzureErrorResult
     {
-        public Int32 code;
+        public int code;
         public string message;
     }
 }

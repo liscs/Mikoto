@@ -72,5 +72,11 @@
       <TargetPlatformMinVersion Condition="$(TargetPlatformMinVersion) == '10.0.14257.0'">$(SupportedOSPlatformVersion)</TargetPlatformMinVersion>
     </PropertyGroup>
   </Target>
+  <ItemGroup>
+    <None Remove="C:\Users\dream\.nuget\packages\tesseractocr\5.2.14\build\\..\x86\leptonica-1.82.0.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="C:\Users\dream\.nuget\packages\tesseractocr\5.2.14\build\\..\x86\tesseract52.dll" />
+  </ItemGroup>
 
 </Project>

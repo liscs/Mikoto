@@ -1,14 +1,17 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
+using TranslatorLibrary.lang;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class YandexTranslator : ITranslator
     {
         public string ApiKey;
 
         private string errorInfo;
+
+        public string TranslatorDisplayName { get { return Strings.YandexTranslator; } set => throw new System.NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -26,13 +29,13 @@ namespace TranslatorLibrary
             if (srcLang == "jp")
                 srcLang = "ja";
 
-            var hc = CommonFunction.GetHttpClient();
+            var hc = TranslatorCommon.GetHttpClient();
             string apiurl = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + ApiKey + "&lang=" + srcLang + "-" + desLang + "&text=";
 
             try
             {
                 string retString = await hc.GetStringAsync(apiurl + HttpUtility.UrlEncode(sourceText));
-                var doc = JsonSerializer.Deserialize<Result>(retString, CommonFunction.JsonOP);
+                var doc = JsonSerializer.Deserialize<Result>(retString, TranslatorCommon.JsonOP);
                 return doc.text[0];
             }
             catch (System.Net.Http.HttpRequestException ex)
@@ -40,7 +43,7 @@ namespace TranslatorLibrary
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;

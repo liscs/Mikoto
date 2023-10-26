@@ -2,6 +2,7 @@ extern alias Tesseract;
 using OCRLibrary;
 using System.Windows;
 using TranslatorLibrary;
+using TranslatorLibrary.Translator;
 
 namespace MisakaTranslator_WPF
 {
@@ -172,7 +173,7 @@ namespace MisakaTranslator_WPF
 
                 if (Common.appSettings.HttpProxy != "")
                 {
-                    CommonFunction.SetHttpProxiedClient(Common.appSettings.HttpProxy);
+                    TranslatorCommon.SetHttpProxiedClient(Common.appSettings.HttpProxy);
                 }
                 ITranslator translator1 = TranslateWindow.TranslatorAuto(Common.appSettings.FirstTranslator);
                 ITranslator translator2 = TranslateWindow.TranslatorAuto(Common.appSettings.SecondTranslator);

@@ -18,6 +18,7 @@ using System.Windows.Media.Effects;
 using TextHookLibrary;
 using TextRepairLibrary;
 using TranslatorLibrary;
+using TranslatorLibrary.Translator;
 using TransOptimizationLibrary;
 using TTSHelperLibrary;
 using Windows.Win32;
@@ -104,7 +105,7 @@ namespace MisakaTranslator_WPF
             IsNotPausedFlag = true;
             if (Common.appSettings.HttpProxy != "")
             {
-                CommonFunction.SetHttpProxiedClient(Common.appSettings.HttpProxy);
+                TranslatorCommon.SetHttpProxiedClient(Common.appSettings.HttpProxy);
             }
             _translator1 = TranslatorAuto(Common.appSettings.FirstTranslator);
             _translator2 = TranslatorAuto(Common.appSettings.SecondTranslator);
@@ -114,11 +115,11 @@ namespace MisakaTranslator_WPF
 
             _artificialTransHelper = new ArtificialTransHelper(Convert.ToString(Common.GameID));
 
-            if (Common.transMode == 1)
+            if (Common.transMode == Common.TransMode.hook)
             {
-                Common.textHooker.Sevent += TranslateEventHook;
+                Common.textHooker.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
             }
-            else if (Common.transMode == 2)
+            else if (Common.transMode == Common.TransMode.ocr)
             {
                 MouseKeyboardHook_Init();
             }
@@ -223,10 +224,6 @@ namespace MisakaTranslator_WPF
                     BaiduTranslator bd = new BaiduTranslator();
                     bd.TranslatorInit(Common.appSettings.BDappID, Common.appSettings.BDsecretKey);
                     return bd;
-                case "TencentFYJTranslator":
-                    TencentFYJTranslator tx = new TencentFYJTranslator();
-                    tx.TranslatorInit(Common.appSettings.TXappID, Common.appSettings.TXappKey);
-                    return tx;
                 case "TencentOldTranslator":
                     TencentOldTranslator txo = new TencentOldTranslator();
                     txo.TranslatorInit(Common.appSettings.TXOSecretId, Common.appSettings.TXOSecretKey);
@@ -255,10 +252,6 @@ namespace MisakaTranslator_WPF
                     YoudaoTranslator yd = new YoudaoTranslator();
                     yd.TranslatorInit();
                     return yd;
-                case "AlapiTranslator":
-                    AlapiTranslator al = new AlapiTranslator();
-                    al.TranslatorInit();
-                    return al;
                 case "GoogleCNTranslator":
                     GoogleCNTranslator gct = new GoogleCNTranslator();
                     gct.TranslatorInit();
@@ -271,7 +264,7 @@ namespace MisakaTranslator_WPF
                     KingsoftFastAITTranslator kfat = new KingsoftFastAITTranslator();
                     kfat.TranslatorInit(Common.appSettings.KingsoftFastAITPath);
                     return kfat;
-                case "Dreye":
+                case "DreyeTranslator":
                     DreyeTranslator drt = new DreyeTranslator();
                     drt.TranslatorInit(Common.appSettings.DreyePath);
                     return drt;
@@ -401,7 +394,7 @@ namespace MisakaTranslator_WPF
         /// <summary>
         /// Hook模式下调用的事件
         /// </summary>
-        public void TranslateEventHook(object sender, SolvedDataRecvEventArgs e)
+        public void ProcessAndDisplayTranslation(object sender, SolvedDataReceivedEventArgs e)
         {
             //1.得到原句
             string source = e.Data.Data;
@@ -433,10 +426,7 @@ namespace MisakaTranslator_WPF
             if (repairedText.Length != 0 && repairedText.Length <= Common.appSettings.TransLimitNums)
             {
                 //2.5 清除面板
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    SourceTextPanel.Children.Clear();
-                });
+                Application.Current.Dispatcher.Invoke(SourceTextPanel.Children.Clear);
 
                 _currentsrcText = repairedText;
 
@@ -466,9 +456,11 @@ namespace MisakaTranslator_WPF
                     //分词后结果显示
                     for (int i = 0; i < mwi.Count; i++)
                     {
-                        StackPanel stackPanel = new StackPanel();
-                        stackPanel.Orientation = Orientation.Vertical;
-                        stackPanel.Margin = new Thickness(10, 0, 0, 10);
+                        StackPanel stackPanel = new StackPanel
+                        {
+                            Orientation = Orientation.Vertical,
+                            Margin = new Thickness(10, 0, 0, 10)
+                        };
 
                         System.Windows.Controls.TextBox textBlock = new()
                         {
@@ -734,7 +726,7 @@ namespace MisakaTranslator_WPF
 
         private void Pause_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (Common.transMode == 1)
+            if (Common.transMode == Common.TransMode.hook)
             {
                 if (Common.textHooker.Pause)
                 {
@@ -742,7 +734,7 @@ namespace MisakaTranslator_WPF
                 }
                 else
                 {
-                    PauseButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.Play);
+                    PauseButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Play);
                 }
                 Common.textHooker.Pause = !Common.textHooker.Pause;
             }
@@ -750,11 +742,11 @@ namespace MisakaTranslator_WPF
             {
                 if (IsNotPausedFlag)
                 {
-                    PauseButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.Play);
+                    PauseButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Play);
                 }
                 else
                 {
-                    PauseButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.Pause);
+                    PauseButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Pause);
                 }
                 IsNotPausedFlag = !IsNotPausedFlag;
             }
@@ -766,11 +758,11 @@ namespace MisakaTranslator_WPF
             _isShowSource = !_isShowSource;
             if (_isShowSource)
             {
-                ShowSourceButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.Eye);
+                ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Eye);
             }
             else
             {
-                ShowSourceButton.SetValue(FontAwesome.WPF.Awesome.ContentProperty, FontAwesomeIcon.EyeSlash);
+                ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.EyeSlash);
             }
             Common.appSettings.TF_showSourceText = _isShowSource;
         }
@@ -790,7 +782,7 @@ namespace MisakaTranslator_WPF
 
             if (Common.textHooker != null)
             {
-                Common.textHooker.Sevent -= TranslateEventHook;
+                Common.textHooker.MeetHookAddressMessageReceived -= ProcessAndDisplayTranslation;
                 Common.textHooker.StopHook();
                 Common.textHooker = null;
             }
@@ -860,7 +852,7 @@ namespace MisakaTranslator_WPF
 
         private void RenewOCR_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (Common.transMode == 2)
+            if (Common.transMode == Common.TransMode.ocr)
             {
                 TranslateEventOcr(true);
             }

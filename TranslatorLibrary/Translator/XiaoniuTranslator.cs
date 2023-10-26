@@ -2,13 +2,16 @@
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using TranslatorLibrary.lang;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class XiaoniuTranslator : ITranslator
     {
         public string apiKey;//小牛翻译API 的APIKEY
         private string errorInfo;//错误信息
+
+        public string TranslatorDisplayName { get { return Strings.XiaoniuTranslator; } set => throw new NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -39,7 +42,7 @@ namespace TranslatorLibrary
 
             string url = sb.ToString();
 
-            var hc = CommonFunction.GetHttpClient();
+            var hc = TranslatorCommon.GetHttpClient();
             try
             {
                 retString = await hc.GetStringAsync(url);
@@ -49,13 +52,13 @@ namespace TranslatorLibrary
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;
             }
 
-            XiaoniuTransOutInfo oinfo = JsonSerializer.Deserialize<XiaoniuTransOutInfo>(retString, CommonFunction.JsonOP);
+            XiaoniuTransOutInfo oinfo = JsonSerializer.Deserialize<XiaoniuTransOutInfo>(retString, TranslatorCommon.JsonOP);
 
             if (oinfo.error_code == null || oinfo.error_code == "52000")
             {

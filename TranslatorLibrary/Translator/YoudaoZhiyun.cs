@@ -6,14 +6,17 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
+using TranslatorLibrary.lang;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class YoudaoZhiyun : ITranslator
     {
         private static readonly string TRANSLATE_API_URL = "https://openapi.youdao.com/api";
         private string appId, appSecret;
         private string errorInfo;
+
+        public string TranslatorDisplayName { get { return Strings.YoudaoZhiyun; } set => throw new NotImplementedException(); }
 
         public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
@@ -26,12 +29,12 @@ namespace TranslatorLibrary
             string q = sourceText;
             string input = q.Length <= 20 ? q : q.Substring(0, 10) + q.Length + q.Substring(q.Length - 10);
             string salt = DateTime.Now.Millisecond.ToString();
-            string curtime = CommonFunction.GetTimeStamp();
+            string curtime = TranslatorCommon.GetTimeStamp();
             SHA256 sha = SHA256.Create();
             string sign = BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(appId + input + salt + curtime + appSecret))).Replace("-", "").ToLower();
             sha.Dispose();
 
-            Dictionary<String, String> dic = new Dictionary<String, String>
+            Dictionary<string, string> dic = new Dictionary<string, string>
             {
                 { "from", LangConversion(srcLang) },
                 { "to", LangConversion(desLang) },
@@ -49,7 +52,7 @@ namespace TranslatorLibrary
 
             try
             {
-                HttpResponseMessage response = await CommonFunction.GetHttpClient().PostAsync(TRANSLATE_API_URL, request);
+                HttpResponseMessage response = await TranslatorCommon.GetHttpClient().PostAsync(TRANSLATE_API_URL, request);
                 if (response.IsSuccessStatusCode)
                 {
                     string resultStr = await response.Content.ReadAsStringAsync();
@@ -70,12 +73,12 @@ namespace TranslatorLibrary
                     return null;
                 }
             }
-            catch (System.Net.Http.HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;

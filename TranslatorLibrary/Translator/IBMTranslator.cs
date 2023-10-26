@@ -4,8 +4,9 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using TranslatorLibrary.lang;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class IBMTranslator : ITranslator
     {
@@ -13,6 +14,8 @@ namespace TranslatorLibrary
         public string URL;
 
         private string errorInfo;
+
+        public string TranslatorDisplayName { get { return Strings.IBMTranslator; } set => throw new NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -38,7 +41,7 @@ namespace TranslatorLibrary
             }
 
             HttpResponseMessage resp;
-            var hc = CommonFunction.GetHttpClient();
+            var hc = TranslatorCommon.GetHttpClient();
             var req = new HttpRequestMessage(HttpMethod.Post, URL);
             string jsonParam = JsonSerializer.Serialize(new Dictionary<string, object>
             {
@@ -52,12 +55,12 @@ namespace TranslatorLibrary
             {
                 resp = await hc.SendAsync(req);
             }
-            catch (System.Net.Http.HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 errorInfo = ex.Message;
                 return null;
             }
-            catch (System.Threading.Tasks.TaskCanceledException ex)
+            catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
                 return null;
@@ -68,7 +71,7 @@ namespace TranslatorLibrary
             }
 
             string retString = await resp.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<Result>(retString, CommonFunction.JsonOP);
+            var result = JsonSerializer.Deserialize<Result>(retString, TranslatorCommon.JsonOP);
 
             if (!resp.IsSuccessStatusCode)
             {

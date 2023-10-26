@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using TranslatorLibrary.lang;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class JBeijingTranslator : ITranslator
     {
@@ -36,6 +37,8 @@ namespace TranslatorLibrary
 
         public string JBJCTDllPath;//DLL路径
         private string errorInfo;//错误信息
+
+        public string TranslatorDisplayName { get { return Strings.JBeijingTranslator; } set => throw new NotImplementedException(); }
 
         public string GetLastError()
         {

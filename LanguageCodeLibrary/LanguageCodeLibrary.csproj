@@ -1,7 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netframework'))">
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-</Project>

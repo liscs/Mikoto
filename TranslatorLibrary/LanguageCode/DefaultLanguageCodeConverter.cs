@@ -1,6 +1,6 @@
-﻿namespace LanguageCodeLibrary
+﻿namespace TranslatorLibrary
 {
-    public class BaiduLanguageCodeConverter : ILanguageCodeConverter
+    internal class DefaultLanguageCodeConverter : ILanguageCodeConverter
     {
         public string GetLanguageCode(Language language)
         {

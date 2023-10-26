@@ -1,25 +1,25 @@
-﻿namespace LanguageCodeLibrary
+﻿namespace TranslatorLibrary
 {
-    internal class DefaultLanguageCodeConverter : ILanguageCodeConverter
+    public class AzureLanguageCodeConverter : ILanguageCodeConverter
     {
         public string GetLanguageCode(Language language)
         {
             switch (language)
             {
                 case Language.Simplified_Chinese:
-                    return "zh";
+                    return "zh-Hans";
                 case Language.Traditional_Chinese:
-                    return "cht";
+                    return "zh-Hant";
                 case Language.English:
                     return "en";
                 case Language.Japanese:
-                    return "jp";
+                    return "ja";
                 case Language.Korean:
-                    return "kor";
+                    return "ko";
                 case Language.Spanish:
-                    return "spa";
+                    return "es";
                 case Language.French:
-                    return "fra";
+                    return "fr";
                 case Language.Portuguese:
                     return "pt";
                 case Language.Russian:

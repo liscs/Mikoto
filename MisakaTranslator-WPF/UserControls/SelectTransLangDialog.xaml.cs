@@ -20,7 +20,7 @@ namespace MisakaTranslator_WPF.UserControls
 
             _win = win;
 
-            _langList = CommonFunction.lstLanguage.Keys.ToList();
+            _langList = TranslatorCommon.LanguageList.Keys.ToList();
             SrcLangCombox.ItemsSource = _langList;
             DstLangCombox.ItemsSource = _langList;
 
@@ -30,8 +30,8 @@ namespace MisakaTranslator_WPF.UserControls
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _win.SrcLang = CommonFunction.lstLanguage[_langList[SrcLangCombox.SelectedIndex]];
-            _win.DstLang = CommonFunction.lstLanguage[_langList[DstLangCombox.SelectedIndex]];
+            _win.SrcLang = TranslatorCommon.LanguageList[_langList[SrcLangCombox.SelectedIndex]];
+            _win.DstLang = TranslatorCommon.LanguageList[_langList[DstLangCombox.SelectedIndex]];
 
             if (_win.SrcLang == "" || _win.DstLang == "" || _win.SrcLang == _win.DstLang)
             {

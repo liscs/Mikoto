@@ -1,0 +1,17 @@
+﻿在TranslatorLibrary/Translator中添加实现ITranslator的类
+在TranslatorLibrary/lang/Strings.resx中添加翻译器的本地化名称
+在MisakaTranslator-WPF/SettingsPages中添加翻译器的设置xaml页
+在MisakaTranslator-WPF/lang中添加翻译器设置页的本地化字符串
+在MisakaTranslator-WPF/IAppSettings中添加需要保存的信息（密钥等）
+在MisakaTranslator-WPF/SettingsWindow.xaml中添加设置左列项目
+在MisakaTranslator-WPF/SettingsWindow.xaml.cs中添加导航显示设置页面的代码
+
+Add a class that implements ITranslator in TranslatorLibrary/Translator
+Add the localized name of the translator in TranslatorLibrary/lang/Strings.resx
+Add the translator's settings xaml page in MisakaTranslator-WPF/SettingsPages
+Add localized strings for the translator settings page in MisakaTranslator-WPF/lang
+Add the information that needs to be saved (keys, etc.) in MisakaTranslator-WPF/IAppSettings
+Add settings left column items in MisakaTranslator-WPF/SettingsWindow.xaml
+Add the code to navigate and display the settings page in MisakaTranslator-WPF/SettingsWindow.xaml.cs
+
+//TODO 利用反射简化

@@ -4,8 +4,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
+using TranslatorLibrary.lang;
 
-namespace TranslatorLibrary
+namespace TranslatorLibrary.Translator
 {
     public class TencentOldTranslator : ITranslator
     {
@@ -13,6 +14,8 @@ namespace TranslatorLibrary
         private string errorInfo;//错误信息
         public string SecretId;//腾讯旧版API SecretId
         public string SecretKey;//腾讯旧版API SecretKey
+
+        public string TranslatorDisplayName { get { return Strings.TencentOldTranslator; } set => throw new NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -27,8 +30,8 @@ namespace TranslatorLibrary
                 return null;
             }
 
-            string salt = CommonFunction.RD.Next(100000).ToString();
-            string ts = CommonFunction.GetTimeStamp().ToString();
+            string salt = TranslatorCommon.RD.Next(100000).ToString();
+            string ts = TranslatorCommon.GetTimeStamp().ToString();
 
             string url = "https://tmt.tencentcloudapi.com/?";
 
@@ -67,7 +70,7 @@ namespace TranslatorLibrary
             req = sb.ToString();
 
             string retString;
-            var hc = CommonFunction.GetHttpClient();
+            var hc = TranslatorCommon.GetHttpClient();
             try
             {
                 retString = await hc.GetStringAsync(url + req);
@@ -83,7 +86,7 @@ namespace TranslatorLibrary
                 return null;
             }
 
-            TencentOldTransOutInfo oinfo = JsonSerializer.Deserialize<TencentOldTransOutInfo>(retString, CommonFunction.JsonOP);
+            TencentOldTransOutInfo oinfo = JsonSerializer.Deserialize<TencentOldTransOutInfo>(retString, TranslatorCommon.JsonOP);
 
             if (oinfo.Response.Error == null)
             {
