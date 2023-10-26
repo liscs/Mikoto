@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
+using TranslatorLibrary.lang;
 
 namespace TranslatorLibrary.Translator
 {
@@ -7,8 +8,7 @@ namespace TranslatorLibrary.Translator
     {
         private string errorInfo;//错误信息
 
-        public string TranslatorKey { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string TranslatorDisplayName { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.GoogleCNTranslator; } set => throw new System.NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -36,13 +36,13 @@ namespace TranslatorLibrary.Translator
 
             string googleTransUrl = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&sl=" + srcLang + "&tl=" + desLang + "&q=" + HttpUtility.UrlEncode(sourceText);
 
-            var hc = CommonFunction.GetHttpClient();
+            var hc = TranslatorCommon.GetHttpClient();
 
             try
             {
                 var ResultHtml = await hc.GetStringAsync(googleTransUrl);
 
-                dynamic TempResult = System.Text.Json.JsonSerializer.Deserialize<dynamic>(ResultHtml, CommonFunction.JsonOP);
+                dynamic TempResult = System.Text.Json.JsonSerializer.Deserialize<dynamic>(ResultHtml, TranslatorCommon.JsonOP);
 
                 string ResultText = "";
 

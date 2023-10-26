@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
+using TranslatorLibrary.lang;
 
 namespace TranslatorLibrary.Translator
 {
@@ -10,8 +11,7 @@ namespace TranslatorLibrary.Translator
 
         private string errorInfo;
 
-        public string TranslatorKey { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string TranslatorDisplayName { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.YandexTranslator; } set => throw new System.NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -29,13 +29,13 @@ namespace TranslatorLibrary.Translator
             if (srcLang == "jp")
                 srcLang = "ja";
 
-            var hc = CommonFunction.GetHttpClient();
+            var hc = TranslatorCommon.GetHttpClient();
             string apiurl = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + ApiKey + "&lang=" + srcLang + "-" + desLang + "&text=";
 
             try
             {
                 string retString = await hc.GetStringAsync(apiurl + HttpUtility.UrlEncode(sourceText));
-                var doc = JsonSerializer.Deserialize<Result>(retString, CommonFunction.JsonOP);
+                var doc = JsonSerializer.Deserialize<Result>(retString, TranslatorCommon.JsonOP);
                 return doc.text[0];
             }
             catch (System.Net.Http.HttpRequestException ex)

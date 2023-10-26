@@ -105,7 +105,7 @@ namespace MisakaTranslator_WPF
             IsNotPausedFlag = true;
             if (Common.appSettings.HttpProxy != "")
             {
-                CommonFunction.SetHttpProxiedClient(Common.appSettings.HttpProxy);
+                TranslatorCommon.SetHttpProxiedClient(Common.appSettings.HttpProxy);
             }
             _translator1 = TranslatorAuto(Common.appSettings.FirstTranslator);
             _translator2 = TranslatorAuto(Common.appSettings.SecondTranslator);
@@ -224,10 +224,6 @@ namespace MisakaTranslator_WPF
                     BaiduTranslator bd = new BaiduTranslator();
                     bd.TranslatorInit(Common.appSettings.BDappID, Common.appSettings.BDsecretKey);
                     return bd;
-                case "TencentFYJTranslator":
-                    TencentFYJTranslator tx = new TencentFYJTranslator();
-                    tx.TranslatorInit(Common.appSettings.TXappID, Common.appSettings.TXappKey);
-                    return tx;
                 case "TencentOldTranslator":
                     TencentOldTranslator txo = new TencentOldTranslator();
                     txo.TranslatorInit(Common.appSettings.TXOSecretId, Common.appSettings.TXOSecretKey);
@@ -256,10 +252,6 @@ namespace MisakaTranslator_WPF
                     YoudaoTranslator yd = new YoudaoTranslator();
                     yd.TranslatorInit();
                     return yd;
-                case "AlapiTranslator":
-                    AlapiTranslator al = new AlapiTranslator();
-                    al.TranslatorInit();
-                    return al;
                 case "GoogleCNTranslator":
                     GoogleCNTranslator gct = new GoogleCNTranslator();
                     gct.TranslatorInit();
@@ -272,7 +264,7 @@ namespace MisakaTranslator_WPF
                     KingsoftFastAITTranslator kfat = new KingsoftFastAITTranslator();
                     kfat.TranslatorInit(Common.appSettings.KingsoftFastAITPath);
                     return kfat;
-                case "Dreye":
+                case "DreyeTranslator":
                     DreyeTranslator drt = new DreyeTranslator();
                     drt.TranslatorInit(Common.appSettings.DreyePath);
                     return drt;

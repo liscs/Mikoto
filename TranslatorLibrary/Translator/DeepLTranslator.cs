@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using TranslatorLibrary.lang;
 
 /*
  * DeepL translator integration
@@ -20,8 +21,7 @@ namespace TranslatorLibrary.Translator
         private string secretKey; //DeepL翻译API的秘钥
         private string errorInfo; //错误信息
 
-        public string TranslatorKey { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string TranslatorDisplayName { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.DeepLTranslator; } set => throw new System.NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -45,11 +45,11 @@ namespace TranslatorLibrary.Translator
 
             try
             {
-                HttpResponseMessage response = await CommonFunction.GetHttpClient().PostAsync(TRANSLATE_API_URL, request);
+                HttpResponseMessage response = await TranslatorCommon.GetHttpClient().PostAsync(TRANSLATE_API_URL, request);
                 if (response.IsSuccessStatusCode)
                 {
                     string resultStr = await response.Content.ReadAsStringAsync();
-                    DeepLTranslateResult translateResult = JsonSerializer.Deserialize<DeepLTranslateResult>(resultStr, CommonFunction.JsonOP);
+                    DeepLTranslateResult translateResult = JsonSerializer.Deserialize<DeepLTranslateResult>(resultStr, TranslatorCommon.JsonOP);
                     if (translateResult.translations?.Length > 0)
                     {
                         return translateResult.translations[0].text;

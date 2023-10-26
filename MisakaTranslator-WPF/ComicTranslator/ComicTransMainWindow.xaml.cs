@@ -40,7 +40,7 @@ namespace MisakaTranslator_WPF.ComicTranslator
 
         System.Windows.Point iniP;
         private ViewModel viewModel;
-        System.Drawing.Rectangle selectRect;
+        Rectangle selectRect;
         double scale;
 
         public ComicTransMainWindow()
@@ -54,7 +54,7 @@ namespace MisakaTranslator_WPF.ComicTranslator
 
             if (Common.appSettings.HttpProxy != "")
             {
-                CommonFunction.SetHttpProxiedClient(Common.appSettings.HttpProxy);
+                TranslatorCommon.SetHttpProxiedClient(Common.appSettings.HttpProxy);
             }
             transRes1 = "";
             transRes2 = "";
@@ -114,7 +114,6 @@ namespace MisakaTranslator_WPF.ComicTranslator
                 Width = 2,
                 Height = 2,
                 StylusTip = StylusTip.Rectangle,
-                //FitToCurve = true,
                 IsHighlighter = false,
                 IgnorePressure = true,
             };

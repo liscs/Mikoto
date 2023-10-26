@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ArtificialTranslator" xml:space="preserve">
-    <value>本地人工翻译(见说明)</value>
+    <value>Local human translation (see description)</value>
   </data>
   <data name="AzureTranslator" xml:space="preserve">
     <value>Azure</value>

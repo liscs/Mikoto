@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using TranslatorLibrary.lang;
 
 namespace TranslatorLibrary.Translator
 {
@@ -14,8 +15,7 @@ namespace TranslatorLibrary.Translator
 
         private string errorInfo;
 
-        public string TranslatorKey { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string TranslatorDisplayName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.IBMTranslator; } set => throw new NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -41,7 +41,7 @@ namespace TranslatorLibrary.Translator
             }
 
             HttpResponseMessage resp;
-            var hc = CommonFunction.GetHttpClient();
+            var hc = TranslatorCommon.GetHttpClient();
             var req = new HttpRequestMessage(HttpMethod.Post, URL);
             string jsonParam = JsonSerializer.Serialize(new Dictionary<string, object>
             {
@@ -71,7 +71,7 @@ namespace TranslatorLibrary.Translator
             }
 
             string retString = await resp.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<Result>(retString, CommonFunction.JsonOP);
+            var result = JsonSerializer.Deserialize<Result>(retString, TranslatorCommon.JsonOP);
 
             if (!resp.IsSuccessStatusCode)
             {

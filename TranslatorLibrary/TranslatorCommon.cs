@@ -5,14 +5,36 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
+using TranslatorLibrary.Translator;
 
 namespace TranslatorLibrary
 {
-    public static class CommonFunction
+    public static class TranslatorCommon
     {
+        /// <summary>
+        /// 反射获取所有的翻译器（即所有实现了ITranslator的类），放入字典
+        /// </summary>
+        public static void Init()
+        {
+            Task.Run(() =>
+            {
+                Type type = typeof(ITranslator);
+                var types = AppDomain.CurrentDomain.GetAssemblies()
+                    .SelectMany(s => s.GetTypes())
+                    .Where(p => type.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract);
+                foreach (Type item in types)
+                {
+                    object obj = Activator.CreateInstance(item);
+                    string displayName = item.GetProperty("TranslatorDisplayName").GetValue(obj).ToString();
+                    TranslatorList.Add(displayName, item.Name);
+                }
+            });
+        }
+
         // TODO 搞成反射
-        public static Dictionary<string, string> lstLanguage = new Dictionary<string, string>() {
-            { "中文" , "zh" },
+        public static Dictionary<string, string> LanguageList = new Dictionary<string, string>() {
+            { "简体中文" , "zh" },
             { "English" , "en" },
             { "日本語" ,  "jp" },
             { "한국어" , "kr" },
@@ -20,25 +42,8 @@ namespace TranslatorLibrary
             { "Français" , "fr" }
         };
 
-        public static Dictionary<string, string> lstTranslator = new Dictionary<string, string>() {
-            { "无翻译" , "NoTranslator"},
-            { "百度翻译" , "BaiduTranslator" },
-            { "腾讯云翻译" , "TencentOldTranslator" },
-            { "彩云小译" , "CaiyunTranslator" },
-            { "小牛翻译" , "XiaoniuTranslator"},
-            { "IBM翻译" , "IBMTranslator"},
-            { "Yandex翻译" , "YandexTranslator"},
-            { "有道智云", "YoudaoZhiyun"},
-            { "有道翻译(公共接口)" , "YoudaoTranslator" },
-            { "谷歌翻译(公共接口)" , "GoogleCNTranslator"},
-            { "JBeijing" , "JBeijingTranslator" },
-            { "金山快译" , "KingsoftFastAITTranslator" },
-            { "译典通", "Dreye"},
-            { "DeepL", "DeepLTranslator"},
-            { "ChatGPT", "ChatGPTTranslator" },
-            { "Azure", "AzureTranslator" },
-            { "本地人工翻译(见说明)" , "ArtificialTranslator"}
-        };
+        public static Dictionary<string, string> TranslatorList = new Dictionary<string, string>();
+
 
         /// <summary>
         /// 计算MD5值
@@ -79,7 +84,7 @@ namespace TranslatorLibrary
         /// <returns></returns>
         public static List<string> GetTranslatorList()
         {
-            return lstTranslator.Keys.ToList();
+            return TranslatorList.Keys.ToList();
         }
 
         /// <summary>
@@ -89,9 +94,9 @@ namespace TranslatorLibrary
         /// <returns></returns>
         public static int GetTranslatorIndex(string TranslatorValue)
         {
-            for (int i = 0; i < lstTranslator.Count; i++)
+            for (int i = 0; i < TranslatorList.Count; i++)
             {
-                var kvp = lstTranslator.ElementAt(i);
+                var kvp = TranslatorList.ElementAt(i);
                 if (kvp.Value == TranslatorValue)
                 {
                     return i;
@@ -107,7 +112,7 @@ namespace TranslatorLibrary
         public static HttpClient GetHttpClient()
         {
             if (HC == null)
-                lock (typeof(CommonFunction))
+                lock (typeof(TranslatorCommon))
                     if (HC == null)
                     {
                         HC = new HttpClient() { Timeout = TimeSpan.FromSeconds(8) };

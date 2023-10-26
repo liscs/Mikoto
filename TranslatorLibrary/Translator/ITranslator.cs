@@ -5,11 +5,6 @@ namespace TranslatorLibrary.Translator
     public interface ITranslator
     {
         /// <summary>
-        /// 定位翻译器的唯一键
-        /// </summary>
-        string TranslatorKey { get; set; }
-
-        /// <summary>
         /// 翻译器用于显示的本地化名称
         /// </summary>
         string TranslatorDisplayName { get; set; }

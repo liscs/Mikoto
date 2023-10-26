@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using TranslatorLibrary.lang;
 
 /*
  * ChatGPT translator integration
@@ -20,8 +21,7 @@ namespace TranslatorLibrary.Translator
         private string apiUrl; //ChatGPT翻译API的URL
         private string errorInfo; //错误信息
 
-        public string TranslatorKey { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string TranslatorDisplayName { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.ChatGPTTranslator; } set => throw new System.NotImplementedException(); }
 
         public string GetLastError()
         {
@@ -39,7 +39,7 @@ namespace TranslatorLibrary.Translator
             }
             string retString;
             string jsonParam = $"{{\"model\": \"{openai_model}\",\"messages\": [{{\"role\": \"system\", \"content\": \"Translate {srcLang} To {desLang}\"}},{{\"role\": \"user\", \"content\": \"{q}\"}}]}}";
-            var hc = CommonFunction.GetHttpClient();
+            var hc = TranslatorCommon.GetHttpClient();
             var req = new StringContent(jsonParam, null, "application/json");
             hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
             try
@@ -65,7 +65,7 @@ namespace TranslatorLibrary.Translator
 
             try
             {
-                oinfo = JsonSerializer.Deserialize<ChatResponse>(retString, CommonFunction.JsonOP);
+                oinfo = JsonSerializer.Deserialize<ChatResponse>(retString, TranslatorCommon.JsonOP);
             }
             catch
             {
@@ -81,7 +81,7 @@ namespace TranslatorLibrary.Translator
             {
                 try
                 {
-                    var err = JsonSerializer.Deserialize<ChatResErr>(retString, CommonFunction.JsonOP);
+                    var err = JsonSerializer.Deserialize<ChatResErr>(retString, TranslatorCommon.JsonOP);
                     errorInfo = err.error.message;
                     return null;
                 }

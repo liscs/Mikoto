@@ -2,6 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     
+    <sys:String x:Key="Language_Changed">Language is set. Restart translator to take effect.</sys:String>
+
     <sys:String x:Key="MessageBox_Error">Error</sys:String>
     <sys:String x:Key="MessageBox_Result">Result</sys:String>
     <sys:String x:Key="MessageBox_Ask">Ask</sys:String>
@@ -46,11 +48,7 @@
     <sys:String x:Key="SettingsMenu_OCRSettings_BaiduFanyi">BaiduFanyi OCR</sys:String>
     <sys:String x:Key="SettingsMenu_OCRSettings_Tencent">Tencent Image Translation</sys:String>
     <sys:String x:Key="SettingsMenu_OCRSettings_TesseractCli">TesseractCli OCR</sys:String>
-    
-    
-    <sys:String x:Key="Language_Changed">Language is set. Restart translator to take effect.</sys:String>
 
-    
     <sys:String x:Key="SettingsMenu_TranslatorSettings">Translation Settings</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_General">General</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Baidu">百度翻译 Baidu Translate</sys:String>
@@ -76,6 +74,7 @@
     <sys:String x:Key="API_testDstLang">Target text language</sys:String>
     <sys:String x:Key="API_testTransBtn">Test translation</sys:String>
     <sys:String x:Key="API_docBtn">Error codes guide (API Document)</sys:String>
+    <sys:String x:Key="API_langCode">语言代码查询</sys:String>
     <sys:String x:Key="API_billBtn">Check API quota</sys:String>
 
     <sys:String x:Key="GeneralTransSettingsPage_Introduce">The translator window simultaneously displays two sources at most. You can set the APIs in use and toggle the sentence-break setting from below.</sys:String>
@@ -85,6 +84,10 @@
     <sys:String x:Key="GeneralTransSettingsPage_EachRowTransCheckBox">Enable sentence-break</sys:String>
     <sys:String x:Key="GeneralTransSettingsPage_TransSourceHint">Note: Translation takes longer if you use multiple online APIs at the same time.</sys:String>
     <sys:String x:Key="GeneralTransSettingsPage_EachRowTransHint">When disabled, the Translator combines all texts into one sentence. This improves translation quality for some games.</sys:String>
+    
+    <sys:String x:Key="AzureTransSettingsPage_Introduce">Azure翻译简介</sys:String>
+    <sys:String x:Key="AzureTransSettingsPage_secretKey">AzureAPI 密钥</sys:String>
+    <sys:String x:Key="AzureTransSettingsPage_location">AzureAPI 位置/区域</sys:String>
 
     <sys:String x:Key="BaiduTransSettingsPage_Introduce">Baidu Translate (百度翻译, network required) supports inter-translation for 28 languages; among them English, Japanese, Chinese translation is better. You need to apply for the API and activate translation services (on the website in Chinese), get access to the appID and key, and then fill in below before testing. If the API is tested as invalid, you can refer to official Baidu documentations with the error codes. It is likely to incur charges, &quot;Check API quota&quot; will lead you to the dashboard of Baidu Translate.</sys:String>
     <sys:String x:Key="BaiduTransSettingsPage_appID">API appID</sys:String>
@@ -96,7 +99,6 @@
     <sys:String x:Key="ChatGPTTransSettingsPage_Introduce">ChatPT (network required) provides AI Tranlate. You need to apply for the API, acquire the authentication key, and then fill in below before testing. If the API is tested as invalid, you can refer to official OpenAI documentations with the error codes. It is likely to incur charges, &quot;Check API quota&quot; will lead you to the dashboard of OpenAI.</sys:String>
     <sys:String x:Key="ChatGPTTransSettingsPage_secretKey">ChatGPT authentication key</sys:String>
     <sys:String x:Key="ChatGPTTransSettingsPage_apiUrl">ChatGPT API URL</sys:String>
-
 
     <sys:String x:Key="TencentOldTransSettingsPage_Introduce">Tencent TMT API (腾讯云翻译, network required) supports multilingual translation with better support for Japanese and Chinese. You need to apply for the API (on the website in Chinese), get access to the SecretId and SecretKey, and then fill in below before testing. If the API is tested as invalid, you can refer to official Tencent documentations with the error codes. Previous version of API is likely to incur charges, &quot;Check API quota&quot; will lead you to the dashboard of Tencent TMT.</sys:String>
     <sys:String x:Key="TencentOldTransSettingsPage_SecretId">SecretId</sys:String>
@@ -110,7 +112,7 @@
     <sys:String x:Key="CaiyunTransSettingsPage_Token">API token</sys:String>
 
     <sys:String x:Key="IBMTransSettingsPage_Introduce">IBM Language Translator (network required) supports inter-translation between English and other languages by default. This project supports transition between non-English, through it will be converted to English internally, resulting in large amount of quota consumption and unimpressed quality.</sys:String>
-    <sys:String x:Key="IBMTransSettingsPage_secretKey">IBM API key</sys:String>
+    <sys:String x:Key="IBMTransSettingsPage_apiKey">IBM API key</sys:String>
     <sys:String x:Key="IBMTransSettingsPage_URL">IBM URL</sys:String>
 
     <sys:String x:Key="YandexTransSettingsPage_Introduce">Yandex translate (network required) requires verification credit card for registration.</sys:String>
@@ -291,7 +293,8 @@
     <sys:String x:Key="TransWinSettingsWin_FontName">Font</sys:String>
     <sys:String x:Key="TransWinSettingsWin_BtnChooseColor">Choose a color</sys:String>
     <sys:String x:Key="TransWinSettingsWin_srcSetNotice">Changes to the source text takes effect after texts updated.</sys:String>
-
+    <sys:String x:Key="TransWinSettingsWin_enableWhiteStroke">启用白色描边</sys:String>
+    
     <sys:String x:Key="AddOptWin_Introduce">Enter the word you want to add into the thesaurus, which will be replaced directly in the original sentence before submitting for translation.</sys:String>
     <sys:String x:Key="AddOptWin_beforeBox">Original word</sys:String>
     <sys:String x:Key="AddOptWin_afterBox">Translation</sys:String>
@@ -334,11 +337,11 @@
     <sys:String x:Key="TransWinSettingsWin_DropShadowCbox">开启文字阴影</sys:String>
 
     <sys:String x:Key="TransWinSettingsWin_KanaCbox">开启日语原文假名标注</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_ColorfulCbox">开启源文本分词上色</sys:String>
 
     <sys:String x:Key="TransWinSettingsWin_HirakanaCbox">使用平假名注音</sys:String>
 
     <sys:String x:Key="TransWinSettingsWin_KanaBoldCbox">将假名标注加粗</sys:String>
-    <sys:String x:Key="TransWinSettingsWin_ColorfulCbox">开启源文本分词上色</sys:String>
 
     <sys:String x:Key="MainWindow_AutoUpdateCheck">发现新版本！点击确认进入下载页面，点击取消忽略本次更新提示。</sys:String>
 

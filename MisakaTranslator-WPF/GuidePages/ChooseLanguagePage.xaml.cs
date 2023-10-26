@@ -18,7 +18,7 @@ namespace MisakaTranslator_WPF.GuidePages
         {
             InitializeComponent();
 
-            _langList = CommonFunction.lstLanguage.Keys.ToList();
+            _langList = TranslatorCommon.LanguageList.Keys.ToList();
             SrcLangCombox.ItemsSource = _langList;
             DstLangCombox.ItemsSource = _langList;
 
@@ -34,8 +34,8 @@ namespace MisakaTranslator_WPF.GuidePages
             }
             else
             {
-                Common.UsingSrcLang = CommonFunction.lstLanguage[_langList[SrcLangCombox.SelectedIndex]];
-                Common.UsingDstLang = CommonFunction.lstLanguage[_langList[DstLangCombox.SelectedIndex]];
+                Common.UsingSrcLang = TranslatorCommon.LanguageList[_langList[SrcLangCombox.SelectedIndex]];
+                Common.UsingDstLang = TranslatorCommon.LanguageList[_langList[DstLangCombox.SelectedIndex]];
 
                 //写数据库信息
                 if (Common.GameID != -1)

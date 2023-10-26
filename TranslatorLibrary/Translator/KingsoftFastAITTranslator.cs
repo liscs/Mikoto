@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using TranslatorLibrary.lang;
 
 namespace TranslatorLibrary.Translator
 {
@@ -101,8 +102,7 @@ namespace TranslatorLibrary.Translator
         public string FilePath;//文件路径
         private string errorInfo;//错误信息
 
-        public string TranslatorKey { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string TranslatorDisplayName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.KingsoftFastAITTranslator; } set => throw new NotImplementedException(); }
 
         public string GetLastError()
         {

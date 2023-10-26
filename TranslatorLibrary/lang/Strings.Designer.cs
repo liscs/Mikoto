@@ -61,11 +61,155 @@ namespace TranslatorLibrary.lang {
         }
         
         /// <summary>
+        ///   查找类似 本地人工翻译(见说明) 的本地化字符串。
+        /// </summary>
+        internal static string ArtificialTranslator {
+            get {
+                return ResourceManager.GetString("ArtificialTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Azure 的本地化字符串。
         /// </summary>
-        internal static string Azure {
+        internal static string AzureTranslator {
             get {
-                return ResourceManager.GetString("Azure", resourceCulture);
+                return ResourceManager.GetString("AzureTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 百度翻译 的本地化字符串。
+        /// </summary>
+        internal static string BaiduTranslator {
+            get {
+                return ResourceManager.GetString("BaiduTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 彩云小译 的本地化字符串。
+        /// </summary>
+        internal static string CaiyunTranslator {
+            get {
+                return ResourceManager.GetString("CaiyunTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ChatGPT 的本地化字符串。
+        /// </summary>
+        internal static string ChatGPTTranslator {
+            get {
+                return ResourceManager.GetString("ChatGPTTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 DeepL 的本地化字符串。
+        /// </summary>
+        internal static string DeepLTranslator {
+            get {
+                return ResourceManager.GetString("DeepLTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 译典通 的本地化字符串。
+        /// </summary>
+        internal static string DreyeTranslator {
+            get {
+                return ResourceManager.GetString("DreyeTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 谷歌翻译(公共接口) 的本地化字符串。
+        /// </summary>
+        internal static string GoogleCNTranslator {
+            get {
+                return ResourceManager.GetString("GoogleCNTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 IBM翻译 的本地化字符串。
+        /// </summary>
+        internal static string IBMTranslator {
+            get {
+                return ResourceManager.GetString("IBMTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 JBeijing 的本地化字符串。
+        /// </summary>
+        internal static string JBeijingTranslator {
+            get {
+                return ResourceManager.GetString("JBeijingTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 金山快译 的本地化字符串。
+        /// </summary>
+        internal static string KingsoftFastAITTranslator {
+            get {
+                return ResourceManager.GetString("KingsoftFastAITTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 无翻译 的本地化字符串。
+        /// </summary>
+        internal static string NoTranslator {
+            get {
+                return ResourceManager.GetString("NoTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 腾讯云翻译 的本地化字符串。
+        /// </summary>
+        internal static string TencentOldTranslator {
+            get {
+                return ResourceManager.GetString("TencentOldTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 小牛翻译 的本地化字符串。
+        /// </summary>
+        internal static string XiaoniuTranslator {
+            get {
+                return ResourceManager.GetString("XiaoniuTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Yandex翻译 的本地化字符串。
+        /// </summary>
+        internal static string YandexTranslator {
+            get {
+                return ResourceManager.GetString("YandexTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 有道翻译(公共接口) 的本地化字符串。
+        /// </summary>
+        internal static string YoudaoTranslator {
+            get {
+                return ResourceManager.GetString("YoudaoTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 有道智云 的本地化字符串。
+        /// </summary>
+        internal static string YoudaoZhiyun {
+            get {
+                return ResourceManager.GetString("YoudaoZhiyun", resourceCulture);
             }
         }
     }

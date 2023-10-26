@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TranslatorLibrary.lang;
 
 namespace TranslatorLibrary.Translator
 {
@@ -397,7 +398,6 @@ namespace TranslatorLibrary.Translator
         private const double possibleCursorsThresh = 0.001;
         private Dictionary<int, double> possibleCursors = new Dictionary<int, double>();
 
-        public string TranslatorKey { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string TranslatorDisplayName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.ArtificialTranslator; } set => throw new NotImplementedException(); }
     }
 }

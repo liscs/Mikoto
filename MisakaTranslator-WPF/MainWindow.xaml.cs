@@ -7,12 +7,15 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
 using TextHookLibrary;
+using TranslatorLibrary;
 
 namespace MisakaTranslator_WPF
 {
@@ -28,9 +31,9 @@ namespace MisakaTranslator_WPF
         {
             Instance = this;
             Common.mainWin = this;
-
             var settings = new ConfigurationBuilder<IAppSettings>().UseIniFile("settings/settings.ini").Build();
             InitializeLanguage();
+            TranslatorCommon.Init();
             InitializeComponent();
             Initialize(settings);
             GrowlDisableSwitch();
@@ -43,6 +46,8 @@ namespace MisakaTranslator_WPF
         {
             var appResource = Application.Current.Resources.MergedDictionaries;
             Common.appSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\settings\\settings.ini").Build();
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(Common.appSettings.AppLanguage);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Common.appSettings.AppLanguage);
             foreach (var item in appResource)
             {
                 //卸载所有非当前语言的资源文件
