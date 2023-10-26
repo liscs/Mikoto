@@ -7,6 +7,7 @@ using MecabHelperLibrary;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -425,8 +426,6 @@ namespace MisakaTranslator_WPF
             //补充2：如果去重后文本长度为0，则不翻译不显示
             if (repairedText.Length != 0 && repairedText.Length <= Common.appSettings.TransLimitNums)
             {
-                //2.5 清除面板
-                Application.Current.Dispatcher.Invoke(SourceTextPanel.Children.Clear);
 
                 _currentsrcText = repairedText;
 
@@ -446,10 +445,11 @@ namespace MisakaTranslator_WPF
         /// <param name="repairedText">原文</param>
         private void UpdateSource(string repairedText)
         {
-            if (_isShowSource)
+            // 使用BeginInvoke，在更新原文时可以去获取翻译
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
-                // 使用BeginInvoke，在更新原文时可以去获取翻译
-                Application.Current.Dispatcher.BeginInvoke(() =>
+                SourceTextPanel.Children.Clear();
+                if (_isShowSource)
                 {
                     //3.分词
                     var mwi = _mecabHelper.SentenceHandle(repairedText);
@@ -585,8 +585,9 @@ namespace MisakaTranslator_WPF
                         }
 
                     }
-                });
-            }
+                }
+            });
+
         }
 
         /// <summary>
