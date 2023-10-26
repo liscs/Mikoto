@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace TextHookLibrary
 {
@@ -106,7 +107,7 @@ namespace TextHookLibrary
                 }
             }
             else
-                foreach (var p in Process.GetProcesses())
+                foreach (Process p in Process.GetProcesses().Where(p => (long)p.MainWindowHandle != 0).ToArray())
                     using (p)
                         try { l.Add((p.Id, p.MainModule.FileName)); }
                         catch (System.ComponentModel.Win32Exception) { } // 无权限

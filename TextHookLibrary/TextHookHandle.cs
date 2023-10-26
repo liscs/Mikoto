@@ -371,7 +371,10 @@ namespace TextHookLibrary
 
                         //文本去重窗口处理&游戏翻译窗口处理
                         // TODO 寻找更好的Hook Address确定方法
-                        if (HookCodeList.Count != 0 && HookCodeList.Contains(data.HookCode) && MisakaCodeList[0].Substring(3) == data.MisakaHookCode.Substring(3))
+                        if (HookCodeList.Count != 0 
+                            && HookCodeList.Contains(data.HookCode) &&
+                            MisakaCodeList[0].Split(':').ElementAt(0).Substring(3) == data.MisakaHookCode.Split(':').ElementAt(0).Substring(3) &&
+                            MisakaCodeList[0].Split(':').ElementAt(2) == data.MisakaHookCode.Split(':').ElementAt(2))
                         {
                             SolvedDataReceivedEventArgs e = new SolvedDataReceivedEventArgs
                             {

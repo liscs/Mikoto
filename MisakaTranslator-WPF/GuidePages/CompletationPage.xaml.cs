@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using SQLHelperLibrary;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace MisakaTranslator_WPF.GuidePages
@@ -15,6 +16,14 @@ namespace MisakaTranslator_WPF.GuidePages
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
+            //刷新主界面
+            Dispatcher.BeginInvoke(() =>
+            {
+                MainWindow.Instance.GameLibraryPanel.Children.Clear();
+                MainWindow.Instance.GameInfoList = GameLibraryHelper.GetAllGameLibrary();
+                MainWindow.Instance.GameLibraryPanel_Init();
+            });
+
             //使用路由事件机制通知窗口来完成下一步操作
             PageChangeRoutedEventArgs args = new PageChangeRoutedEventArgs(PageChange.PageChangeRoutedEvent, this);
             args.XamlPath = "1";//表示完成
