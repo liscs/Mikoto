@@ -284,6 +284,20 @@ namespace MisakaTranslator_WPF
             set;
         }
 
+        [Option(Alias = "TTS.AzureTTSSecretKey", DefaultValue = "")]
+        string AzureTTSSecretKey
+        {
+            get;
+            set;
+        }
+
+        [Option(Alias = "TTS.AzureTTSLocation", DefaultValue = "")]
+        string AzureTTSLocation
+        {
+            get;
+            set;
+        }
+
         [Option(Alias = "TTS.Voice", DefaultValue = "")]
         string ttsVoice
         {

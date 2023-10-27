@@ -49,7 +49,10 @@
                 <hc:SideMenuItem Header="{StaticResource SettingsMenu_DictSettings_xxgrz}" Selected="Item_xxgrz_Selected"/>
                 <hc:SideMenuItem Header="MeCab" Selected="Item_MeCabSettings_Selected"/>
             </hc:SideMenuItem>
-            <hc:SideMenuItem Header="{StaticResource SettingsMenu_TTSSettings}" FontSize="15" Selected="Item_TTSSettings_Selected"/>
+            <hc:SideMenuItem Header="{StaticResource SettingsMenu_TTSSettings}" FontSize="15">
+                <hc:SideMenuItem Header="{StaticResource SettingsMenu_LocalTTS}" Selected="Item_LocalTTS_Selected"/>
+                <hc:SideMenuItem Header="{StaticResource SettingsMenu_AzureTTS}" Selected="Item_AzureTTS_Selected"/>
+            </hc:SideMenuItem>
             <hc:SideMenuItem Header="{StaticResource SettingsMenu_ATSettings}" FontSize="15" Selected="Item_ATSettings_Selected"/>
         </hc:SideMenu>
         <Frame Grid.Column="1" Name="SettingFrame" Source="SettingsPages/AboutPage.xaml" NavigationUIVisibility="Hidden"/>

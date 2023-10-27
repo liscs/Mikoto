@@ -1,11 +1,30 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netframework'))">
-    <Reference Include="System.Speech" />
-  </ItemGroup>
+	<PropertyGroup>
+		<Platforms>AnyCPU</Platforms>
+	</PropertyGroup>
 
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netcoreapp'))">
-    <PackageReference Include="System.Speech" Version="7.0.0"/>
-  </ItemGroup>
+	<ItemGroup Condition="$(TargetFramework.StartsWith('netframework'))">
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="System.Net.Http" />
+		<Reference Include="System.Web" />
+		<Reference Include="System.Speech" />
+	</ItemGroup>
 
+	<!-- Cognitive Service Text to speech... manually added because adding via Visual Studio is broken
+       as per https://stackoverflow.com/questions/75616169/unable-to-load-dll-microsoft-cognitiveservices-speech-core-dll-could-not-be-f#answer-75623332 -->
+	<ItemGroup>
+		<Content Include="..\packages\Microsoft.CognitiveServices.Speech.1.32.1\Microsoft.CognitiveServices.Speech.core.dll">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\packages\Microsoft.CognitiveServices.Speech.1.32.1\Microsoft.CognitiveServices.Speech.extension.audio.sys.dll">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CognitiveServices.Speech">
+			<Version>1.32.1</Version>
+		</PackageReference>
+	</ItemGroup>
 </Project>

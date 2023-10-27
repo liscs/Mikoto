@@ -3,16 +3,17 @@ using System.Windows;
 using System.Windows.Controls;
 using TTSHelperLibrary;
 
-namespace MisakaTranslator_WPF.SettingsPages
+
+namespace MisakaTranslator_WPF.SettingsPages.TTSPages
 {
     /// <summary>
-    /// TTSSettingsPage.xaml 的交互逻辑
+    /// LocalTTSSettingsPage.xaml 的交互逻辑
     /// </summary>
-    public partial class TTSSettingsPage : Page
+    public partial class LocalTTSSettingsPage : Page
     {
         TextSpeechHelper tsh;
 
-        public TTSSettingsPage()
+        public LocalTTSSettingsPage()
         {
             tsh = new TextSpeechHelper();
             InitializeComponent();
