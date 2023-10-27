@@ -284,6 +284,21 @@ namespace MisakaTranslator_WPF
             set;
         }
 
+        //选择使用的TTS，"azure"为AzureTTS，"local"为系统本地TTS
+        [Option(Alias = "TTS.SelectedTTS", DefaultValue = "local")]
+        string SelectedTTS
+        {
+            get;
+            set;
+        }
+
+        [Option(Alias = "TTS.AzureTTSProxy", DefaultValue = "")]
+        string AzureTTSProxy
+        {
+            get;
+            set;
+        }
+
         [Option(Alias = "TTS.AzureTTSSecretKey", DefaultValue = "")]
         string AzureTTSSecretKey
         {
@@ -293,6 +308,13 @@ namespace MisakaTranslator_WPF
 
         [Option(Alias = "TTS.AzureTTSLocation", DefaultValue = "")]
         string AzureTTSLocation
+        {
+            get;
+            set;
+        }
+
+        [Option(Alias = "TTS.AzureTTSVoice", DefaultValue = "ja-JP-NanamiNeural")]
+        string AzureTTSVoice
         {
             get;
             set;

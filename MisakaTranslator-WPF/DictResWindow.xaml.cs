@@ -11,16 +11,16 @@ namespace MisakaTranslator_WPF
     public partial class DictResWindow : System.Windows.Window
     {
         private string sourceWord;
-        private TextSpeechHelper _textSpeechHelper;
+        private LocalTTS _textSpeechHelper;
         private IDict _dict;
 
-        public DictResWindow(string word, string kana = "----", TextSpeechHelper tsh = null)
+        public DictResWindow(string word, string kana = "----", LocalTTS tsh = null)
         {
             sourceWord = word;
             InitializeComponent();
             if (tsh == null)
             {
-                _textSpeechHelper = new TextSpeechHelper();
+                _textSpeechHelper = new LocalTTS();
             }
             else
             {

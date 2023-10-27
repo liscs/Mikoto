@@ -3,16 +3,16 @@ using System.Speech.Synthesis;
 
 namespace TTSHelperLibrary
 {
-    public class TextSpeechHelper
+    public class LocalTTS
     {
         private SpeechSynthesizer synth;
 
-        public TextSpeechHelper()
+        public LocalTTS()
         {
             synth = new SpeechSynthesizer();
         }
 
-        ~TextSpeechHelper()
+        ~LocalTTS()
         {
             synth = null;
         }

@@ -11,11 +11,11 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
     /// </summary>
     public partial class LocalTTSSettingsPage : Page
     {
-        TextSpeechHelper tsh;
+        LocalTTS tsh;
 
         public LocalTTSSettingsPage()
         {
-            tsh = new TextSpeechHelper();
+            tsh = new LocalTTS();
             InitializeComponent();
 
             List<string> lst = tsh.GetAllTTSEngine();

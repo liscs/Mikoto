@@ -22,9 +22,11 @@ using TranslatorLibrary;
 using TranslatorLibrary.Translator;
 using TransOptimizationLibrary;
 using TTSHelperLibrary;
+using TTSHelperLibrary.TTSGenerator;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
+using static MisakaTranslator_WPF.Common;
 
 namespace MisakaTranslator_WPF
 {
@@ -59,7 +61,9 @@ namespace MisakaTranslator_WPF
 
         private readonly object _saveTransResultLock = new object(); // 读写数据库和_gameTextHistory的线程锁
 
-        private TextSpeechHelper _textSpeechHelper;//TTS朗读对象
+        private LocalTTS _localTTS;//本地TTS朗读对象
+
+        private AzureTTS _azureTTS;
 
         private HWND winHandle;//窗口句柄，用于设置活动窗口，以达到全屏状态下总在最前的目的
 
@@ -85,17 +89,21 @@ namespace MisakaTranslator_WPF
                 Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoMeCab_Hint"].ToString());
             }
 
-            _textSpeechHelper = new TextSpeechHelper();
+            _localTTS = new LocalTTS();
             if (Common.appSettings.ttsVoice == "")
             {
                 Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoTTS_Hint"].ToString());
             }
             else
             {
-                _textSpeechHelper.SetTTSVoice(Common.appSettings.ttsVoice);
-                _textSpeechHelper.SetVolume(Common.appSettings.ttsVolume);
-                _textSpeechHelper.SetRate(Common.appSettings.ttsRate);
+                _localTTS.SetTTSVoice(Common.appSettings.ttsVoice);
+                _localTTS.SetVolume(Common.appSettings.ttsVolume);
+                _localTTS.SetRate(Common.appSettings.ttsRate);
             }
+
+            _azureTTS = new AzureTTS();
+            _azureTTS.TTSInit(appSettings.AzureTTSSecretKey, appSettings.AzureTTSLocation);
+            AzureTTS.ProxyString = appSettings.AzureTTSProxy;
 
             if (Common.appSettings.xxgPath != string.Empty)
             {
@@ -378,7 +386,7 @@ namespace MisakaTranslator_WPF
                         else
                         {
                             dtimer.Stop();
-                            DictResWindow _dictResWindow = new DictResWindow(textBlock.Text, (string)textBlock.Tag, _textSpeechHelper);
+                            DictResWindow _dictResWindow = new DictResWindow(textBlock.Text, (string)textBlock.Tag, _localTTS);
                             _dictResWindow.ShowDialog();
                             dtimer.Start();
                         }
@@ -884,7 +892,15 @@ namespace MisakaTranslator_WPF
 
         private void TTS_Item_Click(object sender, RoutedEventArgs e)
         {
-            _textSpeechHelper.SpeakAsync(_currentsrcText);
+            Enum.TryParse(appSettings.SelectedTTS, out TTSMode mode);
+            if (mode == TTSMode.local)
+            {
+                _localTTS.SpeakAsync(_currentsrcText);
+            }
+            else if (mode == TTSMode.azure)
+            {
+                _ = _azureTTS.TextToSpeechAsync(_currentsrcText, appSettings.AzureTTSVoice);
+            }
         }
 
         private void TransWin_Loaded(object sender, RoutedEventArgs e)

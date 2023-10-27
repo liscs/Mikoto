@@ -33,6 +33,11 @@ namespace MisakaTranslator_WPF
             hook = 1,
             ocr = 2,
         }
+        public enum TTSMode
+        {
+            azure = 1,
+            local = 2,
+        }
         public static TransMode transMode; //全局使用中的翻译模式 1=hook 2=ocr
 
         public static int GameID; //全局使用中的游戏ID(数据库)

@@ -44,7 +44,7 @@ namespace TranslatorLibrary.Translator
             object[] body = new object[] { new { Text = textToTranslate } };
             var requestBody = JsonConvert.SerializeObject(body);
             AzureTransOutInfo oinfo;
-            using (var client = new HttpClient())
+            var client = TranslatorCommon.GetHttpClient();
             using (var request = new HttpRequestMessage())
             {
                 // Build the request.
