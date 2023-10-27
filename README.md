@@ -14,3 +14,5 @@
   <br>
   <br>
 </p>
+
+原始项目页：https://github.com/hanmin0822/MisakaTranslator
