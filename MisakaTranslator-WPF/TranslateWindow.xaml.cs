@@ -467,11 +467,12 @@ namespace MisakaTranslator_WPF
                         StackPanel stackPanel = new StackPanel
                         {
                             Orientation = Orientation.Vertical,
-                            Margin = new Thickness(10, 0, 0, 10)
+                            Margin = new Thickness(5, 0, 0, 5)
                         };
 
                         System.Windows.Controls.TextBox textBlock = new()
                         {
+                            TextAlignment = TextAlignment.Center,
                             IsReadOnly = true,
                             Background = new SolidColorBrush(Colors.Transparent),
                             BorderBrush = new SolidColorBrush(Colors.Transparent),
@@ -485,48 +486,77 @@ namespace MisakaTranslator_WPF
                         }
                         textBlock.Text = mwi[i].Word;
 
+
+                        //选择平假名或者片假名
                         if (Common.appSettings.TF_Hiragana)
                         {
-                            textBlock.Tag = mwi[i].HiraKana;
+                            textBlock.Tag = mwi[i].Hiragana;
                         }
                         else
                         {
-                            textBlock.Tag = mwi[i].Kana;
+                            textBlock.Tag = mwi[i].Katakana;
                         }
-                        //选择平假名或者片假名
-
 
                         textBlock.Margin = new Thickness(0, 0, 0, 0);
                         textBlock.FontSize = SourceTextFontSize;
                         textBlock.Background = Brushes.Transparent;
                         textBlock.MouseLeftButtonDown += DictArea_MouseLeftButtonDown;
-                        //根据不同词性跟字体上色
-
 
                         if (Common.appSettings.TF_DropShadow)
                         {
-                            textBlock.Effect = DropShadow;
                             //加入原文的阴影
+                            textBlock.Effect = DropShadow;
                         }
 
                         if (Common.appSettings.TF_Colorful)
                         {
+                            //根据不同词性跟字体上色
                             switch (mwi[i].PartOfSpeech)
                             {
-                                case "名詞":
-                                    textBlock.Foreground = Brushes.AliceBlue;
-                                    break;
-                                case "助詞":
-                                    textBlock.Foreground = Brushes.LightGreen;
+                                case "補助記号":
+                                    textBlock.Foreground = Brushes.White;
                                     break;
                                 case "動詞":
-                                    textBlock.Foreground = Brushes.Red;
+                                    textBlock.Foreground = Brushes.YellowGreen;
                                     break;
-                                case "連体詞":
+                                case "形容詞":
                                     textBlock.Foreground = Brushes.Orange;
                                     break;
+                                case "判定詞":
+                                    textBlock.Foreground = Brushes.Yellow;
+                                    break;
+                                case "助動詞":
+                                    textBlock.Foreground = Brushes.LightGreen;
+                                    break;
+                                case "名詞":
+                                    textBlock.Foreground = Brushes.SkyBlue;
+                                    break;
+                                case "副詞":
+                                    textBlock.Foreground = Brushes.Indigo;
+                                    break;
+                                case "助詞":
+                                    textBlock.Foreground = Brushes.Wheat;
+                                    break;
+                                case "連体詞":
+                                    textBlock.Foreground = Brushes.Pink;
+                                    break;
+                                case "接続詞":
+                                    textBlock.Foreground = Brushes.Brown;
+                                    break;
+                                case "感動詞":
+                                    textBlock.Foreground = Brushes.Red;
+                                    break;
+                                case "指示詞":
+                                    textBlock.Foreground = Brushes.Plum;
+                                    break;
+                                case "代名詞":
+                                    textBlock.Foreground = Brushes.Olive;
+                                    break;
+                                case "接頭辞":
+                                    textBlock.Foreground = Brushes.LightGreen;
+                                    break;
                                 default:
-                                    textBlock.Foreground = Brushes.White;
+                                    textBlock.Foreground = Brushes.Gray;
                                     break;
                             }
                         }
@@ -535,30 +565,30 @@ namespace MisakaTranslator_WPF
                             textBlock.Foreground = Brushes.White;
                         }
 
-                        TextBlock superScript = new TextBlock();//假名或注释等的上标标签
+                        // 假名或注释等的上标标签
+                        TextBlock superScript = new TextBlock();
                         if (!string.IsNullOrEmpty(SourceTextFont))
                         {
                             FontFamily fontFamily = new FontFamily(SourceTextFont);
                             superScript.FontFamily = fontFamily;
                         }
-
+                        //选择平假名或者片假名
                         if (Common.appSettings.TF_Hiragana)
                         {
-                            superScript.Text = mwi[i].HiraKana;
+                            superScript.Text = mwi[i].Hiragana;
                         }
                         else
                         {
-                            superScript.Text = mwi[i].Kana;
+                            superScript.Text = mwi[i].Katakana;
                         }
-                        //选择平假名或者片假名
 
                         superScript.Margin = new Thickness(0, 0, 0, 2);
                         superScript.HorizontalAlignment = HorizontalAlignment.Center;
 
                         if (Common.appSettings.TF_DropShadow)
                         {
-                            superScript.Effect = DropShadow;
                             //加入注音的阴影
+                            superScript.Effect = DropShadow;
                         }
 
                         if (SourceTextFontSize - 6.5 > 0)
@@ -569,7 +599,6 @@ namespace MisakaTranslator_WPF
                                 superScript.FontWeight = FontWeights.Bold;
                                 //注音加粗
                             }
-
                         }
                         else
                         {
@@ -578,7 +607,6 @@ namespace MisakaTranslator_WPF
                         superScript.Background = Brushes.Transparent;
                         superScript.Foreground = Brushes.White;
                         stackPanel.Children.Add(superScript);
-
 
                         //是否打开假名标注
                         if (Common.appSettings.TF_isKanaShow)
@@ -591,11 +619,9 @@ namespace MisakaTranslator_WPF
                             textBlock.Margin = new Thickness(10, 0, 0, 10);
                             SourceTextPanel.Children.Add(textBlock);
                         }
-
                     }
                 }
             });
-
         }
 
         /// <summary>

@@ -26,12 +26,12 @@ namespace MecabHelperLibrary
         /// <summary>
         /// 片假名
         /// </summary>
-        public string Kana;
+        public string Katakana;
 
         /// <summary>
         /// 平假名
         /// </summary>
-        public string HiraKana;
+        public string Hiragana;
 
         /// <summary>
         /// 罗马音
@@ -101,11 +101,11 @@ namespace MecabHelperLibrary
 
                         //加这一步是为了防止乱码进入分词导致无法读取假名
                         //以及助词一般不需要注音
-                        if (features.Length >= 8 & mwi.PartOfSpeech != "助詞")
+                        if (features.Length >= 21 && mwi.PartOfSpeech != "助詞" && mwi.PartOfSpeech != "補助記号" && mwi.PartOfSpeech != "空白")
                         {
-                            mwi.HiraKana = KataganaToHiragana(features[7]);
-                            mwi.Romaji = HiraganaToAlphabet(mwi.HiraKana);
-                            mwi.Kana = features[7];
+                            mwi.Katakana = features[20];
+                            mwi.Hiragana = KatakanaToHiragana(mwi.Katakana);
+                            mwi.Romaji = HiraganaToAlphabet(mwi.Hiragana);
                         }
 
                         ret.Add(mwi);
@@ -119,7 +119,7 @@ namespace MecabHelperLibrary
             return ret;
         }
 
-        static string KataganaToHiragana(string s)
+        static string KatakanaToHiragana(string s)
         {
             StringBuilder sb = new StringBuilder();
             char[] target = s.ToCharArray();
@@ -128,15 +128,15 @@ namespace MecabHelperLibrary
             {
                 c = target[i];
                 if (c >= 'ァ' && c <= 'ヴ')
-                { // 筛选平假名范围内的字符
-                    c = (char)(c - 0x0060);  // 平假名转换为片假名
+                { // 筛选片假名范围内的字符
+                    c = (char)(c - 0x0060);  // 片假名转换为平假名
                 }
                 sb.Append(c);
             }
             return sb.ToString();
         }
 
-        static string HiraganaToAlphabet1(string s)
+        static string ConvertHiraganaToRomaji(string s)
         {
             switch (s)
             {
@@ -308,34 +308,34 @@ namespace MecabHelperLibrary
             }
         }
 
-        static string HiraganaToAlphabet(string s1)
+        //平假名转罗马音
+        static string HiraganaToAlphabet(string kana)
         {
-            string s2 = "";
-            for (int i = 0; i < s1.Length; i++)
+            string romaji = "";
+            for (int i = 0; i < kana.Length; i++)
             {
 
-                if (i + 1 < s1.Length)
+                if (i + 1 < kana.Length)
                 {
                     // 有「っ」的情况下
-                    if (s1.Substring(i, 1).CompareTo("っ") == 0)
+                    if (kana.Substring(i, 1).CompareTo("っ") == 0)
                     {
-                        s2 += HiraganaToAlphabet1(s1.Substring(i + 1, 1)).Substring(0, 1);
+                        romaji += ConvertHiraganaToRomaji(kana.Substring(i + 1, 1)).Substring(0, 1);
                         continue;
                     }
 
-
                     // 出现其他小假名的情况
-                    string s3 = HiraganaToAlphabet1(s1.Substring(i, 2));
-                    if (s3.CompareTo("*") != 0)
+                    string combineConvertResult = ConvertHiraganaToRomaji(kana.Substring(i, 2));
+                    if (combineConvertResult.CompareTo("") != 0)
                     {
-                        s2 += s3;
+                        romaji += combineConvertResult;
                         i++;
                         continue;
                     }
                 }
-                s2 += HiraganaToAlphabet1(s1.Substring(i, 1));
+                romaji += ConvertHiraganaToRomaji(kana.Substring(i, 1));
             }
-            return s2;
+            return romaji;
         }
     }
 }
