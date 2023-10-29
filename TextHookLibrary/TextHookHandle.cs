@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using UtilityLibrary;
 using Windows.Win32;
 
 namespace TextHookLibrary
@@ -307,6 +309,9 @@ namespace TextHookLibrary
             }
         }
 
+
+        List<string> matchList = new List<string>();
+        HashSet<string> excludeSet = new HashSet<string>();
         /// <summary>
         /// 控制台输出事件，在这做内部消化处理
         /// </summary>
@@ -370,17 +375,31 @@ namespace TextHookLibrary
                         }
 
                         //文本去重窗口处理&游戏翻译窗口处理
-                        // TODO 寻找更好的Hook Address确定方法，记录misakacode列表，取平均最长的？
-                        if (HookCodeList.Count != 0 
-                            && HookCodeList.Contains(data.HookCode) &&
+                        // TODO 寻找更好的Hook Address确定方法，记录匹配的多个misakacode表，将不够匹配的列入排除表
+                        if (HookCodeList.Count != 0 &&
+                            HookCodeList.Contains(data.HookCode) &&
+                            //要求第一串后四位以及第三串相等
                             MisakaCodeList[0].Split(':').ElementAt(0).Substring(3) == data.MisakaHookCode.Split(':').ElementAt(0).Substring(3) &&
                             MisakaCodeList[0].Split(':').ElementAt(2) == data.MisakaHookCode.Split(':').ElementAt(2))
                         {
-                            SolvedDataReceivedEventArgs e = new SolvedDataReceivedEventArgs
+                            if (!excludeSet.Contains(data.MisakaHookCode.Split(':').ElementAt(1)))
                             {
-                                Data = data
-                            };
-                            MeetHookAddressMessageReceived?.Invoke(this, e);
+                                if (!matchList.Contains(data.MisakaHookCode.Split(':')[1]))
+                                {
+                                    matchList.Add(data.MisakaHookCode.Split(':')[1]);
+                                }
+                                SolvedDataReceivedEventArgs e = new SolvedDataReceivedEventArgs
+                                {
+                                    Data = data
+                                };
+                                MeetHookAddressMessageReceived?.Invoke(this, e);
+                                if (matchList.Count > 1)
+                                {
+                                    string notThatMatch = GetWorstMatchString(MisakaCodeList[0].Split(':').ElementAt(1), matchList[0], matchList[1]);
+                                    excludeSet.Add(notThatMatch);
+                                    matchList.Clear();
+                                }
+                            }
                         }
 
                     }
@@ -389,6 +408,17 @@ namespace TextHookLibrary
 
             }
 
+        }
+
+        /// <summary>
+        /// 获得最不匹配target的字符串
+        /// </summary>
+        private string GetWorstMatchString(string target, string s1, string s2)
+        {
+            int dist1 = Algorithm.GetLevenshteinDistance(target, s1);
+            int dist2 = Algorithm.GetLevenshteinDistance(target, s2);
+            if (dist1 < dist2) { return s2; }
+            else { return s1; }
         }
 
         /// <summary>

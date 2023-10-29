@@ -5,4 +5,8 @@
     <UseWin32>true</UseWin32>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UtilityLibrary\UtilityLibrary.csproj" />
+  </ItemGroup>
+
 </Project>

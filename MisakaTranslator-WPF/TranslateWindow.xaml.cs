@@ -831,10 +831,8 @@ namespace MisakaTranslator_WPF
                 //System.InvalidOperationException:“关闭 Window 之后，无法设置 Visibility，也无法调用 Show、ShowDialogor 或 WindowInteropHelper.EnsureHandle。”
                 Common.mainWin.Visibility = Visibility.Visible;
             }
-            catch (Exception ex)
-            {
-                Common.WhiteExceptionLog(ex);
-            }
+            catch (InvalidOperationException)
+            {}
         }
 
         private void Settings_Item_Click(object sender, RoutedEventArgs e)

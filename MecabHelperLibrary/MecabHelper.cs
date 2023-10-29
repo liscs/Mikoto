@@ -326,7 +326,7 @@ namespace MecabHelperLibrary
 
                     // 出现其他小假名的情况
                     string combineConvertResult = ConvertHiraganaToRomaji(kana.Substring(i, 2));
-                    if (combineConvertResult.CompareTo("") != 0)
+                    if (combineConvertResult != "")
                     {
                         romaji += combineConvertResult;
                         i++;
