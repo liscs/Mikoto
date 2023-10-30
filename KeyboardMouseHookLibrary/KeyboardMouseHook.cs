@@ -80,7 +80,7 @@ namespace KeyboardMouseHookLibrary
                 processMonitor.BeginOutputReadLine();
                 return res;
             }
-            catch (System.ComponentModel.Win32Exception ex)
+            catch (System.ComponentModel.Win32Exception)
             {
                 return false;
             }

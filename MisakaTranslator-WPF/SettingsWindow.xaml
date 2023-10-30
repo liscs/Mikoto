@@ -50,7 +50,7 @@
                 <hc:SideMenuItem Header="MeCab" Selected="Item_MeCabSettings_Selected"/>
             </hc:SideMenuItem>
             <hc:SideMenuItem Header="{StaticResource SettingsMenu_TTSSettings}" FontSize="15">
-                <hc:SideMenuItem Header="TTS选择" Selected="Item_ChooseTTS_Selected"/>
+                <hc:SideMenuItem Header="{StaticResource SettingsMenu_SelectTTS}" Selected="Item_ChooseTTS_Selected"/>
                 <hc:SideMenuItem Header="{StaticResource SettingsMenu_AzureTTS}" Selected="Item_AzureTTS_Selected"/>
                 <hc:SideMenuItem Header="{StaticResource SettingsMenu_LocalTTS}" Selected="Item_LocalTTS_Selected"/>
             </hc:SideMenuItem>

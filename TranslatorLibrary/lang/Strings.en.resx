@@ -124,10 +124,10 @@
     <value>Azure</value>
   </data>
   <data name="BaiduTranslator" xml:space="preserve">
-    <value>百度翻译</value>
+    <value>Baidu Translate</value>
   </data>
   <data name="CaiyunTranslator" xml:space="preserve">
-    <value>彩云小译</value>
+    <value>Lingocloud</value>
   </data>
   <data name="ChatGPTTranslator" xml:space="preserve">
     <value>ChatGPT</value>
@@ -136,36 +136,36 @@
     <value>DeepL</value>
   </data>
   <data name="DreyeTranslator" xml:space="preserve">
-    <value>译典通</value>
+    <value>Dr.eye</value>
   </data>
   <data name="GoogleCNTranslator" xml:space="preserve">
-    <value>谷歌翻译(公共接口)</value>
+    <value>Google Translator (Public Interface)</value>
   </data>
   <data name="IBMTranslator" xml:space="preserve">
-    <value>IBM翻译</value>
+    <value>IBM</value>
   </data>
   <data name="JBeijingTranslator" xml:space="preserve">
     <value>JBeijing</value>
   </data>
   <data name="KingsoftFastAITTranslator" xml:space="preserve">
-    <value>金山快译</value>
+    <value>Kingsoft Fast AIT</value>
   </data>
   <data name="NoTranslator" xml:space="preserve">
-    <value>无翻译</value>
+    <value>No Translator</value>
   </data>
   <data name="TencentOldTranslator" xml:space="preserve">
-    <value>腾讯云翻译</value>
+    <value>Tencent TMT</value>
   </data>
   <data name="XiaoniuTranslator" xml:space="preserve">
-    <value>小牛翻译</value>
+    <value>Xiaoniu Translation</value>
   </data>
   <data name="YandexTranslator" xml:space="preserve">
-    <value>Yandex翻译</value>
+    <value>Yandex Translator</value>
   </data>
   <data name="YoudaoTranslator" xml:space="preserve">
-    <value>有道翻译(公共接口)</value>
+    <value>Youdao Translator (Public Interface)</value>
   </data>
   <data name="YoudaoZhiyun" xml:space="preserve">
-    <value>有道智云</value>
+    <value>Youdao AI</value>
   </data>
 </root>

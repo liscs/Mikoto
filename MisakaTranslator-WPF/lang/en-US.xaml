@@ -74,7 +74,7 @@
     <sys:String x:Key="API_testDstLang">Target text language</sys:String>
     <sys:String x:Key="API_testTransBtn">Test translation</sys:String>
     <sys:String x:Key="API_docBtn">Error codes guide (API Document)</sys:String>
-    <sys:String x:Key="API_langCode">语言代码查询</sys:String>
+    <sys:String x:Key="API_langCode">Language code query</sys:String>
     <sys:String x:Key="API_billBtn">Check API quota</sys:String>
 
     <sys:String x:Key="GeneralTransSettingsPage_Introduce">The translator window simultaneously displays two sources at most. You can set the APIs in use and toggle the sentence-break setting from below.</sys:String>
@@ -84,10 +84,10 @@
     <sys:String x:Key="GeneralTransSettingsPage_EachRowTransCheckBox">Enable sentence-break</sys:String>
     <sys:String x:Key="GeneralTransSettingsPage_TransSourceHint">Note: Translation takes longer if you use multiple online APIs at the same time.</sys:String>
     <sys:String x:Key="GeneralTransSettingsPage_EachRowTransHint">When disabled, the Translator combines all texts into one sentence. This improves translation quality for some games.</sys:String>
-    
-    <sys:String x:Key="AzureTransSettingsPage_Introduce">Azure翻译简介</sys:String>
-    <sys:String x:Key="AzureTransSettingsPage_secretKey">AzureAPI 密钥</sys:String>
-    <sys:String x:Key="AzureTransSettingsPage_location">AzureAPI 位置/区域</sys:String>
+
+    <sys:String x:Key="AzureTransSettingsPage_Introduce">Azure Translation Introduction</sys:String>
+    <sys:String x:Key="AzureTransSettingsPage_secretKey">AzureAPI key</sys:String>
+    <sys:String x:Key="AzureTransSettingsPage_location">AzureAPI location/region</sys:String>
 
     <sys:String x:Key="BaiduTransSettingsPage_Introduce">Baidu Translate (百度翻译, network required) supports inter-translation for 28 languages; among them English, Japanese, Chinese translation is better. You need to apply for the API and activate translation services (on the website in Chinese), get access to the appID and key, and then fill in below before testing. If the API is tested as invalid, you can refer to official Baidu documentations with the error codes. It is likely to incur charges, &quot;Check API quota&quot; will lead you to the dashboard of Baidu Translate.</sys:String>
     <sys:String x:Key="BaiduTransSettingsPage_appID">API appID</sys:String>
@@ -116,7 +116,7 @@
     <sys:String x:Key="IBMTransSettingsPage_URL">IBM URL</sys:String>
 
     <sys:String x:Key="YandexTransSettingsPage_Introduce">Yandex translate (network required) requires verification credit card for registration.</sys:String>
-    <sys:String x:Key="YandexTransSettingsPage_secretKey">Yandex API key</sys:String>
+    <sys:String x:Key="YandexTransSettingsPage_apiKey">Yandex API key</sys:String>
 
     <sys:String x:Key="YoudaoZhiyunTransSettingsPage_Introduce">Youdao NMT API (有道智云, network required) supports multilingual translation with better support for Japanese and Chinese. You need to apply for the API (on the website in Chinese), get access to the AppId and AppSecret, and then fill in below before testing. If the API is tested as invalid, you can refer to official Youdao documentations with the error codes. It is likely to incur charges, &quot;Check API quota&quot; will lead you to the dashboard of Youdao NMT</sys:String>
     <sys:String x:Key="YoudaoZhiyunTransSettingsPage_appId">App Id</sys:String>
@@ -242,7 +242,7 @@
     <sys:String x:Key="ChooseOCRAreaPage_RenewAreaBtn">Refresh OCR area</sys:String>
     <sys:String x:Key="ChooseOCRAreaPage_ConfirmBtn">Confirm</sys:String>
     <sys:String x:Key="ChooseOCRAreaPage_NextErrorHint">Please select the window first.</sys:String>
-    <sys:String x:Key="ChooseOCRAreaPage_RenewErrorHint">请先预览选择区域！</sys:String>
+    <sys:String x:Key="ChooseOCRAreaPage_RenewErrorHint">Please preview the selected area first!</sys:String>
 
     <sys:String x:Key="ChooseHandleFuncPage_Introduce">Select the OCR source language and an OCR pre-processing method for your game, which can be viewed below for testing and confirming. Note that you must do the test otherwise OCR won't be initialized.</sys:String>
     <sys:String x:Key="ChooseHandleFuncPage_OCRLangCBox">OCR source language</sys:String>
@@ -293,7 +293,7 @@
     <sys:String x:Key="TransWinSettingsWin_FontName">Font</sys:String>
     <sys:String x:Key="TransWinSettingsWin_BtnChooseColor">Choose a color</sys:String>
     <sys:String x:Key="TransWinSettingsWin_srcSetNotice">Changes to the source text takes effect after texts updated.</sys:String>
-    <sys:String x:Key="TransWinSettingsWin_enableWhiteStroke">启用白色描边</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_enableWhiteStroke">Use white stroke</sys:String>
     
     <sys:String x:Key="AddOptWin_Introduce">Enter the word you want to add into the thesaurus, which will be replaced directly in the original sentence before submitting for translation.</sys:String>
     <sys:String x:Key="AddOptWin_beforeBox">Original word</sys:String>
@@ -319,88 +319,102 @@
     <sys:String x:Key="App_Global_ErrorHint_left">MisakaTranslator encountered an exception that cannot be resolved. It is about to exit. Details about this exception have been stored in the "</sys:String>
     <sys:String x:Key="App_Global_ErrorHint_right">" file in the "logs" Directory. To better the Translator, sending these files to the developer on GitHub to troubleshoot is appreciated.</sys:String>
 
+    <sys:String x:Key="TTSGeneralSettingsPage_Selection">TTS selection</sys:String>
+    <sys:String x:Key="TTSGeneralSettingsPage_Hint">TTS (Text to Speech) can be applied to the translation interface and dictionary query interface of this software to provide text reading function.</sys:String>
+    <sys:String x:Key="TTSGeneralSettingsPage_Azure">Azure TTS</sys:String>
+    <sys:String x:Key="TTSGeneralSettingsPage_Local">Local TTS engine</sys:String>
+
     <sys:String x:Key="SettingsMenu_TTSSettings">TTS Settings</sys:String>
-    <sys:String x:Key="SettingsMenu_LocalTTS">本地TTS</sys:String>
+    <sys:String x:Key="SettingsMenu_SelectTTS">Select TTS</sys:String>
+    <sys:String x:Key="SettingsMenu_LocalTTS">LocalTTS</sys:String>
     <sys:String x:Key="SettingsMenu_AzureTTS">AzureTTS</sys:String>
 
-    <sys:String x:Key="TTSSettingsPage_Hint">TTS(文字转语音)可以应用在本软件的翻译界面和字典查询界面，提供文本的朗读功能。在使用前您需要先下载一些TTS引擎(例如NeoSpeech或Win10自带引擎等)并安装，然后在本界面中选中相应的TTS引擎并对其进行一些基本设置。设置完毕后您需要通过本界面的测试部分进行测试，这个步骤将保存您的设置。</sys:String>
-    <sys:String x:Key="TTSSettingsPage_TTSSourceLabel">TTS 引擎</sys:String>
-    <sys:String x:Key="TTSSettingsPage_TTSVolumeLabel">朗读音量</sys:String>
-    <sys:String x:Key="TTSSettingsPage_TTSRateLabel">朗读语速</sys:String>
-    <sys:String x:Key="TTSSettingsPage_TestText">TTS测试 源文本</sys:String>
+    <sys:String x:Key="TTSSettingsPage_Hint">Before using local TTS, you need to download and install some TTS engines (such as NeoSpeech or the engine that comes with Win10, etc.), then select the corresponding TTS engine in this interface and make some basic settings for it. After setting up, you need to test through the test part of this interface. This step will save your settings.</sys:String>
+    <sys:String x:Key="TTSSettingsPage_TTSSourceLabel">TTS Engine</sys:String>
+    <sys:String x:Key="TTSSettingsPage_TTSVolumeLabel">Reading volume</sys:String>
+    <sys:String x:Key="TTSSettingsPage_TTSRateLabel">Reading speed</sys:String>
+    <sys:String x:Key="TTSSettingsPage_TestText">TTS test source text</sys:String>
+    <sys:String x:Key="TTSSettingsPage_VoiceName">Voice library</sys:String>
     <sys:String x:Key="TTSSettingsPage_TestBtn">Test Speech</sys:String>
-    <sys:String x:Key="TTSSettingsPage_TargetVoice">目标语音</sys:String>
+    <sys:String x:Key="TTSSettingsPage_TargetVoice">Target Voice</sys:String>
 
-    <sys:String x:Key="TranslateWin_Menu_TTS">朗读源文本</sys:String>
-    <sys:String x:Key="TranslateWin_NoTTS_Hint">您没有配置TTS相关设置，朗读功能无法使用</sys:String>
+    <sys:String x:Key="TranslateWin_Menu_TTS">Read source text</sys:String>
+    <sys:String x:Key="TranslateWin_NoTTS_Hint">You have not configured TTS related settings, the reading function cannot be used</sys:String>
 
-    <sys:String x:Key="AddOptWin_Success_Hint">已添加名词翻译优化词条</sys:String>
-    <sys:String x:Key="AddOptWin_Error_Hint">添加名词翻译优化词条失败</sys:String>
+    <sys:String x:Key="AddOptWin_Success_Hint">Noun translation optimization entry has been added</sys:String>
+    <sys:String x:Key="AddOptWin_Error_Hint">Failed to add noun translation optimization entry</sys:String>
 
-    <sys:String x:Key="TransWinSettingsWin_DropShadowCbox">开启文字阴影</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_DropShadowCbox">Turn on text shadow</sys:String>
 
-    <sys:String x:Key="TransWinSettingsWin_KanaCbox">开启日语原文假名标注</sys:String>
-    <sys:String x:Key="TransWinSettingsWin_ColorfulCbox">开启源文本分词上色</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_KanaCbox">Enable Japanese original Kana annotation</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_ColorfulCbox">Enable source text word segmentation coloring</sys:String>
 
-    <sys:String x:Key="TransWinSettingsWin_HirakanaCbox">使用平假名注音</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_HirakanaCbox">Use Hiragana phonetic notation</sys:String>
 
-    <sys:String x:Key="TransWinSettingsWin_KanaBoldCbox">将假名标注加粗</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_KanaBoldCbox">Bold the kana label</sys:String>
 
-    <sys:String x:Key="MainWindow_AutoUpdateCheck">发现新版本！点击确认进入下载页面，点击取消忽略本次更新提示。</sys:String>
+    <sys:String x:Key="MainWindow_AutoUpdateCheck">New version found! Click Confirm to enter the download page, click Cancel to ignore this update prompt.</sys:String>
 
-    <sys:String x:Key="GeneralTransSettingsPage_Translimit">翻译限制字数</sys:String>
+    <sys:String x:Key="GeneralTransSettingsPage_Translimit">Translation limit word count</sys:String>
 
-    <sys:String x:Key="ArtificialTransAdd_Error_Hint">人工翻译结果自动添加失败！</sys:String>
+    <sys:String x:Key="ArtificialTransAdd_Error_Hint">The automatic addition of manual translation results failed!</sys:String>
 
-    <sys:String x:Key="ArtificialTransWin_Title">自定义人工翻译结果</sys:String>
-    <sys:String x:Key="ArtificialTransWin_Hint">在此窗口可自定义人工翻译结果，上方编辑框代表原文内容，您可以在下方编辑框输入自定义的译文。默认情况下，译文将由第一翻译源的翻译结果决定。</sys:String>
-    <sys:String x:Key="ArtificialTransWin_transBox">请输入翻译</sys:String>
-    <sys:String x:Key="ArtificialTransWin_ResetBtn">清空内容</sys:String>
-    <sys:String x:Key="ArtificialTransWin_ConfirmBtn">确定修改</sys:String>
-    <sys:String x:Key="ArtificialTransWin_Success_Hint">自定义人工翻译结果成功！</sys:String>
-    <sys:String x:Key="ArtificialTransWin_Error_Hint">自定义人工翻译结果失败！</sys:String>
+    <sys:String x:Key="ArtificialTransWin_Title">Customized human translation results</sys:String>
+    <sys:String x:Key="ArtificialTransWin_Hint">In this window, you can customize the manual translation results. The upper edit box represents the original content, and you can enter the customized translation in the lower edit box. By default, the translation will be determined by the translation from the first translation source.</sys:String>
+    <sys:String x:Key="ArtificialTransWin_transBox">Please enter translation</sys:String>
+    <sys:String x:Key="ArtificialTransWin_ResetBtn">Clear content</sys:String>
+    <sys:String x:Key="ArtificialTransWin_ConfirmBtn">Confirm modification</sys:String>
+    <sys:String x:Key="ArtificialTransWin_Success_Hint">Customized human translation results successfully!</sys:String>
+    <sys:String x:Key="ArtificialTransWin_Error_Hint">Customized manual translation result failed!</sys:String>
 
-    <sys:String x:Key="TranslateWin_Menu_ATadd">自定义人工翻译</sys:String>
+    <sys:String x:Key="TranslateWin_Menu_ATadd">Custom human translation</sys:String>
 
-    <sys:String x:Key="ArtificialTransSettingsPage_Introduce">在这里进行人工翻译的相关设置。您可以选择是否开启人工翻译记录，指定人工翻译文本文件位置以及导出您当前所有已保存游戏的文本翻译。</sys:String>
-    <sys:String x:Key="ArtificialTransSettingsPage_ATon_Hint">开启人工翻译记录后，您在游戏的过程中会自动将第一翻译源的翻译文本记录到数据库中。</sys:String>
-    <sys:String x:Key="ArtificialTransSettingsPage_ATon">开启人工翻译记录</sys:String>
-    <sys:String x:Key="ArtificialTransSettingsPage_ChoosePath_Hint">人工翻译文件路径</sys:String>
-    <sys:String x:Key="ArtificialTransSettingsPage_GameChoose">选择游戏翻译数据库</sys:String>
-    <sys:String x:Key="ArtificialTransSettingsPage_ExportBtn">导出人工翻译文件</sys:String>
-    <sys:String x:Key="ArtificialTransSettingsPage_Export_Error">导出人工翻译文件失败！</sys:String>
-    <sys:String x:Key="ArtificialTransSettingsPage_Export_Success">导出人工翻译文件完成！</sys:String>
+    <sys:String x:Key="ArtificialTransSettingsPage_Introduce">Configure settings related to manual translation here. You can choose whether to enable human translation logging, specify the location of human translation text files, and export text translations for all your currently saved games.</sys:String>
+    <sys:String x:Key="ArtificialTransSettingsPage_ATon_Hint">After turning on manual translation recording, the translated text of the first translation source will be automatically recorded in the database during the game.</sys:String>
+    <sys:String x:Key="ArtificialTransSettingsPage_ATon">Enable manual translation records</sys:String>
+    <sys:String x:Key="ArtificialTransSettingsPage_ChoosePath_Hint">Manual translation file path</sys:String>
+    <sys:String x:Key="ArtificialTransSettingsPage_GameChoose">Choose game translation database</sys:String>
+    <sys:String x:Key="ArtificialTransSettingsPage_ExportBtn">Export human translation file</sys:String>
+    <sys:String x:Key="ArtificialTransSettingsPage_Export_Error">Failed to export human translation file!</sys:String>
+    <sys:String x:Key="ArtificialTransSettingsPage_Export_Success">Exporting human translation files is completed!</sys:String>
 
-    <sys:String x:Key="SettingsMenu_ATSettings">人工翻译相关设置</sys:String>
+    <sys:String x:Key="SettingsMenu_ATSettings">Manual translation related settings</sys:String>
 
-    <sys:String x:Key="ArtificialTransWin_SecondTransBtn">使用第二翻译源结果</sys:String>
+    <sys:String x:Key="ArtificialTransWin_SecondTransBtn">Use secondary translation source results</sys:String>
 
-    <sys:String x:Key="XiaoniuTransSettingsPage_Introduce">小牛翻译API支持多种语言互译，对日语、汉语的互译支持较好，需要联网使用；您需要先申请该API，获取apiKey后填入下方相应位置并进行测试认证；如果认证出现错误，请根据错误码至小牛翻译API官方文档获取解决办法；同时，小牛翻译还支持自定义术语库，请自行在其管理台操作。小牛翻译API免费版没有什么太大的限制，敬请使用。</sys:String>
-    <sys:String x:Key="XiaoniuTransSettingsPage_apikey">小牛翻译 apiKey</sys:String>
-    <sys:String x:Key="SettingsMenu_TranslatorSettings_Xiaoniu">小牛翻译</sys:String>
+    <sys:String x:Key="XiaoniuTransSettingsPage_Introduce">Xiaoniu Translation API supports translation between multiple languages. It has good support for Japanese and Chinese translation and requires an Internet connection. You need to apply for the API first, obtain the apiKey and then fill it in Click the corresponding location below and perform test certification; if there is an error in the certification, please go to the official documentation of Xiaoniu Translation API according to the error code to obtain a solution; at the same time, Xiaoniu Translation also supports custom term libraries, please operate it on its management console. There are no big restrictions on the free version of Xiaoniu Translation API, so please use it.</sys:String>
+    <sys:String x:Key="XiaoniuTransSettingsPage_apikey">Xiaoniu Translation apiKey</sys:String>
+    <sys:String x:Key="SettingsMenu_TranslatorSettings_Xiaoniu">Xiaoniu Translation</sys:String>
 
-    <sys:String x:Key="MainWindow_Tip_ComicTrans">漫画翻译</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_Btn_RealSize">真实大小(截图用)</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_Btn_FitWin">适合窗口</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_Btn_Next">下一页</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_Btn_Pre">上一页</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_Btn_AddOCRRect">添加新条目(选择区域)</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_TB_OCRsource">OCR结果：</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_TB_trans">翻译结果：</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_BTNbox_inputJPN">日语手写输入</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_BTNbox_trans">翻译</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_List_Header_pos">位置</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_List_Header_source">原文</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_List_Header_trans">翻译</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_ChoosePathHint">选择需要翻译的漫画文件夹路径</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_Hint_LastofAll">已经是最后一张图片了</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_Hint_FirstofAll">已经是第一张图片了</sys:String>
-    <sys:String x:Key="ImageProcWindow_Thresholding">二值化处理阈值</sys:String>
-    <sys:String x:Key="ImageProcWindow_Confirm">完成处理</sys:String>
-    <sys:String x:Key="ImageProcWindow_eraseBtn">手动擦除</sys:String>
+    <sys:String x:Key="MainWindow_Tip_ComicTrans">Comic Translation</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_Btn_RealSize">Real size (for screenshots)</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_Btn_FitWin">Fit to window</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_Btn_Next">Next page</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_Btn_Pre">Previous page</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_Btn_AddOCRRect">Add new entry (select area)</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_TB_OCRsource">OCR result:</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_TB_trans">Translation result:</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_BTNbox_inputJPN">Japanese handwriting input</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_BTNbox_trans">Translation</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_List_Header_pos">Position</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_List_Header_source">Original text</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_List_Header_trans">Translation</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_ChoosePathHint">Choose the comic folder path to be translated</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_Hint_LastofAll">This is the last picture</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_Hint_FirstofAll">This is already the first picture</sys:String>
+    <sys:String x:Key="ImageProcWindow_Thresholding">Binarization processing threshold</sys:String>
+    <sys:String x:Key="ImageProcWindow_Confirm">Complete processing</sys:String>
+    <sys:String x:Key="ImageProcWindow_eraseBtn">Manual Erase</sys:String>
 
-    <sys:String x:Key="ComicTransMainWindow_Btn_RemoveBlank">去除空格换行</sys:String>
-    <sys:String x:Key="ImageProcWindow_InkBar">橡皮范围粗细</sys:String>
-    <sys:String x:Key="ImageProcWindow_WinName">OCR图片预处理</sys:String>
-    <sys:String x:Key="ComicTransMainWindow_IsSaveRes">是否保存本次翻译结果?</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_Btn_RemoveBlank">Remove spaces and line breaks</sys:String>
+    <sys:String x:Key="ImageProcWindow_InkBar">Eraser range thickness</sys:String>
+    <sys:String x:Key="ImageProcWindow_WinName">OCR image preprocessing</sys:String>
+    <sys:String x:Key="ComicTransMainWindow_IsSaveRes">Do you want to save this translation result?</sys:String>
+
+    <sys:String x:Key="SoftwareSettingsPage_ClickCloseButton">When the close button is clicked</sys:String>
+    <sys:String x:Key="SoftwareSettingsPage_EnableGlobalNotification">Whether to enable global notification, it will take effect after restart</sys:String>
+    <sys:String x:Key="SoftwareSettingsPage_Minimize">Minimize to system tray</sys:String>
+    <sys:String x:Key="SoftwareSettingsPage_Exit">Exit MisakaTranslator</sys:String>
+    <sys:String x:Key="SoftwareSettingsPage_Enable">Enable</sys:String>
+
 </ResourceDictionary>
