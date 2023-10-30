@@ -149,17 +149,6 @@ namespace OCRLibrary
             {
                 AllSum += i * hist[i];     //   质量矩   
                 AllPixelNumber += hist[i];  //  质量    
-
-                /* 项目“OCRLibrary (netframework4.7.2)”的未合并的更改
-                在此之前:
-                            }
-
-                            MaxValue = -1.0;
-                在此之后:
-                            }
-
-                            MaxValue = -1.0;
-                */
             }
 
             MaxValue = -1.0;

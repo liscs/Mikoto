@@ -13,8 +13,8 @@
             <StackPanel Background="White">
                 <TextBlock Text="TTS选择" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
                 <StackPanel>
-                    <RadioButton x:Name="AzureTTSRadio" Content="Azure TTS" Checked="AzureTTSRadio_Checked"/>
-                    <RadioButton x:Name="LocalTTSRadio" Margin="0,16,0,0" Content="本地TTS引擎" Checked="LocalTTSRadio_Checked"/>
+                    <RadioButton x:Name="AzureTTSRadio" Content="Azure TTS" Checked="AzureTTSRadio_Checked" Width="100" Style="{StaticResource RadioButtonIcon}"/>
+                    <RadioButton x:Name="LocalTTSRadio" Margin="0,16,0,0" Content="本地TTS引擎" Checked="LocalTTSRadio_Checked" Width="100" Style="{StaticResource RadioButtonIcon}"/>
                 </StackPanel>
             </StackPanel>
         </hc:ScrollViewer>

@@ -39,19 +39,7 @@ namespace ArtificialTransHelperLibrary
                 return false;
             }
 
-            string sql =
-
-                /* 项目“ArtificialTransHelperLibrary (netframework4.7.2)”的未合并的更改
-                在此之前:
-                                $"SELECT * FROM artificialtrans WHERE source = '{source}';";
-
-                            List<List<string>> ret = sqlite.ExecuteReader(sql, 4);
-                在此之后:
-                                $"SELECT * FROM artificialtrans WHERE source = '{source}';";
-
-                            List<List<string>> ret = sqlite.ExecuteReader(sql, 4);
-                */
-                $"SELECT * FROM artificialtrans WHERE source = '{source}';";
+            string sql = $"SELECT * FROM artificialtrans WHERE source = '{source}';";
 
             List<List<string>> ret = sqlite.ExecuteReader(sql, 4);
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using TTSHelperLibrary.TTSGenerator;
 using static MisakaTranslator_WPF.Common;
 
 namespace MisakaTranslator_WPF.SettingsPages.TTSPages

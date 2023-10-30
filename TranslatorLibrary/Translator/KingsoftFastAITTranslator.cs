@@ -114,19 +114,6 @@ namespace TranslatorLibrary.Translator
             if (FilePath == "" || desLang != "zh")
             {
                 return Task.FromResult<string>(null);
-
-                /* 项目“TranslatorLibrary (netcoreapp7.0-windows10.0.22621.0)”的未合并的更改
-                在此之前:
-                            }
-
-
-                            IntPtr buffer = Marshal.AllocHGlobal(buffersize);
-                在此之后:
-                            }
-
-
-                            IntPtr buffer = Marshal.AllocHGlobal(buffersize);
-                */
             }
 
 

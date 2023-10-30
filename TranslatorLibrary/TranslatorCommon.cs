@@ -43,8 +43,6 @@ namespace TranslatorLibrary
         };
 
         public static Dictionary<string, string> TranslatorList = new Dictionary<string, string>();
-
-
         /// <summary>
         /// 计算MD5值
         /// </summary>

@@ -63,11 +63,6 @@ namespace SQLHelperLibrary
         public string HookCodeCustom { get; set; }
 
         /// <summary>
-        /// 是否需要下次启动时重选Hook方法，仅在hook模式有效，值为True或False
-        /// </summary>
-        public bool IsMultiHook { get; set; }
-
-        /// <summary>
         /// 检查是否是64位应用程序
         /// </summary>
         public bool Isx64 { get; set; }
@@ -87,7 +82,26 @@ namespace SQLHelperLibrary
         /// </summary>
         static GameLibraryHelper()
         {
-            var id = sqlHelper.ExecuteSql("CREATE TABLE IF NOT EXISTS game_library(gameid INTEGER PRIMARY KEY AUTOINCREMENT,gamename TEXT,gamefilepath TEXT,transmode INTEGER,src_lang TEXT,dst_lang TEXT,repair_func TEXT,repair_param_a TEXT,repair_param_b TEXT,hookcode TEXT,isMultiHook TEXT,isx64 TEXT,hookcode_custom TEXT,misakahookcode TEXT);");
+            string createTableSql =
+                    @"
+                        CREATE TABLE IF NOT EXISTS game_library(
+                            gameid INTEGER PRIMARY KEY AUTOINCREMENT,
+                            gamename TEXT,
+                            gamefilepath TEXT,
+                            transmode INTEGER,
+                            src_lang TEXT,
+                            dst_lang TEXT,
+                            repair_func TEXT,
+                            repair_param_a TEXT,
+                            repair_param_b TEXT,
+                            hookcode TEXT,
+                            isMultiHook TEXT,
+                            isx64 TEXT,
+                            hookcode_custom TEXT,
+                            misakahookcode TEXT
+                        );
+                    ";
+            var id = sqlHelper.ExecuteSql(createTableSql);
             if (id == -1)
             {
                 MessageBox.Show($"初始化游戏库发生错误，数据库错误代码:\n{sqlHelper.GetLastError()}");
@@ -115,7 +129,18 @@ namespace SQLHelperLibrary
             if (ls.Count == 0)
             {
                 var sql =
-                    $"INSERT INTO game_library VALUES(NULL,'{Path.GetFileNameWithoutExtension(gamePath)}','{gamePath}',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);";
+                    @$"
+                        INSERT INTO game_library (
+                            gamename,
+                            gamefilepath,
+                            transmode
+                        )
+                        VALUES(
+                            '{Path.GetFileNameWithoutExtension(gamePath)}',
+                            '{gamePath}',
+                            1
+                        );
+                    ";
                 sqlHelper.ExecuteSql(sql);
                 ls = sqlHelper.ExecuteReader_OneLine(
                     $"SELECT gameid FROM game_library WHERE gamefilepath = '{gamePath}';", 1);
@@ -129,49 +154,68 @@ namespace SQLHelperLibrary
         /// </summary>
         public static List<GameInfo> GetAllGameLibrary()
         {
-            var ls = sqlHelper.ExecuteReader("SELECT * FROM game_library;", 14);
+            string sql =
+                    @"
+                        SELECT                         
+                            gameid,
+                            gamename,
+                            gamefilepath,
+                            transmode,
+                            src_lang,
+                            dst_lang,
+                            repair_func,
+                            repair_param_a,
+                            repair_param_b,
+                            hookcode,
+                            isMultiHook,
+                            isx64,
+                            hookcode_custom,
+                            misakahookcode
+                        FROM game_library;
+                    ";
+            var resultList = sqlHelper.ExecuteReader(sql, 14);
 
-            if (ls == null)
+            if (resultList == null)
             {
                 MessageBox.Show($"数据库访问时发生错误，错误代码:\n{sqlHelper.GetLastError()}", "数据库错误");
                 return null;
             }
 
-            if (ls.Count == 0)
+            if (resultList.Count == 0)
             {
                 return null;
             }
 
-            var ret = new List<GameInfo>();
+            var allInfoList = new List<GameInfo>();
 
-            foreach (var gameI in ls)
+            foreach (var item in resultList)
             {
                 var gameInfo = new GameInfo();
 
-                if (gameI[4] == "" || gameI[5] == "" || gameI[6] == "" || gameI[9] == "" || gameI[11] == "")
+                if (item[4] == "" || item[5] == "" || item[6] == "" || item[9] == "" || item[11] == "")
                 {
                     //没有完整走完导航的游戏，这时就不需要显示这个库
                     continue;
                 }
 
-                gameInfo.GameID = int.Parse(gameI[0]);
-                gameInfo.GameName = gameI[1];
-                gameInfo.FilePath = gameI[2];
-                gameInfo.TransMode = int.Parse(gameI[3]);
-                gameInfo.SrcLang = gameI[4];
-                gameInfo.DstLang = gameI[5];
-                gameInfo.RepairFunc = gameI[6];
-                gameInfo.RepairParamA = gameI[7];
-                gameInfo.RepairParamB = gameI[8];
-                gameInfo.HookCode = gameI[9];
-                gameInfo.Isx64 = Convert.ToBoolean(gameI[11]);
-                gameInfo.HookCodeCustom = gameI[12];
-                gameInfo.MisakaHookCode = gameI[13];
+                gameInfo.GameID = int.Parse(item[0]);
+                gameInfo.GameName = item[1];
+                gameInfo.FilePath = item[2];
+                gameInfo.TransMode = int.Parse(item[3]);
+                gameInfo.SrcLang = item[4];
+                gameInfo.DstLang = item[5];
+                gameInfo.RepairFunc = item[6];
+                gameInfo.RepairParamA = item[7];
+                gameInfo.RepairParamB = item[8];
+                gameInfo.HookCode = item[9];
+                gameInfo.Isx64 = Convert.ToBoolean(item[11]);
+                gameInfo.HookCodeCustom = item[12];
+                gameInfo.MisakaHookCode = item[13];
 
-                ret.Add(gameInfo);
+                allInfoList.Add(gameInfo);
             }
 
-            return ret;
+            return allInfoList;
         }
 
         /// <summary>

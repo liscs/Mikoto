@@ -7,7 +7,6 @@ using MecabHelperLibrary;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -832,7 +831,7 @@ namespace MisakaTranslator_WPF
                 Common.mainWin.Visibility = Visibility.Visible;
             }
             catch (InvalidOperationException)
-            {}
+            { }
         }
 
         private void Settings_Item_Click(object sender, RoutedEventArgs e)

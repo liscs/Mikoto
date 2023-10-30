@@ -24,17 +24,6 @@ namespace OCRLibrary
                 var recog = engine.Process(pix);
                 string text = recog.Text;
                 stream.Dispose();
-
-                /* 项目“OCRLibrary (netframework4.7.2)”的未合并的更改
-                在此之前:
-                                recog.Dispose();
-
-                                return Task.FromResult(text);
-                在此之后:
-                                recog.Dispose();
-
-                                return Task.FromResult(text);
-                */
                 recog.Dispose();
 
                 return Task.FromResult(text);

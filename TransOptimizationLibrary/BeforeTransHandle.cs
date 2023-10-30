@@ -5,24 +5,7 @@ namespace TransOptimizationLibrary
 {
     public class BeforeTransHandle
     {
-
-
-        /* 项目“TransOptimizationLibrary (netframework4.7.2)”的未合并的更改
-        在此之前:
-                NounTransOptimization nto;
-
-
-
-                public BeforeTransHandle(string gameName,string srcLang,string dstLang) {
-        在此之后:
-                NounTransOptimization nto;
-
-
-
-                public BeforeTransHandle(string gameName,string srcLang,string dstLang) {
-        */
         NounTransOptimization nto;
-
 
 
         public BeforeTransHandle(string gameName, string srcLang, string dstLang)

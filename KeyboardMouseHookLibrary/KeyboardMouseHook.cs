@@ -64,17 +64,6 @@ namespace KeyboardMouseHookLibrary
             else
             {
                 processMonitor.StartInfo.Arguments = "2 " + keyCode;
-
-                /* 项目“KeyboardMouseHookLibrary (netcoreapp7.0-windows10.0.22621.0)”的未合并的更改
-                在此之前:
-                            }
-
-                            processMonitor.StartInfo.CreateNoWindow = true;
-                在此之后:
-                            }
-
-                            processMonitor.StartInfo.CreateNoWindow = true;
-                */
             }
 
             processMonitor.StartInfo.CreateNoWindow = true;
@@ -82,18 +71,6 @@ namespace KeyboardMouseHookLibrary
             processMonitor.StartInfo.RedirectStandardInput = true;
             processMonitor.StartInfo.RedirectStandardOutput = true;
 
-            /* 项目“KeyboardMouseHookLibrary (netcoreapp7.0-windows10.0.22621.0)”的未合并的更改
-            在此之前:
-                        processMonitor.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
-
-
-                        try
-            在此之后:
-                        processMonitor.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
-
-
-                        try
-            */
             processMonitor.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
 
 
