@@ -16,4 +16,5 @@
 </p>
 
 原始项目页：https://github.com/hanmin0822/MisakaTranslator
+
 Macab词典：https://clrd.ninjal.ac.jp/unidic
