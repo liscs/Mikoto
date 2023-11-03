@@ -99,8 +99,6 @@ namespace MecabHelperLibrary
                             Feature = node.Feature
                         };
 
-                        //加这一步是为了防止乱码进入分词导致无法读取假名
-                        //以及助词一般不需要注音
                         if (features.Length >= 21 && mwi.PartOfSpeech != "助詞" && mwi.PartOfSpeech != "補助記号" && mwi.PartOfSpeech != "空白")
                         {
                             mwi.Katakana = features[20];

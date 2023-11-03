@@ -42,8 +42,8 @@
             <Button fa:Awesome.Content="Language" Foreground="{DynamicResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{StaticResource EffectShadow5}"  Margin="0,0,20,0.5" Click="LanguageBtn_Click">
                 <Button.ContextMenu>
                     <ContextMenu x:Name="LanguageContextMenu">
-                        <MenuItem Header="中文" Click="Language_MenuItem_Click" Tag="zh-cn"/>
-                        <MenuItem Header="English" Click="Language_MenuItem_Click" Tag="en-us"/>
+                        <MenuItem Header="中文" Click="Language_MenuItem_Click" Tag="zh-CN"/>
+                        <MenuItem Header="English" Click="Language_MenuItem_Click" Tag="en-US"/>
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>

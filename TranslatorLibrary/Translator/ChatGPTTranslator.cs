@@ -21,7 +21,7 @@ namespace TranslatorLibrary.Translator
         private string apiUrl; //ChatGPT翻译API的URL
         private string errorInfo; //错误信息
 
-        public string TranslatorDisplayName { get { return Strings.ChatGPTTranslator; } set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.ChatGPTTranslator; } }
 
         public string GetLastError()
         {

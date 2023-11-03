@@ -7,7 +7,7 @@ namespace TranslatorLibrary.Translator
         /// <summary>
         /// 翻译器用于显示的本地化名称
         /// </summary>
-        string TranslatorDisplayName { get; set; }
+        string TranslatorDisplayName { get; }
 
         /// <summary>
         /// 翻译API初始化

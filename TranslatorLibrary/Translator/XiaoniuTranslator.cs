@@ -11,7 +11,7 @@ namespace TranslatorLibrary.Translator
         public string apiKey;//小牛翻译API 的APIKEY
         private string errorInfo;//错误信息
 
-        public string TranslatorDisplayName { get { return Strings.XiaoniuTranslator; } set => throw new NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.XiaoniuTranslator; } }
 
         public string GetLastError()
         {

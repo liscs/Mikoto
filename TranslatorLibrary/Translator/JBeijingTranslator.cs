@@ -38,7 +38,7 @@ namespace TranslatorLibrary.Translator
         public string JBJCTDllPath;//DLL路径
         private string errorInfo;//错误信息
 
-        public string TranslatorDisplayName { get { return Strings.JBeijingTranslator; } set => throw new NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.JBeijingTranslator; } }
 
         public string GetLastError()
         {

@@ -21,7 +21,7 @@ namespace TranslatorLibrary.Translator
         private string secretKey; //DeepL翻译API的秘钥
         private string errorInfo; //错误信息
 
-        public string TranslatorDisplayName { get { return Strings.DeepLTranslator; } set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.DeepLTranslator; } }
 
         public string GetLastError()
         {

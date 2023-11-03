@@ -102,7 +102,7 @@ namespace TranslatorLibrary.Translator
         public string FilePath;//文件路径
         private string errorInfo;//错误信息
 
-        public string TranslatorDisplayName { get { return Strings.KingsoftFastAITTranslator; } set => throw new NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.KingsoftFastAITTranslator; } }
 
         public string GetLastError()
         {

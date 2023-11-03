@@ -11,7 +11,7 @@ namespace TranslatorLibrary.Translator
 
         private string errorInfo;
 
-        public string TranslatorDisplayName { get { return Strings.YandexTranslator; } set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.YandexTranslator; } }
 
         public string GetLastError()
         {

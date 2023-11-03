@@ -487,13 +487,20 @@ namespace MisakaTranslator_WPF
 
 
                         //选择平假名或者片假名
-                        if (Common.appSettings.TF_Hiragana)
+                        switch (appSettings.TF_PhoneticNotationType)
                         {
-                            textBlock.Tag = mwi[i].Hiragana;
-                        }
-                        else
-                        {
-                            textBlock.Tag = mwi[i].Katakana;
+                            case IAppSettings.PhoneticNotationType.hiragana:
+                                textBlock.Tag = mwi[i].Hiragana;
+                                break;
+                            case IAppSettings.PhoneticNotationType.katakana:
+                                textBlock.Tag = mwi[i].Katakana;
+                                break;
+                            case IAppSettings.PhoneticNotationType.romaji:
+                                textBlock.Tag = mwi[i].Romaji;
+                                break;
+                            default:
+                                textBlock.Tag = mwi[i].Hiragana;
+                                break;
                         }
 
                         textBlock.Margin = new Thickness(0, 0, 0, 0);
@@ -572,13 +579,20 @@ namespace MisakaTranslator_WPF
                             superScript.FontFamily = fontFamily;
                         }
                         //选择平假名或者片假名
-                        if (Common.appSettings.TF_Hiragana)
+                        switch (Common.appSettings.TF_PhoneticNotationType)
                         {
-                            superScript.Text = mwi[i].Hiragana;
-                        }
-                        else
-                        {
-                            superScript.Text = mwi[i].Katakana;
+                            case IAppSettings.PhoneticNotationType.hiragana:
+                                superScript.Text = mwi[i].Hiragana;
+                                break;
+                            case IAppSettings.PhoneticNotationType.katakana:
+                                superScript.Text = mwi[i].Katakana;
+                                break;
+                            case IAppSettings.PhoneticNotationType.romaji:
+                                superScript.Text = mwi[i].Romaji;
+                                break;
+                            default:
+                                superScript.Text = mwi[i].Hiragana;
+                                break;
                         }
 
                         superScript.Margin = new Thickness(0, 0, 0, 2);
@@ -608,7 +622,7 @@ namespace MisakaTranslator_WPF
                         stackPanel.Children.Add(superScript);
 
                         //是否打开假名标注
-                        if (Common.appSettings.TF_isKanaShow)
+                        if (Common.appSettings.TF_EnablePhoneticNotation)
                         {
                             stackPanel.Children.Add(textBlock);
                             SourceTextPanel.Children.Add(stackPanel);

@@ -10,7 +10,7 @@ namespace TranslatorLibrary.Translator
     {
         private string errorInfo;//错误信息
 
-        public string TranslatorDisplayName { get { return Strings.YoudaoTranslator; } set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.YoudaoTranslator; } }
 
         public string GetLastError()
         {

@@ -32,7 +32,7 @@ namespace TranslatorLibrary
             });
         }
 
-        // TODO 搞成反射
+        // 默认使用百度的语言代码
         public static Dictionary<string, string> LanguageList = new Dictionary<string, string>() {
             { "简体中文" , "zh" },
             { "English" , "en" },

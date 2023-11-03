@@ -461,7 +461,7 @@ namespace MisakaTranslator_WPF
         }
 
         [Option(Alias = "TranslateFormSettings.isKanaShow", DefaultValue = true)]
-        bool TF_isKanaShow
+        bool TF_EnablePhoneticNotation
         {
             get;
             set;
@@ -473,8 +473,16 @@ namespace MisakaTranslator_WPF
             get;
             set;
         }
-        [Option(Alias = "TranslateFromSetting.isUseHiragana", DefaultValue = true)]
-        bool TF_Hiragana
+
+        enum PhoneticNotationType
+        {
+            hiragana = 1,
+            katakana = 2,
+            romaji = 3,
+        }
+
+        [Option(Alias = "TranslateFromSetting.phoneticNotationType", DefaultValue = PhoneticNotationType.hiragana)]
+        PhoneticNotationType TF_PhoneticNotationType
         {
             get;
             set;

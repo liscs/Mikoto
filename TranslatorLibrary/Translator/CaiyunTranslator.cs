@@ -13,7 +13,7 @@ namespace TranslatorLibrary.Translator
         public string caiyunToken;//彩云小译 令牌
         private string errorInfo;//错误信息
 
-        public string TranslatorDisplayName { get { return Strings.CaiyunTranslator; } set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.CaiyunTranslator; } }
 
         public string GetLastError()
         {

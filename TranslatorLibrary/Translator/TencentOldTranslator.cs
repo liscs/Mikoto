@@ -15,7 +15,7 @@ namespace TranslatorLibrary.Translator
         public string SecretId;//腾讯旧版API SecretId
         public string SecretKey;//腾讯旧版API SecretKey
 
-        public string TranslatorDisplayName { get { return Strings.TencentOldTranslator; } set => throw new NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.TencentOldTranslator; } }
 
         public string GetLastError()
         {

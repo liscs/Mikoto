@@ -16,7 +16,7 @@ namespace TranslatorLibrary.Translator
         private string appId, appSecret;
         private string errorInfo;
 
-        public string TranslatorDisplayName { get { return Strings.YoudaoZhiyun; } set => throw new NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.YoudaoZhiyun; } }
 
         public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
         {

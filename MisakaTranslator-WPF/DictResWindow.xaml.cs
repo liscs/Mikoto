@@ -25,19 +25,6 @@ namespace MisakaTranslator_WPF
             else
             {
                 _textSpeechHelper = tsh;
-
-                /* 项目“MisakaTranslator-WPF (netcoreapp7.0-windows10.0.22621.0)”的未合并的更改
-                在此之前:
-                            }
-
-
-                            if (Common.appSettings.ttsVoice == "")
-                在此之后:
-                            }
-
-
-                            if (Common.appSettings.ttsVoice == "")
-                */
             }
 
 

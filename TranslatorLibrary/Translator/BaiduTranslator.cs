@@ -14,7 +14,7 @@ namespace TranslatorLibrary.Translator
         public string secretKey;//百度翻译API 的密钥
         private string errorInfo;//错误信息
 
-        public string TranslatorDisplayName { get { return Strings.BaiduTranslator; } set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.BaiduTranslator; } }
 
         public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
         {

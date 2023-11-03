@@ -8,7 +8,7 @@ namespace TranslatorLibrary.Translator
     {
         private string errorInfo;//错误信息
 
-        public string TranslatorDisplayName { get { return Strings.GoogleCNTranslator; } set => throw new System.NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.GoogleCNTranslator; } }
 
         public string GetLastError()
         {

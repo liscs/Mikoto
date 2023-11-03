@@ -7,7 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing.Printing;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -44,19 +46,22 @@ namespace MisakaTranslator_WPF
 
         private static void InitializeLanguage()
         {
-            var appResource = Application.Current.Resources.MergedDictionaries;
-            Common.appSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\settings\\settings.ini").Build();
-            Thread.CurrentThread.CurrentCulture = new CultureInfo(Common.appSettings.AppLanguage);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Common.appSettings.AppLanguage);
-            foreach (var item in appResource)
+            foreach (var item in Application.Current.Resources.MergedDictionaries)
             {
-                //卸载所有非当前语言的资源文件
-                if (item.Source.ToString().Contains("lang") && item.Source.ToString() != $@"lang/{Common.appSettings.AppLanguage}.xaml")
+                //卸载设计器预览用资源
+                if (item.Source.ToString().Contains("lang") && item.Source.ToString() == "lang/zh-CN.xaml")
                 {
-                    appResource.Remove(item);
+                    Application.Current.Resources.MergedDictionaries.Remove(item);
                     break;
                 }
             }
+            Common.appSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\settings\\settings.ini").Build();
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(Common.appSettings.AppLanguage);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Common.appSettings.AppLanguage);
+
+            ResourceDictionary languageResource = new ResourceDictionary();
+            languageResource.Source = new Uri($"lang/{Common.appSettings.AppLanguage}.xaml", UriKind.Relative);
+            Application.Current.Resources.MergedDictionaries.Add(languageResource);
         }
 
         //按下快捷键时被调用的方法
@@ -393,11 +398,11 @@ namespace MisakaTranslator_WPF
             {
                 switch (menuItem.Tag)
                 {
-                    case "zh-cn":
+                    case "zh-CN":
                         Common.appSettings.AppLanguage = "zh-CN";
                         HandyControl.Controls.MessageBox.Show("语言配置已修改！重启软件后生效！", "提示");
                         break;
-                    case "en-us":
+                    case "en-US":
                         Common.appSettings.AppLanguage = "en-US";
                         HandyControl.Controls.MessageBox.Show("Language configuration has been modified! It will take effect after restarting MisakaTranslator!", "Hint");
                         break;

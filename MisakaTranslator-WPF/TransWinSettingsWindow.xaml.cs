@@ -98,14 +98,36 @@ namespace MisakaTranslator_WPF
                 Common.appSettings.TF_DropShadow = (bool)DropShadowCheckBox.IsChecked;
             };
 
-            KanaCheckBox.Click += delegate
+            PhoneticNotationCheckBox.Click += delegate
             {
-                Common.appSettings.TF_isKanaShow = (bool)KanaCheckBox.IsChecked;
+                Common.appSettings.TF_EnablePhoneticNotation = (bool)PhoneticNotationCheckBox.IsChecked;
+                if (PhoneticNotationCheckBox.IsChecked == true)
+                {
+                    HiraganaRadioButton.IsEnabled = true;
+                    KatakanaRadioButton.IsEnabled = true;
+                    RomajiRadioButton.IsEnabled = true;
+                }
+                else
+                {
+                    HiraganaRadioButton.IsEnabled = false;
+                    KatakanaRadioButton.IsEnabled = false;
+                    RomajiRadioButton.IsEnabled = false;
+                }
             };
 
-            HirakanaCheckBox.Click += delegate
+            HiraganaRadioButton.Click += delegate
             {
-                Common.appSettings.TF_Hiragana = (bool)HirakanaCheckBox.IsChecked;
+                Common.appSettings.TF_PhoneticNotationType = IAppSettings.PhoneticNotationType.hiragana;
+            };
+
+            KatakanaRadioButton.Click += delegate
+            {
+                Common.appSettings.TF_PhoneticNotationType = IAppSettings.PhoneticNotationType.katakana;
+            };
+
+            RomajiRadioButton.Click += delegate
+            {
+                Common.appSettings.TF_PhoneticNotationType = IAppSettings.PhoneticNotationType.romaji;
             };
 
             KanaBoldCheckBox.Click += delegate
@@ -170,8 +192,37 @@ namespace MisakaTranslator_WPF
             firstWhiteStrokeCheckBox.IsChecked = Common.appSettings.TF_firstWhiteStrokeIsChecked;
 
             DropShadowCheckBox.IsChecked = Common.appSettings.TF_DropShadow;
-            KanaCheckBox.IsChecked = Common.appSettings.TF_isKanaShow;
-            HirakanaCheckBox.IsChecked = Common.appSettings.TF_Hiragana;
+
+            PhoneticNotationCheckBox.IsChecked = Common.appSettings.TF_EnablePhoneticNotation;
+
+            Common.appSettings.TF_EnablePhoneticNotation = (bool)PhoneticNotationCheckBox.IsChecked;
+            if (PhoneticNotationCheckBox.IsChecked == true)
+            {
+                HiraganaRadioButton.IsEnabled = true;
+                KatakanaRadioButton.IsEnabled = true;
+                RomajiRadioButton.IsEnabled = true;
+            }
+            else
+            {
+                HiraganaRadioButton.IsEnabled = false;
+                KatakanaRadioButton.IsEnabled = false;
+                RomajiRadioButton.IsEnabled = false;
+            }
+            switch (Common.appSettings.TF_PhoneticNotationType)
+            {
+                case IAppSettings.PhoneticNotationType.hiragana:
+                    HiraganaRadioButton.IsChecked = true;
+                    break;
+                case IAppSettings.PhoneticNotationType.katakana:
+                    KatakanaRadioButton.IsChecked = true;
+                    break;
+                case IAppSettings.PhoneticNotationType.romaji:
+                    RomajiRadioButton.IsChecked = true;
+                    break;
+                default:
+                    break;
+            }
+
             KanaBoldCheckBox.IsChecked = Common.appSettings.TF_SuperBold;
             ColorfulCheckBox.IsChecked = Common.appSettings.TF_Colorful;
         }

@@ -15,7 +15,7 @@ namespace TranslatorLibrary.Translator
 
         private string errorInfo;
 
-        public string TranslatorDisplayName { get { return Strings.IBMTranslator; } set => throw new NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.IBMTranslator; } }
 
         public string GetLastError()
         {

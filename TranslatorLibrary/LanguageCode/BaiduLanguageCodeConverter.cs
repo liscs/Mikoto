@@ -1,32 +1,34 @@
-﻿namespace TranslatorLibrary
+﻿using System.Globalization;
+
+namespace TranslatorLibrary
 {
     public class BaiduLanguageCodeConverter : ILanguageCodeConverter
     {
-        public string GetLanguageCode(Language language)
+        public string GetLanguageCode(CultureInfo cultureInfo)
         {
-            switch (language)
+            switch (cultureInfo.Name)
             {
-                case Language.Simplified_Chinese:
+                case "zh-CN":
                     return "zh";
-                case Language.Traditional_Chinese:
+                case "zh-TW":
                     return "cht";
-                case Language.English:
+                case "en":
                     return "en";
-                case Language.Japanese:
+                case "ja":
                     return "jp";
-                case Language.Korean:
+                case "ko":
                     return "kor";
-                case Language.Spanish:
+                case "es":
                     return "spa";
-                case Language.French:
+                case "fr":
                     return "fra";
-                case Language.Portuguese:
+                case "pt":
                     return "pt";
-                case Language.Russian:
+                case "ru":
                     return "ru";
-                case Language.German:
+                case "de":
                     return "de";
-                case Language.Italian:
+                case "it":
                     return "it";
                 default:
                     return "zh";

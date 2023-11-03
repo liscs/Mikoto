@@ -48,7 +48,7 @@ namespace TranslatorLibrary.Translator
         public string FilePath;//文件路径
         private string errorInfo;//错误信息
 
-        public string TranslatorDisplayName { get { return Strings.DreyeTranslator; } set => throw new NotImplementedException(); }
+        public string TranslatorDisplayName { get { return Strings.DreyeTranslator; } }
 
         public string GetLastError()
         {

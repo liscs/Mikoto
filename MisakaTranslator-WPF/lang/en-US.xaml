@@ -346,11 +346,13 @@
 
     <sys:String x:Key="TransWinSettingsWin_DropShadowCbox">Turn on text shadow</sys:String>
 
-    <sys:String x:Key="TransWinSettingsWin_KanaCbox">Enable Japanese original Kana annotation</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_Hirogana">Hirogana</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_Katakana">Katakana</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_Romaji">Romaji</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_PhoneticNotationCheckBox">Enable Japanese phonetic notation</sys:String>
     <sys:String x:Key="TransWinSettingsWin_ColorfulCbox">Enable source text word segmentation coloring</sys:String>
 
     <sys:String x:Key="TransWinSettingsWin_HirakanaCbox">Use Hiragana phonetic notation</sys:String>
-
     <sys:String x:Key="TransWinSettingsWin_KanaBoldCbox">Bold the kana label</sys:String>
 
     <sys:String x:Key="MainWindow_AutoUpdateCheck">New version found! Click Confirm to enter the download page, click Cancel to ignore this update prompt.</sys:String>

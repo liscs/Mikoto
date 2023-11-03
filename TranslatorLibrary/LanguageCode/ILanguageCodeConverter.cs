@@ -1,5 +1,7 @@
-﻿namespace TranslatorLibrary;
+﻿using System.Globalization;
+
+namespace TranslatorLibrary;
 public interface ILanguageCodeConverter
 {
-    string GetLanguageCode(Language language);
+    string GetLanguageCode(CultureInfo cultureInfo);
 }
