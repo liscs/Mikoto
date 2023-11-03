@@ -373,19 +373,34 @@ namespace TextHookLibrary
                             }
                         }
 
+                        //保存的misakacode
+                        var savedMisakaCode = MisakaCodeList[0];
+                        //misakacode第一段
+                        var savedMisakaCode1 = savedMisakaCode.Split(':').ElementAt(0).Substring(1);
+                        //misakacode第二段
+                        var savedMisakaCode2 = savedMisakaCode.Split(':').ElementAt(1);
+                        //misakacode第三段
+                        var savedMisakaCode3 = savedMisakaCode.Split(':').ElementAt(2).Substring(0, savedMisakaCode.Split(':').ElementAt(2).Length - 1);
+
+                        //取得的misakacode
+                        var obtainedMisakaCode = data.MisakaHookCode;
+                        var obtainedMisakaCode1 = obtainedMisakaCode.Split(':').ElementAt(0).Substring(1);
+                        var obtainedMisakaCode2 = obtainedMisakaCode.Split(':').ElementAt(1);
+                        var obtainedMisakaCode3 = obtainedMisakaCode.Split(':').ElementAt(2).Substring(0, obtainedMisakaCode.Split(':').ElementAt(2).Length - 1);
+
                         //文本去重窗口处理&游戏翻译窗口处理
                         // TODO 寻找更好的Hook Address确定方法，记录匹配的多个misakacode表，将不够匹配的列入排除表
                         if (HookCodeList.Count != 0 &&
                             HookCodeList.Contains(data.HookCode) &&
                             //要求第一串后四位以及第三串相等
-                            MisakaCodeList[0].Split(':').ElementAt(0).Substring(3) == data.MisakaHookCode.Split(':').ElementAt(0).Substring(3) &&
-                            MisakaCodeList[0].Split(':').ElementAt(2) == data.MisakaHookCode.Split(':').ElementAt(2))
+                            savedMisakaCode1.Substring(savedMisakaCode1.Length - 4) == obtainedMisakaCode1.Substring(obtainedMisakaCode1.Length - 4) &&
+                            savedMisakaCode3 == obtainedMisakaCode3)
                         {
-                            if (!excludeSet.Contains(data.MisakaHookCode.Split(':').ElementAt(1)))
+                            if (!excludeSet.Contains(obtainedMisakaCode2))
                             {
-                                if (!matchList.Contains(data.MisakaHookCode.Split(':')[1]))
+                                if (!matchList.Contains(obtainedMisakaCode2))
                                 {
-                                    matchList.Add(data.MisakaHookCode.Split(':')[1]);
+                                    matchList.Add(obtainedMisakaCode2);
                                 }
                                 SolvedDataReceivedEventArgs e = new SolvedDataReceivedEventArgs
                                 {
@@ -394,7 +409,7 @@ namespace TextHookLibrary
                                 MeetHookAddressMessageReceived?.Invoke(this, e);
                                 if (matchList.Count > 1)
                                 {
-                                    string notThatMatch = GetWorstMatchString(MisakaCodeList[0].Split(':').ElementAt(1), matchList[0], matchList[1]);
+                                    string notThatMatch = GetWorstMatchString(savedMisakaCode2, matchList[0], matchList[1]);
                                     excludeSet.Add(notThatMatch);
                                     matchList.Clear();
                                 }
