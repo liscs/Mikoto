@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextHookLibrary", "TextHook
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MecabHelperLibrary", "MecabHelperLibrary\MecabHelperLibrary.csproj", "{82FDE770-321E-4433-8E05-8803850F24DB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLHelperLibrary", "SQLHelperLibrary\SQLHelperLibrary.csproj", "{08A96F84-775C-4F7E-90B0-B54780A4DDB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLibrary", "SQLHelperLibrary\DataAccessLibrary.csproj", "{08A96F84-775C-4F7E-90B0-B54780A4DDB9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransOptimizationLibrary", "TransOptimizationLibrary\TransOptimizationLibrary.csproj", "{A17B385F-8E6E-4B7D-B3EF-EC08C7A8D115}"
 EndProject

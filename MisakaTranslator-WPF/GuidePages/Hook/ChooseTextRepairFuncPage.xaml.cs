@@ -1,4 +1,5 @@
-﻿using SQLHelperLibrary;
+﻿using GameLibraryAccessHelper;
+using SQLHelperLibrary;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -60,25 +61,39 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             Common.UsingRepairFunc = TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]];
 
             //写入数据库的去重方法
-            if (Common.GameID != -1)
+            if (Common.GameID != null)
             {
+                List<GameInfo> allGames = GameLibraryHelper.GetAllGameLibrary();
+                GameInfo targetGame = null;
+                foreach (GameInfo game in allGames)
+                {
+                    if (game.GameID == Common.GameID)
+                    {
+                        targetGame = game;
+                        break;
+                    }
+                }
                 switch (TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])
                 {
                     case "RepairFun_RemoveSingleWordRepeat":
-                        GameLibraryHelper.sqlHelper.ExecuteSql(
-                            $"UPDATE game_library SET repair_func = '{Common.UsingRepairFunc}',repair_param_a = '{Common.repairSettings.SingleWordRepeatTimes}' WHERE gameid = {Common.GameID};");
+                        targetGame.RepairFunc = Common.UsingRepairFunc;
+                        targetGame.RepairParamA = Common.repairSettings.SingleWordRepeatTimes.ToString();
+                        GameLibraryHelper.SaveGameInfo(targetGame);
                         break;
                     case "RepairFun_RemoveSentenceRepeat":
-                        GameLibraryHelper.sqlHelper.ExecuteSql(
-                            $"UPDATE game_library SET repair_func = '{Common.UsingRepairFunc}',repair_param_a = '{Common.repairSettings.SentenceRepeatFindCharNum}' WHERE gameid = {Common.GameID};");
+                        targetGame.RepairFunc = Common.UsingRepairFunc;
+                        targetGame.RepairParamA = Common.repairSettings.SentenceRepeatFindCharNum.ToString();
+                        GameLibraryHelper.SaveGameInfo(targetGame);
                         break;
                     case "RepairFun_RegexReplace":
-                        GameLibraryHelper.sqlHelper.ExecuteSql(
-                            $"UPDATE game_library SET repair_func = '{Common.UsingRepairFunc}',repair_param_a = '{Common.repairSettings.Regex}',repair_param_b = '{Common.repairSettings.Regex_Replace}' WHERE gameid = {Common.GameID};");
+                        targetGame.RepairFunc = Common.UsingRepairFunc;
+                        targetGame.RepairParamA = Common.repairSettings.Regex.ToString();
+                        targetGame.RepairParamB = Common.repairSettings.Regex_Replace.ToString();
+                        GameLibraryHelper.SaveGameInfo(targetGame);
                         break;
                     default:
-                        GameLibraryHelper.sqlHelper.ExecuteSql(
-                            $"UPDATE game_library SET repair_func = '{Common.UsingRepairFunc}' WHERE gameid = {Common.GameID};");
+                        targetGame.RepairFunc = Common.UsingRepairFunc;
+                        GameLibraryHelper.SaveGameInfo(targetGame);
                         break;
                 }
 

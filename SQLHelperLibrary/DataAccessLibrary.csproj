@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <UseWindowsForms>true</UseWindowsForms>
@@ -9,6 +9,7 @@
     <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.4" IncludeAssets="none" ExcludeAssets="all" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.4" />
     <PackageReference Include="SQLitePCLRaw.provider.winsqlite3" Version="2.1.4" />
+    <PackageReference Include="System.Text.Json" Version="7.0.1" />
   </ItemGroup>
 
   <ItemGroup>

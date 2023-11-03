@@ -1,4 +1,5 @@
-﻿using SQLHelperLibrary;
+﻿using GameLibraryAccessHelper;
+using SQLHelperLibrary;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -38,12 +39,20 @@ namespace MisakaTranslator_WPF.GuidePages
                 Common.UsingDstLang = TranslatorCommon.LanguageList[_langList[DstLangCombox.SelectedIndex]];
 
                 //写数据库信息
-                if (Common.GameID != -1)
+                if (Common.GameID != null)
                 {
-                    GameLibraryHelper.sqlHelper.ExecuteSql(
-                        $"UPDATE game_library SET src_lang = '{Common.UsingSrcLang}' WHERE gameid = {Common.GameID};");
-                    GameLibraryHelper.sqlHelper.ExecuteSql(
-                        $"UPDATE game_library SET dst_lang = '{Common.UsingDstLang}' WHERE gameid = {Common.GameID};");
+                    List<GameInfo> allGames = GameLibraryAccessHelper.GameLibraryHelper.GetAllGameLibrary();
+                    foreach (GameInfo game in allGames)
+                    {
+                        if (game.GameID == Common.GameID)
+                        {
+                            GameInfo targetGame = game;
+                            targetGame.SrcLang = Common.UsingSrcLang;
+                            targetGame.DstLang = Common.UsingDstLang;
+                            GameLibraryAccessHelper.GameLibraryHelper.SaveGameInfo(targetGame);
+                            break;
+                        }
+                    }
                 }
 
                 //使用路由事件机制通知窗口来完成下一步操作

@@ -43,7 +43,7 @@
 		<ProjectReference Include="..\KeyboardMouseMonitor\KeyboardMouseMonitor.csproj" />
 		<ProjectReference Include="..\MecabHelperLibrary\MecabHelperLibrary.csproj" />
 		<ProjectReference Include="..\OCRLibrary\OCRLibrary.csproj" />
-		<ProjectReference Include="..\SQLHelperLibrary\SQLHelperLibrary.csproj" />
+		<ProjectReference Include="..\SQLHelperLibrary\DataAccessLibrary.csproj" />
 		<ProjectReference Include="..\TextHookLibrary\TextHookLibrary.csproj" />
 		<ProjectReference Include="..\TextRepairLibrary\TextRepairLibrary.csproj" />
 		<ProjectReference Include="..\TranslatorLibrary\TranslatorLibrary.csproj" />

@@ -40,7 +40,7 @@ namespace MisakaTranslator_WPF
         }
         public static TransMode transMode; //全局使用中的翻译模式 1=hook 2=ocr
 
-        public static int GameID; //全局使用中的游戏ID(数据库)
+        public static Guid? GameID; //全局使用中的游戏ID(数据库)
 
         public static TextHookHandle textHooker; //全局使用中的Hook对象
         public static string UsingRepairFunc; //全局使用中的去重方法

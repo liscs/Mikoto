@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
+using System.Text.Json;
 
-namespace SQLHelperLibrary
+namespace GameLibraryAccessHelper
 {
     public class GameInfo
     {
@@ -20,7 +20,7 @@ namespace SQLHelperLibrary
         /// <summary>
         /// 游戏ID
         /// </summary>
-        public int GameID { get; set; }
+        public Guid GameID { get; set; }
 
         /// <summary>
         /// 翻译模式,1=hook 2=ocr
@@ -75,210 +75,133 @@ namespace SQLHelperLibrary
 
     public static class GameLibraryHelper
     {
-        public static readonly SQLHelper sqlHelper = new($"{Environment.CurrentDirectory}\\MisakaGameLibrary.sqlite");
-
-        /// <summary>
-        /// 创建一个新游戏列表库
-        /// </summary>
-        static GameLibraryHelper()
-        {
-            string createTableSql =
-                    @"
-                        CREATE TABLE IF NOT EXISTS game_library(
-                            gameid INTEGER PRIMARY KEY AUTOINCREMENT,
-                            gamename TEXT,
-                            gamefilepath TEXT,
-                            transmode INTEGER,
-                            src_lang TEXT,
-                            dst_lang TEXT,
-                            repair_func TEXT,
-                            repair_param_a TEXT,
-                            repair_param_b TEXT,
-                            hookcode TEXT,
-                            isMultiHook TEXT,
-                            isx64 TEXT,
-                            hookcode_custom TEXT,
-                            misakahookcode TEXT
-                        );
-                    ";
-            var id = sqlHelper.ExecuteSql(createTableSql);
-            if (id == -1)
-            {
-                MessageBox.Show($"初始化游戏库发生错误，数据库错误代码:\n{sqlHelper.GetLastError()}");
-                throw new Exception(sqlHelper.GetLastError());
-            }
-        }
+        //游戏信息文件夹
+        public static readonly DirectoryInfo directory = Directory.CreateDirectory($"{Environment.CurrentDirectory}\\Games\\");
 
         /// <summary>
         /// 得到一个游戏的游戏ID
-        /// 如果游戏已经存在于数据库中，则直接返回ID，否则追加新游戏路径并返回新ID，如果返回-1则有数据库错误
+        /// 如果游戏已经存在，则直接返回ID，否则追加新游戏路径并返回新ID
         /// </summary>
         /// <param name="gamePath"></param>
         /// <returns>返回游戏ID</returns>
-        public static int GetGameID(string gamePath)
+        public static Guid GetGameID(string gamePath)
         {
-            var ls = sqlHelper.ExecuteReader_OneLine(
-                $"SELECT gameid FROM game_library WHERE gamefilepath = '{gamePath}';", 1);
-
-            if (ls == null)
+            (bool existed, Guid? id) = GameExists(gamePath);
+            if (existed && id != null)
             {
-                MessageBox.Show($"数据库访问时发生错误，错误代码:\n{sqlHelper.GetLastError()}", "数据库错误");
-                return -1;
+                return (Guid)id;
             }
-
-            if (ls.Count == 0)
+            else
             {
-                var sql =
-                    @$"
-                        INSERT INTO game_library (
-                            gamename,
-                            gamefilepath,
-                            transmode
-                        )
-                        VALUES(
-                            '{Path.GetFileNameWithoutExtension(gamePath)}',
-                            '{gamePath}',
-                            1
-                        );
-                    ";
-                sqlHelper.ExecuteSql(sql);
-                ls = sqlHelper.ExecuteReader_OneLine(
-                    $"SELECT gameid FROM game_library WHERE gamefilepath = '{gamePath}';", 1);
+                return AddGame(gamePath);
             }
-
-            return int.Parse(ls[0]);
         }
 
+        private static (bool, Guid?) GameExists(string gamePath)
+        {
+            foreach (FileInfo fileInfo in directory.GetFiles())
+            {
+                string jsonString = File.ReadAllText(fileInfo.FullName);
+                GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString)!;
+                if (gameInfo.FilePath == gamePath)
+                {
+                    return (true, gameInfo.GameID);
+                }
+            }
+            return (false, null);
+        }
+
+        private static Guid AddGame(string gamePath)
+        {
+            string name = Path.GetFileNameWithoutExtension(gamePath);
+            Guid id = Guid.NewGuid();
+            GameInfo gameInfo = new GameInfo()
+            {
+                GameID = id,
+                GameName = name,
+            };
+            SaveGameInfo(gameInfo);
+            return id;
+        }
+
+
         /// <summary>
-        /// 得到游戏库中所有游戏的信息
+        /// 得到游戏库中所有有效游戏的信息
         /// </summary>
         public static List<GameInfo> GetAllGameLibrary()
         {
-            string sql =
-                    @"
-                        SELECT                         
-                            gameid,
-                            gamename,
-                            gamefilepath,
-                            transmode,
-                            src_lang,
-                            dst_lang,
-                            repair_func,
-                            repair_param_a,
-                            repair_param_b,
-                            hookcode,
-                            isMultiHook,
-                            isx64,
-                            hookcode_custom,
-                            misakahookcode
-                        FROM game_library;
-                    ";
-            var resultList = sqlHelper.ExecuteReader(sql, 14);
-
-            if (resultList == null)
+            List<GameInfo> list = new List<GameInfo>();
+            foreach (FileInfo fileInfo in directory.GetFiles())
             {
-                MessageBox.Show($"数据库访问时发生错误，错误代码:\n{sqlHelper.GetLastError()}", "数据库错误");
-                return null;
-            }
-
-            if (resultList.Count == 0)
-            {
-                return null;
-            }
-
-            var allInfoList = new List<GameInfo>();
-
-            foreach (var item in resultList)
-            {
-                var gameInfo = new GameInfo();
-
-                if (item[4] == "" || item[5] == "" || item[6] == "" || item[9] == "" || item[11] == "")
+                string jsonString = File.ReadAllText(fileInfo.FullName);
+                GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString)!;
+                if (string.IsNullOrEmpty(gameInfo.SrcLang) ||
+                    string.IsNullOrEmpty(gameInfo.DstLang) ||
+                    string.IsNullOrEmpty(gameInfo.RepairFunc) ||
+                    string.IsNullOrEmpty(gameInfo.HookCode)
+                    )
                 {
-                    //没有完整走完导航的游戏，这时就不需要显示这个库
                     continue;
                 }
-
-                gameInfo.GameID = int.Parse(item[0]);
-                gameInfo.GameName = item[1];
-                gameInfo.FilePath = item[2];
-                gameInfo.TransMode = int.Parse(item[3]);
-                gameInfo.SrcLang = item[4];
-                gameInfo.DstLang = item[5];
-                gameInfo.RepairFunc = item[6];
-                gameInfo.RepairParamA = item[7];
-                gameInfo.RepairParamB = item[8];
-                gameInfo.HookCode = item[9];
-                gameInfo.Isx64 = Convert.ToBoolean(item[11]);
-                gameInfo.HookCodeCustom = item[12];
-                gameInfo.MisakaHookCode = item[13];
-
-                allInfoList.Add(gameInfo);
+                list.Add(gameInfo);
             }
-
-            return allInfoList;
+            return list;
         }
 
+
+
         /// <summary>
-        /// 通过游戏ID得到游戏信息
+        /// 删除游戏信息
         /// </summary>
         /// <param name="gameID"></param>
         /// <returns></returns>
-        public static GameInfo GetGameInfoByID(int gameID)
+        public static bool DeleteGameByID(Guid gameID)
         {
-            var ls = sqlHelper.ExecuteReader_OneLine($"SELECT * FROM game_library WHERE gameid = {gameID};", 14);
-
-            if (ls == null)
+            foreach (FileInfo fileInfo in directory.GetFiles())
             {
-                MessageBox.Show($"数据库访问时发生错误，错误代码:\n{sqlHelper.GetLastError()}", "数据库错误");
-                return null;
+                string jsonString = File.ReadAllText(fileInfo.FullName);
+                GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString)!;
+                if (gameInfo.GameID == gameID)
+                {
+                    File.Delete(fileInfo.FullName);
+                }
+                return true;
             }
-
-            if (ls.Count == 0)
-            {
-                return null;
-            }
-
-            GameInfo gameInfo = new GameInfo
-            {
-                GameID = int.Parse(ls[0]),
-                GameName = ls[1],
-                FilePath = ls[2],
-                TransMode = int.Parse(ls[3]),
-                SrcLang = ls[4],
-                DstLang = ls[5],
-                RepairFunc = ls[6],
-                RepairParamA = ls[7],
-                RepairParamB = ls[8],
-                HookCode = ls[9],
-                Isx64 = Convert.ToBoolean(ls[11]),
-                HookCodeCustom = ls[12],
-                MisakaHookCode = ls[13]
-            };
-
-            return gameInfo;
+            return false;
         }
 
         /// <summary>
-        /// 从数据库中删除这个游戏
-        /// </summary>
-        /// <param name="gameID"></param>
-        /// <returns></returns>
-        public static bool DeleteGameByID(int gameID)
-        {
-            var ret = sqlHelper.ExecuteSql($"DELETE FROM game_library WHERE gameid = {gameID};");
-            return ret != -1;
-        }
-
-        /// <summary>
-        /// 修改数据库中的游戏名
+        /// 修改游戏名信息
         /// </summary>
         /// <param name="gameID"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static bool UpdateGameNameByID(int gameID, string name)
+        public static bool UpdateGameNameByID(Guid gameID, string name)
         {
-            var ret = sqlHelper.ExecuteSql($"UPDATE game_library SET gamename = '{name}' WHERE gameid = {gameID};");
-            return ret != -1;
+            foreach (FileInfo fileInfo in directory.GetFiles())
+            {
+                string jsonString = File.ReadAllText(fileInfo.FullName);
+                GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString)!;
+                if (gameInfo.GameID == gameID)
+                {
+                    gameInfo.GameName = name;
+                    SaveGameInfo(gameInfo);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 保存GameInfo
+        /// </summary>
+        /// <param name="gameInfo"></param>
+        /// <returns></returns>
+        public static void SaveGameInfo(GameInfo gameInfo)
+        {
+            string fileName = $"{directory.FullName}\\{gameInfo.GameName}.json";
+            string jsonString = JsonSerializer.Serialize(gameInfo);
+            File.WriteAllText(fileName, jsonString);
         }
     }
 }

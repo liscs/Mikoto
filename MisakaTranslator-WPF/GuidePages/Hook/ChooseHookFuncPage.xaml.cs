@@ -1,4 +1,4 @@
-﻿using SQLHelperLibrary;
+﻿using GameLibraryAccessHelper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -81,11 +81,23 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                     Common.textHooker.DetachUnrelatedHooks(pid, usedHook);
                 }
 
-                if (Common.GameID != -1)
+                if (Common.GameID != null)
                 {
-                    GameLibraryHelper.sqlHelper.ExecuteSql($"UPDATE game_library SET transmode = {"1"} WHERE gameid = {Common.GameID};");
-                    GameLibraryHelper.sqlHelper.ExecuteSql($"UPDATE game_library SET hookcode = '{lstData[HookFunListView.SelectedIndex].HookCode}' WHERE gameid = {Common.GameID};");
-                    GameLibraryHelper.sqlHelper.ExecuteSql($"UPDATE game_library SET misakahookcode = '{lstData[HookFunListView.SelectedIndex].MisakaHookCode}' WHERE gameid = {Common.GameID};");
+                    List<GameInfo> allGames = GameLibraryAccessHelper.GameLibraryHelper.GetAllGameLibrary();
+                    GameInfo targetGame = null;
+                    foreach (GameInfo game in allGames)
+                    {
+                        if (game.GameID == Common.GameID)
+                        {
+                            targetGame = game;
+                            targetGame.TransMode = 1;
+                            targetGame.HookCode = lstData[HookFunListView.SelectedIndex].HookCode;
+                            targetGame.MisakaHookCode = lstData[HookFunListView.SelectedIndex].MisakaHookCode;
+                            GameLibraryAccessHelper.GameLibraryHelper.SaveGameInfo(targetGame);
+                            break;
+                        }
+                    }
+
                     if (LastCustomHookCode != "NULL")
                     {
                         MessageBoxResult result = HandyControl.Controls.MessageBox.Show(
@@ -97,8 +109,8 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                         if (result == MessageBoxResult.Yes)
                         {
                             //记录这个特殊码到数据库
-                            GameLibraryHelper.sqlHelper.ExecuteSql(
-                                $"UPDATE game_library SET hookcode_custom = '{LastCustomHookCode}' WHERE gameid = {Common.GameID};");
+                            targetGame.HookCodeCustom = LastCustomHookCode;
+                            GameLibraryAccessHelper.GameLibraryHelper.SaveGameInfo(targetGame);
                         }
                         else if (result == MessageBoxResult.No)
                         {
@@ -108,13 +120,14 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                         else
                         {
                             //不记录特殊码，但也要写NULL
-                            GameLibraryHelper.sqlHelper.ExecuteSql(
-                                $"UPDATE game_library SET hookcode_custom = '{"NULL"}' WHERE gameid = {Common.GameID};");
+                            targetGame.HookCodeCustom = "NULL";
+                            GameLibraryAccessHelper.GameLibraryHelper.SaveGameInfo(targetGame);
                         }
                     }
                     else
                     {
-                        GameLibraryHelper.sqlHelper.ExecuteSql($"UPDATE game_library SET hookcode_custom = '{"NULL"}' WHERE gameid = {Common.GameID};");
+                        targetGame.HookCodeCustom = "NULL";
+                        GameLibraryAccessHelper.GameLibraryHelper.SaveGameInfo(targetGame);
                     }
 
                 }

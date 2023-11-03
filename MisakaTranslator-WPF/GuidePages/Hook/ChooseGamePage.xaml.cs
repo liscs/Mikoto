@@ -1,4 +1,5 @@
-﻿using SQLHelperLibrary;
+﻿using GameLibraryAccessHelper;
+using SQLHelperLibrary;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -49,14 +50,24 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                     return;
                 }
 
-                Common.GameID = -1;
+                Common.GameID = null;
                 string filepath = ProcessHelper.FindProcessPath(GamePid, (bool)x64GameCheckBox.IsChecked);
                 if (filepath != "")
                 {
-                    Common.GameID = GameLibraryHelper.GetGameID(filepath);
+                    Common.GameID = GameLibraryAccessHelper.GameLibraryHelper.GetGameID(filepath);
                 }
-                GameLibraryHelper.sqlHelper.ExecuteSql(
-                    $"UPDATE game_library SET isx64 = '{x64GameCheckBox.IsChecked}' WHERE gameid = {Common.GameID};");
+                List<GameInfo> allGames = GameLibraryAccessHelper.GameLibraryHelper.GetAllGameLibrary();
+                foreach (GameInfo game in allGames)
+                {
+                    if (game.GameID == Common.GameID)
+                    {
+                        GameInfo targetGame = game;
+                        targetGame.Isx64 = (bool)x64GameCheckBox.IsChecked;
+                        GameLibraryAccessHelper.GameLibraryHelper.SaveGameInfo(targetGame);
+                        break;
+                    }
+                }
+
 
 
                 //使用路由事件机制通知窗口来完成下一步操作

@@ -1,4 +1,5 @@
-﻿using SQLHelperLibrary;
+﻿using GameLibraryAccessHelper;
+using SQLHelperLibrary;
 using System.Windows;
 using System.Windows.Controls;
 

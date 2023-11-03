@@ -1,15 +1,13 @@
 using Config.Net;
+using GameLibraryAccessHelper;
 using HandyControl.Controls;
 using KeyboardMouseHookLibrary;
 using OCRLibrary;
-using SQLHelperLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing.Printing;
 using System.Globalization;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -446,7 +444,7 @@ namespace MisakaTranslator_WPF
         private void ClipboardGuideBtn_Click(object sender, RoutedEventArgs e)
         {
             Common.textHooker = new TextHookHandle();
-            Common.GameID = 0;
+            Common.GameID = null;
             Common.transMode = Common.TransMode.hook;
             Common.textHooker.AddClipBoardThread();
 

@@ -32,6 +32,7 @@ namespace MisakaTranslator_WPF.UserControls
         {
             _win.SrcLang = TranslatorCommon.LanguageList[_langList[SrcLangCombox.SelectedIndex]];
             _win.DstLang = TranslatorCommon.LanguageList[_langList[DstLangCombox.SelectedIndex]];
+            _win.DstLang = TranslatorCommon.LanguageList[_langList[DstLangCombox.SelectedIndex]];
 
             if (_win.SrcLang == "" || _win.DstLang == "" || _win.SrcLang == _win.DstLang)
             {
