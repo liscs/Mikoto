@@ -1,5 +1,4 @@
 ﻿using GameLibraryAccessHelper;
-using SQLHelperLibrary;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -21,7 +20,7 @@ namespace MisakaTranslator_WPF.GuidePages
             Dispatcher.BeginInvoke(() =>
             {
                 MainWindow.Instance.GameLibraryPanel.Children.Clear();
-                MainWindow.Instance.GameInfoList = GameLibraryHelper.GetAllGameLibrary();
+                MainWindow.Instance.GameInfoList = GameLibraryHelper.GetAllCompletedGames();
                 MainWindow.Instance.GameLibraryPanel_Init();
             });
 

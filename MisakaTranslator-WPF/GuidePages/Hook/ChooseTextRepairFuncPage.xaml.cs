@@ -1,5 +1,4 @@
 ﻿using GameLibraryAccessHelper;
-using SQLHelperLibrary;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -63,16 +62,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             //写入数据库的去重方法
             if (Common.GameID != null)
             {
-                List<GameInfo> allGames = GameLibraryHelper.GetAllGameLibrary();
-                GameInfo targetGame = null;
-                foreach (GameInfo game in allGames)
-                {
-                    if (game.GameID == Common.GameID)
-                    {
-                        targetGame = game;
-                        break;
-                    }
-                }
+                GameInfo targetGame = GameLibraryHelper.GetGameById(Common.GameID);
                 switch (TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])
                 {
                     case "RepairFun_RemoveSingleWordRepeat":

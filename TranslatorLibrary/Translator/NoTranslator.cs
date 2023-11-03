@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using TranslatorLibrary.lang;
 
 namespace TranslatorLibrary.Translator
 {
     public class NoTranslator : ITranslator
     {
-        public string TranslatorDisplayName { get { return Strings.NoTranslator; }  }
+        public string TranslatorDisplayName { get { return Strings.NoTranslator; } }
 
         public string GetLastError()
         {

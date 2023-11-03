@@ -83,20 +83,12 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
                 if (Common.GameID != null)
                 {
-                    List<GameInfo> allGames = GameLibraryAccessHelper.GameLibraryHelper.GetAllGameLibrary();
-                    GameInfo targetGame = null;
-                    foreach (GameInfo game in allGames)
-                    {
-                        if (game.GameID == Common.GameID)
-                        {
-                            targetGame = game;
-                            targetGame.TransMode = 1;
-                            targetGame.HookCode = lstData[HookFunListView.SelectedIndex].HookCode;
-                            targetGame.MisakaHookCode = lstData[HookFunListView.SelectedIndex].MisakaHookCode;
-                            GameLibraryAccessHelper.GameLibraryHelper.SaveGameInfo(targetGame);
-                            break;
-                        }
-                    }
+                    GameInfo targetGame = GameLibraryHelper.GetGameById(Common.GameID);
+                    targetGame.TransMode = 1;
+                    targetGame.HookCode = lstData[HookFunListView.SelectedIndex].HookCode;
+                    targetGame.MisakaHookCode = lstData[HookFunListView.SelectedIndex].MisakaHookCode;
+                    GameLibraryHelper.SaveGameInfo(targetGame);
+
 
                     if (LastCustomHookCode != "NULL")
                     {
@@ -110,7 +102,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                         {
                             //记录这个特殊码到数据库
                             targetGame.HookCodeCustom = LastCustomHookCode;
-                            GameLibraryAccessHelper.GameLibraryHelper.SaveGameInfo(targetGame);
+                            GameLibraryHelper.SaveGameInfo(targetGame);
                         }
                         else if (result == MessageBoxResult.No)
                         {
@@ -121,13 +113,13 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                         {
                             //不记录特殊码，但也要写NULL
                             targetGame.HookCodeCustom = "NULL";
-                            GameLibraryAccessHelper.GameLibraryHelper.SaveGameInfo(targetGame);
+                            GameLibraryHelper.SaveGameInfo(targetGame);
                         }
                     }
                     else
                     {
                         targetGame.HookCodeCustom = "NULL";
-                        GameLibraryAccessHelper.GameLibraryHelper.SaveGameInfo(targetGame);
+                        GameLibraryHelper.SaveGameInfo(targetGame);
                     }
 
                 }

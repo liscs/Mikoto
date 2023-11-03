@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 
 namespace GameLibraryAccessHelper
 {
@@ -79,17 +81,34 @@ namespace GameLibraryAccessHelper
         public static readonly DirectoryInfo directory = Directory.CreateDirectory($"{Environment.CurrentDirectory}\\Games\\");
 
         /// <summary>
-        /// 得到一个游戏的游戏ID
-        /// 如果游戏已经存在，则直接返回ID，否则追加新游戏路径并返回新ID
+        /// 根据id获得游戏信息
         /// </summary>
-        /// <param name="gamePath"></param>
-        /// <returns>返回游戏ID</returns>
-        public static Guid GetGameID(string gamePath)
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static GameInfo GetGameById(Guid? id)
         {
-            (bool existed, Guid? id) = GameExists(gamePath);
-            if (existed && id != null)
+            foreach (FileInfo fileInfo in directory.GetFiles())
             {
-                return (Guid)id;
+                string jsonString = File.ReadAllText(fileInfo.FullName);
+                GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString)!;
+                if (gameInfo.GameID == id)
+                {
+                    return gameInfo;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 得到一个游戏的GameInfo
+        /// 如果游戏已经存在，则直接返回GameInfo，否则追加新游戏路径并返回新GameInfo
+        /// </summary>
+        public static GameInfo GetGameByPath(string gamePath)
+        {
+            (bool existed, GameInfo gameInfo) = GameExists(gamePath);
+            if (existed && gameInfo != null)
+            {
+                return gameInfo;
             }
             else
             {
@@ -97,7 +116,7 @@ namespace GameLibraryAccessHelper
             }
         }
 
-        private static (bool, Guid?) GameExists(string gamePath)
+        private static (bool, GameInfo) GameExists(string gamePath)
         {
             foreach (FileInfo fileInfo in directory.GetFiles())
             {
@@ -105,13 +124,13 @@ namespace GameLibraryAccessHelper
                 GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString)!;
                 if (gameInfo.FilePath == gamePath)
                 {
-                    return (true, gameInfo.GameID);
+                    return (true, gameInfo);
                 }
             }
             return (false, null);
         }
 
-        private static Guid AddGame(string gamePath)
+        private static GameInfo AddGame(string gamePath)
         {
             string name = Path.GetFileNameWithoutExtension(gamePath);
             Guid id = Guid.NewGuid();
@@ -119,16 +138,17 @@ namespace GameLibraryAccessHelper
             {
                 GameID = id,
                 GameName = name,
+                FilePath = gamePath,
             };
             SaveGameInfo(gameInfo);
-            return id;
+            return gameInfo;
         }
 
 
         /// <summary>
         /// 得到游戏库中所有有效游戏的信息
         /// </summary>
-        public static List<GameInfo> GetAllGameLibrary()
+        public static List<GameInfo> GetAllCompletedGames()
         {
             List<GameInfo> list = new List<GameInfo>();
             foreach (FileInfo fileInfo in directory.GetFiles())
@@ -184,6 +204,7 @@ namespace GameLibraryAccessHelper
                 GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString)!;
                 if (gameInfo.GameID == gameID)
                 {
+                    File.Delete(fileInfo.FullName);
                     gameInfo.GameName = name;
                     SaveGameInfo(gameInfo);
                     return true;
@@ -192,6 +213,11 @@ namespace GameLibraryAccessHelper
             return false;
         }
 
+        private static JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+        };
         /// <summary>
         /// 保存GameInfo
         /// </summary>
@@ -200,7 +226,7 @@ namespace GameLibraryAccessHelper
         public static void SaveGameInfo(GameInfo gameInfo)
         {
             string fileName = $"{directory.FullName}\\{gameInfo.GameName}.json";
-            string jsonString = JsonSerializer.Serialize(gameInfo);
+            string jsonString = JsonSerializer.Serialize(gameInfo, options);
             File.WriteAllText(fileName, jsonString);
         }
     }

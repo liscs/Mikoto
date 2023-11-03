@@ -1,5 +1,4 @@
 ﻿using GameLibraryAccessHelper;
-using SQLHelperLibrary;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -51,24 +50,15 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                 }
 
                 Common.GameID = null;
+                GameInfo targetGame;
                 string filepath = ProcessHelper.FindProcessPath(GamePid, (bool)x64GameCheckBox.IsChecked);
                 if (filepath != "")
                 {
-                    Common.GameID = GameLibraryAccessHelper.GameLibraryHelper.GetGameID(filepath);
+                    targetGame = GameLibraryHelper.GetGameByPath(filepath);
+                    Common.GameID = targetGame.GameID;
+                    targetGame.Isx64 = (bool)x64GameCheckBox.IsChecked;
+                    GameLibraryHelper.SaveGameInfo(targetGame);
                 }
-                List<GameInfo> allGames = GameLibraryAccessHelper.GameLibraryHelper.GetAllGameLibrary();
-                foreach (GameInfo game in allGames)
-                {
-                    if (game.GameID == Common.GameID)
-                    {
-                        GameInfo targetGame = game;
-                        targetGame.Isx64 = (bool)x64GameCheckBox.IsChecked;
-                        GameLibraryAccessHelper.GameLibraryHelper.SaveGameInfo(targetGame);
-                        break;
-                    }
-                }
-
-
 
                 //使用路由事件机制通知窗口来完成下一步操作
                 PageChangeRoutedEventArgs args = new PageChangeRoutedEventArgs(PageChange.PageChangeRoutedEvent, this);

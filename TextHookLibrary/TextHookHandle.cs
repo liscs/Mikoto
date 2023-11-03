@@ -372,6 +372,10 @@ namespace TextHookLibrary
                                 listIndex_Re++;
                             }
                         }
+                        if (MisakaCodeList.Count == 0)
+                        {
+                            return;
+                        }
 
                         //保存的misakacode
                         var savedMisakaCode = MisakaCodeList[0];

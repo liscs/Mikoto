@@ -71,7 +71,7 @@ namespace MisakaTranslator_WPF
         private void Initialize(IAppSettings settings)
         {
             this.Resources["Foreground"] = (SolidColorBrush)(new BrushConverter().ConvertFrom(settings.ForegroundHex));
-            GameInfoList = GameLibraryHelper.GetAllGameLibrary();
+            GameInfoList = GameLibraryHelper.GetAllCompletedGames();
             Common.repairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Environment.CurrentDirectory + "\\settings\\RepairSettings.ini").Build();
             GameLibraryPanel_Init();
             //先初始化这两个语言，用于全局OCR识别
@@ -427,7 +427,7 @@ namespace MisakaTranslator_WPF
         /// <returns>数组索引（非GameID），-1代表未找到</returns>
         private int GetGameListHasProcessGame_PID_ID()
         {
-            GameInfoList = GameLibraryHelper.GetAllGameLibrary();
+            GameInfoList = GameLibraryHelper.GetAllCompletedGames();
             if (GameInfoList == null)
                 return -1;
 
