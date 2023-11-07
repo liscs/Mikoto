@@ -9,8 +9,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Border Background="{DynamicResource RegionBrush}" Padding="24">
         <StackPanel>
-            <TextBox Name="nameBox" Margin="10" Width="196" hc:InfoElement.Placeholder="{StaticResource MainWindow_Drawer_NameHint}" hc:InfoElement.Necessary="True" Style="{StaticResource TextBoxExtend}"/>
-            <Button Height="30" Click="Button_Click" Command="hc:ControlCommands.Close" Style="{StaticResource ButtonSuccess}" Content="{DynamicResource MainWindow_Drawer_NameConfirmBtn}"/>
+            <TextBox Name="nameBox" Margin="10" Width="196" hc:InfoElement.Placeholder="{DynamicResource MainWindow_Drawer_NameHint}" hc:InfoElement.Necessary="True" Style="{DynamicResource TextBoxExtend}"/>
+            <Button Height="30" Click="Button_Click" Command="hc:ControlCommands.Close" Style="{DynamicResource ButtonSuccess}" Content="{DynamicResource MainWindow_Drawer_NameConfirmBtn}"/>
         </StackPanel>
     </Border>
 </UserControl>

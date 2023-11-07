@@ -10,11 +10,11 @@
       Title="MecabDictPage">
 
     <StackPanel>
-        <TextBlock Text="{StaticResource MecabDictPage_Introduce}" FontSize="16" TextWrapping="WrapWithOverflow" Margin="10" />
-        <TextBox hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{StaticResource MecabDictPage_DBPath}" Name="PathBox" IsReadOnly="True" Margin="20,10" />
+        <TextBlock Text="{DynamicResource MecabDictPage_Introduce}" FontSize="16" TextWrapping="WrapWithOverflow" Margin="10" />
+        <TextBox hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource MecabDictPage_DBPath}" Name="PathBox" IsReadOnly="True" Margin="20,10" />
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,10">
-            <Button Content="{StaticResource MecabDictPage_ClearPath}" Width="122" Click="ClearPathBtn_Click" Margin="0,0,10,0" />
-            <Button Content="{StaticResource JbeijingTransSettingsPage_ChoosePath}" Width="122" Click="ChoosePathBtn_Click" Margin="10,0,0,0" />
+            <Button Content="{DynamicResource MecabDictPage_ClearPath}" Width="122" Click="ClearPathBtn_Click" Margin="0,0,10,0" />
+            <Button Content="{DynamicResource JbeijingTransSettingsPage_ChoosePath}" Width="122" Click="ChoosePathBtn_Click" Margin="10,0,0,0" />
         </StackPanel>
     </StackPanel>
 </Page>

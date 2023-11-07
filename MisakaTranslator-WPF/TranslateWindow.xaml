@@ -54,22 +54,22 @@
                 </Style>
             </Grid.Resources>
             <StackPanel HorizontalAlignment="Left">
-                <ToggleButton fa:Awesome.Content="MousePointer" Name="LockButton" IsChecked="True" Click="Lock_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_Lock}" />
-                <ToggleButton fa:Awesome.Content="Expand" Name="ChangeSizeButton" Click="ChangeSize_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_ChangeSize}" />
+                <ToggleButton fa:Awesome.Content="MousePointer" Name="LockButton" IsChecked="True" Click="Lock_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_Lock}" />
+                <ToggleButton fa:Awesome.Content="Expand" Name="ChangeSizeButton" Click="ChangeSize_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_ChangeSize}" />
             </StackPanel>
             <StackPanel HorizontalAlignment="Center">
-                <Button fa:Awesome.Content="Pause" Name="PauseButton" Click="Pause_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_Pause}" />
-                <Button fa:Awesome.Content="Repeat" Click="RenewOCR_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_RenewOCR}" />
-                <Button fa:Awesome.Content="EyeSlash" Name="ShowSourceButton" Click="ShowSource_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_ShowSource}" />
-                <Button fa:Awesome.Content="History" Click="History_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_History}" />
-                <Button fa:Awesome.Content="Edit" Click="AddNoun_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_AddNounTrans}" />
-                <Button fa:Awesome.Content="UserPlus" Click="ArtificialTransAdd_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_ATadd}" />
-                <Button fa:Awesome.Content="Cog" Click="Settings_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_Settings}" />
-                <Button fa:Awesome.Content="Microphone" Click="TTS_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_TTS}" />
+                <Button fa:Awesome.Content="Pause" Name="PauseButton" Click="Pause_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_Pause}" />
+                <Button fa:Awesome.Content="Repeat" Click="RenewOCR_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_RenewOCR}" />
+                <Button fa:Awesome.Content="EyeSlash" Name="ShowSourceButton" Click="ShowSource_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_ShowSource}" />
+                <Button fa:Awesome.Content="History" Click="History_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_History}" />
+                <Button fa:Awesome.Content="Edit" Click="AddNoun_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_AddNounTrans}" />
+                <Button fa:Awesome.Content="UserPlus" Click="ArtificialTransAdd_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_ATadd}" />
+                <Button fa:Awesome.Content="Cog" Click="Settings_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_Settings}" />
+                <Button fa:Awesome.Content="Microphone" Click="TTS_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_TTS}" />
             </StackPanel>
             <StackPanel HorizontalAlignment="Right">
-                <Button fa:Awesome.Content="WindowMinimize" Click="Min_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_Min}" />
-                <Button fa:Awesome.Content="WindowCloseOutline" Click="Exit_Item_Click" ToolTip="{StaticResource TranslateWin_Menu_Exit}" />
+                <Button fa:Awesome.Content="WindowMinimize" Click="Min_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_Min}" />
+                <Button fa:Awesome.Content="WindowCloseOutline" Click="Exit_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_Exit}" />
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1" Margin="10" Orientation="Vertical">

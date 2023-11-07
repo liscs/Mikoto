@@ -18,17 +18,17 @@
                 <RowDefinition Height="95*" ></RowDefinition>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="{StaticResource ChooseOCRAreaPage_Introduce}" VerticalAlignment="Center" Margin="15"/>
+            <TextBlock Grid.Row="0" Text="{DynamicResource ChooseOCRAreaPage_Introduce}" VerticalAlignment="Center" Margin="15"/>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <CheckBox Name="AllWinCheckBox" Content="{StaticResource ChooseOCRAreaPage_IsAllWinCBox}" Margin="15" Click="AllWinCheckBox_Click" HorizontalAlignment="Left"/>
-                <Button Name="ChooseWinBtn" Margin="15" Content="{StaticResource ChooseOCRAreaPage_ChooseWinBtn}" VerticalAlignment="Center" HorizontalAlignment="Left" Click="ChooseWinBtn_Click"/>
+                <CheckBox Name="AllWinCheckBox" Content="{DynamicResource ChooseOCRAreaPage_IsAllWinCBox}" Margin="15" Click="AllWinCheckBox_Click" HorizontalAlignment="Left"/>
+                <Button Name="ChooseWinBtn" Margin="15" Content="{DynamicResource ChooseOCRAreaPage_ChooseWinBtn}" VerticalAlignment="Center" HorizontalAlignment="Left" Click="ChooseWinBtn_Click"/>
                 <TextBlock Name="WinNameTag" Margin="15" Text="" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </StackPanel>
 
-            <Button Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15" Content="{StaticResource ChooseOCRAreaPage_ChooseAreaBtn}" Click="ChooseAreaBtn_Click"></Button>
-            <Button Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15" Content="{StaticResource ChooseOCRAreaPage_RenewAreaBtn}" Click="RenewAreaBtn_Click"></Button>
-            <Button x:Name="ConfirmBtn" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="15" Content="{StaticResource ChooseOCRAreaPage_ConfirmBtn}" Click="ConfirmBtn_Click" IsEnabled="False"></Button>
+            <Button Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15" Content="{DynamicResource ChooseOCRAreaPage_ChooseAreaBtn}" Click="ChooseAreaBtn_Click"></Button>
+            <Button Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15" Content="{DynamicResource ChooseOCRAreaPage_RenewAreaBtn}" Click="RenewAreaBtn_Click"></Button>
+            <Button x:Name="ConfirmBtn" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="15" Content="{DynamicResource ChooseOCRAreaPage_ConfirmBtn}" Click="ConfirmBtn_Click" IsEnabled="False"></Button>
 
 
             <Border Grid.Row="3" Margin="15" BorderThickness="1" BorderBrush="Black">

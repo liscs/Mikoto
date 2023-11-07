@@ -11,23 +11,23 @@
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel Background="White">
-                <TextBlock Text="{StaticResource TTSSettingsPage_Hint}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
+                <TextBlock Text="{DynamicResource TTSSettingsPage_Hint}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
                 <StackPanel Margin="20,20,20,0">
-                    <hc:ComboBox Name="TTSSourceCombox" Margin="10,10,10,10"  Width="500" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="100" hc:InfoElement.Title="{StaticResource TTSSettingsPage_TTSSourceLabel}" SelectionChanged="TTSSourceCombox_SelectionChanged" HorizontalAlignment="Left" />
+                    <hc:ComboBox Name="TTSSourceCombox" Margin="10,10,10,10"  Width="500" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="100" hc:InfoElement.Title="{DynamicResource TTSSettingsPage_TTSSourceLabel}" SelectionChanged="TTSSourceCombox_SelectionChanged" HorizontalAlignment="Left" />
 
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{StaticResource TTSSettingsPage_TTSVolumeLabel}" VerticalAlignment="Center" Margin="10"/>
+                        <TextBlock Text="{DynamicResource TTSSettingsPage_TTSVolumeLabel}" VerticalAlignment="Center" Margin="10"/>
                         <Slider Name="VolumeBar" Width="300" Margin="35,10,10,10" Maximum="100" Minimum="0" Value="80" hc:TipElement.Visibility="Visible" hc:TipElement.Placement="Top" ValueChanged="VolumeBar_ValueChanged"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{StaticResource TTSSettingsPage_TTSRateLabel}" VerticalAlignment="Center" Margin="10"/>
+                        <TextBlock Text="{DynamicResource TTSSettingsPage_TTSRateLabel}" VerticalAlignment="Center" Margin="10"/>
                         <Slider Name="RateBar" Width="300" Margin="35,10,10,10" Maximum="10" Minimum="-10" Value="0" hc:TipElement.Visibility="Visible" hc:TipElement.Placement="Top" IsSnapToTickEnabled="True" TickFrequency="1" TickPlacement="BottomRight" ValueChanged="RateBar_ValueChanged"/>
                     </StackPanel>
 
                     <hc:Divider/>
-                    <hc:TextBox Margin="10" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{StaticResource TTSSettingsPage_TestText}" Name="TestSrcText" hc:InfoElement.ShowClearButton="True" Text="国境の長いトンネルを抜けると雪国であった。夜の底が白くなった。信号所に汽車が止まった。"/>
-                    <Button Content="{StaticResource TTSSettingsPage_TestBtn}" Margin="10,0,10,10" Width="122" Click="TestBtn_Click" HorizontalAlignment="Right" ></Button>
+                    <hc:TextBox Margin="10" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource TTSSettingsPage_TestText}" Name="TestSrcText" hc:InfoElement.ShowClearButton="True" Text="国境の長いトンネルを抜けると雪国であった。夜の底が白くなった。信号所に汽車が止まった。"/>
+                    <Button Content="{DynamicResource TTSSettingsPage_TestBtn}" Margin="10,0,10,10" Width="122" Click="TestBtn_Click" HorizontalAlignment="Right" ></Button>
                 </StackPanel>
             </StackPanel>
         </hc:ScrollViewer>

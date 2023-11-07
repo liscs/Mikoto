@@ -7,7 +7,7 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:MisakaTranslator_WPF"
         mc:Ignorable="d"
-        Title="{StaticResource TranslateWin_Dict_Title}" Height="300" Width="600">
+        Title="{DynamicResource TranslateWin_Dict_Title}" Height="300" Width="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>

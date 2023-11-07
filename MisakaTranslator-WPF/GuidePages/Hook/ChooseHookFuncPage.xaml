@@ -18,30 +18,30 @@
                     <RowDefinition Height="40*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Text="{StaticResource ChooseHookFuncPage_Introduce}" Margin="10"/>
+                <TextBlock Grid.Row="0" Text="{DynamicResource ChooseHookFuncPage_Introduce}" Margin="10"/>
 
                 <ListView Name="HookFunListView" Grid.Row="1" Background="White" SelectionMode="Single">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Width="70" Header="{StaticResource ChooseHookFuncPage_Header_PID}" DisplayMemberBinding="{Binding Path=GamePID}"/>
-                            <GridViewColumn Width="100" Header="{StaticResource ChooseHookFuncPage_Header_FunName}" DisplayMemberBinding="{Binding Path=HookFunc}"/>
-                            <GridViewColumn Width="100" Header="{StaticResource ChooseHookFuncPage_Header_HookCode}" DisplayMemberBinding="{Binding Path=MisakaHookCode}"/>
-                            <GridViewColumn Width="500" Header="{StaticResource ChooseHookFuncPage_Header_Content}" DisplayMemberBinding="{Binding Path=Data}"/>
+                            <GridViewColumn Width="70" Header="{DynamicResource ChooseHookFuncPage_Header_PID}" DisplayMemberBinding="{Binding Path=GamePID}"/>
+                            <GridViewColumn Width="100" Header="{DynamicResource ChooseHookFuncPage_Header_FunName}" DisplayMemberBinding="{Binding Path=HookFunc}"/>
+                            <GridViewColumn Width="100" Header="{DynamicResource ChooseHookFuncPage_Header_HookCode}" DisplayMemberBinding="{Binding Path=MisakaHookCode}"/>
+                            <GridViewColumn Width="500" Header="{DynamicResource ChooseHookFuncPage_Header_Content}" DisplayMemberBinding="{Binding Path=Data}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
 
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
-                    <Button HorizontalAlignment="Left" Margin="10" Content="{StaticResource ChooseHookFuncPage_BtnAddHook}" Click="AddHookBtn_Click"/>
+                    <Button HorizontalAlignment="Left" Margin="10" Content="{DynamicResource ChooseHookFuncPage_BtnAddHook}" Click="AddHookBtn_Click"/>
 
                     <TextBlock Margin="10" VerticalAlignment="Center">
                         <Hyperlink Click="CannotfindHookBtn_Click"> 
-                            <TextBlock Text="{StaticResource ChooseHookFuncPage_BtnCannotfindHook}"/>
+                            <TextBlock Text="{DynamicResource ChooseHookFuncPage_BtnCannotfindHook}"/>
                         </Hyperlink>
                     </TextBlock>
                 </StackPanel>
 
-                <Button Grid.Row="2" HorizontalAlignment="Right" Margin="10" Content="{StaticResource ChooseHookFuncPage_BtnConfirm}" Width="205" Click="ConfirmBtn_Click"/>
+                <Button Grid.Row="2" HorizontalAlignment="Right" Margin="10" Content="{DynamicResource ChooseHookFuncPage_BtnConfirm}" Width="205" Click="ConfirmBtn_Click"/>
 
             </Grid>
 
@@ -55,14 +55,14 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Text="{StaticResource ChooseHookFuncPage_Drawer_Header}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                        <TextBlock Grid.Row="0" Text="{DynamicResource ChooseHookFuncPage_Drawer_Header}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
 
-                        <TextBox Name="PIDTextBox" hc:InfoElement.Placeholder="{StaticResource ChooseHookFuncPage_Drawer_PidBox}" hc:InfoElement.Necessary="True" Style="{StaticResource TextBoxExtend}" Grid.Row="1" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" FontSize="15" Width="200"/>
+                        <TextBox Name="PIDTextBox" hc:InfoElement.Placeholder="{DynamicResource ChooseHookFuncPage_Drawer_PidBox}" hc:InfoElement.Necessary="True" Style="{DynamicResource TextBoxExtend}" Grid.Row="1" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" FontSize="15" Width="200"/>
 
-                        <TextBox Name="HookCodeTextBox" hc:InfoElement.Placeholder="{StaticResource ChooseHookFuncPage_Drawer_HookCodeBox}" hc:InfoElement.Necessary="True" Style="{StaticResource TextBoxExtend}" Grid.Row="2" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" FontSize="15" Width="200"></TextBox>
+                        <TextBox Name="HookCodeTextBox" hc:InfoElement.Placeholder="{DynamicResource ChooseHookFuncPage_Drawer_HookCodeBox}" hc:InfoElement.Necessary="True" Style="{DynamicResource TextBoxExtend}" Grid.Row="2" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" FontSize="15" Width="200"></TextBox>
 
-                        <Button Grid.Row="3" Style="{StaticResource ButtonInfo}" HorizontalAlignment="Left" Margin="30" VerticalAlignment="Center" Content="{StaticResource ChooseHookFuncPage_Drawer_BtnConfirm}" FontSize="15" Height="Auto" Click="HookCodeConfirmBtn_Click"></Button>
-                        <Button Grid.Row="3" Style="{StaticResource ButtonDanger}" HorizontalAlignment="Right" Margin="30" VerticalAlignment="Center" Content="{StaticResource Drawer_BtnExit}" FontSize="15" Height="Auto" Click="ExitBtn_Click"></Button>
+                        <Button Grid.Row="3" Style="{DynamicResource ButtonInfo}" HorizontalAlignment="Left" Margin="30" VerticalAlignment="Center" Content="{DynamicResource ChooseHookFuncPage_Drawer_BtnConfirm}" FontSize="15" Height="Auto" Click="HookCodeConfirmBtn_Click"></Button>
+                        <Button Grid.Row="3" Style="{DynamicResource ButtonDanger}" HorizontalAlignment="Right" Margin="30" VerticalAlignment="Center" Content="{DynamicResource Drawer_BtnExit}" FontSize="15" Height="Auto" Click="ExitBtn_Click"></Button>
 
                     </Grid>
                 </Border>

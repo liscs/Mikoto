@@ -33,12 +33,12 @@ namespace MisakaTranslator_WPF.SettingsPages
 
         private void FirstTransCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Common.appSettings.FirstTranslator = TranslatorCommon.TranslatorList[(string)FirstTransCombox.SelectedValue];
+            Common.appSettings.FirstTranslator = TranslatorCommon.TranslatorDict[(string)FirstTransCombox.SelectedValue];
         }
 
         private void SecondTransCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Common.appSettings.SecondTranslator = TranslatorCommon.TranslatorList[(string)SecondTransCombox.SelectedValue];
+            Common.appSettings.SecondTranslator = TranslatorCommon.TranslatorDict[(string)SecondTransCombox.SelectedValue];
         }
 
         private void EachRowTransCheckBox_Click(object sender, RoutedEventArgs e)

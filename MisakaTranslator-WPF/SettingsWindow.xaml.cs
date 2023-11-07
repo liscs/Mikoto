@@ -11,7 +11,6 @@ namespace MisakaTranslator_WPF
         public SettingsWindow()
         {
             InitializeComponent();
-
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)

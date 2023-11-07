@@ -5,9 +5,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!--fallback用本地化资源-->
+                <ResourceDictionary Source="lang/zh-CN.xaml"/>
+                <ResourceDictionary Source="lang/zh-CN.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
-                <ResourceDictionary Source="lang/zh-CN.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

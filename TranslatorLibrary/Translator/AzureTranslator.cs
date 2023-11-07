@@ -5,7 +5,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using TranslatorLibrary.lang;
 
 namespace TranslatorLibrary.Translator
@@ -20,7 +22,7 @@ namespace TranslatorLibrary.Translator
         private string errorInfo;//错误信息
         private readonly string endpoint = "https://api.cognitive.microsofttranslator.com";
 
-        public string TranslatorDisplayName { get { return Strings.AzureTranslator; } set { TranslatorDisplayName = value; } }
+        public string TranslatorDisplayName { get { return Strings.AzureTranslator; } }
 
         public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
         {

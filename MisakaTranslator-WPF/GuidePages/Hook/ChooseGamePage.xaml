@@ -18,14 +18,14 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="{StaticResource ChooseGamePage_Introduce}" FontSize="15" TextWrapping="WrapWithOverflow" Margin="10"/>
+            <TextBlock Grid.Row="0" Text="{DynamicResource ChooseGamePage_Introduce}" FontSize="15" TextWrapping="WrapWithOverflow" Margin="10"/>
 
             <hc:ComboBox Name="GameProcessCombox" Grid.Row="1" Margin="10" VerticalAlignment="Center" SelectionChanged="GameProcessCombox_SelectionChanged"/>
 
             <TextBlock Name="AutoHookTag" Grid.Row="2" Text="[AutoHook]" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" FontSize="15"></TextBlock>
 
-            <CheckBox Name="x64GameCheckBox" Grid.Row="3" Margin="10" Content="{StaticResource ChooseGamePage_CBoxX64}" FontSize="15" HorizontalAlignment="Left" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{StaticResource ChooseGamePage_CBoxX64Hint}" hc:Poptip.Placement="Top"/>
-            <Button Grid.Row="3" Margin="10" Height="Auto" Content="{StaticResource ChooseGamePage_BtnConfirm}" HorizontalAlignment="Right" FontSize="15" Width="250" Click="ConfirmButton_Click"/>
+            <CheckBox Name="x64GameCheckBox" Grid.Row="3" Margin="10" Content="{DynamicResource ChooseGamePage_CBoxX64}" FontSize="15" HorizontalAlignment="Left" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{DynamicResource ChooseGamePage_CBoxX64Hint}" hc:Poptip.Placement="Top"/>
+            <Button Grid.Row="3" Margin="10" Height="Auto" Content="{DynamicResource ChooseGamePage_BtnConfirm}" HorizontalAlignment="Right" FontSize="15" Width="250" Click="ConfirmButton_Click"/>
 
         </Grid>
 

@@ -31,11 +31,11 @@ namespace MisakaTranslator_WPF
         {
             Instance = this;
             Common.mainWin = this;
-            var settings = new ConfigurationBuilder<IAppSettings>().UseIniFile("settings/settings.ini").Build();
+            Common.appSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\settings\\settings.ini").Build();
             InitializeLanguage();
-            TranslatorCommon.Init();
+            TranslatorCommon.Refresh();
             InitializeComponent();
-            Initialize(settings);
+            Initialize();
             GrowlDisableSwitch();
 
             //注册全局OCR热键
@@ -44,22 +44,11 @@ namespace MisakaTranslator_WPF
 
         private static void InitializeLanguage()
         {
-            foreach (var item in Application.Current.Resources.MergedDictionaries)
-            {
-                //卸载设计器预览用资源
-                if (item.Source.ToString().Contains("lang") && item.Source.ToString() == "lang/zh-CN.xaml")
-                {
-                    Application.Current.Resources.MergedDictionaries.Remove(item);
-                    break;
-                }
-            }
-            Common.appSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\settings\\settings.ini").Build();
             Thread.CurrentThread.CurrentCulture = new CultureInfo(Common.appSettings.AppLanguage);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(Common.appSettings.AppLanguage);
-
             ResourceDictionary languageResource = new ResourceDictionary();
             languageResource.Source = new Uri($"lang/{Common.appSettings.AppLanguage}.xaml", UriKind.Relative);
-            Application.Current.Resources.MergedDictionaries.Add(languageResource);
+            Application.Current.Resources.MergedDictionaries[1] = languageResource;
         }
 
         //按下快捷键时被调用的方法
@@ -68,9 +57,9 @@ namespace MisakaTranslator_WPF
             Common.GlobalOCR();
         }
 
-        private void Initialize(IAppSettings settings)
+        private void Initialize()
         {
-            this.Resources["Foreground"] = (SolidColorBrush)(new BrushConverter().ConvertFrom(settings.ForegroundHex));
+            this.Resources["Foreground"] = (SolidColorBrush)(new BrushConverter().ConvertFrom(Common.appSettings.ForegroundHex));
             GameInfoList = GameLibraryHelper.GetAllCompletedGames();
             Common.repairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Environment.CurrentDirectory + "\\settings\\RepairSettings.ini").Build();
             GameLibraryPanel_Init();
@@ -134,12 +123,12 @@ namespace MisakaTranslator_WPF
             }
             var textBlock = new TextBlock()
             {
-                Text = Application.Current.Resources["MainWindow_ScrollViewer_AddNewGame"].ToString(),
                 Foreground = Brushes.White,
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(3)
             };
+            textBlock.SetResourceReference(TextBlock.TextProperty, "MainWindow_ScrollViewer_AddNewGame");
             var grid = new Grid();
             grid.Children.Add(textBlock);
             var border = new Border()
@@ -392,19 +381,16 @@ namespace MisakaTranslator_WPF
         /// <param name="e"></param>
         private void Language_MenuItem_Click(object sender, RoutedEventArgs e)
         {
+            ResourceDictionary languageResource = new ResourceDictionary();
             if (sender is MenuItem menuItem)
             {
-                switch (menuItem.Tag)
-                {
-                    case "zh-CN":
-                        Common.appSettings.AppLanguage = "zh-CN";
-                        HandyControl.Controls.MessageBox.Show("语言配置已修改！重启软件后生效！", "提示");
-                        break;
-                    case "en-US":
-                        Common.appSettings.AppLanguage = "en-US";
-                        HandyControl.Controls.MessageBox.Show("Language configuration has been modified! It will take effect after restarting MisakaTranslator!", "Hint");
-                        break;
-                }
+                Common.appSettings.AppLanguage = menuItem.Tag.ToString();
+                Thread.CurrentThread.CurrentCulture = new CultureInfo(Common.appSettings.AppLanguage);
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Common.appSettings.AppLanguage);
+                TranslatorCommon.Refresh();
+                languageResource.Source = new Uri($"lang/{Common.appSettings.AppLanguage}.xaml", UriKind.Relative);
+                Application.Current.Resources.MergedDictionaries[1] = languageResource;
+                HandyControl.Controls.MessageBox.Show(Application.Current.Resources["Language_Changed"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
             }
         }
 
