@@ -60,9 +60,8 @@
 
                     <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}" HorizontalAlignment="Center" Margin="15"/>
                     <Button Name="firstColorBtn" Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}" Margin="0" Width="200" Style="{DynamicResource ButtonPrimary}" Click="ChooseColorBtn_Click"/>
-                    <CheckBox Name="firstWhiteStrokeCheckBox" Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}" Margin="10" HorizontalAlignment="Center"/>
                     <Border Name="firstColorBlock" Margin="10" Width="200" Height="25"/>
-
+                    <CheckBox Name="firstWhiteStrokeCheckBox" Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}" Margin="10" HorizontalAlignment="Center"/>
                 </StackPanel>
 
             </TabItem>
@@ -75,9 +74,8 @@
 
                     <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}" HorizontalAlignment="Center" Margin="15"/>
                     <Button Name="secondColorBtn" Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}" Margin="0" Width="200" Style="{DynamicResource ButtonPrimary}" Click="ChooseColorBtn_Click"/>
-                    <CheckBox Name="secondWhiteStrokeCheckBox" Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}" Margin="10" HorizontalAlignment="Center"/>
                     <Border Name="secondColorBlock" Margin="10" Width="200" Height="25"/>
-
+                    <CheckBox Name="secondWhiteStrokeCheckBox" Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}" Margin="10" HorizontalAlignment="Center"/>
                 </StackPanel>
 
             </TabItem>

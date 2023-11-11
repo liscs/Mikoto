@@ -22,7 +22,7 @@ namespace TTSHelperLibrary.TTSGenerator
         public async Task TextToSpeechAsync(string text, string voice)
         {
             ErrorMessage = string.Empty;
-            if (subscriptionKey == string.Empty || subscriptionRegion == string.Empty)
+            if (subscriptionKey == string.Empty || subscriptionRegion == string.Empty || string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(voice))
                 return;
             var config = SpeechConfig.FromSubscription(subscriptionKey, subscriptionRegion);
             if (ProxyString != string.Empty)
