@@ -112,6 +112,7 @@ namespace MisakaTranslator_WPF
                         Height = 64,
                         Width = 64
                     };
+                    RenderOptions.SetBitmapScalingMode(ico, BitmapScalingMode.HighQuality);
                     var gd = new Grid();
                     gd.Children.Add(ico);
                     gd.Children.Add(tb);
