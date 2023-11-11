@@ -6,7 +6,7 @@
     <TargetFrameworks>netframework4.7.2</TargetFrameworks>
     <Platforms>AnyCPU</Platforms>
     <LangVersion>11.0</LangVersion>
-    <Version>2.12.2.0</Version>
+    <Version>1.1.0</Version>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
 

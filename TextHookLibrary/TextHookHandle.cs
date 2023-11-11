@@ -157,9 +157,6 @@ namespace TextHookLibrary
                     FileName = path,
                     CreateNoWindow = true,
                     UseShellExecute = false,
-#if NETCOREAPP
-                    StandardInputEncoding = new UnicodeEncoding(false, false),
-#endif
                     StandardOutputEncoding = Encoding.Unicode,
                     RedirectStandardInput = true,
                     RedirectStandardOutput = true,
@@ -170,17 +167,13 @@ namespace TextHookLibrary
             ProcessTextractor.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
             try
             {
-#if NETFRAMEWORK
                 // .NET Framework根据Console.InputEncoding编码在Start()中创建输入流
                 Console.InputEncoding = new UnicodeEncoding(false, false);
-#endif
                 bool res = ProcessTextractor.Start();
-#if NETFRAMEWORK
                 // Console.InputEncoding修改为非UTF16编码需要创建控制台
                 PInvoke.AllocConsole();
                 Console.InputEncoding = Encoding.Default;
                 PInvoke.FreeConsole();
-#endif
                 ProcessTextractor.BeginOutputReadLine();
                 return res;
             }
@@ -395,7 +388,7 @@ namespace TextHookLibrary
                         //文本去重窗口处理&游戏翻译窗口处理
                         // TODO 寻找更好的Hook Address确定方法，记录匹配的多个misakacode表，将不够匹配的列入排除表
                         if (HookCodeList.Count != 0 &&
-                            HookCodeList.Contains(data.HookCode) &&
+                            obtainedMisakaCode1.Length - 4 >= 0 &&
                             //要求第一串后四位以及第三串相等
                             savedMisakaCode1.Substring(savedMisakaCode1.Length - 4) == obtainedMisakaCode1.Substring(obtainedMisakaCode1.Length - 4) &&
                             savedMisakaCode3 == obtainedMisakaCode3)
