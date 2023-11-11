@@ -15,19 +15,19 @@
             <RowDefinition Height="40*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="{StaticResource ChooseHookFuncPage_Introduce}" Margin="10"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource ChooseHookFuncPage_Introduce}" Margin="10"/>
 
         <ListView Name="HookFunListView" Grid.Row="1" Background="White" SelectionMode="Single">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="70" Header="{StaticResource ChooseHookFuncPage_Header_PID}" DisplayMemberBinding="{Binding Path=GamePID}"/>
-                    <GridViewColumn Width="100" Header="{StaticResource ChooseHookFuncPage_Header_FunName}" DisplayMemberBinding="{Binding Path=HookFunc}"/>
-                    <GridViewColumn Width="100" Header="{StaticResource ChooseHookFuncPage_Header_HookCode}" DisplayMemberBinding="{Binding Path=MisakaHookCode}"/>
-                    <GridViewColumn Width="500" Header="{StaticResource ChooseHookFuncPage_Header_Content}" DisplayMemberBinding="{Binding Path=Data}"/>
+                    <GridViewColumn Width="70" Header="{DynamicResource ChooseHookFuncPage_Header_PID}" DisplayMemberBinding="{Binding Path=GamePID}"/>
+                    <GridViewColumn Width="100" Header="{DynamicResource ChooseHookFuncPage_Header_FunName}" DisplayMemberBinding="{Binding Path=HookFunc}"/>
+                    <GridViewColumn Width="100" Header="{DynamicResource ChooseHookFuncPage_Header_HookCode}" DisplayMemberBinding="{Binding Path=MisakaHookCode}"/>
+                    <GridViewColumn Width="500" Header="{DynamicResource ChooseHookFuncPage_Header_Content}" DisplayMemberBinding="{Binding Path=Data}"/>
                 </GridView>
             </ListView.View>
         </ListView>
 
-        <Button Grid.Row="2" HorizontalAlignment="Right" Margin="10" Content="{StaticResource ChooseHookFuncPage_BtnConfirm}" Width="205" Click="ConfirmBtn_Click"/>
+        <Button Grid.Row="2" HorizontalAlignment="Right" Margin="10" Content="{DynamicResource ChooseHookFuncPage_BtnConfirm}" Width="205" Click="ConfirmBtn_Click"/>
     </Grid>
 </Page>

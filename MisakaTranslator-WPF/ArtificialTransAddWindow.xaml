@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MisakaTranslator_WPF"
         mc:Ignorable="d"
-        Title="{StaticResource ArtificialTransWin_Title}" Height="400" Width="600">
+        Title="{DynamicResource ArtificialTransWin_Title}" Height="400" Width="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
@@ -16,19 +16,19 @@
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="{StaticResource ArtificialTransWin_Hint}" TextWrapping="WrapWithOverflow" Margin="10"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource ArtificialTransWin_Hint}" TextWrapping="WrapWithOverflow" Margin="10"/>
 
         <TextBox Name="srcText" Grid.Row="1" Margin="10" TextWrapping="Wrap" IsReadOnly="True"/>
 
-        <TextBlock Grid.Row="2" Text="{StaticResource ArtificialTransWin_transBox}" Margin="10"/>
+        <TextBlock Grid.Row="2" Text="{DynamicResource ArtificialTransWin_transBox}" Margin="10"/>
 
         <TextBox Name="transText" Grid.Row="3" Margin="10" TextWrapping="Wrap"/>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal">
-            <Button HorizontalAlignment="Left" Width="100" Margin="10" Content="{StaticResource ArtificialTransWin_ResetBtn}" Click="ResetBtn_Click"/>
-            <Button HorizontalAlignment="Left" Margin="10" Content="{StaticResource ArtificialTransWin_SecondTransBtn}" Click="SecondTransBtn_Click"/>
+            <Button HorizontalAlignment="Left" Width="100" Margin="10" Content="{DynamicResource ArtificialTransWin_ResetBtn}" Click="ResetBtn_Click"/>
+            <Button HorizontalAlignment="Left" Margin="10" Content="{DynamicResource ArtificialTransWin_SecondTransBtn}" Click="SecondTransBtn_Click"/>
         </StackPanel>
-        <Button Grid.Row="4" HorizontalAlignment="Right" Width="100" Margin="10" Content="{StaticResource ArtificialTransWin_ConfirmBtn}" Click="ConfirmBtn_Click"/>
+        <Button Grid.Row="4" HorizontalAlignment="Right" Width="100" Margin="10" Content="{DynamicResource ArtificialTransWin_ConfirmBtn}" Click="ConfirmBtn_Click"/>
         
     </Grid>
 </Window>

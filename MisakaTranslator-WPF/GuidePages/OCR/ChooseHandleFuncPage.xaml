@@ -18,15 +18,15 @@
                 <RowDefinition Height="95*" ></RowDefinition>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="{StaticResource ChooseHandleFuncPage_Introduce}" VerticalAlignment="Center" Margin="15"/>
+            <TextBlock Grid.Row="0" Text="{DynamicResource ChooseHandleFuncPage_Introduce}" VerticalAlignment="Center" Margin="15"/>
 
-            <hc:ComboBox Grid.Row="1" Name="OCRLangCombox" VerticalAlignment="Center" Margin="15" Width="200" hc:InfoElement.TitleWidth="80" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{StaticResource ChooseHandleFuncPage_OCRLangCBox}" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{StaticResource ChooseHandleFuncPage_OCRLangCBox_Hint}" hc:Poptip.Placement="Top" SelectionChanged="OCRLangCombox_SelectionChanged" HorizontalAlignment="Left"/>
-            <hc:ComboBox Grid.Row="1" Name="HandleFuncCombox" VerticalAlignment="Center" Margin="15" Width="300" hc:InfoElement.TitleWidth="100" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{StaticResource ChooseHandleFuncPage_HandleFuncCBox}" SelectionChanged="HandleFuncCombox_SelectionChanged" HorizontalAlignment="Right"/>
+            <hc:ComboBox Grid.Row="1" Name="OCRLangCombox" VerticalAlignment="Center" Margin="15" Width="200" hc:InfoElement.TitleWidth="80" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource ChooseHandleFuncPage_OCRLangCBox}" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{DynamicResource ChooseHandleFuncPage_OCRLangCBox_Hint}" hc:Poptip.Placement="Top" SelectionChanged="OCRLangCombox_SelectionChanged" HorizontalAlignment="Left"/>
+            <hc:ComboBox Grid.Row="1" Name="HandleFuncCombox" VerticalAlignment="Center" Margin="15" Width="300" hc:InfoElement.TitleWidth="100" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource ChooseHandleFuncPage_HandleFuncCBox}" SelectionChanged="HandleFuncCombox_SelectionChanged" HorizontalAlignment="Right"/>
 
 
-            <Button Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15" Content="{StaticResource ChooseHandleFuncPage_RenewAreaBtn}" Click="RenewAreaBtn_Click"></Button>
-            <Button Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15" Content="{StaticResource ChooseHandleFuncPage_OCRBtn}" Click="OCRTestBtn_Click"></Button>
-            <Button x:Name="ConfirmBtn" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="15" Content="{StaticResource ChooseHandleFuncPage_ConfirmBtn}" Click="ConfirmBtn_Click" IsEnabled="False"></Button>
+            <Button Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15" Content="{DynamicResource ChooseHandleFuncPage_RenewAreaBtn}" Click="RenewAreaBtn_Click"></Button>
+            <Button Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15" Content="{DynamicResource ChooseHandleFuncPage_OCRBtn}" Click="OCRTestBtn_Click"></Button>
+            <Button x:Name="ConfirmBtn" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="15" Content="{DynamicResource ChooseHandleFuncPage_ConfirmBtn}" Click="ConfirmBtn_Click" IsEnabled="False"></Button>
 
             <hc:CompareSlider Name="picCompair"  Grid.Row="3" Value="10" Margin="15">
                 <hc:CompareSlider.TargetContent>

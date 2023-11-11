@@ -15,10 +15,11 @@ namespace TranslatorLibrary
         /// <summary>
         /// 反射获取所有的翻译器（即所有实现了ITranslator的类），放入字典
         /// </summary>
-        public static void Init()
+        public static void Refresh()
         {
             Task.Run(() =>
             {
+                TranslatorDict.Clear();
                 Type type = typeof(ITranslator);
                 var types = AppDomain.CurrentDomain.GetAssemblies()
                     .SelectMany(s => s.GetTypes())
@@ -27,13 +28,13 @@ namespace TranslatorLibrary
                 {
                     object obj = Activator.CreateInstance(item);
                     string displayName = item.GetProperty("TranslatorDisplayName").GetValue(obj).ToString();
-                    TranslatorList.Add(displayName, item.Name);
+                    TranslatorDict.Add(displayName, item.Name);
                 }
             });
         }
 
         // 默认使用百度的语言代码
-        public static Dictionary<string, string> LanguageList = new Dictionary<string, string>() {
+        public static Dictionary<string, string> LanguageDict = new Dictionary<string, string>() {
             { "简体中文" , "zh" },
             { "English" , "en" },
             { "日本語" ,  "jp" },
@@ -42,7 +43,7 @@ namespace TranslatorLibrary
             { "Français" , "fr" }
         };
 
-        public static Dictionary<string, string> TranslatorList = new Dictionary<string, string>();
+        public static Dictionary<string, string> TranslatorDict = new Dictionary<string, string>();
         /// <summary>
         /// 计算MD5值
         /// </summary>
@@ -82,7 +83,7 @@ namespace TranslatorLibrary
         /// <returns></returns>
         public static List<string> GetTranslatorList()
         {
-            return TranslatorList.Keys.ToList();
+            return TranslatorDict.Keys.ToList();
         }
 
         /// <summary>
@@ -92,9 +93,9 @@ namespace TranslatorLibrary
         /// <returns></returns>
         public static int GetTranslatorIndex(string TranslatorValue)
         {
-            for (int i = 0; i < TranslatorList.Count; i++)
+            for (int i = 0; i < TranslatorDict.Count; i++)
             {
-                var kvp = TranslatorList.ElementAt(i);
+                var kvp = TranslatorDict.ElementAt(i);
                 if (kvp.Value == TranslatorValue)
                 {
                     return i;

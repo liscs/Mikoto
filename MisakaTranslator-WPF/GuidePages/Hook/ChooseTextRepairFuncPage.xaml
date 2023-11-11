@@ -18,18 +18,18 @@
                     <RowDefinition Height="40*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Text="{StaticResource ChooseTextRepairFuncPage_Introduce}" Margin="10"/>
+                <TextBlock Grid.Row="0" Text="{DynamicResource ChooseTextRepairFuncPage_Introduce}" Margin="10"/>
 
                 <StackPanel Grid.Row="1">
                     <hc:ComboBox Name="RepairFuncCombox" Margin="10,10,10,0" VerticalAlignment="Center" SelectionChanged="RepairFuncCombox_SelectionChanged" />
 
-                    <hc:TextBox Name="sourceTextBox" TextWrapping="Wrap" Margin="10,0,10,0" Height="100" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{StaticResource ChooseTextRepairFuncPage_SourceText}"></hc:TextBox>
+                    <hc:TextBox Name="sourceTextBox" TextWrapping="Wrap" Margin="10,0,10,0" Height="100" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource ChooseTextRepairFuncPage_SourceText}"></hc:TextBox>
 
-                    <hc:TextBox Name="repairedTextBox" TextWrapping="Wrap" Margin="10,0,10,0" Height="100" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{StaticResource ChooseTextRepairFuncPage_RepairedText}"></hc:TextBox>
+                    <hc:TextBox Name="repairedTextBox" TextWrapping="Wrap" Margin="10,0,10,0" Height="100" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource ChooseTextRepairFuncPage_RepairedText}"></hc:TextBox>
 
                 </StackPanel>
                 
-                <Button Grid.Row="2" HorizontalAlignment="Right" Margin="10" Content="{StaticResource ChooseHookFuncPage_BtnConfirm}" Width="205" Click="ConfirmBtn_Click"/>
+                <Button Grid.Row="2" HorizontalAlignment="Right" Margin="10" Content="{DynamicResource ChooseHookFuncPage_BtnConfirm}" Width="205" Click="ConfirmBtn_Click"/>
 
             </Grid>
 
@@ -42,12 +42,12 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Text="{StaticResource ChooseTextRepairFuncPage_Drawer_Single}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                        <TextBlock Grid.Row="0" Text="{DynamicResource ChooseTextRepairFuncPage_Drawer_Single}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
 
                         <TextBox Name="Single_TextBox" Grid.Row="1" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" FontSize="15" Width="200"/>
 
-                        <Button Grid.Row="2" Style="{StaticResource ButtonInfo}" HorizontalAlignment="Left" Margin="30" VerticalAlignment="Center" Content="{StaticResource ChooseTextRepairFuncPage_Drawer_BtnConfirm}" FontSize="15" Height="Auto" Click="SingleConfirm_Click"></Button>
-                        <Button Grid.Row="2" Style="{StaticResource ButtonDanger}" HorizontalAlignment="Right" Margin="30" VerticalAlignment="Center" Content="{StaticResource Drawer_BtnExit}" FontSize="15" Height="Auto" Click="ExitBtn_Click"></Button>
+                        <Button Grid.Row="2" Style="{DynamicResource ButtonInfo}" HorizontalAlignment="Left" Margin="30" VerticalAlignment="Center" Content="{DynamicResource ChooseTextRepairFuncPage_Drawer_BtnConfirm}" FontSize="15" Height="Auto" Click="SingleConfirm_Click"></Button>
+                        <Button Grid.Row="2" Style="{DynamicResource ButtonDanger}" HorizontalAlignment="Right" Margin="30" VerticalAlignment="Center" Content="{DynamicResource Drawer_BtnExit}" FontSize="15" Height="Auto" Click="ExitBtn_Click"></Button>
 
                     </Grid>
                 </Border>
@@ -62,12 +62,12 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Text="{StaticResource ChooseTextRepairFuncPage_Drawer_Sentence}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                        <TextBlock Grid.Row="0" Text="{DynamicResource ChooseTextRepairFuncPage_Drawer_Sentence}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
 
                         <TextBox Name="Sentence_TextBox" Grid.Row="1" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" FontSize="15" Width="200"/>
 
-                        <Button Grid.Row="2" Style="{StaticResource ButtonInfo}" HorizontalAlignment="Left" Margin="30" VerticalAlignment="Center" Content="{StaticResource ChooseTextRepairFuncPage_Drawer_BtnConfirm}" FontSize="15" Height="Auto" Click="SentenceConfirm_Click"></Button>
-                        <Button Grid.Row="2" Style="{StaticResource ButtonDanger}" HorizontalAlignment="Right" Margin="30" VerticalAlignment="Center" Content="{StaticResource Drawer_BtnExit}" FontSize="15" Height="Auto" Click="ExitBtn_Click"></Button>
+                        <Button Grid.Row="2" Style="{DynamicResource ButtonInfo}" HorizontalAlignment="Left" Margin="30" VerticalAlignment="Center" Content="{DynamicResource ChooseTextRepairFuncPage_Drawer_BtnConfirm}" FontSize="15" Height="Auto" Click="SentenceConfirm_Click"></Button>
+                        <Button Grid.Row="2" Style="{DynamicResource ButtonDanger}" HorizontalAlignment="Right" Margin="30" VerticalAlignment="Center" Content="{DynamicResource Drawer_BtnExit}" FontSize="15" Height="Auto" Click="ExitBtn_Click"></Button>
 
                     </Grid>
                 </Border>
@@ -83,14 +83,14 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Text="{StaticResource ChooseTextRepairFuncPage_Drawer_RegexIntrduce}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                        <TextBlock Grid.Row="0" Text="{DynamicResource ChooseTextRepairFuncPage_Drawer_RegexIntrduce}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
 
-                        <TextBox Name="Regex_TextBox" hc:InfoElement.Placeholder="{StaticResource ChooseTextRepairFuncPage_Drawer_Regex}" hc:InfoElement.Necessary="True" Style="{StaticResource TextBoxExtend}" Grid.Row="1" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" FontSize="15" Width="200"/>
+                        <TextBox Name="Regex_TextBox" hc:InfoElement.Placeholder="{DynamicResource ChooseTextRepairFuncPage_Drawer_Regex}" hc:InfoElement.Necessary="True" Style="{DynamicResource TextBoxExtend}" Grid.Row="1" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" FontSize="15" Width="200"/>
 
-                        <TextBox Name="Replace_TextBox" hc:InfoElement.Placeholder="{StaticResource ChooseTextRepairFuncPage_Drawer_RegexReplace}" hc:InfoElement.Necessary="True" Style="{StaticResource TextBoxExtend}" Grid.Row="2" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" FontSize="15" Width="200"></TextBox>
+                        <TextBox Name="Replace_TextBox" hc:InfoElement.Placeholder="{DynamicResource ChooseTextRepairFuncPage_Drawer_RegexReplace}" hc:InfoElement.Necessary="True" Style="{DynamicResource TextBoxExtend}" Grid.Row="2" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" FontSize="15" Width="200"></TextBox>
 
-                        <Button Grid.Row="3" Style="{StaticResource ButtonInfo}" HorizontalAlignment="Left" Margin="30" VerticalAlignment="Center" Content="{StaticResource ChooseTextRepairFuncPage_Drawer_BtnConfirm}" FontSize="15" Height="Auto" Click="RegexConfirm_Click"></Button>
-                        <Button Grid.Row="3" Style="{StaticResource ButtonDanger}" HorizontalAlignment="Right" Margin="30" VerticalAlignment="Center" Content="{StaticResource Drawer_BtnExit}" FontSize="15" Height="Auto" Click="ExitBtn_Click"></Button>
+                        <Button Grid.Row="3" Style="{DynamicResource ButtonInfo}" HorizontalAlignment="Left" Margin="30" VerticalAlignment="Center" Content="{DynamicResource ChooseTextRepairFuncPage_Drawer_BtnConfirm}" FontSize="15" Height="Auto" Click="RegexConfirm_Click"></Button>
+                        <Button Grid.Row="3" Style="{DynamicResource ButtonDanger}" HorizontalAlignment="Right" Margin="30" VerticalAlignment="Center" Content="{DynamicResource Drawer_BtnExit}" FontSize="15" Height="Auto" Click="ExitBtn_Click"></Button>
 
                     </Grid>
                 </Border>

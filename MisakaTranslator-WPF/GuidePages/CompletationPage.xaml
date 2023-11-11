@@ -17,9 +17,9 @@
         </Grid.RowDefinitions>
         <Image Grid.Row="0" Margin="0" Source="Completation_small.png"></Image>
 
-        <TextBlock Grid.Row="1" Text="{StaticResource CompletationPage_Hint}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+        <TextBlock Grid.Row="1" Text="{DynamicResource CompletationPage_Hint}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
 
-        <Button Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Height="Auto" Content="{StaticResource CompletationPage_BtnConfirm}" Click="ConfirmBtn_Click" />
+        <Button Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Height="Auto" Content="{DynamicResource CompletationPage_BtnConfirm}" Click="ConfirmBtn_Click" />
 
 
     </Grid>

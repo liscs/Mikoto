@@ -6,7 +6,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:MisakaTranslator_WPF"
         mc:Ignorable="d"
-        Title="{StaticResource GameGuideWin_WinName}" Height="500" Width="800" Name="guide" Closing="GuideWindow_Closing" Topmost="True">
+        Title="{DynamicResource GameGuideWin_WinName}" Height="500" Width="800" Name="guide" Closing="GuideWindow_Closing" Topmost="True">
     
     <Grid>
         <Grid.RowDefinitions>
@@ -17,7 +17,7 @@
 
         <TextBlock Name="FuncHint" Grid.Row="0" Text="Loading" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10"></TextBlock>
 
-        <CheckBox IsChecked="{Binding Path=Topmost, ElementName=guide, Mode=TwoWay}" Grid.Row="0" Content="{StaticResource GameGuideWin_AlwaysTop}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10"></CheckBox>
+        <CheckBox IsChecked="{Binding Path=Topmost, ElementName=guide, Mode=TwoWay}" Grid.Row="0" Content="{DynamicResource GameGuideWin_AlwaysTop}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10"></CheckBox>
 
         <Frame Grid.Row="1" Name="GuidePageFrame" NavigationUIVisibility="Hidden" BorderThickness="0" />
 
