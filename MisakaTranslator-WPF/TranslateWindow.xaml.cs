@@ -65,9 +65,9 @@ namespace MisakaTranslator_WPF
         private AzureTTS _azureTTS;
 
         private HWND winHandle;//窗口句柄，用于设置活动窗口，以达到全屏状态下总在最前的目的
+        private TransWinSettingsWindow transWinSettingsWindow;
 
         private DropShadowEffect DropShadow = new DropShadowEffect();
-
 
         public TranslateWindow()
         {
@@ -132,6 +132,10 @@ namespace MisakaTranslator_WPF
                 MouseKeyboardHook_Init();
             }
 
+            Dispatcher.BeginInvoke(() =>
+            {
+                transWinSettingsWindow = new TransWinSettingsWindow(this);
+            });
 
         }
 
@@ -851,8 +855,8 @@ namespace MisakaTranslator_WPF
         private void Settings_Item_Click(object sender, RoutedEventArgs e)
         {
             dtimer.Stop();
-            TransWinSettingsWindow twsw = new TransWinSettingsWindow(this);
-            twsw.Show();
+            transWinSettingsWindow.WindowState = WindowState.Normal;
+            transWinSettingsWindow.Show();
         }
 
         private void History_Item_Click(object sender, RoutedEventArgs e)

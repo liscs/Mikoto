@@ -6,7 +6,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:MisakaTranslator_WPF"
         mc:Ignorable="d"
-        Title="{DynamicResource TransWinSettingsWin_Title}" Height="500" Width="300" Closed="TransWinSettingsWin_Closed">
+        Title="{DynamicResource TransWinSettingsWin_Title}" Height="500" Width="300">
     <Grid>
 
         <TabControl Style="{DynamicResource TabControlInLine}">

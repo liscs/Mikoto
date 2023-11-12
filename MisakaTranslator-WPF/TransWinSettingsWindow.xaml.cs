@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -271,9 +271,11 @@ namespace MisakaTranslator_WPF
             window.Show();
         }
 
-        private void TransWinSettingsWin_Closed(object sender, EventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
         {
+            e.Cancel = true;
             translateWin.dtimer.Start();
+            Hide();
         }
     }
 }
