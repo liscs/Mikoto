@@ -5,7 +5,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
 
-namespace GameLibraryAccessHelper
+namespace DataAccessLibrary
 {
     public class GameInfo
     {
@@ -75,10 +75,10 @@ namespace GameLibraryAccessHelper
         public string MisakaHookCode { get; set; }
     }
 
-    public static class GameLibraryHelper
+    public static class GameHelper
     {
         //游戏信息文件夹
-        public static readonly DirectoryInfo directory = Directory.CreateDirectory($"{Environment.CurrentDirectory}\\Games\\");
+        public static readonly DirectoryInfo directory = Directory.CreateDirectory($"{Environment.CurrentDirectory}\\data\\games\\");
 
         /// <summary>
         /// 根据id获得游戏信息

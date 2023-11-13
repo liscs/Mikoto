@@ -198,13 +198,13 @@ namespace TranslatorLibrary.Translator
          * 
          */
         #endregion
-        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        public Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
             //sourceText = addNoise(addNoise2(sourceText)); //The translator is able to find the correct match on hook mode under a high noise
             Console.WriteLine(string.Format("Input:{0}", sourceText));
             if (jp_text.Count == 0)
             {
-                return "No translation available";
+                return Task.FromResult("No translation available");
             }
 
             if (sourceText.Length >= R_MAX_LEN)
@@ -263,10 +263,10 @@ namespace TranslatorLibrary.Translator
                 Console.WriteLine(possibleCursors[k]);
             }
             if (possibleCursors.Count == 0)
-                return "无匹配文本";
+                return Task.FromResult("无匹配文本");
             Console.WriteLine(string.Format("[{0}:{1}]", maxI, jp_text[maxI]));
             Console.WriteLine("------");
-            return cn_text[maxI] == "" ? jp_text[maxI] : cn_text[maxI];
+            return Task.FromResult(cn_text[maxI] == "" ? jp_text[maxI] : cn_text[maxI]);
         }
 
         int addNoiseState = 0;

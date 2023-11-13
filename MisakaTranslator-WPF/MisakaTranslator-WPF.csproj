@@ -38,12 +38,12 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ArtificialTransHelperLibrary\ArtificialTransHelperLibrary.csproj" />
+		<ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
 		<ProjectReference Include="..\DictionaryHelperLibrary\DictionaryHelperLibrary.csproj" />
 		<ProjectReference Include="..\KeyboardMouseHookLibrary\KeyboardMouseHookLibrary.csproj" />
 		<ProjectReference Include="..\KeyboardMouseMonitor\KeyboardMouseMonitor.csproj" />
 		<ProjectReference Include="..\MecabHelperLibrary\MecabHelperLibrary.csproj" />
 		<ProjectReference Include="..\OCRLibrary\OCRLibrary.csproj" />
-		<ProjectReference Include="..\SQLHelperLibrary\DataAccessLibrary.csproj" />
 		<ProjectReference Include="..\TextHookLibrary\TextHookLibrary.csproj" />
 		<ProjectReference Include="..\TextRepairLibrary\TextRepairLibrary.csproj" />
 		<ProjectReference Include="..\TranslatorLibrary\TranslatorLibrary.csproj" />

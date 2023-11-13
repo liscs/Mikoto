@@ -1,4 +1,4 @@
-﻿using GameLibraryAccessHelper;
+﻿using DataAccessLibrary;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -38,12 +38,12 @@ namespace MisakaTranslator_WPF.GuidePages
                 Common.UsingDstLang = TranslatorCommon.LanguageDict[_langList[DstLangCombox.SelectedIndex]];
 
                 //写游戏信息
-                GameInfo targetGame = GameLibraryHelper.GetGameById(Common.GameID);
+                GameInfo targetGame = GameHelper.GetGameById(Common.GameID);
                 if (targetGame != null)
                 {
                     targetGame.SrcLang = Common.UsingSrcLang;
                     targetGame.DstLang = Common.UsingDstLang;
-                    GameLibraryHelper.SaveGameInfo(targetGame);
+                    GameHelper.SaveGameInfo(targetGame);
                 }
                 //使用路由事件机制通知窗口来完成下一步操作
                 PageChangeRoutedEventArgs args = new PageChangeRoutedEventArgs(PageChange.PageChangeRoutedEvent, this)

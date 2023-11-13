@@ -34,7 +34,7 @@ namespace MisakaTranslator_WPF
     /// </summary>
     public partial class TranslateWindow
     {
-        public System.Windows.Threading.DispatcherTimer dtimer;//定时器 定时刷新位置
+        public System.Windows.Threading.DispatcherTimer dtimer;//定时器 定时将窗口置顶
 
         private ArtificialTransHelper _artificialTransHelper;
 

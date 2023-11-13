@@ -215,11 +215,11 @@ namespace MisakaTranslator_WPF
         /// <param name="exception"></param>
         public static void WhiteExceptionLog(Exception exception)
         {
-            if (!Directory.Exists($"{Environment.CurrentDirectory}\\logs"))
+            if (!Directory.Exists($"{Environment.CurrentDirectory}\\data\\logs"))
             {
-                Directory.CreateDirectory($"{Environment.CurrentDirectory}\\logs");
+                Directory.CreateDirectory($"{Environment.CurrentDirectory}\\data\\logs");
             }
-            FileStream fs = new FileStream($"{Environment.CurrentDirectory}\\logs\\excption log.txt", FileMode.Append);
+            FileStream fs = new FileStream($"{Environment.CurrentDirectory}\\data\\logs\\exception logs.txt", FileMode.Append);
 
             StreamWriter sw = new StreamWriter(fs);
 
@@ -232,6 +232,8 @@ namespace MisakaTranslator_WPF
 
             sw.WriteLine("==============Exception Info================");
             sw.WriteLine(exception.ToString());
+            sw.WriteLine();
+            sw.WriteLine();
 
             sw.Flush();
             sw.Close();

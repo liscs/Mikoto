@@ -3,7 +3,7 @@ using SQLitePCL;
 using System;
 using System.Collections.Generic;
 
-namespace SQLHelperLibrary
+namespace DataAccessLibrary
 {
     public class SQLHelper
     {

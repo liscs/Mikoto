@@ -1,5 +1,5 @@
 using Config.Net;
-using GameLibraryAccessHelper;
+using DataAccessLibrary;
 using HandyControl.Controls;
 using KeyboardMouseHookLibrary;
 using OCRLibrary;
@@ -31,7 +31,7 @@ namespace MisakaTranslator_WPF
         {
             Instance = this;
             Common.mainWin = this;
-            Common.appSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\settings\\settings.ini").Build();
+            Common.appSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\data\\settings\\settings.ini").Build();
             InitializeLanguage();
             TranslatorCommon.Refresh();
             InitializeComponent();
@@ -60,8 +60,8 @@ namespace MisakaTranslator_WPF
         private void Initialize()
         {
             this.Resources["Foreground"] = (SolidColorBrush)(new BrushConverter().ConvertFrom(Common.appSettings.ForegroundHex));
-            GameInfoList = GameLibraryHelper.GetAllCompletedGames();
-            Common.repairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Environment.CurrentDirectory + "\\settings\\RepairSettings.ini").Build();
+            GameInfoList = GameHelper.GetAllCompletedGames();
+            Common.repairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Environment.CurrentDirectory + "\\data\\settings\\RepairSettings.ini").Build();
             GameLibraryPanel_Init();
             //先初始化这两个语言，用于全局OCR识别
             Common.UsingDstLang = "zh";
@@ -322,7 +322,7 @@ namespace MisakaTranslator_WPF
         {
             if (HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_Drawer_DeleteGameConfirmBox"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                GameLibraryHelper.DeleteGameByID(GameInfoList[gid].GameID);
+                GameHelper.DeleteGameByID(GameInfoList[gid].GameID);
                 var b = GameLibraryPanel.FindName($"game{gid}") as Border;
                 GameLibraryPanel.Children.Remove(b);
                 GameInfoDrawer.IsOpen = false;
@@ -414,7 +414,7 @@ namespace MisakaTranslator_WPF
         /// <returns>数组索引（非GameID），-1代表未找到</returns>
         private int GetGameListHasProcessGame_PID_ID()
         {
-            GameInfoList = GameLibraryHelper.GetAllCompletedGames();
+            GameInfoList = GameHelper.GetAllCompletedGames();
             if (GameInfoList == null)
                 return -1;
 

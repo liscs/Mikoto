@@ -90,11 +90,11 @@ namespace MisakaTranslator_WPF
         /// <param name="errorMessage">错误消息</param>
         private static void PrintErrorMessageToFile(string fileName, Exception e, int exceptionThread, string errorMessage = null)
         {
-            if (!Directory.Exists($"{Environment.CurrentDirectory}\\logs"))
+            if (!Directory.Exists($"{Environment.CurrentDirectory}\\data\\logs"))
             {
-                Directory.CreateDirectory($"{Environment.CurrentDirectory}\\logs");
+                Directory.CreateDirectory($"{Environment.CurrentDirectory}\\data\\logs");
             }
-            FileStream fs = new FileStream($"{Environment.CurrentDirectory}\\logs\\{fileName}.txt", FileMode.Create);
+            FileStream fs = new FileStream($"{Environment.CurrentDirectory}\\data\\logs\\{fileName}.txt", FileMode.Create);
 
             StreamWriter sw = new StreamWriter(fs);
 

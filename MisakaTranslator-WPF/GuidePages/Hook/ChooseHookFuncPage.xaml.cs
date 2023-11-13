@@ -1,4 +1,4 @@
-﻿using GameLibraryAccessHelper;
+﻿using DataAccessLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -83,11 +83,11 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
                 if (Common.GameID != null)
                 {
-                    GameInfo targetGame = GameLibraryHelper.GetGameById(Common.GameID);
+                    GameInfo targetGame = GameHelper.GetGameById(Common.GameID);
                     targetGame.TransMode = 1;
                     targetGame.HookCode = lstData[HookFunListView.SelectedIndex].HookCode;
                     targetGame.MisakaHookCode = lstData[HookFunListView.SelectedIndex].MisakaHookCode;
-                    GameLibraryHelper.SaveGameInfo(targetGame);
+                    GameHelper.SaveGameInfo(targetGame);
 
 
                     if (LastCustomHookCode != "NULL")
@@ -102,7 +102,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                         {
                             //记录这个特殊码到数据库
                             targetGame.HookCodeCustom = LastCustomHookCode;
-                            GameLibraryHelper.SaveGameInfo(targetGame);
+                            GameHelper.SaveGameInfo(targetGame);
                         }
                         else if (result == MessageBoxResult.No)
                         {
@@ -113,13 +113,13 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                         {
                             //不记录特殊码，但也要写NULL
                             targetGame.HookCodeCustom = "NULL";
-                            GameLibraryHelper.SaveGameInfo(targetGame);
+                            GameHelper.SaveGameInfo(targetGame);
                         }
                     }
                     else
                     {
                         targetGame.HookCodeCustom = "NULL";
-                        GameLibraryHelper.SaveGameInfo(targetGame);
+                        GameHelper.SaveGameInfo(targetGame);
                     }
 
                 }

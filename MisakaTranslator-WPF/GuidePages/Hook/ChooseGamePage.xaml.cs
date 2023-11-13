@@ -1,4 +1,4 @@
-﻿using GameLibraryAccessHelper;
+﻿using DataAccessLibrary;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -54,10 +54,10 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                 string filepath = ProcessHelper.FindProcessPath(GamePid, (bool)x64GameCheckBox.IsChecked);
                 if (filepath != "")
                 {
-                    targetGame = GameLibraryHelper.GetGameByPath(filepath);
+                    targetGame = GameHelper.GetGameByPath(filepath);
                     Common.GameID = targetGame.GameID;
                     targetGame.Isx64 = (bool)x64GameCheckBox.IsChecked;
-                    GameLibraryHelper.SaveGameInfo(targetGame);
+                    GameHelper.SaveGameInfo(targetGame);
                 }
 
                 //使用路由事件机制通知窗口来完成下一步操作

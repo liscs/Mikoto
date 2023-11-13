@@ -1,4 +1,4 @@
-﻿using GameLibraryAccessHelper;
+﻿using DataAccessLibrary;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -62,28 +62,28 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             //写入数据库的去重方法
             if (Common.GameID != null)
             {
-                GameInfo targetGame = GameLibraryHelper.GetGameById(Common.GameID);
+                GameInfo targetGame = GameHelper.GetGameById(Common.GameID);
                 switch (TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])
                 {
                     case "RepairFun_RemoveSingleWordRepeat":
                         targetGame.RepairFunc = Common.UsingRepairFunc;
                         targetGame.RepairParamA = Common.repairSettings.SingleWordRepeatTimes.ToString();
-                        GameLibraryHelper.SaveGameInfo(targetGame);
+                        GameHelper.SaveGameInfo(targetGame);
                         break;
                     case "RepairFun_RemoveSentenceRepeat":
                         targetGame.RepairFunc = Common.UsingRepairFunc;
                         targetGame.RepairParamA = Common.repairSettings.SentenceRepeatFindCharNum.ToString();
-                        GameLibraryHelper.SaveGameInfo(targetGame);
+                        GameHelper.SaveGameInfo(targetGame);
                         break;
                     case "RepairFun_RegexReplace":
                         targetGame.RepairFunc = Common.UsingRepairFunc;
                         targetGame.RepairParamA = Common.repairSettings.Regex.ToString();
                         targetGame.RepairParamB = Common.repairSettings.Regex_Replace.ToString();
-                        GameLibraryHelper.SaveGameInfo(targetGame);
+                        GameHelper.SaveGameInfo(targetGame);
                         break;
                     default:
                         targetGame.RepairFunc = Common.UsingRepairFunc;
-                        GameLibraryHelper.SaveGameInfo(targetGame);
+                        GameHelper.SaveGameInfo(targetGame);
                         break;
                 }
 

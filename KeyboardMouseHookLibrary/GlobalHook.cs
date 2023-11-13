@@ -91,7 +91,7 @@ namespace KeyboardMouseHookLibrary
                         PInvoke.GetModuleHandle(moduleName),
                         0);
                 }
-                catch (Exception err) { return false; }
+                catch (Exception) { return false; }
                 //如果安装鼠标钩子失败
                 if (_hMouseHook.IsNull)
                 {
@@ -111,7 +111,7 @@ namespace KeyboardMouseHookLibrary
                         PInvoke.GetModuleHandle(moduleName),
                         0);
                 }
-                catch (Exception err2) { return false; }
+                catch (Exception) { return false; }
                 //如果安装键盘钩子失败
                 if (_hKeyboardHook.IsNull)
                 {
