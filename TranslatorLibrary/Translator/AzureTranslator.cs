@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TranslatorLibrary.lang;
 
@@ -42,7 +42,7 @@ namespace TranslatorLibrary.Translator
             string route = $"/translate?api-version=3.0&from={srcLang}&to={desLang}";
             string textToTranslate = sourceText;
             object[] body = new object[] { new { Text = textToTranslate } };
-            var requestBody = JsonConvert.SerializeObject(body);
+            var requestBody = JsonSerializer.Serialize(body);
             AzureTransOutInfo oinfo;
             var client = TranslatorCommon.GetHttpClient();
             using (var request = new HttpRequestMessage())
@@ -60,7 +60,7 @@ namespace TranslatorLibrary.Translator
                     string result = await response.Content.ReadAsStringAsync();
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        oinfo = System.Text.Json.JsonSerializer.Deserialize<List<AzureTransOutInfo>>(result, TranslatorCommon.JsonOP).ElementAt(0);
+                        oinfo = JsonSerializer.Deserialize<List<AzureTransOutInfo>>(result, TranslatorCommon.JsonOP).ElementAt(0);
                         if (oinfo.translations.Length == 0)
                             return string.Empty;
                         else if (oinfo.translations.Length == 1)
@@ -75,7 +75,7 @@ namespace TranslatorLibrary.Translator
                     }
                     else
                     {
-                        oinfo = System.Text.Json.JsonSerializer.Deserialize<AzureTransOutInfo>(result, TranslatorCommon.JsonOP);
+                        oinfo = JsonSerializer.Deserialize<AzureTransOutInfo>(result, TranslatorCommon.JsonOP);
                         errorInfo = $"ErrorCode: {oinfo.error.code}, Message: {oinfo.error.message}";
                         return null;
                     }
