@@ -28,11 +28,6 @@ namespace TranslatorLibrary.Translator
                 return null;
             }
 
-            if (desLang == "jp")
-                desLang = "ja";
-            if (srcLang == "jp")
-                srcLang = "ja";
-
             // 原文
             string q = sourceText;
             string retString;

@@ -24,14 +24,6 @@ namespace TranslatorLibrary.Translator
 
         public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
-            if (desLang == "kr")
-                desLang = "ko";
-            if (srcLang == "kr")
-                srcLang = "ko";
-            if (desLang == "jp")
-                desLang = "ja";
-            if (srcLang == "jp")
-                srcLang = "ja";
             if (desLang != "en" && srcLang != "en")
             {
                 sourceText = await TranslateAsync(sourceText, "en", srcLang);

@@ -71,7 +71,7 @@ namespace TranslatorLibrary.Translator
 
             if (desLang == "zh")
             {
-                if (srcLang == "jp")
+                if (srcLang == "ja")
                 {
                     try
                     {

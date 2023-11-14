@@ -65,7 +65,7 @@ namespace MisakaTranslator_WPF
             GameLibraryPanel_Init();
             //先初始化这两个语言，用于全局OCR识别
             Common.UsingDstLang = "zh";
-            Common.UsingSrcLang = "jp";
+            Common.UsingSrcLang = "ja";
         }
 
         /// <summary>

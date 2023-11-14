@@ -158,7 +158,7 @@ namespace MisakaTranslator_WPF
                         srclang = "en";
                         break;
                     case "jpn":
-                        srclang = "jp";
+                        srclang = "ja";
                         break;
                     default:
                         srclang = Common.appSettings.GlobalOCRLang;

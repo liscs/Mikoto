@@ -26,7 +26,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <hc:TextBox hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource API_testSrcLang}" Name="TestSrcLang" hc:InfoElement.ShowClearButton="True" Text="jp" TextAlignment="Center"/>
+                        <hc:TextBox hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource API_testSrcLang}" Name="TestSrcLang" hc:InfoElement.ShowClearButton="True" Text="ja" TextAlignment="Center"/>
                         <hc:TextBox Grid.Column="2" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource API_testDstLang}" Name="TestDstLang" hc:InfoElement.ShowClearButton="True" Text="zh" TextAlignment="Center"/>
                         <Button Grid.Column="3" Content="{DynamicResource API_testTransBtn}" Margin="10,0,0,0" Width="122" Click="TransTestBtn_Click" ></Button>
                     </Grid>

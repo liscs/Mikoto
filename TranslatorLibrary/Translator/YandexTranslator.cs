@@ -20,15 +20,6 @@ namespace TranslatorLibrary.Translator
 
         public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
-            if (desLang == "kr")
-                desLang = "ko";
-            if (srcLang == "kr")
-                srcLang = "ko";
-            if (desLang == "jp")
-                desLang = "ja";
-            if (srcLang == "jp")
-                srcLang = "ja";
-
             var hc = TranslatorCommon.GetHttpClient();
             string apiurl = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + ApiKey + "&lang=" + srcLang + "-" + desLang + "&text=";
 

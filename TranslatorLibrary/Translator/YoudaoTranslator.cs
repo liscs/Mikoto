@@ -1,8 +1,10 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 using TranslatorLibrary.lang;
+using TranslatorLibrary.LanguageCode;
 
 namespace TranslatorLibrary.Translator
 {
@@ -24,16 +26,8 @@ namespace TranslatorLibrary.Translator
                 errorInfo = "Param Missing";
                 return null;
             }
-
-            if (desLang == "zh")
-                desLang = "zh_cn";
-            if (srcLang == "zh")
-                srcLang = "zh_cn";
-
-            if (desLang == "jp")
-                desLang = "ja";
-            if (srcLang == "jp")
-                srcLang = "ja";
+            srcLang = GetLanguageCode(new CultureInfo(srcLang));
+            desLang = GetLanguageCode(new CultureInfo(desLang));
 
             // 原文
             string q = HttpUtility.UrlEncode(sourceText);
@@ -87,6 +81,11 @@ namespace TranslatorLibrary.Translator
                 errorInfo = "ErrorID:" + oinfo.errorCode;
                 return null;
             }
+        }
+
+        private string GetLanguageCode(CultureInfo cultureInfo)
+        {
+            return new YoudaoLanguageCodeConverter().GetLanguageCode(cultureInfo);
         }
 
         public void TranslatorInit(string param1 = "", string param2 = "")

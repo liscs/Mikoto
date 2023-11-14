@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 using TranslatorLibrary.lang;
+using TranslatorLibrary.LanguageCode;
 
 namespace TranslatorLibrary.Translator
 {
@@ -25,6 +27,8 @@ namespace TranslatorLibrary.Translator
                 errorInfo = "Param Missing";
                 return null;
             }
+            srcLang = GetLanguageCode(new CultureInfo(srcLang));
+            desLang = GetLanguageCode(new CultureInfo(desLang));
 
             string q = sourceText;
             string input = q.Length <= 20 ? q : q.Substring(0, 10) + q.Length + q.Substring(q.Length - 10);
@@ -36,8 +40,8 @@ namespace TranslatorLibrary.Translator
 
             Dictionary<string, string> dic = new Dictionary<string, string>
             {
-                { "from", LangConversion(srcLang) },
-                { "to", LangConversion(desLang) },
+                { "from", srcLang },
+                { "to", desLang },
                 { "signType", "v3" },
                 { "curtime", curtime },
                 { "appKey", appId },
@@ -139,16 +143,9 @@ namespace TranslatorLibrary.Translator
             return builder.ToString();
         }
 
-        private string LangConversion(string lang)
+        private string GetLanguageCode(CultureInfo cultureInfo)
         {
-            if (lang == "zh")
-                return "zh-CHS";
-            else if (lang == "jp")
-                return "ja";
-            else if (lang == "kr")
-                return "ko";
-            else
-                return lang;
+            return new YoudaoZhiyunLanguageCodeConverter().GetLanguageCode(cultureInfo);
         }
     }
 

@@ -13,10 +13,11 @@ namespace TranslatorLibrary
     public static class TranslatorCommon
     {
         /// <summary>
-        /// 反射获取所有的翻译器（即所有实现了ITranslator的类），放入字典
+        /// 刷新/初始化翻译器
         /// </summary>
         public static void Refresh()
         {
+            //反射获取所有的翻译器（即所有实现了ITranslator的类），放入字典
             Task.Run(() =>
             {
                 TranslatorDict.Clear();
@@ -33,14 +34,19 @@ namespace TranslatorLibrary
             });
         }
 
-        // 默认使用百度的语言代码
-        public static Dictionary<string, string> LanguageDict = new Dictionary<string, string>() {
-            { "简体中文" , "zh" },
+        // 默认使用cultureinfo的语言代码
+        public static Dictionary<string, string> LanguageDict = new Dictionary<string, string>()
+        {
+            { "中文" , "zh" },
             { "English" , "en" },
-            { "日本語" ,  "jp" },
-            { "한국어" , "kr" },
+            { "日本語" ,  "ja" },
+            { "한국어" , "ko" },
             { "Русскийязык" , "ru" },
-            { "Français" , "fr" }
+            { "Français" , "fr" },
+            { "Español", "es" },
+            { "Português", "pt" },
+            { "Deutsch", "de" },
+            { "Italiano", "it" }
         };
 
         public static Dictionary<string, string> TranslatorDict = new Dictionary<string, string>();

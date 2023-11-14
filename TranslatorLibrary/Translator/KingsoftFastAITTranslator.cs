@@ -147,7 +147,7 @@ namespace TranslatorLibrary.Translator
                     Marshal.FreeHGlobal(buffer);
                 }
             }
-            else if (srcLang == "jp")
+            else if (srcLang == "ja")
             {
                 Environment.CurrentDirectory = FilePath + "\\GTS\\JapaneseSChinese\\";
                 string dicPath = FilePath + "\\GTS\\JapaneseSChinese\\" + DEFAULT_DIC;

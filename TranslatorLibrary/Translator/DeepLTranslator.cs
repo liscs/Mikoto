@@ -91,9 +91,9 @@ namespace TranslatorLibrary.Translator
                     return "ZH";
                 case "en":
                     return "EN";
-                case "jp":
+                case "ja":
                     return "JA";
-                case "kr":
+                case "ko":
                     errorInfo = "Korean is not supported by DeepL";
                     return null;
                 case "ru":
@@ -114,9 +114,9 @@ namespace TranslatorLibrary.Translator
                     return "ZH";
                 case "en":
                     return "EN-US";
-                case "jp":
+                case "ja":
                     return "JA";
-                case "kr":
+                case "ko":
                     errorInfo = "Korean is not supported by DeepL";
                     return null;
                 case "ru":

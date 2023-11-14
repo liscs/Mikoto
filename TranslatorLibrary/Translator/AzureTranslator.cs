@@ -29,15 +29,6 @@ namespace TranslatorLibrary.Translator
                 errorInfo = "Param Missing";
                 return null;
             }
-            if (desLang == "kr")
-                desLang = "ko";
-            if (srcLang == "kr")
-                srcLang = "ko";
-            if (desLang == "jp")
-                desLang = "ja";
-            if (srcLang == "jp")
-                srcLang = "ja";
-
             // Input and output languages are defined as parameters.
             string route = $"/translate?api-version=3.0&from={srcLang}&to={desLang}";
             string textToTranslate = sourceText;

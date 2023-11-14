@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
@@ -23,15 +24,8 @@ namespace TranslatorLibrary.Translator
                 errorInfo = "Param Missing";
                 return null;
             }
-
-            if (desLang == "kr")
-                desLang = "kor";
-            if (srcLang == "kr")
-                srcLang = "kor";
-            if (desLang == "fr")
-                desLang = "fra";
-            if (srcLang == "fr")
-                srcLang = "fra";
+            srcLang = GetLanguageCode(new CultureInfo(srcLang));
+            desLang = GetLanguageCode(new CultureInfo(desLang));
 
             // 原文
             string q = sourceText;
@@ -128,6 +122,11 @@ namespace TranslatorLibrary.Translator
         public static string GetUrl_Doc()
         {
             return "https://api.fanyi.baidu.com/doc/21";
+        }
+
+        private string GetLanguageCode(CultureInfo cultureInfo)
+        {
+            return new BaiduLanguageCodeConverter().GetLanguageCode(cultureInfo);
         }
     }
 

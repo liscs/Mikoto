@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Globalization;
+using System.Threading.Tasks;
 using System.Web;
 using TranslatorLibrary.lang;
+using TranslatorLibrary.LanguageCode;
 
 namespace TranslatorLibrary.Translator
 {
@@ -17,20 +19,8 @@ namespace TranslatorLibrary.Translator
 
         public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
-            if (desLang == "zh")
-                desLang = "zh-cn";
-            if (srcLang == "zh")
-                srcLang = "zh-cn";
-
-            if (desLang == "jp")
-                desLang = "ja";
-            if (srcLang == "jp")
-                srcLang = "ja";
-
-            if (desLang == "kr")
-                desLang = "ko";
-            if (srcLang == "kr")
-                srcLang = "ko";
+            srcLang = GetLanguageCode(new CultureInfo(srcLang));
+            desLang = GetLanguageCode(new CultureInfo(desLang));
 
             string fun = string.Format(@"TL('{0}')", sourceText);
 
@@ -64,7 +54,10 @@ namespace TranslatorLibrary.Translator
                 return null;
             }
         }
-
+        public string GetLanguageCode(CultureInfo cultureInfo)
+        {
+            return new GoogleCNLanguageCodeConverter().GetLanguageCode(cultureInfo);
+        }
         public void TranslatorInit(string param1 = "", string param2 = "") {; }
     }
 }
