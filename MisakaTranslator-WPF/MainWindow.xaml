@@ -24,13 +24,13 @@
 
         
         <StackPanel Orientation="Horizontal" Grid.Column="2">
-            <Button fa:Awesome.Content="Rocket" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{DynamicResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{DynamicResource EffectShadow5}" Click="AutoStart_BtnClick" Margin="0,0,0,0.5">
+            <Button fa:Awesome.Content="Rocket" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{DynamicResource EffectShadow5}" Click="AutoStart_BtnClick" Margin="0,0,0,0.5">
                 <hc:Poptip.Instance>
                     <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{DynamicResource MainWindow_Tip_AutoStart}" Placement="Right"/>
                 </hc:Poptip.Instance>
             </Button>
 
-            <Button fa:Awesome.Content="Book" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{DynamicResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{DynamicResource EffectShadow5}" Click="ComicTransBtn_Click" Margin="20,0,0,0.5">
+            <Button fa:Awesome.Content="Book" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{DynamicResource EffectShadow5}" Click="ComicTransBtn_Click" Margin="20,0,0,0.5">
                 <hc:Poptip.Instance>
                     <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{DynamicResource MainWindow_Tip_ComicTrans}" Placement="Right"/>
                 </hc:Poptip.Instance>
@@ -39,7 +39,7 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button fa:Awesome.Content="Language" Foreground="{DynamicResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{DynamicResource EffectShadow5}"  Margin="0,0,20,0.5" Click="LanguageBtn_Click">
+            <Button fa:Awesome.Content="Language" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{DynamicResource EffectShadow5}"  Margin="0,0,20,0.5" Click="LanguageBtn_Click">
                 <Button.ContextMenu>
                     <ContextMenu x:Name="LanguageContextMenu">
                         <MenuItem Header="中文" Click="Language_MenuItem_Click" Tag="zh-CN"/>
@@ -47,7 +47,7 @@
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>
-            <Button fa:Awesome.Content="Cog" Foreground="{DynamicResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{DynamicResource EffectShadow5}" Click="SettingsBtn_Click" Margin="0,0,0,0.5">
+            <Button fa:Awesome.Content="Cog" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{DynamicResource EffectShadow5}" Click="SettingsBtn_Click" Margin="0,0,0,0.5">
                 <hc:Poptip.Instance>
                     <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{DynamicResource MainWindow_Tip_Settings}" Placement="Left"/>
                 </hc:Poptip.Instance>
@@ -56,12 +56,12 @@
 
         <hc:Drawer Name="AddNewGameDrawer" ShowMode="Press" MaskCanClose="True" Dock="Top">
             
-        <StackPanel Orientation="Vertical" Background="{DynamicResource TranslateWindowBackground}">
+        <StackPanel Orientation="Vertical" Background="{StaticResource TranslateWindowBackground}">
             <Border Padding="30" Effect="{DynamicResource EffectShadow3}">
                 <hc:ButtonGroup Orientation="Horizontal">
-                        <Button Background="{DynamicResource BoxBtnColor}" Content="{DynamicResource BtnHookGuide}" Click="HookGuideBtn_Click" Height="50"></Button>
-                        <Button Background="{DynamicResource BoxBtnColor}" Content="{DynamicResource BtnOCRGuide}" Click="OCRGuideBtn_Click" Height="50"></Button>
-                        <Button Background="{DynamicResource BoxBtnColor}" Content="{DynamicResource BtnClipboardGuide}" Click="ClipboardGuideBtn_Click" Height="50"></Button>
+                        <Button Background="{StaticResource BoxBtnColor}" Content="{DynamicResource BtnHookGuide}" Click="HookGuideBtn_Click" Height="50"></Button>
+                        <Button Background="{StaticResource BoxBtnColor}" Content="{DynamicResource BtnOCRGuide}" Click="OCRGuideBtn_Click" Height="50"></Button>
+                        <Button Background="{StaticResource BoxBtnColor}" Content="{DynamicResource BtnClipboardGuide}" Click="ClipboardGuideBtn_Click" Height="50"></Button>
                     </hc:ButtonGroup>
             </Border>
         </StackPanel>
