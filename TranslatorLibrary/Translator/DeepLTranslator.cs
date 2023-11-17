@@ -1,7 +1,9 @@
-﻿using System.Net.Http;
+﻿using System.Globalization;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TranslatorLibrary.lang;
+using TranslatorLibrary.LanguageCode;
 
 /*
  * DeepL translator integration
@@ -35,11 +37,13 @@ namespace TranslatorLibrary.Translator
                 errorInfo = "Param Missing";
                 return null;
             }
+            srcLang = GetLanguageCode(new CultureInfo(srcLang));
+            desLang = GetLanguageCode(new CultureInfo(desLang));
 
             string payload = "text=" + sourceText
                 + "&auth_key=" + secretKey
-                + "&source_lang=" + transformSrcLangKey(srcLang)
-                + "&target_lang=" + transformDesLangKey(desLang);
+                + "&source_lang=" + srcLang
+                + "&target_lang=" + desLang;
 
             StringContent request = new StringContent(payload, null, "application/x-www-form-urlencoded");
 
@@ -83,50 +87,9 @@ namespace TranslatorLibrary.Translator
             secretKey = param1;
         }
 
-        private string transformSrcLangKey(string langKey)
+        private string GetLanguageCode(CultureInfo cultureInfo)
         {
-            switch (langKey)
-            {
-                case "zh":
-                    return "ZH";
-                case "en":
-                    return "EN";
-                case "ja":
-                    return "JA";
-                case "ko":
-                    errorInfo = "Korean is not supported by DeepL";
-                    return null;
-                case "ru":
-                    return "RU";
-                case "fr":
-                    return "FR";
-
-            }
-            errorInfo = "Unknown language tag: " + langKey;
-            return null;
-        }
-
-        private string transformDesLangKey(string langKey)
-        {
-            switch (langKey)
-            {
-                case "zh":
-                    return "ZH";
-                case "en":
-                    return "EN-US";
-                case "ja":
-                    return "JA";
-                case "ko":
-                    errorInfo = "Korean is not supported by DeepL";
-                    return null;
-                case "ru":
-                    return "RU";
-                case "fr":
-                    return "FR";
-
-            }
-            errorInfo = "Unknown language tag: " + langKey;
-            return null;
+            return DeepLLanguageCodeConverter.GetLanguageCode(cultureInfo);
         }
     }
 

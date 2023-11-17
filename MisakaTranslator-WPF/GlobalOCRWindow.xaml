@@ -16,7 +16,7 @@
 
         <TextBlock Grid.Row="0" Text=""  Name="sourceText" Margin="10" TextWrapping="Wrap"></TextBlock>
 
-        <TextBlock Grid.Row="1" Text="等待源文本"  Name="FirstTransText" Margin="10" TextWrapping="Wrap"></TextBlock>
+        <TextBlock Grid.Row="1" Text="{DynamicResource TranslateWin_WaitingSource}"  Name="FirstTransText" Margin="10" TextWrapping="Wrap"></TextBlock>
 
         <TextBlock Grid.Row="2" Name="SecondTransText" Margin="10" TextWrapping="Wrap"></TextBlock>
 

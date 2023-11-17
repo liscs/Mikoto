@@ -2,9 +2,9 @@
 
 namespace TranslatorLibrary.LanguageCode
 {
-    public class YoudaoLanguageCodeConverter : ILanguageCodeConverter
+    public static class YoudaoLanguageCodeConverter 
     {
-        public string GetLanguageCode(CultureInfo cultureInfo)
+        public static string GetLanguageCode(CultureInfo cultureInfo)
         {
             switch (cultureInfo.TwoLetterISOLanguageName)
             {

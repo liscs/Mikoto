@@ -85,7 +85,7 @@ namespace TranslatorLibrary.Translator
 
         private string GetLanguageCode(CultureInfo cultureInfo)
         {
-            return new YoudaoLanguageCodeConverter().GetLanguageCode(cultureInfo);
+            return YoudaoLanguageCodeConverter.GetLanguageCode(cultureInfo);
         }
 
         public void TranslatorInit(string param1 = "", string param2 = "")

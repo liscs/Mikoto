@@ -280,6 +280,7 @@
     <sys:String x:Key="TranslateWin_Dict_Title">Dictionary queries</sys:String>
     <sys:String x:Key="TranslateWin_DictError_Hint">Query error or no results!</sys:String>
     <sys:String x:Key="TranslateWin_DragBox_Hint">The mouse points to the drag bar to show.</sys:String>
+    <sys:String x:Key="TranslateWin_WaitingSource">Waiting for text ......</sys:String>
 
     <sys:String x:Key="TransWinSettingsWin_Title">Translator window settings</sys:String>
     <sys:String x:Key="TransWinSettingsWin_Tab_Window">Window</sys:String>

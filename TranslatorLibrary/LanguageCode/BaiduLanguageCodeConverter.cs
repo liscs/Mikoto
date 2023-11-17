@@ -2,9 +2,9 @@
 
 namespace TranslatorLibrary
 {
-    public class BaiduLanguageCodeConverter : ILanguageCodeConverter
+    public static class BaiduLanguageCodeConverter 
     {
-        public string GetLanguageCode(CultureInfo cultureInfo)
+        public static string GetLanguageCode(CultureInfo cultureInfo)
         {
             switch (cultureInfo.TwoLetterISOLanguageName)
             {

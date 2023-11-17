@@ -56,7 +56,7 @@ namespace TranslatorLibrary.Translator
         }
         public string GetLanguageCode(CultureInfo cultureInfo)
         {
-            return new GoogleCNLanguageCodeConverter().GetLanguageCode(cultureInfo);
+            return GoogleCNLanguageCodeConverter.GetLanguageCode(cultureInfo);
         }
         public void TranslatorInit(string param1 = "", string param2 = "") {; }
     }

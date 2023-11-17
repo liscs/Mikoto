@@ -2,9 +2,9 @@
 
 namespace TranslatorLibrary.LanguageCode
 {
-    public class GoogleCNLanguageCodeConverter : ILanguageCodeConverter
+    public static class GoogleCNLanguageCodeConverter 
     {
-        public string GetLanguageCode(CultureInfo cultureInfo)
+        public static string GetLanguageCode(CultureInfo cultureInfo)
         {
             switch (cultureInfo.TwoLetterISOLanguageName)
             {

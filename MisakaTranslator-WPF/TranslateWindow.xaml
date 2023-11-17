@@ -74,7 +74,7 @@
         </Grid>
         <StackPanel Grid.Row="1" Margin="10" Orientation="Vertical">
             <WrapPanel x:Name="SourceTextPanel" Margin="10,0,10,5" Orientation="Horizontal" Background="Transparent"></WrapPanel>
-            <hc:OutlineText Text="等待源文本" 
+            <hc:OutlineText Text="{DynamicResource TranslateWin_WaitingSource}" 
                             Fill="White" Stroke="Black" StrokeThickness="0.7" FontWeight="Bold" Name="FirstTransText" Margin="10,0,10,5" TextWrapping="Wrap" StrokePosition="Outside"></hc:OutlineText>
             <hc:OutlineText Text="" 
                             Fill="White" Stroke="Black" StrokeThickness="0.7" FontWeight="Bold" Name="SecondTransText" Margin="10,0,10,0" TextWrapping="Wrap" StrokePosition="Outside"></hc:OutlineText>

@@ -126,7 +126,7 @@ namespace TranslatorLibrary.Translator
 
         private string GetLanguageCode(CultureInfo cultureInfo)
         {
-            return new BaiduLanguageCodeConverter().GetLanguageCode(cultureInfo);
+            return BaiduLanguageCodeConverter.GetLanguageCode(cultureInfo);
         }
     }
 

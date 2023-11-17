@@ -145,7 +145,7 @@ namespace TranslatorLibrary.Translator
 
         private string GetLanguageCode(CultureInfo cultureInfo)
         {
-            return new YoudaoZhiyunLanguageCodeConverter().GetLanguageCode(cultureInfo);
+            return YoudaoZhiyunLanguageCodeConverter.GetLanguageCode(cultureInfo);
         }
     }
 

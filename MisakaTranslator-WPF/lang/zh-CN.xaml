@@ -280,6 +280,7 @@
     <sys:String x:Key="TranslateWin_Dict_Title">字典查询结果</sys:String>
     <sys:String x:Key="TranslateWin_DictError_Hint">查询错误或无结果！</sys:String>
     <sys:String x:Key="TranslateWin_DragBox_Hint">鼠标指向窗口边框可更改尺寸！</sys:String>
+    <sys:String x:Key="TranslateWin_WaitingSource">等待文本……</sys:String>
 
     <sys:String x:Key="TransWinSettingsWin_Title">翻译窗口界面设置</sys:String>
     <sys:String x:Key="TransWinSettingsWin_Tab_Window">窗口</sys:String>
