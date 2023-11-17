@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace MecabHelperLibrary
 {
@@ -88,7 +89,7 @@ namespace MecabHelperLibrary
                 {
                     if (node.CharType > 0)
                     {
-                        var features = node.Feature.Split(',');
+                        var features = Regex.Split(node.Feature, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
 
                         MecabWordInfo mwi = new MecabWordInfo
@@ -99,7 +100,7 @@ namespace MecabHelperLibrary
                             Feature = node.Feature
                         };
 
-                        if (features.Length >= 21 && mwi.PartOfSpeech != "助詞" && mwi.PartOfSpeech != "補助記号" && mwi.PartOfSpeech != "空白")
+                        if (features.Length >= 21 && mwi.PartOfSpeech != "補助記号" && mwi.PartOfSpeech != "空白")
                         {
                             mwi.Katakana = features[20];
                             mwi.Hiragana = KatakanaToHiragana(mwi.Katakana);
