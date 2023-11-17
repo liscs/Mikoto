@@ -2,7 +2,7 @@
 
 namespace TranslatorLibrary.LanguageCode
 {
-    public static class GoogleCNLanguageCodeConverter 
+    public static class GoogleCNLanguageCodeConverter
     {
         public static string GetLanguageCode(CultureInfo cultureInfo)
         {

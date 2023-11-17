@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -8,14 +8,12 @@
     <UseWinRT>true</UseWinRT>
   </PropertyGroup>
 
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netframework'))">
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Web" />
-    <PackageReference Include="System.Text.Json" Version="7.0.1" />
-  </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="TesseractOCR" Version="5.2.14" Aliases="Tesseract" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.49-beta">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="TesseractOCR" Version="5.3.5" Aliases="Tesseract" />
   </ItemGroup>
 
 </Project>

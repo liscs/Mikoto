@@ -5,13 +5,16 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using TextHookLibrary;
 using TextRepairLibrary;
+using Windows.Media.Protection.PlayReady;
 
 namespace MisakaTranslator_WPF
 {
@@ -135,8 +138,8 @@ namespace MisakaTranslator_WPF
         /// <summary>
         /// 检查软件更新
         /// </summary>
-        /// <returns>如果已经是最新或获取更新失败，返回NULL，否则返回更新信息可直接显示</returns>
-        public static List<string> CheckUpdate()
+        /// <returns>如果已经是最新或获取更新失败，返回null，否则返回更新信息可直接显示</returns>
+        public static async Task<List<string>> CheckUpdate()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             string currentVersion = version.ToString();
@@ -147,16 +150,24 @@ namespace MisakaTranslator_WPF
 
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                //声明一个HttpWebRequest请求
-                request.Timeout = 30000;
-                //设置连接超时时间
-                request.Headers.Set("Pragma", "no-cache");
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream streamReceive = response.GetResponseStream();
-                Encoding encoding = Encoding.GetEncoding("GB2312");
-                StreamReader streamReader = new StreamReader(streamReceive, encoding);
-                strResult = streamReader.ReadToEnd();
+                HttpClient httpClient = new HttpClient()
+                {
+                    Timeout = TimeSpan.FromSeconds(30),
+                };
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12; // For FX4.7
+                httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("MisakaTranslator");
+                using (var request = new HttpRequestMessage())
+                {
+                    request.Method = HttpMethod.Get;
+                    request.RequestUri = new Uri(url);
+                    request.Headers.Add("Pragma", "no-cache");
+                    HttpResponseMessage response = await httpClient.SendAsync(request).ConfigureAwait(false);
+                    string result = await response.Content.ReadAsStringAsync();
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        strResult = result;
+                    }
+                }
             }
             catch
             {

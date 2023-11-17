@@ -24,6 +24,11 @@
 			$(CustomAfterMicrosoftCommonTargets);
 			$(PkgMicrosoft_WindowsAppSDK)\build\Microsoft.Build.Msix.targets
 		</CustomAfterMicrosoftCommonTargets>
+		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <Optimize>True</Optimize>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -41,7 +46,9 @@
 		<ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
 		<ProjectReference Include="..\DictionaryHelperLibrary\DictionaryHelperLibrary.csproj" />
 		<ProjectReference Include="..\KeyboardMouseHookLibrary\KeyboardMouseHookLibrary.csproj" />
-		<ProjectReference Include="..\KeyboardMouseMonitor\KeyboardMouseMonitor.csproj" />
+		<ProjectReference Include="..\KeyboardMouseMonitor\KeyboardMouseMonitor.csproj">
+		  <TreatAsUsed>true</TreatAsUsed>
+		</ProjectReference>
 		<ProjectReference Include="..\MecabHelperLibrary\MecabHelperLibrary.csproj" />
 		<ProjectReference Include="..\OCRLibrary\OCRLibrary.csproj" />
 		<ProjectReference Include="..\TextHookLibrary\TextHookLibrary.csproj" />
@@ -53,11 +60,20 @@
 
 	<ItemGroup>
 		<PackageReference Include="Config.Net" Version="5.1.5" />
-		<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+		<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9">
+		  <NoWarn>NU1701;</NoWarn>
+		</PackageReference>
 		<PackageReference Include="HandyControl" Version="3.4.0" />
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="$([System.Version]::Parse('$(TargetPlatformVersion)').ToString(3)).*" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230502000" IncludeAssets="none" ExcludeAssets="all" PrivateAssets="all" GeneratePathProperty="true" />
-		<PackageReference Include="TesseractOCR" Version="5.2.14" Aliases="Tesseract" />
+		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.49-beta">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" />
+		<PackageReference Include="Microsoft.Windows.SDK.Win32Metadata" Version="56.0.13-preview" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000" IncludeAssets="none" ExcludeAssets="all" PrivateAssets="all" GeneratePathProperty="true" />
+		<PackageReference Include="TesseractOCR" Version="5.3.5" Aliases="Tesseract">
+		  <TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
 	</ItemGroup>
 
 	<!-- Workaround for Desktop Bridge -->

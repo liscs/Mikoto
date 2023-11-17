@@ -2,7 +2,7 @@
 
 namespace TranslatorLibrary
 {
-    public static class BaiduLanguageCodeConverter 
+    public static class BaiduLanguageCodeConverter
     {
         public static string GetLanguageCode(CultureInfo cultureInfo)
         {

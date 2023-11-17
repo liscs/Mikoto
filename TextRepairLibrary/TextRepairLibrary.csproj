@@ -1,11 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netframework'))">
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
+  
   <ItemGroup>
-    <PackageReference Include="IronPython" Version="2.7.11" />
+    <PackageReference Include="IronPython" Version="3.4.1" />
   </ItemGroup>
 
 </Project>

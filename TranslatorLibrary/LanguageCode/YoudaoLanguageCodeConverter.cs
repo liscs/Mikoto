@@ -2,7 +2,7 @@
 
 namespace TranslatorLibrary.LanguageCode
 {
-    public static class YoudaoLanguageCodeConverter 
+    public static class YoudaoLanguageCodeConverter
     {
         public static string GetLanguageCode(CultureInfo cultureInfo)
         {

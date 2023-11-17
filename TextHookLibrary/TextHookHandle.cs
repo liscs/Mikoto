@@ -157,6 +157,7 @@ namespace TextHookLibrary
                     FileName = path,
                     CreateNoWindow = true,
                     UseShellExecute = false,
+                    StandardInputEncoding = new UnicodeEncoding(false, false),
                     StandardOutputEncoding = Encoding.Unicode,
                     RedirectStandardInput = true,
                     RedirectStandardOutput = true,
@@ -167,13 +168,7 @@ namespace TextHookLibrary
             ProcessTextractor.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
             try
             {
-                // .NET Framework根据Console.InputEncoding编码在Start()中创建输入流
-                Console.InputEncoding = new UnicodeEncoding(false, false);
                 bool res = ProcessTextractor.Start();
-                // Console.InputEncoding修改为非UTF16编码需要创建控制台
-                PInvoke.AllocConsole();
-                Console.InputEncoding = Encoding.Default;
-                PInvoke.FreeConsole();
                 ProcessTextractor.BeginOutputReadLine();
                 return res;
             }
