@@ -32,17 +32,17 @@ namespace OCRLibrary
             switch (ocr)
             {
                 case "BaiduOCR":
-                    return new BaiduGeneralOCR();
+                    return new BaiduGeneralOCREngine();
                 case "BaiduFanyiOCR":
-                    return new BaiduFanyiOCR();
+                    return new BaiduFanyiOCREngine();
                 case "TencentOCR":
                     return new TencentOCR();
                 case "TesseractOCR":
-                    return new TesseractOCR();
+                    return new TesseractOCREngine();
                 case "TesseractCli":
-                    return new TesseractCli();
+                    return new TesseractCommandLineEngine();
                 case "WindowsOCR":
-                    return new WindowsOCR();
+                    return new WindowsOCREngine();
                 default:
                     return null;
             }

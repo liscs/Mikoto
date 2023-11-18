@@ -17,4 +17,8 @@
 
 原始项目页：https://github.com/hanmin0822/MisakaTranslator
 
-Macab词典：https://clrd.ninjal.ac.jp/unidic
+Textractor：https://github.com/Artikash/Textractor
+
+Locale-Emulator：https://github.com/xupefei/Locale-Emulator
+
+Macab分词词典：https://clrd.ninjal.ac.jp/unidic

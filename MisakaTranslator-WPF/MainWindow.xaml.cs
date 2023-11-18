@@ -443,10 +443,10 @@ namespace MisakaTranslator_WPF
             ggw.Show();
         }
 
-        
+
         private async void BlurWindow_ContentRendered(object sender, EventArgs e)
         {
-            List<string> res =await Common.CheckUpdate();
+            List<string> res = await Common.CheckUpdate();
             if (res != null)
             {
                 MessageBoxResult dr = HandyControl.Controls.MessageBox.Show(res[0] + "\n" + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);

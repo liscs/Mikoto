@@ -12,7 +12,7 @@ using Windows.System;
 
 namespace OCRLibrary
 {
-    public class WindowsOCR : OCREngine
+    public class WindowsOCREngine : OCREngine
     {
         public string srcLangCode;
         private OcrEngine rtOcr;

@@ -1,4 +1,3 @@
-extern alias Tesseract;
 using OCRLibrary;
 using System.Windows;
 using TranslatorLibrary;
@@ -25,7 +24,7 @@ namespace MisakaTranslator_WPF
             string res = null;
             if (Common.appSettings.OCRsource == "TesseractOCR")
             {
-                ocr = new TesseractOCR();
+                ocr = new TesseractOCREngine();
                 if (ocr.OCR_Init("", "") != false)
                 {
                     ocr.SetOCRSourceLang(Common.appSettings.GlobalOCRLang);
@@ -47,7 +46,7 @@ namespace MisakaTranslator_WPF
             }
             else if (Common.appSettings.OCRsource == "TesseractCli")
             {
-                ocr = new TesseractCli();
+                ocr = new TesseractCommandLineEngine();
                 if (ocr.OCR_Init(Common.appSettings.TesseractCli_Path, Common.appSettings.TesseractCli_Args))
                 {
                     ocr.SetOCRSourceLang(Common.appSettings.GlobalOCRLang);
@@ -69,7 +68,7 @@ namespace MisakaTranslator_WPF
             }
             else if (Common.appSettings.OCRsource == "BaiduOCR")
             {
-                ocr = new BaiduGeneralOCR();
+                ocr = new BaiduGeneralOCREngine();
                 if (ocr.OCR_Init(Common.appSettings.BDOCR_APIKEY, Common.appSettings.BDOCR_SecretKey))
                 {
                     ocr.SetOCRSourceLang(Common.appSettings.GlobalOCRLang);
@@ -91,7 +90,7 @@ namespace MisakaTranslator_WPF
             }
             else if (Common.appSettings.OCRsource == "BaiduFanyiOCR")
             {
-                ocr = new BaiduFanyiOCR();
+                ocr = new BaiduFanyiOCREngine();
                 if (ocr.OCR_Init(Common.appSettings.BDappID, Common.appSettings.BDsecretKey))
                 {
                     ocr.SetOCRSourceLang(Common.appSettings.GlobalOCRLang);
@@ -123,7 +122,7 @@ namespace MisakaTranslator_WPF
             }
             else if (Common.appSettings.OCRsource == "WindowsOCR")
             {
-                ocr = new WindowsOCR();
+                ocr = new WindowsOCREngine();
                 if (ocr.OCR_Init("", "") != false)
                 {
                     ocr.SetOCRSourceLang(Common.appSettings.GlobalOCRLang);

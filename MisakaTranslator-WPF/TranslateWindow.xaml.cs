@@ -372,34 +372,31 @@ namespace MisakaTranslator_WPF
 
         private void DictArea_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            System.Windows.Controls.TextBox textBox = sender as System.Windows.Controls.TextBox;
+            textBox.SelectAll();
             if (_dict != null)
             {
-                if (e.ClickCount == 2)
+                string ret = _dict.SearchInDict(textBox.Text);
+                if (ret != null)
                 {
-                    //双击事件
-                    TextBlock textBlock = sender as TextBlock;
-
-                    string ret = _dict.SearchInDict(textBlock.Text);
-                    if (ret != null)
-                    {
-                        if (ret == string.Empty)
-                        {
-                            Growl.ErrorGlobal(Application.Current.Resources["TranslateWin_DictError_Hint"] + _dict.GetLastError());
-                        }
-                        else
-                        {
-                            dtimer.Stop();
-                            DictResWindow _dictResWindow = new DictResWindow(textBlock.Text, (string)textBlock.Tag, _localTTS);
-                            _dictResWindow.ShowDialog();
-                            dtimer.Start();
-                        }
-                    }
-                    else
+                    if (ret == string.Empty)
                     {
                         Growl.ErrorGlobal(Application.Current.Resources["TranslateWin_DictError_Hint"] + _dict.GetLastError());
                     }
+                    else
+                    {
+                        dtimer.Stop();
+                        DictResWindow _dictResWindow = new DictResWindow(textBox.Text, (string)textBox.Tag, _localTTS);
+                        _dictResWindow.ShowDialog();
+                        dtimer.Start();
+                    }
+                }
+                else
+                {
+                    Growl.ErrorGlobal(Application.Current.Resources["TranslateWin_DictError_Hint"] + _dict.GetLastError());
                 }
             }
+
 
         }
 
@@ -473,7 +470,7 @@ namespace MisakaTranslator_WPF
                             Margin = new Thickness(5, 0, 0, 5)
                         };
 
-                        System.Windows.Controls.TextBox textBlock = new()
+                        System.Windows.Controls.TextBox textBox = new()
                         {
                             TextAlignment = TextAlignment.Center,
                             IsReadOnly = true,
@@ -485,37 +482,37 @@ namespace MisakaTranslator_WPF
                         if (!string.IsNullOrEmpty(SourceTextFont))
                         {
                             FontFamily fontFamily = new FontFamily(SourceTextFont);
-                            textBlock.FontFamily = fontFamily;
+                            textBox.FontFamily = fontFamily;
                         }
-                        textBlock.Text = mwi[i].Word;
+                        textBox.Text = mwi[i].Word;
 
 
                         //选择平假名或者片假名
                         switch (appSettings.TF_PhoneticNotationType)
                         {
                             case IAppSettings.PhoneticNotationType.hiragana:
-                                textBlock.Tag = mwi[i].Hiragana;
+                                textBox.Tag = mwi[i].Hiragana;
                                 break;
                             case IAppSettings.PhoneticNotationType.katakana:
-                                textBlock.Tag = mwi[i].Katakana;
+                                textBox.Tag = mwi[i].Katakana;
                                 break;
                             case IAppSettings.PhoneticNotationType.romaji:
-                                textBlock.Tag = mwi[i].Romaji;
+                                textBox.Tag = mwi[i].Romaji;
                                 break;
                             default:
-                                textBlock.Tag = mwi[i].Hiragana;
+                                textBox.Tag = mwi[i].Hiragana;
                                 break;
                         }
 
-                        textBlock.Margin = new Thickness(0, 0, 0, 0);
-                        textBlock.FontSize = SourceTextFontSize;
-                        textBlock.Background = Brushes.Transparent;
-                        textBlock.MouseLeftButtonDown += DictArea_MouseLeftButtonDown;
+                        textBox.Margin = new Thickness(0, 0, 0, 0);
+                        textBox.FontSize = SourceTextFontSize;
+                        textBox.Background = Brushes.Transparent;
+                        textBox.MouseDoubleClick += DictArea_MouseLeftButtonDown;
 
                         if (Common.appSettings.TF_DropShadow)
                         {
                             //加入原文的阴影
-                            textBlock.Effect = DropShadow;
+                            textBox.Effect = DropShadow;
                         }
 
                         if (Common.appSettings.TF_Colorful)
@@ -524,55 +521,55 @@ namespace MisakaTranslator_WPF
                             switch (mwi[i].PartOfSpeech)
                             {
                                 case "補助記号":
-                                    textBlock.Foreground = Brushes.White;
+                                    textBox.Foreground = Brushes.White;
                                     break;
                                 case "動詞":
-                                    textBlock.Foreground = Brushes.YellowGreen;
+                                    textBox.Foreground = Brushes.YellowGreen;
                                     break;
                                 case "形容詞":
-                                    textBlock.Foreground = Brushes.Orange;
+                                    textBox.Foreground = Brushes.Orange;
                                     break;
                                 case "判定詞":
-                                    textBlock.Foreground = Brushes.Yellow;
+                                    textBox.Foreground = Brushes.Yellow;
                                     break;
                                 case "助動詞":
-                                    textBlock.Foreground = Brushes.LightGreen;
+                                    textBox.Foreground = Brushes.LightGreen;
                                     break;
                                 case "名詞":
-                                    textBlock.Foreground = Brushes.SkyBlue;
+                                    textBox.Foreground = Brushes.SkyBlue;
                                     break;
                                 case "副詞":
-                                    textBlock.Foreground = Brushes.Indigo;
+                                    textBox.Foreground = Brushes.Indigo;
                                     break;
                                 case "助詞":
-                                    textBlock.Foreground = Brushes.Wheat;
+                                    textBox.Foreground = Brushes.Wheat;
                                     break;
                                 case "連体詞":
-                                    textBlock.Foreground = Brushes.Pink;
+                                    textBox.Foreground = Brushes.Pink;
                                     break;
                                 case "接続詞":
-                                    textBlock.Foreground = Brushes.Brown;
+                                    textBox.Foreground = Brushes.Brown;
                                     break;
                                 case "感動詞":
-                                    textBlock.Foreground = Brushes.Red;
+                                    textBox.Foreground = Brushes.Red;
                                     break;
                                 case "指示詞":
-                                    textBlock.Foreground = Brushes.Plum;
+                                    textBox.Foreground = Brushes.Plum;
                                     break;
                                 case "代名詞":
-                                    textBlock.Foreground = Brushes.Olive;
+                                    textBox.Foreground = Brushes.Olive;
                                     break;
                                 case "接頭辞":
-                                    textBlock.Foreground = Brushes.LightGreen;
+                                    textBox.Foreground = Brushes.LightGreen;
                                     break;
                                 default:
-                                    textBlock.Foreground = Brushes.Gray;
+                                    textBox.Foreground = Brushes.Gray;
                                     break;
                             }
                         }
                         else
                         {
-                            textBlock.Foreground = Brushes.White;
+                            textBox.Foreground = Brushes.White;
                         }
 
                         // 假名或注释等的上标标签
@@ -628,13 +625,13 @@ namespace MisakaTranslator_WPF
                         //是否打开假名标注
                         if (Common.appSettings.TF_EnablePhoneticNotation)
                         {
-                            stackPanel.Children.Add(textBlock);
+                            stackPanel.Children.Add(textBox);
                             SourceTextPanel.Children.Add(stackPanel);
                         }
                         else
                         {
-                            textBlock.Margin = new Thickness(10, 0, 0, 10);
-                            SourceTextPanel.Children.Add(textBlock);
+                            textBox.Margin = new Thickness(10, 0, 0, 10);
+                            SourceTextPanel.Children.Add(textBox);
                         }
                     }
                 }
@@ -949,7 +946,7 @@ namespace MisakaTranslator_WPF
             winHandle = (HWND)new WindowInteropHelper(this).Handle;//记录翻译窗口句柄
 
             dtimer = new System.Windows.Threading.DispatcherTimer();
-            dtimer.Interval = TimeSpan.FromMilliseconds(10);
+            dtimer.Interval = TimeSpan.FromSeconds(10);
             dtimer.Tick += dtimer_Tick;
             dtimer.Start();
 

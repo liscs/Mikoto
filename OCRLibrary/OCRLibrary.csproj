@@ -13,7 +13,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="TesseractOCR" Version="5.3.5" Aliases="Tesseract" />
+    <PackageReference Include="TesseractOCR" Version="5.3.5" />
   </ItemGroup>
 
 </Project>

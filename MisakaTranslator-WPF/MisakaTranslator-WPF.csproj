@@ -31,6 +31,10 @@
 	  <Optimize>True</Optimize>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <Optimize>True</Optimize>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<AppxManifest Include="Properties\Package.appxmanifest" />
 		<Resource Include="logo.ico" />
@@ -71,9 +75,6 @@
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" />
 		<PackageReference Include="Microsoft.Windows.SDK.Win32Metadata" Version="56.0.13-preview" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000" IncludeAssets="none" ExcludeAssets="all" PrivateAssets="all" GeneratePathProperty="true" />
-		<PackageReference Include="TesseractOCR" Version="5.3.5" Aliases="Tesseract">
-		  <TreatAsUsed>true</TreatAsUsed>
-		</PackageReference>
 	</ItemGroup>
 
 	<!-- Workaround for Desktop Bridge -->

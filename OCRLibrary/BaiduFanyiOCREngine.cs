@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OCRLibrary
 {
-    public class BaiduFanyiOCR : OCREngine
+    public class BaiduFanyiOCREngine : OCREngine
     {
         public string appId;
         public string secretKey;

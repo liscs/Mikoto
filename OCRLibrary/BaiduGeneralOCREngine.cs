@@ -11,7 +11,7 @@ using System.Web;
 
 namespace OCRLibrary
 {
-    public class BaiduGeneralOCR : OCREngine
+    public class BaiduGeneralOCREngine : OCREngine
     {
         public string APIKey;
         public string secretKey;

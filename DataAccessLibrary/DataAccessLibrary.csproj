@@ -9,6 +9,5 @@
     <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.6" IncludeAssets="none" ExcludeAssets="all" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.6" />
     <PackageReference Include="SQLitePCLRaw.provider.winsqlite3" Version="2.1.6" />
-    <PackageReference Include="System.Text.Json" Version="8.0.0" />
   </ItemGroup>
 </Project>

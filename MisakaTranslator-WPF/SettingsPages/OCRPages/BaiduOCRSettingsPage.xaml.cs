@@ -27,7 +27,7 @@ namespace MisakaTranslator_WPF.SettingsPages.OCRPages
                 return;
             }
 
-            BaiduGeneralOCR bgocr = new BaiduGeneralOCR();
+            BaiduGeneralOCREngine bgocr = new BaiduGeneralOCREngine();
 
             bool ret = bgocr.OCR_Init(APIKEYBox.Text, SecretKeyBox.Text);
 
@@ -43,17 +43,17 @@ namespace MisakaTranslator_WPF.SettingsPages.OCRPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(BaiduGeneralOCR.GetUrl_allpyAPI());
+            System.Diagnostics.Process.Start(BaiduGeneralOCREngine.GetUrl_allpyAPI());
         }
 
         private void DocBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(BaiduGeneralOCR.GetUrl_Doc());
+            System.Diagnostics.Process.Start(BaiduGeneralOCREngine.GetUrl_Doc());
         }
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(BaiduGeneralOCR.GetUrl_bill());
+            System.Diagnostics.Process.Start(BaiduGeneralOCREngine.GetUrl_bill());
         }
     }
 }

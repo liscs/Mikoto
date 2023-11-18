@@ -1,14 +1,13 @@
-extern alias Tesseract;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
-using Tesseract.TesseractOCR;
+using TesseractOCR;
 
 namespace OCRLibrary
 {
-    public class TesseractOCR : OCREngine
+    public class TesseractOCREngine : OCREngine
     {
         private string srcLangCode;  //OCR识别语言 jpn=日语 eng=英语
         private Engine engine;
@@ -19,7 +18,7 @@ namespace OCRLibrary
             {
                 var stream = new MemoryStream();
                 img.Save(stream, ImageFormat.Bmp);
-                var pix = Tesseract.TesseractOCR.Pix.Image.LoadFromMemory(stream);
+                var pix = TesseractOCR.Pix.Image.LoadFromMemory(stream);
 
                 var recog = engine.Process(pix);
                 string text = recog.Text;
@@ -39,7 +38,7 @@ namespace OCRLibrary
         {
             try
             {
-                engine = new Tesseract.TesseractOCR.Engine(Environment.CurrentDirectory + "\\tessdata", srcLangCode);
+                engine = new TesseractOCR.Engine(Environment.CurrentDirectory + "\\tessdata", srcLangCode);
                 return true;
             }
             catch (Exception ex)

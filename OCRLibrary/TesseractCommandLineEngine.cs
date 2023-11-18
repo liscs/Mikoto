@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OCRLibrary
 {
-    public class TesseractCli : OCREngine
+    public class TesseractCommandLineEngine : OCREngine
     {
         private string path;
         private string args;

@@ -1,4 +1,3 @@
-extern alias Tesseract;
 using HandyControl.Controls;
 using OCRLibrary;
 using System;
