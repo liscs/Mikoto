@@ -277,13 +277,6 @@ namespace MisakaTranslator_WPF
             set;
         }
 
-        [Option(Alias = "XxgJpZhDict.xxgPath", DefaultValue = "")]
-        string xxgPath
-        {
-            get;
-            set;
-        }
-
         //选择使用的TTS，"azure"为AzureTTS，"local"为系统本地TTS
         [Option(Alias = "TTS.SelectedTTS", DefaultValue = "local")]
         string SelectedTTS

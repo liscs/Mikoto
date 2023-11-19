@@ -18,9 +18,10 @@
             <TextBlock Name="SourceWord" Margin="10" FontSize="20" VerticalAlignment="Center"></TextBlock>
             <TextBlock Name="Kana" Margin="10" FontSize="15" VerticalAlignment="Center"></TextBlock>
             <Button fa:Awesome.Content="Microphone" Margin="5" VerticalAlignment="Center" Background="#00000000" BorderThickness="0" Height="40" Width="40" FontSize="16" Foreground="Black" Click="TTS_Btn_Click"></Button>
+            <TextBox Name="SearchBox" Margin="10" FontSize="15" VerticalAlignment="Center" Width="150"/>
             <Button fa:Awesome.Content="Search"  Margin="5" VerticalAlignment="Center" Background="#00000000" BorderThickness="0" Height="40" Width="40" FontSize="16" Foreground="Black" Click="Search_Btn_Click"></Button>
         </StackPanel>
-        
-        <TextBox Grid.Row="1" Margin="10" Name="DicResText"></TextBox>
+
+        <TextBox Grid.Row="1" Margin="10" Name="DicResText" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
     </Grid>
 </Window>

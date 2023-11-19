@@ -22,3 +22,5 @@ Textractor：https://github.com/Artikash/Textractor
 Locale-Emulator：https://github.com/xupefei/Locale-Emulator
 
 Macab分词词典：https://clrd.ninjal.ac.jp/unidic
+
+本地翻译词典：https://freemdict.com

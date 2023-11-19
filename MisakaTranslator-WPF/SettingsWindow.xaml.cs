@@ -106,9 +106,9 @@ namespace MisakaTranslator_WPF
             this.SettingFrame.Navigate(new Uri("SettingsPages/LESettingsPage.xaml", UriKind.Relative));
         }
 
-        private void Item_xxgrz_Selected(object sender, RoutedEventArgs e)
+        private void Item_EBWinSettings_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("SettingsPages/DictionaryPages/XxgJpZhDictPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new Uri("SettingsPages/DictionaryPages/EBwinDictPage.xaml", UriKind.Relative));
         }
 
         private void Item_MeCabSettings_Selected(object sender, RoutedEventArgs e)

@@ -1,6 +1,11 @@
-﻿using DictionaryHelperLibrary;
+﻿using Castle.Components.DictionaryAdapter;
+using DictionaryHelperLibrary;
 using HandyControl.Controls;
+using System;
+using System.ComponentModel;
+using System.Web;
 using System.Windows;
+using System.Windows.Controls;
 using TTSHelperLibrary;
 
 namespace MisakaTranslator_WPF
@@ -12,7 +17,7 @@ namespace MisakaTranslator_WPF
     {
         private string sourceWord;
         private LocalTTS _textSpeechHelper;
-        private IDict _dict;
+        static private EbwinHelper _ebwinHelper = new EbwinHelper();
 
         public DictResWindow(string word, string kana = "----", LocalTTS tsh = null)
         {
@@ -39,26 +44,11 @@ namespace MisakaTranslator_WPF
                 _textSpeechHelper.SetRate(Common.appSettings.ttsRate);
             }
 
-            if (Common.appSettings.xxgPath != string.Empty)
-            {
-                _dict = new XxgJpzhDict();
-                _dict.DictInit(Common.appSettings.xxgPath, string.Empty);
-            }
-
-            string ret = _dict.SearchInDict(sourceWord);
-
+            string ret = _ebwinHelper.Search(sourceWord);
             SourceWord.Text = sourceWord;
-
             Kana.Text = kana;
-
             this.Topmost = true;
-            DicResText.Text = XxgJpzhDict.RemoveHTML(ret);
-        }
-
-        ~DictResWindow()
-        {
-            _textSpeechHelper = null;
-            _dict = null;
+            DicResText.Text = HttpUtility.HtmlDecode(ret);
         }
 
         private void TTS_Btn_Click(object sender, RoutedEventArgs e)
@@ -68,7 +58,28 @@ namespace MisakaTranslator_WPF
 
         private void Search_Btn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://www.baidu.com/s?wd=" + sourceWord);
+            SearchAndShow(SearchBox.Text);
+        }
+        public void SearchAndShow(string s)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                string ret = _ebwinHelper.Search(s);
+                this.SourceWord.Text = s;
+                this.Kana.Text = string.Empty;
+                this.Topmost = true;
+                this.DicResText.Text = HttpUtility.HtmlDecode(ret);
+                if (string.IsNullOrWhiteSpace(DicResText.Text))
+                {
+                    DicResText.Text = (string)FindResource("TranslateWin_DictError_Hint") ;
+                }
+            }));
+
+        }
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            Hide();
+            e.Cancel = true;
         }
     }
 }

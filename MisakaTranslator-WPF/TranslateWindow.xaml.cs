@@ -1,5 +1,4 @@
 ﻿using ArtificialTransHelperLibrary;
-using DictionaryHelperLibrary;
 using FontAwesome.WPF;
 using HandyControl.Controls;
 using KeyboardMouseHookLibrary;
@@ -43,8 +42,6 @@ namespace MisakaTranslator_WPF
         private AfterTransHandle _afterTransHandle;
         private ITranslator _translator1; //第一翻译源
         private ITranslator _translator2; //第二翻译源
-
-        private IDict _dict;
 
         private string _currentsrcText; //当前源文本内容
 
@@ -95,20 +92,17 @@ namespace MisakaTranslator_WPF
             }
             else
             {
-                _localTTS.SetTTSVoice(Common.appSettings.ttsVoice);
-                _localTTS.SetVolume(Common.appSettings.ttsVolume);
-                _localTTS.SetRate(Common.appSettings.ttsRate);
+                Dispatcher.BeginInvoke(() =>
+                {
+                    _localTTS.SetTTSVoice(Common.appSettings.ttsVoice);
+                    _localTTS.SetVolume(Common.appSettings.ttsVolume);
+                    _localTTS.SetRate(Common.appSettings.ttsRate);
+                });
             }
 
             _azureTTS = new AzureTTS();
             _azureTTS.TTSInit(appSettings.AzureTTSSecretKey, appSettings.AzureTTSLocation);
             AzureTTS.ProxyString = appSettings.AzureTTSProxy;
-
-            if (Common.appSettings.xxgPath != string.Empty)
-            {
-                _dict = new XxgJpzhDict();
-                _dict.DictInit(Common.appSettings.xxgPath, string.Empty);
-            }
 
             IsNotPausedFlag = true;
             if (Common.appSettings.HttpProxy != "")
@@ -369,35 +363,22 @@ namespace MisakaTranslator_WPF
 
             IsOCRingFlag = false;
         }
-
+        DictResWindow _dictResWindow;
         private void DictArea_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Controls.TextBox textBox = sender as System.Windows.Controls.TextBox;
             textBox.SelectAll();
-            if (_dict != null)
+            dtimer.Stop();
+            if (_dictResWindow == null)
             {
-                string ret = _dict.SearchInDict(textBox.Text);
-                if (ret != null)
-                {
-                    if (ret == string.Empty)
-                    {
-                        Growl.ErrorGlobal(Application.Current.Resources["TranslateWin_DictError_Hint"] + _dict.GetLastError());
-                    }
-                    else
-                    {
-                        dtimer.Stop();
-                        DictResWindow _dictResWindow = new DictResWindow(textBox.Text, (string)textBox.Tag, _localTTS);
-                        _dictResWindow.ShowDialog();
-                        dtimer.Start();
-                    }
-                }
-                else
-                {
-                    Growl.ErrorGlobal(Application.Current.Resources["TranslateWin_DictError_Hint"] + _dict.GetLastError());
-                }
+                _dictResWindow = new DictResWindow(textBox.Text, (string)textBox.Tag, _localTTS);
             }
-
-
+            else
+            {
+                _dictResWindow.SearchAndShow(textBox.Text);
+            }
+            _dictResWindow.Show();
+            dtimer.Start();
         }
 
         /// <summary>

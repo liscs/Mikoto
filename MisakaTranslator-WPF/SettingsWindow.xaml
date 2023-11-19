@@ -46,7 +46,7 @@
                 <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Yandex}" Selected="Item_Yandex_Selected"/>
             </hc:SideMenuItem>
             <hc:SideMenuItem Header="{DynamicResource SettingsMenu_DictSettings}" FontSize="15">
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_DictSettings_xxgrz}" Selected="Item_xxgrz_Selected"/>
+                <hc:SideMenuItem Header="EBWin" Selected="Item_EBWinSettings_Selected"/>
                 <hc:SideMenuItem Header="MeCab" Selected="Item_MeCabSettings_Selected"/>
             </hc:SideMenuItem>
             <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TTSSettings}" FontSize="15">

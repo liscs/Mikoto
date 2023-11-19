@@ -60,7 +60,6 @@
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Dreye">译典通 Dr.eye</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Caiyun">彩云小译 Lingocloud</sys:String>
     <sys:String x:Key="SettingsMenu_DictSettings">Dictionary Settings</sys:String>
-    <sys:String x:Key="SettingsMenu_DictSettings_xxgrz">小学馆日中 Shogakukan ja-zh dictionary</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_DeepL">DeepL</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_ChatGPT">ChatGPT</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Azure">Azure</sys:String>
@@ -278,7 +277,7 @@
     <sys:String x:Key="TranslateWin_Menu_AddNounTrans">Add proper nouns</sys:String>
     <sys:String x:Key="TranslateWin_History_Title">Translation history</sys:String>
     <sys:String x:Key="TranslateWin_Dict_Title">Dictionary queries</sys:String>
-    <sys:String x:Key="TranslateWin_DictError_Hint">Query error or no results!</sys:String>
+    <sys:String x:Key="TranslateWin_DictError_Hint">Query no results!</sys:String>
     <sys:String x:Key="TranslateWin_DragBox_Hint">The mouse points to the drag bar to show.</sys:String>
     <sys:String x:Key="TranslateWin_WaitingSource">Waiting for text ......</sys:String>
 
@@ -301,12 +300,6 @@
     <sys:String x:Key="AddOptWin_afterBox">Translation</sys:String>
     <sys:String x:Key="AddOptWin_wordType">Speech</sys:String>
     <sys:String x:Key="AddOptWin_confirmBtn">Add to the thesaurus</sys:String>
-
-    <sys:String x:Key="XxgJpZhDictPage_Introduce">Shogakukan Japanese-Chinese dictionary contains about 70,000 words, covering common words. Please download the dictionary's database file (.db) of MisakaTranslator customized version, and fill in its location below and test if it works properly.</sys:String>
-    <sys:String x:Key="XxgJpZhDictPage_DBPath">Database file path</sys:String>
-    <sys:String x:Key="XxgJpZhDictPage_TestSourceWord">Dictionary query test:</sys:String>
-    <sys:String x:Key="XxgJpZhDictPage_BtnTest">Look up</sys:String>
-    <sys:String x:Key="XxgJpZhDictPage_ChoosePathHint">Select the Shogakukan dictionary database file.</sys:String>
 
     <sys:String x:Key="MecabDictPage_Introduce">Please download the dictionary's databases of MeCab, and fill in its location.</sys:String>
     <sys:String x:Key="MecabDictPage_DBPath">Database folder path</sys:String>

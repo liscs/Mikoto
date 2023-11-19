@@ -60,7 +60,6 @@
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Dreye">译典通</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Caiyun">彩云小译</sys:String>
     <sys:String x:Key="SettingsMenu_DictSettings">词典相关设置</sys:String>
-    <sys:String x:Key="SettingsMenu_DictSettings_xxgrz">小学馆日中</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_DeepL">DeepL</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_ChatGPT">ChatGPT</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Azure">Azure</sys:String>
@@ -278,7 +277,7 @@
     <sys:String x:Key="TranslateWin_Menu_Lock">鼠标穿透窗口</sys:String>
     <sys:String x:Key="TranslateWin_History_Title">翻译历史记录</sys:String>
     <sys:String x:Key="TranslateWin_Dict_Title">字典查询结果</sys:String>
-    <sys:String x:Key="TranslateWin_DictError_Hint">查询错误或无结果！</sys:String>
+    <sys:String x:Key="TranslateWin_DictError_Hint">查询无结果！</sys:String>
     <sys:String x:Key="TranslateWin_DragBox_Hint">鼠标指向窗口边框可更改尺寸！</sys:String>
     <sys:String x:Key="TranslateWin_WaitingSource">等待文本……</sys:String>
 
@@ -302,11 +301,10 @@
     <sys:String x:Key="AddOptWin_wordType">词性</sys:String>
     <sys:String x:Key="AddOptWin_confirmBtn">添加到词库</sys:String>
 
-    <sys:String x:Key="XxgJpZhDictPage_Introduce">小学馆日中翻译词典(第二版)包含大约七万词，涵盖常见词汇。请获得MisakaTranslator定制版本的小学馆日中翻译词典(第二版)的数据库文件(.db)后将其位置填写到下方并测试是否正常工作。</sys:String>
-    <sys:String x:Key="XxgJpZhDictPage_DBPath">数据库文件路径</sys:String>
-    <sys:String x:Key="XxgJpZhDictPage_TestSourceWord">字典查询测试 单词:</sys:String>
-    <sys:String x:Key="XxgJpZhDictPage_BtnTest">字典查询</sys:String>
-    <sys:String x:Key="XxgJpZhDictPage_ChoosePathHint">请选择小学馆日中词典数据库文件</sys:String>
+    <sys:String x:Key="EBwinDictPage_Introduce">本软件使用ebwinc解析词典文件。</sys:String>
+    <sys:String x:Key="EBwinDictPage_AddDictionary">添加字典</sys:String>
+    <sys:String x:Key="EBwinDictPage_EditDictionary">编辑</sys:String>
+    <sys:String x:Key="EBwinDictPage_RemoveDictionary">移除</sys:String>
 
     <sys:String x:Key="MecabDictPage_Introduce">指定MeCab词典文件夹路径，启用日语分词功能。</sys:String>
     <sys:String x:Key="MecabDictPage_DBPath">词典数据库文件夹路径</sys:String>
