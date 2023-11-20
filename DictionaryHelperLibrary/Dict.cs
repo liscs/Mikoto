@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text.Json.Serialization;
 
 namespace DictionaryHelperLibrary
@@ -8,6 +9,7 @@ namespace DictionaryHelperLibrary
         public Dict() { }
         public Dict(string path)
         {
+            ArgumentException.ThrowIfNullOrEmpty("path");
             DictPath = path;
             Name = Path.GetFileName(Path.GetDirectoryName(path));
         }

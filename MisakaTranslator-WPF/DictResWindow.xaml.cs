@@ -16,42 +16,32 @@ namespace MisakaTranslator_WPF
         private ITTS _textSpeechHelper;
         static private EbwinHelper _ebwinHelper = new EbwinHelper();
 
-        public DictResWindow(string word, ITTS tsh = null)
+        public DictResWindow(string word, ITTS tsh)
         {
             sourceWord = word;
             InitializeComponent();
+            _textSpeechHelper = tsh;
+
             if (tsh == null)
-            {
-                _textSpeechHelper = new LocalTTS();
-            }
-            else
-            {
-                _textSpeechHelper = tsh;
-            }
-
-
-            if (Common.appSettings.ttsVoice == "")
             {
                 Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoTTS_Hint"].ToString());
             }
-            Dispatcher.BeginInvoke(() => {
-                string ret = _ebwinHelper.Search(sourceWord);
-                SourceWord.Text = sourceWord;
-                this.Topmost = true;
-                DicResText.Text = HttpUtility.HtmlDecode(ret);
-            });
         }
 
         private void TTS_Btn_Click(object sender, RoutedEventArgs e)
         {
-            _textSpeechHelper.SpeakAsync(sourceWord);
+            if (_textSpeechHelper != null)
+            {
+                _textSpeechHelper.SpeakAsync(sourceWord);
+            }
         }
 
         private void Search_Btn_Click(object sender, RoutedEventArgs e)
         {
-            SearchAndShow(SearchBox.Text);
+            Search(SearchBox.Text);
         }
-        public void SearchAndShow(string s)
+
+        public void Search(string s)
         {
             Dispatcher.BeginInvoke(() =>
             {
@@ -61,7 +51,7 @@ namespace MisakaTranslator_WPF
                 this.DicResText.Text = HttpUtility.HtmlDecode(ret);
                 if (string.IsNullOrWhiteSpace(DicResText.Text))
                 {
-                    DicResText.Text = (string)FindResource("TranslateWin_DictError_Hint") ;
+                    DicResText.Text = (string)FindResource("TranslateWin_DictError_Hint");
                 }
             });
         }

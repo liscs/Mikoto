@@ -186,12 +186,15 @@ namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
                 buttonEdit.Click += (_, _) =>
                 {
                     string path = BrowseForDictionaryFile("Dictionary Files|CATALOG*;*.dic;*.idx;*.ebd;*.ifo;*.mdx;*.dsl;*.dz");
-                    Dict d = new Dict(path)
+                    if (path != string.Empty)
                     {
-                        Active = true,
-                        Priority = allDicts.Count + 1
-                    };
-                    _ebwinHelper.AddOrUpdateDictionary(d);
+                        Dict d = new Dict(path)
+                        {
+                            Active = true,
+                            Priority = allDicts.Count + 1
+                        };
+                        _ebwinHelper.AddOrUpdateDictionary(d);
+                    }
                     UpdateDictionariesDisplay();
                 };
 
@@ -273,12 +276,15 @@ namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
         private void ButtonAddDictionary_OnClick(object sender, RoutedEventArgs e)
         {
             string path = BrowseForDictionaryFile("Dictionary Files|CATALOG*;*.dic;*.idx;*.ebd;*.ifo;*.mdx;*.dsl;*.dz");
-            Dict d = new Dict(path)
+            if (path != string.Empty)
             {
-                Active = true,
-                Priority = allDicts.Count + 1
-            };
-            _ebwinHelper.AddOrUpdateDictionary(d);
+                Dict d = new Dict(path)
+                {
+                    Active = true,
+                    Priority = allDicts.Count + 1
+                };
+                _ebwinHelper.AddOrUpdateDictionary(d);
+            }
             UpdateDictionariesDisplay();
         }
 

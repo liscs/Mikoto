@@ -384,14 +384,8 @@ namespace MisakaTranslator_WPF
             System.Windows.Controls.TextBox textBox = sender as System.Windows.Controls.TextBox;
             textBox.SelectAll();
             dtimer.Stop();
-            if (_dictResWindow == null)
-            {
-                _dictResWindow = new DictResWindow(textBox.Text, _TTS);
-            }
-            else
-            {
-                _dictResWindow.SearchAndShow(textBox.Text);
-            }
+            _dictResWindow ??= new DictResWindow(textBox.Text, _TTS);
+            _dictResWindow.Search(textBox.Text);
             _dictResWindow.Show();
             dtimer.Start();
         }
