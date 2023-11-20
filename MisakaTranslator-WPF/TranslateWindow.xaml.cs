@@ -544,7 +544,7 @@ namespace MisakaTranslator_WPF
                                     textBox.Foreground = Brushes.LightGreen;
                                     break;
                                 default:
-                                    textBox.Foreground = Brushes.Gray;
+                                    textBox.Foreground = Brushes.White;
                                     break;
                             }
                         }
