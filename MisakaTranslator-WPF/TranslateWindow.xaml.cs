@@ -20,7 +20,6 @@ using TranslatorLibrary;
 using TranslatorLibrary.Translator;
 using TransOptimizationLibrary;
 using TTSHelperLibrary;
-using TTSHelperLibrary.TTSGenerator;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
@@ -57,9 +56,7 @@ namespace MisakaTranslator_WPF
 
         private readonly object _saveTransResultLock = new object(); // 读写数据库和_gameTextHistory的线程锁
 
-        private LocalTTS _localTTS;//本地TTS朗读对象
-
-        private AzureTTS _azureTTS;
+        private ITTS _TTS;
 
         private HWND winHandle;//窗口句柄，用于设置活动窗口，以达到全屏状态下总在最前的目的
         private TransWinSettingsWindow transWinSettingsWindow;
@@ -85,24 +82,7 @@ namespace MisakaTranslator_WPF
                 Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoMeCab_Hint"].ToString());
             }
 
-            _localTTS = new LocalTTS();
-            if (Common.appSettings.ttsVoice == "")
-            {
-                Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoTTS_Hint"].ToString());
-            }
-            else
-            {
-                Dispatcher.BeginInvoke(() =>
-                {
-                    _localTTS.SetTTSVoice(Common.appSettings.ttsVoice);
-                    _localTTS.SetVolume(Common.appSettings.ttsVolume);
-                    _localTTS.SetRate(Common.appSettings.ttsRate);
-                });
-            }
-
-            _azureTTS = new AzureTTS();
-            _azureTTS.TTSInit(appSettings.AzureTTSSecretKey, appSettings.AzureTTSLocation);
-            AzureTTS.ProxyString = appSettings.AzureTTSProxy;
+            TTS_Init();
 
             IsNotPausedFlag = true;
             if (Common.appSettings.HttpProxy != "")
@@ -130,6 +110,41 @@ namespace MisakaTranslator_WPF
             {
                 transWinSettingsWindow = new TransWinSettingsWindow(this);
             });
+
+        }
+
+        private void TTS_Init()
+        {
+            Enum.TryParse(appSettings.SelectedTTS, out TTSMode mode);
+            mode = TTSMode.local;
+            switch (mode)
+            {
+                case TTSMode.local:
+                    var localTTS = new LocalTTS();
+                    if (Common.appSettings.ttsVoice == "")
+                    {
+                        Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoTTS_Hint"].ToString());
+                    }
+                    else
+                    {
+                        Dispatcher.BeginInvoke(() =>
+                        {
+                            localTTS.SetTTSVoice(Common.appSettings.ttsVoice);
+                            localTTS.SetVolume(Common.appSettings.ttsVolume);
+                            localTTS.SetRate(Common.appSettings.ttsRate);
+                        });
+                    }
+                    _TTS = localTTS;
+                    break;
+                case TTSMode.azure:
+                    var azureTTS = new AzureTTS();
+                    azureTTS.SetTTSVoice(Common.appSettings.AzureTTSVoice);
+                    azureTTS.TTSInit(appSettings.AzureTTSSecretKey, appSettings.AzureTTSLocation);
+                    azureTTS.ProxyString = appSettings.AzureTTSProxy;
+                    _TTS = azureTTS;
+                    break;
+            }
+
 
         }
 
@@ -371,7 +386,7 @@ namespace MisakaTranslator_WPF
             dtimer.Stop();
             if (_dictResWindow == null)
             {
-                _dictResWindow = new DictResWindow(textBox.Text, _localTTS);
+                _dictResWindow = new DictResWindow(textBox.Text, _TTS);
             }
             else
             {
@@ -911,15 +926,7 @@ namespace MisakaTranslator_WPF
 
         private void TTS_Item_Click(object sender, RoutedEventArgs e)
         {
-            Enum.TryParse(appSettings.SelectedTTS, out TTSMode mode);
-            if (mode == TTSMode.local)
-            {
-                _localTTS.SpeakAsync(_currentsrcText);
-            }
-            else if (mode == TTSMode.azure)
-            {
-                _ = _azureTTS.TextToSpeechAsync(_currentsrcText, appSettings.AzureTTSVoice);
-            }
+            _TTS.SpeakAsync(_currentsrcText);
         }
 
         private void TransWin_Loaded(object sender, RoutedEventArgs e)

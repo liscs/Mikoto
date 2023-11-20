@@ -13,10 +13,10 @@ namespace MisakaTranslator_WPF
     public partial class DictResWindow : System.Windows.Window
     {
         private string sourceWord;
-        private LocalTTS _textSpeechHelper;
+        private ITTS _textSpeechHelper;
         static private EbwinHelper _ebwinHelper = new EbwinHelper();
 
-        public DictResWindow(string word, LocalTTS tsh = null)
+        public DictResWindow(string word, ITTS tsh = null)
         {
             sourceWord = word;
             InitializeComponent();
@@ -33,12 +33,6 @@ namespace MisakaTranslator_WPF
             if (Common.appSettings.ttsVoice == "")
             {
                 Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoTTS_Hint"].ToString());
-            }
-            else
-            {
-                _textSpeechHelper.SetTTSVoice(Common.appSettings.ttsVoice);
-                _textSpeechHelper.SetVolume(Common.appSettings.ttsVolume);
-                _textSpeechHelper.SetRate(Common.appSettings.ttsRate);
             }
             Dispatcher.BeginInvoke(() => {
                 string ret = _ebwinHelper.Search(sourceWord);

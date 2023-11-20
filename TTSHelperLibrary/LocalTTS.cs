@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Speech.Synthesis;
+using System.Threading.Tasks;
 
 namespace TTSHelperLibrary
 {
-    public class LocalTTS
+    public class LocalTTS : ITTS
     {
         private SpeechSynthesizer synth;
 
@@ -83,9 +84,10 @@ namespace TTSHelperLibrary
         /// 以异步方式说出字符串的内容。
         /// </summary>
         /// <param name="text">要说的字符串</param>
-        public void SpeakAsync(string text)
+        public Task SpeakAsync(string text)
         {
             synth.SpeakAsync(text);
+            return Task.CompletedTask;
         }
 
         /// <summary>

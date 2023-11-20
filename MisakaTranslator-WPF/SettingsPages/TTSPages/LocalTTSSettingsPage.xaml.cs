@@ -11,14 +11,12 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
     /// </summary>
     public partial class LocalTTSSettingsPage : Page
     {
-        LocalTTS tsh;
-
+        LocalTTS localTTS = new LocalTTS();
         public LocalTTSSettingsPage()
         {
-            tsh = new LocalTTS();
             InitializeComponent();
 
-            List<string> lst = tsh.GetAllTTSEngine();
+            List<string> lst = localTTS.GetAllTTSEngine();
             TTSSourceCombox.ItemsSource = lst;
 
             for (int i = 0; i < lst.Count; i++)
@@ -35,12 +33,12 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
 
         private void TTSSourceCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            tsh.SetTTSVoice((string)TTSSourceCombox.SelectedValue);
+            localTTS.SetTTSVoice((string)TTSSourceCombox.SelectedValue);
         }
 
         private void TestBtn_Click(object sender, RoutedEventArgs e)
         {
-            tsh.SpeakAsync(TestSrcText.Text);
+            localTTS.SpeakAsync(TestSrcText.Text);
             Common.appSettings.ttsVoice = (string)TTSSourceCombox.SelectedValue;
             Common.appSettings.ttsVolume = (int)VolumeBar.Value;
             Common.appSettings.ttsRate = (int)RateBar.Value;
@@ -48,12 +46,12 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
 
         private void VolumeBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            tsh.SetVolume((int)VolumeBar.Value);
+            localTTS.SetVolume((int)VolumeBar.Value);
         }
 
         private void RateBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            tsh.SetRate((int)RateBar.Value);
+            localTTS.SetRate((int)RateBar.Value);
         }
     }
 }

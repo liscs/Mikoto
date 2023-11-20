@@ -3,15 +3,17 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TTSHelperLibrary.TTSGenerator
+namespace TTSHelperLibrary
 {
-    public class AzureTTS
+    public class AzureTTS : ITTS
     {
         //形如127.0.0.1:7890的代理字符串
-        public static string ProxyString { get; set; }
+        public string ProxyString { get; set; }
 
         string subscriptionKey = string.Empty;
         string subscriptionRegion = string.Empty;
+
+        string Voice { get; set; }
         public AzureTTS() { }
         public void TTSInit(string key, string location)
         {
@@ -19,15 +21,15 @@ namespace TTSHelperLibrary.TTSGenerator
             subscriptionRegion = location;
         }
 
-        public async Task TextToSpeechAsync(string text, string voice)
+        public async Task SpeakAsync(string text)
         {
             ErrorMessage = string.Empty;
-            if (subscriptionKey == string.Empty || subscriptionRegion == string.Empty || string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(voice))
+            if (subscriptionKey == string.Empty || subscriptionRegion == string.Empty || string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(Voice))
                 return;
             var config = SpeechConfig.FromSubscription(subscriptionKey, subscriptionRegion);
             if (ProxyString != string.Empty)
             {
-                if (ProxyString.Contains(":"))
+                if (ProxyString.Contains(':'))
                 {
                     try
                     {
@@ -44,7 +46,7 @@ namespace TTSHelperLibrary.TTSGenerator
                     ErrorMessage += "Failed to set proxy! ";
                 }
             }
-            config.SpeechSynthesisVoiceName = voice;
+            config.SpeechSynthesisVoiceName = Voice;
             config.SetSpeechSynthesisOutputFormat(SpeechSynthesisOutputFormat.Riff44100Hz16BitMonoPcm);
             using (var synthesizer = new SpeechSynthesizer(config))
             {
@@ -90,6 +92,11 @@ namespace TTSHelperLibrary.TTSGenerator
         public static string GetUrl_VoiceList()
         {
             return "https://speech.microsoft.com/portal";
+        }
+
+        public void SetTTSVoice(string azureTTSVoice)
+        {
+            Voice = azureTTSVoice;
         }
     }
 }

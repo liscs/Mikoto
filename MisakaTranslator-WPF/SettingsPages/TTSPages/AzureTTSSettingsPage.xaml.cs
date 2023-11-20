@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using TTSHelperLibrary.TTSGenerator;
+using TTSHelperLibrary;
 
 namespace MisakaTranslator_WPF.SettingsPages.TTSPages
 {
@@ -9,13 +9,13 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
     /// </summary>
     public partial class AzureTTSSettingsPage : Page
     {
+        AzureTTS azureTTS = new AzureTTS();
         public AzureTTSSettingsPage()
         {
             InitializeComponent();
             AzureTTSSecretKeyBox.Text = Common.appSettings.AzureTTSSecretKey;
             AzureTTSLocationBox.Text = Common.appSettings.AzureTTSLocation;
             HttpProxyBox.Text = Common.appSettings.AzureTTSProxy;
-            AzureTTS.ProxyString = Common.appSettings.AzureTTSProxy;
             TestDstVoice.Text = Common.appSettings.AzureTTSVoice;
         }
 
@@ -33,9 +33,10 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
         {
             Common.appSettings.AzureTTSSecretKey = AzureTTSSecretKeyBox.Text;
             Common.appSettings.AzureTTSLocation = AzureTTSLocationBox.Text;
-            AzureTTS azureTTS = new AzureTTS();
+            azureTTS.ProxyString = Common.appSettings.AzureTTSProxy;
             azureTTS.TTSInit(Common.appSettings.AzureTTSSecretKey, Common.appSettings.AzureTTSLocation);
-            await azureTTS.TextToSpeechAsync(TestSrcText.Text, TestDstVoice.Text);
+            azureTTS.SetTTSVoice(TestDstVoice.Text);
+            await azureTTS.SpeakAsync(TestSrcText.Text);
             if (azureTTS.ErrorMessage != string.Empty)
             {
                 HandyControl.Controls.Growl.Error(azureTTS.ErrorMessage);
@@ -46,7 +47,6 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
         {
             string text = HttpProxyBox.Text.Trim();
             Common.appSettings.AzureTTSProxy = text;
-            AzureTTS.ProxyString = text;
         }
 
         private void TestDstVoice_LostFocus(object sender, RoutedEventArgs e)
