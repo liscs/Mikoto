@@ -371,7 +371,7 @@ namespace MisakaTranslator_WPF
             dtimer.Stop();
             if (_dictResWindow == null)
             {
-                _dictResWindow = new DictResWindow(textBox.Text, (string)textBox.Tag, _localTTS);
+                _dictResWindow = new DictResWindow(textBox.Text, _localTTS);
             }
             else
             {

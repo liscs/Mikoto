@@ -32,7 +32,9 @@ namespace DictionaryHelperLibrary
             //%%UTF-8=1
             //C:\Users\dream\Desktop\新世纪日汉双解\xsjrihanshuangjie.mdx|_|_|_|_|_|
             //
-            using (File.Create(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EBWin4\\alternate.ini")) { }
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EBWin4"))
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EBWin4");
+            File.Create(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EBWin4\\alternate.ini").Close();
             EBPOCKETlist = new List<string>() { "%%UTF-8=1" };
             var dList = GetAllDicts().ToList().OrderBy(d => d.Priority);
             foreach (var d in dList)
@@ -48,7 +50,7 @@ namespace DictionaryHelperLibrary
 
         public static void EnActive(Dict d)
         {
-            if (d.Priority == 0) return;
+            if (d.Priority == 0 || d.Name == null) return;
             EBPOCKETlist[d.Priority] = $"{d.DictPath}|_|_|_|_|_|";
             File.WriteAllText(EBPOCKET, string.Join(Environment.NewLine, EBPOCKETlist));
             string fileName = $"{directory.FullName}\\{d.Name}.json";
@@ -57,7 +59,7 @@ namespace DictionaryHelperLibrary
         }
         public static void InActive(Dict d)
         {
-            if (d.Priority == 0) return;
+            if (d.Priority == 0 || d.Name == null) return;
             EBPOCKETlist[d.Priority] = " ";
             File.WriteAllText(EBPOCKET, string.Join(Environment.NewLine, EBPOCKETlist));
             string fileName = $"{directory.FullName}\\{d.Name}.json";
@@ -87,7 +89,7 @@ namespace DictionaryHelperLibrary
             }
             else
             {
-                Dictionary<string, int> dictionarys = new();
+                Dictionary<string, int> dictionaries = new();
                 using (FileStream grp = new FileStream(EBPOCKET, FileMode.Open))
                 {
                     using (StreamReader streamReader = new StreamReader(grp))
@@ -99,17 +101,17 @@ namespace DictionaryHelperLibrary
                             string fileString = streamReader.ReadLine();
                             if (!string.IsNullOrWhiteSpace(fileString))
                             {
-                                dictionarys.Add(fileString, id);
+                                dictionaries.Add(fileString, id);
                                 id++;
                             }
                         }
                     }
                 }
-                foreach (var v in dictionarys.Keys)
+                foreach (var v in dictionaries.Keys)
                 {
                     if (v.Contains(dictionaryName))
                     {
-                        process.StartInfo.Arguments = $"-C=1 -N=20 -M=a -#={dictionarys[v]} {entry}";
+                        process.StartInfo.Arguments = $"-C=1 -N=20 -M=a -#={dictionaries[v]} {entry}";
                     }
                 }
             }
@@ -120,15 +122,8 @@ namespace DictionaryHelperLibrary
             string errorData = string.Empty;
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
-            process.OutputDataReceived += (sender, e) =>
-            {
-                outputData += (e.Data + Environment.NewLine);
-            };
-
-            process.ErrorDataReceived += (sender, e) =>
-            {
-                errorData += (e.Data + Environment.NewLine);
-            };
+            process.OutputDataReceived += (sender, e) => outputData += (e.Data + Environment.NewLine);
+            process.ErrorDataReceived += (sender, e) => errorData += (e.Data + Environment.NewLine);
 
             //等待退出  
             process.WaitForExit();
@@ -154,6 +149,7 @@ namespace DictionaryHelperLibrary
         //CATALOG*;*.dic;*.idx;*.ebd;*.ifo;*.mdx;*.dsl;*.dz
         public bool AddOrUpdateDictionary(Dict dict)
         {
+            if (dict.Name == null) { return false; }
             EBPOCKETlist.RemoveAll(s => s.Contains($"{dict.DictPath}|_|_|_|_|_|"));
             if (dict.Active)
             {
