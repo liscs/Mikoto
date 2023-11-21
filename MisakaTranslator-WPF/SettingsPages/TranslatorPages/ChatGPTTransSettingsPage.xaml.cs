@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using TranslatorLibrary.Translator;
 
@@ -36,17 +37,17 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(ChatGPTTranslator.SIGN_UP_URL);
+            Process.Start(new ProcessStartInfo(ChatGPTTranslator.SIGN_UP_URL) { UseShellExecute = true });
         }
 
         private void DocBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(ChatGPTTranslator.DOCUMENT_URL);
+            Process.Start(new ProcessStartInfo(ChatGPTTranslator.DOCUMENT_URL) { UseShellExecute = true });
         }
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(ChatGPTTranslator.BILL_URL);
+            Process.Start(new ProcessStartInfo(ChatGPTTranslator.BILL_URL) { UseShellExecute = true });
         }
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)

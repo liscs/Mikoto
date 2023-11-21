@@ -169,7 +169,7 @@
     <sys:String x:Key="LESettingsPage_LEbox">LE (Locale Emulator) path</sys:String>
     <sys:String x:Key="LESettingsPage_ChooseFilePathHint">Please select the folder where The Locale Emulator is located.</sys:String>
 
-    <sys:String x:Key="AboutPage_BtnHelp">Guide and Feedback</sys:String>
+    <sys:String x:Key="AboutPage_BtnHelp">Feedback</sys:String>
     <sys:String x:Key="AboutPage_BtnGithub">GitHub Project Page</sys:String>
 
     <sys:String x:Key="GameGuideWin_WinName">Game Translation Wizard</sys:String>
@@ -232,7 +232,7 @@
     <sys:String x:Key="ChooseLanguagePage_NextErrorHint">The two languages cannot be the same.</sys:String>
 
     <sys:String x:Key="CompletationPage_BtnConfirm">Finish setting</sys:String>
-    <sys:String x:Key="CompletationPage_Hint">Congrats! You've completed all the settings for the game!</sys:String>
+    <sys:String x:Key="CompletationPage_Hint">All settings for this game are complete!</sys:String>
 
     <sys:String x:Key="ChooseOCRAreaPage_Introduce">First choose Full-screen snapshot or select a window (by clicking on the game window), and then select the OCR area. use the &quot;Refresh OCR area&quot; to preview.</sys:String>
     <sys:String x:Key="ChooseOCRAreaPage_IsAllWinCBox">Full-screen snapshot</sys:String>
@@ -284,8 +284,8 @@
     <sys:String x:Key="TransWinSettingsWin_Title">Translator window settings</sys:String>
     <sys:String x:Key="TransWinSettingsWin_Tab_Window">Window</sys:String>
     <sys:String x:Key="TransWinSettingsWin_Tab_source">Source text</sys:String>
-    <sys:String x:Key="TransWinSettingsWin_Tab_first">No.1 Translation</sys:String>
-    <sys:String x:Key="TransWinSettingsWin_Tab_second">No.2 Translation</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_Tab_first">Trans 1</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_Tab_second">Trans 2</sys:String>
     <sys:String x:Key="TransWinSettingsWin_BgColor">Background color and opacity</sys:String>
     <sys:String x:Key="TransWinSettingsWin_ZenMode">Zen Mode (Valid only this time)</sys:String>
     <sys:String x:Key="TransWinSettingsWin_FontColor">Font color</sys:String>
@@ -301,6 +301,11 @@
     <sys:String x:Key="AddOptWin_wordType">Speech</sys:String>
     <sys:String x:Key="AddOptWin_confirmBtn">Add to the thesaurus</sys:String>
 
+    <sys:String x:Key="EBwinDictPage_Introduce">This software uses ebwinc to parse dictionary files.</sys:String>
+    <sys:String x:Key="EBwinDictPage_AddDictionary">Add dictionary</sys:String>
+    <sys:String x:Key="EBwinDictPage_EditDictionary">Edit</sys:String>
+    <sys:String x:Key="EBwinDictPage_RemoveDictionary">Remove</sys:String>
+    
     <sys:String x:Key="MecabDictPage_Introduce">Please download the dictionary's databases of MeCab, and fill in its location.</sys:String>
     <sys:String x:Key="MecabDictPage_DBPath">Database folder path</sys:String>
     <sys:String x:Key="MecabDictPage_ClearPath">Clear</sys:String>

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using TTSHelperLibrary;
 
@@ -21,12 +22,12 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(AzureTTS.GetUrl_allpyAPI());
+            Process.Start(new ProcessStartInfo(AzureTTS.GetUrl_allpyAPI()) { UseShellExecute = true });
         }
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(AzureTTS.GetUrl_bill());
+            Process.Start(new ProcessStartInfo(AzureTTS.GetUrl_bill()) { UseShellExecute = true });
         }
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
@@ -56,7 +57,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
 
         private void VoiceNameQuery_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(AzureTTS.GetUrl_VoiceList());
+            Process.Start(new ProcessStartInfo(AzureTTS.GetUrl_VoiceList()) { UseShellExecute = true });
         }
     }
 }

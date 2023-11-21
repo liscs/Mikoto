@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using TranslatorLibrary.Translator;
 
@@ -36,21 +37,21 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(AzureTranslator.GetUrl_allpyAPI());
+            Process.Start(new ProcessStartInfo(AzureTranslator.GetUrl_allpyAPI()) { UseShellExecute = true });
         }
 
         private void DocBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(AzureTranslator.GetUrl_Doc());
+            Process.Start(new ProcessStartInfo(AzureTranslator.GetUrl_Doc()) { UseShellExecute = true });
         }
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(AzureTranslator.GetUrl_bill());
+            Process.Start(new ProcessStartInfo(AzureTranslator.GetUrl_bill()) { UseShellExecute = true });
         }
         private void AzureLangCodeBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(AzureTranslator.GetUrl_lang());
+            Process.Start(new ProcessStartInfo(AzureTranslator.GetUrl_lang()) { UseShellExecute = true });
         }
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)

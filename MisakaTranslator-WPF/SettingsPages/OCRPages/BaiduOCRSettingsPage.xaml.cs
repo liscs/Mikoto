@@ -1,4 +1,5 @@
 ﻿using OCRLibrary;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -43,17 +44,17 @@ namespace MisakaTranslator_WPF.SettingsPages.OCRPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(BaiduGeneralOCREngine.GetUrl_allpyAPI());
+            Process.Start(new ProcessStartInfo(BaiduGeneralOCREngine.GetUrl_allpyAPI()) { UseShellExecute = true });
         }
 
         private void DocBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(BaiduGeneralOCREngine.GetUrl_Doc());
+            Process.Start(new ProcessStartInfo(BaiduGeneralOCREngine.GetUrl_Doc()) { UseShellExecute = true });
         }
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(BaiduGeneralOCREngine.GetUrl_bill());
+            Process.Start(new ProcessStartInfo(BaiduGeneralOCREngine.GetUrl_bill()) { UseShellExecute = true });
         }
     }
 }

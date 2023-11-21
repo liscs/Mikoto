@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using TranslatorLibrary.Translator;
 
@@ -42,17 +43,17 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(BaiduTranslator.GetUrl_allpyAPI());
+            Process.Start(new ProcessStartInfo(BaiduTranslator.GetUrl_allpyAPI()) { UseShellExecute = true });
         }
 
         private void DocBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(BaiduTranslator.GetUrl_Doc());
+            Process.Start(new ProcessStartInfo(BaiduTranslator.GetUrl_Doc()) { UseShellExecute = true });
         }
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(BaiduTranslator.GetUrl_bill());
+            Process.Start(new ProcessStartInfo(BaiduTranslator.GetUrl_bill()) { UseShellExecute = true });
         }
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)

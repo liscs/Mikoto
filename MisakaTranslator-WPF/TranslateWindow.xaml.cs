@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using System.Windows.Threading;
 using TextHookLibrary;
 using TextRepairLibrary;
 using TranslatorLibrary;
@@ -117,33 +118,56 @@ namespace MisakaTranslator_WPF
         {
             Enum.TryParse(appSettings.SelectedTTS, out TTSMode mode);
             mode = TTSMode.local;
+
+            DispatcherOperation dispatcherOperation = null;
             switch (mode)
             {
                 case TTSMode.local:
                     var localTTS = new LocalTTS();
-                    if (Common.appSettings.ttsVoice == "")
+                    if (!string.IsNullOrWhiteSpace(Common.appSettings.ttsVoice))
                     {
-                        Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoTTS_Hint"].ToString());
+                        dispatcherOperation = Dispatcher.BeginInvoke(() =>
+                            {
+                                localTTS.SetTTSVoice(Common.appSettings.ttsVoice);
+                                localTTS.SetVolume(Common.appSettings.ttsVolume);
+                                localTTS.SetRate(Common.appSettings.ttsRate);
+                                _TTS = localTTS;
+                            });
                     }
                     else
                     {
-                        Dispatcher.BeginInvoke(() =>
-                        {
-                            localTTS.SetTTSVoice(Common.appSettings.ttsVoice);
-                            localTTS.SetVolume(Common.appSettings.ttsVolume);
-                            localTTS.SetRate(Common.appSettings.ttsRate);
-                        });
+                        _TTS = null;
                     }
-                    _TTS = localTTS;
                     break;
                 case TTSMode.azure:
-                    var azureTTS = new AzureTTS();
-                    azureTTS.SetTTSVoice(Common.appSettings.AzureTTSVoice);
-                    azureTTS.TTSInit(appSettings.AzureTTSSecretKey, appSettings.AzureTTSLocation);
-                    azureTTS.ProxyString = appSettings.AzureTTSProxy;
-                    _TTS = azureTTS;
+                    if (!string.IsNullOrWhiteSpace(appSettings.AzureTTSVoice) &&
+                        !string.IsNullOrWhiteSpace(appSettings.AzureTTSSecretKey) &&
+                        !string.IsNullOrWhiteSpace(appSettings.AzureTTSLocation)
+                        )
+                    {
+                        var azureTTS = new AzureTTS();
+                        azureTTS.SetTTSVoice(appSettings.AzureTTSVoice);
+                        azureTTS.TTSInit(appSettings.AzureTTSSecretKey, appSettings.AzureTTSLocation);
+                        azureTTS.ProxyString = appSettings.AzureTTSProxy;
+                        _TTS = azureTTS;
+                    }
+                    else
+                    {
+                        _TTS = null;
+                    }
                     break;
             }
+            Dispatcher.BeginInvoke(() =>
+            {
+                if (dispatcherOperation != null)
+                {
+                    dispatcherOperation.Wait();
+                }
+                if (_TTS == null)
+                {
+                    Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoTTS_Hint"].ToString());
+                }
+            });
 
 
         }

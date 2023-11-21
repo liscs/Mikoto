@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace MisakaTranslator_WPF.SettingsPages
@@ -15,12 +16,12 @@ namespace MisakaTranslator_WPF.SettingsPages
 
         private void BtnHelp_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/hanmin0822/MisakaTranslator/issues");
+            Process.Start(new ProcessStartInfo("https://github.com/liscs/MisakaTranslator/issues") { UseShellExecute = true });
         }
 
         private void BtnGithub_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/hanmin0822/MisakaTranslator");
+            Process.Start(new ProcessStartInfo("https://github.com/liscs/MisakaTranslator") { UseShellExecute = true });
         }
     }
 }
