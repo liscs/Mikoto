@@ -116,7 +116,10 @@ namespace MisakaTranslator_WPF
 
         private void TTS_Init()
         {
-            Enum.TryParse(appSettings.SelectedTTS, out TTSMode mode);
+            if (!Enum.TryParse(appSettings.SelectedTTS, out TTSMode mode))
+            {
+                mode = TTSMode.local;
+            }
 
             DispatcherOperation dispatcherOperation = null;
             switch (mode)
