@@ -30,7 +30,7 @@ namespace MisakaTranslator_WPF
 
         private void TTS_Btn_Click(object sender, RoutedEventArgs e)
         {
-            if (_textSpeechHelper != null)
+            if (_textSpeechHelper != null && !string.IsNullOrWhiteSpace(sourceWord))
             {
                 _textSpeechHelper.SpeakAsync(sourceWord);
             }

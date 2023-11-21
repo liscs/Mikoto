@@ -117,7 +117,6 @@ namespace MisakaTranslator_WPF
         private void TTS_Init()
         {
             Enum.TryParse(appSettings.SelectedTTS, out TTSMode mode);
-            mode = TTSMode.local;
 
             DispatcherOperation dispatcherOperation = null;
             switch (mode)
@@ -944,7 +943,8 @@ namespace MisakaTranslator_WPF
 
         private void TTS_Item_Click(object sender, RoutedEventArgs e)
         {
-            _TTS.SpeakAsync(_currentsrcText);
+            if (!string.IsNullOrWhiteSpace(_currentsrcText))
+                _TTS.SpeakAsync(_currentsrcText);
         }
 
         private void TransWin_Loaded(object sender, RoutedEventArgs e)
