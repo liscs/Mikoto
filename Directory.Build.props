@@ -1,12 +1,14 @@
 <Project>
 
-  <PropertyGroup>
-    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
-    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
-    <Platforms>AnyCPU</Platforms>
-    <LangVersion>12.0</LangVersion>
-    <Version>1.2.0</Version>
-    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
-  </PropertyGroup>
+	<PropertyGroup>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+		<TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+		<TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+		<Platforms>AnyCPU</Platforms>
+		<LangVersion>12.0</LangVersion>
+		<Version>1.2.0</Version>
+		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+	</PropertyGroup>
 
 </Project>

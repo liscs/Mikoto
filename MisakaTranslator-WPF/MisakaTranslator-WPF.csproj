@@ -4,6 +4,7 @@
 		<OutputType>WinExe</OutputType>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
+		<NoWarn>$(NoWarn);WFAC010</NoWarn>
 		<ApplicationManifest>Properties\App.manifest</ApplicationManifest>
 		<ApplicationIcon>logo.ico</ApplicationIcon>
 		<RootNamespace>MisakaTranslator_WPF</RootNamespace>
@@ -28,11 +29,11 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <Optimize>True</Optimize>
+		<Optimize>True</Optimize>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-	  <Optimize>True</Optimize>
+		<Optimize>True</Optimize>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -51,7 +52,7 @@
 		<ProjectReference Include="..\DictionaryHelperLibrary\DictionaryHelperLibrary.csproj" />
 		<ProjectReference Include="..\KeyboardMouseHookLibrary\KeyboardMouseHookLibrary.csproj" />
 		<ProjectReference Include="..\KeyboardMouseMonitor\KeyboardMouseMonitor.csproj">
-		  <TreatAsUsed>true</TreatAsUsed>
+			<TreatAsUsed>true</TreatAsUsed>
 		</ProjectReference>
 		<ProjectReference Include="..\MecabHelperLibrary\MecabHelperLibrary.csproj" />
 		<ProjectReference Include="..\OCRLibrary\OCRLibrary.csproj" />
@@ -65,12 +66,12 @@
 	<ItemGroup>
 		<PackageReference Include="Config.Net" Version="5.1.5" />
 		<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9">
-		  <NoWarn>NU1701;</NoWarn>
+			<NoWarn>NU1701;</NoWarn>
 		</PackageReference>
 		<PackageReference Include="HandyControl" Version="3.4.0" />
 		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.49-beta">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" />
 		<PackageReference Include="Microsoft.Windows.SDK.Win32Metadata" Version="56.0.13-preview" />

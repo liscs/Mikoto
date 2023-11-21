@@ -65,7 +65,9 @@ namespace OCRLibrary
                 .Append("&Version=2018-03-21")
                 .Append("&Signature=").Append(HttpUtility.UrlEncode(Convert.ToBase64String(hashBytes)));
 
+#pragma warning disable SYSLIB0014
             HttpWebRequest request = WebRequest.CreateHttp(sb2.ToString());
+#pragma warning restore SYSLIB0014
             request.Timeout = 8000;
             request.UserAgent = "MisakaTranslator";
 

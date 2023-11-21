@@ -27,7 +27,9 @@ namespace OCRLibrary
             }
 
             string host = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic?access_token=" + accessToken;
+#pragma warning disable SYSLIB0014
             HttpWebRequest request = WebRequest.CreateHttp(host);
+#pragma warning restore SYSLIB0014
             request.Method = "post";
             request.Timeout = 8000;
             // 图片的base64编码

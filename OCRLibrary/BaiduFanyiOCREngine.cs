@@ -42,7 +42,9 @@ namespace OCRLibrary
             string endpoint = "https://fanyi-api.baidu.com/api/trans/sdk/picture?cuid=APICUID&mac=mac&salt=" + salt + "&appid=" + appId + "&sign=" + sign + "&to=zh&from=" + langCode;
 
 
+#pragma warning disable SYSLIB0014
             HttpWebRequest request = WebRequest.CreateHttp(endpoint);
+#pragma warning restore SYSLIB0014
             request.Method = "POST";
             request.Timeout = 8000;
             request.UserAgent = "MisakaTranslator";

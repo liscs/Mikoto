@@ -10,7 +10,7 @@
   <br>
   <b>开源 | 高效 | 易用</b>
   <br>
-  <img src="https://github.com/hanmin0822/MisakaTranslator/workflows/CI/badge.svg" alt="CI">
+  <img src="https://github.com/liscs/MisakaTranslator/workflows/CI/badge.svg" alt="CI">
   <br>
   <br>
 </p>
