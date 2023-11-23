@@ -467,14 +467,7 @@ namespace MisakaTranslator_WPF
             set;
         }
 
-        enum PhoneticNotationType
-        {
-            hiragana = 1,
-            katakana = 2,
-            romaji = 3,
-        }
-
-        [Option(Alias = "TranslateFromSetting.phoneticNotationType", DefaultValue = PhoneticNotationType.hiragana)]
+        [Option(Alias = "TranslateFromSetting.phoneticNotationType", DefaultValue = PhoneticNotationType.Hiragana)]
         PhoneticNotationType TF_PhoneticNotationType
         {
             get;

@@ -25,7 +25,6 @@ using TTSHelperLibrary;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
-using static MisakaTranslator_WPF.Common;
 
 namespace MisakaTranslator_WPF
 {
@@ -34,7 +33,7 @@ namespace MisakaTranslator_WPF
     /// </summary>
     public partial class TranslateWindow
     {
-        public System.Windows.Threading.DispatcherTimer dtimer;//定时器 定时将窗口置顶
+        public DispatcherTimer dtimer;//定时器 定时将窗口置顶
 
         private ArtificialTransHelper _artificialTransHelper;
 
@@ -99,11 +98,11 @@ namespace MisakaTranslator_WPF
 
             _artificialTransHelper = new ArtificialTransHelper(Convert.ToString(Common.GameID));
 
-            if (Common.transMode == Common.TransMode.hook)
+            if (Common.transMode == TransMode.Hook)
             {
                 Common.textHooker.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
             }
-            else if (Common.transMode == Common.TransMode.ocr)
+            else if (Common.transMode == TransMode.Ocr)
             {
                 MouseKeyboardHook_Init();
             }
@@ -117,15 +116,15 @@ namespace MisakaTranslator_WPF
 
         private void TTS_Init()
         {
-            if (!Enum.TryParse(appSettings.SelectedTTS, out TTSMode mode))
+            if (!Enum.TryParse(Common.appSettings.SelectedTTS, out TTSMode mode))
             {
-                mode = TTSMode.local;
+                mode = TTSMode.Local;
             }
 
             DispatcherOperation dispatcherOperation = null;
             switch (mode)
             {
-                case TTSMode.local:
+                case TTSMode.Local:
                     var localTTS = new LocalTTS();
                     if (!string.IsNullOrWhiteSpace(Common.appSettings.ttsVoice))
                     {
@@ -142,16 +141,16 @@ namespace MisakaTranslator_WPF
                         _TTS = null;
                     }
                     break;
-                case TTSMode.azure:
-                    if (!string.IsNullOrWhiteSpace(appSettings.AzureTTSVoice) &&
-                        !string.IsNullOrWhiteSpace(appSettings.AzureTTSSecretKey) &&
-                        !string.IsNullOrWhiteSpace(appSettings.AzureTTSLocation)
+                case TTSMode.Azure:
+                    if (!string.IsNullOrWhiteSpace(Common.appSettings.AzureTTSVoice) &&
+                        !string.IsNullOrWhiteSpace(Common.appSettings.AzureTTSSecretKey) &&
+                        !string.IsNullOrWhiteSpace(Common.appSettings.AzureTTSLocation)
                         )
                     {
                         var azureTTS = new AzureTTS();
-                        azureTTS.SetTTSVoice(appSettings.AzureTTSVoice);
-                        azureTTS.TTSInit(appSettings.AzureTTSSecretKey, appSettings.AzureTTSLocation);
-                        azureTTS.ProxyString = appSettings.AzureTTSProxy;
+                        azureTTS.SetTTSVoice(Common.appSettings.AzureTTSVoice);
+                        azureTTS.TTSInit(Common.appSettings.AzureTTSSecretKey, Common.appSettings.AzureTTSLocation);
+                        azureTTS.ProxyString = Common.appSettings.AzureTTSProxy;
                         _TTS = azureTTS;
                     }
                     else
@@ -505,15 +504,15 @@ namespace MisakaTranslator_WPF
 
 
                             //选择平假名或者片假名
-                            switch (appSettings.TF_PhoneticNotationType)
+                            switch (Common.appSettings.TF_PhoneticNotationType)
                             {
-                                case IAppSettings.PhoneticNotationType.hiragana:
+                                case PhoneticNotationType.Hiragana:
                                     textBox.Tag = mwi[i].Hiragana;
                                     break;
-                                case IAppSettings.PhoneticNotationType.katakana:
+                                case PhoneticNotationType.Katakana:
                                     textBox.Tag = mwi[i].Katakana;
                                     break;
-                                case IAppSettings.PhoneticNotationType.romaji:
+                                case PhoneticNotationType.Romaji:
                                     textBox.Tag = mwi[i].Romaji;
                                     break;
                                 default:
@@ -606,13 +605,13 @@ namespace MisakaTranslator_WPF
                             //选择平假名或者片假名
                             switch (Common.appSettings.TF_PhoneticNotationType)
                             {
-                                case IAppSettings.PhoneticNotationType.hiragana:
+                                case PhoneticNotationType.Hiragana:
                                     superScript.Text = mwi[i].Hiragana;
                                     break;
-                                case IAppSettings.PhoneticNotationType.katakana:
+                                case PhoneticNotationType.Katakana:
                                     superScript.Text = mwi[i].Katakana;
                                     break;
-                                case IAppSettings.PhoneticNotationType.romaji:
+                                case PhoneticNotationType.Romaji:
                                     superScript.Text = mwi[i].Romaji;
                                     break;
                                 default:
@@ -833,7 +832,7 @@ namespace MisakaTranslator_WPF
 
         private void Pause_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (Common.transMode == Common.TransMode.hook)
+            if (Common.transMode == TransMode.Hook)
             {
                 if (Common.textHooker.Pause)
                 {
@@ -957,7 +956,7 @@ namespace MisakaTranslator_WPF
 
         private void RenewOCR_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (Common.transMode == Common.TransMode.ocr)
+            if (Common.transMode == TransMode.Ocr)
             {
                 TranslateEventOcr(true);
             }

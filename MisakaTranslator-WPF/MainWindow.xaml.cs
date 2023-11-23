@@ -195,13 +195,13 @@ namespace MisakaTranslator_WPF
 
         private void HookGuideBtn_Click(object sender, RoutedEventArgs e)
         {
-            var ggw = new GameGuideWindow(Common.GuideMode.hook);
+            var ggw = new GameGuideWindow(GuideMode.Hook);
             ggw.Show();
         }
 
         private void OCRGuideBtn_Click(object sender, RoutedEventArgs e)
         {
-            var ggw = new GameGuideWindow(Common.GuideMode.ocr);
+            var ggw = new GameGuideWindow(GuideMode.Ocr);
             ggw.Show();
         }
 
@@ -259,7 +259,7 @@ namespace MisakaTranslator_WPF
             }
 
             Common.GameID = GameInfoList[gid].GameID;
-            Common.transMode = Common.TransMode.hook;
+            Common.transMode = TransMode.Hook;
             Common.UsingDstLang = GameInfoList[gid].DstLang;
             Common.UsingSrcLang = GameInfoList[gid].SrcLang;
             Common.UsingRepairFunc = GameInfoList[gid].RepairFunc;
@@ -432,14 +432,14 @@ namespace MisakaTranslator_WPF
         {
             Common.textHooker = new TextHookHandle();
             Common.GameID = null;
-            Common.transMode = Common.TransMode.hook;
+            Common.transMode = TransMode.Hook;
             Common.textHooker.AddClipBoardThread();
 
             //剪贴板方式读取的特殊码和misakacode
             Common.textHooker.HookCodeList.Add("HB0@0");
             Common.textHooker.MisakaCodeList.Add("【0:-1:-1】");
 
-            var ggw = new GameGuideWindow(Common.GuideMode.clipboard);
+            var ggw = new GameGuideWindow(GuideMode.Clipboard);
             ggw.Show();
         }
 

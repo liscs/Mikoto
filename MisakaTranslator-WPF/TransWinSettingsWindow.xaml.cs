@@ -117,17 +117,17 @@ namespace MisakaTranslator_WPF
 
             HiraganaRadioButton.Click += delegate
             {
-                Common.appSettings.TF_PhoneticNotationType = IAppSettings.PhoneticNotationType.hiragana;
+                Common.appSettings.TF_PhoneticNotationType = PhoneticNotationType.Hiragana;
             };
 
             KatakanaRadioButton.Click += delegate
             {
-                Common.appSettings.TF_PhoneticNotationType = IAppSettings.PhoneticNotationType.katakana;
+                Common.appSettings.TF_PhoneticNotationType = PhoneticNotationType.Katakana;
             };
 
             RomajiRadioButton.Click += delegate
             {
-                Common.appSettings.TF_PhoneticNotationType = IAppSettings.PhoneticNotationType.romaji;
+                Common.appSettings.TF_PhoneticNotationType = PhoneticNotationType.Romaji;
             };
 
             KanaBoldCheckBox.Click += delegate
@@ -210,13 +210,13 @@ namespace MisakaTranslator_WPF
             }
             switch (Common.appSettings.TF_PhoneticNotationType)
             {
-                case IAppSettings.PhoneticNotationType.hiragana:
+                case PhoneticNotationType.Hiragana:
                     HiraganaRadioButton.IsChecked = true;
                     break;
-                case IAppSettings.PhoneticNotationType.katakana:
+                case PhoneticNotationType.Katakana:
                     KatakanaRadioButton.IsChecked = true;
                     break;
-                case IAppSettings.PhoneticNotationType.romaji:
+                case PhoneticNotationType.Romaji:
                     RomajiRadioButton.IsChecked = true;
                     break;
                 default:
