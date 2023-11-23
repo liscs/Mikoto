@@ -405,15 +405,17 @@ namespace MisakaTranslator_WPF
             IsOCRingFlag = false;
         }
         DictResWindow _dictResWindow;
-        private void DictArea_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void DictArea_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Controls.TextBox textBox = sender as System.Windows.Controls.TextBox;
-            textBox.SelectAll();
-            dtimer.Stop();
-            _dictResWindow ??= new DictResWindow(textBox.Text, _TTS);
-            _dictResWindow.Search(textBox.Text);
-            _dictResWindow.Show();
-            dtimer.Start();
+            if (!string.IsNullOrWhiteSpace(textBox.SelectedText))
+            {
+                dtimer.Stop();
+                _dictResWindow ??= new DictResWindow(_TTS);
+                _dictResWindow.Search(textBox.SelectedText);
+                _dictResWindow.Show();
+                dtimer.Start();
+            }
         }
 
         /// <summary>
@@ -520,10 +522,10 @@ namespace MisakaTranslator_WPF
                                     break;
                             }
 
-                        textBox.Margin = new Thickness(0, 0, 0, 0);
+                            textBox.Margin = new Thickness(0, 0, 0, 0);
                             textBox.FontSize = SourceTextFontSize;
                             textBox.Background = Brushes.Transparent;
-                            textBox.MouseDoubleClick += DictArea_MouseLeftButtonDown;
+                            textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
 
                             if (Common.appSettings.TF_EnableDropShadow)
                             {
@@ -660,37 +662,33 @@ namespace MisakaTranslator_WPF
                     }
                     else
                     {
-                        string[] words = repairedText.Split(" ");
-
-                        foreach (string word in words)
+                        System.Windows.Controls.TextBox textBox = new()
                         {
-
-                            System.Windows.Controls.TextBox textBox = new()
-                            {
-                                TextAlignment = TextAlignment.Center,
-                                IsReadOnly = true,
-                                Background = new SolidColorBrush(Colors.Transparent),
-                                BorderBrush = new SolidColorBrush(Colors.Transparent),
-                                Padding = new Thickness(0),
-                                Margin = new Thickness(10,0,0,10)
-                            };
-                            if (!string.IsNullOrEmpty(SourceTextFont))
-                            {
-                                FontFamily fontFamily = new FontFamily(SourceTextFont);
-                                textBox.FontFamily = fontFamily;
-                            }
-                            textBox.Text = word;
-                            textBox.FontSize = SourceTextFontSize;
-                            textBox.Background = Brushes.Transparent;
-                            textBox.MouseDoubleClick += DictArea_MouseLeftButtonDown;
-                            if (Common.appSettings.TF_EnableDropShadow)
-                            {
-                                textBox.Effect = DropShadow;
-                            }
-                            textBox.Foreground = Brushes.White;
-                            SourceTextPanel.Children.Add(textBox);
+                            TextAlignment = TextAlignment.Left,
+                            IsReadOnly = true,
+                            Background = new SolidColorBrush(Colors.Transparent),
+                            BorderBrush = new SolidColorBrush(Colors.Transparent),
+                            Padding = new Thickness(0),
+                            Margin = new Thickness(10, 0, 0, 10)
+                        };
+                        if (!string.IsNullOrEmpty(SourceTextFont))
+                        {
+                            FontFamily fontFamily = new FontFamily(SourceTextFont);
+                            textBox.FontFamily = fontFamily;
                         }
+                        textBox.Text = repairedText;
+                        textBox.TextWrapping = TextWrapping.Wrap;
+                        textBox.FontSize = SourceTextFontSize;
+                        textBox.Background = Brushes.Transparent;
+                        textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
+                        if (Common.appSettings.TF_EnableDropShadow)
+                        {
+                            textBox.Effect = DropShadow;
+                        }
+                        textBox.Foreground = Brushes.White;
+                        SourceTextPanel.Children.Add(textBox);
                     }
+
                 }
             });
         }

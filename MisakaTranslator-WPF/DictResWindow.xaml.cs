@@ -16,9 +16,8 @@ namespace MisakaTranslator_WPF
         private ITTS _textSpeechHelper;
         static private EbwinHelper _ebwinHelper = new EbwinHelper();
 
-        public DictResWindow(string word, ITTS tsh)
+        public DictResWindow(ITTS tsh)
         {
-            sourceWord = word;
             InitializeComponent();
             _textSpeechHelper = tsh;
 
@@ -43,6 +42,8 @@ namespace MisakaTranslator_WPF
 
         public void Search(string s)
         {
+            if (string.IsNullOrWhiteSpace(s)) 
+                return;
             Dispatcher.BeginInvoke(() =>
             {
                 string ret = _ebwinHelper.Search(s);
