@@ -241,11 +241,21 @@ namespace MisakaTranslator_WPF
         private async Task StartTranslateByGid(int gid)
         {
             var pidList = new List<Process>();
+            DateTime dateTime = DateTime.Now;
 
-            foreach (var (pid, path) in ProcessHelper.GetProcessesData(GameInfoList[gid].Isx64))
-                if (path == GameInfoList[gid].FilePath)
-                    pidList.Add(Process.GetProcessById(pid));
-
+            //等待游戏启动
+            while (DateTime.Now - dateTime < TimeSpan.FromSeconds(5))
+            {
+                foreach (var (pid, path) in ProcessHelper.GetProcessesData(GameInfoList[gid].Isx64))
+                {
+                    if (path == GameInfoList[gid].FilePath)
+                    {
+                        pidList.Add(Process.GetProcessById(pid));
+                        goto ProcessFound;
+                    }
+                }
+            }
+        ProcessFound:
             if (pidList.Count == 0)
             {
                 HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
@@ -308,10 +318,8 @@ namespace MisakaTranslator_WPF
 
         private async void StartBtn_Click(object sender, RoutedEventArgs e)
         {
-            var res = Process.Start(GameInfoList[gid].FilePath);
-            res?.WaitForInputIdle(5000);
+            Process.Start(GameInfoList[gid].FilePath);
             GameInfoDrawer.IsOpen = false;
-            await Task.Delay(2000);
             await StartTranslateByGid(gid);
         }
 
@@ -345,10 +353,8 @@ namespace MisakaTranslator_WPF
             p.Arguments = $"-run \"{filepath}\"";
             p.UseShellExecute = false;
             p.WorkingDirectory = lePath;
-            var res = Process.Start(p);
-            res?.WaitForInputIdle(5000);
+            Process.Start(p);
             GameInfoDrawer.IsOpen = false;
-            await Task.Delay(2000);
             await StartTranslateByGid(gid);
         }
 
