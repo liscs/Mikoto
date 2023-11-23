@@ -77,8 +77,8 @@ namespace MisakaTranslator_WPF
             IsOCRingFlag = false;
 
 
-            _mecabHelper = new MecabHelper(Common.appSettings.Mecab_dicPath);
-            if (!_mecabHelper.EnableMecab && Common.appSettings.Mecab_dicPath != string.Empty)
+            _mecabHelper = new MecabHelper(Common.appSettings.Mecab_DicPath);
+            if (!_mecabHelper.EnableMecab && Common.appSettings.Mecab_DicPath != string.Empty)
             {
                 Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoMeCab_Hint"].ToString());
             }
@@ -126,13 +126,13 @@ namespace MisakaTranslator_WPF
             {
                 case TTSMode.Local:
                     var localTTS = new LocalTTS();
-                    if (!string.IsNullOrWhiteSpace(Common.appSettings.ttsVoice))
+                    if (!string.IsNullOrWhiteSpace(Common.appSettings.LocalTTSVoice))
                     {
                         dispatcherOperation = Dispatcher.BeginInvoke(() =>
                             {
-                                localTTS.SetTTSVoice(Common.appSettings.ttsVoice);
-                                localTTS.SetVolume(Common.appSettings.ttsVolume);
-                                localTTS.SetRate(Common.appSettings.ttsRate);
+                                localTTS.SetTTSVoice(Common.appSettings.LocalTTSVoice);
+                                localTTS.SetVolume(Common.appSettings.LoaclTTSVolume);
+                                localTTS.SetRate(Common.appSettings.LocaTTSRate);
                                 _TTS = localTTS;
                             });
                     }
@@ -218,7 +218,7 @@ namespace MisakaTranslator_WPF
         private void UI_Init()
         {
 
-            _isShowSource = Common.appSettings.TF_showSourceText;
+            _isShowSource = Common.appSettings.TF_ShowSourceText;
             if (_isShowSource)
             {
                 ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Eye);
@@ -228,20 +228,20 @@ namespace MisakaTranslator_WPF
                 ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.EyeSlash);
             }
 
-            SourceTextFontSize = (int)Common.appSettings.TF_srcTextSize;
-            FirstTransText.FontSize = Common.appSettings.TF_firstTransTextSize;
-            SecondTransText.FontSize = Common.appSettings.TF_secondTransTextSize;
+            SourceTextFontSize = (int)Common.appSettings.TF_SrcTextSize;
+            FirstTransText.FontSize = Common.appSettings.TF_FirstTransTextSize;
+            SecondTransText.FontSize = Common.appSettings.TF_SecondTransTextSize;
 
-            SourceTextFont = Common.appSettings.TF_srcTextFont;
-            FirstTransText.FontFamily = new FontFamily(Common.appSettings.TF_firstTransTextFont);
-            SecondTransText.FontFamily = new FontFamily(Common.appSettings.TF_secondTransTextFont);
+            SourceTextFont = Common.appSettings.TF_SrcTextFont;
+            FirstTransText.FontFamily = new FontFamily(Common.appSettings.TF_FirstTransTextFont);
+            SecondTransText.FontFamily = new FontFamily(Common.appSettings.TF_SecondTransTextFont);
 
-            FirstTransText.Stroke = Common.appSettings.TF_firstWhiteStrokeIsChecked ? Brushes.White : Brushes.Black;
-            SecondTransText.Stroke = Common.appSettings.TF_secondWhiteStrokeIsChecked ? Brushes.White : Brushes.Black;
+            FirstTransText.Stroke = Common.appSettings.TF_FirstWhiteStrokeIsChecked ? Brushes.White : Brushes.Black;
+            SecondTransText.Stroke = Common.appSettings.TF_SecondWhiteStrokeIsChecked ? Brushes.White : Brushes.Black;
 
             BrushConverter brushConverter = new BrushConverter();
-            FirstTransText.Fill = (Brush)brushConverter.ConvertFromString(Common.appSettings.TF_firstTransTextColor);
-            SecondTransText.Fill = (Brush)brushConverter.ConvertFromString(Common.appSettings.TF_secondTransTextColor);
+            FirstTransText.Fill = (Brush)brushConverter.ConvertFromString(Common.appSettings.TF_FirstTransTextColor);
+            SecondTransText.Fill = (Brush)brushConverter.ConvertFromString(Common.appSettings.TF_SecondTransTextColor);
 
             this.Background = (Brush)brushConverter.ConvertFromString(Common.appSettings.TF_BackColor);
 
@@ -525,13 +525,13 @@ namespace MisakaTranslator_WPF
                             textBox.Background = Brushes.Transparent;
                             textBox.MouseDoubleClick += DictArea_MouseLeftButtonDown;
 
-                            if (Common.appSettings.TF_DropShadow)
+                            if (Common.appSettings.TF_EnableDropShadow)
                             {
                                 //加入原文的阴影
                                 textBox.Effect = DropShadow;
                             }
 
-                            if (Common.appSettings.TF_Colorful)
+                            if (Common.appSettings.TF_EnableColorful)
                             {
                                 //根据不同词性跟字体上色
                                 switch (mwi[i].PartOfSpeech)
@@ -622,7 +622,7 @@ namespace MisakaTranslator_WPF
                             superScript.Margin = new Thickness(0, 0, 0, 2);
                             superScript.HorizontalAlignment = HorizontalAlignment.Center;
 
-                            if (Common.appSettings.TF_DropShadow)
+                            if (Common.appSettings.TF_EnableDropShadow)
                             {
                                 //加入注音的阴影
                                 superScript.Effect = DropShadow;
@@ -631,7 +631,7 @@ namespace MisakaTranslator_WPF
                             if (SourceTextFontSize - 6.5 > 0)
                             {
                                 superScript.FontSize = SourceTextFontSize - 6.5;
-                                if (Common.appSettings.TF_SuperBold)
+                                if (Common.appSettings.TF_EnableSuperBold)
                                 {
                                     superScript.FontWeight = FontWeights.Bold;
                                     //注音加粗
@@ -683,7 +683,7 @@ namespace MisakaTranslator_WPF
                             textBox.FontSize = SourceTextFontSize;
                             textBox.Background = Brushes.Transparent;
                             textBox.MouseDoubleClick += DictArea_MouseLeftButtonDown;
-                            if (Common.appSettings.TF_DropShadow)
+                            if (Common.appSettings.TF_EnableDropShadow)
                             {
                                 textBox.Effect = DropShadow;
                             }
@@ -749,7 +749,7 @@ namespace MisakaTranslator_WPF
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         FirstTransText.Text = afterString;
-                        if (Common.appSettings.TF_DropShadow)
+                        if (Common.appSettings.TF_EnableDropShadow)
                         {
                             FirstTransText.Effect = DropShadow;
                         }
@@ -764,7 +764,7 @@ namespace MisakaTranslator_WPF
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         SecondTransText.Text = afterString;
-                        if (Common.appSettings.TF_DropShadow)
+                        if (Common.appSettings.TF_EnableDropShadow)
                         {
                             SecondTransText.Effect = DropShadow;
                         }
@@ -870,7 +870,7 @@ namespace MisakaTranslator_WPF
             {
                 ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.EyeSlash);
             }
-            Common.appSettings.TF_showSourceText = _isShowSource;
+            Common.appSettings.TF_ShowSourceText = _isShowSource;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
