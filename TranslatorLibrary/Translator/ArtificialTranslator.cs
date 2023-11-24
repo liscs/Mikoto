@@ -263,7 +263,7 @@ namespace TranslatorLibrary.Translator
                 Console.WriteLine(possibleCursors[k]);
             }
             if (possibleCursors.Count == 0)
-                return Task.FromResult("无匹配文本");
+                return Task.FromResult("No matching text");
             Console.WriteLine(string.Format("[{0}:{1}]", maxI, jp_text[maxI]));
             Console.WriteLine("------");
             return Task.FromResult(cn_text[maxI] == "" ? jp_text[maxI] : cn_text[maxI]);

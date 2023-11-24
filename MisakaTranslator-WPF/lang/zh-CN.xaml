@@ -417,5 +417,24 @@
     <sys:String x:Key="SoftwareSettingsPage_Minimize">最小化到系统托盘</sys:String>
     <sys:String x:Key="SoftwareSettingsPage_Exit">退出 MisakaTranslator</sys:String>
     <sys:String x:Key="SoftwareSettingsPage_Enable">启用</sys:String>
-    
+
+    <!--补漏-->
+    <sys:String x:Key="AddOptWindow_PersonName">人名</sys:String>
+    <sys:String x:Key="AddOptWindow_PlaceName">地名</sys:String>
+    <sys:String x:Key="ComicTranslator_TransOne">翻译一：</sys:String>
+    <sys:String x:Key="ComicTranslator_TransTwo">翻译二：</sys:String>
+    <sys:String x:Key="Common_TextractorHistory">=================以下是Textractor的历史输出记录================</sys:String>
+    <sys:String x:Key="MainWindow_NoGlobalNotice">将不会显示全局通知。</sys:String>
+    <sys:String x:Key="ScreenCaptureWindow_Area">按住鼠标左键并拖动鼠标绘制出要识别的区域，确认完成后单击右键退出</sys:String>
+    <sys:String x:Key="ArtificialTransSettingsPage_FileExtension">MisakaTranslator人工翻译文件|*.txt</sys:String>
+    <sys:String x:Key="TesseractCliSettingsPage_JapaneseHorizontal">日语（横向）</sys:String>
+    <sys:String x:Key="TesseractCliSettingsPage_JapaneseVertical">日语（纵向）</sys:String>
+    <sys:String x:Key="TesseractCliSettingsPage_English">英语</sys:String>
+    <sys:String x:Key="TesseractCliSettingsPage_Custom">自定义</sys:String>
+    <sys:String x:Key="TesseractCliSettingsPage_Exe">可执行文件|*.exe</sys:String>
+    <sys:String x:Key="TranslateWindow_OCREmpty">[OCR]自动识别三次均为空，请自行刷新！</sys:String>
+    <sys:String x:Key="GameNameDialog_Modified">已修改，重启后生效！</sys:String>
+
+
+
 </ResourceDictionary>

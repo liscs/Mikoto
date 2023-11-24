@@ -1,4 +1,5 @@
 ﻿using DataAccessLibrary;
+using HandyControl.Tools.Extension;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,7 +25,7 @@ namespace MisakaTranslator_WPF
             if (nameBox.Text != "")
             {
                 GameHelper.UpdateGameNameByID(gameInfolst[gid].GameID, nameBox.Text);
-                HandyControl.Controls.MessageBox.Show("已修改，重启后生效！", "提示");
+                HandyControl.Controls.MessageBox.Show(Application.Current.Resources["GameNameDialog_Modified"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
             }
 
         }

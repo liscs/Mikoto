@@ -48,7 +48,7 @@ namespace MisakaTranslator_WPF
 
             viewModel = new ViewModel
             {
-                MeaInfo = "按住鼠标左键并拖动鼠标绘制出要识别的区域，确认完成后单击右键退出",
+                MeaInfo = Application.Current.Resources["ScreenCaptureWindow_Area"].ToString(),
                 InkStrokes = new StrokeCollection(),
             };
 

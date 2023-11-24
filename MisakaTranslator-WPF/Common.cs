@@ -72,7 +72,7 @@ namespace MisakaTranslator_WPF
                     FileStream fs = new FileStream("TextractorOutPutHistory.txt", FileMode.Create);
                     StreamWriter sw = new StreamWriter(fs);
 
-                    sw.WriteLine("=================以下是Textractor的历史输出记录================");
+                    sw.WriteLine(Application.Current.Resources["Common_TextractorHistory"]);
                     string[] history = textHooker.TextractorOutPutHistory.ToArray();
                     for (int i = 0; i < history.Length; i++)
                     {

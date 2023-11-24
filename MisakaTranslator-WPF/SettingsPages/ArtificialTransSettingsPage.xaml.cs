@@ -46,7 +46,7 @@ namespace MisakaTranslator_WPF.SettingsPages
         {
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
             {
-                Filter = "MisakaTranslator人工翻译文件|*.txt",
+                Filter = Application.Current.Resources["ArtificialTransSettingsPage_FileExtension"].ToString(),
             };
 
             if (dialog.ShowDialog() == true)
@@ -69,7 +69,7 @@ namespace MisakaTranslator_WPF.SettingsPages
         {
             Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog()
             {
-                Filter = "MisakaTranslator人工翻译文件|*.txt",
+                Filter = Application.Current.Resources["ArtificialTransSettingsPage_FileExtension"].ToString(),
             };
 
             if (dialog.ShowDialog().GetValueOrDefault())

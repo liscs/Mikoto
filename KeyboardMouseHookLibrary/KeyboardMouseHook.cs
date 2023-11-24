@@ -97,7 +97,7 @@ namespace KeyboardMouseHookLibrary
                 processMonitor.Kill();
                 processMonitor.Close();
                 processMonitor = null;
-                throw new Exception("注册键鼠钩子失败！");
+                throw new Exception("Keyboard Mouse Hook Failed");
             }
             else if (output == "KeyboardAction")
             {

@@ -9,10 +9,10 @@ namespace MisakaTranslator_WPF.SettingsPages.OCRPages
     {
         static Dictionary<string, string> modeLst = new Dictionary<string, string>()
         {
-            { "日语（横向）", "jpn" },
-            { "日语（纵向）", "jpn_vert" },
-            { "英语", "eng" },
-            { "自定义", "custom" }
+            { Application.Current.Resources["TesseractCliSettingsPage_JapaneseHorizontal"].ToString(), "jpn" },
+            { Application.Current.Resources["TesseractCliSettingsPage_JapaneseVertical"].ToString(), "jpn_vert" },
+            { Application.Current.Resources["TesseractCliSettingsPage_English"].ToString(), "eng" },
+            { Application.Current.Resources["TesseractCliSettingsPage_Custom"].ToString(), "custom" }
         };
         static List<string> itemList = modeLst.Keys.ToList();
         static List<string> valueList = new List<string>();
@@ -36,7 +36,7 @@ namespace MisakaTranslator_WPF.SettingsPages.OCRPages
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
-            dialog.Filter = "可执行文件|*.exe";
+            dialog.Filter = Application.Current.Resources["TesseractCliSettingsPage_Exe"].ToString();
             if (dialog.ShowDialog() == true)
             {
                 if (string.IsNullOrEmpty(dialog.FileName))
