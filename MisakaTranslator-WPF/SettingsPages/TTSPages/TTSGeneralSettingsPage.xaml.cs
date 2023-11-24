@@ -16,10 +16,10 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
             Enum.TryParse(appSettings.SelectedTTS, out TTSMode tTSMode);
             switch (tTSMode)
             {
-                case TTSMode.azure:
+                case TTSMode.Azure:
                     AzureTTSRadio.IsChecked = true;
                     break;
-                case TTSMode.local:
+                case TTSMode.Local:
                     LocalTTSRadio.IsChecked = true;
                     break;
             }

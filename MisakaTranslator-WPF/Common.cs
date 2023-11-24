@@ -16,29 +16,38 @@ using TextRepairLibrary;
 
 namespace MisakaTranslator_WPF
 {
+    public enum GuideMode
+    {
+        Hook = 1,
+        Ocr = 2,
+        Rehook = 3,
+        Clipboard = 4,
+    }
+
+    public enum TransMode
+    {
+        Hook = 1,
+        Ocr = 2,
+    }
+
+    public enum TTSMode
+    {
+        Azure = 1,
+        Local = 2,
+    }
+
+    public enum PhoneticNotationType
+    {
+        Hiragana = 1,
+        Katakana = 2,
+        Romaji = 3,
+    }
+
     public class Common
     {
         public static IAppSettings appSettings; //应用设置
         public static IRepeatRepairSettings repairSettings; //去重方法参数
 
-        public enum GuideMode
-        {
-            hook = 1,
-            ocr = 2,
-            rehook = 3,
-            clipboard = 4,
-        }
-
-        public enum TransMode
-        {
-            hook = 1,
-            ocr = 2,
-        }
-        public enum TTSMode
-        {
-            azure = 1,
-            local = 2,
-        }
         public static TransMode transMode; //全局使用中的翻译模式 1=hook 2=ocr
 
         public static Guid? GameID; //全局使用中的游戏ID(数据库)
@@ -90,7 +99,7 @@ namespace MisakaTranslator_WPF
                     return false;
                 }
             }
-            catch (System.NullReferenceException)
+            catch (NullReferenceException)
             {
                 return false;
             }

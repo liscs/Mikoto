@@ -9,10 +9,10 @@ namespace MisakaTranslator_WPF
     /// </summary>
     public partial class GameGuideWindow : Window
     {
-        Common.GuideMode GuideMode;
+        GuideMode GuideMode;
         bool isComplete;//是否是在完成状态下退出的，作为检验，默认为假
 
-        public GameGuideWindow(Common.GuideMode Mode)
+        public GameGuideWindow(GuideMode Mode)
         {
             InitializeComponent();
 
@@ -20,7 +20,7 @@ namespace MisakaTranslator_WPF
 
             isComplete = false;
             GuideMode = Mode;
-            if (Mode == Common.GuideMode.hook)
+            if (Mode == GuideMode.Hook)
             {
                 //Hook模式
                 List<string> lstStep = new List<string>()
@@ -36,7 +36,7 @@ namespace MisakaTranslator_WPF
                 FuncHint.Text = Application.Current.Resources["GameGuideWin_FuncHint_Hook"].ToString();
                 GuidePageFrame.Navigate(new Uri("GuidePages/Hook/ChooseGamePage.xaml", UriKind.Relative));
             }
-            else if (Mode == Common.GuideMode.ocr)
+            else if (Mode == GuideMode.Ocr)
             {
                 //OCR模式
                 List<string> lstStep = new List<string>()
@@ -52,7 +52,7 @@ namespace MisakaTranslator_WPF
                 FuncHint.Text = Application.Current.Resources["GameGuideWin_FuncHint_OCR"].ToString();
                 GuidePageFrame.Navigate(new Uri("GuidePages/OCR/ChooseOCRAreaPage.xaml", UriKind.Relative));
             }
-            else if (Mode == Common.GuideMode.rehook)
+            else if (Mode == GuideMode.Rehook)
             {
                 //重新选择Hook方法
                 List<string> lstStep = new List<string>()
@@ -65,7 +65,7 @@ namespace MisakaTranslator_WPF
                 FuncHint.Text = Application.Current.Resources["GameGuideWin_FuncHint_ReHook"].ToString();
                 GuidePageFrame.Navigate(new Uri("GuidePages/Hook/ReChooseHookFuncPage.xaml", UriKind.Relative));
             }
-            else if (Mode == Common.GuideMode.clipboard)
+            else if (Mode == GuideMode.Clipboard)
             {
                 //剪贴板监控
                 List<string> lstStep = new List<string>()
@@ -92,37 +92,37 @@ namespace MisakaTranslator_WPF
 
             if (args.XamlPath == "1")
             {
-                if (GuideMode == Common.GuideMode.hook)
+                if (GuideMode == GuideMode.Hook)
                 {
                     //Hook方式设置 完成
-                    Common.transMode = Common.TransMode.hook;
+                    Common.transMode = TransMode.Hook;
                     TranslateWindow translateWindow = new TranslateWindow();
                     translateWindow.Show();
                     isComplete = true;
                     this.Close();
                 }
-                else if (GuideMode == Common.GuideMode.ocr)
+                else if (GuideMode == GuideMode.Ocr)
                 {
                     //OCR方式设置 完成
-                    Common.transMode = Common.TransMode.ocr;
+                    Common.transMode = TransMode.Ocr;
                     TranslateWindow translateWindow = new TranslateWindow();
                     translateWindow.Show();
                     isComplete = true;
                     this.Close();
                 }
-                else if (GuideMode == Common.GuideMode.rehook)
+                else if (GuideMode == GuideMode.Rehook)
                 {
                     //Hook方式设置 完成
-                    Common.transMode = Common.TransMode.hook;
+                    Common.transMode = TransMode.Hook;
                     TranslateWindow translateWindow = new TranslateWindow();
                     translateWindow.Show();
                     isComplete = true;
                     this.Close();
                 }
-                else if (GuideMode == Common.GuideMode.clipboard)
+                else if (GuideMode == GuideMode.Clipboard)
                 {
                     //剪贴板监控方式设置 完成
-                    Common.transMode = Common.TransMode.hook;
+                    Common.transMode = TransMode.Hook;
                     TranslateWindow translateWindow = new TranslateWindow();
                     translateWindow.Show();
                     isComplete = true;
@@ -143,7 +143,7 @@ namespace MisakaTranslator_WPF
             if (isComplete == false)
             {
                 //确保是在未完成的情况下退出再检查
-                if (GuideMode == Common.GuideMode.hook || GuideMode == Common.GuideMode.rehook || GuideMode == Common.GuideMode.clipboard)
+                if (GuideMode == GuideMode.Hook || GuideMode == GuideMode.Rehook || GuideMode == GuideMode.Clipboard)
                 {
                     if (Common.textHooker != null)
                     {

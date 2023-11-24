@@ -196,13 +196,13 @@ namespace MisakaTranslator_WPF
 
         private void HookGuideBtn_Click(object sender, RoutedEventArgs e)
         {
-            var ggw = new GameGuideWindow(Common.GuideMode.hook);
+            var ggw = new GameGuideWindow(GuideMode.Hook);
             ggw.Show();
         }
 
         private void OCRGuideBtn_Click(object sender, RoutedEventArgs e)
         {
-            var ggw = new GameGuideWindow(Common.GuideMode.ocr);
+            var ggw = new GameGuideWindow(GuideMode.Ocr);
             ggw.Show();
         }
 
@@ -242,11 +242,21 @@ namespace MisakaTranslator_WPF
         private async Task StartTranslateByGid(int gid)
         {
             var pidList = new List<Process>();
+            DateTime dateTime = DateTime.Now;
 
-            foreach (var (pid, path) in ProcessHelper.GetProcessesData(GameInfoList[gid].Isx64))
-                if (path == GameInfoList[gid].FilePath)
-                    pidList.Add(Process.GetProcessById(pid));
-
+            //等待游戏启动
+            while (DateTime.Now - dateTime < TimeSpan.FromSeconds(5))
+            {
+                foreach (var (pid, path) in ProcessHelper.GetProcessesData(GameInfoList[gid].Isx64))
+                {
+                    if (path == GameInfoList[gid].FilePath)
+                    {
+                        pidList.Add(Process.GetProcessById(pid));
+                        goto ProcessFound;
+                    }
+                }
+            }
+        ProcessFound:
             if (pidList.Count == 0)
             {
                 HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
@@ -260,7 +270,7 @@ namespace MisakaTranslator_WPF
             }
 
             Common.GameID = GameInfoList[gid].GameID;
-            Common.transMode = Common.TransMode.hook;
+            Common.transMode = TransMode.Hook;
             Common.UsingDstLang = GameInfoList[gid].DstLang;
             Common.UsingSrcLang = GameInfoList[gid].SrcLang;
             Common.UsingRepairFunc = GameInfoList[gid].RepairFunc;
@@ -309,10 +319,8 @@ namespace MisakaTranslator_WPF
 
         private async void StartBtn_Click(object sender, RoutedEventArgs e)
         {
-            var res = Process.Start(GameInfoList[gid].FilePath);
-            res?.WaitForInputIdle(5000);
+            Process.Start(GameInfoList[gid].FilePath);
             GameInfoDrawer.IsOpen = false;
-            await Task.Delay(2000);
             await StartTranslateByGid(gid);
         }
 
@@ -346,10 +354,8 @@ namespace MisakaTranslator_WPF
             p.Arguments = $"-run \"{filepath}\"";
             p.UseShellExecute = false;
             p.WorkingDirectory = lePath;
-            var res = Process.Start(p);
-            res?.WaitForInputIdle(5000);
+            Process.Start(p);
             GameInfoDrawer.IsOpen = false;
-            await Task.Delay(2000);
             await StartTranslateByGid(gid);
         }
 
@@ -434,14 +440,14 @@ namespace MisakaTranslator_WPF
         {
             Common.textHooker = new TextHookHandle();
             Common.GameID = null;
-            Common.transMode = Common.TransMode.hook;
+            Common.transMode = TransMode.Hook;
             Common.textHooker.AddClipBoardThread();
 
             //剪贴板方式读取的特殊码和misakacode
             Common.textHooker.HookCodeList.Add("HB0@0");
             Common.textHooker.MisakaCodeList.Add("【0:-1:-1】");
 
-            var ggw = new GameGuideWindow(Common.GuideMode.clipboard);
+            var ggw = new GameGuideWindow(GuideMode.Clipboard);
             ggw.Show();
         }
 

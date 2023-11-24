@@ -67,77 +67,77 @@ namespace MisakaTranslator_WPF
             set;
         }
 
-        [Option(Alias = "AzureTranslator.secretKey", DefaultValue = "")]
+        [Option(Alias = "AzureTranslator.SecretKey", DefaultValue = "")]
         string AzureSecretKey
         {
             get;
             set;
         }
 
-        [Option(Alias = "AzureTranslator.location", DefaultValue = "")]
+        [Option(Alias = "AzureTranslator.Location", DefaultValue = "")]
         string AzureLocation
         {
             get;
             set;
         }
 
-        [Option(Alias = "BaiduTranslator.appID", DefaultValue = "")]
+        [Option(Alias = "BaiduTranslator.AppID", DefaultValue = "")]
         string BDappID
         {
             get;
             set;
         }
 
-        [Option(Alias = "BaiduTranslator.secretKey", DefaultValue = "")]
+        [Option(Alias = "BaiduTranslator.SecretKey", DefaultValue = "")]
         string BDsecretKey
         {
             get;
             set;
         }
 
-        [Option(Alias = "DeepLTranslator.secretKey", DefaultValue = "")]
+        [Option(Alias = "DeepLTranslator.SecretKey", DefaultValue = "")]
         string DeepLsecretKey
         {
             get;
             set;
         }
 
-        [Option(Alias = "TencentTranslator.appID", DefaultValue = "")]
+        [Option(Alias = "TencentTranslator.AppID", DefaultValue = "")]
         string TXappID
         {
             get;
             set;
         }
 
-        [Option(Alias = "TencentTranslator.appKey", DefaultValue = "")]
+        [Option(Alias = "TencentTranslator.AppKey", DefaultValue = "")]
         string TXappKey
         {
             get;
             set;
         }
 
-        [Option(Alias = "CaiyunTranslator.caiyunToken", DefaultValue = "")]
+        [Option(Alias = "CaiyunTranslator.CaiyunToken", DefaultValue = "")]
         string CaiyunToken
         {
             get;
             set;
         }
 
-        [Option(Alias = "ChatGPTTranslator.apiKey", DefaultValue = "")]
+        [Option(Alias = "ChatGPTTranslator.ApiKey", DefaultValue = "")]
         string ChatGPTapiKey
         {
             get;
             set;
         }
 
-        [Option(Alias = "ChatGPTTranslator.apiUrl", DefaultValue = "https://api.openai.com/v1/chat/completions")]
+        [Option(Alias = "ChatGPTTranslator.ApiUrl", DefaultValue = "https://api.openai.com/v1/chat/completions")]
         string ChatGPTapiUrl
         {
             get;
             set;
         }
 
-        [Option(Alias = "XiaoniuTranslator.xiaoniuApiKey", DefaultValue = "")]
+        [Option(Alias = "XiaoniuTranslator.XiaoniuApiKey", DefaultValue = "")]
         string xiaoniuApiKey
         {
             get;
@@ -277,7 +277,6 @@ namespace MisakaTranslator_WPF
             set;
         }
 
-        //选择使用的TTS，"azure"为AzureTTS，"local"为系统本地TTS
         [Option(Alias = "TTS.SelectedTTS", DefaultValue = "local")]
         string SelectedTTS
         {
@@ -313,35 +312,35 @@ namespace MisakaTranslator_WPF
             set;
         }
 
-        [Option(Alias = "TTS.Voice", DefaultValue = "")]
-        string ttsVoice
+        [Option(Alias = "TTS.LocalTTSVoice", DefaultValue = "")]
+        string LocalTTSVoice
         {
             get;
             set;
         }
 
-        [Option(Alias = "TTS.volume", DefaultValue = "80")]
-        int ttsVolume
+        [Option(Alias = "TTS.LoaclTTSVolume", DefaultValue = "80")]
+        int LoaclTTSVolume
         {
             get;
             set;
         }
 
-        [Option(Alias = "TTS.rate", DefaultValue = "0")]
-        int ttsRate
+        [Option(Alias = "TTS.LocaTTSRate", DefaultValue = "0")]
+        int LocaTTSRate
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.opacity", DefaultValue = "100")]
+        [Option(Alias = "TranslateFormSettings.Opacity", DefaultValue = "100")]
         double TF_Opacity
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.backColor", DefaultValue = "#4BFFFFFF")]
+        [Option(Alias = "TranslateFormSettings.BackColor", DefaultValue = "#4BFFFFFF")]
         string TF_BackColor
         {
             get;
@@ -376,124 +375,117 @@ namespace MisakaTranslator_WPF
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.showSourceText", DefaultValue = true)]
-        bool TF_showSourceText
+        [Option(Alias = "TranslateFormSettings.ShowSourceText", DefaultValue = true)]
+        bool TF_ShowSourceText
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.srcTextFont", DefaultValue = "微软雅黑")]
-        string TF_srcTextFont
+        [Option(Alias = "TranslateFormSettings.SrcTextFont", DefaultValue = "微软雅黑")]
+        string TF_SrcTextFont
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.srcTextSize", DefaultValue = "26")]
-        double TF_srcTextSize
+        [Option(Alias = "TranslateFormSettings.SrcTextSize", DefaultValue = "26")]
+        double TF_SrcTextSize
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.firstTransTextFont", DefaultValue = "微软雅黑")]
-        string TF_firstTransTextFont
+        [Option(Alias = "TranslateFormSettings.FirstTransTextFont", DefaultValue = "微软雅黑")]
+        string TF_FirstTransTextFont
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.firstTransTextSize", DefaultValue = "30")]
-        double TF_firstTransTextSize
+        [Option(Alias = "TranslateFormSettings.FirstTransTextSize", DefaultValue = "30")]
+        double TF_FirstTransTextSize
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.firstTransTextColor", DefaultValue = "#ffFFFFFF")]
-        string TF_firstTransTextColor
+        [Option(Alias = "TranslateFormSettings.FirstTransTextColor", DefaultValue = "#ffFFFFFF")]
+        string TF_FirstTransTextColor
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.secondTransTextFont", DefaultValue = "微软雅黑")]
-        string TF_secondTransTextFont
+        [Option(Alias = "TranslateFormSettings.SecondTransTextFont", DefaultValue = "微软雅黑")]
+        string TF_SecondTransTextFont
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.secondTransTextSize", DefaultValue = "30")]
-        double TF_secondTransTextSize
+        [Option(Alias = "TranslateFormSettings.SecondTransTextSize", DefaultValue = "30")]
+        double TF_SecondTransTextSize
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.secondTransTextColor", DefaultValue = "#ffFFFFFF")]
-        string TF_secondTransTextColor
+        [Option(Alias = "TranslateFormSettings.SecondTransTextColor", DefaultValue = "#ffFFFFFF")]
+        string TF_SecondTransTextColor
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.firstWhiteStrokeIsChecked", DefaultValue = false)]
-        bool TF_firstWhiteStrokeIsChecked
+        [Option(Alias = "TranslateFormSettings.FirstWhiteStrokeIsChecked", DefaultValue = false)]
+        bool TF_FirstWhiteStrokeIsChecked
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.secondWhiteStrokeIsChecked", DefaultValue = false)]
-        bool TF_secondWhiteStrokeIsChecked
+        [Option(Alias = "TranslateFormSettings.SecondWhiteStrokeIsChecked", DefaultValue = false)]
+        bool TF_SecondWhiteStrokeIsChecked
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.isKanaShow", DefaultValue = true)]
+        [Option(Alias = "TranslateFormSettings.EnablePhoneticNotation", DefaultValue = true)]
         bool TF_EnablePhoneticNotation
         {
             get;
             set;
         }
 
-        [Option(Alias = "TranslateFromSetting.isDropShadow", DefaultValue = true)]
-        bool TF_DropShadow
+        [Option(Alias = "TranslateFromSettings.EnableDropShadow", DefaultValue = true)]
+        bool TF_EnableDropShadow
         {
             get;
             set;
         }
 
-        enum PhoneticNotationType
-        {
-            hiragana = 1,
-            katakana = 2,
-            romaji = 3,
-        }
-
-        [Option(Alias = "TranslateFromSetting.phoneticNotationType", DefaultValue = PhoneticNotationType.hiragana)]
+        [Option(Alias = "TranslateFromSettings.PhoneticNotationType", DefaultValue = PhoneticNotationType.Hiragana)]
         PhoneticNotationType TF_PhoneticNotationType
         {
             get;
             set;
         }
-        [Option(Alias = "TranslateFromSetting.isSuperBold", DefaultValue = true)]
-        bool TF_SuperBold
+        [Option(Alias = "TranslateFromSettings.EnableSuperBold", DefaultValue = true)]
+        bool TF_EnableSuperBold
         {
             get;
             set;
         }
-        [Option(Alias = "TranslateFromSetting.isColorful", DefaultValue = true)]
-        bool TF_Colorful
+        [Option(Alias = "TranslateFromSettings.EnableColorful", DefaultValue = true)]
+        bool TF_EnableColorful
         {
             get;
             set;
         }
 
-        [Option(Alias = "ArtificialTrans.patchPath", DefaultValue = "")]
+        [Option(Alias = "ArtificialTrans.PatchPath", DefaultValue = "")]
         string ArtificialPatchPath
         {
             get;
@@ -521,8 +513,8 @@ namespace MisakaTranslator_WPF
         [Option(DefaultValue = true)]
         bool GrowlEnabled { get; set; }
 
-        [Option(Alias = "Mecab.dicPath", DefaultValue = "")]
-        string Mecab_dicPath { get; set; }
+        [Option(Alias = "Mecab.DicPath", DefaultValue = "")]
+        string Mecab_DicPath { get; set; }
 
         [Option(Alias = "Textractor.Path32", DefaultValue = "")]
         string Textractor_Path32 { get; set; }

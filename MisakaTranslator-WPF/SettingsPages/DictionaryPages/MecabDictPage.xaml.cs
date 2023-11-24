@@ -21,20 +21,20 @@ namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 PathBox.Text = dialog.SelectedPath;
-                Common.appSettings.Mecab_dicPath = PathBox.Text;
+                Common.appSettings.Mecab_DicPath = PathBox.Text;
             }
         }
 
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
-            PathBox.Text = Common.appSettings.Mecab_dicPath;
+            PathBox.Text = Common.appSettings.Mecab_DicPath;
         }
 
         private void ClearPathBtn_Click(object sender, RoutedEventArgs e)
         {
             PathBox.Text = string.Empty;
-            Common.appSettings.Mecab_dicPath = PathBox.Text;
+            Common.appSettings.Mecab_DicPath = PathBox.Text;
         }
     }
 }
