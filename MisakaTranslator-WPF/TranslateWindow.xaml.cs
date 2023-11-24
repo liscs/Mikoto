@@ -395,7 +395,7 @@ namespace MisakaTranslator_WPF
             else if (!string.IsNullOrEmpty(Common.ocr.GetLastError()))
                 Growl.WarningGlobal(Common.appSettings.OCRsource + " Error: " + Common.ocr.GetLastError());
             else
-                Growl.WarningGlobal("[OCR]自动识别三次均为空，请自行刷新！");
+                Growl.WarningGlobal(Application.Current.Resources["TranslateWindow_OCREmpty"].ToString());
 
             IsOCRingFlag = false;
         }

@@ -1,9 +1,13 @@
 ﻿using IronPython.Hosting;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using TextRepairLibrary.lang;
 
 namespace TextRepairLibrary
 {
@@ -14,18 +18,11 @@ namespace TextRepairLibrary
         public static string regexPattern;
         public static string regexReplacement;
 
-        public static Dictionary<string, string> lstRepairFun = new Dictionary<string, string>() {
-            { "不进行处理" , "RepairFun_NoDeal" },
-            { "单字重复处理" , "RepairFun_RemoveSingleWordRepeat" },
-            { "句子重复处理" , "RepairFun_RemoveSentenceRepeat" },
-            { "去除字母和数字" , "RepairFun_RemoveLetterNumber" },
-            { "去除HTML标签" , "RepairFun_RemoveHTML" },
-            { "正则表达式替换(见说明)" , "RepairFun_RegexReplace" },
-            { "用户自定义DLL(见说明)" , "RepairFun_Custom" }
-        };
+        public static Dictionary<string, string> lstRepairFun;
 
         static TextRepair()
         {
+            Refresh();
             try
             {
                 string[] handlers = Directory.GetFiles("textRepairPlugins");
@@ -37,7 +34,7 @@ namespace TextRepairLibrary
                     {
                         continue;
                     }
-                    lstRepairFun.Add("用户自定义Python2脚本: " + stem, "#" + stem);
+                    lstRepairFun.Add(Strings.CustomPythonScript + stem, "#" + stem);
                 }
             }
             catch { }
@@ -65,7 +62,7 @@ namespace TextRepairLibrary
             }
             else
             {
-                return "该方法处理错误！";
+                return Strings.MethodError;
             }
         }
 
@@ -149,14 +146,14 @@ namespace TextRepairLibrary
 
             if (source == "" || source.Length < findNum)
             {
-                return "";
+                return string.Empty;
             }
 
             char[] arr = source.ToCharArray();
             Array.Reverse(arr);
             string text = new string(arr);
 
-            string cmp = "";
+            string cmp = string.Empty;
             for (int i = 1; i <= findNum; i++)
             {
                 cmp = cmp + text[i];
@@ -165,7 +162,7 @@ namespace TextRepairLibrary
             int pos = text.IndexOf(cmp, findNum);
             if (pos == -1)
             {
-                return "句子去重出错";
+                return Strings.SentenceRepeatError;
             }
 
             string t1 = text.Remove(pos, text.Length - pos);
@@ -275,6 +272,20 @@ namespace TextRepairLibrary
                 return e.Message;
             }
             return (string)scope.GetVariable("ResultStr");
+        }
+
+        public static void Refresh()
+        {
+            lstRepairFun = new Dictionary<string, string>() {
+            { Strings.NoDeal , "RepairFun_NoDeal" },
+            { Strings.RemoveSingleWordRepeat , "RepairFun_RemoveSingleWordRepeat" },
+            { Strings.RemoveSentenceRepeat , "RepairFun_RemoveSentenceRepeat" },
+            { Strings.RemoveLetterNumber , "RepairFun_RemoveLetterNumber" },
+            { Strings.RemoveHTML , "RepairFun_RemoveHTML" },
+            { Strings.RegexReplace , "RepairFun_RegexReplace" },
+            { Strings.Custom , "RepairFun_Custom" }
+        };
+
         }
     }
 }

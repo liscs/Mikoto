@@ -294,7 +294,7 @@ namespace MisakaTranslator_WPF.ComicTranslator
                 transRes2 = "None";
             }
 
-            transTextBox.Text = "翻译一：" + transRes1 + "\n翻译二：" + transRes2;
+            transTextBox.Text = Application.Current.Resources["ComicTranslator_TransOne"] + transRes1 + Environment.NewLine + Application.Current.Resources["ComicTranslator_TransTwo"] + transRes2;
 
         }
 

@@ -15,6 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
 using TextHookLibrary;
+using TextRepairLibrary;
 using TranslatorLibrary;
 
 namespace MisakaTranslator_WPF
@@ -395,6 +396,7 @@ namespace MisakaTranslator_WPF
                 Thread.CurrentThread.CurrentCulture = new CultureInfo(Common.appSettings.AppLanguage);
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(Common.appSettings.AppLanguage);
                 TranslatorCommon.Refresh();
+                TextRepair.Refresh();
                 languageResource.Source = new Uri($"lang/{Common.appSettings.AppLanguage}.xaml", UriKind.Relative);
                 Application.Current.Resources.MergedDictionaries[1] = languageResource;
                 HandyControl.Controls.MessageBox.Show(Application.Current.Resources["Language_Changed"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
@@ -478,8 +480,7 @@ namespace MisakaTranslator_WPF
         {
             if (!Common.appSettings.GrowlEnabled)
             {
-                Growl.InfoGlobal("将不会显示全局通知。"); // 必须先显示一句
-                                                // 则GrowlWindow是null
+                Growl.InfoGlobal(Application.Current.Resources["MainWindow_NoGlobalNotice"].ToString()); // 必须先显示一句否则GrowlWindow是null
                 var gw = typeof(Growl).GetField("GrowlWindow", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic).GetValue(null);
                 var panel = gw.GetType().GetProperty("GrowlPanel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
                 var sp = new StackPanel();

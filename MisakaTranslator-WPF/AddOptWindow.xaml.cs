@@ -14,11 +14,11 @@ namespace MisakaTranslator_WPF
             InitializeComponent();
             this.Topmost = true;
 
-            List<string> wordtype = new List<string>()
-            {
-                "人名",
-                "地名"
-            };
+            List<string> wordtype =
+            [
+                Application.Current.Resources["AddOptWindow_PersonName"].ToString(),
+                Application.Current.Resources["AddOptWindow_PlaceName"].ToString(),
+            ];
 
             srcText.Text = src;
             wordTypeCombox.ItemsSource = wordtype;
