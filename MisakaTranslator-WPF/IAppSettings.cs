@@ -277,8 +277,8 @@ namespace MisakaTranslator_WPF
             set;
         }
 
-        [Option(Alias = "TTS.SelectedTTS", DefaultValue = "local")]
-        string SelectedTTS
+        [Option(Alias = "TTS.SelectedTTS", DefaultValue = "Local")]
+        TTSMode SelectedTTS
         {
             get;
             set;

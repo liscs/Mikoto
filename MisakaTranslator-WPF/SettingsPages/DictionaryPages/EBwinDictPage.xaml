@@ -9,8 +9,12 @@
       Title="ManageDictionariesPage">
 
     <Grid>
-        <TextBlock Text="{DynamicResource EBwinDictPage_Introduce}" FontSize="16" TextWrapping="WrapWithOverflow" Margin="10" />
-        <StackPanel Margin="20,10,20,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{DynamicResource EBwinDictPage_Introduce}" FontSize="16" TextWrapping="WrapWithOverflow" Margin="10" />
+        <StackPanel Grid.Row="1" Margin="20,10,20,10">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type DockPanel}">
                     <Setter Property="Margin" Value="0,10,0,0" />

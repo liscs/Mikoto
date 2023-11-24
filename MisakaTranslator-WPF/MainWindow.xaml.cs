@@ -478,7 +478,8 @@ namespace MisakaTranslator_WPF
         {
             if (!Common.appSettings.GrowlEnabled)
             {
-                Growl.InfoGlobal("将不会显示全局通知。"); // 必须先显示一句否则GrowlWindow是null
+                Growl.InfoGlobal("将不会显示全局通知。"); // 必须先显示一句
+                                                // 则GrowlWindow是null
                 var gw = typeof(Growl).GetField("GrowlWindow", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic).GetValue(null);
                 var panel = gw.GetType().GetProperty("GrowlPanel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
                 var sp = new StackPanel();

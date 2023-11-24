@@ -13,8 +13,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
         public TTSGeneralSettingsPage()
         {
             InitializeComponent();
-            Enum.TryParse(appSettings.SelectedTTS, out TTSMode tTSMode);
-            switch (tTSMode)
+            switch (appSettings.SelectedTTS)
             {
                 case TTSMode.Azure:
                     AzureTTSRadio.IsChecked = true;
@@ -27,12 +26,12 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
 
         private void AzureTTSRadio_Checked(object sender, RoutedEventArgs e)
         {
-            appSettings.SelectedTTS = "azure";
+            appSettings.SelectedTTS = TTSMode.Azure;
         }
 
         private void LocalTTSRadio_Checked(object sender, RoutedEventArgs e)
         {
-            appSettings.SelectedTTS = "local";
+            appSettings.SelectedTTS = TTSMode.Local;
         }
     }
 }
