@@ -35,7 +35,6 @@ namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
             UpdateDictionariesDisplay();
         }
 
-        // probably should be split into several methods
         private void UpdateDictionariesDisplay()
         {
             allDicts = _ebwinHelper.GetAllDicts();

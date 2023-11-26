@@ -30,7 +30,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Grid x:Name="TitleBar" Grid.Row="0" Height="32">
+        <Grid Name="TitleBar" Grid.Row="0" Height="32">
             <Grid.Resources>
                 <Style TargetType="StackPanel">
                     <Setter Property="VerticalAlignment" Value="Center" />
@@ -73,7 +73,7 @@
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1" Margin="10" Orientation="Vertical">
-            <WrapPanel x:Name="SourceTextPanel" Margin="10,0,10,5" Orientation="Horizontal" Background="Transparent"></WrapPanel>
+            <WrapPanel Name="SourceTextPanel" Margin="10,0,10,5" Orientation="Horizontal" Background="Transparent"/>
             <hc:OutlineText Text="{DynamicResource TranslateWin_WaitingSource}" 
                             Fill="White" Stroke="Black" StrokeThickness="0.7" FontWeight="Bold" Name="FirstTransText" Margin="10,0,10,5" TextWrapping="Wrap" StrokePosition="Outside"></hc:OutlineText>
             <hc:OutlineText Text="" 

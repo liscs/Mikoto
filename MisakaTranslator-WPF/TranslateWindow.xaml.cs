@@ -62,6 +62,7 @@ namespace MisakaTranslator_WPF
         private HWND winHandle;//窗口句柄，用于设置活动窗口，以达到全屏状态下总在最前的目的
         private TransWinSettingsWindow transWinSettingsWindow;
 
+        //Effect 疑似有内存泄露 https://github.com/dotnet/wpf/issues/6782 use frozen
         private DropShadowEffect DropShadow = new DropShadowEffect();
 
         public TranslateWindow()
@@ -468,6 +469,7 @@ namespace MisakaTranslator_WPF
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 SourceTextPanel.Children.Clear();
+                SourceTextPanel.UpdateLayout();
                 if (_isShowSource)
                 {
                     //3.分词
@@ -525,7 +527,7 @@ namespace MisakaTranslator_WPF
                             if (Common.appSettings.TF_EnableDropShadow)
                             {
                                 //加入原文的阴影
-                                textBox.Effect = DropShadow;
+                                textBox.Effect = (Effect)DropShadow.GetCurrentValueAsFrozen();
                             }
 
                             if (Common.appSettings.TF_EnableColorful)
@@ -553,7 +555,7 @@ namespace MisakaTranslator_WPF
                                         textBox.Foreground = Brushes.SkyBlue;
                                         break;
                                     case "副詞":
-                                        textBox.Foreground = Brushes.Indigo;
+                                        textBox.Foreground = Brushes.BlueViolet;
                                         break;
                                     case "助詞":
                                         textBox.Foreground = Brushes.Wheat;
@@ -622,7 +624,7 @@ namespace MisakaTranslator_WPF
                             if (Common.appSettings.TF_EnableDropShadow)
                             {
                                 //加入注音的阴影
-                                superScript.Effect = DropShadow;
+                                superScript.Effect = (Effect)DropShadow.GetCurrentValueAsFrozen();
                             }
 
                             if (SourceTextFontSize - 6.5 > 0)
@@ -678,7 +680,7 @@ namespace MisakaTranslator_WPF
                         textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
                         if (Common.appSettings.TF_EnableDropShadow)
                         {
-                            textBox.Effect = DropShadow;
+                            textBox.Effect = (Effect)DropShadow.GetCurrentValueAsFrozen(); ;
                         }
                         textBox.Foreground = Brushes.White;
                         SourceTextPanel.Children.Add(textBox);
@@ -744,7 +746,7 @@ namespace MisakaTranslator_WPF
                         FirstTransText.Text = afterString;
                         if (Common.appSettings.TF_EnableDropShadow)
                         {
-                            FirstTransText.Effect = DropShadow;
+                            FirstTransText.Effect = (Effect)DropShadow.GetCurrentValueAsFrozen(); ;
                         }
                         else
                         {
@@ -759,7 +761,7 @@ namespace MisakaTranslator_WPF
                         SecondTransText.Text = afterString;
                         if (Common.appSettings.TF_EnableDropShadow)
                         {
-                            SecondTransText.Effect = DropShadow;
+                            SecondTransText.Effect = (Effect)DropShadow.GetCurrentValueAsFrozen(); ;
                         }
                         else
                         {

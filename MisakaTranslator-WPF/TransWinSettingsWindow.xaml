@@ -6,7 +6,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:MisakaTranslator_WPF"
         mc:Ignorable="d"
-        Title="{DynamicResource TransWinSettingsWin_Title}" Height="500" Width="300">
+        Title="{DynamicResource TransWinSettingsWin_Title}" Height="500" Width="300" MinWidth="300">
     <Grid>
 
         <TabControl Style="{DynamicResource TabControlInLine}">
@@ -17,7 +17,7 @@
                     <Button Name="BgColorBtn" Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}" Margin="10" Width="200" Style="{DynamicResource ButtonPrimary}" Click="ChooseColorBtn_Click"/>
                     <Border Name="BgColorBlock" Margin="10" Width="200" Height="25"/>
                     <CheckBox Name="DropShadowCheckBox" Content="{DynamicResource TransWinSettingsWin_DropShadowCbox}" Margin="10" HorizontalAlignment="Center"/>
-                    <CheckBox x:Name="ZenModeCheckBox" Content="{DynamicResource TransWinSettingsWin_ZenMode}" HorizontalAlignment="Center" Margin="10" />
+                    <CheckBox Name="ZenModeCheckBox" Content="{DynamicResource TransWinSettingsWin_ZenMode}" HorizontalAlignment="Center" Margin="10" />
                 </StackPanel>
 
             </TabItem>
@@ -46,7 +46,7 @@
                     <CheckBox Name="KanaBoldCheckBox" Content="{DynamicResource TransWinSettingsWin_KanaBoldCbox}" Margin="10" HorizontalAlignment="Left"/>
                     <CheckBox Name="ColorfulCheckBox" Content="{DynamicResource TransWinSettingsWin_ColorfulCbox}" Margin="10" HorizontalAlignment="Left"/>
 
-                    <TextBlock Text="{DynamicResource TransWinSettingsWin_srcSetNotice}" Margin="10" HorizontalAlignment="Center"/>
+                    <TextBlock TextWrapping="Wrap" Text="{DynamicResource TransWinSettingsWin_srcSetNotice}" Margin="10" HorizontalAlignment="Center"/>
 
                 </StackPanel>
 

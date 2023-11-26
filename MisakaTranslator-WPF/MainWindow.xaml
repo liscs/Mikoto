@@ -41,7 +41,7 @@
         <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Button fa:Awesome.Content="Language" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{DynamicResource EffectShadow5}"  Margin="0,0,20,0.5" Click="LanguageBtn_Click">
                 <Button.ContextMenu>
-                    <ContextMenu x:Name="LanguageContextMenu">
+                    <ContextMenu Name="LanguageContextMenu">
                         <MenuItem Header="中文" Click="Language_MenuItem_Click" Tag="zh-CN"/>
                         <MenuItem Header="English" Click="Language_MenuItem_Click" Tag="en-US"/>
                     </ContextMenu>
@@ -101,7 +101,7 @@
                 </Grid>
             </Border>
         </hc:Drawer>
-        <hc:NotifyIcon Token="MisakaTranslator" x:Name="NotifyIconContextContent" Text="HandyControl" IsBlink="False" Visibility="Visible"  Icon="pack://application:,,,/MisakaTranslator-WPF;component/logo.ico">
+        <hc:NotifyIcon Token="MisakaTranslator" Name="NotifyIconContextContent" Text="HandyControl" IsBlink="False" Visibility="Visible"  Icon="pack://application:,,,/MisakaTranslator-WPF;component/logo.ico">
             <hc:NotifyIcon.ContextContent>
                 <Border CornerRadius="4" Margin="10" Background="{DynamicResource RegionBrush}" Effect="{DynamicResource EffectShadow2}">
                     <StackPanel VerticalAlignment="Center" Margin="16">

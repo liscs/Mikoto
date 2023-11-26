@@ -13,11 +13,11 @@
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel Background="White" Margin="10">
                 <TextBlock Text="{DynamicResource SoftwareSettingsPage_ClickCloseButton}" FontSize="16" FontWeight="Black" Foreground="#666666"/>
-                <RadioButton x:Name="MinimizationRadioButton" Content="{DynamicResource SoftwareSettingsPage_Minimize}" HorizontalAlignment="Left" Margin="0,10,0,0" Click="RadioButtonBase_OnClick"/>
-                <RadioButton x:Name="ExitRadioButton" Content="{DynamicResource SoftwareSettingsPage_Exit}" HorizontalAlignment="Left" Margin="0,5,0,0" Click="RadioButtonBase_OnClick"/>
+                <RadioButton Name="MinimizationRadioButton" Content="{DynamicResource SoftwareSettingsPage_Minimize}" HorizontalAlignment="Left" Margin="0,10,0,0" Click="RadioButtonBase_OnClick"/>
+                <RadioButton Name="ExitRadioButton" Content="{DynamicResource SoftwareSettingsPage_Exit}" HorizontalAlignment="Left" Margin="0,5,0,0" Click="RadioButtonBase_OnClick"/>
 
                 <TextBlock Text="{DynamicResource SoftwareSettingsPage_EnableGlobalNotification}" FontSize="16" FontWeight="Black" Foreground="#666666" Margin="0,10,0,0"/>
-                <CheckBox x:Name="GrowlEnabledCheckBox" Content="{DynamicResource SoftwareSettingsPage_Enable}" HorizontalAlignment="Left" Margin="0,10,0,0" Click="GrowlEnabledCheckBox_Click"/>
+                <CheckBox Name="GrowlEnabledCheckBox" Content="{DynamicResource SoftwareSettingsPage_Enable}" HorizontalAlignment="Left" Margin="0,10,0,0" Click="GrowlEnabledCheckBox_Click"/>
             </StackPanel>
         </hc:ScrollViewer>
     </Grid>

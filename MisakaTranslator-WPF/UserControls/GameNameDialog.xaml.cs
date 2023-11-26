@@ -1,5 +1,4 @@
 ﻿using DataAccessLibrary;
-using HandyControl.Tools.Extension;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;

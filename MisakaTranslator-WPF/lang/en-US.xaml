@@ -358,28 +358,28 @@
 
     <sys:String x:Key="GeneralTransSettingsPage_Translimit">Translation limit word count</sys:String>
 
-    <sys:String x:Key="ArtificialTransAdd_Error_Hint">The automatic addition of manual translation results failed!</sys:String>
+    <sys:String x:Key="ArtificialTransAdd_Error_Hint">The automatic addition of human translation results failed!</sys:String>
 
     <sys:String x:Key="ArtificialTransWin_Title">Customized human translation results</sys:String>
-    <sys:String x:Key="ArtificialTransWin_Hint">In this window, you can customize the manual translation results. The upper edit box represents the original content, and you can enter the customized translation in the lower edit box. By default, the translation will be determined by the translation from the first translation source.</sys:String>
+    <sys:String x:Key="ArtificialTransWin_Hint">In this window, you can customize the human translation results. The upper edit box represents the original content, and you can enter the customized translation in the lower edit box. By default, the translation will be determined by the translation from the first translation source.</sys:String>
     <sys:String x:Key="ArtificialTransWin_transBox">Please enter translation</sys:String>
     <sys:String x:Key="ArtificialTransWin_ResetBtn">Clear content</sys:String>
     <sys:String x:Key="ArtificialTransWin_ConfirmBtn">Confirm modification</sys:String>
     <sys:String x:Key="ArtificialTransWin_Success_Hint">Customized human translation results successfully!</sys:String>
-    <sys:String x:Key="ArtificialTransWin_Error_Hint">Customized manual translation result failed!</sys:String>
+    <sys:String x:Key="ArtificialTransWin_Error_Hint">Customized human translation result failed!</sys:String>
 
     <sys:String x:Key="TranslateWin_Menu_ATadd">Custom human translation</sys:String>
 
-    <sys:String x:Key="ArtificialTransSettingsPage_Introduce">Configure settings related to manual translation here. You can choose whether to enable human translation logging, specify the location of human translation text files, and export text translations for all your currently saved games.</sys:String>
-    <sys:String x:Key="ArtificialTransSettingsPage_ATon_Hint">After turning on manual translation recording, the translated text of the first translation source will be automatically recorded in the database during the game.</sys:String>
-    <sys:String x:Key="ArtificialTransSettingsPage_ATon">Enable manual translation records</sys:String>
-    <sys:String x:Key="ArtificialTransSettingsPage_ChoosePath_Hint">Manual translation file path</sys:String>
+    <sys:String x:Key="ArtificialTransSettingsPage_Introduce">Configure settings related to human translation here. You can choose whether to enable human translation logging, specify the location of human translation text files, and export text translations for all your currently saved games.</sys:String>
+    <sys:String x:Key="ArtificialTransSettingsPage_ATon_Hint">After turning on human translation recording, the translated text of the first translation source will be automatically recorded in the database during the game.</sys:String>
+    <sys:String x:Key="ArtificialTransSettingsPage_ATon">Enable human translation records</sys:String>
+    <sys:String x:Key="ArtificialTransSettingsPage_ChoosePath_Hint">Human translation file path</sys:String>
     <sys:String x:Key="ArtificialTransSettingsPage_GameChoose">Choose game translation database</sys:String>
     <sys:String x:Key="ArtificialTransSettingsPage_ExportBtn">Export human translation file</sys:String>
     <sys:String x:Key="ArtificialTransSettingsPage_Export_Error">Failed to export human translation file!</sys:String>
     <sys:String x:Key="ArtificialTransSettingsPage_Export_Success">Exporting human translation files is completed!</sys:String>
 
-    <sys:String x:Key="SettingsMenu_ATSettings">Manual translation related settings</sys:String>
+    <sys:String x:Key="SettingsMenu_ATSettings">Human Translation Settings</sys:String>
 
     <sys:String x:Key="ArtificialTransWin_SecondTransBtn">Use secondary translation source results</sys:String>
 

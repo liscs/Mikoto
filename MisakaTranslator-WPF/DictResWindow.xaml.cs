@@ -41,7 +41,7 @@ namespace MisakaTranslator_WPF
 
         public void Search(string s)
         {
-            if (string.IsNullOrWhiteSpace(s)) 
+            if (string.IsNullOrWhiteSpace(s))
                 return;
             Dispatcher.BeginInvoke(() =>
             {
