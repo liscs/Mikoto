@@ -468,6 +468,7 @@ namespace MisakaTranslator_WPF
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 SourceTextPanel.Children.Clear();
+                SourceTextPanel.UpdateLayout();
                 if (_isShowSource)
                 {
                     //3.分词
