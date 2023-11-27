@@ -145,8 +145,8 @@ namespace MisakaTranslator_WPF
                     {
                         var azureTTS = new AzureTTS();
                         azureTTS.SetTTSVoice(Common.appSettings.AzureTTSVoice);
-                        azureTTS.TTSInit(Common.appSettings.AzureTTSSecretKey, Common.appSettings.AzureTTSLocation);
                         azureTTS.ProxyString = Common.appSettings.AzureTTSProxy;
+                        azureTTS.TTSInit(Common.appSettings.AzureTTSSecretKey, Common.appSettings.AzureTTSLocation);
                         _TTS = azureTTS;
                     }
                     else
@@ -469,7 +469,6 @@ namespace MisakaTranslator_WPF
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 SourceTextPanel.Children.Clear();
-                SourceTextPanel.UpdateLayout();
                 if (_isShowSource)
                 {
                     //3.分词
