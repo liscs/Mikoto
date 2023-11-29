@@ -45,7 +45,7 @@ namespace MecabHelperLibrary
         public string Feature;
     }
 
-    public class MecabHelper : IDisposable
+    public partial class MecabHelper : IDisposable
     {
         private readonly MeCabTagger Tagger;
 
@@ -89,7 +89,7 @@ namespace MecabHelperLibrary
                 {
                     if (node.CharType > 0)
                     {
-                        var features = Regex.Split(node.Feature, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                        var features = CommaSeparateRegex().Split(node.Feature);
 
 
                         MecabWordInfo mwi = new MecabWordInfo
@@ -336,5 +336,8 @@ namespace MecabHelperLibrary
             }
             return romaji;
         }
+
+        [GeneratedRegex(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")]
+        private static partial Regex CommaSeparateRegex();
     }
 }

@@ -8,14 +8,13 @@ using TextRepairLibrary.lang;
 
 namespace TextRepairLibrary
 {
-    public class TextRepair
+    public static class TextRepair
     {
-        public static int SingleWordRepeatTimes;
-        public static int SentenceRepeatFindCharNum;
-        public static string regexPattern;
-        public static string regexReplacement;
-
-        public static Dictionary<string, string> lstRepairFun;
+        public static string RegexReplacement { get; set; }
+        public static string RegexPattern { get; set; }
+        public static int SentenceRepeatFindCharNum { get; set; }
+        public static int SingleWordRepeatTimes { get; set; }
+        public static Dictionary<string, string> LstRepairFun { get; set; }
 
         static TextRepair()
         {
@@ -31,7 +30,7 @@ namespace TextRepairLibrary
                     {
                         continue;
                     }
-                    lstRepairFun.Add(Strings.CustomPythonScript + stem, "#" + stem);
+                    LstRepairFun.Add(Strings.CustomPythonScript + stem, "#" + stem);
                 }
             }
             catch { }
@@ -46,7 +45,7 @@ namespace TextRepairLibrary
         /// <returns></returns>
         public static string RepairFun_Auto(string functionName, string sourceText)
         {
-            if (functionName.StartsWith("#"))
+            if (functionName.StartsWith('#'))
             {
                 return RepairFun_PythonScript(functionName.Substring(1), sourceText);
             }
@@ -61,16 +60,6 @@ namespace TextRepairLibrary
             {
                 return Strings.MethodError;
             }
-        }
-
-
-        /// <summary>
-        /// 无处理方式
-        /// </summary>
-        /// <returns></returns>
-        public static string RepairFun_NoDeal(string source)
-        {
-            return source;
         }
 
         /// <summary>
@@ -90,7 +79,7 @@ namespace TextRepairLibrary
             int flag = 0;
             string ret = "";
 
-            if (repeatTimes <= 2)
+            if (repeatTimes <= 1)
             {
                 //未设置固定重复次数时，逢重复就删
                 for (int i = 1; i < source.Length; i++)
@@ -172,41 +161,17 @@ namespace TextRepairLibrary
         }
 
         /// <summary>
-        /// 去字母和数字（包括大写和小写字母）
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static string RepairFun_RemoveLetterNumber(string source)
-        {
-            string strRemoved = Regex.Replace(source, "[a-z]", "", RegexOptions.IgnoreCase);
-            strRemoved = Regex.Replace(strRemoved, "[0-9]", "", RegexOptions.IgnoreCase);
-            return strRemoved;
-        }
-
-        /// <summary>
-        /// 去除HTML标签
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static string RepairFun_RemoveHTML(string source)
-        {
-            string strRemoved = Regex.Replace(source, "<[^>]+>", "");
-            strRemoved = Regex.Replace(strRemoved, "&[^;]+;", "");
-            return strRemoved;
-        }
-
-        /// <summary>
         /// 正则表达式替换
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
         public static string RepairFun_RegexReplace(string source)
         {
-            if (regexPattern == null || regexReplacement == null || source == "")
+            if (RegexPattern == null || RegexReplacement == null || source == "")
             {
                 return "";
             }
-            return Regex.Replace(source, regexPattern, regexReplacement);
+            return Regex.Replace(source, RegexPattern, RegexReplacement);
         }
 
 
@@ -273,12 +238,10 @@ namespace TextRepairLibrary
 
         public static void Refresh()
         {
-            lstRepairFun = new Dictionary<string, string>() {
+            LstRepairFun = new Dictionary<string, string>() {
             { Strings.NoDeal , "RepairFun_NoDeal" },
             { Strings.RemoveSingleWordRepeat , "RepairFun_RemoveSingleWordRepeat" },
             { Strings.RemoveSentenceRepeat , "RepairFun_RemoveSentenceRepeat" },
-            { Strings.RemoveLetterNumber , "RepairFun_RemoveLetterNumber" },
-            { Strings.RemoveHTML , "RepairFun_RemoveHTML" },
             { Strings.RegexReplace , "RepairFun_RegexReplace" },
             { Strings.Custom , "RepairFun_Custom" }
         };

@@ -112,8 +112,8 @@ namespace MisakaTranslator_WPF
         {
             TextRepair.SingleWordRepeatTimes = repairSettings.SingleWordRepeatTimes;
             TextRepair.SentenceRepeatFindCharNum = repairSettings.SentenceRepeatFindCharNum;
-            TextRepair.regexPattern = repairSettings.Regex;
-            TextRepair.regexReplacement = repairSettings.Regex_Replace;
+            TextRepair.RegexPattern = repairSettings.Regex;
+            TextRepair.RegexReplacement = repairSettings.Regex_Replace;
         }
 
         /// <summary>

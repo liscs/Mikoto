@@ -13,7 +13,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
     /// </summary>
     public partial class ChooseTextRepairFuncPage : Page
     {
-        private List<string> lstRepairFun = TextRepair.lstRepairFun.Keys.ToList();
+        private List<string> lstRepairFun = TextRepair.LstRepairFun.Keys.ToList();
 
         public ChooseTextRepairFuncPage()
         {
@@ -30,14 +30,14 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 sourceTextBox.Text = e.Data.Data;
-                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]], sourceTextBox.Text);
+                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]], sourceTextBox.Text);
 
             });
         }
 
         private void RepairFuncCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])
+            switch (TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])
             {
                 case "RepairFun_RemoveSingleWordRepeat":
                     Single_InputDrawer.IsOpen = true;
@@ -50,20 +50,20 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                     break;
             }
 
-            repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]], sourceTextBox.Text);
+            repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]], sourceTextBox.Text);
         }
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
             Common.textHooker.MeetHookAddressMessageReceived -= FilterAndDisplayData;
 
-            Common.UsingRepairFunc = TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]];
+            Common.UsingRepairFunc = TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]];
 
             //写入数据库的去重方法
             if (Common.GameID != null)
             {
                 GameInfo targetGame = GameHelper.GetGameById(Common.GameID);
-                switch (TextRepair.lstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])
+                switch (TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])
                 {
                     case "RepairFun_RemoveSingleWordRepeat":
                         targetGame.RepairFunc = Common.UsingRepairFunc;
