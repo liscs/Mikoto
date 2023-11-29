@@ -16,13 +16,14 @@ namespace TTSHelperLibrary
 
         string Voice { get; set; }
         public AzureTTS() { }
-        public void TTSInit(string key, string location)
+        public void TTSInit(string key, string location,string voice)
         {
             subscriptionKey = key;
             subscriptionRegion = location;
+            Voice = voice;
 
             var config = SpeechConfig.FromSubscription(subscriptionKey, subscriptionRegion);
-            if (ProxyString != string.Empty)
+            if (! string.IsNullOrWhiteSpace(ProxyString))
             {
                 if (ProxyString.Contains(':'))
                 {
@@ -92,12 +93,7 @@ namespace TTSHelperLibrary
 
         public static string GetUrl_VoiceList()
         {
-            return "https://speech.microsoft.com/portal";
-        }
-
-        public void SetTTSVoice(string azureTTSVoice)
-        {
-            Voice = azureTTSVoice;
+            return "https://speech.microsoft.com/portal/voicegallery";
         }
     }
 }

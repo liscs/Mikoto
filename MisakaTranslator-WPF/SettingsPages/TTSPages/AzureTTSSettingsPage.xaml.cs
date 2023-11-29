@@ -35,8 +35,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
             Common.appSettings.AzureTTSSecretKey = AzureTTSSecretKeyBox.Text;
             Common.appSettings.AzureTTSLocation = AzureTTSLocationBox.Text;
             azureTTS.ProxyString = Common.appSettings.AzureTTSProxy;
-            azureTTS.TTSInit(Common.appSettings.AzureTTSSecretKey, Common.appSettings.AzureTTSLocation);
-            azureTTS.SetTTSVoice(TestDstVoice.Text);
+            azureTTS.TTSInit(Common.appSettings.AzureTTSSecretKey, Common.appSettings.AzureTTSLocation, Common.appSettings.AzureTTSVoice);
             await azureTTS.SpeakAsync(TestSrcText.Text);
             if (azureTTS.ErrorMessage != string.Empty)
             {

@@ -144,9 +144,8 @@ namespace MisakaTranslator_WPF
                         )
                     {
                         var azureTTS = new AzureTTS();
-                        azureTTS.SetTTSVoice(Common.appSettings.AzureTTSVoice);
                         azureTTS.ProxyString = Common.appSettings.AzureTTSProxy;
-                        azureTTS.TTSInit(Common.appSettings.AzureTTSSecretKey, Common.appSettings.AzureTTSLocation);
+                        azureTTS.TTSInit(Common.appSettings.AzureTTSSecretKey, Common.appSettings.AzureTTSLocation, Common.appSettings.AzureTTSVoice);
                         _TTS = azureTTS;
                     }
                     else
