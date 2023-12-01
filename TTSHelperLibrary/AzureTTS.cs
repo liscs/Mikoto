@@ -16,14 +16,14 @@ namespace TTSHelperLibrary
 
         string Voice { get; set; }
         public AzureTTS() { }
-        public void TTSInit(string key, string location,string voice)
+        public void TTSInit(string key, string location, string voice)
         {
             subscriptionKey = key;
             subscriptionRegion = location;
             Voice = voice;
 
             var config = SpeechConfig.FromSubscription(subscriptionKey, subscriptionRegion);
-            if (! string.IsNullOrWhiteSpace(ProxyString))
+            if (!string.IsNullOrWhiteSpace(ProxyString))
             {
                 if (ProxyString.Contains(':'))
                 {
