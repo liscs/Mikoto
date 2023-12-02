@@ -63,6 +63,8 @@ namespace TextRepairLibrary
             }
         }
 
+        public static string RepairFun_NoDeal(string source) => source;
+
         /// <summary>
         /// 处理单字重复
         /// 可以设置重复次数更准确的进行去重
