@@ -52,13 +52,13 @@ namespace TextRepairLibrary
             }
             return functionName switch
             {
-                "RepairFun_NoDeal" => RepairFun_NoDeal(functionName),
-                "RepairFun_RemoveSingleWordRepeat"=> RepairFun_RemoveSingleWordRepeat(functionName),
-                "RepairFun_RemoveSentenceRepeat" => RepairFun_RemoveSentenceRepeat(functionName),
-                "RepairFun_RemoveLetterNumber" => RepairFun_RemoveLetterNumber(functionName),
-                "RepairFun_RemoveHTML" => RepairFun_RemoveHTML(functionName),
-                "RepairFun_RegexReplace" => RepairFun_RegexReplace(functionName),
-                "RepairFun_Custom" => RepairFun_Custom(functionName),
+                "RepairFun_NoDeal" => RepairFun_NoDeal(sourceText),
+                "RepairFun_RemoveSingleWordRepeat" => RepairFun_RemoveSingleWordRepeat(sourceText),
+                "RepairFun_RemoveSentenceRepeat" => RepairFun_RemoveSentenceRepeat(sourceText),
+                "RepairFun_RemoveLetterNumber" => RepairFun_RemoveLetterNumber(sourceText),
+                "RepairFun_RemoveHTML" => RepairFun_RemoveHTML(sourceText),
+                "RepairFun_RegexReplace" => RepairFun_RegexReplace(sourceText),
+                "RepairFun_Custom" => RepairFun_Custom(sourceText),
                 _ => Strings.MethodError,
             };
         }
