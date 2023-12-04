@@ -112,7 +112,7 @@ namespace TranslatorLibrary.Translator
         /// 腾讯旧版翻译API申请地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_allpyAPI()
+        public static string GetUrl_API()
         {
             return "https://cloud.tencent.com/product/tmt";
         }
@@ -121,7 +121,7 @@ namespace TranslatorLibrary.Translator
         /// 腾讯旧版翻译API额度查询地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_bill()
+        public static string GetUrl_Bill()
         {
             return "https://console.cloud.tencent.com/tmt";
         }

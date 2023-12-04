@@ -100,7 +100,7 @@ namespace TranslatorLibrary.Translator
         /// 彩云小译API申请地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_allpyAPI()
+        public static string GetUrl_API()
         {
             return "https://dashboard.caiyunapp.com/user/sign_in/";
         }
@@ -109,7 +109,7 @@ namespace TranslatorLibrary.Translator
         /// 彩云小译API额度查询地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_bill()
+        public static string GetUrl_Bill()
         {
             return "https://dashboard.caiyunapp.com/";
         }

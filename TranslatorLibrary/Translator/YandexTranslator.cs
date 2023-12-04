@@ -50,7 +50,7 @@ namespace TranslatorLibrary.Translator
         /// Yandex翻译API申请地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_allpyAPI()
+        public static string GetUrl_API()
         {
             return "https://translate.yandex.com/developers/keys";
         }
@@ -59,7 +59,7 @@ namespace TranslatorLibrary.Translator
         /// Yandex翻译API额度查询地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_bill()
+        public static string GetUrl_Bill()
         {
             return "https://translate.yandex.com/developers/stat";
         }

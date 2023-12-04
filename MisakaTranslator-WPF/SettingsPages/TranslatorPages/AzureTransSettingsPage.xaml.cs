@@ -37,7 +37,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(AzureTranslator.GetUrl_allpyAPI()) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(AzureTranslator.GetUrl_API()) { UseShellExecute = true });
         }
 
         private void DocBtn_Click(object sender, RoutedEventArgs e)
@@ -47,7 +47,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(AzureTranslator.GetUrl_bill()) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(AzureTranslator.GetUrl_Bill()) { UseShellExecute = true });
         }
         private void AzureLangCodeBtn_Click(object sender, RoutedEventArgs e)
         {

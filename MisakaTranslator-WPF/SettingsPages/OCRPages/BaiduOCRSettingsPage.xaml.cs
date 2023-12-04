@@ -44,7 +44,7 @@ namespace MisakaTranslator_WPF.SettingsPages.OCRPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(BaiduGeneralOCREngine.GetUrl_allpyAPI()) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(BaiduGeneralOCREngine.GetUrl_API()) { UseShellExecute = true });
         }
 
         private void DocBtn_Click(object sender, RoutedEventArgs e)
@@ -54,7 +54,7 @@ namespace MisakaTranslator_WPF.SettingsPages.OCRPages
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(BaiduGeneralOCREngine.GetUrl_bill()) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(BaiduGeneralOCREngine.GetUrl_Bill()) { UseShellExecute = true });
         }
     }
 }

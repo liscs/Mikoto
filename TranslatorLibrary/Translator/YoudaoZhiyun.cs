@@ -105,7 +105,7 @@ namespace TranslatorLibrary.Translator
         /// 有道智云API申请地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_allpyAPI()
+        public static string GetUrl_API()
         {
             return "https://ai.youdao.com/product-fanyi-text.s";
         }
@@ -114,7 +114,7 @@ namespace TranslatorLibrary.Translator
         /// 有道智云API额度查询地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_bill()
+        public static string GetUrl_Bill()
         {
             return "https://ai.youdao.com/console";
         }

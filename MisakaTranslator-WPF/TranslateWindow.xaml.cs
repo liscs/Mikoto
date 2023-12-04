@@ -62,7 +62,7 @@ namespace MisakaTranslator_WPF
         private TransWinSettingsWindow transWinSettingsWindow;
 
         //Effect 疑似有内存泄露 https://github.com/dotnet/wpf/issues/6782 use frozen
-        private DropShadowEffect DropShadow = new DropShadowEffect();
+        private readonly DropShadowEffect dropShadowEffect = new DropShadowEffect();
 
         public TranslateWindow()
         {
@@ -137,13 +137,15 @@ namespace MisakaTranslator_WPF
                     }
                     break;
                 case TTSMode.Azure:
-                    if (!string.IsNullOrWhiteSpace(Common.appSettings.AzureTTSVoice) &&
-                        !string.IsNullOrWhiteSpace(Common.appSettings.AzureTTSSecretKey) &&
-                        !string.IsNullOrWhiteSpace(Common.appSettings.AzureTTSLocation)
+                    if (!string.IsNullOrWhiteSpace(Common.appSettings.AzureTTSVoice)
+                        && !string.IsNullOrWhiteSpace(Common.appSettings.AzureTTSSecretKey)
+                        && !string.IsNullOrWhiteSpace(Common.appSettings.AzureTTSLocation)
                         )
                     {
-                        var azureTTS = new AzureTTS();
-                        azureTTS.ProxyString = Common.appSettings.AzureTTSProxy;
+                        var azureTTS = new AzureTTS
+                        {
+                            ProxyString = Common.appSettings.AzureTTSProxy
+                        };
                         azureTTS.TTSInit(Common.appSettings.AzureTTSSecretKey, Common.appSettings.AzureTTSLocation, Common.appSettings.AzureTTSVoice);
                         _TTS = azureTTS;
                     }
@@ -164,8 +166,6 @@ namespace MisakaTranslator_WPF
                     Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoTTS_Hint"].ToString());
                 }
             });
-
-
         }
 
         /// <summary>
@@ -247,9 +247,9 @@ namespace MisakaTranslator_WPF
                 this.Height = int.Parse(Common.appSettings.TF_SizeH);
             }
 
-            DropShadow.Opacity = 1;
-            DropShadow.ShadowDepth = 0;
-            DropShadow.BlurRadius = 6;
+            dropShadowEffect.Opacity = 1;
+            dropShadowEffect.ShadowDepth = 0;
+            dropShadowEffect.BlurRadius = 6;
         }
 
         /// <summary>
@@ -505,7 +505,7 @@ namespace MisakaTranslator_WPF
                             if (Common.appSettings.TF_EnableDropShadow)
                             {
                                 //加入原文的阴影
-                                textBox.Effect = (Effect)DropShadow.GetCurrentValueAsFrozen();
+                                textBox.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen();
                             }
                             if (Common.appSettings.TF_EnableColorful)
                             {
@@ -602,7 +602,7 @@ namespace MisakaTranslator_WPF
                                 if (Common.appSettings.TF_EnableDropShadow)
                                 {
                                     //加入注音的阴影
-                                    NotationTextBlock.Effect = (Effect)DropShadow.GetCurrentValueAsFrozen();
+                                    NotationTextBlock.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen();
                                 }
                                 if (SourceTextFontSize - 6.5 > 0)
                                 {
@@ -653,7 +653,7 @@ namespace MisakaTranslator_WPF
                         textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
                         if (Common.appSettings.TF_EnableDropShadow)
                         {
-                            textBox.Effect = (Effect)DropShadow.GetCurrentValueAsFrozen(); ;
+                            textBox.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen(); ;
                         }
                         textBox.Foreground = Brushes.White;
                         SourceTextPanel.Children.Add(textBox);
@@ -718,7 +718,7 @@ namespace MisakaTranslator_WPF
                         FirstTransText.Text = afterString;
                         if (Common.appSettings.TF_EnableDropShadow)
                         {
-                            FirstTransText.Effect = (Effect)DropShadow.GetCurrentValueAsFrozen(); ;
+                            FirstTransText.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen(); ;
                         }
                         else
                         {
@@ -733,7 +733,7 @@ namespace MisakaTranslator_WPF
                         SecondTransText.Text = afterString;
                         if (Common.appSettings.TF_EnableDropShadow)
                         {
-                            SecondTransText.Effect = (Effect)DropShadow.GetCurrentValueAsFrozen(); ;
+                            SecondTransText.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen(); ;
                         }
                         else
                         {

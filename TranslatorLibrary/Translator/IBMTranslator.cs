@@ -84,7 +84,7 @@ namespace TranslatorLibrary.Translator
         /// IBM翻译API申请地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_allpyAPI()
+        public static string GetUrl_API()
         {
             return "https://cloud.ibm.com/catalog/services/language-translator";
         }
@@ -93,7 +93,7 @@ namespace TranslatorLibrary.Translator
         /// IBM翻译API额度查询地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_bill()
+        public static string GetUrl_Bill()
         {
             throw new NotImplementedException();
         }

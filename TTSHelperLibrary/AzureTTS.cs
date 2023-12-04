@@ -8,7 +8,7 @@ namespace TTSHelperLibrary
     public class AzureTTS : ITTS
     {
         //形如127.0.0.1:7890的代理字符串
-        public string ProxyString { get; set; }
+        public string ProxyString { get; set; } = string.Empty;
         private SpeechSynthesizer _synthesizer;
 
         string subscriptionKey = string.Empty;
@@ -77,7 +77,7 @@ namespace TTSHelperLibrary
         /// AzureTTSAPI申请地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_allpyAPI()
+        public static string GetUrl_API()
         {
             return "https://azure.microsoft.com/en-us/products/ai-services/text-to-speech";
         }
@@ -86,7 +86,7 @@ namespace TTSHelperLibrary
         /// AzureTTSAPI额度查询地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_bill()
+        public static string GetUrl_Bill()
         {
             return "https://portal.azure.com/#home";
         }

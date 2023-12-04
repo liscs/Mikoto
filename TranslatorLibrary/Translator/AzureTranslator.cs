@@ -95,7 +95,7 @@ namespace TranslatorLibrary.Translator
         /// Azure翻译API申请地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_allpyAPI()
+        public static string GetUrl_API()
         {
             return "https://azure.microsoft.com/zh-cn/products/ai-services/ai-translator";
         }
@@ -104,7 +104,7 @@ namespace TranslatorLibrary.Translator
         /// Azure翻译API额度查询地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_bill()
+        public static string GetUrl_Bill()
         {
             return "https://portal.azure.com/#home";
         }

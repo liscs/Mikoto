@@ -43,7 +43,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(BaiduTranslator.GetUrl_allpyAPI()) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(BaiduTranslator.GetUrl_API()) { UseShellExecute = true });
         }
 
         private void DocBtn_Click(object sender, RoutedEventArgs e)
@@ -53,7 +53,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(BaiduTranslator.GetUrl_bill()) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(BaiduTranslator.GetUrl_Bill()) { UseShellExecute = true });
         }
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)

@@ -99,7 +99,7 @@ namespace OCRLibrary
         /// <summary>
         /// 百度翻译OCRAPI申请地址
         /// </summary>
-        public static string GetUrl_allpyAPI()
+        public static string GetUrl_API()
         {
             return "https://fanyi-api.baidu.com/";
         }
@@ -107,7 +107,7 @@ namespace OCRLibrary
         /// <summary>
         /// 百度翻译OCRAPI额度查询地址
         /// </summary>
-        public static string GetUrl_bill()
+        public static string GetUrl_Bill()
         {
             return "https://fanyi-api.baidu.com/api/trans/product/desktop";
         }

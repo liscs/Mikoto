@@ -21,7 +21,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         {
             Common.appSettings.TXOSecretId = TransAppIDBox.Text;
             Common.appSettings.TXOSecretKey = TransSecretKeyBox.Text;
-            ITranslator Trans = new TencentOldTranslator();
+            TencentOldTranslator Trans = new TencentOldTranslator();
             Trans.TranslatorInit(TransAppIDBox.Text, TransSecretKeyBox.Text);
             if (await Trans.TranslateAsync("apple", "zh", "en") != null)
             {
@@ -35,7 +35,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(TencentOldTranslator.GetUrl_allpyAPI()) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(TencentOldTranslator.GetUrl_API()) { UseShellExecute = true });
         }
 
         private void DocBtn_Click(object sender, RoutedEventArgs e)
@@ -45,12 +45,12 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(TencentOldTranslator.GetUrl_bill()) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(TencentOldTranslator.GetUrl_Bill()) { UseShellExecute = true });
         }
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator Trans = new TencentOldTranslator();
+            TencentOldTranslator Trans = new TencentOldTranslator();
             Trans.TranslatorInit(Common.appSettings.TXOSecretId, Common.appSettings.TXOSecretKey);
             string res = await Trans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
             if (res != null)

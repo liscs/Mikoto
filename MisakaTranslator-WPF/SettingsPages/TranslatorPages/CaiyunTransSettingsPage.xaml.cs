@@ -19,7 +19,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         private async void AuthTestBtn_Click(object sender, RoutedEventArgs e)
         {
             Common.appSettings.CaiyunToken = TransTokenBox.Text;
-            ITranslator Trans = new CaiyunTranslator();
+            CaiyunTranslator Trans = new CaiyunTranslator();
             Trans.TranslatorInit(TransTokenBox.Text, "");
             if (await Trans.TranslateAsync("apple", "zh", "en") != null)
             {
@@ -33,7 +33,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(CaiyunTranslator.GetUrl_allpyAPI()) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(CaiyunTranslator.GetUrl_API()) { UseShellExecute = true });
         }
 
         private void DocBtn_Click(object sender, RoutedEventArgs e)
@@ -43,12 +43,12 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(CaiyunTranslator.GetUrl_bill()) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(CaiyunTranslator.GetUrl_Bill()) { UseShellExecute = true });
         }
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator Trans = new CaiyunTranslator();
+            CaiyunTranslator Trans = new CaiyunTranslator();
             Trans.TranslatorInit(Common.appSettings.CaiyunToken, "");
             string res = await Trans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
             if (res != null)

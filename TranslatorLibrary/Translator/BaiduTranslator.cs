@@ -101,7 +101,7 @@ namespace TranslatorLibrary.Translator
         /// 百度翻译API申请地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_allpyAPI()
+        public static string GetUrl_API()
         {
             return "https://api.fanyi.baidu.com/product/11";
         }
@@ -110,7 +110,7 @@ namespace TranslatorLibrary.Translator
         /// 百度翻译API额度查询地址
         /// </summary>
         /// <returns></returns>
-        public static string GetUrl_bill()
+        public static string GetUrl_Bill()
         {
             return "https://api.fanyi.baidu.com/api/trans/product/desktop";
         }

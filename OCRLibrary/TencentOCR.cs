@@ -100,12 +100,12 @@ namespace OCRLibrary
             return true;
         }
 
-        public static string GetUrl_allpyAPI()
+        public static string GetUrl_API()
         {
             return "https://cloud.tencent.com/product/tmt";
         }
 
-        public static string GetUrl_bill()
+        public static string GetUrl_Bill()
         {
             return "https://console.cloud.tencent.com/tmt";
         }

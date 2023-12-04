@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UtilityLibrary;
 
@@ -11,7 +12,7 @@ namespace TextHookLibrary
     /// <summary>
     /// 该类使用TextractorCLI版本进行读写
     /// </summary>
-    public class TextHookHandle
+    public partial class TextHookHandle
     {
         /// <summary>
         /// Textractor进程
@@ -297,6 +298,10 @@ namespace TextHookLibrary
 
         List<string> matchList = new List<string>();
         HashSet<string> excludeSet = new HashSet<string>();
+
+        [GeneratedRegex("(?<=【).*?(?=:)")]
+        private static partial Regex FirstCodeRegex();
+
         /// <summary>
         /// 控制台输出事件，在这做内部消化处理
         /// </summary>
@@ -305,113 +310,108 @@ namespace TextHookLibrary
         void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
         {
             AddTextractorHistory(outLine.Data);
-
-            if (Pause == false)
+            if (Pause) { return; }
+            TextHookData thData = DealTextratorOutput(outLine.Data);
+            if (thData != null)
             {
-                TextHookData thData = DealTextratorOutput(outLine.Data);
+                TextHookData data = thData;
 
-                if (thData != null)
+                if (data.HookFunc != "Console" && data.HookFunc != "Clipboard" && data.HookFunc != "")
                 {
-                    TextHookData data = thData;
-
-                    if (data.HookFunc != "Console" && data.HookFunc != "Clipboard" && data.HookFunc != "")
+                    //Hook入口选择窗口处理
+                    if (TextractorFun_Index_List.ContainsKey(data.MisakaHookCode) == true)
                     {
-                        //Hook入口选择窗口处理
-                        if (TextractorFun_Index_List.ContainsKey(data.MisakaHookCode) == true)
+                        HookReceivedEventArgs e = new HookReceivedEventArgs();
+                        e.Index = TextractorFun_Index_List[data.MisakaHookCode];
+                        e.Data = data;
+                        HookMessageReceived?.Invoke(this, e);
+                    }
+                    else
+                    {
+                        TextractorFun_Index_List.Add(data.MisakaHookCode, listIndex);
+                        HookReceivedEventArgs e = new HookReceivedEventArgs();
+                        e.Index = TextractorFun_Index_List[data.MisakaHookCode];
+                        e.Data = data;
+                        HookMessageReceived?.Invoke(this, e);
+                        listIndex++;
+                    }
+
+                    //Hook入口重复确认窗口处理
+                    if (HookCodeList.Count != 0 && HookCodeList.Contains(data.HookCode))
+                    {
+                        if (TextractorFun_Re_Index_List.ContainsKey(data.MisakaHookCode) == true)
                         {
-                            HookReceivedEventArgs e = new HookReceivedEventArgs();
-                            e.Index = TextractorFun_Index_List[data.MisakaHookCode];
-                            e.Data = data;
-                            HookMessageReceived?.Invoke(this, e);
+                            HookReceivedEventArgs e = new HookReceivedEventArgs
+                            {
+                                Index = TextractorFun_Index_List[data.MisakaHookCode],
+                                Data = data
+                            };
+                            MeetHookCodeMessageReceived?.Invoke(this, e);
                         }
                         else
                         {
-                            TextractorFun_Index_List.Add(data.MisakaHookCode, listIndex);
-                            HookReceivedEventArgs e = new HookReceivedEventArgs();
-                            e.Index = TextractorFun_Index_List[data.MisakaHookCode];
-                            e.Data = data;
-                            HookMessageReceived?.Invoke(this, e);
-                            listIndex++;
-                        }
-
-                        //Hook入口重复确认窗口处理
-                        if (HookCodeList.Count != 0 && HookCodeList.Contains(data.HookCode))
-                        {
-                            if (TextractorFun_Re_Index_List.ContainsKey(data.MisakaHookCode) == true)
+                            TextractorFun_Re_Index_List.Add(data.MisakaHookCode, listIndex_Re);
+                            HookReceivedEventArgs e = new HookReceivedEventArgs
                             {
-                                HookReceivedEventArgs e = new HookReceivedEventArgs
-                                {
-                                    Index = TextractorFun_Index_List[data.MisakaHookCode],
-                                    Data = data
-                                };
-                                MeetHookCodeMessageReceived?.Invoke(this, e);
-                            }
-                            else
-                            {
-                                TextractorFun_Re_Index_List.Add(data.MisakaHookCode, listIndex_Re);
-                                HookReceivedEventArgs e = new HookReceivedEventArgs
-                                {
-                                    Index = TextractorFun_Index_List[data.MisakaHookCode],
-                                    Data = data
-                                };
-                                MeetHookCodeMessageReceived?.Invoke(this, e);
-                                listIndex_Re++;
-                            }
+                                Index = TextractorFun_Index_List[data.MisakaHookCode],
+                                Data = data
+                            };
+                            MeetHookCodeMessageReceived?.Invoke(this, e);
+                            listIndex_Re++;
                         }
-                        if (MisakaCodeList.Count == 0)
-                        {
-                            return;
-                        }
-
-                        //保存的misakacode
-                        var savedMisakaCode = MisakaCodeList[0];
-                        //misakacode第一段
-                        var savedMisakaCode1 = savedMisakaCode.Split(':').ElementAt(0).Substring(1);
-                        //misakacode第二段
-                        var savedMisakaCode2 = savedMisakaCode.Split(':').ElementAt(1);
-                        //misakacode第三段
-                        var savedMisakaCode3 = savedMisakaCode.Split(':').ElementAt(2).Substring(0, savedMisakaCode.Split(':').ElementAt(2).Length - 1);
-
-                        //取得的misakacode
-                        var obtainedMisakaCode = data.MisakaHookCode;
-                        var obtainedMisakaCode1 = obtainedMisakaCode.Split(':').ElementAt(0).Substring(1);
-                        var obtainedMisakaCode2 = obtainedMisakaCode.Split(':').ElementAt(1);
-                        var obtainedMisakaCode3 = obtainedMisakaCode.Split(':').ElementAt(2).Substring(0, obtainedMisakaCode.Split(':').ElementAt(2).Length - 1);
-
-                        //文本去重窗口处理&游戏翻译窗口处理
-                        // TODO 寻找更好的Hook Address确定方法，记录匹配的多个misakacode表，将不够匹配的列入排除表
-                        if (HookCodeList.Count != 0 &&
-                            obtainedMisakaCode1.Length - 4 >= 0 &&
-                            //要求第一串后四位以及第三串相等
-                            savedMisakaCode1.Substring(savedMisakaCode1.Length - 4) == obtainedMisakaCode1.Substring(obtainedMisakaCode1.Length - 4) &&
-                            savedMisakaCode3 == obtainedMisakaCode3)
-                        {
-                            if (!excludeSet.Contains(obtainedMisakaCode2))
-                            {
-                                if (!matchList.Contains(obtainedMisakaCode2))
-                                {
-                                    matchList.Add(obtainedMisakaCode2);
-                                }
-                                SolvedDataReceivedEventArgs e = new SolvedDataReceivedEventArgs
-                                {
-                                    Data = data
-                                };
-                                MeetHookAddressMessageReceived?.Invoke(this, e);
-                                if (matchList.Count > 1)
-                                {
-                                    string notThatMatch = GetWorstMatchString(savedMisakaCode2, matchList[0], matchList[1]);
-                                    excludeSet.Add(notThatMatch);
-                                    matchList.Clear();
-                                }
-                            }
-                        }
-
                     }
+                    if (MisakaCodeList.Count == 0)
+                    {
+                        return;
+                    }
+
+                    Regex firstMisakaCodeRegex = FirstCodeRegex();
+
+                    //保存的misakacode
+                    var savedMisakaCode = MisakaCodeList[0];
+                    //misakacode第一段
+                    var savedMisakaCode1 = savedMisakaCode.Split(':').ElementAt(0).Substring(1);
+                    //misakacode第二段
+                    var savedMisakaCode2 = savedMisakaCode.Split(':').ElementAt(1);
+                    //misakacode第三段
+                    var savedMisakaCode3 = savedMisakaCode.Split(':').ElementAt(2).Substring(0, savedMisakaCode.Split(':').ElementAt(2).Length - 1);
+
+                    //取得的misakacode
+                    var obtainedMisakaCode = data.MisakaHookCode;
+                    var obtainedMisakaCode1 = obtainedMisakaCode.Split(':').ElementAt(0).Substring(1);
+                    var obtainedMisakaCode2 = obtainedMisakaCode.Split(':').ElementAt(1);
+                    var obtainedMisakaCode3 = obtainedMisakaCode.Split(':').ElementAt(2).Substring(0, obtainedMisakaCode.Split(':').ElementAt(2).Length - 1);
+
+                    //文本去重窗口处理&游戏翻译窗口处理
+                    // TODO 寻找更好的Hook Address确定方法，记录匹配的多个misakacode表，将不够匹配的列入排除表
+                    if (HookCodeList.Count != 0
+                       && obtainedMisakaCode1.Length - 4 >= 0
+                       //要求第一串后四位以及第三串相等
+                       && savedMisakaCode1.Substring(savedMisakaCode1.Length - 4) == obtainedMisakaCode1.Substring(obtainedMisakaCode1.Length - 4)
+                       && savedMisakaCode3 == obtainedMisakaCode3)
+                    {
+                        if (!excludeSet.Contains(obtainedMisakaCode2))
+                        {
+                            if (!matchList.Contains(obtainedMisakaCode2))
+                            {
+                                matchList.Add(obtainedMisakaCode2);
+                            }
+                            SolvedDataReceivedEventArgs e = new SolvedDataReceivedEventArgs
+                            {
+                                Data = data
+                            };
+                            MeetHookAddressMessageReceived?.Invoke(this, e);
+                            if (matchList.Count > 1)
+                            {
+                                string notThatMatch = GetWorstMatchString(savedMisakaCode2, matchList[0], matchList[1]);
+                                excludeSet.Add(notThatMatch);
+                                matchList.Clear();
+                            }
+                        }
+                    }
+
                 }
-
-
             }
-
         }
 
         /// <summary>
@@ -630,5 +630,6 @@ namespace TextHookLibrary
                 cm = null;
             }
         }
+
     }
 }

@@ -22,12 +22,12 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(AzureTTS.GetUrl_allpyAPI()) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(AzureTTS.GetUrl_API()) { UseShellExecute = true });
         }
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(AzureTTS.GetUrl_bill()) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(AzureTTS.GetUrl_Bill()) { UseShellExecute = true });
         }
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
