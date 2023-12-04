@@ -510,7 +510,7 @@ namespace MisakaTranslator_WPF
                                if (Common.appSettings.TF_EnableDropShadow)
                                {
                                    //加入原文的阴影
-                                   textBox.Effect = (Effect)DropShadow.GetCurrentValueAsFrozen();
+                                   textBox.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen();
                                }
                                if (Common.appSettings.TF_EnableColorful)
                                {
@@ -607,7 +607,7 @@ namespace MisakaTranslator_WPF
                                    if (Common.appSettings.TF_EnableDropShadow)
                                    {
                                        //加入注音的阴影
-                                       NotationTextBlock.Effect = (Effect)DropShadow.GetCurrentValueAsFrozen();
+                                       NotationTextBlock.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen();
                                    }
                                    if (SourceTextFontSize - 6.5 > 0)
                                    {
@@ -658,7 +658,7 @@ namespace MisakaTranslator_WPF
                            textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
                            if (Common.appSettings.TF_EnableDropShadow)
                            {
-                               textBox.Effect = (Effect)DropShadow.GetCurrentValueAsFrozen(); ;
+                               textBox.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen(); ;
                            }
                            textBox.Foreground = Brushes.White;
                            _sourceTextCollection.Add(textBox);
