@@ -73,7 +73,13 @@
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1" Margin="10" Orientation="Vertical">
-            <WrapPanel Name="SourceTextPanel" Margin="10,0,10,5" Orientation="Horizontal" Background="Transparent"/>
+            <ItemsControl ItemsSource="{Binding}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" Name="SourceTextPanel" Margin="10,0,10,5" Orientation="Horizontal" Background="Transparent" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
             <hc:OutlineText Text="{DynamicResource TranslateWin_WaitingSource}" 
                             Fill="White" Stroke="Black" StrokeThickness="0.7" FontWeight="Bold" Name="FirstTransText" Margin="10,0,10,5" TextWrapping="Wrap" StrokePosition="Outside"></hc:OutlineText>
             <hc:OutlineText Text="" 

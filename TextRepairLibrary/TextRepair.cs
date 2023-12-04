@@ -50,18 +50,20 @@ namespace TextRepairLibrary
             {
                 return RepairFun_PythonScript(functionName.Substring(1), sourceText);
             }
-            Type t = typeof(TextRepair);//括号中的为所要使用的函数所在的类的类名
-            MethodInfo mt = t.GetMethod(functionName);
-            if (mt != null)
+            return functionName switch
             {
-                string str = (string)mt.Invoke(null, new object[] { sourceText });
-                return str;
-            }
-            else
-            {
-                return Strings.MethodError;
-            }
+                "RepairFun_NoDeal" => RepairFun_NoDeal(sourceText),
+                "RepairFun_RemoveSingleWordRepeat" => RepairFun_RemoveSingleWordRepeat(sourceText),
+                "RepairFun_RemoveSentenceRepeat" => RepairFun_RemoveSentenceRepeat(sourceText),
+                "RepairFun_RemoveLetterNumber" => RepairFun_RemoveLetterNumber(sourceText),
+                "RepairFun_RemoveHTML" => RepairFun_RemoveHTML(sourceText),
+                "RepairFun_RegexReplace" => RepairFun_RegexReplace(sourceText),
+                "RepairFun_Custom" => RepairFun_Custom(sourceText),
+                _ => Strings.MethodError,
+            };
         }
+
+        public static string RepairFun_NoDeal(string source) => source;
 
         /// <summary>
         /// 处理单字重复
