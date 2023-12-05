@@ -71,7 +71,7 @@
 
 
         <hc:Drawer Name="GameInfoDrawer" ShowMode="Press" MaskCanClose="True" Dock="Left">
-            <Border Background="{DynamicResource TranslateWindowBackground}" Width="300" BorderBrush="{DynamicResource BorderBrush}">
+            <Border Background="{StaticResource TranslateWindowBackground}" Width="300" BorderBrush="{DynamicResource BorderBrush}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
