@@ -132,7 +132,7 @@ namespace DataAccessLibrary
 
         private static GameInfo AddGame(string gamePath)
         {
-            string name = Path.GetFileNameWithoutExtension(gamePath);
+            string name = Path.GetFileName(Path.GetDirectoryName(gamePath));
             Guid id = Guid.NewGuid();
             GameInfo gameInfo = new GameInfo()
             {
@@ -184,8 +184,8 @@ namespace DataAccessLibrary
                 if (gameInfo.GameID == gameID)
                 {
                     File.Delete(fileInfo.FullName);
+                    return true;
                 }
-                return true;
             }
             return false;
         }
