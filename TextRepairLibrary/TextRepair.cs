@@ -156,7 +156,7 @@ namespace TextRepairLibrary
 
             char[] arr1 = t1.ToCharArray();
             Array.Reverse(arr1);
-            string ret = new string(arr1);
+            string ret = new string(arr1, 1, arr1.Length - 1);
 
             return ret;
         }
