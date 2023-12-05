@@ -261,76 +261,73 @@ namespace MisakaTranslator_WPF
         /// <summary>
         /// 根据翻译器名称自动返回翻译器类实例(包括初始化)
         /// </summary>
-        /// <param name="translator"></param>
+        /// <param name="translatorName"></param>
         /// <returns></returns>
-        public static ITranslator TranslatorAuto(string translator)
+        public static ITranslator TranslatorAuto(string translatorName)
         {
-            switch (translator)
+            ITranslator translator;
+            switch (translatorName)
             {
                 case "BaiduTranslator":
-                    BaiduTranslator bd = new BaiduTranslator();
-                    bd.TranslatorInit(Common.appSettings.BDappID, Common.appSettings.BDsecretKey);
-                    return bd;
+                    translator = new BaiduTranslator();
+                    translator.TranslatorInit(Common.appSettings.BDappID, Common.appSettings.BDsecretKey);
+                    return translator;
                 case "TencentOldTranslator":
-                    TencentOldTranslator txo = new TencentOldTranslator();
-                    txo.TranslatorInit(Common.appSettings.TXOSecretId, Common.appSettings.TXOSecretKey);
-                    return txo;
+                    translator = new TencentOldTranslator();
+                    translator.TranslatorInit(Common.appSettings.TXOSecretId, Common.appSettings.TXOSecretKey);
+                    return translator;
                 case "CaiyunTranslator":
-                    CaiyunTranslator cy = new CaiyunTranslator();
-                    cy.TranslatorInit(Common.appSettings.CaiyunToken);
-                    return cy;
+                    translator = new CaiyunTranslator();
+                    translator.TranslatorInit(Common.appSettings.CaiyunToken);
+                    return translator;
                 case "XiaoniuTranslator":
-                    XiaoniuTranslator xt = new XiaoniuTranslator();
-                    xt.TranslatorInit(Common.appSettings.xiaoniuApiKey);
-                    return xt;
+                    translator = new XiaoniuTranslator();
+                    translator.TranslatorInit(Common.appSettings.xiaoniuApiKey);
+                    return translator;
                 case "IBMTranslator":
-                    IBMTranslator it = new IBMTranslator();
-                    it.TranslatorInit(Common.appSettings.IBMApiKey, Common.appSettings.IBMURL);
-                    return it;
+                    translator = new IBMTranslator();
+                    translator.TranslatorInit(Common.appSettings.IBMApiKey, Common.appSettings.IBMURL);
+                    return translator;
                 case "YandexTranslator":
-                    YandexTranslator yt = new YandexTranslator();
-                    yt.TranslatorInit(Common.appSettings.YandexApiKey);
-                    return yt;
+                    translator = new YandexTranslator();
+                    translator.TranslatorInit(Common.appSettings.YandexApiKey);
+                    return translator;
                 case "YoudaoZhiyun":
-                    YoudaoZhiyun ydzy = new YoudaoZhiyun();
-                    ydzy.TranslatorInit(Common.appSettings.YDZYAppId, Common.appSettings.YDZYAppSecret);
-                    return ydzy;
-                case "YoudaoTranslator":
-                    YoudaoTranslator yd = new YoudaoTranslator();
-                    yd.TranslatorInit();
-                    return yd;
+                    translator = new YoudaoZhiyun();
+                    translator.TranslatorInit(Common.appSettings.YDZYAppId, Common.appSettings.YDZYAppSecret);
+                    return translator;
                 case "GoogleCNTranslator":
-                    GoogleCNTranslator gct = new GoogleCNTranslator();
-                    gct.TranslatorInit();
-                    return gct;
+                    translator = new GoogleCNTranslator();
+                    translator.TranslatorInit();
+                    return translator;
                 case "JBeijingTranslator":
-                    JBeijingTranslator bj = new JBeijingTranslator();
-                    bj.TranslatorInit(Common.appSettings.JBJCTDllPath);
-                    return bj;
+                    translator = new JBeijingTranslator();
+                    translator.TranslatorInit(Common.appSettings.JBJCTDllPath);
+                    return translator;
                 case "KingsoftFastAITTranslator":
-                    KingsoftFastAITTranslator kfat = new KingsoftFastAITTranslator();
-                    kfat.TranslatorInit(Common.appSettings.KingsoftFastAITPath);
-                    return kfat;
+                    translator = new KingsoftFastAITTranslator();
+                    translator.TranslatorInit(Common.appSettings.KingsoftFastAITPath);
+                    return translator;
                 case "DreyeTranslator":
-                    DreyeTranslator drt = new DreyeTranslator();
-                    drt.TranslatorInit(Common.appSettings.DreyePath);
-                    return drt;
+                    translator = new DreyeTranslator();
+                    translator.TranslatorInit(Common.appSettings.DreyePath);
+                    return translator;
                 case "DeepLTranslator":
-                    DeepLTranslator deepl = new DeepLTranslator();
-                    deepl.TranslatorInit(Common.appSettings.DeepLsecretKey, Common.appSettings.DeepLsecretKey);
-                    return deepl;
+                    translator = new DeepLTranslator();
+                    translator.TranslatorInit(Common.appSettings.DeepLsecretKey, Common.appSettings.DeepLsecretKey);
+                    return translator;
                 case "ChatGPTTranslator":
-                    ChatGPTTranslator chatgpt = new ChatGPTTranslator();
-                    chatgpt.TranslatorInit(Common.appSettings.ChatGPTapiKey, Common.appSettings.ChatGPTapiUrl);
-                    return chatgpt;
+                    translator = new ChatGPTTranslator();
+                    translator.TranslatorInit(Common.appSettings.ChatGPTapiKey, Common.appSettings.ChatGPTapiUrl);
+                    return translator;
                 case "AzureTranslator":
-                    AzureTranslator azure = new AzureTranslator();
-                    azure.TranslatorInit(Common.appSettings.AzureSecretKey, Common.appSettings.AzureLocation);
-                    return azure;
+                    translator = new AzureTranslator();
+                    translator.TranslatorInit(Common.appSettings.AzureSecretKey, Common.appSettings.AzureLocation);
+                    return translator;
                 case "ArtificialTranslator":
-                    ArtificialTranslator at = new ArtificialTranslator();
-                    at.TranslatorInit(Common.appSettings.ArtificialPatchPath);
-                    return at;
+                    translator = new ArtificialTranslator();
+                    translator.TranslatorInit(Common.appSettings.ArtificialPatchPath);
+                    return translator;
                 default:
                     return null;
             }

@@ -162,9 +162,6 @@
   <data name="YandexTranslator" xml:space="preserve">
     <value>Yandex翻译</value>
   </data>
-  <data name="YoudaoTranslator" xml:space="preserve">
-    <value>有道翻译(公共接口)</value>
-  </data>
   <data name="YoudaoZhiyun" xml:space="preserve">
     <value>有道智云</value>
   </data>

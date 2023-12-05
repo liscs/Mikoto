@@ -196,15 +196,6 @@ namespace TranslatorLibrary.lang {
         }
         
         /// <summary>
-        ///   查找类似 有道翻译(公共接口) 的本地化字符串。
-        /// </summary>
-        internal static string YoudaoTranslator {
-            get {
-                return ResourceManager.GetString("YoudaoTranslator", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 有道智云 的本地化字符串。
         /// </summary>
         internal static string YoudaoZhiyun {
