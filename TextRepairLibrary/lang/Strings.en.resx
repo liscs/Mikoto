@@ -121,7 +121,7 @@
     <value>User-defined DLL (see description)</value>
   </data>
   <data name="CustomPythonScript" xml:space="preserve">
-    <value>User-defined Python2 script:</value>
+    <value>User-defined Python script:</value>
   </data>
   <data name="MethodError" xml:space="preserve">
     <value>This method handles errors!</value>

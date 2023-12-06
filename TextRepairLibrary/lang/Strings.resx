@@ -121,7 +121,7 @@
     <value>用户自定义DLL(见说明)</value>
   </data>
   <data name="CustomPythonScript" xml:space="preserve">
-    <value>用户自定义Python2脚本:</value>
+    <value>用户自定义Python脚本:</value>
   </data>
   <data name="MethodError" xml:space="preserve">
     <value>该方法处理错误！</value>

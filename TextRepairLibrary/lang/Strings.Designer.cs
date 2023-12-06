@@ -70,7 +70,7 @@ namespace TextRepairLibrary.lang {
         }
         
         /// <summary>
-        ///   查找类似 用户自定义Python2脚本: 的本地化字符串。
+        ///   查找类似 用户自定义Python脚本: 的本地化字符串。
         /// </summary>
         internal static string CustomPythonScript {
             get {

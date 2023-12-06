@@ -238,6 +238,14 @@ namespace TextRepairLibrary
             }
         }
 
+
+        static ScriptEngine pythonEngine = Python.CreateEngine();
+        static ScriptScope scope = pythonEngine.CreateScope();
+        static string nowHandler = "example";
+        static ScriptSource pythonScript = pythonEngine.CreateScriptSourceFromString(
+                $"import textRepairPlugins.example as customHandler\n" +
+                "ResultStr = customHandler.process(SourceStr)\n"
+                );
         /// <summary>
         /// 用户自定义Python脚本
         /// </summary>
@@ -249,15 +257,15 @@ namespace TextRepairLibrary
             {
                 return string.Empty;
             }
-
-            ScriptEngine pythonEngine = Python.CreateEngine();
-            ScriptSource pythonScript = pythonEngine.CreateScriptSourceFromString(
+            if (nowHandler != handler)
+            {
+                nowHandler = handler;
+                pythonScript = pythonEngine.CreateScriptSourceFromString(
                 $"import textRepairPlugins.{handler} as customHandler\n" +
                 "ResultStr = customHandler.process(SourceStr)\n"
                 );
-            ScriptScope scope = pythonEngine.CreateScope();
+            }
             scope.SetVariable("SourceStr", source);
-
             try
             {
                 pythonScript.Execute(scope);
