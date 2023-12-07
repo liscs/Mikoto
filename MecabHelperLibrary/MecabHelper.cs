@@ -82,7 +82,7 @@ namespace MecabHelperLibrary
         /// <returns></returns>
         public List<MecabWordInfo> SentenceHandle(string sentence)
         {
-            List<MecabWordInfo> ret = new List<MecabWordInfo>();
+            List<MecabWordInfo> ret = new();
             if (EnableMecab)
             {
                 foreach (var node in Tagger.ParseToNodes(sentence))
@@ -92,7 +92,7 @@ namespace MecabHelperLibrary
                         var features = CommaSeparateRegex().Split(node.Feature);
 
 
-                        MecabWordInfo mwi = new MecabWordInfo
+                        MecabWordInfo mwi = new()
                         {
                             Word = node.Surface,
                             PartOfSpeech = features[0],
@@ -120,7 +120,7 @@ namespace MecabHelperLibrary
 
         static string KatakanaToHiragana(string s)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             char[] target = s.ToCharArray();
             char c;
             for (int i = 0; i < target.Length; i++)
@@ -137,174 +137,174 @@ namespace MecabHelperLibrary
 
         static string ConvertHiraganaToRomaji(string s)
         {
-            switch (s)
+            return s switch
             {
-                case "あ": return "a";
-                case "い": return "i";
-                case "う": return "u";
-                case "え": return "e";
-                case "お": return "o";
-                case "か": return "ka";
-                case "き": return "ki";
-                case "く": return "ku";
-                case "け": return "ke";
-                case "こ": return "ko";
-                case "さ": return "sa";
-                case "し": return "shi";
-                case "す": return "su";
-                case "せ": return "se";
-                case "そ": return "so";
-                case "た": return "ta";
-                case "ち": return "chi";
-                case "つ": return "tsu";
-                case "て": return "te";
-                case "と": return "to";
-                case "な": return "na";
-                case "に": return "ni";
-                case "ぬ": return "nu";
-                case "ね": return "ne";
-                case "の": return "no";
-                case "は": return "ha";
-                case "ひ": return "hi";
-                case "ふ": return "hu";
-                case "へ": return "he";
-                case "ほ": return "ho";
-                case "ま": return "ma";
-                case "み": return "mi";
-                case "む": return "mu";
-                case "め": return "me";
-                case "も": return "mo";
-                case "や": return "ya";
-                case "ゆ": return "yu";
-                case "よ": return "yo";
-                case "ら": return "ra";
-                case "り": return "ri";
-                case "る": return "ru";
-                case "れ": return "re";
-                case "ろ": return "ro";
-                case "わ": return "wa";
-                case "を": return "wo";
-                case "ん": return "n";
-                case "が": return "ga";
-                case "ぎ": return "gi";
-                case "ぐ": return "gu";
-                case "げ": return "ge";
-                case "ご": return "go";
-                case "ざ": return "za";
-                case "じ": return "ji";
-                case "ず": return "zu";
-                case "ぜ": return "ze";
-                case "ぞ": return "zo";
-                case "だ": return "da";
-                case "ぢ": return "ji";
-                case "づ": return "du";
-                case "で": return "de";
-                case "ど": return "do";
-                case "ば": return "ba";
-                case "び": return "bi";
-                case "ぶ": return "bu";
-                case "べ": return "be";
-                case "ぼ": return "bo";
-                case "ぱ": return "pa";
-                case "ぴ": return "pi";
-                case "ぷ": return "pu";
-                case "ぺ": return "pe";
-                case "ぽ": return "po";
-                case "きゃ": return "kya";
-                case "きぃ": return "kyi";
-                case "きゅ": return "kyu";
-                case "きぇ": return "kye";
-                case "きょ": return "kyo";
-                case "しゃ": return "sha";
-                case "しぃ": return "syi";
-                case "しゅ": return "shu";
-                case "しぇ": return "she";
-                case "しょ": return "sho";
-                case "ちゃ": return "cha";
-                case "ちぃ": return "cyi";
-                case "ちゅ": return "chu";
-                case "ちぇ": return "che";
-                case "ちょ": return "cho";
-                case "にゃ": return "nya";
-                case "にぃ": return "nyi";
-                case "にゅ": return "nyu";
-                case "にぇ": return "nye";
-                case "にょ": return "nyo";
-                case "ひゃ": return "hya";
-                case "ひぃ": return "hyi";
-                case "ひゅ": return "hyu";
-                case "ひぇ": return "hye";
-                case "ひょ": return "hyo";
-                case "みゃ": return "mya";
-                case "みぃ": return "myi";
-                case "みゅ": return "myu";
-                case "みぇ": return "mye";
-                case "みょ": return "myo";
-                case "りゃ": return "rya";
-                case "りぃ": return "ryi";
-                case "りゅ": return "ryu";
-                case "りぇ": return "rye";
-                case "りょ": return "ryo";
-                case "ぎゃ": return "gya";
-                case "ぎぃ": return "gyi";
-                case "ぎゅ": return "gyu";
-                case "ぎぇ": return "gye";
-                case "ぎょ": return "gyo";
-                case "じゃ": return "ja";
-                case "じぃ": return "ji";
-                case "じゅ": return "ju";
-                case "じぇ": return "je";
-                case "じょ": return "jo";
-                case "ぢゃ": return "dya";
-                case "ぢぃ": return "dyi";
-                case "ぢゅ": return "dyu";
-                case "ぢぇ": return "dye";
-                case "ぢょ": return "dyo";
-                case "びゃ": return "bya";
-                case "びぃ": return "byi";
-                case "びゅ": return "byu";
-                case "びぇ": return "bye";
-                case "びょ": return "byo";
-                case "ぴゃ": return "pya";
-                case "ぴぃ": return "pyi";
-                case "ぴゅ": return "pyu";
-                case "ぴぇ": return "pye";
-                case "ぴょ": return "pyo";
-                case "ぐぁ": return "gwa";
-                case "ぐぃ": return "gwi";
-                case "ぐぅ": return "gwu";
-                case "ぐぇ": return "gwe";
-                case "ぐぉ": return "gwo";
-                case "つぁ": return "tsa";
-                case "つぃ": return "tsi";
-                case "つぇ": return "tse";
-                case "つぉ": return "tso";
-                case "ふぁ": return "fa";
-                case "ふぃ": return "fi";
-                case "ふぇ": return "fe";
-                case "ふぉ": return "fo";
-                case "うぁ": return "wha";
-                case "うぃ": return "whi";
-                case "うぅ": return "whu";
-                case "うぇ": return "whe";
-                case "うぉ": return "who";
-                case "ヴぁ": return "va";
-                case "ヴぃ": return "vi";
-                case "ヴ": return "vu";
-                case "ヴぇ": return "ve";
-                case "ヴぉ": return "vo";
-                case "でゃ": return "dha";
-                case "でぃ": return "dhi";
-                case "でゅ": return "dhu";
-                case "でぇ": return "dhe";
-                case "でょ": return "dho";
-                case "てゃ": return "tha";
-                case "てぃ": return "thi";
-                case "てゅ": return "thu";
-                case "てぇ": return "the";
-                case "てょ": return "tho";
-                default: return "";
-            }
+                "あ" => "a",
+                "い" => "i",
+                "う" => "u",
+                "え" => "e",
+                "お" => "o",
+                "か" => "ka",
+                "き" => "ki",
+                "く" => "ku",
+                "け" => "ke",
+                "こ" => "ko",
+                "さ" => "sa",
+                "し" => "shi",
+                "す" => "su",
+                "せ" => "se",
+                "そ" => "so",
+                "た" => "ta",
+                "ち" => "chi",
+                "つ" => "tsu",
+                "て" => "te",
+                "と" => "to",
+                "な" => "na",
+                "に" => "ni",
+                "ぬ" => "nu",
+                "ね" => "ne",
+                "の" => "no",
+                "は" => "ha",
+                "ひ" => "hi",
+                "ふ" => "hu",
+                "へ" => "he",
+                "ほ" => "ho",
+                "ま" => "ma",
+                "み" => "mi",
+                "む" => "mu",
+                "め" => "me",
+                "も" => "mo",
+                "や" => "ya",
+                "ゆ" => "yu",
+                "よ" => "yo",
+                "ら" => "ra",
+                "り" => "ri",
+                "る" => "ru",
+                "れ" => "re",
+                "ろ" => "ro",
+                "わ" => "wa",
+                "を" => "wo",
+                "ん" => "n",
+                "が" => "ga",
+                "ぎ" => "gi",
+                "ぐ" => "gu",
+                "げ" => "ge",
+                "ご" => "go",
+                "ざ" => "za",
+                "じ" => "ji",
+                "ず" => "zu",
+                "ぜ" => "ze",
+                "ぞ" => "zo",
+                "だ" => "da",
+                "ぢ" => "ji",
+                "づ" => "du",
+                "で" => "de",
+                "ど" => "do",
+                "ば" => "ba",
+                "び" => "bi",
+                "ぶ" => "bu",
+                "べ" => "be",
+                "ぼ" => "bo",
+                "ぱ" => "pa",
+                "ぴ" => "pi",
+                "ぷ" => "pu",
+                "ぺ" => "pe",
+                "ぽ" => "po",
+                "きゃ" => "kya",
+                "きぃ" => "kyi",
+                "きゅ" => "kyu",
+                "きぇ" => "kye",
+                "きょ" => "kyo",
+                "しゃ" => "sha",
+                "しぃ" => "syi",
+                "しゅ" => "shu",
+                "しぇ" => "she",
+                "しょ" => "sho",
+                "ちゃ" => "cha",
+                "ちぃ" => "cyi",
+                "ちゅ" => "chu",
+                "ちぇ" => "che",
+                "ちょ" => "cho",
+                "にゃ" => "nya",
+                "にぃ" => "nyi",
+                "にゅ" => "nyu",
+                "にぇ" => "nye",
+                "にょ" => "nyo",
+                "ひゃ" => "hya",
+                "ひぃ" => "hyi",
+                "ひゅ" => "hyu",
+                "ひぇ" => "hye",
+                "ひょ" => "hyo",
+                "みゃ" => "mya",
+                "みぃ" => "myi",
+                "みゅ" => "myu",
+                "みぇ" => "mye",
+                "みょ" => "myo",
+                "りゃ" => "rya",
+                "りぃ" => "ryi",
+                "りゅ" => "ryu",
+                "りぇ" => "rye",
+                "りょ" => "ryo",
+                "ぎゃ" => "gya",
+                "ぎぃ" => "gyi",
+                "ぎゅ" => "gyu",
+                "ぎぇ" => "gye",
+                "ぎょ" => "gyo",
+                "じゃ" => "ja",
+                "じぃ" => "ji",
+                "じゅ" => "ju",
+                "じぇ" => "je",
+                "じょ" => "jo",
+                "ぢゃ" => "dya",
+                "ぢぃ" => "dyi",
+                "ぢゅ" => "dyu",
+                "ぢぇ" => "dye",
+                "ぢょ" => "dyo",
+                "びゃ" => "bya",
+                "びぃ" => "byi",
+                "びゅ" => "byu",
+                "びぇ" => "bye",
+                "びょ" => "byo",
+                "ぴゃ" => "pya",
+                "ぴぃ" => "pyi",
+                "ぴゅ" => "pyu",
+                "ぴぇ" => "pye",
+                "ぴょ" => "pyo",
+                "ぐぁ" => "gwa",
+                "ぐぃ" => "gwi",
+                "ぐぅ" => "gwu",
+                "ぐぇ" => "gwe",
+                "ぐぉ" => "gwo",
+                "つぁ" => "tsa",
+                "つぃ" => "tsi",
+                "つぇ" => "tse",
+                "つぉ" => "tso",
+                "ふぁ" => "fa",
+                "ふぃ" => "fi",
+                "ふぇ" => "fe",
+                "ふぉ" => "fo",
+                "うぁ" => "wha",
+                "うぃ" => "whi",
+                "うぅ" => "whu",
+                "うぇ" => "whe",
+                "うぉ" => "who",
+                "ヴぁ" => "va",
+                "ヴぃ" => "vi",
+                "ヴ" => "vu",
+                "ヴぇ" => "ve",
+                "ヴぉ" => "vo",
+                "でゃ" => "dha",
+                "でぃ" => "dhi",
+                "でゅ" => "dhu",
+                "でぇ" => "dhe",
+                "でょ" => "dho",
+                "てゃ" => "tha",
+                "てぃ" => "thi",
+                "てゅ" => "thu",
+                "てぇ" => "the",
+                "てょ" => "tho",
+                _ => "",
+            };
         }
 
         //平假名转罗马音

@@ -138,7 +138,7 @@ namespace TextRepairLibrary
 
             char[] arr = source.ToCharArray();
             Array.Reverse(arr);
-            string text = new string(arr);
+            string text = new(arr);
 
             string cmp = string.Empty;
             for (int i = 1; i <= findNum; i++)
@@ -156,7 +156,7 @@ namespace TextRepairLibrary
 
             char[] arr1 = t1.ToCharArray();
             Array.Reverse(arr1);
-            string ret = new string(arr1, 1, arr1.Length - 1);
+            string ret = new(arr1, 1, arr1.Length - 1);
 
             return ret;
         }
