@@ -79,24 +79,23 @@ namespace DataAccessLibrary
     {
         //游戏信息文件夹
         public static readonly DirectoryInfo directory = Directory.CreateDirectory($"{Environment.CurrentDirectory}\\data\\games\\");
-
+        public static Dictionary<Guid, GameInfo> AllCompletedGamesIdDict { get; set; }
+        public static Dictionary<string, GameInfo> AllCompletedGamesPathDict { get; set; }
         /// <summary>
         /// 根据id获得游戏信息
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static GameInfo GetGameById(Guid? id)
+        public static GameInfo GetGameById(Guid id)
         {
-            foreach (FileInfo fileInfo in directory.GetFiles())
+            try
             {
-                string jsonString = File.ReadAllText(fileInfo.FullName);
-                GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString)!;
-                if (gameInfo.GameID == id)
-                {
-                    return gameInfo;
-                }
+                return AllCompletedGamesIdDict[id];
             }
-            return null;
+            catch (KeyNotFoundException)
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -105,29 +104,14 @@ namespace DataAccessLibrary
         /// </summary>
         public static GameInfo GetGameByPath(string gamePath)
         {
-            (bool existed, GameInfo gameInfo) = GameExists(gamePath);
-            if (existed && gameInfo != null)
+            try
             {
-                return gameInfo;
+                return AllCompletedGamesPathDict[gamePath];
             }
-            else
+            catch (KeyNotFoundException)
             {
                 return AddGame(gamePath);
             }
-        }
-
-        private static (bool, GameInfo) GameExists(string gamePath)
-        {
-            foreach (FileInfo fileInfo in directory.GetFiles())
-            {
-                string jsonString = File.ReadAllText(fileInfo.FullName);
-                GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString)!;
-                if (gameInfo.FilePath == gamePath)
-                {
-                    return (true, gameInfo);
-                }
-            }
-            return (false, null);
         }
 
         private static GameInfo AddGame(string gamePath)
@@ -150,7 +134,9 @@ namespace DataAccessLibrary
         /// </summary>
         public static List<GameInfo> GetAllCompletedGames()
         {
-            List<GameInfo> list = new List<GameInfo>();
+            List<GameInfo> list = new();
+            AllCompletedGamesIdDict.Clear();
+            AllCompletedGamesPathDict.Clear();
             foreach (FileInfo fileInfo in directory.GetFiles())
             {
                 string jsonString = File.ReadAllText(fileInfo.FullName);
@@ -161,9 +147,12 @@ namespace DataAccessLibrary
                     string.IsNullOrEmpty(gameInfo.HookCode)
                     )
                 {
+                    File.Delete(fileInfo.FullName);
                     continue;
                 }
                 list.Add(gameInfo);
+                AllCompletedGamesIdDict.Add(gameInfo.GameID, gameInfo);
+                AllCompletedGamesPathDict.Add(gameInfo.FilePath, gameInfo);
             }
             return list;
         }
@@ -177,17 +166,16 @@ namespace DataAccessLibrary
         /// <returns></returns>
         public static bool DeleteGameByID(Guid gameID)
         {
-            foreach (FileInfo fileInfo in directory.GetFiles())
+            try
             {
-                string jsonString = File.ReadAllText(fileInfo.FullName);
-                GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString)!;
-                if (gameInfo.GameID == gameID)
-                {
-                    File.Delete(fileInfo.FullName);
-                    return true;
-                }
+                GameInfo gameInfo = AllCompletedGamesIdDict[gameID];
+                File.Delete($"{directory.FullName}\\{gameInfo.GameName}.json");
+                return true;
             }
-            return false;
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -218,6 +206,7 @@ namespace DataAccessLibrary
             WriteIndented = true,
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
         };
+
         /// <summary>
         /// 保存GameInfo
         /// </summary>

@@ -438,7 +438,7 @@ namespace MisakaTranslator_WPF
         private void ClipboardGuideBtn_Click(object sender, RoutedEventArgs e)
         {
             Common.textHooker = new TextHookHandle();
-            Common.GameID = null;
+            Common.GameID = Guid.Empty;
             Common.transMode = TransMode.Hook;
             Common.textHooker.AddClipBoardThread();
 

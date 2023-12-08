@@ -159,7 +159,7 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.GameID = null;//OCR暂时还不支持保存,因此强制给值null
+            Common.GameID = Guid.Empty;//OCR暂时还不支持保存,因此强制给值Empty
 
             //使用路由事件机制通知窗口来完成下一步操作
             PageChangeRoutedEventArgs args = new PageChangeRoutedEventArgs(PageChange.PageChangeRoutedEvent, this);

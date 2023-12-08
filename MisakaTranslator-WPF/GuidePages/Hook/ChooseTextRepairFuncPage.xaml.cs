@@ -1,4 +1,5 @@
 ﻿using DataAccessLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -60,7 +61,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             Common.UsingRepairFunc = TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]];
 
             //写入去重方法
-            if (Common.GameID != null)
+            if (Common.GameID != Guid.Empty)
             {
                 GameInfo targetGame = GameHelper.GetGameById(Common.GameID);
                 switch (TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])

@@ -82,7 +82,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                     Common.textHooker.DetachUnrelatedHooks(pid, usedHook);
                 }
 
-                if (Common.GameID != null)
+                if (Common.GameID != Guid.Empty)
                 {
                     GameInfo targetGame = GameHelper.GetGameById(Common.GameID);
                     targetGame.TransMode = 1;

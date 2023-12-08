@@ -1,4 +1,6 @@
 ﻿using DataAccessLibrary;
+using HandyControl.Controls;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -49,7 +51,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                     return;
                 }
 
-                Common.GameID = null;
+                Common.GameID = Guid.Empty;
                 GameInfo targetGame;
                 string filepath = ProcessHelper.FindProcessPath(GamePid, (bool)x64GameCheckBox.IsChecked);
                 if (filepath != "")
