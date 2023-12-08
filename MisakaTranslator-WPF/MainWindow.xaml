@@ -80,10 +80,8 @@
 
                     <StackPanel Grid.Row="0">
                         <Button HorizontalAlignment="Right" Foreground="{DynamicResource PrimaryTextBrush}" Style="{DynamicResource ButtonIcon}" hc:IconElement.Geometry="{DynamicResource DeleteFillCircleGeometry}" Click="CloseDrawerBtn_Click"/>
-
                         <TextBlock Name="GameNameTag" Margin="25,0,0,10" FontSize="15"/>
                         <TextBlock Name="TransModeTag" Margin="25,0,0,10" FontSize="15"/>
-
                     </StackPanel>
 
                     <StackPanel Grid.Row="1">

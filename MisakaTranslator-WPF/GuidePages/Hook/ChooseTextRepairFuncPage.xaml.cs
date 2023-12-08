@@ -59,7 +59,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
             Common.UsingRepairFunc = TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]];
 
-            //写入数据库的去重方法
+            //写入去重方法
             if (Common.GameID != null)
             {
                 GameInfo targetGame = GameHelper.GetGameById(Common.GameID);
