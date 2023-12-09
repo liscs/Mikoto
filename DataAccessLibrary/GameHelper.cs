@@ -79,8 +79,8 @@ namespace DataAccessLibrary
     {
         //游戏信息文件夹
         public static readonly DirectoryInfo directory = Directory.CreateDirectory($"{Environment.CurrentDirectory}\\data\\games\\");
-        public static Dictionary<Guid, GameInfo> AllCompletedGamesIdDict { get; set; }
-        public static Dictionary<string, GameInfo> AllCompletedGamesPathDict { get; set; }
+        public static Dictionary<Guid, GameInfo> AllCompletedGamesIdDict { get; set; } = new();
+        public static Dictionary<string, GameInfo> AllCompletedGamesPathDict { get; set; } = new();
         /// <summary>
         /// 根据id获得游戏信息
         /// </summary>
