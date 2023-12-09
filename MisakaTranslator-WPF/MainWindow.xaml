@@ -18,11 +18,10 @@
     <Grid Margin="5">
         <hc:ScrollViewer Grid.Row="0" Grid.Column="1"  Margin="10,10,10,10.5" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden" hc:ScrollViewerAttach.Orientation="Horizontal" Grid.ColumnSpan="2">
             <hc:WaterfallPanel Name="GameLibraryPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Height="250" Groups="2" Orientation="Vertical" hc:PanelElement.FluidMoveBehavior="{DynamicResource BehaviorXY200}">
-
             </hc:WaterfallPanel>
         </hc:ScrollViewer>
 
-        
+
         <StackPanel Orientation="Horizontal" Grid.Column="2">
             <Button fa:Awesome.Content="Rocket" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{DynamicResource EffectShadow5}" Click="AutoStart_BtnClick" Margin="0,0,0,0.5">
                 <hc:Poptip.Instance>
@@ -55,16 +54,16 @@
         </StackPanel>
 
         <hc:Drawer Name="AddNewGameDrawer" ShowMode="Press" MaskCanClose="True" Dock="Top">
-            
-        <StackPanel Orientation="Vertical" Background="{StaticResource TranslateWindowBackground}">
-            <Border Padding="30" Effect="{DynamicResource EffectShadow3}">
-                <hc:ButtonGroup Orientation="Horizontal">
+
+            <StackPanel Orientation="Vertical" Background="{StaticResource TranslateWindowBackground}">
+                <Border Padding="30" Effect="{DynamicResource EffectShadow3}">
+                    <hc:ButtonGroup Orientation="Horizontal">
                         <Button Background="{StaticResource BoxBtnColor}" Content="{DynamicResource BtnHookGuide}" Click="HookGuideBtn_Click" Height="50"></Button>
                         <Button Background="{StaticResource BoxBtnColor}" Content="{DynamicResource BtnOCRGuide}" Click="OCRGuideBtn_Click" Height="50"></Button>
                         <Button Background="{StaticResource BoxBtnColor}" Content="{DynamicResource BtnClipboardGuide}" Click="ClipboardGuideBtn_Click" Height="50"></Button>
                     </hc:ButtonGroup>
-            </Border>
-        </StackPanel>
+                </Border>
+            </StackPanel>
 
         </hc:Drawer>
 
@@ -86,12 +85,13 @@
 
                     <StackPanel Grid.Row="1">
                         <Border Padding="30">
-                        <hc:ButtonGroup Orientation="Vertical">
-                            <Button Content="{DynamicResource MainWindow_Drawer_Start}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource SuccessBrush}" Click="StartBtn_Click"/>
-                            <Button Content="{DynamicResource MainWindow_Drawer_LEStart}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource InfoBrush}" Click="LEStartBtn_Click"/>
-                            <Button Content="{DynamicResource MainWindow_Drawer_DeleteGame}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource DangerBrush}" Click="DeleteGameBtn_Click"/>
-                            <Button Content="{DynamicResource MainWindow_Drawer_UpdateName}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource WarningBrush}" Click="UpdateNameBtn_Click"/>
-                        </hc:ButtonGroup>
+                            <hc:ButtonGroup Orientation="Vertical">
+                                <Button Content="{DynamicResource MainWindow_Drawer_Start}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource SuccessBrush}" Click="StartBtn_Click"/>
+                                <Button Content="{DynamicResource MainWindow_Drawer_LEStart}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource InfoBrush}" Click="LEStartBtn_Click"/>
+                                <Button Content="{DynamicResource MainWindow_Drawer_DeleteGame}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource DangerBrush}" Click="DeleteGameBtn_Click"/>
+                                <Button Content="{DynamicResource MainWindow_Drawer_UpdateName}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource WarningBrush}" Click="UpdateNameBtn_Click"/>
+                                <Button Name="GameInfoDrawerClearButton" Content="GAME CLEAR!" Height="50" Margin="5" Foreground="White" Background="Gold" Click="ClearBtn_Click"/>
+                            </hc:ButtonGroup>
                         </Border>
 
                     </StackPanel>

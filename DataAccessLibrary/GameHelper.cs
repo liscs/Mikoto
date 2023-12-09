@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
@@ -73,6 +75,8 @@ namespace DataAccessLibrary
         /// 包含hook地址信息的本软件特有的MisakaHookCode
         /// </summary>
         public string MisakaHookCode { get; set; }
+
+        public bool Cleared { get; set; } = false;
     }
 
     public static class GameHelper
@@ -154,7 +158,7 @@ namespace DataAccessLibrary
                 AllCompletedGamesIdDict.Add(gameInfo.GameID, gameInfo);
                 AllCompletedGamesPathDict.Add(gameInfo.FilePath, gameInfo);
             }
-            return list;
+            return list.OrderBy(p => p.GameName).ToList();
         }
 
 
@@ -169,7 +173,7 @@ namespace DataAccessLibrary
             try
             {
                 GameInfo gameInfo = AllCompletedGamesIdDict[gameID];
-                File.Delete($"{directory.FullName}\\{gameInfo.GameName}.json");
+                File.Delete($"{directory.FullName}\\{gameInfo.GameID}.json");
                 return true;
             }
             catch (Exception)
@@ -179,26 +183,25 @@ namespace DataAccessLibrary
         }
 
         /// <summary>
-        /// 修改游戏名信息
+        /// 修改游戏信息
         /// </summary>
-        /// <param name="gameID"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static bool UpdateGameNameByID(Guid gameID, string name)
+        /// <param name="key">属性名</param>
+        /// <param name="value">属性值</param>
+        public static bool UpdateGameInfoByID(Guid gameID, string key, object value)
         {
-            foreach (FileInfo fileInfo in directory.GetFiles())
+            try
             {
-                string jsonString = File.ReadAllText(fileInfo.FullName);
-                GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString)!;
-                if (gameInfo.GameID == gameID)
-                {
-                    File.Delete(fileInfo.FullName);
-                    gameInfo.GameName = name;
-                    SaveGameInfo(gameInfo);
-                    return true;
-                }
+                GameInfo gameInfo = AllCompletedGamesIdDict[gameID];
+                File.Delete($"{directory}\\{gameInfo.GameID}.json");
+                PropertyInfo pinfo = typeof(GameInfo).GetProperty(key);
+                pinfo.SetValue(gameInfo, value);
+                SaveGameInfo(gameInfo);
+                return true;
             }
-            return false;
+            catch (KeyNotFoundException)
+            {
+                return false;
+            }
         }
 
         private static JsonSerializerOptions options = new JsonSerializerOptions
@@ -214,7 +217,7 @@ namespace DataAccessLibrary
         /// <returns></returns>
         public static void SaveGameInfo(GameInfo gameInfo)
         {
-            string fileName = $"{directory.FullName}\\{gameInfo.GameName}.json";
+            string fileName = $"{directory.FullName}\\{gameInfo.GameID}.json";
             string jsonString = JsonSerializer.Serialize(gameInfo, options);
             File.WriteAllText(fileName, jsonString);
         }

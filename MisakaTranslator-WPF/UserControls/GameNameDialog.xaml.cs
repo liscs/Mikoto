@@ -17,13 +17,14 @@ namespace MisakaTranslator_WPF
             InitializeComponent();
             gameInfolst = gameInfo;
             gid = id;
+            nameBox.Text = gameInfolst[gid].GameName;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (nameBox.Text != "")
+            if (!string.IsNullOrWhiteSpace(nameBox.Text) && nameBox.Text != gameInfolst[gid].GameName)
             {
-                GameHelper.UpdateGameNameByID(gameInfolst[gid].GameID, nameBox.Text);
+                GameHelper.UpdateGameInfoByID(gameInfolst[gid].GameID,"GameName", nameBox.Text);
                 HandyControl.Controls.MessageBox.Show(Application.Current.Resources["GameNameDialog_Modified"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
             }
 

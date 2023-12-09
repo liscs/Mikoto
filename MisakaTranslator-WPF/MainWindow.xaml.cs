@@ -69,18 +69,25 @@ namespace MisakaTranslator_WPF
             Common.UsingSrcLang = "ja";
         }
 
+        private readonly List<SolidColorBrush> bushLst = new List<SolidColorBrush>
+                {
+                    Brushes.CornflowerBlue,
+                    Brushes.IndianRed,
+                    Brushes.Orange,
+                    Brushes.ForestGreen,
+                    Brushes.Peru,
+                    Brushes.MediumVioletRed,
+                };
+        private SolidColorBrush GetNormalBackground(int i)
+        {
+            return bushLst[i % 6];
+        }
+
         /// <summary>
         /// 游戏库瀑布流初始化
         /// </summary>
         public void GameLibraryPanel_Init()
         {
-            var bushLst = new List<SolidColorBrush>
-                {
-                    Brushes.CornflowerBlue,
-                    Brushes.IndianRed,
-                    Brushes.Orange,
-                    Brushes.ForestGreen
-                };
             if (GameInfoList != null)
             {
                 for (var i = 0; i < GameInfoList.Count; i++)
@@ -111,7 +118,7 @@ namespace MisakaTranslator_WPF
                         Width = 150,
                         Child = gd,
                         Margin = new Thickness(5),
-                        Background = bushLst[i % 4],
+                        Background = GameInfoList[i].Cleared ? Brushes.Gold : GetNormalBackground(i),
                     };
                     back.MouseEnter += Border_MouseEnter;
                     back.MouseLeave += Border_MouseLeave;
@@ -119,7 +126,6 @@ namespace MisakaTranslator_WPF
                     try { GameLibraryPanel.UnregisterName("game" + i); } catch (ArgumentException) { }
                     GameLibraryPanel.RegisterName("game" + i, back);
                     GameLibraryPanel.Children.Add(back);
-
                 }
             }
             var textBlock = new TextBlock()
@@ -232,6 +238,17 @@ namespace MisakaTranslator_WPF
             else
             {
                 TransModeTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_TransMode"].ToString() + "OCR";
+            }
+
+            if (GameInfoList[gid].Cleared)
+            {
+                GameInfoDrawerClearButton.Background = Brushes.Gray;
+                GameInfoDrawerClearButton.Content = "CANCEL CLEAR";
+            }
+            else
+            {
+                GameInfoDrawerClearButton.Background = Brushes.Gold;
+                GameInfoDrawerClearButton.Content = "GAME CLEAR!";
             }
 
             GameInfoDrawer.IsOpen = true;
@@ -492,6 +509,27 @@ namespace MisakaTranslator_WPF
         private void LanguageBtn_Click(object sender, RoutedEventArgs e)
         {
             LanguageContextMenu.IsOpen = true;
+        }
+
+        private void ClearBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (GameInfoList[gid].Cleared)
+            {
+                Growl.InfoGlobal("CLEAR CANCELED");
+                var b = GameLibraryPanel.FindName($"game{gid}") as Border;
+                b.Background = GetNormalBackground(gid);
+                GameInfoList[gid].Cleared = false;
+            }
+            else
+            {
+                Growl.InfoGlobal("GAME CLEARED!");
+                var b = GameLibraryPanel.FindName($"game{gid}") as Border;
+                b.Background = Brushes.Gold;
+                GameInfoList[gid].Cleared = true;
+            }
+            GameHelper.UpdateGameInfoByID(GameInfoList[gid].GameID, "Cleared", GameInfoList[gid].Cleared);
+            GameInfoDrawer.IsOpen = false;
+
         }
     }
 }
