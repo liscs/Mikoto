@@ -38,7 +38,7 @@ namespace MisakaTranslator_WPF.GuidePages
                 Common.UsingDstLang = TranslatorCommon.LanguageDict[_langList[DstLangCombox.SelectedIndex]];
 
                 //写游戏信息
-                GameInfo targetGame = GameHelper.GetGameById(Common.GameID);
+                GameInfo targetGame = GameHelper.GetImcompletedGameById(Common.GameID);
                 if (targetGame != null)
                 {
                     targetGame.SrcLang = Common.UsingSrcLang;

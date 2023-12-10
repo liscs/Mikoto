@@ -84,7 +84,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
                 if (Common.GameID != Guid.Empty)
                 {
-                    GameInfo targetGame = GameHelper.GetGameById(Common.GameID);
+                    GameInfo targetGame = GameHelper.GetImcompletedGameById(Common.GameID);
                     targetGame.TransMode = 1;
                     targetGame.HookCode = lstData[HookFunListView.SelectedIndex].HookCode;
                     targetGame.MisakaHookCode = lstData[HookFunListView.SelectedIndex].MisakaHookCode;

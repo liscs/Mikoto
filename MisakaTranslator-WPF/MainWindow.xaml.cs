@@ -36,7 +36,7 @@ namespace MisakaTranslator_WPF
             InitializeLanguage();
             TranslatorCommon.Refresh();
             InitializeComponent();
-            Initialize();
+            Refresh();
             GrowlDisableSwitch();
 
             //注册全局OCR热键
@@ -58,7 +58,7 @@ namespace MisakaTranslator_WPF
             Common.GlobalOCR();
         }
 
-        private void Initialize()
+        public void Refresh()
         {
             this.Resources["Foreground"] = (SolidColorBrush)(new BrushConverter().ConvertFrom(Common.appSettings.ForegroundHex));
             GameInfoList = GameHelper.GetAllCompletedGames();
@@ -88,6 +88,7 @@ namespace MisakaTranslator_WPF
         /// </summary>
         public void GameLibraryPanel_Init()
         {
+            GameLibraryPanel.Children.Clear();
             if (GameInfoList != null)
             {
                 for (var i = 0; i < GameInfoList.Count; i++)
@@ -357,7 +358,7 @@ namespace MisakaTranslator_WPF
 
         private void UpdateNameBtn_Click(object sender, RoutedEventArgs e)
         {
-            Dialog.Show(new GameNameDialog(GameInfoList, gid));
+            Dialog.Show(new GameNameDialog(this, GameInfoList, gid));
         }
 
         private async void LEStartBtn_Click(object sender, RoutedEventArgs e)

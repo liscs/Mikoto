@@ -12,9 +12,11 @@ namespace MisakaTranslator_WPF
     {
         List<GameInfo> gameInfolst;
         int gid; //当前选中的顺序，并非游戏ID
-        public GameNameDialog(List<GameInfo> gameInfo, int id)
+        MainWindow _mainWindow;
+        public GameNameDialog(MainWindow mainWindow, List<GameInfo> gameInfo, int id)
         {
             InitializeComponent();
+            _mainWindow = mainWindow;
             gameInfolst = gameInfo;
             gid = id;
             nameBox.Text = gameInfolst[gid].GameName;
@@ -24,8 +26,8 @@ namespace MisakaTranslator_WPF
         {
             if (!string.IsNullOrWhiteSpace(nameBox.Text) && nameBox.Text != gameInfolst[gid].GameName)
             {
-                GameHelper.UpdateGameInfoByID(gameInfolst[gid].GameID,"GameName", nameBox.Text);
-                HandyControl.Controls.MessageBox.Show(Application.Current.Resources["GameNameDialog_Modified"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
+                GameHelper.UpdateGameInfoByID(gameInfolst[gid].GameID, "GameName", nameBox.Text);
+                _mainWindow.Refresh();
             }
 
         }

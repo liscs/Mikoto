@@ -90,16 +90,9 @@ namespace DataAccessLibrary
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static GameInfo GetGameById(Guid id)
+        public static GameInfo GetImcompletedGameById(Guid id)
         {
-            try
-            {
-                return AllCompletedGamesIdDict[id];
-            }
-            catch (KeyNotFoundException)
-            {
-                return null;
-            }
+            return LoadGameInfo($"{directory.FullName}\\{id}.json");
         }
 
         /// <summary>
@@ -143,8 +136,7 @@ namespace DataAccessLibrary
             AllCompletedGamesPathDict.Clear();
             foreach (FileInfo fileInfo in directory.GetFiles())
             {
-                string jsonString = File.ReadAllText(fileInfo.FullName);
-                GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString)!;
+                GameInfo gameInfo = LoadGameInfo(fileInfo.FullName);
                 if (string.IsNullOrEmpty(gameInfo.SrcLang) ||
                     string.IsNullOrEmpty(gameInfo.DstLang) ||
                     string.IsNullOrEmpty(gameInfo.RepairFunc) ||
@@ -158,7 +150,7 @@ namespace DataAccessLibrary
                 AllCompletedGamesIdDict.Add(gameInfo.GameID, gameInfo);
                 AllCompletedGamesPathDict.Add(gameInfo.FilePath, gameInfo);
             }
-            return list.OrderBy(p => p.GameName).ToList();
+            return list.OrderByDescending(p => p.Cleared).ThenBy(p => p.GameName).ToList();
         }
 
 
@@ -192,7 +184,7 @@ namespace DataAccessLibrary
             try
             {
                 GameInfo gameInfo = AllCompletedGamesIdDict[gameID];
-                File.Delete($"{directory}\\{gameInfo.GameID}.json");
+                File.Delete($"{directory.FullName}\\{gameInfo.GameID}.json");
                 PropertyInfo pinfo = typeof(GameInfo).GetProperty(key);
                 pinfo.SetValue(gameInfo, value);
                 SaveGameInfo(gameInfo);
@@ -220,6 +212,13 @@ namespace DataAccessLibrary
             string fileName = $"{directory.FullName}\\{gameInfo.GameID}.json";
             string jsonString = JsonSerializer.Serialize(gameInfo, options);
             File.WriteAllText(fileName, jsonString);
+        }
+
+        private static GameInfo LoadGameInfo(string path)
+        {
+            string jsonString = File.ReadAllText(path);
+            GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString)!;
+            return gameInfo;
         }
     }
 }
