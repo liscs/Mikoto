@@ -23,9 +23,9 @@
                 <ListView Name="HookFunListView" Grid.Row="1" Background="White" SelectionMode="Single">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Width="70" Header="{DynamicResource ChooseHookFuncPage_Header_PID}" DisplayMemberBinding="{Binding Path=GamePID}"/>
-                            <GridViewColumn Width="100" Header="{DynamicResource ChooseHookFuncPage_Header_FunName}" DisplayMemberBinding="{Binding Path=HookFunc}"/>
-                            <GridViewColumn Width="100" Header="{DynamicResource ChooseHookFuncPage_Header_HookCode}" DisplayMemberBinding="{Binding Path=MisakaHookCode}"/>
+                            <GridViewColumn Width="Auto" Header="{DynamicResource ChooseHookFuncPage_Header_PID}" DisplayMemberBinding="{Binding Path=GamePID}"/>
+                            <GridViewColumn Width="Auto" Header="{DynamicResource ChooseHookFuncPage_Header_FunName}" DisplayMemberBinding="{Binding Path=HookFunc}"/>
+                            <GridViewColumn Width="Auto" Header="{DynamicResource ChooseHookFuncPage_Header_HookCode}" DisplayMemberBinding="{Binding Path=MisakaHookCode}"/>
                             <GridViewColumn Width="500" Header="{DynamicResource ChooseHookFuncPage_Header_Content}" DisplayMemberBinding="{Binding Path=Data}"/>
                         </GridView>
                     </ListView.View>

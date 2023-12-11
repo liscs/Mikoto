@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -38,6 +39,10 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             //加一步判断防止卡顿，部分不可能使用的方法刷新速度过快，在几秒之内就能刷新超过100个，这时候就停止对他们的刷新,直接卸载这个方法
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
+                if (InvalidMisakaCodeRegex().Match(e.Data.MisakaHookCode).Success)
+                {
+                    e.Data.MisakaHookCode = string.Empty;
+                }
                 if (e.Index < sum)
                 {
                     lstData[e.Index] = e.Data;
@@ -174,5 +179,8 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
         {
             Process.Start(new ProcessStartInfo("https://github.com/hanmin0822/MisakaHookFinder") { UseShellExecute = true });
         }
+
+        [GeneratedRegex("【F+:F+:F+】")]
+        private static partial Regex InvalidMisakaCodeRegex();
     }
 }
