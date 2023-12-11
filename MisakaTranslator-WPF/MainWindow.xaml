@@ -29,12 +29,12 @@
 
         <!--左下角-->
         <StackPanel Orientation="Horizontal" Grid.Column="2">
-            <Button fa:Awesome.Content="Rocket" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{DynamicResource EffectShadow5}" Click="AutoStart_BtnClick" Margin="0,0,0,0.5">
+            <Button fa:Awesome.Content="Rocket" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="AutoStart_BtnClick" Margin="0,0,0,0.5">
                 <hc:Poptip.Instance>
                     <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{DynamicResource MainWindow_Tip_AutoStart}" Placement="Right"/>
                 </hc:Poptip.Instance>
             </Button>
-            <Button fa:Awesome.Content="Book" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{DynamicResource EffectShadow5}" Click="ComicTransBtn_Click" Margin="20,0,0,0.5">
+            <Button fa:Awesome.Content="Book" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="ComicTransBtn_Click" Margin="20,0,0,0.5">
                 <hc:Poptip.Instance>
                     <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{DynamicResource MainWindow_Tip_ComicTrans}" Placement="Right"/>
                 </hc:Poptip.Instance>
@@ -43,7 +43,7 @@
 
         <!--右下角-->
         <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button fa:Awesome.Content="Language" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{DynamicResource EffectShadow5}"  Margin="0,0,20,0.5" Click="LanguageBtn_Click">
+            <Button fa:Awesome.Content="Language" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{StaticResource EffectShadow5}"  Margin="0,0,20,0.5" Click="LanguageBtn_Click">
                 <Button.ContextMenu>
                     <ContextMenu Name="LanguageContextMenu">
                         <MenuItem Header="中文" Click="Language_MenuItem_Click" Tag="zh-CN"/>
@@ -51,7 +51,7 @@
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>
-            <Button fa:Awesome.Content="Cog" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{DynamicResource EffectShadow5}" Click="SettingsBtn_Click" Margin="0,0,0,0.5">
+            <Button fa:Awesome.Content="Cog" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="SettingsBtn_Click" Margin="0,0,0,0.5">
                 <hc:Poptip.Instance>
                     <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{DynamicResource MainWindow_Tip_Settings}" Placement="Left"/>
                 </hc:Poptip.Instance>
@@ -61,7 +61,7 @@
         <!--添加游戏-->
         <hc:Drawer Name="AddNewGameDrawer" ShowMode="Press" MaskCanClose="True" Dock="Top">
             <StackPanel Orientation="Vertical" Background="{StaticResource TranslateWindowBackground}">
-                <Border Padding="30" Effect="{DynamicResource EffectShadow3}">
+                <Border Padding="30" Effect="{StaticResource EffectShadow3}">
                     <hc:ButtonGroup Orientation="Horizontal">
                         <Button Background="{StaticResource BoxBtnColor}" Content="{DynamicResource BtnHookGuide}" Click="HookGuideBtn_Click" Height="50"></Button>
                         <Button Background="{StaticResource BoxBtnColor}" Content="{DynamicResource BtnOCRGuide}" Click="OCRGuideBtn_Click" Height="50"></Button>
@@ -103,7 +103,7 @@
         </hc:Drawer>
         <hc:NotifyIcon Token="MisakaTranslator" Name="NotifyIconContextContent" Text="HandyControl" IsBlink="False" Visibility="Visible"  Icon="pack://application:,,,/MisakaTranslator-WPF;component/logo.ico">
             <hc:NotifyIcon.ContextContent>
-                <Border CornerRadius="4" Margin="10" Background="{DynamicResource RegionBrush}" Effect="{DynamicResource EffectShadow2}">
+                <Border CornerRadius="4" Margin="10" Background="{DynamicResource RegionBrush}" Effect="{StaticResource EffectShadow2}">
                     <StackPanel VerticalAlignment="Center" Margin="16">
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                             <Button Click="ButtonPush_OnClick"  Command="hc:ControlCommands.PushMainWindow2Top" MinWidth="100" Content="打开主界面"/>
