@@ -90,7 +90,7 @@ namespace DataAccessLibrary
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static GameInfo GetImcompletedGameById(Guid id)
+        public static GameInfo GetUncompletedGameById(Guid id)
         {
             return LoadGameInfo($"{directory.FullName}\\{id}.json");
         }

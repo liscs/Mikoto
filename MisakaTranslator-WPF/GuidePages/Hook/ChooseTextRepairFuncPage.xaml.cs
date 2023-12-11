@@ -63,7 +63,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             //写入去重方法
             if (Common.GameID != Guid.Empty)
             {
-                GameInfo targetGame = GameHelper.GetImcompletedGameById(Common.GameID);
+                GameInfo targetGame = GameHelper.GetUncompletedGameById(Common.GameID);
                 switch (TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])
                 {
                     case "RepairFun_RemoveSingleWordRepeat":
