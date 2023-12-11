@@ -5,6 +5,7 @@ using KeyboardMouseHookLibrary;
 using OCRLibrary;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -25,11 +26,13 @@ namespace MisakaTranslator_WPF
         public List<GameInfo> GameInfoList { get; set; }
         private int gid; //当前选中的顺序，并非游戏ID
         private IntPtr hwnd;
+        public ObservableCollection<Border> GamePanelCollection { get; set; } = new();
 
         public static MainWindow Instance { get; set; }
 
         public MainWindow()
         {
+            DataContext = GamePanelCollection;
             Instance = this;
             Common.mainWin = this;
             Common.appSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\data\\settings\\settings.ini").Build();
@@ -88,7 +91,7 @@ namespace MisakaTranslator_WPF
         /// </summary>
         public void GameLibraryPanel_Init()
         {
-            GameLibraryPanel.Children.Clear();
+            GamePanelCollection.Clear();
             if (GameInfoList != null)
             {
                 for (var i = 0; i < GameInfoList.Count; i++)
@@ -124,9 +127,7 @@ namespace MisakaTranslator_WPF
                     back.MouseEnter += Border_MouseEnter;
                     back.MouseLeave += Border_MouseLeave;
                     back.MouseLeftButtonDown += Back_MouseLeftButtonDown;
-                    try { GameLibraryPanel.UnregisterName("game" + i); } catch (ArgumentException) { }
-                    GameLibraryPanel.RegisterName("game" + i, back);
-                    GameLibraryPanel.Children.Add(back);
+                    GamePanelCollection.Add(back);
                 }
             }
             var textBlock = new TextBlock()
@@ -150,9 +151,7 @@ namespace MisakaTranslator_WPF
             border.MouseEnter += Border_MouseEnter;
             border.MouseLeave += Border_MouseLeave;
             border.MouseLeftButtonDown += Border_MouseLeftButtonDown;
-            try { GameLibraryPanel.UnregisterName("AddNewGame"); } catch (ArgumentException) { }
-            GameLibraryPanel.RegisterName("AddNewGame", border);
-            GameLibraryPanel.Children.Add(border);
+            GamePanelCollection.Add(border);
         }
 
         private void Border_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -349,8 +348,8 @@ namespace MisakaTranslator_WPF
             if (HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_Drawer_DeleteGameConfirmBox"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 GameHelper.DeleteGameByID(GameInfoList[gid].GameID);
-                var b = GameLibraryPanel.FindName($"game{gid}") as Border;
-                GameLibraryPanel.Children.Remove(b);
+                var b = GamePanelCollection[gid];
+                GamePanelCollection.Remove(b);
                 GameInfoDrawer.IsOpen = false;
             }
 
@@ -517,14 +516,14 @@ namespace MisakaTranslator_WPF
             if (GameInfoList[gid].Cleared)
             {
                 Growl.InfoGlobal("CLEAR CANCELED");
-                var b = GameLibraryPanel.FindName($"game{gid}") as Border;
+                var b = GamePanelCollection[gid];
                 b.Background = GetNormalBackground(gid);
                 GameInfoList[gid].Cleared = false;
             }
             else
             {
                 Growl.InfoGlobal("GAME CLEARED!");
-                var b = GameLibraryPanel.FindName($"game{gid}") as Border;
+                var b = GamePanelCollection[gid];
                 b.Background = Brushes.Gold;
                 GameInfoList[gid].Cleared = true;
             }

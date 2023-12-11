@@ -16,27 +16,32 @@
     </Window.Resources>
 
     <Grid Margin="5">
-        <hc:ScrollViewer Grid.Row="0" Grid.Column="1"  Margin="10,10,10,10.5" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden" hc:ScrollViewerAttach.Orientation="Horizontal" Grid.ColumnSpan="2">
-            <hc:WaterfallPanel Name="GameLibraryPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Height="250" Groups="2" Orientation="Vertical" hc:PanelElement.FluidMoveBehavior="{DynamicResource BehaviorXY200}">
-            </hc:WaterfallPanel>
+        <!--游戏列表-->
+        <hc:ScrollViewer Grid.Row="0" Grid.Column="1"  Margin="10,10,10,10.5" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden" hc:ScrollViewerAttach.Orientation="Horizontal" Grid.ColumnSpan="3">
+            <ItemsControl ItemsSource="{Binding}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <hc:WaterfallPanel IsItemsHost="True" Name="GameLibraryPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Height="250" Groups="2" Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
         </hc:ScrollViewer>
 
-
+        <!--左下角-->
         <StackPanel Orientation="Horizontal" Grid.Column="2">
             <Button fa:Awesome.Content="Rocket" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{DynamicResource EffectShadow5}" Click="AutoStart_BtnClick" Margin="0,0,0,0.5">
                 <hc:Poptip.Instance>
                     <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{DynamicResource MainWindow_Tip_AutoStart}" Placement="Right"/>
                 </hc:Poptip.Instance>
             </Button>
-
             <Button fa:Awesome.Content="Book" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{DynamicResource EffectShadow5}" Click="ComicTransBtn_Click" Margin="20,0,0,0.5">
                 <hc:Poptip.Instance>
                     <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{DynamicResource MainWindow_Tip_ComicTrans}" Placement="Right"/>
                 </hc:Poptip.Instance>
             </Button>
-
         </StackPanel>
 
+        <!--右下角-->
         <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Button fa:Awesome.Content="Language" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{DynamicResource EffectShadow5}"  Margin="0,0,20,0.5" Click="LanguageBtn_Click">
                 <Button.ContextMenu>
@@ -52,9 +57,9 @@
                 </hc:Poptip.Instance>
             </Button>
         </StackPanel>
-
+        
+        <!--添加游戏-->
         <hc:Drawer Name="AddNewGameDrawer" ShowMode="Press" MaskCanClose="True" Dock="Top">
-
             <StackPanel Orientation="Vertical" Background="{StaticResource TranslateWindowBackground}">
                 <Border Padding="30" Effect="{DynamicResource EffectShadow3}">
                     <hc:ButtonGroup Orientation="Horizontal">
@@ -64,11 +69,8 @@
                     </hc:ButtonGroup>
                 </Border>
             </StackPanel>
-
         </hc:Drawer>
-
-
-
+        <!--游戏详情-->
         <hc:Drawer Name="GameInfoDrawer" ShowMode="Press" MaskCanClose="True" Dock="Left">
             <Border Background="{StaticResource TranslateWindowBackground}" Width="300" BorderBrush="{DynamicResource BorderBrush}">
                 <Grid>

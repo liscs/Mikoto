@@ -19,7 +19,7 @@ namespace MisakaTranslator_WPF.GuidePages
             //刷新主界面
             Dispatcher.BeginInvoke(() =>
             {
-                MainWindow.Instance.GameLibraryPanel.Children.Clear();
+                MainWindow.Instance.GamePanelCollection.Clear();
                 MainWindow.Instance.GameInfoList = GameHelper.GetAllCompletedGames();
                 MainWindow.Instance.GameLibraryPanel_Init();
             });
