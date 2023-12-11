@@ -19,9 +19,8 @@ namespace MisakaTranslator_WPF.GuidePages
             //刷新主界面
             Dispatcher.BeginInvoke(() =>
             {
-                MainWindow.Instance.GamePanelCollection.Clear();
                 MainWindow.Instance.GameInfoList = GameHelper.GetAllCompletedGames();
-                MainWindow.Instance.GameLibraryPanel_Init();
+                MainWindow.Instance.Refresh();
             });
 
             //使用路由事件机制通知窗口来完成下一步操作

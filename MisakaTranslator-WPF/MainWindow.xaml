@@ -21,7 +21,7 @@
             <ItemsControl ItemsSource="{Binding}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <hc:WaterfallPanel IsItemsHost="True" Name="GameLibraryPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Height="250" Groups="2" Orientation="Vertical" />
+                        <hc:WaterfallPanel IsItemsHost="True" Name="GameLibraryPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Height="375" Groups="3" Orientation="Vertical" hc:PanelElement.FluidMoveBehavior="{StaticResource BehaviorXY200}"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>

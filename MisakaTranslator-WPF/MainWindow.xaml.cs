@@ -89,47 +89,57 @@ namespace MisakaTranslator_WPF
         /// <summary>
         /// 游戏库瀑布流初始化
         /// </summary>
-        public void GameLibraryPanel_Init()
+        private void GameLibraryPanel_Init()
         {
             GamePanelCollection.Clear();
             if (GameInfoList != null)
             {
                 for (var i = 0; i < GameInfoList.Count; i++)
                 {
-                    var tb = new TextBlock()
-                    {
-                        Text = GameInfoList[i].GameName,
-                        Foreground = Brushes.White,
-                        VerticalAlignment = VerticalAlignment.Bottom,
-                        HorizontalAlignment = HorizontalAlignment.Left,
-                        Margin = new Thickness(3)
-                    };
-                    var ico = new Image()
-                    {
-                        Source = ImageProcFunc.ImageToBitmapImage(ImageProcFunc.GetAppIcon(GameInfoList[i].FilePath)),
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Height = 64,
-                        Width = 64
-                    };
-                    RenderOptions.SetBitmapScalingMode(ico, BitmapScalingMode.HighQuality);
-                    var gd = new Grid();
-                    gd.Children.Add(ico);
-                    gd.Children.Add(tb);
-                    var back = new Border()
-                    {
-                        Name = "game" + i,
-                        Width = 150,
-                        Child = gd,
-                        Margin = new Thickness(5),
-                        Background = GameInfoList[i].Cleared ? Brushes.Gold : GetNormalBackground(i),
-                    };
-                    back.MouseEnter += Border_MouseEnter;
-                    back.MouseLeave += Border_MouseLeave;
-                    back.MouseLeftButtonDown += Back_MouseLeftButtonDown;
-                    GamePanelCollection.Add(back);
+                    AddGame(i);
                 }
             }
+            InitAddGamePanel();
+        }
+
+        private void AddGame(int i)
+        {
+            var tb = new TextBlock()
+            {
+                Text = GameInfoList[i].GameName,
+                Foreground = Brushes.White,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = new Thickness(3)
+            };
+            var ico = new Image()
+            {
+                Source = ImageProcFunc.ImageToBitmapImage(ImageProcFunc.GetAppIcon(GameInfoList[i].FilePath)),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Height = 64,
+                Width = 64
+            };
+            RenderOptions.SetBitmapScalingMode(ico, BitmapScalingMode.HighQuality);
+            var gd = new Grid();
+            gd.Children.Add(ico);
+            gd.Children.Add(tb);
+            var back = new Border()
+            {
+                Name = "game" + i,
+                Width = 150,
+                Child = gd,
+                Margin = new Thickness(3),
+                Background = GameInfoList[i].Cleared ? Brushes.Gold : GetNormalBackground(i),
+            };
+            back.MouseEnter += Border_MouseEnter;
+            back.MouseLeave += Border_MouseLeave;
+            back.MouseLeftButtonDown += Back_MouseLeftButtonDown;
+            GamePanelCollection.Add(back);
+        }
+
+        private void InitAddGamePanel()
+        {
             var textBlock = new TextBlock()
             {
                 Foreground = Brushes.White,
@@ -145,7 +155,7 @@ namespace MisakaTranslator_WPF
                 Name = "AddNewName",
                 Width = 150,
                 Child = grid,
-                Margin = new Thickness(5),
+                Margin = new Thickness(3),
                 Background = (SolidColorBrush)this.Resources["Foreground"]
             };
             border.MouseEnter += Border_MouseEnter;
