@@ -92,7 +92,14 @@ namespace DataAccessLibrary
         /// <returns></returns>
         public static GameInfo GetUncompletedGameById(Guid id)
         {
-            return LoadGameInfo($"{directory.FullName}\\{id}.json");
+            if (id != Guid.Empty)
+            {
+                return LoadGameInfo($"{directory.FullName}\\{id}.json");
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -137,10 +144,10 @@ namespace DataAccessLibrary
             foreach (FileInfo fileInfo in directory.GetFiles())
             {
                 GameInfo gameInfo = LoadGameInfo(fileInfo.FullName);
-                if (string.IsNullOrEmpty(gameInfo.SrcLang) ||
-                    string.IsNullOrEmpty(gameInfo.DstLang) ||
-                    string.IsNullOrEmpty(gameInfo.RepairFunc) ||
-                    string.IsNullOrEmpty(gameInfo.HookCode)
+                if (string.IsNullOrEmpty(gameInfo.SrcLang)
+                    || string.IsNullOrEmpty(gameInfo.DstLang)
+                    || string.IsNullOrEmpty(gameInfo.RepairFunc)
+                    || string.IsNullOrEmpty(gameInfo.HookCode)
                     )
                 {
                     File.Delete(fileInfo.FullName);
