@@ -296,7 +296,7 @@ namespace MisakaTranslator_WPF
             }
 
             Common.GameID = GameInfoList[gid].GameID;
-            Common.transMode = TransMode.Hook;
+            Common.TransMode = TransMode.Hook;
             Common.UsingDstLang = GameInfoList[gid].DstLang;
             Common.UsingSrcLang = GameInfoList[gid].SrcLang;
             Common.UsingRepairFunc = GameInfoList[gid].RepairFunc;
@@ -466,7 +466,7 @@ namespace MisakaTranslator_WPF
         {
             Common.textHooker = new TextHookHandle();
             Common.GameID = Guid.Empty;
-            Common.transMode = TransMode.Hook;
+            Common.TransMode = TransMode.Hook;
             Common.textHooker.AddClipBoardThread();
 
             //剪贴板方式读取的特殊码和misakacode

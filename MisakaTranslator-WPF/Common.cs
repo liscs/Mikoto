@@ -43,12 +43,12 @@ namespace MisakaTranslator_WPF
         Romaji = 3,
     }
 
-    public class Common
+    public static class Common
     {
         public static IAppSettings appSettings; //应用设置
         public static IRepeatRepairSettings repairSettings; //去重方法参数
 
-        public static TransMode transMode; //全局使用中的翻译模式 1=hook 2=ocr
+        private static TransMode transMode; //全局使用中的翻译模式 1=hook 2=ocr
 
         public static Guid GameID; //全局使用中的游戏ID(数据库)
 
@@ -131,6 +131,9 @@ namespace MisakaTranslator_WPF
         }
 
         static double scale;
+
+        public static TransMode TransMode { get => transMode; set => transMode = value; }
+
         /// <summary>
         /// 获取DPI缩放倍数
         /// </summary>

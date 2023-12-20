@@ -95,7 +95,7 @@ namespace MisakaTranslator_WPF
                 if (GuideMode == GuideMode.Hook)
                 {
                     //Hook方式设置 完成
-                    Common.transMode = TransMode.Hook;
+                    Common.TransMode = TransMode.Hook;
                     TranslateWindow translateWindow = new TranslateWindow();
                     translateWindow.Show();
                     isComplete = true;
@@ -104,7 +104,7 @@ namespace MisakaTranslator_WPF
                 else if (GuideMode == GuideMode.Ocr)
                 {
                     //OCR方式设置 完成
-                    Common.transMode = TransMode.Ocr;
+                    Common.TransMode = TransMode.Ocr;
                     TranslateWindow translateWindow = new TranslateWindow();
                     translateWindow.Show();
                     isComplete = true;
@@ -113,7 +113,7 @@ namespace MisakaTranslator_WPF
                 else if (GuideMode == GuideMode.Rehook)
                 {
                     //Hook方式设置 完成
-                    Common.transMode = TransMode.Hook;
+                    Common.TransMode = TransMode.Hook;
                     TranslateWindow translateWindow = new TranslateWindow();
                     translateWindow.Show();
                     isComplete = true;
@@ -122,7 +122,7 @@ namespace MisakaTranslator_WPF
                 else if (GuideMode == GuideMode.Clipboard)
                 {
                     //剪贴板监控方式设置 完成
-                    Common.transMode = TransMode.Hook;
+                    Common.TransMode = TransMode.Hook;
                     TranslateWindow translateWindow = new TranslateWindow();
                     translateWindow.Show();
                     isComplete = true;

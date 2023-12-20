@@ -49,7 +49,7 @@ namespace MisakaTranslator_WPF
         public int SourceTextFontSize; //源文本区域字体大小
 
         private Queue<string> _gameTextHistory; //历史文本
-        public static KeyboardMouseHook hook; //全局键盘鼠标钩子
+        private static KeyboardMouseHook hook; //全局键盘鼠标钩子
         public volatile bool IsOCRingFlag; //线程锁:判断是否正在OCR线程中，保证同时只有一组在跑OCR
         public bool IsNotPausedFlag; //是否处在暂停状态（专用于OCR）,为真可以翻译
 
@@ -102,11 +102,11 @@ namespace MisakaTranslator_WPF
 
             _artificialTransHelper = new ArtificialTransHelper(Convert.ToString(Common.GameID));
 
-            if (Common.transMode == TransMode.Hook)
+            if (Common.TransMode == TransMode.Hook)
             {
                 Common.textHooker.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
             }
-            else if (Common.transMode == TransMode.Ocr)
+            else if (Common.TransMode == TransMode.Ocr)
             {
                 MouseKeyboardHook_Init();
             }
@@ -420,15 +420,23 @@ namespace MisakaTranslator_WPF
             //1.得到原句
             string source = e.Data.Data;
             if (source == null && e.Data.HookFunc == "Clipboard")
+            {
                 return;
+            }
             //2.进行去重
             string repairedText = TextRepair.RepairFun_Auto(Common.UsingRepairFunc, source);
 
             if (!Common.appSettings.EachRowTrans) // 不启用分行翻译
-                if (Common.UsingSrcLang != "zh" && Common.UsingSrcLang != "ja")
-                    repairedText = repairedText.Replace(Environment.NewLine, " ").Replace("\n", " ").Replace("<br>", " ").Replace("</br>", " ");
-                else
+            {
+                if (Common.UsingSrcLang == "zh" || Common.UsingSrcLang == "ja")
+                {
                     repairedText = new string(repairedText.Where(p => !char.IsWhiteSpace(p)).ToArray()).Replace("<br>", "").Replace("</br>", "");
+                }
+                else
+                {
+                    repairedText = repairedText.Replace(Environment.NewLine, " ").Replace("\n", " ").Replace("<br>", " ").Replace("</br>", " ");
+                }
+            }
 
             TranslateText(repairedText);
         }
@@ -757,7 +765,7 @@ namespace MisakaTranslator_WPF
 
         private void Pause_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (Common.transMode == TransMode.Hook)
+            if (Common.TransMode == TransMode.Hook)
             {
                 if (Common.textHooker.Pause)
                 {
@@ -881,7 +889,7 @@ namespace MisakaTranslator_WPF
 
         private void RenewOCR_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (Common.transMode == TransMode.Ocr)
+            if (Common.TransMode == TransMode.Ocr)
             {
                 TranslateEventOcr(true);
             }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.CognitiveServices.Speech;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,9 +45,26 @@ namespace TTSHelperLibrary
             }
             config.SpeechSynthesisVoiceName = Voice;
             config.SetSpeechSynthesisOutputFormat(SpeechSynthesisOutputFormat.Riff44100Hz16BitMonoPcm);
-            _synthesizer?.Dispose();
+            if (_synthesizer != null)
+            {
+                disposeList.Add(_synthesizer);
+            }
+
+            foreach (var item in disposeList)
+            {
+                try
+                {
+                    item.Dispose();
+                    disposeList.Remove(item);
+                }
+                catch (InvalidOperationException)
+                {
+                }
+            }
             _synthesizer = new SpeechSynthesizer(config);
         }
+
+        HashSet<SpeechSynthesizer> disposeList = new();
 
         public async Task SpeakAsync(string text)
         {
@@ -68,6 +86,10 @@ namespace TTSHelperLibrary
             }
         }
 
+        public Task<SynthesisVoicesResult> GetVoices()
+        {
+            return _synthesizer.GetVoicesAsync();
+        }
         /// <summary>
         /// 错误代码
         /// </summary>

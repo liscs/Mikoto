@@ -1,5 +1,6 @@
 ﻿using OCRLibrary;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Ink;
 using System.Windows.Input;
