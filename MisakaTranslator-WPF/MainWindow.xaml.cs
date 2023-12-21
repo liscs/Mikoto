@@ -110,7 +110,8 @@ namespace MisakaTranslator_WPF
                 Foreground = Brushes.White,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 HorizontalAlignment = HorizontalAlignment.Left,
-                Margin = new Thickness(3)
+                Margin = new Thickness(3),
+                TextWrapping = TextWrapping.Wrap,
             };
             var ico = new Image()
             {
