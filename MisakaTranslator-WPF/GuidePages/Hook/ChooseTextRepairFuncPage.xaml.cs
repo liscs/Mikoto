@@ -23,7 +23,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             RepairFuncCombox.ItemsSource = lstRepairFun;
             RepairFuncCombox.SelectedIndex = 0;
 
-            Common.textHooker.MeetHookAddressMessageReceived += FilterAndDisplayData;
+            Common.TextHooker.MeetHookAddressMessageReceived += FilterAndDisplayData;
         }
 
         public void FilterAndDisplayData(object sender, SolvedDataReceivedEventArgs e)
@@ -56,7 +56,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.textHooker.MeetHookAddressMessageReceived -= FilterAndDisplayData;
+            Common.TextHooker.MeetHookAddressMessageReceived -= FilterAndDisplayData;
 
             Common.UsingRepairFunc = TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]];
 
@@ -68,18 +68,18 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                 {
                     case "RepairFun_RemoveSingleWordRepeat":
                         targetGame.RepairFunc = Common.UsingRepairFunc;
-                        targetGame.RepairParamA = Common.repairSettings.SingleWordRepeatTimes.ToString();
+                        targetGame.RepairParamA = Common.RepairSettings.SingleWordRepeatTimes.ToString();
                         GameHelper.SaveGameInfo(targetGame);
                         break;
                     case "RepairFun_RemoveSentenceRepeat":
                         targetGame.RepairFunc = Common.UsingRepairFunc;
-                        targetGame.RepairParamA = Common.repairSettings.SentenceRepeatFindCharNum.ToString();
+                        targetGame.RepairParamA = Common.RepairSettings.SentenceRepeatFindCharNum.ToString();
                         GameHelper.SaveGameInfo(targetGame);
                         break;
                     case "RepairFun_RegexReplace":
                         targetGame.RepairFunc = Common.UsingRepairFunc;
-                        targetGame.RepairParamA = Common.repairSettings.Regex.ToString();
-                        targetGame.RepairParamB = Common.repairSettings.Regex_Replace.ToString();
+                        targetGame.RepairParamA = Common.RepairSettings.Regex.ToString();
+                        targetGame.RepairParamB = Common.RepairSettings.Regex_Replace.ToString();
                         GameHelper.SaveGameInfo(targetGame);
                         break;
                     default:
@@ -100,7 +100,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
         {
             if (!int.TryParse(Single_TextBox.Text, out int times))
                 return;
-            Common.repairSettings.SingleWordRepeatTimes = times;
+            Common.RepairSettings.SingleWordRepeatTimes = times;
             Common.RepairFuncInit();
             repairedTextBox.Text = TextRepair.RepairFun_RemoveSingleWordRepeat(sourceTextBox.Text);
             Single_InputDrawer.IsOpen = false;
@@ -110,7 +110,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
         {
             if (!int.TryParse(Sentence_TextBox.Text, out int num))
                 return;
-            Common.repairSettings.SentenceRepeatFindCharNum = num;
+            Common.RepairSettings.SentenceRepeatFindCharNum = num;
             Common.RepairFuncInit();
             repairedTextBox.Text = TextRepair.RepairFun_RemoveSentenceRepeat(sourceTextBox.Text);
             Sentence_InputDrawer.IsOpen = false;
@@ -118,8 +118,8 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
         private void RegexConfirm_Click(object sender, RoutedEventArgs e)
         {
-            Common.repairSettings.Regex = Regex_TextBox.Text;
-            Common.repairSettings.Regex_Replace = Replace_TextBox.Text;
+            Common.RepairSettings.Regex = Regex_TextBox.Text;
+            Common.RepairSettings.Regex_Replace = Replace_TextBox.Text;
             Common.RepairFuncInit();
             repairedTextBox.Text = TextRepair.RepairFun_RegexReplace(sourceTextBox.Text);
             Regex_InputDrawer.IsOpen = false;

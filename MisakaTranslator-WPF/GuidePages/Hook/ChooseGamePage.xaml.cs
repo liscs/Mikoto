@@ -37,14 +37,14 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             {
                 if (SameNameGameProcessList.Count == 1)
                 {
-                    Common.textHooker = new TextHookHandle(lstProcess[(string)GameProcessCombox.SelectedValue]);
+                    Common.TextHooker = new TextHookHandle(lstProcess[(string)GameProcessCombox.SelectedValue]);
                 }
                 else
                 {
-                    Common.textHooker = new TextHookHandle(SameNameGameProcessList);
+                    Common.TextHooker = new TextHookHandle(SameNameGameProcessList);
                 }
 
-                if (!Common.textHooker.Init((bool)x64GameCheckBox.IsChecked ? Common.appSettings.Textractor_Path64 : Common.appSettings.Textractor_Path32))
+                if (!Common.TextHooker.Init((bool)x64GameCheckBox.IsChecked ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
                 {
                     HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
                     return;

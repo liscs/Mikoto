@@ -22,12 +22,12 @@ namespace MisakaTranslator_WPF
         {
             OCREngine ocr;
             string res = null;
-            if (Common.appSettings.OCRsource == "TesseractOCR")
+            if (Common.AppSettings.OCRsource == "TesseractOCR")
             {
                 ocr = new TesseractOCREngine();
                 if (ocr.OCR_Init("", "") != false)
                 {
-                    ocr.SetOCRSourceLang(Common.appSettings.GlobalOCRLang);
+                    ocr.SetOCRSourceLang(Common.AppSettings.GlobalOCRLang);
                     res = await ocr.OCRProcessAsync(img);
 
                     if (res != null)
@@ -44,12 +44,12 @@ namespace MisakaTranslator_WPF
                     HandyControl.Controls.Growl.ErrorGlobal($"TesseractOCR {Application.Current.Resources["APITest_Error_Hint"]}\n{ocr.GetLastError()}");
                 }
             }
-            else if (Common.appSettings.OCRsource == "TesseractCli")
+            else if (Common.AppSettings.OCRsource == "TesseractCli")
             {
                 ocr = new TesseractCommandLineEngine();
-                if (ocr.OCR_Init(Common.appSettings.TesseractCli_Path, Common.appSettings.TesseractCli_Args))
+                if (ocr.OCR_Init(Common.AppSettings.TesseractCli_Path, Common.AppSettings.TesseractCli_Args))
                 {
-                    ocr.SetOCRSourceLang(Common.appSettings.GlobalOCRLang);
+                    ocr.SetOCRSourceLang(Common.AppSettings.GlobalOCRLang);
                     res = await ocr.OCRProcessAsync(img);
 
                     if (res != null)
@@ -66,12 +66,12 @@ namespace MisakaTranslator_WPF
                     HandyControl.Controls.Growl.ErrorGlobal($"TesseractCli {Application.Current.Resources["APITest_Error_Hint"]}\n{ocr.GetLastError()}");
                 }
             }
-            else if (Common.appSettings.OCRsource == "BaiduOCR")
+            else if (Common.AppSettings.OCRsource == "BaiduOCR")
             {
                 ocr = new BaiduGeneralOCREngine();
-                if (ocr.OCR_Init(Common.appSettings.BDOCR_APIKEY, Common.appSettings.BDOCR_SecretKey))
+                if (ocr.OCR_Init(Common.AppSettings.BDOCR_APIKEY, Common.AppSettings.BDOCR_SecretKey))
                 {
-                    ocr.SetOCRSourceLang(Common.appSettings.GlobalOCRLang);
+                    ocr.SetOCRSourceLang(Common.AppSettings.GlobalOCRLang);
                     res = await ocr.OCRProcessAsync(img);
 
                     if (res != null)
@@ -88,12 +88,12 @@ namespace MisakaTranslator_WPF
                     HandyControl.Controls.Growl.ErrorGlobal($"百度智能云OCR {Application.Current.Resources["APITest_Error_Hint"]}\n{ocr.GetLastError()}");
                 }
             }
-            else if (Common.appSettings.OCRsource == "BaiduFanyiOCR")
+            else if (Common.AppSettings.OCRsource == "BaiduFanyiOCR")
             {
                 ocr = new BaiduFanyiOCREngine();
-                if (ocr.OCR_Init(Common.appSettings.BDappID, Common.appSettings.BDsecretKey))
+                if (ocr.OCR_Init(Common.AppSettings.BDappID, Common.AppSettings.BDsecretKey))
                 {
-                    ocr.SetOCRSourceLang(Common.appSettings.GlobalOCRLang);
+                    ocr.SetOCRSourceLang(Common.AppSettings.GlobalOCRLang);
                     res = await ocr.OCRProcessAsync(img);
 
                     if (res != null)
@@ -104,12 +104,12 @@ namespace MisakaTranslator_WPF
                 else
                     HandyControl.Controls.Growl.ErrorGlobal($"百度翻译OCR {Application.Current.Resources["APITest_Error_Hint"]}\n{ocr.GetLastError()}");
             }
-            else if (Common.appSettings.OCRsource == "TencentOCR")
+            else if (Common.AppSettings.OCRsource == "TencentOCR")
             {
                 ocr = new TencentOCR();
-                if (ocr.OCR_Init(Common.appSettings.TXOSecretId, Common.appSettings.TXOSecretKey))
+                if (ocr.OCR_Init(Common.AppSettings.TXOSecretId, Common.AppSettings.TXOSecretKey))
                 {
-                    ocr.SetOCRSourceLang(Common.appSettings.GlobalOCRLang);
+                    ocr.SetOCRSourceLang(Common.AppSettings.GlobalOCRLang);
                     res = await ocr.OCRProcessAsync(new System.Drawing.Bitmap(img));
 
                     if (res != null)
@@ -120,12 +120,12 @@ namespace MisakaTranslator_WPF
                 else
                     HandyControl.Controls.Growl.ErrorGlobal($"腾讯云图片翻译 {Application.Current.Resources["APITest_Error_Hint"]}\n{ocr.GetLastError()}");
             }
-            else if (Common.appSettings.OCRsource == "WindowsOCR")
+            else if (Common.AppSettings.OCRsource == "WindowsOCR")
             {
                 ocr = new WindowsOCREngine();
                 if (ocr.OCR_Init("", "") != false)
                 {
-                    ocr.SetOCRSourceLang(Common.appSettings.GlobalOCRLang);
+                    ocr.SetOCRSourceLang(Common.AppSettings.GlobalOCRLang);
                     res = await ocr.OCRProcessAsync(img);
 
                     if (res != null)
@@ -147,11 +147,11 @@ namespace MisakaTranslator_WPF
             {
                 FirstTransText.Text = "OCR ERROR";
             }
-            else if (!(Common.appSettings.OCRsource == "BaiduFanyiOCR" || Common.appSettings.OCRsource == "TencentOCR"))
+            else if (!(Common.AppSettings.OCRsource == "BaiduFanyiOCR" || Common.AppSettings.OCRsource == "TencentOCR"))
             {
                 // 因为历史原因，OCR的源语言用的是三个字母的，如eng和jpn。而翻译的API即Common.UsingSrcLang用的两个字母，如en和jp
                 string srclang;
-                switch (Common.appSettings.GlobalOCRLang)
+                switch (Common.AppSettings.GlobalOCRLang)
                 {
                     case "eng":
                         srclang = "en";
@@ -160,22 +160,22 @@ namespace MisakaTranslator_WPF
                         srclang = "ja";
                         break;
                     default:
-                        srclang = Common.appSettings.GlobalOCRLang;
+                        srclang = Common.AppSettings.GlobalOCRLang;
                         break;
                 }
 
-                if (!Common.appSettings.EachRowTrans)
+                if (!Common.AppSettings.EachRowTrans)
                     if (srclang == "en")
                         res = res.Replace("\n", " ").Replace("\r", " ");
                     else
                         res = res.Replace("\n", "").Replace("\r", "");
 
-                if (Common.appSettings.HttpProxy != "")
+                if (Common.AppSettings.HttpProxy != "")
                 {
-                    TranslatorCommon.SetHttpProxiedClient(Common.appSettings.HttpProxy);
+                    TranslatorCommon.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
                 }
-                ITranslator translator1 = TranslateWindow.TranslatorAuto(Common.appSettings.FirstTranslator);
-                ITranslator translator2 = TranslateWindow.TranslatorAuto(Common.appSettings.SecondTranslator);
+                ITranslator translator1 = TranslateWindow.TranslatorAuto(Common.AppSettings.FirstTranslator);
+                ITranslator translator2 = TranslateWindow.TranslatorAuto(Common.AppSettings.SecondTranslator);
                 //5.提交翻译
                 string transRes1 = "";
                 string transRes2 = "";

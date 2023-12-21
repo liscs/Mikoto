@@ -20,14 +20,14 @@ namespace MisakaTranslator_WPF.SettingsPages
             InitializeComponent();
             OCRSourceCombox.ItemsSource = OCRCommon.GetOCRList();
 
-            OCRSourceCombox.SelectedValue = Common.appSettings.OCRsource;
-            OCRHotKeyBox.Text = Common.appSettings.GlobalOCRHotkey;
+            OCRSourceCombox.SelectedValue = Common.AppSettings.OCRsource;
+            OCRHotKeyBox.Text = Common.AppSettings.GlobalOCRHotkey;
 
             Langlist = ImageProcFunc.lstOCRLang.Keys.ToList();
             OCRLangCombox.ItemsSource = Langlist;
             for (int i = 0; i < Langlist.Count; i++)
             {
-                if (ImageProcFunc.lstOCRLang[Langlist[i]] == Common.appSettings.GlobalOCRLang)
+                if (ImageProcFunc.lstOCRLang[Langlist[i]] == Common.AppSettings.GlobalOCRLang)
                 {
                     OCRLangCombox.SelectedIndex = i;
                 }
@@ -37,7 +37,7 @@ namespace MisakaTranslator_WPF.SettingsPages
 
         private void OCRsourceCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Common.appSettings.OCRsource = (string)OCRSourceCombox.SelectedValue;
+            Common.AppSettings.OCRsource = (string)OCRSourceCombox.SelectedValue;
         }
 
         private void OCRHotKeyBox_KeyDown(object sender, KeyEventArgs e1)
@@ -70,7 +70,7 @@ namespace MisakaTranslator_WPF.SettingsPages
             }
             ((TextBox)sender).Text = keyValue.ToString();
 
-            Common.appSettings.GlobalOCRHotkey = OCRHotKeyBox.Text;
+            Common.AppSettings.GlobalOCRHotkey = OCRHotKeyBox.Text;
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace MisakaTranslator_WPF.SettingsPages
 
         private void OCRLangCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Common.appSettings.GlobalOCRLang = ImageProcFunc.lstOCRLang[Langlist[OCRLangCombox.SelectedIndex]];
+            Common.AppSettings.GlobalOCRLang = ImageProcFunc.lstOCRLang[Langlist[OCRLangCombox.SelectedIndex]];
         }
     }
 }

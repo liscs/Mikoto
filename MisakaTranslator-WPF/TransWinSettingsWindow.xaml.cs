@@ -48,59 +48,59 @@ namespace MisakaTranslator_WPF
             sourceFont.SelectionChanged += delegate
             {
                 translateWin.SourceTextFont = FontList[sourceFont.SelectedIndex];
-                Common.appSettings.TF_SrcTextFont = FontList[sourceFont.SelectedIndex];
+                Common.AppSettings.TF_SrcTextFont = FontList[sourceFont.SelectedIndex];
             };
 
             firstFont.SelectionChanged += delegate
             {
                 translateWin.FirstTransText.FontFamily = new FontFamily(FontList[firstFont.SelectedIndex]);
-                Common.appSettings.TF_FirstTransTextFont = FontList[firstFont.SelectedIndex];
+                Common.AppSettings.TF_FirstTransTextFont = FontList[firstFont.SelectedIndex];
             };
 
             secondFont.SelectionChanged += delegate
             {
                 translateWin.SecondTransText.FontFamily = new FontFamily(FontList[secondFont.SelectedIndex]);
-                Common.appSettings.TF_SecondTransTextFont = FontList[secondFont.SelectedIndex];
+                Common.AppSettings.TF_SecondTransTextFont = FontList[secondFont.SelectedIndex];
             };
 
             sourceFontSize.ValueChanged += delegate
             {
                 translateWin.SourceTextFontSize = (int)sourceFontSize.Value;
-                Common.appSettings.TF_SrcTextSize = sourceFontSize.Value;
+                Common.AppSettings.TF_SrcTextSize = sourceFontSize.Value;
             };
 
             firstFontSize.ValueChanged += delegate
             {
                 translateWin.FirstTransText.FontSize = firstFontSize.Value;
-                Common.appSettings.TF_FirstTransTextSize = firstFontSize.Value;
+                Common.AppSettings.TF_FirstTransTextSize = firstFontSize.Value;
             };
 
             secondFontSize.ValueChanged += delegate
             {
                 translateWin.SecondTransText.FontSize = secondFontSize.Value;
-                Common.appSettings.TF_SecondTransTextSize = secondFontSize.Value;
+                Common.AppSettings.TF_SecondTransTextSize = secondFontSize.Value;
             };
 
             firstWhiteStrokeCheckBox.Click += delegate
             {
                 translateWin.FirstTransText.Stroke = (bool)firstWhiteStrokeCheckBox.IsChecked ? Brushes.White : Brushes.Black;
-                Common.appSettings.TF_FirstWhiteStrokeIsChecked = (bool)firstWhiteStrokeCheckBox.IsChecked;
+                Common.AppSettings.TF_FirstWhiteStrokeIsChecked = (bool)firstWhiteStrokeCheckBox.IsChecked;
             };
 
             secondWhiteStrokeCheckBox.Click += delegate
             {
                 translateWin.SecondTransText.Stroke = (bool)secondWhiteStrokeCheckBox.IsChecked ? Brushes.White : Brushes.Black;
-                Common.appSettings.TF_SecondWhiteStrokeIsChecked = (bool)secondWhiteStrokeCheckBox.IsChecked;
+                Common.AppSettings.TF_SecondWhiteStrokeIsChecked = (bool)secondWhiteStrokeCheckBox.IsChecked;
             };
 
             DropShadowCheckBox.Click += delegate
             {
-                Common.appSettings.TF_EnableDropShadow = (bool)DropShadowCheckBox.IsChecked;
+                Common.AppSettings.TF_EnableDropShadow = (bool)DropShadowCheckBox.IsChecked;
             };
 
             PhoneticNotationCheckBox.Click += delegate
             {
-                Common.appSettings.TF_EnablePhoneticNotation = (bool)PhoneticNotationCheckBox.IsChecked;
+                Common.AppSettings.TF_EnablePhoneticNotation = (bool)PhoneticNotationCheckBox.IsChecked;
                 if (PhoneticNotationCheckBox.IsChecked == true)
                 {
                     HiraganaRadioButton.IsEnabled = true;
@@ -117,27 +117,27 @@ namespace MisakaTranslator_WPF
 
             HiraganaRadioButton.Click += delegate
             {
-                Common.appSettings.TF_PhoneticNotationType = PhoneticNotationType.Hiragana;
+                Common.AppSettings.TF_PhoneticNotationType = PhoneticNotationType.Hiragana;
             };
 
             KatakanaRadioButton.Click += delegate
             {
-                Common.appSettings.TF_PhoneticNotationType = PhoneticNotationType.Katakana;
+                Common.AppSettings.TF_PhoneticNotationType = PhoneticNotationType.Katakana;
             };
 
             RomajiRadioButton.Click += delegate
             {
-                Common.appSettings.TF_PhoneticNotationType = PhoneticNotationType.Romaji;
+                Common.AppSettings.TF_PhoneticNotationType = PhoneticNotationType.Romaji;
             };
 
             KanaBoldCheckBox.Click += delegate
             {
-                Common.appSettings.TF_EnableSuperBold = (bool)KanaBoldCheckBox.IsChecked;
+                Common.AppSettings.TF_EnableSuperBold = (bool)KanaBoldCheckBox.IsChecked;
             };
 
             ColorfulCheckBox.Click += delegate
             {
-                Common.appSettings.TF_EnableColorful = (bool)ColorfulCheckBox.IsChecked;
+                Common.AppSettings.TF_EnableColorful = (bool)ColorfulCheckBox.IsChecked;
             };
 
             ZenModeCheckBox.Click += delegate (object sender, RoutedEventArgs e)
@@ -163,39 +163,39 @@ namespace MisakaTranslator_WPF
         private void UI_Init()
         {
             BrushConverter brushConverter = new BrushConverter();
-            BgColorBlock.Background = (Brush)brushConverter.ConvertFromString(Common.appSettings.TF_BackColor);
-            firstColorBlock.Background = (Brush)brushConverter.ConvertFromString(Common.appSettings.TF_FirstTransTextColor);
-            secondColorBlock.Background = (Brush)brushConverter.ConvertFromString(Common.appSettings.TF_SecondTransTextColor);
+            BgColorBlock.Background = (Brush)brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor);
+            firstColorBlock.Background = (Brush)brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor);
+            secondColorBlock.Background = (Brush)brushConverter.ConvertFromString(Common.AppSettings.TF_SecondTransTextColor);
 
             for (int i = 0; i < FontList.Count; i++)
             {
-                if (Common.appSettings.TF_SrcTextFont == FontList[i])
+                if (Common.AppSettings.TF_SrcTextFont == FontList[i])
                 {
                     sourceFont.SelectedIndex = i;
                 }
 
-                if (Common.appSettings.TF_FirstTransTextFont == FontList[i])
+                if (Common.AppSettings.TF_FirstTransTextFont == FontList[i])
                 {
                     firstFont.SelectedIndex = i;
                 }
 
-                if (Common.appSettings.TF_SecondTransTextFont == FontList[i])
+                if (Common.AppSettings.TF_SecondTransTextFont == FontList[i])
                 {
                     secondFont.SelectedIndex = i;
                 }
             }
 
-            sourceFontSize.Value = Common.appSettings.TF_SrcTextSize;
-            firstFontSize.Value = Common.appSettings.TF_FirstTransTextSize;
-            secondFontSize.Value = Common.appSettings.TF_SecondTransTextSize;
+            sourceFontSize.Value = Common.AppSettings.TF_SrcTextSize;
+            firstFontSize.Value = Common.AppSettings.TF_FirstTransTextSize;
+            secondFontSize.Value = Common.AppSettings.TF_SecondTransTextSize;
 
-            firstWhiteStrokeCheckBox.IsChecked = Common.appSettings.TF_FirstWhiteStrokeIsChecked;
+            firstWhiteStrokeCheckBox.IsChecked = Common.AppSettings.TF_FirstWhiteStrokeIsChecked;
 
-            DropShadowCheckBox.IsChecked = Common.appSettings.TF_EnableDropShadow;
+            DropShadowCheckBox.IsChecked = Common.AppSettings.TF_EnableDropShadow;
 
-            PhoneticNotationCheckBox.IsChecked = Common.appSettings.TF_EnablePhoneticNotation;
+            PhoneticNotationCheckBox.IsChecked = Common.AppSettings.TF_EnablePhoneticNotation;
 
-            Common.appSettings.TF_EnablePhoneticNotation = (bool)PhoneticNotationCheckBox.IsChecked;
+            Common.AppSettings.TF_EnablePhoneticNotation = (bool)PhoneticNotationCheckBox.IsChecked;
             if (PhoneticNotationCheckBox.IsChecked == true)
             {
                 HiraganaRadioButton.IsEnabled = true;
@@ -208,7 +208,7 @@ namespace MisakaTranslator_WPF
                 KatakanaRadioButton.IsEnabled = false;
                 RomajiRadioButton.IsEnabled = false;
             }
-            switch (Common.appSettings.TF_PhoneticNotationType)
+            switch (Common.AppSettings.TF_PhoneticNotationType)
             {
                 case PhoneticNotationType.Hiragana:
                     HiraganaRadioButton.IsChecked = true;
@@ -223,8 +223,8 @@ namespace MisakaTranslator_WPF
                     break;
             }
 
-            KanaBoldCheckBox.IsChecked = Common.appSettings.TF_EnableSuperBold;
-            ColorfulCheckBox.IsChecked = Common.appSettings.TF_EnableColorful;
+            KanaBoldCheckBox.IsChecked = Common.AppSettings.TF_EnableSuperBold;
+            ColorfulCheckBox.IsChecked = Common.AppSettings.TF_EnableColorful;
         }
 
         private void ChooseColorBtn_Click(object sender, RoutedEventArgs e)
@@ -248,19 +248,19 @@ namespace MisakaTranslator_WPF
                     translateWin.LockButton.IsChecked = true;
                     BgColorBlock.Background = picker.SelectedBrush;
                     translateWin.Background = picker.SelectedBrush;
-                    Common.appSettings.TF_BackColor = picker.SelectedBrush.ToString();
+                    Common.AppSettings.TF_BackColor = picker.SelectedBrush.ToString();
                 }
                 else if (sender == firstColorBtn)
                 {
                     firstColorBlock.Background = picker.SelectedBrush;
                     translateWin.FirstTransText.Fill = picker.SelectedBrush;
-                    Common.appSettings.TF_FirstTransTextColor = picker.SelectedBrush.ToString();
+                    Common.AppSettings.TF_FirstTransTextColor = picker.SelectedBrush.ToString();
                 }
                 else if (sender == secondColorBtn)
                 {
                     secondColorBlock.Background = picker.SelectedBrush;
                     translateWin.SecondTransText.Fill = picker.SelectedBrush;
-                    Common.appSettings.TF_SecondTransTextColor = picker.SelectedBrush.ToString();
+                    Common.AppSettings.TF_SecondTransTextColor = picker.SelectedBrush.ToString();
                 }
                 window.Close();
             };

@@ -81,8 +81,8 @@ namespace MisakaTranslator_WPF
             IsOCRingFlag = false;
 
 
-            _mecabHelper = new MecabHelper(Common.appSettings.Mecab_DicPath);
-            if (!_mecabHelper.EnableMecab && Common.appSettings.Mecab_DicPath != string.Empty)
+            _mecabHelper = new MecabHelper(Common.AppSettings.Mecab_DicPath);
+            if (!_mecabHelper.EnableMecab && Common.AppSettings.Mecab_DicPath != string.Empty)
             {
                 Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoMeCab_Hint"].ToString());
             }
@@ -90,12 +90,12 @@ namespace MisakaTranslator_WPF
             TTS_Init();
 
             IsNotPausedFlag = true;
-            if (Common.appSettings.HttpProxy != "")
+            if (Common.AppSettings.HttpProxy != "")
             {
-                TranslatorCommon.SetHttpProxiedClient(Common.appSettings.HttpProxy);
+                TranslatorCommon.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
             }
-            _translator1 = TranslatorAuto(Common.appSettings.FirstTranslator);
-            _translator2 = TranslatorAuto(Common.appSettings.SecondTranslator);
+            _translator1 = TranslatorAuto(Common.AppSettings.FirstTranslator);
+            _translator2 = TranslatorAuto(Common.AppSettings.SecondTranslator);
 
             _beforeTransHandle = new BeforeTransHandle(Convert.ToString(Common.GameID), Common.UsingSrcLang, Common.UsingDstLang);
             _afterTransHandle = new AfterTransHandle(_beforeTransHandle);
@@ -104,7 +104,7 @@ namespace MisakaTranslator_WPF
 
             if (Common.TransMode == TransMode.Hook)
             {
-                Common.textHooker.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
+                Common.TextHooker.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
             }
             else if (Common.TransMode == TransMode.Ocr)
             {
@@ -123,17 +123,17 @@ namespace MisakaTranslator_WPF
         private void TTS_Init()
         {
             DispatcherOperation dispatcherOperation = null;
-            switch (Common.appSettings.SelectedTTS)
+            switch (Common.AppSettings.SelectedTTS)
             {
                 case TTSMode.Local:
                     var localTTS = new LocalTTS();
-                    if (!string.IsNullOrWhiteSpace(Common.appSettings.LocalTTSVoice))
+                    if (!string.IsNullOrWhiteSpace(Common.AppSettings.LocalTTSVoice))
                     {
                         dispatcherOperation = Dispatcher.BeginInvoke(() =>
                             {
-                                localTTS.SetTTSVoice(Common.appSettings.LocalTTSVoice);
-                                localTTS.SetVolume(Common.appSettings.LoaclTTSVolume);
-                                localTTS.SetRate(Common.appSettings.LocaTTSRate);
+                                localTTS.SetTTSVoice(Common.AppSettings.LocalTTSVoice);
+                                localTTS.SetVolume(Common.AppSettings.LoaclTTSVolume);
+                                localTTS.SetRate(Common.AppSettings.LocaTTSRate);
                                 _TTS = localTTS;
                             });
                     }
@@ -143,16 +143,16 @@ namespace MisakaTranslator_WPF
                     }
                     break;
                 case TTSMode.Azure:
-                    if (!string.IsNullOrWhiteSpace(Common.appSettings.AzureTTSVoice)
-                        && !string.IsNullOrWhiteSpace(Common.appSettings.AzureTTSSecretKey)
-                        && !string.IsNullOrWhiteSpace(Common.appSettings.AzureTTSLocation)
+                    if (!string.IsNullOrWhiteSpace(Common.AppSettings.AzureTTSVoice)
+                        && !string.IsNullOrWhiteSpace(Common.AppSettings.AzureTTSSecretKey)
+                        && !string.IsNullOrWhiteSpace(Common.AppSettings.AzureTTSLocation)
                         )
                     {
                         var azureTTS = new AzureTTS
                         {
-                            ProxyString = Common.appSettings.AzureTTSProxy
+                            ProxyString = Common.AppSettings.AzureTTSProxy
                         };
-                        azureTTS.TTSInit(Common.appSettings.AzureTTSSecretKey, Common.appSettings.AzureTTSLocation, Common.appSettings.AzureTTSVoice);
+                        azureTTS.TTSInit(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice);
                         _TTS = azureTTS;
                     }
                     else
@@ -215,7 +215,7 @@ namespace MisakaTranslator_WPF
         private void UI_Init()
         {
 
-            _enableShowSource = Common.appSettings.TF_ShowSourceText;
+            _enableShowSource = Common.AppSettings.TF_ShowSourceText;
             if (_enableShowSource)
             {
                 ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Eye);
@@ -225,29 +225,29 @@ namespace MisakaTranslator_WPF
                 ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.EyeSlash);
             }
 
-            SourceTextFontSize = (int)Common.appSettings.TF_SrcTextSize;
-            FirstTransText.FontSize = Common.appSettings.TF_FirstTransTextSize;
-            SecondTransText.FontSize = Common.appSettings.TF_SecondTransTextSize;
+            SourceTextFontSize = (int)Common.AppSettings.TF_SrcTextSize;
+            FirstTransText.FontSize = Common.AppSettings.TF_FirstTransTextSize;
+            SecondTransText.FontSize = Common.AppSettings.TF_SecondTransTextSize;
 
-            SourceTextFont = Common.appSettings.TF_SrcTextFont;
-            FirstTransText.FontFamily = new FontFamily(Common.appSettings.TF_FirstTransTextFont);
-            SecondTransText.FontFamily = new FontFamily(Common.appSettings.TF_SecondTransTextFont);
+            SourceTextFont = Common.AppSettings.TF_SrcTextFont;
+            FirstTransText.FontFamily = new FontFamily(Common.AppSettings.TF_FirstTransTextFont);
+            SecondTransText.FontFamily = new FontFamily(Common.AppSettings.TF_SecondTransTextFont);
 
-            FirstTransText.Stroke = Common.appSettings.TF_FirstWhiteStrokeIsChecked ? Brushes.White : Brushes.Black;
-            SecondTransText.Stroke = Common.appSettings.TF_SecondWhiteStrokeIsChecked ? Brushes.White : Brushes.Black;
+            FirstTransText.Stroke = Common.AppSettings.TF_FirstWhiteStrokeIsChecked ? Brushes.White : Brushes.Black;
+            SecondTransText.Stroke = Common.AppSettings.TF_SecondWhiteStrokeIsChecked ? Brushes.White : Brushes.Black;
 
             BrushConverter brushConverter = new();
-            FirstTransText.Fill = (Brush)brushConverter.ConvertFromString(Common.appSettings.TF_FirstTransTextColor);
-            SecondTransText.Fill = (Brush)brushConverter.ConvertFromString(Common.appSettings.TF_SecondTransTextColor);
+            FirstTransText.Fill = (Brush)brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor);
+            SecondTransText.Fill = (Brush)brushConverter.ConvertFromString(Common.AppSettings.TF_SecondTransTextColor);
 
-            this.Background = (Brush)brushConverter.ConvertFromString(Common.appSettings.TF_BackColor);
+            this.Background = (Brush)brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor);
 
-            if (int.Parse(Common.appSettings.TF_LocX) != -1 && int.Parse(Common.appSettings.TF_SizeW) != 0)
+            if (int.Parse(Common.AppSettings.TF_LocX) != -1 && int.Parse(Common.AppSettings.TF_SizeW) != 0)
             {
-                this.Left = int.Parse(Common.appSettings.TF_LocX);
-                this.Top = int.Parse(Common.appSettings.TF_LocY);
-                this.Width = int.Parse(Common.appSettings.TF_SizeW);
-                this.Height = int.Parse(Common.appSettings.TF_SizeH);
+                this.Left = int.Parse(Common.AppSettings.TF_LocX);
+                this.Top = int.Parse(Common.AppSettings.TF_LocY);
+                this.Width = int.Parse(Common.AppSettings.TF_SizeW);
+                this.Height = int.Parse(Common.AppSettings.TF_SizeH);
             }
 
             dropShadowEffect.Opacity = 1;
@@ -267,31 +267,31 @@ namespace MisakaTranslator_WPF
             {
                 case "BaiduTranslator":
                     translator = new BaiduTranslator();
-                    translator.TranslatorInit(Common.appSettings.BDappID, Common.appSettings.BDsecretKey);
+                    translator.TranslatorInit(Common.AppSettings.BDappID, Common.AppSettings.BDsecretKey);
                     return translator;
                 case "TencentOldTranslator":
                     translator = new TencentOldTranslator();
-                    translator.TranslatorInit(Common.appSettings.TXOSecretId, Common.appSettings.TXOSecretKey);
+                    translator.TranslatorInit(Common.AppSettings.TXOSecretId, Common.AppSettings.TXOSecretKey);
                     return translator;
                 case "CaiyunTranslator":
                     translator = new CaiyunTranslator();
-                    translator.TranslatorInit(Common.appSettings.CaiyunToken);
+                    translator.TranslatorInit(Common.AppSettings.CaiyunToken);
                     return translator;
                 case "XiaoniuTranslator":
                     translator = new XiaoniuTranslator();
-                    translator.TranslatorInit(Common.appSettings.xiaoniuApiKey);
+                    translator.TranslatorInit(Common.AppSettings.xiaoniuApiKey);
                     return translator;
                 case "IBMTranslator":
                     translator = new IBMTranslator();
-                    translator.TranslatorInit(Common.appSettings.IBMApiKey, Common.appSettings.IBMURL);
+                    translator.TranslatorInit(Common.AppSettings.IBMApiKey, Common.AppSettings.IBMURL);
                     return translator;
                 case "YandexTranslator":
                     translator = new YandexTranslator();
-                    translator.TranslatorInit(Common.appSettings.YandexApiKey);
+                    translator.TranslatorInit(Common.AppSettings.YandexApiKey);
                     return translator;
                 case "YoudaoZhiyun":
                     translator = new YoudaoZhiyun();
-                    translator.TranslatorInit(Common.appSettings.YDZYAppId, Common.appSettings.YDZYAppSecret);
+                    translator.TranslatorInit(Common.AppSettings.YDZYAppId, Common.AppSettings.YDZYAppSecret);
                     return translator;
                 case "GoogleCNTranslator":
                     translator = new GoogleCNTranslator();
@@ -299,31 +299,31 @@ namespace MisakaTranslator_WPF
                     return translator;
                 case "JBeijingTranslator":
                     translator = new JBeijingTranslator();
-                    translator.TranslatorInit(Common.appSettings.JBJCTDllPath);
+                    translator.TranslatorInit(Common.AppSettings.JBJCTDllPath);
                     return translator;
                 case "KingsoftFastAITTranslator":
                     translator = new KingsoftFastAITTranslator();
-                    translator.TranslatorInit(Common.appSettings.KingsoftFastAITPath);
+                    translator.TranslatorInit(Common.AppSettings.KingsoftFastAITPath);
                     return translator;
                 case "DreyeTranslator":
                     translator = new DreyeTranslator();
-                    translator.TranslatorInit(Common.appSettings.DreyePath);
+                    translator.TranslatorInit(Common.AppSettings.DreyePath);
                     return translator;
                 case "DeepLTranslator":
                     translator = new DeepLTranslator();
-                    translator.TranslatorInit(Common.appSettings.DeepLsecretKey, Common.appSettings.DeepLsecretKey);
+                    translator.TranslatorInit(Common.AppSettings.DeepLsecretKey, Common.AppSettings.DeepLsecretKey);
                     return translator;
                 case "ChatGPTTranslator":
                     translator = new ChatGPTTranslator();
-                    translator.TranslatorInit(Common.appSettings.ChatGPTapiKey, Common.appSettings.ChatGPTapiUrl);
+                    translator.TranslatorInit(Common.AppSettings.ChatGPTapiKey, Common.AppSettings.ChatGPTapiUrl);
                     return translator;
                 case "AzureTranslator":
                     translator = new AzureTranslator();
-                    translator.TranslatorInit(Common.appSettings.AzureSecretKey, Common.appSettings.AzureLocation);
+                    translator.TranslatorInit(Common.AppSettings.AzureSecretKey, Common.AppSettings.AzureLocation);
                     return translator;
                 case "ArtificialTranslator":
                     translator = new ArtificialTranslator();
-                    translator.TranslatorInit(Common.appSettings.ArtificialPatchPath);
+                    translator.TranslatorInit(Common.AppSettings.ArtificialPatchPath);
                     return translator;
                 default:
                     return null;
@@ -345,7 +345,7 @@ namespace MisakaTranslator_WPF
         /// <param name="e"></param>
         private void Hook_OnMouseActivity(object sender, System.Drawing.Point e)
         {
-            if (Common.isAllWindowCap && Environment.ProcessId != FindWindowInfo.GetProcessIDByHWND(FindWindowInfo.GetWindowHWND(e))
+            if (Common.IsAllWindowCap && Environment.ProcessId != FindWindowInfo.GetProcessIDByHWND(FindWindowInfo.GetWindowHWND(e))
                 || Common.OCRWinHwnd == FindWindowInfo.GetWindowHWND(e))
             {
                 TranslateEventOcr();
@@ -370,7 +370,7 @@ namespace MisakaTranslator_WPF
                 if (!isRenew)
                     await Task.Delay(Common.UsingOCRDelay);
 
-                srcText = await Common.ocr.OCRProcessAsync();
+                srcText = await Common.Ocr.OCRProcessAsync();
 
                 if (!string.IsNullOrEmpty(srcText))
                     break;
@@ -378,11 +378,11 @@ namespace MisakaTranslator_WPF
 
             if (!string.IsNullOrEmpty(srcText))
             {
-                if (Common.appSettings.OCRsource == "BaiduFanyiOCR" || Common.appSettings.OCRsource == "TencentOCR")
+                if (Common.AppSettings.OCRsource == "BaiduFanyiOCR" || Common.AppSettings.OCRsource == "TencentOCR")
                     Application.Current.Dispatcher.Invoke(() => { FirstTransText.Text = srcText; });
                 else
                 {
-                    if (!Common.appSettings.EachRowTrans) // 不启用分行翻译
+                    if (!Common.AppSettings.EachRowTrans) // 不启用分行翻译
                         if (Common.UsingSrcLang != "zh" && Common.UsingSrcLang != "ja")
                             srcText = srcText.Replace(Environment.NewLine, " ").Replace("\n", " ");
                         else
@@ -391,8 +391,8 @@ namespace MisakaTranslator_WPF
                     TranslateText(srcText, isRenew);
                 }
             }
-            else if (!string.IsNullOrEmpty(Common.ocr.GetLastError()))
-                Growl.WarningGlobal(Common.appSettings.OCRsource + " Error: " + Common.ocr.GetLastError());
+            else if (!string.IsNullOrEmpty(Common.Ocr.GetLastError()))
+                Growl.WarningGlobal(Common.AppSettings.OCRsource + " Error: " + Common.Ocr.GetLastError());
             else
                 Growl.WarningGlobal(Application.Current.Resources["TranslateWindow_OCREmpty"].ToString());
 
@@ -426,7 +426,7 @@ namespace MisakaTranslator_WPF
             //2.进行去重
             string repairedText = TextRepair.RepairFun_Auto(Common.UsingRepairFunc, source);
 
-            if (!Common.appSettings.EachRowTrans) // 不启用分行翻译
+            if (!Common.AppSettings.EachRowTrans) // 不启用分行翻译
             {
                 if (Common.UsingSrcLang == "zh" || Common.UsingSrcLang == "ja")
                 {
@@ -450,7 +450,7 @@ namespace MisakaTranslator_WPF
         {
             //补充:如果去重之后的文本长度超过指定值（默认100），直接不翻译、不显示
             //补充2：如果去重后文本长度为0，则不翻译不显示
-            if (repairedText.Length != 0 && repairedText.Length <= Common.appSettings.TransLimitNums)
+            if (repairedText.Length != 0 && repairedText.Length <= Common.AppSettings.TransLimitNums)
             {
 
                 _currentsrcText = repairedText;
@@ -480,7 +480,7 @@ namespace MisakaTranslator_WPF
                        //3.分词
                        if (Common.UsingSrcLang == "ja"
                            && _mecabHelper.EnableMecab
-                           && (Common.appSettings.TF_EnablePhoneticNotation || Common.appSettings.TF_EnableColorful))
+                           && (Common.AppSettings.TF_EnablePhoneticNotation || Common.AppSettings.TF_EnableColorful))
                        {
                            var mwi = _mecabHelper.SentenceHandle(repairedText);
                            //分词后结果显示
@@ -509,12 +509,12 @@ namespace MisakaTranslator_WPF
                                    FontFamily fontFamily = new(SourceTextFont);
                                    textBox.FontFamily = fontFamily;
                                }
-                               if (Common.appSettings.TF_EnableDropShadow)
+                               if (Common.AppSettings.TF_EnableDropShadow)
                                {
                                    //加入原文的阴影
                                    textBox.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen();
                                }
-                               if (Common.appSettings.TF_EnableColorful)
+                               if (Common.AppSettings.TF_EnableColorful)
                                {
                                    textBox.TextAlignment = TextAlignment.Center;
                                    //根据不同词性跟字体上色
@@ -544,7 +544,7 @@ namespace MisakaTranslator_WPF
                                    textBox.Foreground = Brushes.White;
                                }
 
-                               if (Common.appSettings.TF_EnablePhoneticNotation)
+                               if (Common.AppSettings.TF_EnablePhoneticNotation)
                                {
                                    // 假名或注释等的上标标签
                                    TextBlock NotationTextBlock = new();
@@ -554,7 +554,7 @@ namespace MisakaTranslator_WPF
                                        NotationTextBlock.FontFamily = fontFamily;
                                    }
                                    //选择平假名或者片假名
-                                   NotationTextBlock.Text = Common.appSettings.TF_PhoneticNotationType switch
+                                   NotationTextBlock.Text = Common.AppSettings.TF_PhoneticNotationType switch
                                    {
                                        PhoneticNotationType.Hiragana => v.Hiragana,
                                        PhoneticNotationType.Katakana => v.Katakana,
@@ -563,7 +563,7 @@ namespace MisakaTranslator_WPF
                                    };
                                    NotationTextBlock.Margin = new Thickness(0, 0, 0, 2);
                                    NotationTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
-                                   if (Common.appSettings.TF_EnableDropShadow)
+                                   if (Common.AppSettings.TF_EnableDropShadow)
                                    {
                                        //加入注音的阴影
                                        NotationTextBlock.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen();
@@ -571,7 +571,7 @@ namespace MisakaTranslator_WPF
                                    if (SourceTextFontSize - 6.5 > 0)
                                    {
                                        NotationTextBlock.FontSize = SourceTextFontSize - 6.5;
-                                       if (Common.appSettings.TF_EnableSuperBold)
+                                       if (Common.AppSettings.TF_EnableSuperBold)
                                        {
                                            NotationTextBlock.FontWeight = FontWeights.Bold;
                                            //注音加粗
@@ -615,7 +615,7 @@ namespace MisakaTranslator_WPF
                            textBox.FontSize = SourceTextFontSize;
                            textBox.Background = Brushes.Transparent;
                            textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
-                           if (Common.appSettings.TF_EnableDropShadow)
+                           if (Common.AppSettings.TF_EnableDropShadow)
                            {
                                textBox.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen(); ;
                            }
@@ -680,7 +680,7 @@ namespace MisakaTranslator_WPF
                     _ = Application.Current.Dispatcher.BeginInvoke(() =>
                     {
                         FirstTransText.Text = afterString;
-                        if (Common.appSettings.TF_EnableDropShadow)
+                        if (Common.AppSettings.TF_EnableDropShadow)
                         {
                             FirstTransText.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen(); ;
                         }
@@ -695,7 +695,7 @@ namespace MisakaTranslator_WPF
                     _ = Application.Current.Dispatcher.BeginInvoke(() =>
                     {
                         SecondTransText.Text = afterString;
-                        if (Common.appSettings.TF_EnableDropShadow)
+                        if (Common.AppSettings.TF_EnableDropShadow)
                         {
                             SecondTransText.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen(); ;
                         }
@@ -721,7 +721,7 @@ namespace MisakaTranslator_WPF
                     _gameTextHistory.Enqueue(repairedText + Environment.NewLine + afterString);
 
                     //9.翻译原句和结果记录到数据库 
-                    if (Common.appSettings.ATon)
+                    if (Common.AppSettings.ATon)
                     {
                         bool addRes = _artificialTransHelper.AddTrans(repairedText, afterString);
                         if (addRes == false)
@@ -767,7 +767,7 @@ namespace MisakaTranslator_WPF
         {
             if (Common.TransMode == TransMode.Hook)
             {
-                if (Common.textHooker.Pause)
+                if (Common.TextHooker.Pause)
                 {
                     PauseButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Pause);
                 }
@@ -775,7 +775,7 @@ namespace MisakaTranslator_WPF
                 {
                     PauseButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Play);
                 }
-                Common.textHooker.Pause = !Common.textHooker.Pause;
+                Common.TextHooker.Pause = !Common.TextHooker.Pause;
             }
             else
             {
@@ -803,15 +803,15 @@ namespace MisakaTranslator_WPF
             {
                 ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.EyeSlash);
             }
-            Common.appSettings.TF_ShowSourceText = _enableShowSource;
+            Common.AppSettings.TF_ShowSourceText = _enableShowSource;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Common.appSettings.TF_LocX = Convert.ToString((int)this.Left);
-            Common.appSettings.TF_LocY = Convert.ToString((int)this.Top);
-            Common.appSettings.TF_SizeW = Convert.ToString((int)this.ActualWidth);
-            Common.appSettings.TF_SizeH = Convert.ToString((int)this.ActualHeight);
+            Common.AppSettings.TF_LocX = Convert.ToString((int)this.Left);
+            Common.AppSettings.TF_LocY = Convert.ToString((int)this.Top);
+            Common.AppSettings.TF_SizeW = Convert.ToString((int)this.ActualWidth);
+            Common.AppSettings.TF_SizeH = Convert.ToString((int)this.ActualHeight);
 
             if (hook != null)
             {
@@ -819,11 +819,11 @@ namespace MisakaTranslator_WPF
                 hook = null;
             }
 
-            if (Common.textHooker != null)
+            if (Common.TextHooker != null)
             {
-                Common.textHooker.MeetHookAddressMessageReceived -= ProcessAndDisplayTranslation;
-                Common.textHooker.StopHook();
-                Common.textHooker = null;
+                Common.TextHooker.MeetHookAddressMessageReceived -= ProcessAndDisplayTranslation;
+                Common.TextHooker.StopHook();
+                Common.TextHooker = null;
             }
 
             dtimer.Stop();
@@ -833,7 +833,7 @@ namespace MisakaTranslator_WPF
             try
             {
                 //System.InvalidOperationException:“关闭 Window 之后，无法设置 Visibility，也无法调用 Show、ShowDialogor 或 WindowInteropHelper.EnsureHandle。”
-                Common.mainWin.Visibility = Visibility.Visible;
+                Common.MainWin.Visibility = Visibility.Visible;
             }
             catch (InvalidOperationException)
             { }
@@ -914,7 +914,7 @@ namespace MisakaTranslator_WPF
             else
             {
                 BrushConverter brushConverter = new();
-                this.Background = (Brush)brushConverter.ConvertFromString(Common.appSettings.TF_BackColor);
+                this.Background = (Brush)brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor);
             }
         }
 
@@ -935,7 +935,7 @@ namespace MisakaTranslator_WPF
             dtimer.Tick += TickWindowTopMost;
             dtimer.Start();
 
-            Common.mainWin.Visibility = Visibility.Collapsed;
+            Common.MainWin.Visibility = Visibility.Collapsed;
         }
 
         void TickWindowTopMost(object sender, EventArgs e)

@@ -1,10 +1,8 @@
 ﻿using Microsoft.CognitiveServices.Speech;
 using Microsoft.Scripting.Utils;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Speech.Recognition;
 using System.Windows;
 using System.Windows.Controls;
 using TTSHelperLibrary;
@@ -16,14 +14,16 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
     /// </summary>
     public partial class AzureTTSSettingsPage : Page
     {
-        AzureTTS azureTTS = new AzureTTS();
+        private AzureTTS azureTTS = new AzureTTS();
+        private const string DEFAULT_VOICE = "ja-JP-NanamiNeural";
+
         public AzureTTSSettingsPage()
         {
             InitializeComponent();
-            AzureTTSSecretKeyBox.Text = Common.appSettings.AzureTTSSecretKey;
-            AzureTTSLocationBox.Text = Common.appSettings.AzureTTSLocation;
-            HttpProxyBox.Text = Common.appSettings.AzureTTSProxy;
-            azureTTS.TTSInit(Common.appSettings.AzureTTSSecretKey, Common.appSettings.AzureTTSLocation, Common.appSettings.AzureTTSVoice);
+            AzureTTSSecretKeyBox.Text = Common.AppSettings.AzureTTSSecretKey;
+            AzureTTSLocationBox.Text = Common.AppSettings.AzureTTSLocation;
+            HttpProxyBox.Text = Common.AppSettings.AzureTTSProxy;
+            azureTTS.TTSInit(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice);
             SetSavedVoice();
             GetVoices(this, null);
         }
@@ -40,10 +40,10 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.appSettings.AzureTTSSecretKey = AzureTTSSecretKeyBox.Text;
-            Common.appSettings.AzureTTSLocation = AzureTTSLocationBox.Text;
-            azureTTS.ProxyString = Common.appSettings.AzureTTSProxy;
-            azureTTS.TTSInit(Common.appSettings.AzureTTSSecretKey, Common.appSettings.AzureTTSLocation, Common.appSettings.AzureTTSVoice);
+            Common.AppSettings.AzureTTSSecretKey = AzureTTSSecretKeyBox.Text;
+            Common.AppSettings.AzureTTSLocation = AzureTTSLocationBox.Text;
+            azureTTS.ProxyString = Common.AppSettings.AzureTTSProxy;
+            azureTTS.TTSInit(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice);
             await azureTTS.SpeakAsync(TestSrcText.Text);
             if (azureTTS.ErrorMessage != string.Empty)
             {
@@ -54,13 +54,13 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
         private void HttpProxyBox_LostFocus(object sender, RoutedEventArgs e)
         {
             string text = HttpProxyBox.Text.Trim();
-            Common.appSettings.AzureTTSProxy = text;
+            Common.AppSettings.AzureTTSProxy = text;
         }
 
         private void VoiceNameComboBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             if (Voices.Count == 0) { return; }
-            Common.appSettings.AzureTTSVoice = $"{VoiceLocalComboBox.SelectedItem}-{VoiceNameComboBox.SelectedItem}";
+            Common.AppSettings.AzureTTSVoice = $"{VoiceLocalComboBox.SelectedItem}-{VoiceNameComboBox.SelectedItem}";
         }
 
         private void VoiceNameQuery_Click(object sender, RoutedEventArgs e)
@@ -82,33 +82,31 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
             }
         }
 
-        private const string DEFAULT_VOICE = "ja-JP-NanamiNeural";
-
         private void SelectSavedVoice()
         {
-            if (string.IsNullOrEmpty(Common.appSettings.AzureTTSVoice))
+            if (string.IsNullOrEmpty(Common.AppSettings.AzureTTSVoice))
             {
-                VoiceLocalComboBox.SelectedItem = GetVoiceLocal(DEFAULT_VOICE);
+                VoiceLocalComboBox.SelectedItem = GetVoiceLocale(DEFAULT_VOICE);
                 VoiceNameComboBox.SelectedItem = GetVoiceName(DEFAULT_VOICE);
             }
             else
             {
-                VoiceLocalComboBox.SelectedItem = GetVoiceLocal(Common.appSettings.AzureTTSVoice);
-                VoiceNameComboBox.SelectedItem = GetVoiceName(Common.appSettings.AzureTTSVoice);
+                VoiceLocalComboBox.SelectedItem = GetVoiceLocale(Common.AppSettings.AzureTTSVoice);
+                VoiceNameComboBox.SelectedItem = GetVoiceName(Common.AppSettings.AzureTTSVoice);
             }
         }
 
         void SetSavedVoice()
         {
-            if (string.IsNullOrEmpty(Common.appSettings.AzureTTSVoice))
+            if (string.IsNullOrEmpty(Common.AppSettings.AzureTTSVoice))
             {
-                VoiceLocalComboBox.ItemsSource = new List<string> { GetVoiceLocal(DEFAULT_VOICE) };
+                VoiceLocalComboBox.ItemsSource = new List<string> { GetVoiceLocale(DEFAULT_VOICE) };
                 VoiceNameComboBox.ItemsSource = new List<string> { GetVoiceName(DEFAULT_VOICE) };
             }
             else
             {
-                VoiceLocalComboBox.ItemsSource = new List<string> { GetVoiceLocal(Common.appSettings.AzureTTSVoice) };
-                VoiceNameComboBox.ItemsSource = new List<string> { GetVoiceName(Common.appSettings.AzureTTSVoice) };
+                VoiceLocalComboBox.ItemsSource = new List<string> { GetVoiceLocale(Common.AppSettings.AzureTTSVoice) };
+                VoiceNameComboBox.ItemsSource = new List<string> { GetVoiceName(Common.AppSettings.AzureTTSVoice) };
             }
             VoiceLocalComboBox.SelectedIndex = 0;
             VoiceNameComboBox.SelectedIndex = 0;
@@ -124,7 +122,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
             VoiceNameComboBox.SelectedIndex = 0;
         }
 
-        private static string GetVoiceLocal(string voiceString) => voiceString.Substring(0, voiceString.LastIndexOf('-'));
+        private static string GetVoiceLocale(string voiceString) => voiceString.Substring(0, voiceString.LastIndexOf('-'));
         private static string GetVoiceName(string voiceString) => voiceString.Substring(voiceString.LastIndexOf('-') + 1);
 
         private void VoiceLocalComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

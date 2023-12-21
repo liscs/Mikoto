@@ -26,10 +26,10 @@ namespace MisakaTranslator_WPF.SettingsPages.OCRPages
         public TesseractCliSettingsPage()
         {
             InitializeComponent();
-            PathBox.Text = Common.appSettings.TesseractCli_Path;
-            ArgsBox.Text = Common.appSettings.TesseractCli_Args;
+            PathBox.Text = Common.AppSettings.TesseractCli_Path;
+            ArgsBox.Text = Common.AppSettings.TesseractCli_Args;
             SelectBox.ItemsSource = itemList;
-            SelectBox.SelectedIndex = valueList.IndexOf(Common.appSettings.TesseractCli_Mode);
+            SelectBox.SelectedIndex = valueList.IndexOf(Common.AppSettings.TesseractCli_Mode);
             SyncModeAndArgs();
         }
 
@@ -46,7 +46,7 @@ namespace MisakaTranslator_WPF.SettingsPages.OCRPages
                 else
                 {
                     PathBox.Text = dialog.FileName;
-                    Common.appSettings.TesseractCli_Path = dialog.FileName;
+                    Common.AppSettings.TesseractCli_Path = dialog.FileName;
                 }
             }
         }
@@ -55,31 +55,31 @@ namespace MisakaTranslator_WPF.SettingsPages.OCRPages
         {
             if (SelectBox.SelectedValue != null)
             {
-                Common.appSettings.TesseractCli_Mode = modeLst[(string)SelectBox.SelectedValue];
+                Common.AppSettings.TesseractCli_Mode = modeLst[(string)SelectBox.SelectedValue];
                 SyncModeAndArgs();
             }
         }
 
         private void SyncModeAndArgs()
         {
-            switch (Common.appSettings.TesseractCli_Mode)
+            switch (Common.AppSettings.TesseractCli_Mode)
             {
                 case "jpn":
-                    Common.appSettings.TesseractCli_Args = "-l jpn --psm 6";
-                    ArgsBox.Text = Common.appSettings.TesseractCli_Args;
+                    Common.AppSettings.TesseractCli_Args = "-l jpn --psm 6";
+                    ArgsBox.Text = Common.AppSettings.TesseractCli_Args;
                     ArgsBox.IsEnabled = false;
                     break;
                 case "jpn_vert":
-                    Common.appSettings.TesseractCli_Args = "-l jpn_vert --psm 5";
-                    ArgsBox.Text = Common.appSettings.TesseractCli_Args;
+                    Common.AppSettings.TesseractCli_Args = "-l jpn_vert --psm 5";
+                    ArgsBox.Text = Common.AppSettings.TesseractCli_Args;
                     ArgsBox.IsEnabled = false;
                     break;
                 case "eng":
-                    Common.appSettings.TesseractCli_Args = ArgsBox.Text = "--psm 6";
+                    Common.AppSettings.TesseractCli_Args = ArgsBox.Text = "--psm 6";
                     ArgsBox.IsEnabled = false;
                     break;
                 default:
-                    Common.appSettings.TesseractCli_Args = ArgsBox.Text;
+                    Common.AppSettings.TesseractCli_Args = ArgsBox.Text;
                     ArgsBox.IsEnabled = true;
                     break;
             }
@@ -87,12 +87,12 @@ namespace MisakaTranslator_WPF.SettingsPages.OCRPages
 
         private void ArgsBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Common.appSettings.TesseractCli_Args = ArgsBox.Text;
+            Common.AppSettings.TesseractCli_Args = ArgsBox.Text;
         }
 
         private void PathBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Common.appSettings.TesseractCli_Path = PathBox.Text;
+            Common.AppSettings.TesseractCli_Path = PathBox.Text;
         }
     }
 }

@@ -13,12 +13,12 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         public CaiyunTransSettingsPage()
         {
             InitializeComponent();
-            TransTokenBox.Text = Common.appSettings.CaiyunToken;
+            TransTokenBox.Text = Common.AppSettings.CaiyunToken;
         }
 
         private async void AuthTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.appSettings.CaiyunToken = TransTokenBox.Text;
+            Common.AppSettings.CaiyunToken = TransTokenBox.Text;
             CaiyunTranslator Trans = new CaiyunTranslator();
             Trans.TranslatorInit(TransTokenBox.Text, "");
             if (await Trans.TranslateAsync("apple", "zh", "en") != null)
@@ -49,7 +49,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
             CaiyunTranslator Trans = new CaiyunTranslator();
-            Trans.TranslatorInit(Common.appSettings.CaiyunToken, "");
+            Trans.TranslatorInit(Common.AppSettings.CaiyunToken, "");
             string res = await Trans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
             if (res != null)
             {

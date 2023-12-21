@@ -34,8 +34,8 @@ namespace MisakaTranslator_WPF
         {
             DataContext = GamePanelCollection;
             Instance = this;
-            Common.mainWin = this;
-            Common.appSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\data\\settings\\settings.ini").Build();
+            Common.MainWin = this;
+            Common.AppSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\data\\settings\\settings.ini").Build();
             InitializeLanguage();
             TranslatorCommon.Refresh();
             InitializeComponent();
@@ -48,10 +48,10 @@ namespace MisakaTranslator_WPF
 
         private static void InitializeLanguage()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo(Common.appSettings.AppLanguage);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Common.appSettings.AppLanguage);
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(Common.AppSettings.AppLanguage);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Common.AppSettings.AppLanguage);
             ResourceDictionary languageResource = new ResourceDictionary();
-            languageResource.Source = new Uri($"lang/{Common.appSettings.AppLanguage}.xaml", UriKind.Relative);
+            languageResource.Source = new Uri($"lang/{Common.AppSettings.AppLanguage}.xaml", UriKind.Relative);
             Application.Current.Resources.MergedDictionaries[1] = languageResource;
         }
 
@@ -63,9 +63,9 @@ namespace MisakaTranslator_WPF
 
         public void Refresh()
         {
-            this.Resources["Foreground"] = (SolidColorBrush)(new BrushConverter().ConvertFrom(Common.appSettings.ForegroundHex));
+            this.Resources["Foreground"] = (SolidColorBrush)(new BrushConverter().ConvertFrom(Common.AppSettings.ForegroundHex));
             GameInfoList = GameHelper.GetAllCompletedGames();
-            Common.repairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Environment.CurrentDirectory + "\\data\\settings\\RepairSettings.ini").Build();
+            Common.RepairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Environment.CurrentDirectory + "\\data\\settings\\RepairSettings.ini").Build();
             GameLibraryPanel_Init();
             //先初始化这两个语言，用于全局OCR识别
             Common.UsingDstLang = "zh";
@@ -175,7 +175,7 @@ namespace MisakaTranslator_WPF
             HwndSource.FromHwnd(hwnd)?.AddHook(WndProc);
             //注册热键
             Common.GlobalOCRHotKey = new GlobalHotKey();
-            if (Common.GlobalOCRHotKey.RegisterHotKeyByStr(Common.appSettings.GlobalOCRHotkey, hwnd, CallBack) == false)
+            if (Common.GlobalOCRHotKey.RegisterHotKeyByStr(Common.AppSettings.GlobalOCRHotkey, hwnd, CallBack) == false)
             {
                 Growl.ErrorGlobal(Application.Current.Resources["MainWindow_GlobalOCRError_Hint"].ToString());
             }
@@ -304,14 +304,14 @@ namespace MisakaTranslator_WPF
             switch (Common.UsingRepairFunc)
             {
                 case "RepairFun_RemoveSingleWordRepeat":
-                    Common.repairSettings.SingleWordRepeatTimes = int.Parse(GameInfoList[gid].RepairParamA);
+                    Common.RepairSettings.SingleWordRepeatTimes = int.Parse(GameInfoList[gid].RepairParamA);
                     break;
                 case "RepairFun_RemoveSentenceRepeat":
-                    Common.repairSettings.SentenceRepeatFindCharNum = int.Parse(GameInfoList[gid].RepairParamA);
+                    Common.RepairSettings.SentenceRepeatFindCharNum = int.Parse(GameInfoList[gid].RepairParamA);
                     break;
                 case "RepairFun_RegexReplace":
-                    Common.repairSettings.Regex = GameInfoList[gid].RepairParamA;
-                    Common.repairSettings.Regex_Replace = GameInfoList[gid].RepairParamB;
+                    Common.RepairSettings.Regex = GameInfoList[gid].RepairParamA;
+                    Common.RepairSettings.Regex_Replace = GameInfoList[gid].RepairParamB;
                     break;
                 default:
                     break;
@@ -319,21 +319,21 @@ namespace MisakaTranslator_WPF
 
             Common.RepairFuncInit();
 
-            Common.textHooker = pidList.Count == 1 ? new TextHookHandle(pidList[0].Id) : new TextHookHandle(pidList);
+            Common.TextHooker = pidList.Count == 1 ? new TextHookHandle(pidList[0].Id) : new TextHookHandle(pidList);
 
-            if (!Common.textHooker.Init(GameInfoList[gid].Isx64 ? Common.appSettings.Textractor_Path64 : Common.appSettings.Textractor_Path32))
+            if (!Common.TextHooker.Init(GameInfoList[gid].Isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
             {
                 HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
                 return;
             }
-            Common.textHooker.HookCodeList.Add(GameInfoList[gid].HookCode);
-            Common.textHooker.HookCode_Custom = GameInfoList[gid].HookCodeCustom;
+            Common.TextHooker.HookCodeList.Add(GameInfoList[gid].HookCode);
+            Common.TextHooker.HookCode_Custom = GameInfoList[gid].HookCodeCustom;
 
-            Common.textHooker.MisakaCodeList.Add(GameInfoList[gid].MisakaHookCode);
-            await Common.textHooker.StartHook(Convert.ToBoolean(Common.appSettings.AutoHook));
+            Common.TextHooker.MisakaCodeList.Add(GameInfoList[gid].MisakaHookCode);
+            await Common.TextHooker.StartHook(Convert.ToBoolean(Common.AppSettings.AutoHook));
 
             await Task.Delay(3000);
-            Common.textHooker.Auto_AddHookToGame();
+            Common.TextHooker.Auto_AddHookToGame();
 
             new TranslateWindow().Show();
         }
@@ -374,7 +374,7 @@ namespace MisakaTranslator_WPF
         {
             var filepath = GameInfoList[gid].FilePath;
             var p = new ProcessStartInfo();
-            var lePath = Common.appSettings.LEPath;
+            var lePath = Common.AppSettings.LEPath;
             p.FileName = lePath + "\\LEProc.exe";
             // 记住加上引号，否则可能会因为路径带空格而无法启动
             p.Arguments = $"-run \"{filepath}\"";
@@ -388,7 +388,7 @@ namespace MisakaTranslator_WPF
         private void BlurWindow_Closing(object sender, CancelEventArgs e)
         {
             e.Cancel = true;
-            switch (Common.appSettings.OnClickCloseButton)
+            switch (Common.AppSettings.OnClickCloseButton)
             {
                 case "Minimization":
                     Visibility = Visibility.Collapsed;
@@ -418,12 +418,12 @@ namespace MisakaTranslator_WPF
             ResourceDictionary languageResource = new ResourceDictionary();
             if (sender is MenuItem menuItem)
             {
-                Common.appSettings.AppLanguage = menuItem.Tag.ToString();
-                Thread.CurrentThread.CurrentCulture = new CultureInfo(Common.appSettings.AppLanguage);
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Common.appSettings.AppLanguage);
+                Common.AppSettings.AppLanguage = menuItem.Tag.ToString();
+                Thread.CurrentThread.CurrentCulture = new CultureInfo(Common.AppSettings.AppLanguage);
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Common.AppSettings.AppLanguage);
                 TranslatorCommon.Refresh();
                 TextRepair.Refresh();
-                languageResource.Source = new Uri($"lang/{Common.appSettings.AppLanguage}.xaml", UriKind.Relative);
+                languageResource.Source = new Uri($"lang/{Common.AppSettings.AppLanguage}.xaml", UriKind.Relative);
                 Application.Current.Resources.MergedDictionaries[1] = languageResource;
                 HandyControl.Controls.MessageBox.Show(Application.Current.Resources["Language_Changed"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
             }
@@ -464,14 +464,14 @@ namespace MisakaTranslator_WPF
 
         private void ClipboardGuideBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.textHooker = new TextHookHandle();
+            Common.TextHooker = new TextHookHandle();
             Common.GameID = Guid.Empty;
             Common.TransMode = TransMode.Hook;
-            Common.textHooker.AddClipBoardThread();
+            Common.TextHooker.AddClipBoardThread();
 
             //剪贴板方式读取的特殊码和misakacode
-            Common.textHooker.HookCodeList.Add("HB0@0");
-            Common.textHooker.MisakaCodeList.Add("【0:-1:-1】");
+            Common.TextHooker.HookCodeList.Add("HB0@0");
+            Common.TextHooker.MisakaCodeList.Add("【0:-1:-1】");
 
             var ggw = new GameGuideWindow(GuideMode.Clipboard);
             ggw.Show();
@@ -504,7 +504,7 @@ namespace MisakaTranslator_WPF
         /// </summary>
         void GrowlDisableSwitch()
         {
-            if (!Common.appSettings.GrowlEnabled)
+            if (!Common.AppSettings.GrowlEnabled)
             {
                 Growl.InfoGlobal(Application.Current.Resources["MainWindow_NoGlobalNotice"].ToString()); // 必须先显示一句否则GrowlWindow是null
                 var gw = typeof(Growl).GetField("GrowlWindow", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic).GetValue(null);

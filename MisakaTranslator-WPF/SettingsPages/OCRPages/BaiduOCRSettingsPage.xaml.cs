@@ -13,14 +13,14 @@ namespace MisakaTranslator_WPF.SettingsPages.OCRPages
         public BaiduOCRPage()
         {
             InitializeComponent();
-            APIKEYBox.Text = Common.appSettings.BDOCR_APIKEY;
-            SecretKeyBox.Text = Common.appSettings.BDOCR_SecretKey;
+            APIKEYBox.Text = Common.AppSettings.BDOCR_APIKEY;
+            SecretKeyBox.Text = Common.AppSettings.BDOCR_SecretKey;
         }
 
         private void AuthTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.appSettings.BDOCR_APIKEY = APIKEYBox.Text;
-            Common.appSettings.BDOCR_SecretKey = SecretKeyBox.Text;
+            Common.AppSettings.BDOCR_APIKEY = APIKEYBox.Text;
+            Common.AppSettings.BDOCR_SecretKey = SecretKeyBox.Text;
 
             if (APIKEYBox.Text.Length == 17)
             {

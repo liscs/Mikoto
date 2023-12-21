@@ -12,7 +12,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         public KingsoftFAITTransSettingsPage()
         {
             InitializeComponent();
-            PathBox.Text = Common.appSettings.KingsoftFastAITPath;
+            PathBox.Text = Common.AppSettings.KingsoftFastAITPath;
         }
 
         private void ChoosePathBtn_Click(object sender, RoutedEventArgs e)
@@ -31,7 +31,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
                 else
                 {
                     PathBox.Text = dialog.SelectedPath;
-                    Common.appSettings.KingsoftFastAITPath = PathBox.Text;
+                    Common.AppSettings.KingsoftFastAITPath = PathBox.Text;
                 }
             }
         }
@@ -39,7 +39,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
             KingsoftFastAITTranslator Trans = new KingsoftFastAITTranslator();
-            Trans.TranslatorInit(Common.appSettings.KingsoftFastAITPath, "");
+            Trans.TranslatorInit(Common.AppSettings.KingsoftFastAITPath, "");
             string res = await Trans.TranslateAsync(TestSrcText.Text, "zh", TestSrcLang.Text);
             if (res != null)
             {

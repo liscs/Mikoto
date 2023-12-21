@@ -146,9 +146,9 @@ namespace MisakaTranslator_WPF
         /// </summary>
         public void DoHookCheck()
         {
-            if (Common.textHooker != null)
+            if (Common.TextHooker != null)
             {
-                Common.textHooker = null;
+                Common.TextHooker = null;
                 GC.Collect();
             }
         }

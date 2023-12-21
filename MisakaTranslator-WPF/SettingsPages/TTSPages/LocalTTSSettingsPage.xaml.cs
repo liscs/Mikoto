@@ -21,14 +21,14 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
 
             for (int i = 0; i < lst.Count; i++)
             {
-                if (lst[i] == Common.appSettings.LocalTTSVoice)
+                if (lst[i] == Common.AppSettings.LocalTTSVoice)
                 {
                     TTSSourceCombox.SelectedIndex = i;
                     break;
                 }
             }
-            VolumeBar.Value = Common.appSettings.LoaclTTSVolume;
-            RateBar.Value = Common.appSettings.LocaTTSRate;
+            VolumeBar.Value = Common.AppSettings.LoaclTTSVolume;
+            RateBar.Value = Common.AppSettings.LocaTTSRate;
         }
 
         private void TTSSourceCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -39,9 +39,9 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
         private void TestBtn_Click(object sender, RoutedEventArgs e)
         {
             localTTS.SpeakAsync(TestSrcText.Text);
-            Common.appSettings.LocalTTSVoice = (string)TTSSourceCombox.SelectedValue;
-            Common.appSettings.LoaclTTSVolume = (int)VolumeBar.Value;
-            Common.appSettings.LocaTTSRate = (int)RateBar.Value;
+            Common.AppSettings.LocalTTSVoice = (string)TTSSourceCombox.SelectedValue;
+            Common.AppSettings.LoaclTTSVolume = (int)VolumeBar.Value;
+            Common.AppSettings.LocaTTSRate = (int)RateBar.Value;
         }
 
         private void VolumeBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

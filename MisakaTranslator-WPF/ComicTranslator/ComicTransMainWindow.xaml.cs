@@ -52,53 +52,53 @@ namespace MisakaTranslator_WPF.ComicTranslator
             ComicImgList = new List<string>();
             CurrentPos = 0;
 
-            if (Common.appSettings.HttpProxy != "")
+            if (Common.AppSettings.HttpProxy != "")
             {
-                TranslatorCommon.SetHttpProxiedClient(Common.appSettings.HttpProxy);
+                TranslatorCommon.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
             }
             transRes1 = "";
             transRes2 = "";
-            _translator1 = TranslateWindow.TranslatorAuto(Common.appSettings.FirstTranslator);
-            _translator2 = TranslateWindow.TranslatorAuto(Common.appSettings.SecondTranslator);
+            _translator1 = TranslateWindow.TranslatorAuto(Common.AppSettings.FirstTranslator);
+            _translator2 = TranslateWindow.TranslatorAuto(Common.AppSettings.SecondTranslator);
 
-            ocr = OCRCommon.OCRAuto(Common.appSettings.OCRsource);
+            ocr = OCRCommon.OCRAuto(Common.AppSettings.OCRsource);
             ocr.SetOCRSourceLang("jpn");
-            if (Common.appSettings.OCRsource == "BaiduOCR")
+            if (Common.AppSettings.OCRsource == "BaiduOCR")
             {
-                if (ocr.OCR_Init(Common.appSettings.BDOCR_APIKEY, Common.appSettings.BDOCR_SecretKey) == false)
+                if (ocr.OCR_Init(Common.AppSettings.BDOCR_APIKEY, Common.AppSettings.BDOCR_SecretKey) == false)
                 {
                     HandyControl.Controls.Growl.ErrorGlobal($"百度智能云OCR {Application.Current.Resources["APITest_Error_Hint"]}\n{ocr.GetLastError()}");
                 }
             }
-            else if (Common.appSettings.OCRsource == "BaiduFanyiOCR")
+            else if (Common.AppSettings.OCRsource == "BaiduFanyiOCR")
             {
-                if (ocr.OCR_Init(Common.appSettings.BDappID, Common.appSettings.BDsecretKey) == false)
+                if (ocr.OCR_Init(Common.AppSettings.BDappID, Common.AppSettings.BDsecretKey) == false)
                 {
                     HandyControl.Controls.Growl.ErrorGlobal($"百度翻译OCR {Application.Current.Resources["APITest_Error_Hint"]}\n{ocr.GetLastError()}");
                 }
             }
-            else if (Common.appSettings.OCRsource == "TencentOCR")
+            else if (Common.AppSettings.OCRsource == "TencentOCR")
             {
-                if (ocr.OCR_Init(Common.appSettings.TXOSecretId, Common.appSettings.TXOSecretKey) == false)
+                if (ocr.OCR_Init(Common.AppSettings.TXOSecretId, Common.AppSettings.TXOSecretKey) == false)
                 {
                     HandyControl.Controls.Growl.ErrorGlobal($"腾讯云图片翻译 {Application.Current.Resources["APITest_Error_Hint"]}\n{ocr.GetLastError()}");
                 }
             }
-            else if (Common.appSettings.OCRsource == "TesseractCli")
+            else if (Common.AppSettings.OCRsource == "TesseractCli")
             {
-                if (ocr.OCR_Init(Common.appSettings.TesseractCli_Path, Common.appSettings.TesseractCli_Args) == false)
+                if (ocr.OCR_Init(Common.AppSettings.TesseractCli_Path, Common.AppSettings.TesseractCli_Args) == false)
                 {
                     HandyControl.Controls.Growl.ErrorGlobal($"TesseractCli {Application.Current.Resources["APITest_Error_Hint"]}\n{ocr.GetLastError()}");
                 }
             }
-            else if (Common.appSettings.OCRsource == "TesseractOCR")
+            else if (Common.AppSettings.OCRsource == "TesseractOCR")
             {
                 if (ocr.OCR_Init("", "") == false)
                 {
                     HandyControl.Controls.Growl.ErrorGlobal($"TesseractOCR {Application.Current.Resources["APITest_Error_Hint"]}\n{ocr.GetLastError()}");
                 }
             }
-            else if (Common.appSettings.OCRsource == "WindowsOCR")
+            else if (Common.AppSettings.OCRsource == "WindowsOCR")
             {
                 if (ocr.OCR_Init("", "") == false)
                 {
@@ -160,7 +160,7 @@ namespace MisakaTranslator_WPF.ComicTranslator
                 {
                     Bitmap bm = new Bitmap(Environment.CurrentDirectory + "\\comicTemp.png");
                     bm = ImageProcFunc.ColorToGrayscale(bm);
-                    if (!(Common.appSettings.OCRsource == "BaiduFanyiOCR" || Common.appSettings.OCRsource == "TencentOCR"))
+                    if (!(Common.AppSettings.OCRsource == "BaiduFanyiOCR" || Common.AppSettings.OCRsource == "TencentOCR"))
                         sourceTextBox.Text = (await ocr.OCRProcessAsync(bm))?.Replace("\f", "");
                     else
                         transTextBox.Text = await ocr.OCRProcessAsync(bm);

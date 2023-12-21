@@ -12,7 +12,7 @@ namespace MisakaTranslator_WPF.SettingsPages
         {
             InitializeComponent();
 
-            PathBox.Text = Common.appSettings.LEPath;
+            PathBox.Text = Common.AppSettings.LEPath;
         }
 
         private void ChoosePathBtn_Click(object sender, RoutedEventArgs e)
@@ -30,7 +30,7 @@ namespace MisakaTranslator_WPF.SettingsPages
                 else
                 {
                     PathBox.Text = dialog.SelectedPath;
-                    Common.appSettings.LEPath = PathBox.Text;
+                    Common.AppSettings.LEPath = PathBox.Text;
                 }
             }
         }

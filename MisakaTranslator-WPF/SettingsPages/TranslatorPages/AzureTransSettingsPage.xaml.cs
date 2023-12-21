@@ -13,14 +13,14 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         public AzureTransSettingsPage()
         {
             InitializeComponent();
-            AzureTransSecretKeyBox.Text = Common.appSettings.AzureSecretKey;
-            AzureTransLocationBox.Text = Common.appSettings.AzureLocation;
+            AzureTransSecretKeyBox.Text = Common.AppSettings.AzureSecretKey;
+            AzureTransLocationBox.Text = Common.AppSettings.AzureLocation;
         }
 
         private async void AuthTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.appSettings.AzureSecretKey = AzureTransSecretKeyBox.Text;
-            Common.appSettings.AzureLocation = AzureTransLocationBox.Text;
+            Common.AppSettings.AzureSecretKey = AzureTransSecretKeyBox.Text;
+            Common.AppSettings.AzureLocation = AzureTransLocationBox.Text;
 
             ITranslator AzureTrans = new AzureTranslator();
             AzureTrans.TranslatorInit(AzureTransSecretKeyBox.Text, AzureTransLocationBox.Text);
@@ -57,7 +57,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
             ITranslator AzureTrans = new AzureTranslator();
-            AzureTrans.TranslatorInit(Common.appSettings.AzureSecretKey, Common.appSettings.AzureLocation);
+            AzureTrans.TranslatorInit(Common.AppSettings.AzureSecretKey, Common.AppSettings.AzureLocation);
             string res = await AzureTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)

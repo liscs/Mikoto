@@ -45,28 +45,28 @@ namespace MisakaTranslator_WPF
 
     public static class Common
     {
-        public static IAppSettings appSettings; //应用设置
-        public static IRepeatRepairSettings repairSettings; //去重方法参数
+        public static IAppSettings AppSettings { get; set; } //应用设置
+        public static IRepeatRepairSettings RepairSettings { get; set; } //去重方法参数
 
-        private static TransMode transMode; //全局使用中的翻译模式 1=hook 2=ocr
+        public static TransMode TransMode { get; set; } //全局使用中的翻译模式 1=hook 2=ocr
 
-        public static Guid GameID; //全局使用中的游戏ID(数据库)
+        public static Guid GameID { get; set; } //全局使用中的游戏ID(数据库)
 
-        public static TextHookHandle textHooker; //全局使用中的Hook对象
-        public static string UsingRepairFunc; //全局使用中的去重方法
+        public static TextHookHandle TextHooker { get; set; } //全局使用中的Hook对象
+        public static string UsingRepairFunc { get; set; } //全局使用中的去重方法
 
-        public static string UsingSrcLang; //全局使用中的源语言
-        public static string UsingDstLang; //全局使用中的目标翻译语言
+        public static string UsingSrcLang { get; set; }//全局使用中的源语言
+        public static string UsingDstLang { get; set; } //全局使用中的目标翻译语言
 
-        public static OCREngine ocr; //全局使用中的OCR对象
-        public static bool isAllWindowCap; //是否全屏截图
-        public static IntPtr OCRWinHwnd; //全局的OCR的工作窗口
-        public static HotKeyInfo UsingHotKey; //全局使用中的触发键信息
-        public static int UsingOCRDelay; //全局使用中的OCR延时
+        public static OCREngine Ocr { get; set; } //全局使用中的OCR对象
+        public static bool IsAllWindowCap { get; set; } //是否全屏截图
+        public static IntPtr OCRWinHwnd { get; set; } //全局的OCR的工作窗口
+        public static HotKeyInfo UsingHotKey { get; set; } //全局使用中的触发键信息
+        public static int UsingOCRDelay { get; set; } //全局使用中的OCR延时
 
-        public static Window mainWin; //全局的主窗口对象
+        public static Window MainWin { get; set; } //全局的主窗口对象
 
-        public static GlobalHotKey GlobalOCRHotKey; //全局OCR热键
+        public static GlobalHotKey GlobalOCRHotKey { get; set; } //全局OCR热键
 
         /// <summary>
         /// 导出Textractor历史记录，返回是否成功的结果
@@ -76,13 +76,13 @@ namespace MisakaTranslator_WPF
         {
             try
             {
-                if (textHooker != null)
+                if (TextHooker != null)
                 {
                     FileStream fs = new FileStream("TextractorOutPutHistory.txt", FileMode.Create);
                     StreamWriter sw = new StreamWriter(fs);
 
                     sw.WriteLine(Application.Current.Resources["Common_TextractorHistory"]);
-                    string[] history = textHooker.TextractorOutPutHistory.ToArray();
+                    string[] history = TextHooker.TextractorOutPutHistory.ToArray();
                     for (int i = 0; i < history.Length; i++)
                     {
                         sw.WriteLine(history[i]);
@@ -110,10 +110,10 @@ namespace MisakaTranslator_WPF
         /// </summary>
         public static void RepairFuncInit()
         {
-            TextRepair.SingleWordRepeatTimes = repairSettings.SingleWordRepeatTimes;
-            TextRepair.SentenceRepeatFindCharNum = repairSettings.SentenceRepeatFindCharNum;
-            TextRepair.RegexPattern = repairSettings.Regex;
-            TextRepair.RegexReplacement = repairSettings.Regex_Replace;
+            TextRepair.SingleWordRepeatTimes = RepairSettings.SingleWordRepeatTimes;
+            TextRepair.SentenceRepeatFindCharNum = RepairSettings.SentenceRepeatFindCharNum;
+            TextRepair.RegexPattern = RepairSettings.Regex;
+            TextRepair.RegexReplacement = RepairSettings.Regex_Replace;
         }
 
         /// <summary>
@@ -132,8 +132,6 @@ namespace MisakaTranslator_WPF
 
         static double scale;
 
-        public static TransMode TransMode { get => transMode; set => transMode = value; }
-
         /// <summary>
         /// 获取DPI缩放倍数
         /// </summary>
@@ -141,7 +139,7 @@ namespace MisakaTranslator_WPF
         public static double GetScale()
         {
             if (scale == 0)
-                scale = Graphics.FromHwnd(new WindowInteropHelper(mainWin).Handle).DpiX / 96;
+                scale = Graphics.FromHwnd(new WindowInteropHelper(MainWin).Handle).DpiX / 96;
             return scale;
         }
 

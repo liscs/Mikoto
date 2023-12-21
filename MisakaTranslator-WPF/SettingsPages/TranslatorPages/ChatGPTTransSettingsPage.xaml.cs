@@ -13,14 +13,14 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         public ChatGPTTransSettingsPage()
         {
             InitializeComponent();
-            ChatGPTTransSecretKeyBox.Text = Common.appSettings.ChatGPTapiKey;
-            ChatGPTTransUrlBox.Text = Common.appSettings.ChatGPTapiUrl;
+            ChatGPTTransSecretKeyBox.Text = Common.AppSettings.ChatGPTapiKey;
+            ChatGPTTransUrlBox.Text = Common.AppSettings.ChatGPTapiUrl;
         }
 
         private async void AuthTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.appSettings.ChatGPTapiKey = ChatGPTTransSecretKeyBox.Text;
-            Common.appSettings.ChatGPTapiUrl = ChatGPTTransUrlBox.Text;
+            Common.AppSettings.ChatGPTapiKey = ChatGPTTransSecretKeyBox.Text;
+            Common.AppSettings.ChatGPTapiUrl = ChatGPTTransUrlBox.Text;
 
             ITranslator chatGPTTrans = new ChatGPTTranslator();
             chatGPTTrans.TranslatorInit(ChatGPTTransSecretKeyBox.Text, ChatGPTTransUrlBox.Text);

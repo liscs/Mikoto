@@ -30,8 +30,8 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
             HookFunListView.ItemsSource = lstData;
             sum = 0;
-            Common.textHooker.HookMessageReceived += FilterAndDisplayData;
-            _ = Common.textHooker.StartHook(Convert.ToBoolean(Common.appSettings.AutoHook));
+            Common.TextHooker.HookMessageReceived += FilterAndDisplayData;
+            _ = Common.TextHooker.StartHook(Convert.ToBoolean(Common.AppSettings.AutoHook));
         }
 
         public void FilterAndDisplayData(object sender, HookReceivedEventArgs e)
@@ -70,11 +70,11 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                 int pid = lstData[HookFunListView.SelectedIndex].GamePID;
 
                 //先关闭对本窗口的输出
-                Common.textHooker.HookMessageReceived -= FilterAndDisplayData;
+                Common.TextHooker.HookMessageReceived -= FilterAndDisplayData;
 
                 //先要将需要用到的方法注明，再进行后续卸载操作
-                Common.textHooker.HookCodeList.Add(lstData[HookFunListView.SelectedIndex].HookCode);
-                Common.textHooker.MisakaCodeList.Add(lstData[HookFunListView.SelectedIndex].MisakaHookCode);
+                Common.TextHooker.HookCodeList.Add(lstData[HookFunListView.SelectedIndex].HookCode);
+                Common.TextHooker.MisakaCodeList.Add(lstData[HookFunListView.SelectedIndex].MisakaHookCode);
 
                 List<string> usedHook = new List<string>
                 {
@@ -82,9 +82,9 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                 };
 
                 //用户开启了自动卸载
-                if (Convert.ToBoolean(Common.appSettings.AutoDetach) == true)
+                if (Convert.ToBoolean(Common.AppSettings.AutoDetach) == true)
                 {
-                    Common.textHooker.DetachUnrelatedHooks(pid, usedHook);
+                    Common.TextHooker.DetachUnrelatedHooks(pid, usedHook);
                 }
 
                 if (Common.GameID != Guid.Empty)
@@ -149,7 +149,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
         {
             if (PIDTextBox.Text != "" && HookCodeTextBox.Text != "" && int.TryParse(PIDTextBox.Text, out int pid))
             {
-                _ = Common.textHooker.AttachProcessByHookCode(pid, HookCodeTextBox.Text);
+                _ = Common.TextHooker.AttachProcessByHookCode(pid, HookCodeTextBox.Text);
                 LastCustomHookCode = HookCodeTextBox.Text;
                 InputDrawer.IsOpen = false;
                 HandyControl.Controls.Growl.Info(Application.Current.Resources["ChooseHookFuncPage_HookApplyHint"].ToString());
@@ -169,7 +169,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
         {
             if (e.Key == Key.Escape)
             {
-                Common.textHooker.HookMessageReceived -= FilterAndDisplayData;
+                Common.TextHooker.HookMessageReceived -= FilterAndDisplayData;
                 HandyControl.Controls.Growl.Warning(Application.Current.Resources["ChooseHookFuncPage_PauseHint"].ToString());
             }
 

@@ -20,12 +20,12 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             InitializeComponent();
             HookFunListView.ItemsSource = lstData;
             sum = 0;
-            Common.textHooker.MeetHookCodeMessageReceived += FilterAndDisplayData;
-            Common.textHooker.StartHook(Convert.ToBoolean(Common.appSettings.AutoHook));
+            Common.TextHooker.MeetHookCodeMessageReceived += FilterAndDisplayData;
+            Common.TextHooker.StartHook(Convert.ToBoolean(Common.AppSettings.AutoHook));
             var task_1 = System.Threading.Tasks.Task.Run(async delegate
             {
                 await System.Threading.Tasks.Task.Delay(3000);
-                Common.textHooker.Auto_AddHookToGame();
+                Common.TextHooker.Auto_AddHookToGame();
             });
 
         }
@@ -51,16 +51,16 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             if (HookFunListView.SelectedIndex != -1)
             {
                 //先关闭对本窗口的输出
-                Common.textHooker.MeetHookCodeMessageReceived -= FilterAndDisplayData;
+                Common.TextHooker.MeetHookCodeMessageReceived -= FilterAndDisplayData;
 
-                Common.textHooker.MisakaCodeList.Add(lstData[HookFunListView.SelectedIndex].MisakaHookCode);
+                Common.TextHooker.MisakaCodeList.Add(lstData[HookFunListView.SelectedIndex].MisakaHookCode);
 
                 //用户开启了自动卸载
-                if (Convert.ToBoolean(Common.appSettings.AutoDetach) == true)
+                if (Convert.ToBoolean(Common.AppSettings.AutoDetach) == true)
                 {
                     List<string> usedHook = new List<string>();
                     usedHook.Add(lstData[HookFunListView.SelectedIndex].HookAddress);
-                    Common.textHooker.DetachUnrelatedHooks(lstData[HookFunListView.SelectedIndex].GamePID, usedHook);
+                    Common.TextHooker.DetachUnrelatedHooks(lstData[HookFunListView.SelectedIndex].GamePID, usedHook);
                 }
 
 

@@ -13,14 +13,14 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         public BaiduTransSettingsPage()
         {
             InitializeComponent();
-            BDTransAppIDBox.Text = Common.appSettings.BDappID;
-            BDTransSecretKeyBox.Text = Common.appSettings.BDsecretKey;
+            BDTransAppIDBox.Text = Common.AppSettings.BDappID;
+            BDTransSecretKeyBox.Text = Common.AppSettings.BDsecretKey;
         }
 
         private async void AuthTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.appSettings.BDappID = BDTransAppIDBox.Text;
-            Common.appSettings.BDsecretKey = BDTransSecretKeyBox.Text;
+            Common.AppSettings.BDappID = BDTransAppIDBox.Text;
+            Common.AppSettings.BDsecretKey = BDTransSecretKeyBox.Text;
 
             if (BDTransAppIDBox.Text.Length == 24)
             {
@@ -59,7 +59,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
             ITranslator BDTrans = new BaiduTranslator();
-            BDTrans.TranslatorInit(Common.appSettings.BDappID, Common.appSettings.BDsecretKey);
+            BDTrans.TranslatorInit(Common.AppSettings.BDappID, Common.AppSettings.BDsecretKey);
             string res = await BDTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)

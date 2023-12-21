@@ -17,8 +17,8 @@ namespace MisakaTranslator_WPF.SettingsPages
         {
             InitializeComponent();
 
-            ATonCheckBox.IsChecked = Common.appSettings.ATon;
-            PathBox.Text = Common.appSettings.ArtificialPatchPath;
+            ATonCheckBox.IsChecked = Common.AppSettings.ATon;
+            PathBox.Text = Common.AppSettings.ArtificialPatchPath;
 
             if (Directory.Exists(Environment.CurrentDirectory + "\\ArtificialTranslation"))
             {
@@ -52,7 +52,7 @@ namespace MisakaTranslator_WPF.SettingsPages
             if (dialog.ShowDialog() == true)
             {
                 PathBox.Text = dialog.FileName;
-                Common.appSettings.ArtificialPatchPath = PathBox.Text;
+                Common.AppSettings.ArtificialPatchPath = PathBox.Text;
             }
             else
             {
@@ -62,7 +62,7 @@ namespace MisakaTranslator_WPF.SettingsPages
 
         private void ATonCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            Common.appSettings.ATon = (bool)ATonCheckBox.IsChecked;
+            Common.AppSettings.ATon = (bool)ATonCheckBox.IsChecked;
         }
 
         private void ExportBtn_Click(object sender, RoutedEventArgs e)

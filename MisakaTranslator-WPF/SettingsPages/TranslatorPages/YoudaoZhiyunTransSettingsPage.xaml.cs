@@ -13,14 +13,14 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         public YoudaoZhiyunTransSettingsPage()
         {
             InitializeComponent();
-            YDZYTransAppIDBox.Text = Common.appSettings.YDZYAppId;
-            YDZYTransAppSecretBox.Text = Common.appSettings.YDZYAppSecret;
+            YDZYTransAppIDBox.Text = Common.AppSettings.YDZYAppId;
+            YDZYTransAppSecretBox.Text = Common.AppSettings.YDZYAppSecret;
         }
 
         private async void AuthTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.appSettings.YDZYAppId = YDZYTransAppIDBox.Text;
-            Common.appSettings.YDZYAppSecret = YDZYTransAppSecretBox.Text;
+            Common.AppSettings.YDZYAppId = YDZYTransAppIDBox.Text;
+            Common.AppSettings.YDZYAppSecret = YDZYTransAppSecretBox.Text;
             YoudaoZhiyun Trans = new YoudaoZhiyun();
             Trans.TranslatorInit(YDZYTransAppIDBox.Text, YDZYTransAppSecretBox.Text);
             if (await Trans.TranslateAsync("apple", "zh", "en") != null)
@@ -51,7 +51,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
             YoudaoZhiyun Trans = new YoudaoZhiyun();
-            Trans.TranslatorInit(Common.appSettings.YDZYAppId, Common.appSettings.YDZYAppSecret);
+            Trans.TranslatorInit(Common.AppSettings.YDZYAppId, Common.AppSettings.YDZYAppSecret);
             string res = await Trans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
             if (res != null)
             {

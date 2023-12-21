@@ -145,10 +145,10 @@ namespace MisakaTranslator_WPF
                 //确保是在未完成的情况下退出再检查
                 if (GuideMode == GuideMode.Hook || GuideMode == GuideMode.Rehook || GuideMode == GuideMode.Clipboard)
                 {
-                    if (Common.textHooker != null)
+                    if (Common.TextHooker != null)
                     {
-                        Common.textHooker.StopHook();
-                        Common.textHooker = null;
+                        Common.TextHooker.StopHook();
+                        Common.TextHooker = null;
                     }
                 }
             }

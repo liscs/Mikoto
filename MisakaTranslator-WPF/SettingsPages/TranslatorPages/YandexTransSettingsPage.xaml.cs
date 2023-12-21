@@ -13,12 +13,12 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         public YandexTransSettingsPage()
         {
             InitializeComponent();
-            YandexTransApiKeyBox.Text = Common.appSettings.YandexApiKey;
+            YandexTransApiKeyBox.Text = Common.AppSettings.YandexApiKey;
         }
 
         private async void AuthTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.appSettings.YandexApiKey = YandexTransApiKeyBox.Text;
+            Common.AppSettings.YandexApiKey = YandexTransApiKeyBox.Text;
             ITranslator YandexTrans = new YandexTranslator();
             YandexTrans.TranslatorInit(YandexTransApiKeyBox.Text, "");
 
