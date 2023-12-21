@@ -56,7 +56,7 @@ namespace MisakaTranslator_WPF
         }
 
         //按下快捷键时被调用的方法
-        public void CallBack()
+        public static void CallBack()
         {
             Common.GlobalOCR();
         }

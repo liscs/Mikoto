@@ -450,7 +450,10 @@ namespace MisakaTranslator_WPF
         {
             //补充:如果去重之后的文本长度超过指定值（默认100），直接不翻译、不显示
             //补充2：如果去重后文本长度为0，则不翻译不显示
-            if (repairedText.Length != 0 && repairedText.Length <= Common.AppSettings.TransLimitNums)
+            if (repairedText.Length != 0
+                && ((repairedText.Length <= Common.AppSettings.TransLimitNums && IsJaOrZh(Common.UsingSrcLang))
+                || (repairedText.Split(' ').Length <= Common.AppSettings.TransLimitNums && !IsJaOrZh(Common.UsingSrcLang)))
+                )
             {
 
                 _currentsrcText = repairedText;
@@ -462,6 +465,11 @@ namespace MisakaTranslator_WPF
                 _ = TranslateApiSubmitASync(repairedText, 1, isRenew);
                 _ = TranslateApiSubmitASync(repairedText, 2, isRenew);
             }
+        }
+
+        private static bool IsJaOrZh(string s)
+        {
+            return s == "ja" || s == "zh";
         }
 
         /// <summary>
