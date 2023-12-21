@@ -336,6 +336,7 @@
     <sys:String x:Key="TTSSettingsPage_VoiceName">语音库</sys:String>
     <sys:String x:Key="TTSSettingsPage_TestBtn">测试朗读</sys:String>
     <sys:String x:Key="TTSSettingsPage_TargetVoice">目标语音</sys:String>
+    <sys:String x:Key="TTSSettingsPage_SettingErrorInfo">请设置Azure TTS的相关信息并测试朗读</sys:String>
 
     <sys:String x:Key="TranslateWin_Menu_TTS">朗读源文本</sys:String>
     <sys:String x:Key="TranslateWin_NoTTS_Hint">你没有配置TTS相关设置，朗读功能无法使用</sys:String>

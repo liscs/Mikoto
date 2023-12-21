@@ -1,5 +1,7 @@
-﻿using Microsoft.CognitiveServices.Speech;
+﻿using HandyControl.Controls;
+using Microsoft.CognitiveServices.Speech;
 using Microsoft.Scripting.Utils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -26,6 +28,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
             azureTTS.TTSInit(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice);
             SetSavedVoice();
             GetVoices(this, null);
+
         }
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
@@ -47,7 +50,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
             await azureTTS.SpeakAsync(TestSrcText.Text);
             if (azureTTS.ErrorMessage != string.Empty)
             {
-                HandyControl.Controls.Growl.Error(azureTTS.ErrorMessage);
+                Growl.Error(azureTTS.ErrorMessage);
             }
         }
 
@@ -72,7 +75,15 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
 
         private async void GetVoices(object sender, RoutedEventArgs e)
         {
-            SynthesisVoicesResult synthesisVoicesResult = await azureTTS.GetVoices();
+            SynthesisVoicesResult synthesisVoicesResult = null;
+            try
+            {
+                synthesisVoicesResult = await azureTTS.GetVoices();
+            }
+            catch (NullReferenceException)
+            {
+                Growl.InfoGlobal(Application.Current.Resources["TTSSettingsPage_AzureSettingErrorInfo"].ToString());
+            }
             Voices = synthesisVoicesResult.Voices.ToList();
             if (Voices.Count != 0)
             {

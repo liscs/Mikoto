@@ -19,6 +19,10 @@ namespace TTSHelperLibrary
         public AzureTTS() { }
         public void TTSInit(string key, string location, string voice)
         {
+            if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(location) || string.IsNullOrEmpty(voice))
+            {
+                return;
+            }
             subscriptionKey = key;
             subscriptionRegion = location;
             Voice = voice;
