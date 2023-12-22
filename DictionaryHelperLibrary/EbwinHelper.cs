@@ -98,7 +98,7 @@ namespace DictionaryHelperLibrary
                         int id = 0;
                         while (!streamReader.EndOfStream)
                         {
-                            string fileString = streamReader.ReadLine();
+                            string? fileString = streamReader.ReadLine();
                             if (!string.IsNullOrWhiteSpace(fileString))
                             {
                                 dictionaries.Add(fileString, id);
@@ -191,22 +191,20 @@ namespace DictionaryHelperLibrary
             string[] files = Directory.GetFiles(directory.FullName);
             foreach (string file in files)
             {
-                try
+                Dict? dict = GetDictInfo(Path.GetFileNameWithoutExtension(file));
+                if (dict != null)
                 {
-                    Dict dict = GetDictInfo(Path.GetFileNameWithoutExtension(file));
                     allDicts.Add(dict);
                 }
-                catch { }
             }
             return allDicts;
         }
 
-        private Dict GetDictInfo(string dictName)
+        private Dict? GetDictInfo(string dictName)
         {
             string fileName = $"{directory.FullName}\\{dictName}.json";
             string jsonString = File.ReadAllText(fileName);
-            Dict info = JsonSerializer.Deserialize<Dict>(jsonString);
-            return info;
+            return JsonSerializer.Deserialize<Dict>(jsonString);
         }
 
 

@@ -28,7 +28,7 @@ namespace TranslatorLibrary.Translator
             return errorInfo;
         }
 
-        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
             string q = sourceText;
 

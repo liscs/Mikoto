@@ -6,12 +6,11 @@ namespace DictionaryHelperLibrary
 {
     public class Dict
     {
-        public Dict() { }
         public Dict(string path)
         {
             ArgumentException.ThrowIfNullOrEmpty("path");
             DictPath = path;
-            Name = Path.GetFileName(Path.GetDirectoryName(path));
+            Name = Path.GetFileName(Path.GetDirectoryName(path)) ?? Guid.NewGuid().ToString();
         }
         public string Name { get; set; }
         public string DictPath { get; set; }

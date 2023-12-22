@@ -93,7 +93,7 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
             }
         }
 
-        private void RenewAreaBtn_Click(object sender, RoutedEventArgs e)
+        private void RenewAreaBtn_Click(object? sender, RoutedEventArgs? e)
         {
             OCRArea = ScreenCaptureWindow.OCRArea;
             Common.Ocr.SetOCRArea(SelectedHwnd, OCRArea, isAllWin);
@@ -107,7 +107,7 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
         {
             if (!isAllWin && SelectedHwnd == IntPtr.Zero)
             {
-                HandyControl.Controls.Growl.Error(Application.Current.Resources["ChooseOCRAreaPage_NextErrorHint"].ToString());
+                Growl.Error(Application.Current.Resources["ChooseOCRAreaPage_NextErrorHint"].ToString());
                 return;
             }
             BitmapImage img;

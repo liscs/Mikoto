@@ -15,7 +15,7 @@ namespace TextRepairLibrary
         public static string? RegexPattern { get; set; }
         public static int SentenceRepeatFindCharNum { get; set; }
         public static int SingleWordRepeatTimes { get; set; }
-        public static Dictionary<string, string> LstRepairFun { get; set; }
+        public static Dictionary<string, string> LstRepairFun { get; set; } = new();
 
         static TextRepair()
         {
@@ -222,15 +222,23 @@ namespace TextRepairLibrary
             try
             {
                 Assembly asb = Assembly.LoadFrom(Environment.CurrentDirectory + "\\UserCustomRepairRepeat.dll");
-                Type t = asb.GetType("UserCustomRepairRepeat.RepairRepeat");//获取类名 命名空间+类名
-                object o = Activator.CreateInstance(t);
-                MethodInfo method = t.GetMethod("UserCustomRepairRepeatFun");//functionname:方法名字
+                Type? t = asb.GetType("UserCustomRepairRepeat.RepairRepeat");//获取类名 命名空间+类名
+                if (t == null) throw new NullReferenceException("namespace or type not found!");
+                object? o = Activator.CreateInstance(t);
+                MethodInfo? method = t.GetMethod("UserCustomRepairRepeatFun");//functionname:方法名字
                 object[] obj =
                 {
                     source
                 };
-                var ret = method.Invoke(o, obj);
-                return (string)ret;
+                string? ret = method?.Invoke(o, obj) as string;
+                if (ret == null)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return ret;
+                }
             }
             catch (Exception e)
             {

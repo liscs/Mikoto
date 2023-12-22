@@ -256,7 +256,7 @@ namespace MisakaTranslator_WPF
         /// </summary>
         /// <param name="translatorName"></param>
         /// <returns></returns>
-        public static ITranslator TranslatorAuto(string translatorName)
+        public static ITranslator? TranslatorAuto(string translatorName)
         {
             ITranslator translator;
             switch (translatorName)

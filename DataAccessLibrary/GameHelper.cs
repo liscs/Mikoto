@@ -90,7 +90,7 @@ namespace DataAccessLibrary
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static GameInfo GetUncompletedGameById(Guid id)
+        public static GameInfo? GetUncompletedGameById(Guid id)
         {
             if (id != Guid.Empty)
             {
@@ -120,7 +120,7 @@ namespace DataAccessLibrary
 
         private static GameInfo AddGame(string gamePath)
         {
-            string name = Path.GetFileName(Path.GetDirectoryName(gamePath));
+            string name = Path.GetFileName(Path.GetDirectoryName(gamePath)) ?? string.Empty;
             Guid id = Guid.NewGuid();
             GameInfo gameInfo = new GameInfo()
             {

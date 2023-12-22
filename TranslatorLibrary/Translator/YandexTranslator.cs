@@ -18,7 +18,7 @@ namespace TranslatorLibrary.Translator
             return errorInfo;
         }
 
-        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
             var hc = TranslatorCommon.GetHttpClient();
             string apiurl = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + ApiKey + "&lang=" + srcLang + "-" + desLang + "&text=";

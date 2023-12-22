@@ -63,7 +63,7 @@ namespace DataAccessLibrary
         /// <param name="sql"></param>
         /// <param name="columns">结果应包含的列数</param>
         /// <returns></returns>
-        public List<string> ExecuteReader_OneLine(string sql, int columns)
+        public List<string>? ExecuteReader_OneLine(string sql, int columns)
         {
             using (var mDbConnection = new SqliteConnection(_mDbConnectionString))
             {
@@ -101,7 +101,7 @@ namespace DataAccessLibrary
         /// <param name="sql"></param>
         /// <param name="columns">结果应包含的列数</param>
         /// <returns></returns>
-        public List<List<string>> ExecuteReader(string sql, int columns)
+        public List<List<string>>? ExecuteReader(string sql, int columns)
         {
             using (var mDbConnection = new SqliteConnection(_mDbConnectionString))
             {

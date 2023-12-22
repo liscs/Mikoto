@@ -20,7 +20,7 @@ namespace TranslatorLibrary.Translator
 
         public string TranslatorDisplayName { get { return Strings.YoudaoZhiyun; } }
 
-        public async Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
             if (sourceText == "" || desLang == "" || srcLang == "")
             {

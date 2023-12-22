@@ -52,7 +52,7 @@ namespace OCRLibrary
         /// <param name="rec"></param>
         /// <param name="isAllWin">是否是全屏截屏</param>
         /// <returns></returns>
-        public static Bitmap GetWindowRectCapture(IntPtr handle, Rectangle rec, bool isAllWin)
+        public static Bitmap? GetWindowRectCapture(IntPtr handle, Rectangle rec, bool isAllWin)
         {
             if (rec.Width == 0 || rec.Height == 0)
                 return null;

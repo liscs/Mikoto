@@ -23,7 +23,7 @@ namespace MisakaTranslator_WPF
 {
     public partial class MainWindow
     {
-        public List<GameInfo> GameInfoList { get; set; }
+        public List<GameInfo> GameInfoList { get; set; } = new();
         private int gid; //当前选中的顺序，并非游戏ID
         private IntPtr hwnd;
         public ObservableCollection<Border> GamePanelCollection { get; set; } = new();
@@ -92,12 +92,9 @@ namespace MisakaTranslator_WPF
         private void GameLibraryPanel_Init()
         {
             GamePanelCollection.Clear();
-            if (GameInfoList != null)
+            for (var i = 0; i < GameInfoList.Count; i++)
             {
-                for (var i = 0; i < GameInfoList.Count; i++)
-                {
-                    AddGame(i);
-                }
+                AddGame(i);
             }
             InitAddGamePanel();
         }

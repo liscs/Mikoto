@@ -233,7 +233,7 @@ namespace OCRLibrary
         /// </summary>
         /// <param name="bitmap"></param>
         /// <returns></returns>
-        public static BitmapImage ImageToBitmapImage(Image bitmap)
+        public static BitmapImage? ImageToBitmapImage(Image bitmap)
         {
             if (bitmap == null)
             {
@@ -263,7 +263,7 @@ namespace OCRLibrary
         /// </summary>
         /// <param name="filepath"></param>
         /// <returns></returns>
-        public static unsafe Bitmap GetAppIcon(string filepath)
+        public static unsafe Bitmap? GetAppIcon(string filepath)
         {
             //选中文件中的图标总数
             var iconTotalCount = PInvoke.PrivateExtractIcons(filepath, 0, 0, 0, null, null, 0, 0);

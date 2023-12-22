@@ -15,7 +15,7 @@ namespace OCRLibrary
         const string salt = "123456";
         private string langCode;
 
-        public override async Task<string> OCRProcessAsync(Bitmap img)
+        public override async Task<string?> OCRProcessAsync(Bitmap img)
         {
             if (img == null || langCode == null || langCode == "")
             {

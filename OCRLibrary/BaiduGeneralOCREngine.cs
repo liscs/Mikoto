@@ -18,7 +18,7 @@ namespace OCRLibrary
         private string accessToken;
         private string langCode;
 
-        public override async Task<string> OCRProcessAsync(Bitmap img)
+        public override async Task<string?> OCRProcessAsync(Bitmap img)
         {
             if (img == null || langCode == null || langCode == "")
             {
@@ -80,8 +80,8 @@ namespace OCRLibrary
             secretKey = param2;
 
             string ret = BaiduGetToken(APIKey, secretKey);
-            BaiduTokenOutInfo btoi = JsonSerializer.Deserialize<BaiduTokenOutInfo>(ret, OCRCommon.JsonOP);
-            if (btoi.access_token != null)
+            BaiduTokenOutInfo? btoi = JsonSerializer.Deserialize<BaiduTokenOutInfo>(ret, OCRCommon.JsonOP);
+            if (btoi != null && btoi.access_token != null)
             {
                 accessToken = btoi.access_token;
                 return true;

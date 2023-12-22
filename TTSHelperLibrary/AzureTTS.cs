@@ -10,13 +10,13 @@ namespace TTSHelperLibrary
     {
         //形如127.0.0.1:7890的代理字符串
         public string ProxyString { get; set; } = string.Empty;
-        private SpeechSynthesizer _synthesizer;
+        private SpeechSynthesizer? _synthesizer;
 
         string subscriptionKey = string.Empty;
         string subscriptionRegion = string.Empty;
 
-        string Voice { get; set; }
-        public AzureTTS(string key, string location, string voice,string proxy)
+        string Voice { get; set; } = string.Empty;
+        public AzureTTS(string key, string location, string voice, string proxy)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(location) || string.IsNullOrEmpty(voice))
             {
@@ -76,6 +76,7 @@ namespace TTSHelperLibrary
             if (subscriptionKey == string.Empty || subscriptionRegion == string.Empty || string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(Voice))
                 return;
             var synthesizer = _synthesizer;
+            if (synthesizer == null) { ErrorMessage += "Synthesizer should not be null!"; return; }
             using (var result = await synthesizer.SpeakTextAsync(text))
             {
                 if (result.Reason == ResultReason.Canceled)
@@ -92,12 +93,19 @@ namespace TTSHelperLibrary
 
         public Task<SynthesisVoicesResult> GetVoices()
         {
-            return _synthesizer.GetVoicesAsync();
+            if (_synthesizer == null)
+            {
+                throw new NullReferenceException("Synthesizer should not be null!");
+            }
+            else
+            {
+                return _synthesizer.GetVoicesAsync();
+            }
         }
         /// <summary>
         /// 错误代码
         /// </summary>
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage { get; set; } = string.Empty;
 
         /// <summary>
         /// AzureTTSAPI申请地址

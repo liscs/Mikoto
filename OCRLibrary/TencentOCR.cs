@@ -13,12 +13,12 @@ namespace OCRLibrary
 {
     public class TencentOCR : OCREngine
     {
-        public string SecretId;
+        public string SecretId = string.Empty;
         public string SecretKey;
         private string langCode;
         static int SessionUuid = 0;
 
-        public override async Task<string> OCRProcessAsync(Bitmap img)
+        public override async Task<string?> OCRProcessAsync(Bitmap img)
         {
             if (img == null || langCode == null || langCode == "")
             {

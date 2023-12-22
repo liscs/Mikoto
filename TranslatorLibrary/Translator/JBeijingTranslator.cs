@@ -45,7 +45,7 @@ namespace TranslatorLibrary.Translator
             return errorInfo;
         }
 
-        public Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        public Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
             string JBeijingTranslatorPath = JBJCTDllPath;
 

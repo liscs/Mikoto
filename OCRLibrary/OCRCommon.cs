@@ -27,7 +27,7 @@ namespace OCRLibrary
             return lstOCR;
         }
 
-        public static OCREngine OCRAuto(string ocr)
+        public static OCREngine? OCRAuto(string ocr)
         {
             switch (ocr)
             {

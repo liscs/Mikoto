@@ -147,7 +147,7 @@ namespace MisakaTranslator_WPF
         /// 检查软件更新
         /// </summary>
         /// <returns>如果已经是最新或获取更新失败，返回null，否则返回更新信息可直接显示</returns>
-        public static async Task<List<string>> CheckUpdate()
+        public static async Task<List<string>?> CheckUpdate()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             string currentVersion = version.ToString();
@@ -214,7 +214,7 @@ namespace MisakaTranslator_WPF
         /// <param name="preStr"></param>
         /// <param name="nextStr"></param>
         /// <returns></returns>
-        public static string GetMiddleStr(string oldStr, string preStr, string nextStr)
+        public static string? GetMiddleStr(string oldStr, string preStr, string nextStr)
         {
             try
             {

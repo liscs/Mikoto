@@ -17,7 +17,7 @@ namespace TextHookLibrary
         /// <summary>
         /// Textractor进程
         /// </summary>
-        public Process ProcessTextractor;
+        public Process? ProcessTextractor;
 
         /// <summary>
         /// Hook功能选择界面提供的数据收到事件
@@ -309,9 +309,10 @@ namespace TextHookLibrary
         /// <param name="outLine"></param>
         void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
         {
+            if (outLine.Data == null) { return; }
             AddTextractorHistory(outLine.Data);
             if (Pause) { return; }
-            TextHookData thData = DealTextratorOutput(outLine.Data);
+            TextHookData? thData = DealTextratorOutput(outLine.Data);
             if (thData != null)
             {
                 TextHookData data = thData;
@@ -474,7 +475,7 @@ namespace TextHookLibrary
         /// <param name="back">后面的文本</param>
         /// <param name="location">起始搜寻位置</param>
         /// <returns></returns>
-        private string GetMiddleString(string Text, string front, string back, int location)
+        private string? GetMiddleString(string Text, string front, string back, int location)
         {
 
             if (front == "" || back == "")
@@ -506,7 +507,7 @@ namespace TextHookLibrary
         /// </summary>
         /// <param name="OutputText">来自Textrator的输出</param>
         /// <returns></returns>
-        private TextHookData DealTextratorOutput(string OutputText)
+        private TextHookData? DealTextratorOutput(string OutputText)
         {
             if (OutputText == "" || OutputText == null)
             {

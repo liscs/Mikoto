@@ -83,37 +83,46 @@ namespace MisakaTranslator_WPF
 
             firstWhiteStrokeCheckBox.Click += delegate
             {
-                translateWin.FirstTransText.Stroke = (bool)firstWhiteStrokeCheckBox.IsChecked ? Brushes.White : Brushes.Black;
+                translateWin.FirstTransText.Stroke = firstWhiteStrokeCheckBox.IsChecked switch
+                {
+                    true => Brushes.White,
+                    null or false => Brushes.Black
+                };
                 Common.AppSettings.TF_FirstWhiteStrokeIsChecked = (bool)firstWhiteStrokeCheckBox.IsChecked;
             };
 
             secondWhiteStrokeCheckBox.Click += delegate
             {
-                translateWin.SecondTransText.Stroke = (bool)secondWhiteStrokeCheckBox.IsChecked ? Brushes.White : Brushes.Black;
+                translateWin.SecondTransText.Stroke = secondWhiteStrokeCheckBox.IsChecked switch
+                {
+                    true => translateWin.SecondTransText.Stroke = Brushes.White,
+                    null or false => translateWin.SecondTransText.Stroke = Brushes.Black
+                };
+
                 Common.AppSettings.TF_SecondWhiteStrokeIsChecked = (bool)secondWhiteStrokeCheckBox.IsChecked;
             };
 
             DropShadowCheckBox.Click += delegate
-            {
-                Common.AppSettings.TF_EnableDropShadow = (bool)DropShadowCheckBox.IsChecked;
-            };
+                {
+                    Common.AppSettings.TF_EnableDropShadow = (bool)DropShadowCheckBox.IsChecked;
+                };
 
             PhoneticNotationCheckBox.Click += delegate
-            {
-                Common.AppSettings.TF_EnablePhoneticNotation = (bool)PhoneticNotationCheckBox.IsChecked;
-                if (PhoneticNotationCheckBox.IsChecked == true)
-                {
-                    HiraganaRadioButton.IsEnabled = true;
-                    KatakanaRadioButton.IsEnabled = true;
-                    RomajiRadioButton.IsEnabled = true;
-                }
-                else
-                {
-                    HiraganaRadioButton.IsEnabled = false;
-                    KatakanaRadioButton.IsEnabled = false;
-                    RomajiRadioButton.IsEnabled = false;
-                }
-            };
+                    {
+                        Common.AppSettings.TF_EnablePhoneticNotation = (bool)PhoneticNotationCheckBox.IsChecked;
+                        if (PhoneticNotationCheckBox.IsChecked == true)
+                        {
+                            HiraganaRadioButton.IsEnabled = true;
+                            KatakanaRadioButton.IsEnabled = true;
+                            RomajiRadioButton.IsEnabled = true;
+                        }
+                        else
+                        {
+                            HiraganaRadioButton.IsEnabled = false;
+                            KatakanaRadioButton.IsEnabled = false;
+                            RomajiRadioButton.IsEnabled = false;
+                        }
+                    };
 
             HiraganaRadioButton.Click += delegate
             {

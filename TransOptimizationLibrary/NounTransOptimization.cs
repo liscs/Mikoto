@@ -37,7 +37,7 @@ namespace TransOptimizationLibrary
         public string ReplacePeoPleLocNameInSentence(string text)
         {
             //先从库中查找已经定义的人名地名列表
-            List<List<string>> lst = sqlite.ExecuteReader("SELECT source,userTrans,type FROM NounTransOpt WHERE type = 1 OR type = 2;", 3);
+            List<List<string>>? lst = sqlite.ExecuteReader("SELECT source,userTrans,type FROM NounTransOpt WHERE type = 1 OR type = 2;", 3);
 
             PeopleChatName = "";
 
