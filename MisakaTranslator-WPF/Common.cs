@@ -52,13 +52,13 @@ namespace MisakaTranslator_WPF
 
         public static Guid GameID { get; set; } //全局使用中的游戏ID(数据库)
 
-        public static TextHookHandle TextHooker { get; set; } //全局使用中的Hook对象
-        public static string UsingRepairFunc { get; set; } //全局使用中的去重方法
+        public static TextHookHandle? TextHooker { get; set; } //全局使用中的Hook对象
+        public static string? UsingRepairFunc { get; set; } //全局使用中的去重方法
 
         public static string UsingSrcLang { get; set; }//全局使用中的源语言
         public static string UsingDstLang { get; set; } //全局使用中的目标翻译语言
 
-        public static OCREngine Ocr { get; set; } //全局使用中的OCR对象
+        public static OCREngine? Ocr { get; set; } //全局使用中的OCR对象
         public static bool IsAllWindowCap { get; set; } //是否全屏截图
         public static IntPtr OCRWinHwnd { get; set; } //全局的OCR的工作窗口
         public static HotKeyInfo UsingHotKey { get; set; } //全局使用中的触发键信息

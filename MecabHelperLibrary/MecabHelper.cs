@@ -47,7 +47,7 @@ namespace MecabHelperLibrary
 
     public partial class MecabHelper : IDisposable
     {
-        private readonly MeCabTagger Tagger;
+        private readonly MeCabTagger? Tagger;
 
         public bool EnableMecab { get; protected set; }
 
@@ -83,7 +83,7 @@ namespace MecabHelperLibrary
         public List<MecabWordInfo> SentenceHandle(string sentence)
         {
             List<MecabWordInfo> ret = new();
-            if (EnableMecab)
+            if (EnableMecab && Tagger != null)
             {
                 foreach (var node in Tagger.ParseToNodes(sentence))
                 {

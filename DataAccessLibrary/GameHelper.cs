@@ -44,27 +44,27 @@ namespace DataAccessLibrary
         /// <summary>
         /// 去重方法，仅在hook模式有效
         /// </summary>
-        public string RepairFunc { get; set; }
+        public string? RepairFunc { get; set; }
 
         /// <summary>
         /// 去重方法所需参数1，仅在hook模式有效
         /// </summary>
-        public string RepairParamA { get; set; }
+        public string? RepairParamA { get; set; }
 
         /// <summary>
         /// 去重方法所需参数2，仅在hook模式有效
         /// </summary>
-        public string RepairParamB { get; set; }
+        public string? RepairParamB { get; set; }
 
         /// <summary>
         /// 特殊码值，仅在hook模式有效
         /// </summary>
-        public string HookCode { get; set; }
+        public string? HookCode { get; set; }
 
         /// <summary>
         /// 用户自定的特殊码值，如果用户这一项不是自定义的，那么应该为'NULL'，仅在hook模式有效，注意下次开启游戏时这里就需要注入一下
         /// </summary>
-        public string HookCodeCustom { get; set; }
+        public string? HookCodeCustom { get; set; }
 
         /// <summary>
         /// 检查是否是64位应用程序
@@ -74,7 +74,7 @@ namespace DataAccessLibrary
         /// <summary>
         /// 包含hook地址信息的本软件特有的MisakaHookCode
         /// </summary>
-        public string MisakaHookCode { get; set; }
+        public string? MisakaHookCode { get; set; }
 
         public bool Cleared { get; set; } = false;
     }
@@ -144,9 +144,7 @@ namespace DataAccessLibrary
             foreach (FileInfo fileInfo in directory.GetFiles())
             {
                 GameInfo gameInfo = LoadGameInfo(fileInfo.FullName);
-                if (string.IsNullOrEmpty(gameInfo.SrcLang)
-                    || string.IsNullOrEmpty(gameInfo.DstLang)
-                    || string.IsNullOrEmpty(gameInfo.RepairFunc)
+                if (string.IsNullOrEmpty(gameInfo.RepairFunc)
                     || string.IsNullOrEmpty(gameInfo.HookCode)
                     )
                 {
@@ -192,7 +190,8 @@ namespace DataAccessLibrary
             {
                 GameInfo gameInfo = AllCompletedGamesIdDict[gameID];
                 File.Delete($"{directory.FullName}\\{gameInfo.GameID}.json");
-                PropertyInfo pinfo = typeof(GameInfo).GetProperty(key);
+                PropertyInfo? pinfo = typeof(GameInfo).GetProperty(key);
+                if (pinfo == null) return false;
                 pinfo.SetValue(gameInfo, value);
                 SaveGameInfo(gameInfo);
                 return true;

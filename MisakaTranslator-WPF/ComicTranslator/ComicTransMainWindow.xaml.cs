@@ -413,7 +413,7 @@ namespace MisakaTranslator_WPF.ComicTranslator
     public class FileNameSort : IComparer<string>
     {
         //前后文件名进行比较。
-        public int Compare(string name1, string name2)
+        public int Compare(string? name1, string? name2)
         {
             if (null == name1 && null == name2)
             {

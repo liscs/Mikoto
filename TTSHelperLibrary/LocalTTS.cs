@@ -15,7 +15,7 @@ namespace TTSHelperLibrary
 
         ~LocalTTS()
         {
-            synth = null;
+            synth.Dispose();
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace TTSHelperLibrary
             }
             else
             {
-                return null;
+                return new List<string>();
             }
         }
 

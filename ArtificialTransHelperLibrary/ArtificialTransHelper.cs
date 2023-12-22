@@ -15,9 +15,10 @@ namespace ArtificialTransHelperLibrary
                 Directory.CreateDirectory(Environment.CurrentDirectory + "\\ArtificialTranslation");
 
 
-            if (File.Exists(Environment.CurrentDirectory + "\\ArtificialTranslation\\MisakaAT_" + gameName + ".sqlite") == false)
+            if (!File.Exists(Environment.CurrentDirectory + "\\ArtificialTranslation\\MisakaAT_" + gameName + ".sqlite"))
             {
-                CreateNewNounTransDB(gameName);
+                sqlite = new SQLHelper(Environment.CurrentDirectory + "\\ArtificialTranslation\\MisakaAT_" + gameName + ".sqlite");
+                sqlite.ExecuteSql("CREATE TABLE artificialtrans(id INTEGER PRIMARY KEY AUTOINCREMENT,source TEXT,machineTrans TEXT,userTrans TEXT);");
             }
             else
             {

@@ -16,8 +16,7 @@ namespace TTSHelperLibrary
         string subscriptionRegion = string.Empty;
 
         string Voice { get; set; }
-        public AzureTTS() { }
-        public void TTSInit(string key, string location, string voice)
+        public AzureTTS(string key, string location, string voice,string proxy)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(location) || string.IsNullOrEmpty(voice))
             {
@@ -26,6 +25,7 @@ namespace TTSHelperLibrary
             subscriptionKey = key;
             subscriptionRegion = location;
             Voice = voice;
+            ProxyString = proxy;
 
             var config = SpeechConfig.FromSubscription(subscriptionKey, subscriptionRegion);
             if (!string.IsNullOrWhiteSpace(ProxyString))

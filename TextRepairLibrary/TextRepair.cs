@@ -11,8 +11,8 @@ namespace TextRepairLibrary
 {
     public static partial class TextRepair
     {
-        public static string RegexReplacement { get; set; }
-        public static string RegexPattern { get; set; }
+        public static string? RegexReplacement { get; set; }
+        public static string? RegexPattern { get; set; }
         public static int SentenceRepeatFindCharNum { get; set; }
         public static int SingleWordRepeatTimes { get; set; }
         public static Dictionary<string, string> LstRepairFun { get; set; }

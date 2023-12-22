@@ -16,7 +16,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
     /// </summary>
     public partial class AzureTTSSettingsPage : Page
     {
-        private AzureTTS azureTTS = new AzureTTS();
+        private AzureTTS azureTTS;
         private const string DEFAULT_VOICE = "ja-JP-NanamiNeural";
 
         public AzureTTSSettingsPage()
@@ -25,10 +25,9 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
             AzureTTSSecretKeyBox.Text = Common.AppSettings.AzureTTSSecretKey;
             AzureTTSLocationBox.Text = Common.AppSettings.AzureTTSLocation;
             HttpProxyBox.Text = Common.AppSettings.AzureTTSProxy;
-            azureTTS.TTSInit(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice);
+            azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSProxy);
             SetSavedVoice();
             GetVoices(this, null);
-
         }
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
@@ -45,8 +44,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
         {
             Common.AppSettings.AzureTTSSecretKey = AzureTTSSecretKeyBox.Text;
             Common.AppSettings.AzureTTSLocation = AzureTTSLocationBox.Text;
-            azureTTS.ProxyString = Common.AppSettings.AzureTTSProxy;
-            azureTTS.TTSInit(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice);
+            azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSProxy);
             await azureTTS.SpeakAsync(TestSrcText.Text);
             if (azureTTS.ErrorMessage != string.Empty)
             {
@@ -73,27 +71,26 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
 
         public List<VoiceInfo> Voices { get; set; } = new();
 
-        private async void GetVoices(object sender, RoutedEventArgs e)
+        private async void GetVoices(object sender, RoutedEventArgs? e)
         {
-            SynthesisVoicesResult synthesisVoicesResult = null;
             try
             {
-                synthesisVoicesResult = await azureTTS.GetVoices();
+                SynthesisVoicesResult synthesisVoicesResult = await azureTTS.GetVoices();
+                Voices = synthesisVoicesResult.Voices.ToList();
+                if (Voices.Count != 0)
+                {
+                    VoiceLocalComboBox.ItemsSource = Voices.Select(p => p.Locale).Distinct();
+                    UpdateVoiceNameComboBox(VoiceLocalComboBox.SelectedItem.ToString());
+                    PickSavedVoice();
+                }
             }
             catch (NullReferenceException)
             {
-                Growl.InfoGlobal(Application.Current.Resources["TTSSettingsPage_AzureSettingErrorInfo"].ToString());
-            }
-            Voices = synthesisVoicesResult.Voices.ToList();
-            if (Voices.Count != 0)
-            {
-                VoiceLocalComboBox.ItemsSource = Voices.Select(p => p.Locale).Distinct();
-                UpdateVoiceNameComboBox(VoiceLocalComboBox.SelectedItem.ToString());
-                SelectSavedVoice();
+                Growl.Info(Application.Current.Resources["TTSSettingsPage_AzureSettingErrorInfo"].ToString());
             }
         }
 
-        private void SelectSavedVoice()
+        private void PickSavedVoice()
         {
             if (string.IsNullOrEmpty(Common.AppSettings.AzureTTSVoice))
             {
@@ -126,9 +123,9 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
         /// <summary>
         /// 筛选指定地区的语音
         /// </summary>
-        private void UpdateVoiceNameComboBox(string locale)
+        private void UpdateVoiceNameComboBox(string? locale)
         {
-            if (VoiceNameComboBox == null || Voices.Count == 0) { return; }
+            if (string.IsNullOrEmpty(locale) || VoiceNameComboBox == null || Voices.Count == 0) { return; }
             VoiceNameComboBox.ItemsSource = Voices.Where(p => p.Locale == locale).Select(p => GetVoiceName(p.ShortName));
             VoiceNameComboBox.SelectedIndex = 0;
         }

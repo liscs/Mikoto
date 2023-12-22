@@ -131,15 +131,14 @@ namespace MisakaTranslator_WPF
 
     class ViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected virtual void OnPropertyChanged(string propertyName = null)
+        protected virtual void OnPropertyChanged(string? propertyName = null)
         {
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private string meaInfo;
+        private string meaInfo = string.Empty;
         public string MeaInfo
         {
             get => meaInfo;
@@ -150,7 +149,7 @@ namespace MisakaTranslator_WPF
             }
         }
 
-        private StrokeCollection inkStrokes;
+        private StrokeCollection inkStrokes = new();
         public StrokeCollection InkStrokes
         {
             get
