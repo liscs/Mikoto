@@ -50,7 +50,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         {
             XiaoniuTranslator Trans = new XiaoniuTranslator();
             Trans.TranslatorInit(Common.AppSettings.xiaoniuApiKey, "");
-            string res = await Trans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
+            string? res = await Trans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
             if (res != null)
             {
                 HandyControl.Controls.MessageBox.Show(res, Application.Current.Resources["MessageBox_Result"].ToString());

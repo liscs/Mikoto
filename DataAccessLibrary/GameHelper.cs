@@ -12,14 +12,14 @@ namespace DataAccessLibrary
     public class GameInfo
     {
         /// <summary>
-        /// 游戏名（非进程名，但在游戏名未知的情况下先使用进程名替代）
+        /// 游戏名（非进程名，但在游戏名未知的情况下先使用进程所在的文件夹名替代）
         /// </summary>
-        public string GameName { get; set; }
+        public string GameName { get; set; } = string.Empty;
 
         /// <summary>
         /// 游戏文件路径
         /// </summary>
-        public string FilePath { get; set; }
+        public string FilePath { get; set; } = string.Empty;
 
         /// <summary>
         /// 游戏ID
@@ -34,12 +34,12 @@ namespace DataAccessLibrary
         /// <summary>
         /// 源语言代码，同翻译API中语言代码
         /// </summary>
-        public string SrcLang { get; set; }
+        public string SrcLang { get; set; } = string.Empty;
 
         /// <summary>
         /// 目标语言代码，同翻译API中语言代码
         /// </summary>
-        public string DstLang { get; set; }
+        public string DstLang { get; set; } = string.Empty;
 
         /// <summary>
         /// 去重方法，仅在hook模式有效

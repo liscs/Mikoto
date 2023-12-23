@@ -55,11 +55,11 @@ namespace TranslatorLibrary.Translator
             return errorInfo;
         }
 
-        public Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        public Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
             if (FilePath == "")
             {
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string?>(null);
             }
 
             Encoding shiftjis = Encoding.GetEncoding("shift-jis");
@@ -87,7 +87,7 @@ namespace TranslatorLibrary.Translator
                     {
                         Environment.CurrentDirectory = currentpath;
                         errorInfo = ex.Message;
-                        return Task.FromResult<string>(null);
+                        return Task.FromResult<string?>(null);
                     }
                 }
                 else if (srcLang == "en")
@@ -106,25 +106,25 @@ namespace TranslatorLibrary.Translator
                     {
                         Environment.CurrentDirectory = currentpath;
                         errorInfo = ex.Message;
-                        return Task.FromResult<string>(null);
+                        return Task.FromResult<string?>(null);
                     }
                 }
                 else
                 {
                     errorInfo = "语言不支持";
-                    return Task.FromResult<string>(null);
+                    return Task.FromResult<string?>(null);
                 }
             }
             else
             {
                 errorInfo = "语言不支持";
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string?>(null);
             }
 
-            return Task.FromResult(ret);
+            return Task.FromResult<string?>(ret);
         }
 
-        public void TranslatorInit(string param1, string param2 = "")
+        public void TranslatorInit(string param1 = "", string param2 = "")
         {
             FilePath = param1;
         }

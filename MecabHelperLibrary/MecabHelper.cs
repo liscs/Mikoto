@@ -87,28 +87,24 @@ namespace MecabHelperLibrary
             {
                 foreach (var node in Tagger.ParseToNodes(sentence))
                 {
-                    if (node.CharType > 0)
+                    if (node.Feature == null) { continue; }
+                    var features = CommaSeparateRegex().Split(node.Feature);
+                    MecabWordInfo mwi = new()
                     {
-                        var features = CommaSeparateRegex().Split(node.Feature);
+                        Word = node.Surface,
+                        PartOfSpeech = features[0],
+                        Description = features[1],
+                        Feature = node.Feature
+                    };
 
-
-                        MecabWordInfo mwi = new()
-                        {
-                            Word = node.Surface,
-                            PartOfSpeech = features[0],
-                            Description = features[1],
-                            Feature = node.Feature
-                        };
-
-                        if (features.Length >= 21 && mwi.PartOfSpeech != "補助記号" && mwi.PartOfSpeech != "空白")
-                        {
-                            mwi.Katakana = features[20];
-                            mwi.Hiragana = KatakanaToHiragana(mwi.Katakana);
-                            mwi.Romaji = HiraganaToAlphabet(mwi.Hiragana);
-                        }
-
-                        ret.Add(mwi);
+                    if (features.Length >= 21 && mwi.PartOfSpeech != "補助記号" && mwi.PartOfSpeech != "空白")
+                    {
+                        mwi.Katakana = features[20];
+                        mwi.Hiragana = KatakanaToHiragana(mwi.Katakana);
+                        mwi.Romaji = HiraganaToAlphabet(mwi.Hiragana);
                     }
+
+                    ret.Add(mwi);
                 }
             }
             else

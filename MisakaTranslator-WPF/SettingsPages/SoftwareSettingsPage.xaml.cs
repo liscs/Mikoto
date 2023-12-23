@@ -29,6 +29,7 @@ namespace MisakaTranslator_WPF.SettingsPages
         private void RadioButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             var radioButton = sender as RadioButton;
+            if (radioButton == null) { return; }
             switch (radioButton.Name)
             {
                 case "MinimizationRadioButton":

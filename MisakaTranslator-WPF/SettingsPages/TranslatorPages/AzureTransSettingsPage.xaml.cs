@@ -58,7 +58,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         {
             ITranslator AzureTrans = new AzureTranslator();
             AzureTrans.TranslatorInit(Common.AppSettings.AzureSecretKey, Common.AppSettings.AzureLocation);
-            string res = await AzureTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
+            string? res = await AzureTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)
             {

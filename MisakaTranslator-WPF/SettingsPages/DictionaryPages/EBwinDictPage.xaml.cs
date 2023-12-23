@@ -21,13 +21,9 @@ namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
     /// </summary>
     public partial class ManageDictionariesPage : Page
     {
-        private static ManageDictionariesPage s_instance;
-
         private EbwinHelper _ebwinHelper = new EbwinHelper();
 
         private HashSet<Dict> allDicts = new HashSet<Dict>();
-
-        public static ManageDictionariesPage Instance => s_instance ??= new ManageDictionariesPage();
 
         public ManageDictionariesPage()
         {
@@ -225,7 +221,7 @@ namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
             {
                 if (File.Exists(fullPath))
                 {
-                    fullPath = Path.GetDirectoryName(fullPath);
+                    fullPath = Path.GetDirectoryName(fullPath) ?? fullPath;
                 }
 
                 _ = Process.Start("explorer.exe", fullPath);

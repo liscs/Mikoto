@@ -52,7 +52,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         {
             YoudaoZhiyun Trans = new YoudaoZhiyun();
             Trans.TranslatorInit(Common.AppSettings.YDZYAppId, Common.AppSettings.YDZYAppSecret);
-            string res = await Trans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
+            string? res = await Trans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
             if (res != null)
             {
                 HandyControl.Controls.MessageBox.Show(res, Application.Current.Resources["MessageBox_Result"].ToString());

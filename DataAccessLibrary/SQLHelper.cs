@@ -8,7 +8,7 @@ namespace DataAccessLibrary
     public class SQLHelper
     {
         private readonly string _mDbConnectionString;
-        private string _errorInfo;//最后一次错误信息
+        private string? _errorInfo;//最后一次错误信息
 
         static SQLHelper()
         {
@@ -141,7 +141,7 @@ namespace DataAccessLibrary
         /// 获取最后一次失败原因
         /// </summary>
         /// <returns></returns>
-        public string GetLastError()
+        public string? GetLastError()
         {
             return _errorInfo;
         }

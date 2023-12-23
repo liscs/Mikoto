@@ -109,11 +109,11 @@ namespace TranslatorLibrary.Translator
             return errorInfo;
         }
 
-        public Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        public Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
             if (FilePath == "" || desLang != "zh")
             {
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string?>(null);
             }
 
 
@@ -138,7 +138,7 @@ namespace TranslatorLibrary.Translator
                 {
                     Environment.CurrentDirectory = path;
                     errorInfo = ex.Message;
-                    return Task.FromResult<string>(null);
+                    return Task.FromResult<string?>(null);
                 }
                 finally
                 {
@@ -162,7 +162,7 @@ namespace TranslatorLibrary.Translator
                 {
                     Environment.CurrentDirectory = path;
                     errorInfo = ex.Message;
-                    return Task.FromResult<string>(null);
+                    return Task.FromResult<string?>(null);
                 }
                 finally
                 {
@@ -173,10 +173,10 @@ namespace TranslatorLibrary.Translator
             }
             else
             {
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string?>(null);
             }
             Environment.CurrentDirectory = path;
-            return Task.FromResult(to.ToString());
+            return Task.FromResult<string?>(to.ToString());
         }
 
         public void TranslatorInit(string param1, string param2 = "")

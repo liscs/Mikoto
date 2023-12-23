@@ -12,7 +12,7 @@ namespace OCRLibrary
         private string path;
         private string args;
 
-        public override Task<string> OCRProcessAsync(Bitmap img)
+        public override Task<string?> OCRProcessAsync(Bitmap img)
         {
             try
             {
@@ -36,17 +36,17 @@ namespace OCRLibrary
                 if (err.ToLower().Contains("error"))
                 {
                     errorInfo = err;
-                    return Task.FromResult<string>(null);
+                    return Task.FromResult<string?>(null);
                 }
 
                 string result = p.StandardOutput.ReadToEnd();
                 p.Dispose();
-                return Task.FromResult(result);
+                return Task.FromResult<string?>(result);
             }
             catch (Exception ex)
             {
                 errorInfo = ex.Message;
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string?>(null);
             }
         }
 

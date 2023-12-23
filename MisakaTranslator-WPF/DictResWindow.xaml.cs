@@ -12,10 +12,10 @@ namespace MisakaTranslator_WPF
     /// </summary>
     public partial class DictResWindow : System.Windows.Window
     {
-        private ITTS _textSpeechHelper;
+        private ITTS? _textSpeechHelper;
         static private EbwinHelper _ebwinHelper = new EbwinHelper();
 
-        public DictResWindow(ITTS tsh)
+        public DictResWindow(ITTS? tsh)
         {
             InitializeComponent();
             _textSpeechHelper = tsh;

@@ -20,10 +20,10 @@ namespace KeyboardMouseHookLibrary
 
     public class KeyboardMouseHook
     {
-        Process processMonitor;
+        Process? processMonitor;
 
-        public event MouseButtonEventHandler OnMouseActivity;
-        public event KeyboardEventHandler onKeyboardActivity;
+        public event MouseButtonEventHandler? OnMouseActivity;
+        public event KeyboardEventHandler? OnKeyboardActivity;
 
 
         public KeyboardMouseHook()
@@ -88,20 +88,20 @@ namespace KeyboardMouseHookLibrary
 
         void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
         {
-            string output = outLine.Data;
+            string? output = outLine.Data;
 
             Console.WriteLine(output);
 
             if (output == "hookFailed")
             {
-                processMonitor.Kill();
-                processMonitor.Close();
+                processMonitor?.Kill();
+                processMonitor?.Close();
                 processMonitor = null;
                 throw new Exception("Keyboard Mouse Hook Failed");
             }
             else if (output == "KeyboardAction")
             {
-                onKeyboardActivity?.Invoke(this);
+                OnKeyboardActivity?.Invoke(this);
             }
             else
             {

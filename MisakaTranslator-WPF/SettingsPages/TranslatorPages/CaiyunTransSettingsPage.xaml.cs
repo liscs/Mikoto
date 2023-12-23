@@ -50,7 +50,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         {
             CaiyunTranslator Trans = new CaiyunTranslator();
             Trans.TranslatorInit(Common.AppSettings.CaiyunToken, "");
-            string res = await Trans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
+            string? res = await Trans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
             if (res != null)
             {
                 HandyControl.Controls.MessageBox.Show(res, Application.Current.Resources["MessageBox_Result"].ToString());

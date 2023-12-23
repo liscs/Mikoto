@@ -127,7 +127,6 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
         {
             if (string.IsNullOrEmpty(locale) || VoiceNameComboBox == null || Voices.Count == 0) { return; }
             VoiceNameComboBox.ItemsSource = Voices.Where(p => p.Locale == locale).Select(p => GetVoiceName(p.ShortName));
-            VoiceNameComboBox.SelectedIndex = 0;
         }
 
         private static string GetVoiceLocale(string voiceString) => voiceString.Substring(0, voiceString.LastIndexOf('-'));

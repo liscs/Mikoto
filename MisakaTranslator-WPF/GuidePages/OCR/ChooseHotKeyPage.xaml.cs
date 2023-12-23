@@ -10,7 +10,7 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
     /// </summary>
     public partial class ChooseHotKeyPage : Page
     {
-        GlobalHook hook;
+        GlobalHook? hook;
         List<string> lstHotKeySource = new List<string>()
         {
             Application.Current.Resources["ChooseHotKeyPage_List_Keyboard"].ToString(),
@@ -38,7 +38,7 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
             HotKey.IsMouse = false;
             HotKey.KeyCode = e.KeyCode;
             HotKeyTag.Text = Application.Current.Resources["ChooseHotKeyPage_HotKeyTag"].ToString() + HotKey.KeyCode;
-            hook.Stop();
+            hook?.Stop();
             hook = null;
             HotKeySourceCombox.Focus();//设置完后应该转移焦点
             WaitHotKeyDrawer.IsOpen = false;

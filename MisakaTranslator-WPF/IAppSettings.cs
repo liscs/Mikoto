@@ -18,15 +18,15 @@ namespace MisakaTranslator_WPF
             set;
         }
 
-        [Option(Alias = "Textractor.AutoHook", DefaultValue = "False")]
-        string AutoHook
+        [Option(Alias = "Textractor.AutoHook", DefaultValue = false)]
+        bool AutoHook
         {
             get;
             set;
         }
 
-        [Option(Alias = "Textractor.AutoDetach", DefaultValue = "True")]
-        string AutoDetach
+        [Option(Alias = "Textractor.AutoDetach", DefaultValue = true)]
+        bool AutoDetach
         {
             get;
             set;

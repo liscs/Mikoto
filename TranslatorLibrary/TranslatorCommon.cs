@@ -27,9 +27,12 @@ namespace TranslatorLibrary
                     .Where(p => type.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract);
                 foreach (Type item in types)
                 {
-                    object obj = Activator.CreateInstance(item);
-                    string displayName = item.GetProperty("TranslatorDisplayName").GetValue(obj).ToString();
-                    TranslatorDict.Add(displayName, item.Name);
+                    object? obj = Activator.CreateInstance(item);
+                    string? displayName = item.GetProperty("TranslatorDisplayName")?.GetValue(obj)?.ToString();
+                    if (!string.IsNullOrEmpty(displayName))
+                    {
+                        TranslatorDict.Add(displayName, item.Name);
+                    }
                 }
             });
         }

@@ -14,8 +14,8 @@ namespace MisakaTranslator_WPF.SettingsPages
         {
             InitializeComponent();
 
-            AutoHookCheckBox.IsChecked = Convert.ToBoolean(Common.AppSettings.AutoHook);
-            AutoDetachCheckBox.IsChecked = Convert.ToBoolean(Common.AppSettings.AutoDetach);
+            AutoHookCheckBox.IsChecked = Common.AppSettings.AutoHook;
+            AutoDetachCheckBox.IsChecked = Common.AppSettings.AutoDetach;
 
             Path32Box.Text = Common.AppSettings.Textractor_Path32;
             Path64Box.Text = Common.AppSettings.Textractor_Path64;
@@ -23,12 +23,12 @@ namespace MisakaTranslator_WPF.SettingsPages
 
         private void AutoHookCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            Common.AppSettings.AutoHook = Convert.ToString(AutoHookCheckBox.IsChecked);
+            Common.AppSettings.AutoHook = AutoHookCheckBox.IsChecked??false;
         }
 
         private void AutoDetachCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            Common.AppSettings.AutoDetach = Convert.ToString(AutoDetachCheckBox.IsChecked);
+            Common.AppSettings.AutoDetach = AutoDetachCheckBox.IsChecked??true;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

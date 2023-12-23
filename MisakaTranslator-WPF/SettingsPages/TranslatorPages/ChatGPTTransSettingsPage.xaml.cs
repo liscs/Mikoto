@@ -54,7 +54,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         {
             ITranslator chatGPTTrans = new ChatGPTTranslator();
             chatGPTTrans.TranslatorInit(ChatGPTTransSecretKeyBox.Text, ChatGPTTransUrlBox.Text);
-            string res = await chatGPTTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
+            string? res = await chatGPTTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)
             {

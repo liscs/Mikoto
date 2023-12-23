@@ -40,8 +40,8 @@ namespace MisakaTranslator_WPF
         private MecabHelper _mecabHelper;
         private BeforeTransHandle _beforeTransHandle;
         private AfterTransHandle _afterTransHandle;
-        private ITranslator _translator1; //第一翻译源
-        private ITranslator _translator2; //第二翻译源
+        private ITranslator? _translator1; //第一翻译源
+        private ITranslator? _translator2; //第二翻译源
 
         private string _currentsrcText; //当前源文本内容
 
@@ -49,7 +49,7 @@ namespace MisakaTranslator_WPF
         public int SourceTextFontSize; //源文本区域字体大小
 
         private Queue<string> _gameTextHistory; //历史文本
-        private static KeyboardMouseHook hook; //全局键盘鼠标钩子
+        private static KeyboardMouseHook? hook; //全局键盘鼠标钩子
         public volatile bool IsOCRingFlag; //线程锁:判断是否正在OCR线程中，保证同时只有一组在跑OCR
         public bool IsNotPausedFlag; //是否处在暂停状态（专用于OCR）,为真可以翻译
 
@@ -57,7 +57,7 @@ namespace MisakaTranslator_WPF
 
         private readonly object _saveTransResultLock = new(); // 读写数据库和_gameTextHistory的线程锁
 
-        private ITTS _TTS;
+        private ITTS? _TTS;
 
         private HWND winHandle;//窗口句柄，用于设置活动窗口，以达到全屏状态下总在最前的目的
         private TransWinSettingsWindow transWinSettingsWindow;
@@ -97,10 +97,10 @@ namespace MisakaTranslator_WPF
             _translator1 = TranslatorAuto(Common.AppSettings.FirstTranslator);
             _translator2 = TranslatorAuto(Common.AppSettings.SecondTranslator);
 
-            _beforeTransHandle = new BeforeTransHandle(Convert.ToString(Common.GameID), Common.UsingSrcLang, Common.UsingDstLang);
+            _beforeTransHandle = new BeforeTransHandle(Common.GameID.ToString(), Common.UsingSrcLang, Common.UsingDstLang);
             _afterTransHandle = new AfterTransHandle(_beforeTransHandle);
 
-            _artificialTransHelper = new ArtificialTransHelper(Convert.ToString(Common.GameID));
+            _artificialTransHelper = new ArtificialTransHelper(Common.GameID.ToString());
 
             if (Common.TransMode == TransMode.Hook)
             {
@@ -122,7 +122,7 @@ namespace MisakaTranslator_WPF
 
         private void TTS_Init()
         {
-            DispatcherOperation dispatcherOperation = null;
+            DispatcherOperation? dispatcherOperation = null;
             switch (Common.AppSettings.SelectedTTS)
             {
                 case TTSMode.Local:
@@ -191,7 +191,7 @@ namespace MisakaTranslator_WPF
                 }
                 else
                 {
-                    hook.onKeyboardActivity += Hook_OnKeyBoardActivity;
+                    hook.OnKeyboardActivity += Hook_OnKeyBoardActivity;
                     int keycode = (int)Common.UsingHotKey.KeyCode;
                     r = hook.Start(false, keycode);
                 }
@@ -359,7 +359,7 @@ namespace MisakaTranslator_WPF
 
             IsOCRingFlag = true;
 
-            string srcText = null;
+            string? srcText = null;
             for (int i = 0; i < 3; i++)
             {
                 // 重新OCR不需要等待
@@ -397,7 +397,8 @@ namespace MisakaTranslator_WPF
         DictResWindow _dictResWindow;
         private void DictArea_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            System.Windows.Controls.TextBox textBox = sender as System.Windows.Controls.TextBox;
+            System.Windows.Controls.TextBox? textBox = sender as System.Windows.Controls.TextBox;
+            if (textBox == null) { return; }
             if (!string.IsNullOrWhiteSpace(textBox.SelectedText))
             {
                 dtimer.Stop();
@@ -414,8 +415,8 @@ namespace MisakaTranslator_WPF
         public void ProcessAndDisplayTranslation(object sender, SolvedDataReceivedEventArgs e)
         {
             //1.得到原句
-            string source = e.Data.Data;
-            if (source == null && e.Data.HookFunc == "Clipboard")
+            string? source = e.Data.Data;
+            if (source == null)
             {
                 return;
             }
@@ -642,7 +643,7 @@ namespace MisakaTranslator_WPF
             string beforeString = _beforeTransHandle.AutoHandle(repairedText);
 
             //5.提交翻译 
-            string transRes = string.Empty;
+            string? transRes = string.Empty;
             if (tranResultIndex == 1)
             {
                 if (_translator1 != null)
@@ -748,7 +749,7 @@ namespace MisakaTranslator_WPF
 
         private void ChangeSize_Item_Click(object sender, RoutedEventArgs e)
         {
-            if ((bool)(sender as ToggleButton).IsChecked)
+            if ((sender as ToggleButton)?.IsChecked ?? false)
             {
                 this.BorderThickness = new(3);
                 this.ResizeMode = ResizeMode.CanResizeWithGrip;
@@ -925,7 +926,7 @@ namespace MisakaTranslator_WPF
         private void TTS_Item_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(_currentsrcText))
-                _TTS.SpeakAsync(_currentsrcText);
+                _TTS?.SpeakAsync(_currentsrcText);
         }
 
         private void TransWin_Loaded(object sender, RoutedEventArgs e)
@@ -942,7 +943,7 @@ namespace MisakaTranslator_WPF
             Common.MainWin.Visibility = Visibility.Collapsed;
         }
 
-        void TickWindowTopMost(object sender, EventArgs e)
+        void TickWindowTopMost(object? sender, EventArgs e)
         {
             if (this.WindowState != WindowState.Minimized)
             {

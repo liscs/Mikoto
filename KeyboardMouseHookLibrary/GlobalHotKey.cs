@@ -45,8 +45,10 @@ namespace KeyboardMouseHookLibrary
             if (m.Msg == 0x312)
             {
                 int id = m.WParam.ToInt32();
-                if (_keymap.TryGetValue(id, out HotKeyCallBackHandler callback))
+                if (_keymap.TryGetValue(id, out HotKeyCallBackHandler? callback))
+                {
                     callback();
+                }
             }
         }
 

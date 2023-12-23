@@ -278,7 +278,7 @@ namespace OCRLibrary
                 result = PInvoke.PrivateExtractIcons(filepath, 0, 256, 256, p, null, iconTotalCount, (uint)(IMAGE_FLAGS.LR_DEFAULTCOLOR));
             }
 
-            Bitmap myIcon = null;
+            Bitmap? myIcon = null;
             if (result > 0 && result != 0xFFFFFFFF)
             {
                 using Icon ico = Icon.FromHandle(hIcons[0]);

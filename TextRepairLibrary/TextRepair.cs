@@ -39,14 +39,14 @@ namespace TextRepairLibrary
 
 
         /// <summary>
-        /// 反射调用字符串处理方法
+        /// 调用字符串处理方法
         /// </summary>
         /// <param name="functionName">提供方法函数名</param>
         /// <param name="sourceText">源文本</param>
         /// <returns></returns>
-        public static string RepairFun_Auto(string functionName, string sourceText)
+        public static string RepairFun_Auto(string? functionName, string sourceText)
         {
-            if (functionName.StartsWith('#'))
+            if (functionName?.StartsWith('#') ?? false)
             {
                 return RepairFun_PythonScript(functionName.Substring(1), sourceText);
             }

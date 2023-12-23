@@ -37,7 +37,7 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
 
         private void AllWinCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            if ((bool)AllWinCheckBox.IsChecked)
+            if (AllWinCheckBox.IsChecked??false)
             {
                 ChooseWinBtn.Visibility = Visibility.Hidden;
                 WinNameTag.Visibility = Visibility.Hidden;
@@ -47,7 +47,7 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
                 ChooseWinBtn.Visibility = Visibility.Visible;
                 WinNameTag.Visibility = Visibility.Visible;
             }
-            isAllWin = (bool)AllWinCheckBox.IsChecked;
+            isAllWin = AllWinCheckBox.IsChecked ?? false;
         }
 
         private void ChooseWinBtn_Click(object sender, RoutedEventArgs e)
@@ -75,7 +75,7 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
         /// <summary>
         /// 鼠标点击事件
         /// </summary>
-        void Hook_OnMouseActivity(object sender, System.Windows.Forms.MouseEventArgs e)
+        void Hook_OnMouseActivity(object? sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {

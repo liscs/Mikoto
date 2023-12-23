@@ -12,12 +12,12 @@ namespace TranslatorLibrary.Translator
             return "";
         }
 
-        public Task<string> TranslateAsync(string sourceText, string desLang, string srcLang)
+        public Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
-            return Task.FromResult<string>(null);
+            return Task.FromResult<string?>(null);
         }
 
-        public void TranslatorInit(string param1, string param2)
+        public void TranslatorInit(string? param1 = null, string? param2 = null)
         {
             return;
         }

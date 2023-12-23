@@ -82,7 +82,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                 };
 
                 //用户开启了自动卸载
-                if (Convert.ToBoolean(Common.AppSettings.AutoDetach) == true)
+                if (Common.AppSettings.AutoDetach)
                 {
                     Common.TextHooker.DetachUnrelatedHooks(pid, usedHook);
                 }

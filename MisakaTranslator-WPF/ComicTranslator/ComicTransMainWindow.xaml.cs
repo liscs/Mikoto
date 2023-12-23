@@ -27,8 +27,8 @@ namespace MisakaTranslator_WPF.ComicTranslator
         string DicPath;//文件夹路径
         int CurrentPos;//当前指针
 
-        private ITranslator _translator1; //第一翻译源
-        private ITranslator _translator2; //第二翻译源
+        private ITranslator? _translator1; //第一翻译源
+        private ITranslator? _translator2; //第二翻译源
 
         private OCREngine ocr;//OCR对象
 
@@ -278,7 +278,7 @@ namespace MisakaTranslator_WPF.ComicTranslator
 
             if (_translator1 != null)
             {
-                transRes1 = await _translator1.TranslateAsync(sourceText, DstLang, SrcLang);
+                transRes1 = await _translator1.TranslateAsync(sourceText, DstLang, SrcLang) ?? "None";
             }
             else
             {
@@ -287,7 +287,7 @@ namespace MisakaTranslator_WPF.ComicTranslator
 
             if (_translator2 != null)
             {
-                transRes2 = await _translator2.TranslateAsync(sourceText, DstLang, SrcLang);
+                transRes2 = await _translator2.TranslateAsync(sourceText, DstLang, SrcLang) ?? "None";
             }
             else
             {

@@ -11,7 +11,7 @@ namespace MisakaTranslator_WPF.SettingsPages
     /// </summary>
     public partial class ArtificialTransSettingsPage : Page
     {
-        string[] strNames;
+        string[] strNames=[];
 
         public ArtificialTransSettingsPage()
         {
@@ -26,9 +26,9 @@ namespace MisakaTranslator_WPF.SettingsPages
 
                 List<string> fileList = new List<string>();
 
-                for (int i = 0; i < strNames.Length; i++)
+                foreach (string v in strNames)
                 {
-                    fileList.Add(System.IO.Path.GetFileName(strNames[i]));
+                    fileList.Add(Path.GetFileName(v));
                 }
 
                 PatchFileCombox.ItemsSource = fileList;
@@ -62,7 +62,7 @@ namespace MisakaTranslator_WPF.SettingsPages
 
         private void ATonCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            Common.AppSettings.ATon = (bool)ATonCheckBox.IsChecked;
+            Common.AppSettings.ATon = ATonCheckBox.IsChecked ?? false;
         }
 
         private void ExportBtn_Click(object sender, RoutedEventArgs e)

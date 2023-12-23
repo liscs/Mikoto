@@ -26,9 +26,12 @@ namespace TranslatorLibrary.Translator
         {
             if (desLang != "en" && srcLang != "en")
             {
-                sourceText = await TranslateAsync(sourceText, "en", srcLang);
-                if (sourceText == null)
+                sourceText = await TranslateAsync(sourceText, "en", srcLang)??string.Empty;
+                if (string.IsNullOrEmpty(sourceText))
+                {
                     return null;
+                }
+
                 srcLang = "en";
             }
 

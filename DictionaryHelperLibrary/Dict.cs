@@ -6,14 +6,16 @@ namespace DictionaryHelperLibrary
 {
     public class Dict
     {
+        //反序列化用的无参构造函数
+        public Dict() { }
         public Dict(string path)
         {
             ArgumentException.ThrowIfNullOrEmpty("path");
             DictPath = path;
             Name = Path.GetFileName(Path.GetDirectoryName(path)) ?? Guid.NewGuid().ToString();
         }
-        public string Name { get; set; }
-        public string DictPath { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string DictPath { get; set; } = string.Empty;
 
         public bool _active { get; set; }
         [JsonIgnore]

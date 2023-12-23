@@ -70,7 +70,7 @@ namespace MisakaTranslator_WPF
         /// <summary>
         /// Task线程内未捕获异常处理事件
         /// </summary>
-        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
             MisakaTranslator_WPF.MainWindow.Instance.CloseNotifyIcon();
             string fn = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
@@ -88,7 +88,7 @@ namespace MisakaTranslator_WPF
         /// <param name="e">异常</param>
         /// <param name="exceptionThread">异常线程</param>
         /// <param name="errorMessage">错误消息</param>
-        private static void PrintErrorMessageToFile(string fileName, Exception e, int exceptionThread, string errorMessage = null)
+        private static void PrintErrorMessageToFile(string fileName, Exception? e, int exceptionThread, string? errorMessage = null)
         {
             if (!Directory.Exists($"{Environment.CurrentDirectory}\\data\\logs"))
             {

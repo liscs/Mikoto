@@ -38,13 +38,13 @@ namespace TextHookLibrary
     /// </summary>
     public class ClipboardMonitor : Form
     {
-        public event ClipboardUpdateEventHandler onClipboardUpdate;
+        public event ClipboardUpdateEventHandler OnClipboardUpdate;
         private IntPtr hWnd;
         public ClipboardNotification cn;
 
         public ClipboardMonitor(ClipboardUpdateEventHandler onClipboardUpdate)
         {
-            this.onClipboardUpdate = onClipboardUpdate;
+            this.OnClipboardUpdate = onClipboardUpdate;
             this.hWnd = this.Handle;
             cn = new ClipboardNotification(hWnd);
             cn.RegisterClipboardViewer();
@@ -61,15 +61,15 @@ namespace TextHookLibrary
             {
                 case 0x308: //WM_DRAWCLIPBOARD
                     {
-                        IDataObject iData = Clipboard.GetDataObject();
+                        IDataObject? iData = Clipboard.GetDataObject();
                         if (iData != null)
                         {
-                            string str = (string)iData.GetData(DataFormats.UnicodeText);
-                            this.onClipboardUpdate(str);
+                            string str = iData.GetData(DataFormats.UnicodeText) as string?? "剪贴板更新失败 ClipBoard Update Failed";
+                            this.OnClipboardUpdate(str);
                         }
                         else
                         {
-                            this.onClipboardUpdate("剪贴板更新失败 ClipBoard Update Failed");
+                            this.OnClipboardUpdate("剪贴板更新失败 ClipBoard Update Failed");
                         }
                         break;
                     }

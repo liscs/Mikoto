@@ -67,8 +67,8 @@ namespace OCRLibrary
         /// <returns></returns>
         public static Bitmap GetAllWindow()
         {
-            int w = Screen.PrimaryScreen.Bounds.Width;
-            int h = Screen.PrimaryScreen.Bounds.Height;
+            int w = Screen.PrimaryScreen?.Bounds.Width ?? 0;
+            int h = Screen.PrimaryScreen?.Bounds.Height ?? 0;
 
             Bitmap bitmap = new Bitmap(w, h);
             Graphics graphics = Graphics.FromImage(bitmap);

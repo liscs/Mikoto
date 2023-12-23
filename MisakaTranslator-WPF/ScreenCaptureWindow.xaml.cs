@@ -113,7 +113,7 @@ namespace MisakaTranslator_WPF
             if (capMode == 2)
             {
                 //全局OCR截图，直接打开结果页面
-                System.Drawing.Bitmap img = ScreenCapture.GetWindowRectCapture(System.IntPtr.Zero, OCRArea, true);
+                System.Drawing.Bitmap? img = ScreenCapture.GetWindowRectCapture(System.IntPtr.Zero, OCRArea, true);
                 if (img == null) // 没有框选范围
                     return;
 

@@ -42,7 +42,7 @@ namespace ArtificialTransHelperLibrary
 
             string sql = $"SELECT * FROM artificialtrans WHERE source = '{source}';";
 
-            List<List<string>> ret = sqlite.ExecuteReader(sql, 4);
+            List<List<string>>? ret = sqlite.ExecuteReader(sql, 4);
 
             if (ret == null)
             {
@@ -108,7 +108,7 @@ namespace ArtificialTransHelperLibrary
                 //让没有直接被定义的用户翻译等于机器翻译
                 sqliteDB.ExecuteSql("UPDATE artificialtrans SET userTrans = machineTrans WHERE userTrans is NULL;");
 
-                List<List<string>> ret = sqliteDB.ExecuteReader("SELECT * FROM artificialtrans;", 4);
+                List<List<string>> ret = sqliteDB.ExecuteReader("SELECT * FROM artificialtrans;", 4) ?? new();
 
                 FileStream fs = new FileStream(FilePath, FileMode.Create);
                 StreamWriter sw = new StreamWriter(fs);

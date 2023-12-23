@@ -15,7 +15,7 @@ namespace OCRLibrary
     {
         public string SecretId = string.Empty;
         public string SecretKey;
-        private string langCode;
+        private string? langCode;
         static int SessionUuid = 0;
 
         public override async Task<string?> OCRProcessAsync(Bitmap img)

@@ -60,7 +60,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         {
             ITranslator BDTrans = new BaiduTranslator();
             BDTrans.TranslatorInit(Common.AppSettings.BDappID, Common.AppSettings.BDsecretKey);
-            string res = await BDTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
+            string? res = await BDTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)
             {

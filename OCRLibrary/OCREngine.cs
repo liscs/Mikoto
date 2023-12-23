@@ -16,15 +16,15 @@ namespace OCRLibrary
         /// </summary>
         /// <param name="img">欲处理的图片</param>
         /// <returns>返回识别结果，如果为空可通过GetLastError得到错误提示</returns>
-        public abstract Task<string> OCRProcessAsync(Bitmap img);
+        public abstract Task<string?> OCRProcessAsync(Bitmap img);
 
         /// <summary>
         /// OCR处理，根据设定的截图区域自动截图后识别
         /// </summary>
         /// <returns>返回识别结果，如果为空可通过GetLastError得到错误提示</returns>
-        public Task<string>? OCRProcessAsync()
+        public Task<string?>? OCRProcessAsync()
         {
-            Bitmap img = ScreenCapture.GetWindowRectCapture(WinHandle, OCRArea, isAllWin);
+            Bitmap? img = ScreenCapture.GetWindowRectCapture(WinHandle, OCRArea, isAllWin);
             if (img == null)
             {
                 errorInfo = "未设置截图区域";

@@ -21,7 +21,7 @@ namespace MisakaTranslator_WPF
         private async void dataInit()
         {
             OCREngine ocr;
-            string res = null;
+            string? res = null;
             if (Common.AppSettings.OCRsource == "TesseractOCR")
             {
                 ocr = new TesseractOCREngine();
@@ -174,18 +174,18 @@ namespace MisakaTranslator_WPF
                 {
                     TranslatorCommon.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
                 }
-                ITranslator translator1 = TranslateWindow.TranslatorAuto(Common.AppSettings.FirstTranslator);
-                ITranslator translator2 = TranslateWindow.TranslatorAuto(Common.AppSettings.SecondTranslator);
+                ITranslator? translator1 = TranslateWindow.TranslatorAuto(Common.AppSettings.FirstTranslator);
+                ITranslator? translator2 = TranslateWindow.TranslatorAuto(Common.AppSettings.SecondTranslator);
                 //5.提交翻译
-                string transRes1 = "";
-                string transRes2 = "";
+                string transRes1 = string.Empty;
+                string transRes2 = string.Empty;
                 if (translator1 != null)
                 {
-                    transRes1 = await translator1.TranslateAsync(res, Common.UsingDstLang, srclang);
+                    transRes1 = await translator1.TranslateAsync(res, Common.UsingDstLang, srclang) ?? string.Empty;
                 }
                 if (translator2 != null)
                 {
-                    transRes2 = await translator2.TranslateAsync(res, Common.UsingDstLang, srclang);
+                    transRes2 = await translator2.TranslateAsync(res, Common.UsingDstLang, srclang) ?? string.Empty;
                 }
 
                 FirstTransText.Text = transRes1;

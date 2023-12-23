@@ -66,7 +66,7 @@ namespace TextHookLibrary
         private int GamePID;//能够获取到文本的游戏进程ID
         private Dictionary<Process, bool> PossibleGameProcessList;//与gamePID进程同名的进程列表
         private int HandleMode;//处理的方式 1=已确定的单个进程 2=多个进程寻找能搜到文本的进程
-        private Process MaxMemoryProcess;//最大内存进程，用于智能处理时单独注入这个进程而不是PossibleGameProcessList中的每个进程都注入
+        private Process? MaxMemoryProcess;//最大内存进程，用于智能处理时单独注入这个进程而不是PossibleGameProcessList中的每个进程都注入
 
         private int listIndex;//用于Hook功能选择界面的方法序号
         private Dictionary<string, int> TextractorFun_Index_List;//Misaka特殊码与列表索引一一对应
@@ -74,7 +74,7 @@ namespace TextHookLibrary
         private int listIndex_Re;//用于Hook功能重新选择界面的方法序号
         private Dictionary<string, int> TextractorFun_Re_Index_List;//Misaka特殊码与列表索引一一对应
 
-        private ClipboardMonitor cm;//剪贴板监视 对象
+        private ClipboardMonitor? cm;//剪贴板监视 对象
 
         public TextHookHandle(int gamePID)
         {
@@ -83,7 +83,7 @@ namespace TextHookLibrary
             ProcessTextractor = null;
             MaxMemoryProcess = null;
             GamePID = gamePID;
-            PossibleGameProcessList = null;
+            PossibleGameProcessList = new Dictionary<Process, bool>();
             TextractorOutPutHistory = new Queue<string>(1000);
             HandleMode = 1;
             listIndex = 0;
@@ -124,7 +124,7 @@ namespace TextHookLibrary
             HookCodeList = new List<string>();
             MaxMemoryProcess = null;
             GamePID = -1;
-            PossibleGameProcessList = null;
+            PossibleGameProcessList = new Dictionary<Process, bool>();
             TextractorOutPutHistory = new Queue<string>(1000);
             HandleMode = 3;
             listIndex = 0;
@@ -186,6 +186,7 @@ namespace TextHookLibrary
         /// <param name="pid"></param>
         public async Task AttachProcess(int pid)
         {
+            if (ProcessTextractor == null) { return; }
             await ProcessTextractor.StandardInput.WriteLineAsync("attach -P" + pid);
             await ProcessTextractor.StandardInput.FlushAsync();
         }
@@ -199,6 +200,7 @@ namespace TextHookLibrary
         {
             if (!ProcessHelper.IsProcessRunning(pid))
                 return;
+            if (ProcessTextractor == null) { return; }
             try
             {
                 await ProcessTextractor.StandardInput.WriteLineAsync("detach -P" + pid);
@@ -215,6 +217,7 @@ namespace TextHookLibrary
         /// <param name="pid"></param>
         public async Task AttachProcessByHookCode(int pid, string HookCode)
         {
+            if (ProcessTextractor == null) { return; }
             await ProcessTextractor.StandardInput.WriteLineAsync(HookCode + " -P" + pid);
             await ProcessTextractor.StandardInput.FlushAsync();
         }
@@ -230,6 +233,7 @@ namespace TextHookLibrary
             //但是后续给定的模块并不存在，于是Textractor再卸载掉这个用户自定义钩子，达到卸载一个指定Hook办法
             if (!ProcessHelper.IsProcessRunning(pid))
                 return;
+            if (ProcessTextractor == null) { return; }
             await ProcessTextractor.StandardInput.WriteLineAsync("HW0@" + HookAddress + ":module_which_never_exists" + " -P" + pid);
             await ProcessTextractor.StandardInput.FlushAsync();
         }
@@ -514,7 +518,7 @@ namespace TextHookLibrary
                 return null;
             }
 
-            string Info = GetMiddleString(OutputText, "[", "]", 0);
+            string? Info = GetMiddleString(OutputText, "[", "]", 0);
             if (Info == null)
             {
                 return null;

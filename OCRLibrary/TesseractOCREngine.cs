@@ -12,7 +12,7 @@ namespace OCRLibrary
         private string srcLangCode;  //OCR识别语言 jpn=日语 eng=英语
         private Engine engine;
 
-        public override Task<string> OCRProcessAsync(Bitmap img)
+        public override Task<string?> OCRProcessAsync(Bitmap img)
         {
             try
             {
@@ -25,12 +25,12 @@ namespace OCRLibrary
                 stream.Dispose();
                 recog.Dispose();
 
-                return Task.FromResult(text);
+                return Task.FromResult<string?>(text);
             }
             catch (Exception ex)
             {
                 errorInfo = ex.Message;
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string?>(null);
             }
         }
 

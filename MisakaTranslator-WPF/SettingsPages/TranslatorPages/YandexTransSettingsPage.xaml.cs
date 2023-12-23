@@ -51,7 +51,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         {
             ITranslator YandexTrans = new YandexTranslator();
             YandexTrans.TranslatorInit(YandexTransApiKeyBox.Text, "");
-            string res = await YandexTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
+            string? res = await YandexTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)
             {

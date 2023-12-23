@@ -14,7 +14,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
     {
         private Dictionary<string, int> lstProcess;
         private int GamePid;
-        private List<System.Diagnostics.Process> SameNameGameProcessList;
+        private List<System.Diagnostics.Process> SameNameGameProcessList=new();
 
         public ChooseGamePage()
         {
@@ -44,7 +44,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                     Common.TextHooker = new TextHookHandle(SameNameGameProcessList);
                 }
 
-                if (!Common.TextHooker.Init((bool)x64GameCheckBox.IsChecked ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
+                if (!Common.TextHooker.Init(x64GameCheckBox.IsChecked??false ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
                 {
                     HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
                     return;

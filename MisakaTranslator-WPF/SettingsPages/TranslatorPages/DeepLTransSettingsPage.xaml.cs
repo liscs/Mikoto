@@ -51,7 +51,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         {
             ITranslator deepLTrans = new DeepLTranslator();
             deepLTrans.TranslatorInit(DeepLTransSecretKeyBox.Text, DeepLTransSecretKeyBox.Text);
-            string res = await deepLTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
+            string? res = await deepLTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)
             {

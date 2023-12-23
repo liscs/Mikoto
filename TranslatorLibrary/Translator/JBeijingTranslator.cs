@@ -35,7 +35,7 @@ namespace TranslatorLibrary.Translator
             IntPtr buffer,
             ref int bufferCapacity);
 
-        public string JBJCTDllPath;//DLL路径
+        public string JBJCTDllPath = string.Empty;//DLL路径
         private string errorInfo;//错误信息
 
         public string TranslatorDisplayName { get { return Strings.JBeijingTranslator; } }
@@ -49,9 +49,9 @@ namespace TranslatorLibrary.Translator
         {
             string JBeijingTranslatorPath = JBJCTDllPath;
 
-            if (JBeijingTranslatorPath == "")
+            if (JBeijingTranslatorPath == string.Empty)
             {
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string?>(null);
             }
 
             /*
@@ -78,12 +78,12 @@ namespace TranslatorLibrary.Translator
             catch (Exception ex)
             {
                 errorInfo = ex.Message;
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string?>(null);
             }
 
             Environment.CurrentDirectory = path;
 
-            string ret = Marshal.PtrToStringAuto(jp2);
+            string? ret = Marshal.PtrToStringAuto(jp2);
 
             Marshal.FreeHGlobal(jp);
             Marshal.FreeHGlobal(jp2);

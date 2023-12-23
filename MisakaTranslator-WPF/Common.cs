@@ -53,12 +53,12 @@ namespace MisakaTranslator_WPF
         public static Guid GameID { get; set; } //全局使用中的游戏ID(数据库)
 
         public static TextHookHandle? TextHooker { get; set; } //全局使用中的Hook对象
-        public static string? UsingRepairFunc { get; set; } //全局使用中的去重方法
+        public static string UsingRepairFunc { get; set; } //全局使用中的去重方法
 
         public static string UsingSrcLang { get; set; }//全局使用中的源语言
         public static string UsingDstLang { get; set; } //全局使用中的目标翻译语言
 
-        public static OCREngine? Ocr { get; set; } //全局使用中的OCR对象
+        public static OCREngine Ocr { get; set; } //全局使用中的OCR对象
         public static bool IsAllWindowCap { get; set; } //是否全屏截图
         public static IntPtr OCRWinHwnd { get; set; } //全局的OCR的工作窗口
         public static HotKeyInfo UsingHotKey { get; set; } //全局使用中的触发键信息
@@ -184,7 +184,7 @@ namespace MisakaTranslator_WPF
 
             if (strResult != null)
             {
-                string newVersion = GetMiddleStr(strResult, "LatestVersion[", "]");
+                string? newVersion = GetMiddleStr(strResult, "LatestVersion[", "]");
 
                 if (newVersion == null)
                 {
@@ -197,10 +197,11 @@ namespace MisakaTranslator_WPF
                 }
                 else
                 {
-                    string downloadPath = GetMiddleStr(strResult, "DownloadPath[", "]");
-                    return new List<string>() {
-                        newVersion,downloadPath
-                    };
+                    string? downloadPath = GetMiddleStr(strResult, "DownloadPath[", "]");
+                    if (downloadPath != null)
+                    {
+                        return new List<string>() { newVersion, downloadPath };
+                    }
                 }
             }
 
@@ -246,7 +247,7 @@ namespace MisakaTranslator_WPF
             sw.WriteLine("System:" + Environment.OSVersion);
             sw.WriteLine("CurrentTime:" + DateTime.Now.ToString("g"));
             sw.WriteLine("dotNetVersion:" + Environment.Version);
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            Version version = Assembly.GetExecutingAssembly().GetName().Version??new Version();
             sw.WriteLine("MisakaTranslatorVersion:" + version.ToString());
 
             sw.WriteLine("==============Exception Info================");

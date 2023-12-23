@@ -13,11 +13,11 @@ namespace OCRLibrary
         public string appId;
         public string secretKey;
         const string salt = "123456";
-        private string langCode;
+        private string langCode = string.Empty;
 
         public override async Task<string?> OCRProcessAsync(Bitmap img)
         {
-            if (img == null || langCode == null || langCode == "")
+            if (img == null || string.IsNullOrEmpty(langCode))
             {
                 errorInfo = "Param Missing";
                 return null;

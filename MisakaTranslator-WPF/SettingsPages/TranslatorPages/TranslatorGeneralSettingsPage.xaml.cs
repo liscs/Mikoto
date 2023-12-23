@@ -53,7 +53,7 @@ namespace MisakaTranslator_WPF.SettingsPages
             Common.AppSettings.HttpProxy = text;
         }
 
-        private void TransLimitBox_ValueChanged(object sender, HandyControl.Data.FunctionEventArgs<double> e)
+        private void TransLimitBox_ValueChanged(object? sender, HandyControl.Data.FunctionEventArgs<double> e)
         {
             Common.AppSettings.TransLimitNums = (int)TransLimitBox.Value;
         }

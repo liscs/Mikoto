@@ -71,6 +71,10 @@ namespace TextHookLibrary
                     RedirectStandardOutput = true,
                     CreateNoWindow = true
                 });
+                if (p == null)
+                {
+                    throw new InvalidOperationException("Failed to execute ProcessHelper.exe");
+                }
                 string path = p.StandardOutput.ReadToEnd().TrimEnd();
                 if (p.ExitCode == 3) // 不存在此pid对应的进程
                     return "";
@@ -97,7 +101,9 @@ namespace TextHookLibrary
                 });
                 string output = p.StandardOutput.ReadToEnd();
                 if (p.ExitCode != 0)
+                {
                     throw new InvalidOperationException("Failed to execute ProcessHelperExt.exe\n" + p.StandardError.ReadToEnd());
+                }
 
                 string[] lines = output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string line in lines)
@@ -107,11 +113,18 @@ namespace TextHookLibrary
                 }
             }
             else
+            {
                 foreach (Process p in Process.GetProcesses().Where(p => (long)p.MainWindowHandle != 0).ToArray())
+                {
                     using (p)
+                    {
                         try { l.Add((p.Id, p.MainModule.FileName)); }
                         catch (System.ComponentModel.Win32Exception) { } // 无权限
                         catch (InvalidOperationException) { } // 进程已退出
+                    }
+                }
+            }
+
             return l;
         }
 

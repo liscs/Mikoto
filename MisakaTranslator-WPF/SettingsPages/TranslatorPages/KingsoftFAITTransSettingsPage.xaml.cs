@@ -40,7 +40,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         {
             KingsoftFastAITTranslator Trans = new KingsoftFastAITTranslator();
             Trans.TranslatorInit(Common.AppSettings.KingsoftFastAITPath, "");
-            string res = await Trans.TranslateAsync(TestSrcText.Text, "zh", TestSrcLang.Text);
+            string? res = await Trans.TranslateAsync(TestSrcText.Text, "zh", TestSrcLang.Text);
             if (res != null)
             {
                 HandyControl.Controls.MessageBox.Show(res, Application.Current.Resources["MessageBox_Result"].ToString());

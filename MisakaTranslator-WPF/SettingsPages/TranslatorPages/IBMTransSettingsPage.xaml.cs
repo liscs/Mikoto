@@ -53,7 +53,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         {
             ITranslator IBMTrans = new IBMTranslator();
             IBMTrans.TranslatorInit(IBMTransApiKeyBox.Text, IBMTransURLBox.Text);
-            string res = await IBMTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
+            string? res = await IBMTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)
             {

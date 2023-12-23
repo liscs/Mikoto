@@ -18,8 +18,8 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
             JBeijingTranslator Trans = new JBeijingTranslator();
-            Trans.TranslatorInit(Common.AppSettings.JBJCTDllPath, "");
-            string res = await Trans.TranslateAsync(TestSrcText.Text, "", "");
+            Trans.TranslatorInit(Common.AppSettings.JBJCTDllPath);
+            string? res = await Trans.TranslateAsync(TestSrcText.Text, "", "");
             if (res != null)
             {
                 HandyControl.Controls.MessageBox.Show(res, Application.Current.Resources["MessageBox_Result"].ToString());
