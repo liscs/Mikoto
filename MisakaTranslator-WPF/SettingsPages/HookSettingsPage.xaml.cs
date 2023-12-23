@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -23,12 +22,12 @@ namespace MisakaTranslator_WPF.SettingsPages
 
         private void AutoHookCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            Common.AppSettings.AutoHook = AutoHookCheckBox.IsChecked??false;
+            Common.AppSettings.AutoHook = AutoHookCheckBox.IsChecked ?? false;
         }
 
         private void AutoDetachCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            Common.AppSettings.AutoDetach = AutoDetachCheckBox.IsChecked??true;
+            Common.AppSettings.AutoDetach = AutoDetachCheckBox.IsChecked ?? true;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

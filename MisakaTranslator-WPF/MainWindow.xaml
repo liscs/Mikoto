@@ -58,7 +58,7 @@
             </Button>
         </StackPanel>
         
-        <!--添加游戏-->
+        <!--顶部跳出栏位-->
         <hc:Drawer Name="AddNewGameDrawer" ShowMode="Press" MaskCanClose="True" Dock="Top">
             <StackPanel Orientation="Vertical" Background="{StaticResource TranslateWindowBackground}">
                 <Border Padding="30" Effect="{StaticResource EffectShadow3}">

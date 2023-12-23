@@ -55,7 +55,7 @@ namespace OCRLibrary
         public static Bitmap GetWindowRectCapture(IntPtr handle, Rectangle rec, bool isAllWin)
         {
             if (rec.Width == 0 || rec.Height == 0)
-                return new Bitmap(0,0);
+                return new Bitmap(0, 0);
 
             using (Bitmap img = isAllWin ? GetAllWindow() : GetWindowCapture(handle))
                 return img.Clone(rec, img.PixelFormat);

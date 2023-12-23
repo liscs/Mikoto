@@ -103,7 +103,7 @@ namespace MisakaTranslator_WPF
 
         private void AddGame(int i)
         {
-            var tb = new TextBlock()
+            TextBlock tb = new()
             {
                 Text = GameInfoList[i].GameName,
                 Foreground = Brushes.White,
@@ -240,12 +240,30 @@ namespace MisakaTranslator_WPF
         private static void Border_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var b = (Border)sender;
+            var g = b.Child as Grid;
+            foreach (var item in g.Children)
+            {
+                if (item is Image image)
+                {
+                    image.Width -= 4;
+                    image.Height -= 4;
+                }
+            }
             b.BorderThickness = new Thickness(2);
         }
 
         private static void Border_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var b = (Border)sender;
+            var g = b.Child as Grid;
+            foreach (var item in g.Children)
+            {
+                if (item is Image image)
+                {
+                    image.Width += 4;
+                    image.Height += 4;
+                }
+            }
             b.BorderThickness = new Thickness(0);
         }
 

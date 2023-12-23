@@ -11,7 +11,7 @@ namespace MisakaTranslator_WPF.SettingsPages
     /// </summary>
     public partial class ArtificialTransSettingsPage : Page
     {
-        string[] strNames=[];
+        string[] strNames = [];
 
         public ArtificialTransSettingsPage()
         {

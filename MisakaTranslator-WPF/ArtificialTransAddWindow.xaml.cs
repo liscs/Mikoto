@@ -1,5 +1,4 @@
 ﻿using ArtificialTransHelperLibrary;
-using System;
 using System.Windows;
 
 namespace MisakaTranslator_WPF

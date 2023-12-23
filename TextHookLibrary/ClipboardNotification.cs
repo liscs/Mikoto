@@ -64,7 +64,7 @@ namespace TextHookLibrary
                         IDataObject? iData = Clipboard.GetDataObject();
                         if (iData != null)
                         {
-                            string str = iData.GetData(DataFormats.UnicodeText) as string?? "剪贴板更新失败 ClipBoard Update Failed";
+                            string str = iData.GetData(DataFormats.UnicodeText) as string ?? "剪贴板更新失败 ClipBoard Update Failed";
                             this.OnClipboardUpdate(str);
                         }
                         else
