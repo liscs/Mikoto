@@ -9,12 +9,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using TextHookLibrary;
 using TextRepairLibrary;
 using TranslatorLibrary;
@@ -28,7 +30,7 @@ namespace MisakaTranslator_WPF
         private IntPtr hwnd;
         public ObservableCollection<Border> GamePanelCollection { get; set; } = new();
 
-        public static MainWindow Instance { get; set; }
+        public static MainWindow Instance { get; set; } = default!;
 
         public MainWindow()
         {
@@ -63,7 +65,7 @@ namespace MisakaTranslator_WPF
 
         public void Refresh()
         {
-            this.Resources["Foreground"] = (SolidColorBrush)(new BrushConverter().ConvertFrom(Common.AppSettings.ForegroundHex));
+            this.Resources["Foreground"] = new BrushConverter().ConvertFrom(Common.AppSettings.ForegroundHex) as SolidColorBrush;
             GameInfoList = GameHelper.GetAllCompletedGames();
             Common.RepairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Environment.CurrentDirectory + "\\data\\settings\\RepairSettings.ini").Build();
             GameLibraryPanel_Init();
@@ -72,15 +74,15 @@ namespace MisakaTranslator_WPF
             Common.UsingSrcLang = "ja";
         }
 
-        private readonly List<SolidColorBrush> bushLst = new List<SolidColorBrush>
-                {
-                    Brushes.CornflowerBlue,
-                    Brushes.IndianRed,
-                    Brushes.Orange,
-                    Brushes.ForestGreen,
-                    Brushes.Peru,
-                    Brushes.MediumVioletRed,
-                };
+        private readonly List<SolidColorBrush> bushLst =
+        [
+            Brushes.CornflowerBlue,
+            Brushes.IndianRed,
+            Brushes.Orange,
+            Brushes.ForestGreen,
+            Brushes.Peru,
+            Brushes.MediumVioletRed,
+        ];
         private SolidColorBrush GetNormalBackground(int i)
         {
             return bushLst[i % 6];
@@ -110,14 +112,7 @@ namespace MisakaTranslator_WPF
                 Margin = new Thickness(3),
                 TextWrapping = TextWrapping.Wrap,
             };
-            var ico = new Image()
-            {
-                Source = ImageProcFunc.ImageToBitmapImage(ImageProcFunc.GetAppIcon(GameInfoList[i].FilePath)),
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                Height = 64,
-                Width = 64
-            };
+            Image ico = GetGameIcon(i);
             RenderOptions.SetBitmapScalingMode(ico, BitmapScalingMode.HighQuality);
             var gd = new Grid();
             gd.Children.Add(ico);
@@ -134,6 +129,29 @@ namespace MisakaTranslator_WPF
             back.MouseLeave += Border_MouseLeave;
             back.MouseLeftButtonDown += Back_MouseLeftButtonDown;
             GamePanelCollection.Add(back);
+        }
+
+        private Image GetGameIcon(int i)
+        {
+            string[] icoPaths = Directory.GetFiles(Path.GetDirectoryName(GameInfoList[i].FilePath)!, "*.ico");
+            Image ico = new();
+            if (icoPaths.Length > 0)
+            {
+                ico.Source = new BitmapImage(new Uri(icoPaths[0]));
+                ico.HorizontalAlignment = HorizontalAlignment.Center;
+                ico.VerticalAlignment = VerticalAlignment.Center;
+                ico.Height = 64;
+                ico.Width = 64;
+            }
+            else
+            {
+                ico.Source = ImageProcFunc.ImageToBitmapImage(ImageProcFunc.GetAppIcon(GameInfoList[i].FilePath)!);
+                ico.HorizontalAlignment = HorizontalAlignment.Center;
+                ico.VerticalAlignment = VerticalAlignment.Center;
+                ico.Height = 64;
+                ico.Width = 64;
+            }
+            return ico;
         }
 
         private void InitAddGamePanel()
@@ -189,7 +207,7 @@ namespace MisakaTranslator_WPF
             return IntPtr.Zero;
         }
 
-        private WeakReference<SettingsWindow> _settingsWindow;
+        private WeakReference<SettingsWindow>? _settingsWindow;
 
         private void SettingsBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -302,14 +320,14 @@ namespace MisakaTranslator_WPF
             switch (Common.UsingRepairFunc)
             {
                 case "RepairFun_RemoveSingleWordRepeat":
-                    Common.RepairSettings.SingleWordRepeatTimes = int.Parse(GameInfoList[gid].RepairParamA);
+                    Common.RepairSettings.SingleWordRepeatTimes = int.Parse(GameInfoList[gid].RepairParamA ?? "0");
                     break;
                 case "RepairFun_RemoveSentenceRepeat":
-                    Common.RepairSettings.SentenceRepeatFindCharNum = int.Parse(GameInfoList[gid].RepairParamA);
+                    Common.RepairSettings.SentenceRepeatFindCharNum = int.Parse(GameInfoList[gid].RepairParamA ?? "0");
                     break;
                 case "RepairFun_RegexReplace":
-                    Common.RepairSettings.Regex = GameInfoList[gid].RepairParamA;
-                    Common.RepairSettings.Regex_Replace = GameInfoList[gid].RepairParamB;
+                    Common.RepairSettings.Regex = GameInfoList[gid].RepairParamA ?? string.Empty;
+                    Common.RepairSettings.Regex_Replace = GameInfoList[gid].RepairParamB ?? string.Empty;
                     break;
                 default:
                     break;
@@ -416,7 +434,7 @@ namespace MisakaTranslator_WPF
             ResourceDictionary languageResource = new ResourceDictionary();
             if (sender is MenuItem menuItem)
             {
-                Common.AppSettings.AppLanguage = menuItem.Tag.ToString();
+                Common.AppSettings.AppLanguage = menuItem.Tag.ToString() ?? "zh";
                 Thread.CurrentThread.CurrentCulture = new CultureInfo(Common.AppSettings.AppLanguage);
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(Common.AppSettings.AppLanguage);
                 TranslatorCommon.Refresh();
@@ -505,12 +523,12 @@ namespace MisakaTranslator_WPF
             if (!Common.AppSettings.GrowlEnabled)
             {
                 Growl.InfoGlobal(Application.Current.Resources["MainWindow_NoGlobalNotice"].ToString()); // 必须先显示一句否则GrowlWindow是null
-                var gw = typeof(Growl).GetField("GrowlWindow", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic).GetValue(null);
-                var panel = gw.GetType().GetProperty("GrowlPanel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                var gw = typeof(Growl)?.GetField("GrowlWindow", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)?.GetValue(null);
+                var panel = gw?.GetType().GetProperty("GrowlPanel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
                 var sp = new StackPanel();
                 sp.Children.Add(new UIElement()); // 必须添加一个成员否则HC检测到成员为空时就把GrowlWindow设为null了
-                panel.SetValue(gw, sp);
-                this.Closing += (o, e) => gw.GetType().GetMethod("Close").Invoke(gw, null); // 关闭主窗口时关闭GrowlWindow否则程序无法退出
+                panel?.SetValue(gw, sp);
+                this.Closing += (o, e) => gw?.GetType()?.GetMethod("Close")?.Invoke(gw, null); // 关闭主窗口时关闭GrowlWindow否则程序无法退出
             }
         }
 

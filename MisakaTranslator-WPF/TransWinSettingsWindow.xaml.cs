@@ -172,9 +172,9 @@ namespace MisakaTranslator_WPF
         private void UI_Init()
         {
             BrushConverter brushConverter = new BrushConverter();
-            BgColorBlock.Background = (Brush)brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor);
-            firstColorBlock.Background = (Brush)brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor);
-            secondColorBlock.Background = (Brush)brushConverter.ConvertFromString(Common.AppSettings.TF_SecondTransTextColor);
+            BgColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor) as Brush;
+            firstColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor) as Brush;
+            secondColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_SecondTransTextColor) as Brush;
 
             for (int i = 0; i < FontList.Count; i++)
             {

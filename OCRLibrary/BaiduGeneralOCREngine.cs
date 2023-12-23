@@ -13,10 +13,10 @@ namespace OCRLibrary
 {
     public class BaiduGeneralOCREngine : OCREngine
     {
-        public string APIKey;
-        public string secretKey;
-        private string accessToken;
-        private string langCode;
+        public string? APIKey;
+        public string? secretKey;
+        private string? accessToken;
+        private string? langCode;
 
         public override async Task<string?> OCRProcessAsync(Bitmap img)
         {
@@ -80,13 +80,14 @@ namespace OCRLibrary
             secretKey = param2;
 
             string ret = BaiduGetToken(APIKey, secretKey);
-            BaiduTokenOutInfo? btoi = JsonSerializer.Deserialize<BaiduTokenOutInfo>(ret, OCRCommon.JsonOP);
+            BaiduTokenOutInfo btoi = JsonSerializer.Deserialize<BaiduTokenOutInfo>(ret, OCRCommon.JsonOP)!;
             if (btoi != null && btoi.access_token != null)
             {
                 accessToken = btoi.access_token;
                 return true;
             }
-            errorInfo = "ErrorID:" + btoi.error + " ErrorInfo:" + btoi.error_description;
+            errorInfo += "ErrorID:" + btoi?.error;
+            errorInfo += "ErrorInfo:" + btoi?.error_description;
             return false;
         }
 
@@ -147,32 +148,32 @@ namespace OCRLibrary
     {
         public string? access_token { get; set; }
         public int expires_in { get; set; }
-        public string error { get; set; }
-        public string error_description { get; set; }
+        public string? error { get; set; }
+        public string? error_description { get; set; }
 
-        public string refresh_token { get; set; }
-        public string scope { get; set; }
-        public string session_key { get; set; }
-        public string session_secret { get; set; }
+        public string? refresh_token { get; set; }
+        public string? scope { get; set; }
+        public string? session_key { get; set; }
+        public string? session_secret { get; set; }
     }
 
     class BaiduOCRresOutInfo
     {
         public long log_id { get; set; }
-        public List<BaiduOCRresDataOutInfo> words_result { get; set; }
+        public List<BaiduOCRresDataOutInfo>? words_result { get; set; }
         public int words_result_num { get; set; }
 
     }
 
     class BaiduOCRresDataOutInfo
     {
-        public string words { get; set; }
+        public string? words { get; set; }
     }
 
     class BaiduOCRErrorInfo
     {
         public short error_code { get; set; }
-        public string error_msg { get; set; }
+        public string? error_msg { get; set; }
     }
 
 }

@@ -11,9 +11,9 @@ namespace TranslatorLibrary.Translator
     {
         //语言简写列表 https://api.fanyi.baidu.com/product/113
 
-        public string appId;//百度翻译API 的APP ID
-        public string secretKey;//百度翻译API 的密钥
-        private string errorInfo;//错误信息
+        public string? appId;//百度翻译API 的APP ID
+        public string? secretKey;//百度翻译API 的密钥
+        private string errorInfo = string.Empty;//错误信息
 
         public string TranslatorDisplayName { get { return Strings.BaiduTranslator; } }
 

@@ -10,8 +10,8 @@ namespace TranslatorLibrary.Translator
 {
     public class CaiyunTranslator : ITranslator
     {
-        public string caiyunToken;//彩云小译 令牌
-        private string errorInfo;//错误信息
+        public string? caiyunToken;//彩云小译 令牌
+        private string errorInfo = string.Empty;//错误信息
 
         public string TranslatorDisplayName { get { return Strings.CaiyunTranslator; } }
 

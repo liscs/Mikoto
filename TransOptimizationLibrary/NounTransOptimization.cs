@@ -8,10 +8,10 @@ namespace TransOptimizationLibrary
 {
     public class NounTransOptimization
     {
-        public SQLHelper sqlite;
+        public SQLHelper sqlite = default!;
         private string srcLangCode;
         private string dstLangCode;
-        public string PeopleChatName;//显示在结果中的对话人名 以 人名：对话 的形式展示
+        public string PeopleChatName = string.Empty;//显示在结果中的对话人名 以 人名：对话 的形式展示
 
         public NounTransOptimization(string gameName, string srcL, string dstL)
         {

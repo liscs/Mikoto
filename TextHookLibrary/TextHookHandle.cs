@@ -22,17 +22,17 @@ namespace TextHookLibrary
         /// <summary>
         /// Hook功能选择界面提供的数据收到事件
         /// </summary>
-        public event HookMessageReceivedEventHandler HookMessageReceived;
+        public event HookMessageReceivedEventHandler? HookMessageReceived;
 
         /// <summary>
         /// Hook功能重新选择界面提供的数据收到事件
         /// </summary>
-        public event MeetHookCodeMessageReceivedEventHandler MeetHookCodeMessageReceived;
+        public event MeetHookCodeMessageReceivedEventHandler? MeetHookCodeMessageReceived;
 
         /// <summary>
         /// 翻译界面或文本去重界面提供的数据收到事件
         /// </summary>
-        public event MeetHookAddressMessageReceivedEventHandler MeetHookAddressMessageReceived;
+        public event MeetHookAddressMessageReceivedEventHandler? MeetHookAddressMessageReceived;
 
         /// <summary>
         /// 暂停Hook标志,为真时暂停获取文本
@@ -49,17 +49,17 @@ namespace TextHookLibrary
         /// Misaka特殊码列表：一个Misaka特殊码能固定匹配一个入口函数
         /// 此列表就表示当前进程要Hook的函数
         /// </summary>
-        public List<string> MisakaCodeList;
+        public List<string?> MisakaCodeList;
 
         /// <summary>
         /// Hook特殊码列表：用于非首次设置好游戏时，已知特殊码但未知函数入口的情况（一个特殊码对应多个函数入口），这个就是Hook的函数的特殊码列表
         /// </summary>
-        public List<string> HookCodeList;
+        public List<string?> HookCodeList;
 
         /// <summary>
         /// 用户自定义Hook特殊码：用于非首次设置好游戏时，能让系统自动注入一次
         /// </summary>
-        public string HookCode_Custom;
+        public string? HookCode_Custom;
 
         public Queue<string> TextractorOutPutHistory;//Textractor的输出记录队列，用于查错
 
@@ -78,8 +78,8 @@ namespace TextHookLibrary
 
         public TextHookHandle(int gamePID)
         {
-            MisakaCodeList = new List<string>();
-            HookCodeList = new List<string>();
+            MisakaCodeList = new List<string?>();
+            HookCodeList = new List<string?>();
             ProcessTextractor = null;
             MaxMemoryProcess = null;
             GamePID = gamePID;
@@ -94,8 +94,8 @@ namespace TextHookLibrary
 
         public TextHookHandle(List<Process> GameProcessList)
         {
-            MisakaCodeList = new List<string>();
-            HookCodeList = new List<string>();
+            MisakaCodeList = new List<string?>();
+            HookCodeList = new List<string?>();
             ProcessTextractor = null;
             GamePID = -1;
             TextractorOutPutHistory = new Queue<string>(1000);
@@ -120,8 +120,8 @@ namespace TextHookLibrary
         public TextHookHandle()
         {
             //剪贴板方式读取专用
-            MisakaCodeList = new List<string>();
-            HookCodeList = new List<string>();
+            MisakaCodeList = new List<string?>();
+            HookCodeList = new List<string?>();
             MaxMemoryProcess = null;
             GamePID = -1;
             PossibleGameProcessList = new Dictionary<Process, bool>();
@@ -281,7 +281,7 @@ namespace TextHookLibrary
             else if (HandleMode == 2)
             {
                 //不管是否进行智能注入，为了保证再次开启游戏时某些用户自定义特殊码能直接导入，这里强制让游戏ID为最大进程ID
-                GamePID = MaxMemoryProcess.Id;
+                GamePID = MaxMemoryProcess!.Id;
 
                 if (AutoHook == false)
                 {
@@ -373,19 +373,19 @@ namespace TextHookLibrary
                     Regex firstMisakaCodeRegex = FirstCodeRegex();
 
                     //保存的misakacode
-                    var savedMisakaCode = MisakaCodeList[0];
+                    string savedMisakaCode = MisakaCodeList[0] ?? string.Empty;
                     //misakacode第一段
-                    var savedMisakaCode1 = savedMisakaCode.Split(':').ElementAt(0).Substring(1);
+                    string savedMisakaCode1 = savedMisakaCode.Split(':').ElementAt(0).Substring(1);
                     //misakacode第二段
-                    var savedMisakaCode2 = savedMisakaCode.Split(':').ElementAt(1);
+                    string savedMisakaCode2 = savedMisakaCode.Split(':').ElementAt(1);
                     //misakacode第三段
-                    var savedMisakaCode3 = savedMisakaCode.Split(':').ElementAt(2).Substring(0, savedMisakaCode.Split(':').ElementAt(2).Length - 1);
+                    string savedMisakaCode3 = savedMisakaCode.Split(':').ElementAt(2).Substring(0, savedMisakaCode.Split(':').ElementAt(2).Length - 1);
 
                     //取得的misakacode
-                    var obtainedMisakaCode = data.MisakaHookCode;
-                    var obtainedMisakaCode1 = obtainedMisakaCode.Split(':').ElementAt(0).Substring(1);
-                    var obtainedMisakaCode2 = obtainedMisakaCode.Split(':').ElementAt(1);
-                    var obtainedMisakaCode3 = obtainedMisakaCode.Split(':').ElementAt(2).Substring(0, obtainedMisakaCode.Split(':').ElementAt(2).Length - 1);
+                    string obtainedMisakaCode = data.MisakaHookCode;
+                    string obtainedMisakaCode1 = obtainedMisakaCode.Split(':').ElementAt(0).Substring(1);
+                    string obtainedMisakaCode2 = obtainedMisakaCode.Split(':').ElementAt(1);
+                    string obtainedMisakaCode3 = obtainedMisakaCode.Split(':').ElementAt(2).Substring(0, obtainedMisakaCode.Split(':').ElementAt(2).Length - 1);
 
                     //文本去重窗口处理&游戏翻译窗口处理
                     // TODO 寻找更好的Hook Address确定方法，记录匹配的多个misakacode表，将不够匹配的列入排除表
@@ -441,9 +441,10 @@ namespace TextHookLibrary
             var FunList = TextractorFun_Index_List.Keys.ToList();//这个得到的是MisakaCode列表
             for (int i = 0; i < TextractorFun_Index_List.Count; i++)
             {
-                if (UsedHookAddress.Contains(GetHookAddressByMisakaCode(FunList[i])) == false)
+                string hookAddress = GetHookAddressByMisakaCode(FunList[i]) ?? string.Empty;
+                if (!UsedHookAddress.Contains(hookAddress))
                 {
-                    await DetachProcessByHookAddress(pid, GetHookAddressByMisakaCode(FunList[i]));
+                    await DetachProcessByHookAddress(pid, hookAddress);
                 }
             }
         }
@@ -453,7 +454,7 @@ namespace TextHookLibrary
         /// </summary>
         /// <param name="MisakaCode"></param>
         /// <returns></returns>
-        public string GetHookAddressByMisakaCode(string MisakaCode)
+        public string? GetHookAddressByMisakaCode(string MisakaCode)
         {
             return GetMiddleString(MisakaCode, "【", ":", 0);
         }
@@ -567,7 +568,7 @@ namespace TextHookLibrary
 
             try
             {
-                await DetachProcessByHookAddress(pid, GetHookAddressByMisakaCode(misakacode));
+                await DetachProcessByHookAddress(pid, GetHookAddressByMisakaCode(misakacode) ?? string.Empty);
             }
             catch (System.InvalidOperationException)
             {

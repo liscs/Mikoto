@@ -10,8 +10,8 @@ namespace OCRLibrary
 {
     public class BaiduFanyiOCREngine : OCREngine
     {
-        public string appId;
-        public string secretKey;
+        public string? appId;
+        public string? secretKey;
         const string salt = "123456";
         private string langCode = string.Empty;
 

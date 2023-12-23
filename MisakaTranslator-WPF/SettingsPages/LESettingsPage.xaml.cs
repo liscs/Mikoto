@@ -19,7 +19,7 @@ namespace MisakaTranslator_WPF.SettingsPages
         {
             System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog
             {
-                Description = Application.Current.Resources["LESettingsPage_ChooseFilePathHint"].ToString()
+                Description = Application.Current.Resources["LESettingsPage_ChooseFilePathHint"].ToString()!
             };
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {

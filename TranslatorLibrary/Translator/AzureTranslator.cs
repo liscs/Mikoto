@@ -15,9 +15,9 @@ namespace TranslatorLibrary.Translator
         //快速入门：Azure AI 翻译 REST API https://learn.microsoft.com/zh-cn/azure/ai-services/translator/quickstart-text-rest-api?tabs=csharp
         //语言简写列表 https://learn.microsoft.com/zh-CN/azure/ai-services/translator/language-support
 
-        public string secretKey;//Azure翻译API 的密钥
-        public string location;//Azure翻译API 的位置/区域
-        private string errorInfo;//错误信息
+        public string? secretKey;//Azure翻译API 的密钥
+        public string? location;//Azure翻译API 的位置/区域
+        private string errorInfo = string.Empty;//错误信息
         private readonly string endpoint = "https://api.cognitive.microsofttranslator.com";
 
         public string TranslatorDisplayName { get { return Strings.AzureTranslator; } }
@@ -51,7 +51,7 @@ namespace TranslatorLibrary.Translator
                     string result = await response.Content.ReadAsStringAsync();
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        oinfo = JsonSerializer.Deserialize<List<AzureTransOutInfo>>(result, TranslatorCommon.JsonOP).ElementAt(0);
+                        oinfo = JsonSerializer.Deserialize<List<AzureTransOutInfo>>(result, TranslatorCommon.JsonOP)!.ElementAt(0);
                         if (oinfo.translations.Length == 0)
                             return string.Empty;
                         else if (oinfo.translations.Length == 1)

@@ -102,7 +102,7 @@ namespace MisakaTranslator_WPF
             sw.WriteLine("System:" + Environment.OSVersion);
             sw.WriteLine("CurrentTime:" + DateTime.Now.ToString("g"));
             sw.WriteLine("dotNetVersion:" + Environment.Version);
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            Version version = Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
             sw.WriteLine("MisakaTranslatorVersion:" + version.ToString());
 
             if (errorMessage != null)
@@ -126,13 +126,15 @@ namespace MisakaTranslator_WPF
                         sw.WriteLine("ExceptionType:" + "Task Thread");
                         break;
                 }
-
-                sw.WriteLine("ExceptionName:" + e.GetType());
-                sw.WriteLine("ExceptionSource:" + e.Source);
-                sw.WriteLine("ExceptionMessage:" + e.Message);
-                sw.WriteLine("ExceptionStackTrace:" + e.StackTrace);
-                if (e.InnerException != null)
-                    sw.WriteLine("InnerExceptionStackTrace:" + e.InnerException);
+                if (e != null)
+                {
+                    sw.WriteLine("ExceptionName:" + e.GetType());
+                    sw.WriteLine("ExceptionSource:" + e.Source);
+                    sw.WriteLine("ExceptionMessage:" + e.Message);
+                    sw.WriteLine("ExceptionStackTrace:" + e.StackTrace);
+                    if (e.InnerException != null)
+                        sw.WriteLine("InnerExceptionStackTrace:" + e.InnerException);
+                }
             }
 
             sw.Flush();

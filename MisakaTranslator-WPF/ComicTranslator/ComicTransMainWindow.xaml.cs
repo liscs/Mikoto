@@ -24,7 +24,7 @@ namespace MisakaTranslator_WPF.ComicTranslator
 
 
         List<string> ComicImgList;//图片数组
-        string DicPath;//文件夹路径
+        string DicPath = string.Empty;//文件夹路径
         int CurrentPos;//当前指针
 
         private ITranslator? _translator1; //第一翻译源
@@ -35,8 +35,8 @@ namespace MisakaTranslator_WPF.ComicTranslator
         string transRes1;
         string transRes2;
 
-        public string DstLang;
-        public string SrcLang;
+        public string DstLang = string.Empty;
+        public string SrcLang = string.Empty;
 
         System.Windows.Point iniP;
         private ViewModel viewModel;
@@ -227,7 +227,7 @@ namespace MisakaTranslator_WPF.ComicTranslator
             bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
             ImageBrush imageBrush = new ImageBrush();
             ImageSourceConverter imageSourceConverter = new ImageSourceConverter();
-            sourceComicImg.Source = (ImageSource)imageSourceConverter.ConvertFrom(stream);
+            sourceComicImg.Source = imageSourceConverter.ConvertFrom(stream) as ImageSource;
             if (RealsizeTBtn.IsChecked == true)
             {
                 sourceComicImg.Width = bitmap.Width;
@@ -314,7 +314,7 @@ namespace MisakaTranslator_WPF.ComicTranslator
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
-            dialog.Description = Application.Current.Resources["ComicTransMainWindow_ChoosePathHint"].ToString();
+            dialog.Description = Application.Current.Resources["ComicTransMainWindow_ChoosePathHint"].ToString()!;
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 if (string.IsNullOrEmpty(dialog.SelectedPath))
@@ -436,17 +436,17 @@ namespace MisakaTranslator_WPF.ComicTranslator
         /// <summary>
         /// 文字位置
         /// </summary>
-        public string Pos { set; get; }
+        public string Pos { set; get; } = string.Empty;
 
         /// <summary>
         /// 原文
         /// </summary>
-        public string SourceText { set; get; }
+        public string SourceText { set; get; } = string.Empty;
 
         /// <summary>
         /// 译文
         /// </summary>
-        public string TransText { set; get; }
+        public string TransText { set; get; } = string.Empty;
 
     }
 }

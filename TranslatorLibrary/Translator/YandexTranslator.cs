@@ -7,9 +7,9 @@ namespace TranslatorLibrary.Translator
 {
     public class YandexTranslator : ITranslator
     {
-        public string ApiKey;
+        public string? ApiKey;
 
-        private string errorInfo;
+        private string errorInfo = string.Empty;
 
         public string TranslatorDisplayName { get { return Strings.YandexTranslator; } }
 

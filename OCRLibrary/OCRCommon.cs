@@ -27,7 +27,7 @@ namespace OCRLibrary
             return lstOCR;
         }
 
-        public static OCREngine? OCRAuto(string ocr)
+        public static OCREngine OCRAuto(string ocr)
         {
             switch (ocr)
             {
@@ -43,9 +43,8 @@ namespace OCRLibrary
                     return new TesseractCommandLineEngine();
                 case "WindowsOCR":
                     return new WindowsOCREngine();
-                default:
-                    return null;
             }
+            return new WindowsOCREngine();
         }
 
         public static System.Text.Json.JsonSerializerOptions JsonOP = new()

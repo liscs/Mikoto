@@ -9,10 +9,10 @@ namespace MisakaTranslator_WPF.SettingsPages.OCRPages
     {
         static Dictionary<string, string> modeLst = new Dictionary<string, string>()
         {
-            { Application.Current.Resources["TesseractCliSettingsPage_JapaneseHorizontal"].ToString(), "jpn" },
-            { Application.Current.Resources["TesseractCliSettingsPage_JapaneseVertical"].ToString(), "jpn_vert" },
-            { Application.Current.Resources["TesseractCliSettingsPage_English"].ToString(), "eng" },
-            { Application.Current.Resources["TesseractCliSettingsPage_Custom"].ToString(), "custom" }
+            { Application.Current.Resources["TesseractCliSettingsPage_JapaneseHorizontal"].ToString()!, "jpn" },
+            { Application.Current.Resources["TesseractCliSettingsPage_JapaneseVertical"].ToString()!, "jpn_vert" },
+            { Application.Current.Resources["TesseractCliSettingsPage_English"].ToString()!, "eng" },
+            { Application.Current.Resources["TesseractCliSettingsPage_Custom"].ToString()!, "custom" }
         };
         static List<string> itemList = modeLst.Keys.ToList();
         static List<string> valueList = new List<string>();

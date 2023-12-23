@@ -45,28 +45,28 @@ namespace MisakaTranslator_WPF
 
     public static class Common
     {
-        public static IAppSettings AppSettings { get; set; } //应用设置
-        public static IRepeatRepairSettings RepairSettings { get; set; } //去重方法参数
+        public static IAppSettings AppSettings { get; set; } = default!;//应用设置
+        public static IRepeatRepairSettings RepairSettings { get; set; } = default!; //去重方法参数
 
         public static TransMode TransMode { get; set; } //全局使用中的翻译模式 1=hook 2=ocr
 
         public static Guid GameID { get; set; } //全局使用中的游戏ID(数据库)
 
         public static TextHookHandle? TextHooker { get; set; } //全局使用中的Hook对象
-        public static string UsingRepairFunc { get; set; } //全局使用中的去重方法
+        public static string? UsingRepairFunc { get; set; } //全局使用中的去重方法
 
-        public static string UsingSrcLang { get; set; }//全局使用中的源语言
-        public static string UsingDstLang { get; set; } //全局使用中的目标翻译语言
+        public static string UsingSrcLang { get; set; } = "ja";//全局使用中的源语言
+        public static string UsingDstLang { get; set; } = "zh"; //全局使用中的目标翻译语言
 
-        public static OCREngine Ocr { get; set; } //全局使用中的OCR对象
+        public static OCREngine? Ocr { get; set; } //全局使用中的OCR对象
         public static bool IsAllWindowCap { get; set; } //是否全屏截图
         public static IntPtr OCRWinHwnd { get; set; } //全局的OCR的工作窗口
-        public static HotKeyInfo UsingHotKey { get; set; } //全局使用中的触发键信息
+        public static HotKeyInfo UsingHotKey { get; set; } = default!; //全局使用中的触发键信息
         public static int UsingOCRDelay { get; set; } //全局使用中的OCR延时
 
-        public static Window MainWin { get; set; } //全局的主窗口对象
+        public static Window MainWin { get; set; } = default!; //全局的主窗口对象
 
-        public static GlobalHotKey GlobalOCRHotKey { get; set; } //全局OCR热键
+        public static GlobalHotKey GlobalOCRHotKey { get; set; } = default!; //全局OCR热键
 
         /// <summary>
         /// 导出Textractor历史记录，返回是否成功的结果
@@ -121,7 +121,7 @@ namespace MisakaTranslator_WPF
         /// </summary>
         public static void GlobalOCR()
         {
-            BitmapImage img = ImageProcFunc.ImageToBitmapImage(ScreenCapture.GetAllWindow());
+            BitmapImage img = ImageProcFunc.ImageToBitmapImage(ScreenCapture.GetAllWindow()) ?? new();
             ScreenCaptureWindow scw = new ScreenCaptureWindow(img, 2);
             scw.Width = img.Width;
             scw.Height = img.Height;
@@ -149,7 +149,7 @@ namespace MisakaTranslator_WPF
         /// <returns>如果已经是最新或获取更新失败，返回null，否则返回更新信息可直接显示</returns>
         public static async Task<List<string>?> CheckUpdate()
         {
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            Version version = Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
             string currentVersion = version.ToString();
 
             string url = "https://hanmin0822.github.io/MisakaTranslator/index.html";
@@ -247,7 +247,7 @@ namespace MisakaTranslator_WPF
             sw.WriteLine("System:" + Environment.OSVersion);
             sw.WriteLine("CurrentTime:" + DateTime.Now.ToString("g"));
             sw.WriteLine("dotNetVersion:" + Environment.Version);
-            Version version = Assembly.GetExecutingAssembly().GetName().Version??new Version();
+            Version version = Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
             sw.WriteLine("MisakaTranslatorVersion:" + version.ToString());
 
             sw.WriteLine("==============Exception Info================");

@@ -43,7 +43,7 @@ namespace MisakaTranslator_WPF.SettingsPages
 
         private void GrowlEnabledCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            Common.AppSettings.GrowlEnabled = GrowlEnabledCheckBox.IsChecked.Value;
+            Common.AppSettings.GrowlEnabled = GrowlEnabledCheckBox.IsChecked ?? true;
         }
     }
 }

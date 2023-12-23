@@ -14,10 +14,10 @@ namespace OCRLibrary
 {
     public class WindowsOCREngine : OCREngine
     {
-        public string srcLangCode;
-        private OcrEngine rtOcr;
+        public string srcLangCode = string.Empty;
+        private OcrEngine rtOcr = default!;
 
-        public override async Task<string> OCRProcessAsync(Bitmap img)
+        public override async Task<string?> OCRProcessAsync(Bitmap img)
         {
             try
             {

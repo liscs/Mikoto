@@ -107,11 +107,11 @@ namespace MisakaTranslator_WPF.ComicTranslator
         private void ThresholdBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             System.Drawing.Bitmap bm = (System.Drawing.Bitmap)bmp.Clone();
-            System.IO.MemoryStream stream = new System.IO.MemoryStream();
+            MemoryStream stream = new MemoryStream();
             ImageProcFunc.Thresholding(bm, (byte)(int)ThresholdBar.Value).Save(stream, System.Drawing.Imaging.ImageFormat.Png);
             bm.Dispose();
             ImageSourceConverter imageSourceConverter = new ImageSourceConverter();
-            img.Source = (ImageSource)imageSourceConverter.ConvertFrom(stream);
+            img.Source = imageSourceConverter.ConvertFrom(stream) as ImageSource;
         }
 
         private void InkBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

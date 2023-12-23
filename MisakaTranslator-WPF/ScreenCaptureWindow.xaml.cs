@@ -48,7 +48,7 @@ namespace MisakaTranslator_WPF
 
             viewModel = new ViewModel
             {
-                MeaInfo = Application.Current.Resources["ScreenCaptureWindow_Area"].ToString(),
+                MeaInfo = Application.Current.Resources["ScreenCaptureWindow_Area"].ToString()!,
                 InkStrokes = new StrokeCollection(),
             };
 
@@ -113,8 +113,8 @@ namespace MisakaTranslator_WPF
             if (capMode == 2)
             {
                 //全局OCR截图，直接打开结果页面
-                System.Drawing.Bitmap? img = ScreenCapture.GetWindowRectCapture(System.IntPtr.Zero, OCRArea, true);
-                if (img == null) // 没有框选范围
+                System.Drawing.Bitmap img = ScreenCapture.GetWindowRectCapture(System.IntPtr.Zero, OCRArea, true);
+                if (img.Width == 0 && img.Height == 0) // 没有框选范围
                     return;
 
                 var reswin = new GlobalOCRWindow(img);

@@ -8,7 +8,7 @@ namespace TranslatorLibrary.Translator
 {
     public class GoogleCNTranslator : ITranslator
     {
-        private string errorInfo;//错误信息
+        private string errorInfo = string.Empty;//错误信息
 
         public string TranslatorDisplayName { get { return Strings.GoogleCNTranslator; } }
 
@@ -32,7 +32,7 @@ namespace TranslatorLibrary.Translator
             {
                 var ResultHtml = await hc.GetStringAsync(googleTransUrl);
 
-                dynamic TempResult = System.Text.Json.JsonSerializer.Deserialize<dynamic>(ResultHtml, TranslatorCommon.JsonOP);
+                dynamic TempResult = System.Text.Json.JsonSerializer.Deserialize<dynamic>(ResultHtml, TranslatorCommon.JsonOP)!;
 
                 string ResultText = "";
 

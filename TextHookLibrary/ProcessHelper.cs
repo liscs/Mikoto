@@ -56,7 +56,7 @@ namespace TextHookLibrary
             try
             {
                 Process p = Process.GetProcessById(pid);
-                return p.MainModule.FileName;
+                return p.MainModule!.FileName;
             }
             catch (System.ComponentModel.Win32Exception e)
             {
@@ -99,6 +99,10 @@ namespace TextHookLibrary
                     RedirectStandardOutput = true,
                     CreateNoWindow = true
                 });
+                if (p == null)
+                {
+                    throw new InvalidOperationException("Failed to execute ProcessHelperExt.exe\n");
+                }
                 string output = p.StandardOutput.ReadToEnd();
                 if (p.ExitCode != 0)
                 {
@@ -118,7 +122,7 @@ namespace TextHookLibrary
                 {
                     using (p)
                     {
-                        try { l.Add((p.Id, p.MainModule.FileName)); }
+                        try { l.Add((p.Id, p.MainModule!.FileName)); }
                         catch (System.ComponentModel.Win32Exception) { } // 无权限
                         catch (InvalidOperationException) { } // 进程已退出
                     }
@@ -131,6 +135,6 @@ namespace TextHookLibrary
         /// <summary>
         /// internal bool System.Diagnostics.ProcessManager.IsProcessRunning(int pid)
         /// </summary>
-        public static Func<int, bool> IsProcessRunning = (Func<int, bool>)typeof(Process).Assembly.GetType("System.Diagnostics.ProcessManager").GetMethod("IsProcessRunning", new[] { typeof(int) }).CreateDelegate(typeof(Func<int, bool>));
+        public static Func<int, bool> IsProcessRunning = (Func<int, bool>)typeof(Process).Assembly.GetType("System.Diagnostics.ProcessManager")!.GetMethod("IsProcessRunning", new[] { typeof(int) })!.CreateDelegate(typeof(Func<int, bool>));
     }
 }

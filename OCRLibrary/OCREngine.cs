@@ -6,11 +6,11 @@ namespace OCRLibrary
 {
     public abstract class OCREngine
     {
-        protected string errorInfo;
+        protected string errorInfo = string.Empty;
         private IntPtr WinHandle;
         private Rectangle OCRArea;
         private bool isAllWin;
-        private string imgProc;
+        private string imgProc = string.Empty;
         /// <summary>
         /// OCR处理，将图片上的文字提取得到一句话
         /// </summary>
@@ -24,8 +24,8 @@ namespace OCRLibrary
         /// <returns>返回识别结果，如果为空可通过GetLastError得到错误提示</returns>
         public Task<string?>? OCRProcessAsync()
         {
-            Bitmap? img = ScreenCapture.GetWindowRectCapture(WinHandle, OCRArea, isAllWin);
-            if (img == null)
+            Bitmap img = ScreenCapture.GetWindowRectCapture(WinHandle, OCRArea, isAllWin);
+            if (img.Width == 0 && img.Height == 0)
             {
                 errorInfo = "未设置截图区域";
                 return null;
@@ -51,7 +51,7 @@ namespace OCRLibrary
         /// 得到OCR区域截图
         /// </summary>
         /// <returns></returns>
-        public Bitmap? GetOCRAreaCap()
+        public Bitmap GetOCRAreaCap()
         {
             return ScreenCapture.GetWindowRectCapture(WinHandle, OCRArea, isAllWin);
         }

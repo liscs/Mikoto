@@ -19,8 +19,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
         {
             System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog
             {
-                Description = Application.Current.Resources["KingsoftFAITTransSettingsPage_ChoosePathHint"]
-                .ToString()
+                Description = Application.Current.Resources["KingsoftFAITTransSettingsPage_ChoosePathHint"].ToString()!
             };
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {

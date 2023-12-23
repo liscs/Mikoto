@@ -14,7 +14,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
     {
         private Dictionary<string, int> lstProcess;
         private int GamePid;
-        private List<System.Diagnostics.Process> SameNameGameProcessList=new();
+        private List<System.Diagnostics.Process> SameNameGameProcessList = new();
 
         public ChooseGamePage()
         {
@@ -44,7 +44,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                     Common.TextHooker = new TextHookHandle(SameNameGameProcessList);
                 }
 
-                if (!Common.TextHooker.Init(x64GameCheckBox.IsChecked??false ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
+                if (!Common.TextHooker.Init(x64GameCheckBox.IsChecked ?? false ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
                 {
                     HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
                     return;
@@ -52,12 +52,12 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
                 Common.GameID = Guid.Empty;
                 GameInfo targetGame;
-                string filepath = ProcessHelper.FindProcessPath(GamePid, (bool)x64GameCheckBox.IsChecked);
+                string filepath = ProcessHelper.FindProcessPath(GamePid, x64GameCheckBox.IsChecked ?? false);
                 if (filepath != "")
                 {
                     targetGame = GameHelper.GetGameByPath(filepath);
                     Common.GameID = targetGame.GameID;
-                    targetGame.Isx64 = (bool)x64GameCheckBox.IsChecked;
+                    targetGame.Isx64 = x64GameCheckBox.IsChecked ?? false;
                     GameHelper.SaveGameInfo(targetGame);
                 }
 

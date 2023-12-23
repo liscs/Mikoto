@@ -16,8 +16,8 @@ namespace MisakaTranslator_WPF
 
             List<string> wordtype =
             [
-                Application.Current.Resources["AddOptWindow_PersonName"].ToString(),
-                Application.Current.Resources["AddOptWindow_PlaceName"].ToString(),
+                Application.Current.Resources["AddOptWindow_PersonName"].ToString()!,
+                Application.Current.Resources["AddOptWindow_PlaceName"].ToString()!,
             ];
 
             srcText.Text = src;

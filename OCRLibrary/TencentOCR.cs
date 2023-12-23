@@ -13,9 +13,9 @@ namespace OCRLibrary
 {
     public class TencentOCR : OCREngine
     {
-        public string SecretId = string.Empty;
-        public string SecretKey;
-        private string? langCode;
+        public string? SecretId;
+        public string? SecretKey;
+        private string langCode = string.Empty;
         static int SessionUuid = 0;
 
         public override async Task<string?> OCRProcessAsync(Bitmap img)
@@ -45,7 +45,7 @@ namespace OCRLibrary
                 .Append("&Timestamp=").Append(ts)
                 .Append("&Version=2018-03-21");
 
-            var hmac = new HMACSHA1(Encoding.UTF8.GetBytes(SecretKey));
+            var hmac = new HMACSHA1(Encoding.UTF8.GetBytes(SecretKey ?? string.Empty));
             var hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes("GETtmt.tencentcloudapi.com/?" + sb.ToString()));
             hmac.Dispose();
 
@@ -83,7 +83,7 @@ namespace OCRLibrary
                         return null;
                     }
 
-                    return String.Join("\n", result.ImageRecord?.Value.Select(x => x.TargetText));
+                    return String.Join("\n", result.ImageRecord?.Value.Select(x => x.TargetText)!);
                 }
             }
             catch (WebException ex)

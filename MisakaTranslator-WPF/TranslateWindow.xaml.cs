@@ -33,7 +33,7 @@ namespace MisakaTranslator_WPF
     /// </summary>
     public partial class TranslateWindow
     {
-        public DispatcherTimer dtimer;//定时器 定时将窗口置顶
+        public DispatcherTimer dtimer = default!;//定时器 定时将窗口置顶
 
         private ArtificialTransHelper _artificialTransHelper;
 
@@ -43,9 +43,9 @@ namespace MisakaTranslator_WPF
         private ITranslator? _translator1; //第一翻译源
         private ITranslator? _translator2; //第二翻译源
 
-        private string _currentsrcText; //当前源文本内容
+        private string _currentsrcText = string.Empty; //当前源文本内容
 
-        public string SourceTextFont; //源文本区域字体
+        public string SourceTextFont = string.Empty; //源文本区域字体
         public int SourceTextFontSize; //源文本区域字体大小
 
         private Queue<string> _gameTextHistory; //历史文本
@@ -60,7 +60,7 @@ namespace MisakaTranslator_WPF
         private ITTS? _TTS;
 
         private HWND winHandle;//窗口句柄，用于设置活动窗口，以达到全屏状态下总在最前的目的
-        private TransWinSettingsWindow transWinSettingsWindow;
+        private TransWinSettingsWindow transWinSettingsWindow = default!;
 
         //Effect 疑似有内存泄露 https://github.com/dotnet/wpf/issues/6782 use frozen
         private readonly DropShadowEffect dropShadowEffect = new();
@@ -104,14 +104,14 @@ namespace MisakaTranslator_WPF
 
             if (Common.TransMode == TransMode.Hook)
             {
-                Common.TextHooker.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
+                Common.TextHooker!.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
             }
             else if (Common.TransMode == TransMode.Ocr)
             {
                 MouseKeyboardHook_Init();
             }
 
-            Dispatcher.BeginInvoke(() =>
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 transWinSettingsWindow = new TransWinSettingsWindow(this);
             });
@@ -233,10 +233,10 @@ namespace MisakaTranslator_WPF
             SecondTransText.Stroke = Common.AppSettings.TF_SecondWhiteStrokeIsChecked ? Brushes.White : Brushes.Black;
 
             BrushConverter brushConverter = new();
-            FirstTransText.Fill = (Brush)brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor);
-            SecondTransText.Fill = (Brush)brushConverter.ConvertFromString(Common.AppSettings.TF_SecondTransTextColor);
+            FirstTransText.Fill = brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor) as Brush;
+            SecondTransText.Fill = brushConverter.ConvertFromString(Common.AppSettings.TF_SecondTransTextColor) as Brush;
 
-            this.Background = (Brush)brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor);
+            this.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor) as Brush;
 
             if (int.Parse(Common.AppSettings.TF_LocX) != -1 && int.Parse(Common.AppSettings.TF_SizeW) != 0)
             {
@@ -366,7 +366,7 @@ namespace MisakaTranslator_WPF
                 if (!isRenew)
                     await Task.Delay(Common.UsingOCRDelay);
 
-                srcText = await Common.Ocr.OCRProcessAsync();
+                srcText = await Common.Ocr!.OCRProcessAsync()!;
 
                 if (!string.IsNullOrEmpty(srcText))
                     break;
@@ -387,14 +387,14 @@ namespace MisakaTranslator_WPF
                     TranslateText(srcText, isRenew);
                 }
             }
-            else if (!string.IsNullOrEmpty(Common.Ocr.GetLastError()))
+            else if (!string.IsNullOrEmpty(Common.Ocr!.GetLastError()))
                 Growl.WarningGlobal(Common.AppSettings.OCRsource + " Error: " + Common.Ocr.GetLastError());
             else
                 Growl.WarningGlobal(Application.Current.Resources["TranslateWindow_OCREmpty"].ToString());
 
             IsOCRingFlag = false;
         }
-        DictResWindow _dictResWindow;
+        DictResWindow? _dictResWindow;
         private void DictArea_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Controls.TextBox? textBox = sender as System.Windows.Controls.TextBox;
@@ -772,7 +772,7 @@ namespace MisakaTranslator_WPF
         {
             if (Common.TransMode == TransMode.Hook)
             {
-                if (Common.TextHooker.Pause)
+                if (Common.TextHooker!.Pause)
                 {
                     PauseButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Pause);
                 }
@@ -912,14 +912,14 @@ namespace MisakaTranslator_WPF
 
         private void Lock_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (!(bool)(sender as ToggleButton).IsChecked)
+            if (!((sender as ToggleButton)?.IsChecked ?? false))
             {
                 this.Background = new SolidColorBrush(Colors.Transparent);
             }
             else
             {
                 BrushConverter brushConverter = new();
-                this.Background = (Brush)brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor);
+                this.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor) as Brush;
             }
         }
 

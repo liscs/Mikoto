@@ -11,9 +11,9 @@ namespace TranslatorLibrary.Translator
     public class TencentOldTranslator : ITranslator
     {
 
-        private string errorInfo;//错误信息
-        public string SecretId;//腾讯旧版API SecretId
-        public string SecretKey;//腾讯旧版API SecretKey
+        private string errorInfo = string.Empty;//错误信息
+        public string? SecretId;//腾讯旧版API SecretId
+        public string? SecretKey;//腾讯旧版API SecretKey
 
         public string TranslatorDisplayName { get { return Strings.TencentOldTranslator; } }
 
@@ -49,7 +49,7 @@ namespace TranslatorLibrary.Translator
                 .Append("&Version=2018-03-21");
             string req = sb.ToString();
 
-            HMACSHA1 hmac = new HMACSHA1(Encoding.UTF8.GetBytes(SecretKey));
+            HMACSHA1 hmac = new HMACSHA1(Encoding.UTF8.GetBytes(SecretKey!));
             byte[] data = Encoding.UTF8.GetBytes("GETtmt.tencentcloudapi.com/?" + req);
             var result = hmac.ComputeHash(data);
             hmac.Dispose();

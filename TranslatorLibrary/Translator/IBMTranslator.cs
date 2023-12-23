@@ -10,10 +10,10 @@ namespace TranslatorLibrary.Translator
 {
     public class IBMTranslator : ITranslator
     {
-        public string ApiKey;
-        public string URL;
+        public string? ApiKey;
+        public string? URL;
 
-        private string errorInfo;
+        private string errorInfo = string.Empty;
 
         public string TranslatorDisplayName { get { return Strings.IBMTranslator; } }
 
@@ -26,7 +26,7 @@ namespace TranslatorLibrary.Translator
         {
             if (desLang != "en" && srcLang != "en")
             {
-                sourceText = await TranslateAsync(sourceText, "en", srcLang)??string.Empty;
+                sourceText = await TranslateAsync(sourceText, "en", srcLang) ?? string.Empty;
                 if (string.IsNullOrEmpty(sourceText))
                 {
                     return null;
@@ -44,7 +44,7 @@ namespace TranslatorLibrary.Translator
                 {"model_id", srcLang + "-" + desLang}
             });
             req.Content = new StringContent(jsonParam, null, "application/json");
-            req.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(ApiKey)));
+            req.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(ApiKey ?? string.Empty)));
 
             try
             {

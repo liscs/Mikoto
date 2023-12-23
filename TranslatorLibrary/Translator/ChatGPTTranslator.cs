@@ -17,9 +17,9 @@ namespace TranslatorLibrary.Translator
         public static readonly string DOCUMENT_URL = "https://platform.openai.com/docs/introduction/overview";
         private string openai_model = "gpt-3.5-turbo";
 
-        private string apiKey; //ChatGPT翻译API的密钥
-        private string apiUrl; //ChatGPT翻译API的URL
-        private string errorInfo; //错误信息
+        private string? apiKey; //ChatGPT翻译API的密钥
+        private string? apiUrl; //ChatGPT翻译API的URL
+        private string errorInfo = string.Empty; //错误信息
 
         public string TranslatorDisplayName { get { return Strings.ChatGPTTranslator; } }
 

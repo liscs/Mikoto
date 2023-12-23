@@ -37,7 +37,7 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
 
         private void AllWinCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            if (AllWinCheckBox.IsChecked??false)
+            if (AllWinCheckBox.IsChecked ?? false)
             {
                 ChooseWinBtn.Visibility = Visibility.Hidden;
                 WinNameTag.Visibility = Visibility.Hidden;
@@ -55,7 +55,7 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
 
             if (IsChoosingWin == false)
             {
-                bool r = hook.Start(Process.GetCurrentProcess().MainModule.ModuleName);
+                bool r = hook.Start(Process.GetCurrentProcess().MainModule!.ModuleName);
                 if (r)
                 {
                     IsChoosingWin = true;
@@ -96,9 +96,8 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
         private void RenewAreaBtn_Click(object? sender, RoutedEventArgs? e)
         {
             OCRArea = ScreenCaptureWindow.OCRArea;
-            Common.Ocr.SetOCRArea(SelectedHwnd, OCRArea, isAllWin);
-            OCRAreaPicBox.Source = ImageProcFunc.ImageToBitmapImage(
-                Common.Ocr.GetOCRAreaCap());
+            Common.Ocr!.SetOCRArea(SelectedHwnd, OCRArea, isAllWin);
+            OCRAreaPicBox.Source = ImageProcFunc.ImageToBitmapImage(Common.Ocr.GetOCRAreaCap());
 
             GC.Collect();
         }
@@ -114,11 +113,11 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
 
             if (isAllWin)
             {
-                img = ImageProcFunc.ImageToBitmapImage(ScreenCapture.GetAllWindow());
+                img = ImageProcFunc.ImageToBitmapImage(ScreenCapture.GetAllWindow())!;
             }
             else
             {
-                img = ImageProcFunc.ImageToBitmapImage(ScreenCapture.GetWindowCapture(SelectedHwnd));
+                img = ImageProcFunc.ImageToBitmapImage(ScreenCapture.GetWindowCapture(SelectedHwnd))!;
             }
 
             ScreenCaptureWindow scw = new ScreenCaptureWindow(img);
@@ -137,7 +136,7 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
         {
             Common.IsAllWindowCap = isAllWin;
             Common.OCRWinHwnd = SelectedHwnd;
-            Common.Ocr.SetOCRArea(SelectedHwnd, OCRArea, isAllWin);
+            Common.Ocr!.SetOCRArea(SelectedHwnd, OCRArea, isAllWin);
 
             //使用路由事件机制通知窗口来完成下一步操作
             PageChangeRoutedEventArgs args = new PageChangeRoutedEventArgs(PageChange.PageChangeRoutedEvent, this);

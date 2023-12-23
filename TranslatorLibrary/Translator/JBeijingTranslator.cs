@@ -36,7 +36,7 @@ namespace TranslatorLibrary.Translator
             ref int bufferCapacity);
 
         public string JBJCTDllPath = string.Empty;//DLL路径
-        private string errorInfo;//错误信息
+        private string errorInfo = string.Empty;//错误信息
 
         public string TranslatorDisplayName { get { return Strings.JBeijingTranslator; } }
 

@@ -10,17 +10,17 @@ namespace MisakaTranslator_WPF.GuidePages
         /// <summary>
         /// 下一页的XAML地址
         /// </summary>
-        public string XamlPath { get; set; }
+        public string XamlPath { get; set; } = string.Empty;
 
         /// <summary>
         /// 部分方法需要用到的额外参数
         /// </summary>
-        public object ExtraArgs;
+        public object? ExtraArgs;
     }
 
     public class PageChange
     {
-        public string XamlPath;
+        public string? XamlPath;
 
         //声明和注册路由事件
         public static readonly RoutedEvent PageChangeRoutedEvent =

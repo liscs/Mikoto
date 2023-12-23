@@ -9,14 +9,14 @@ namespace OCRLibrary
 {
     public class TesseractCommandLineEngine : OCREngine
     {
-        private string path;
-        private string args;
+        private string path = string.Empty;
+        private string? args;
 
         public override Task<string?> OCRProcessAsync(Bitmap img)
         {
             try
             {
-                Process p = Process.Start(new ProcessStartInfo()
+                Process? p = Process.Start(new ProcessStartInfo()
                 {
                     FileName = path,
                     Arguments = "- - " + args,
@@ -27,6 +27,11 @@ namespace OCRLibrary
                     RedirectStandardError = true,
                     StandardOutputEncoding = Encoding.UTF8
                 });
+                if (p == null)
+                {
+                    errorInfo = "Unable to Start TesseractCommandLine";
+                    return Task.FromResult<string?>(null);
+                }
                 var imgdata = ImageProcFunc.Image2Bytes(img);
                 p.StandardInput.BaseStream.Write(imgdata, 0, imgdata.Length);
                 p.StandardInput.Close();

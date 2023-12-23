@@ -66,11 +66,11 @@ namespace TextHookLibrary
     {
         //这个序号可以直接用于ListView
         public int Index { get; set; }
-        public TextHookData Data { get; set; }
+        public TextHookData Data { get; set; } = new();
     }
 
     public class SolvedDataReceivedEventArgs : EventArgs
     {
-        public TextHookData Data { get; set; }
+        public TextHookData Data { get; set; } = new();
     }
 }

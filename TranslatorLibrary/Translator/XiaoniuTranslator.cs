@@ -8,8 +8,8 @@ namespace TranslatorLibrary.Translator
 {
     public class XiaoniuTranslator : ITranslator
     {
-        public string apiKey;//小牛翻译API 的APIKEY
-        private string errorInfo;//错误信息
+        public string? apiKey;//小牛翻译API 的APIKEY
+        private string errorInfo = string.Empty;//错误信息
 
         public string TranslatorDisplayName { get { return Strings.XiaoniuTranslator; } }
 

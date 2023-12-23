@@ -134,7 +134,7 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
 
         private void VoiceLocalComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateVoiceNameComboBox(e.AddedItems[0].ToString());
+            UpdateVoiceNameComboBox(e.AddedItems[0]?.ToString());
         }
     }
 }

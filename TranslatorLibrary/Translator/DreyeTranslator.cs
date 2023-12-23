@@ -45,8 +45,8 @@ namespace TranslatorLibrary.Translator
             int dat_index
             );
 
-        public string FilePath;//文件路径
-        private string errorInfo;//错误信息
+        public string FilePath = string.Empty;//文件路径
+        private string errorInfo = string.Empty;//错误信息
 
         public string TranslatorDisplayName { get { return Strings.DreyeTranslator; } }
 

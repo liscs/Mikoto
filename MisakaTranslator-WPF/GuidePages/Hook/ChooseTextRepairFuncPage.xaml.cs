@@ -23,7 +23,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             RepairFuncCombox.ItemsSource = lstRepairFun;
             RepairFuncCombox.SelectedIndex = 0;
 
-            Common.TextHooker.MeetHookAddressMessageReceived += FilterAndDisplayData;
+            Common.TextHooker!.MeetHookAddressMessageReceived += FilterAndDisplayData;
         }
 
         public void FilterAndDisplayData(object sender, SolvedDataReceivedEventArgs e)
@@ -31,8 +31,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 sourceTextBox.Text = e.Data.Data;
-                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]], sourceTextBox.Text);
-
+                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]], sourceTextBox.Text ?? string.Empty);
             });
         }
 
@@ -56,8 +55,10 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.TextHooker.MeetHookAddressMessageReceived -= FilterAndDisplayData;
-
+            if (Common.TextHooker != null)
+            {
+                Common.TextHooker.MeetHookAddressMessageReceived -= FilterAndDisplayData;
+            }
             Common.UsingRepairFunc = TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]];
 
             //写入去重方法

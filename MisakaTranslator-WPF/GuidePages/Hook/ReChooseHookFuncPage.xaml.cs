@@ -20,8 +20,8 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             InitializeComponent();
             HookFunListView.ItemsSource = lstData;
             sum = 0;
-            Common.TextHooker.MeetHookCodeMessageReceived += FilterAndDisplayData;
-            Common.TextHooker.StartHook(Common.AppSettings.AutoHook);
+            Common.TextHooker!.MeetHookCodeMessageReceived += FilterAndDisplayData;
+            _ = Common.TextHooker.StartHook(Common.AppSettings.AutoHook);
             var task_1 = System.Threading.Tasks.Task.Run(async delegate
             {
                 await System.Threading.Tasks.Task.Delay(3000);
@@ -51,7 +51,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
             if (HookFunListView.SelectedIndex != -1)
             {
                 //先关闭对本窗口的输出
-                Common.TextHooker.MeetHookCodeMessageReceived -= FilterAndDisplayData;
+                Common.TextHooker!.MeetHookCodeMessageReceived -= FilterAndDisplayData;
 
                 Common.TextHooker.MisakaCodeList.Add(lstData[HookFunListView.SelectedIndex].MisakaHookCode);
 

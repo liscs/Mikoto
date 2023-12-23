@@ -9,8 +9,8 @@ namespace OCRLibrary
 {
     public class TesseractOCREngine : OCREngine
     {
-        private string srcLangCode;  //OCR识别语言 jpn=日语 eng=英语
-        private Engine engine;
+        private string srcLangCode = string.Empty;  //OCR识别语言 jpn=日语 eng=英语
+        private Engine engine = default!;
 
         public override Task<string?> OCRProcessAsync(Bitmap img)
         {

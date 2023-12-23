@@ -40,7 +40,7 @@ namespace KeyboardMouseHookLibrary
 
     public class GlobalHook
     {
-        public string moduleName;//设置的模块名用于确认句柄
+        public string moduleName = string.Empty;//设置的模块名用于确认句柄
 
         public GlobalHook()
         {
@@ -52,10 +52,10 @@ namespace KeyboardMouseHookLibrary
             Stop();
         }
 
-        public event MouseEventHandler OnMouseActivity;
-        public event KeyEventHandler KeyDown;
-        public event KeyPressEventHandler KeyPress;
-        public event KeyEventHandler KeyUp;
+        public event MouseEventHandler? OnMouseActivity;
+        public event KeyEventHandler? KeyDown;
+        public event KeyPressEventHandler? KeyPress;
+        public event KeyEventHandler? KeyUp;
 
         /// <summary>
         /// 定义鼠标钩子句柄.
@@ -69,11 +69,11 @@ namespace KeyboardMouseHookLibrary
         /// <summary>
         /// 定义鼠标处理过程的委托对象
         /// </summary>
-        HOOKPROC MouseHookProcedure;
+        HOOKPROC? MouseHookProcedure;
         /// <summary>
         /// 键盘处理过程的委托对象
         /// </summary>
-        HOOKPROC KeyboardHookProcedure;
+        HOOKPROC? KeyboardHookProcedure;
 
         public bool Start(string _moduleName)
         {
@@ -184,8 +184,7 @@ namespace KeyboardMouseHookLibrary
                     else clickCount = 1;
 
                 //Marshall the data from callback.
-                MOUSEHOOKSTRUCT MyMouseHookStruct =
-                    (MOUSEHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MOUSEHOOKSTRUCT));
+                MOUSEHOOKSTRUCT MyMouseHookStruct = (MOUSEHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MOUSEHOOKSTRUCT))!;
                 MouseEventArgs e = new MouseEventArgs(
                     button,
                     clickCount,
@@ -204,9 +203,7 @@ namespace KeyboardMouseHookLibrary
             // it was ok and someone listens to events
             if ((nCode >= 0) && (KeyDown != null || KeyUp != null || KeyPress != null))
             {
-                KBDLLHOOKSTRUCT MyKeyboardHookStruct =
-                    (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam,
-                    typeof(KBDLLHOOKSTRUCT));
+                KBDLLHOOKSTRUCT MyKeyboardHookStruct = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(KBDLLHOOKSTRUCT))!;
                 // raise KeyDown
                 if (KeyDown != null && (wParam == PInvoke.WM_KEYDOWN || wParam == PInvoke.WM_SYSKEYDOWN))
                 {

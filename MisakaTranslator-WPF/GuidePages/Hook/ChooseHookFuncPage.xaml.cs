@@ -30,7 +30,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
             HookFunListView.ItemsSource = lstData;
             sum = 0;
-            Common.TextHooker.HookMessageReceived += FilterAndDisplayData;
+            Common.TextHooker!.HookMessageReceived += FilterAndDisplayData;
             _ = Common.TextHooker.StartHook(Convert.ToBoolean(Common.AppSettings.AutoHook));
         }
 
@@ -70,7 +70,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
                 int pid = lstData[HookFunListView.SelectedIndex].GamePID;
 
                 //先关闭对本窗口的输出
-                Common.TextHooker.HookMessageReceived -= FilterAndDisplayData;
+                Common.TextHooker!.HookMessageReceived -= FilterAndDisplayData;
 
                 //先要将需要用到的方法注明，再进行后续卸载操作
                 Common.TextHooker.HookCodeList.Add(lstData[HookFunListView.SelectedIndex].HookCode);
@@ -89,7 +89,8 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
 
                 if (Common.GameID != Guid.Empty)
                 {
-                    GameInfo targetGame = GameHelper.GetUncompletedGameById(Common.GameID);
+                    GameInfo? targetGame = GameHelper.GetUncompletedGameById(Common.GameID);
+                    if (targetGame == null) { throw new InvalidOperationException("Uncompleted GameInfo not Found!"); }
                     targetGame.TransMode = 1;
                     targetGame.HookCode = lstData[HookFunListView.SelectedIndex].HookCode;
                     targetGame.MisakaHookCode = lstData[HookFunListView.SelectedIndex].MisakaHookCode;
@@ -149,7 +150,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
         {
             if (PIDTextBox.Text != "" && HookCodeTextBox.Text != "" && int.TryParse(PIDTextBox.Text, out int pid))
             {
-                _ = Common.TextHooker.AttachProcessByHookCode(pid, HookCodeTextBox.Text);
+                _ = Common.TextHooker!.AttachProcessByHookCode(pid, HookCodeTextBox.Text);
                 LastCustomHookCode = HookCodeTextBox.Text;
                 InputDrawer.IsOpen = false;
                 HandyControl.Controls.Growl.Info(Application.Current.Resources["ChooseHookFuncPage_HookApplyHint"].ToString());
@@ -169,7 +170,7 @@ namespace MisakaTranslator_WPF.GuidePages.Hook
         {
             if (e.Key == Key.Escape)
             {
-                Common.TextHooker.HookMessageReceived -= FilterAndDisplayData;
+                Common.TextHooker!.HookMessageReceived -= FilterAndDisplayData;
                 HandyControl.Controls.Growl.Warning(Application.Current.Resources["ChooseHookFuncPage_PauseHint"].ToString());
             }
 

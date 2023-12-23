@@ -20,8 +20,8 @@ namespace TranslatorLibrary.Translator
 
         private static readonly string TRANSLATE_API_URL = "https://api-free.deepl.com/v2/translate";
 
-        private string secretKey; //DeepL翻译API的秘钥
-        private string errorInfo; //错误信息
+        private string? secretKey; //DeepL翻译API的秘钥
+        private string errorInfo = string.Empty; //错误信息
 
         public string TranslatorDisplayName { get { return Strings.DeepLTranslator; } }
 

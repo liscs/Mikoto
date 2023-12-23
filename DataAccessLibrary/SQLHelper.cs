@@ -79,7 +79,7 @@ namespace DataAccessLibrary
                             {
                                 for (var i = 0; i < columns; i++)
                                 {
-                                    ret.Add(myReader[i].ToString());
+                                    ret.Add(myReader[i].ToString() ?? string.Empty);
                                 }
                             }
                             return ret;
@@ -118,7 +118,7 @@ namespace DataAccessLibrary
                                 var lst = new List<string>();
                                 for (var i = 0; i < columns; i++)
                                 {
-                                    lst.Add(myReader[i].ToString());
+                                    lst.Add(myReader[i].ToString() ?? string.Empty);
                                 }
                                 ret.Add(lst);
                             }

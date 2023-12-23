@@ -25,7 +25,7 @@ namespace MisakaTranslator_WPF
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            ArtificialTransHelper ath = new ArtificialTransHelper(Convert.ToString(Common.GameID));
+            ArtificialTransHelper ath = new ArtificialTransHelper(Common.GameID.ToString());
 
             bool res = ath.UpdateTrans(srcText.Text, transText.Text);
             if (res)

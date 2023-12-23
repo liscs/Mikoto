@@ -15,8 +15,8 @@ namespace TranslatorLibrary.Translator
     public class YoudaoZhiyun : ITranslator
     {
         private static readonly string TRANSLATE_API_URL = "https://openapi.youdao.com/api";
-        private string appId, appSecret;
-        private string errorInfo;
+        private string? appId, appSecret;
+        private string errorInfo = string.Empty;
 
         public string TranslatorDisplayName { get { return Strings.YoudaoZhiyun; } }
 
@@ -38,7 +38,7 @@ namespace TranslatorLibrary.Translator
             string sign = BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(appId + input + salt + curtime + appSecret))).Replace("-", "").ToLower();
             sha.Dispose();
 
-            Dictionary<string, string> dic = new Dictionary<string, string>
+            Dictionary<string, string?> dic = new Dictionary<string, string?>
             {
                 { "from", srcLang },
                 { "to", desLang },
@@ -128,7 +128,7 @@ namespace TranslatorLibrary.Translator
             return "https://ai.youdao.com/DOCSIRMA/html/自然语言翻译/API文档/文本翻译服务/文本翻译服务-API文档.html";
         }
 
-        private string BuildPayload(Dictionary<string, string> dic)
+        private string BuildPayload(Dictionary<string, string?> dic)
         {
             StringBuilder builder = new StringBuilder();
             int i = 0;

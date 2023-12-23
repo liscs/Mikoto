@@ -13,9 +13,9 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
         GlobalHook? hook;
         List<string> lstHotKeySource = new List<string>()
         {
-            Application.Current.Resources["ChooseHotKeyPage_List_Keyboard"].ToString(),
-            Application.Current.Resources["ChooseHotKeyPage_List_MouseL"].ToString(),
-            Application.Current.Resources["ChooseHotKeyPage_List_MouseR"].ToString()
+            Application.Current.Resources["ChooseHotKeyPage_List_Keyboard"].ToString()!,
+            Application.Current.Resources["ChooseHotKeyPage_List_MouseL"].ToString()!,
+            Application.Current.Resources["ChooseHotKeyPage_List_MouseR"].ToString()!
         };
 
         HotKeyInfo HotKey;
@@ -33,7 +33,7 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
         /// <summary>
         /// 键盘点击事件
         /// </summary>
-        void Hook_OnKeyBoardActivity(object sender, System.Windows.Forms.KeyEventArgs e)
+        void Hook_OnKeyBoardActivity(object? sender, System.Windows.Forms.KeyEventArgs e)
         {
             HotKey.IsMouse = false;
             HotKey.KeyCode = e.KeyCode;
@@ -55,8 +55,7 @@ namespace MisakaTranslator_WPF.GuidePages.OCR
                     hook.KeyDown += Hook_OnKeyBoardActivity;
                 }
             }
-
-            bool r = hook.Start(System.Diagnostics.Process.GetCurrentProcess().MainModule.ModuleName);
+            bool r = hook!.Start(System.Diagnostics.Process.GetCurrentProcess().MainModule!.ModuleName);
             if (r)
             {
                 WaitHotKeyDrawer.IsOpen = true;
