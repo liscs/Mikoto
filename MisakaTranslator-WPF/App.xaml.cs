@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -39,11 +38,24 @@ namespace MisakaTranslator_WPF
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             MisakaTranslator_WPF.MainWindow.Instance.CloseNotifyIcon();
-            string fn = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-            PrintErrorMessageToFile(fn, e.Exception, 0);
+            string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
+            PrintErrorMessageToFile(nowTime, e.Exception, 0);
             DoHookCheck();
-            MessageBox.Show($"{Current.Resources["App_Global_ErrorHint_left"]}{fn}{Current.Resources["App_Global_ErrorHint_right"]}"
+            ShowExceptionMessageBox(e.Exception, nowTime);
+        }
+
+        private static void ShowExceptionMessageBox(object e, string nowTime)
+        {
+            if (e is Exception ex)
+            {
+                MessageBox.Show($"{Current.Resources["App_Global_ErrorHint_left"]}{nowTime}{Current.Resources["App_Global_ErrorHint_right"]}{Environment.NewLine}{ex.Message}{Environment.NewLine}{ex.StackTrace}"
+                    , Current.Resources["MessageBox_Error"].ToString());
+            }
+            else
+            {
+                MessageBox.Show($"{Current.Resources["App_Global_ErrorHint_left"]}{nowTime}{Current.Resources["App_Global_ErrorHint_right"]}{Environment.NewLine}{e}"
                 , Current.Resources["MessageBox_Error"].ToString());
+            }
         }
 
         /// <summary>
@@ -52,19 +64,19 @@ namespace MisakaTranslator_WPF
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             MisakaTranslator_WPF.MainWindow.Instance.CloseNotifyIcon();
-            string fn = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
+            string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
             if (e.ExceptionObject is Exception exception)
             {
-                PrintErrorMessageToFile(fn, exception, 1);
+                PrintErrorMessageToFile(nowTime, exception, 1);
             }
             else
             {
-                PrintErrorMessageToFile(fn, null, 1, e.ExceptionObject.ToString());
+                PrintErrorMessageToFile(nowTime, null, 1, e.ExceptionObject.ToString());
             }
 
             DoHookCheck();
-            MessageBox.Show($"{Current.Resources["App_Global_ErrorHint_left"]}{fn}{Current.Resources["App_Global_ErrorHint_right"]}"
-                , Current.Resources["MessageBox_Error"].ToString());
+            ShowExceptionMessageBox((e.ExceptionObject as Exception) ?? e.ExceptionObject, nowTime);
+
         }
 
         /// <summary>
@@ -73,12 +85,12 @@ namespace MisakaTranslator_WPF
         private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
             MisakaTranslator_WPF.MainWindow.Instance.CloseNotifyIcon();
-            string fn = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-            PrintErrorMessageToFile(fn, e.Exception, 2);
+            string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
+            PrintErrorMessageToFile(nowTime, e.Exception, 2);
 
             DoHookCheck();
-            MessageBox.Show($"{Current.Resources["App_Global_ErrorHint_left"]}{fn}{Current.Resources["App_Global_ErrorHint_right"]}"
-                , Current.Resources["MessageBox_Error"].ToString());
+            ShowExceptionMessageBox(e.Exception, nowTime);
+
         }
 
         /// <summary>

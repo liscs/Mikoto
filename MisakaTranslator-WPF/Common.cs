@@ -229,36 +229,5 @@ namespace MisakaTranslator_WPF
             }
         }
 
-        /// <summary>
-        /// 写异常Log
-        /// </summary>
-        /// <param name="exception"></param>
-        public static void WhiteExceptionLog(Exception exception)
-        {
-            if (!Directory.Exists($"{Environment.CurrentDirectory}\\data\\logs"))
-            {
-                Directory.CreateDirectory($"{Environment.CurrentDirectory}\\data\\logs");
-            }
-            FileStream fs = new FileStream($"{Environment.CurrentDirectory}\\data\\logs\\exception logs.txt", FileMode.Append);
-
-            StreamWriter sw = new StreamWriter(fs);
-
-            sw.WriteLine("==============System Info================");
-            sw.WriteLine("System:" + Environment.OSVersion);
-            sw.WriteLine("CurrentTime:" + DateTime.Now.ToString("g"));
-            sw.WriteLine("dotNetVersion:" + Environment.Version);
-            Version version = Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
-            sw.WriteLine("MisakaTranslatorVersion:" + version.ToString());
-
-            sw.WriteLine("==============Exception Info================");
-            sw.WriteLine(exception.ToString());
-            sw.WriteLine();
-            sw.WriteLine();
-
-            sw.Flush();
-            sw.Close();
-            fs.Close();
-        }
-
     }
 }
