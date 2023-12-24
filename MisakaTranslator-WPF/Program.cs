@@ -60,10 +60,10 @@ namespace MisakaTranslator_WPF
         [STAThread]
         static void Main()
         {
-            //if (CanElevate())
-            //{
-            //    RunElevate();
-            //}
+            if (CanElevate())
+            {
+                RunElevate();
+            }
             App.Main();
         }
     }

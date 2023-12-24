@@ -935,7 +935,7 @@ namespace MisakaTranslator_WPF
 
             dtimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(10)
+                Interval = TimeSpan.FromSeconds(1)
             };
             dtimer.Tick += TickWindowTopMost;
             dtimer.Start();

@@ -45,7 +45,7 @@ namespace MisakaTranslator_WPF
                 return;
             Dispatcher.BeginInvoke(() =>
             {
-                string ret = _ebwinHelper.Search(s);
+                string ret = EbwinHelper.Search(s);
                 this.SourceWord.Text = s;
                 this.Topmost = true;
                 this.DicResText.Text = HttpUtility.HtmlDecode(ret);

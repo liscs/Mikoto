@@ -70,7 +70,7 @@ namespace DictionaryHelperLibrary
         /// <summary>
         /// 搜索词条，指定词典名为空时搜索所有词典，词典名匹配包含指定名称的词典
         /// </summary>
-        public string Search(string entry, string dictionaryName = "")
+        public static string Search(string entry, string dictionaryName = "")
         {
             Process process = new Process()
             {
@@ -147,7 +147,7 @@ namespace DictionaryHelperLibrary
 
         //适用于以下格式词典
         //CATALOG*;*.dic;*.idx;*.ebd;*.ifo;*.mdx;*.dsl;*.dz
-        public bool AddOrUpdateDictionary(Dict dict)
+        public static bool AddOrUpdateDictionary(Dict dict)
         {
             if (dict.Name == null) { return false; }
             EBPOCKETlist.RemoveAll(s => s.Contains($"{dict.DictPath}|_|_|_|_|_|"));
@@ -172,7 +172,7 @@ namespace DictionaryHelperLibrary
             return true;
         }
 
-        public bool RemoveDictionary(Dict dict)
+        public static bool RemoveDictionary(Dict dict)
         {
             EBPOCKETlist.RemoveAll(s => s.Contains($"{dict.DictPath}|_|_|_|_|_|"));
             File.WriteAllText(EBPOCKET, string.Join(Environment.NewLine, EBPOCKETlist));
@@ -185,7 +185,7 @@ namespace DictionaryHelperLibrary
             return true;
         }
 
-        public HashSet<Dict> GetAllDicts()
+        public static HashSet<Dict> GetAllDicts()
         {
             HashSet<Dict> allDicts = new HashSet<Dict>();
             string[] files = Directory.GetFiles(directory.FullName);
@@ -200,7 +200,7 @@ namespace DictionaryHelperLibrary
             return allDicts;
         }
 
-        private Dict? GetDictInfo(string dictName)
+        private static Dict? GetDictInfo(string dictName)
         {
             string fileName = $"{directory.FullName}\\{dictName}.json";
             string jsonString = File.ReadAllText(fileName);

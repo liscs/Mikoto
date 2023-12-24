@@ -33,7 +33,7 @@ namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
 
         private void UpdateDictionariesDisplay()
         {
-            allDicts = _ebwinHelper.GetAllDicts();
+            allDicts = EbwinHelper.GetAllDicts();
             List<DockPanel> resultDockPanels = new();
 
             foreach (Dict dict in allDicts)
@@ -139,13 +139,13 @@ namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
                 checkBox.Unchecked += (_, _) =>
                 {
                     dict.Active = false;
-                    _ebwinHelper.AddOrUpdateDictionary(dict);
+                    EbwinHelper.AddOrUpdateDictionary(dict);
                 };
 
                 checkBox.Checked += (_, _) =>
                 {
                     dict.Active = true;
-                    _ebwinHelper.AddOrUpdateDictionary(dict);
+                    EbwinHelper.AddOrUpdateDictionary(dict);
                 };
 
                 buttonIncreasePriority.Click += (_, _) =>
@@ -164,7 +164,7 @@ namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
                     if (askResult == MessageBoxResult.OK)
                     {
                         _ = allDicts.Remove(dict);
-                        _ebwinHelper.RemoveDictionary(dict);
+                        EbwinHelper.RemoveDictionary(dict);
                         int priorityOfDeletedDict = dict.Priority;
 
                         foreach (Dict d in allDicts)
@@ -173,7 +173,7 @@ namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
                             {
                                 d.Priority -= 1;
                             }
-                            _ebwinHelper.AddOrUpdateDictionary(d);
+                            EbwinHelper.AddOrUpdateDictionary(d);
                         }
                         UpdateDictionariesDisplay();
                     }
@@ -188,7 +188,7 @@ namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
                             Active = true,
                             Priority = allDicts.Count + 1
                         };
-                        _ebwinHelper.AddOrUpdateDictionary(d);
+                        EbwinHelper.AddOrUpdateDictionary(d);
                     }
                     UpdateDictionariesDisplay();
                 };
@@ -242,8 +242,8 @@ namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
                     Dict neighborDict = item;
                     neighborDict.Priority += 1;
                     dict.Priority -= 1;
-                    _ebwinHelper.AddOrUpdateDictionary(neighborDict);
-                    _ebwinHelper.AddOrUpdateDictionary(dict);
+                    EbwinHelper.AddOrUpdateDictionary(neighborDict);
+                    EbwinHelper.AddOrUpdateDictionary(dict);
                     break;
                 }
             }
@@ -262,8 +262,8 @@ namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
                     Dict neighborDict = item;
                     neighborDict.Priority -= 1;
                     dict.Priority += 1;
-                    _ebwinHelper.AddOrUpdateDictionary(neighborDict);
-                    _ebwinHelper.AddOrUpdateDictionary(dict);
+                    EbwinHelper.AddOrUpdateDictionary(neighborDict);
+                    EbwinHelper.AddOrUpdateDictionary(dict);
                 }
             }
         }
@@ -278,7 +278,7 @@ namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
                     Active = true,
                     Priority = allDicts.Count + 1
                 };
-                _ebwinHelper.AddOrUpdateDictionary(d);
+                EbwinHelper.AddOrUpdateDictionary(d);
             }
             UpdateDictionariesDisplay();
         }
