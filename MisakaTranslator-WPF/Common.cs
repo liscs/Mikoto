@@ -119,7 +119,7 @@ namespace MisakaTranslator_WPF
         /// </summary>
         public static void GlobalOCR()
         {
-            BitmapImage img = ImageProcFunc.ImageToBitmapImage(ScreenCapture.GetAllWindow()) ?? new();
+            BitmapImage img = ImageProcFunc.ImageToBitmapImage(ScreenCapture.GetAllWindow())!;
             ScreenCaptureWindow scw = new ScreenCaptureWindow(img, 2);
             scw.Width = img.Width;
             scw.Height = img.Height;
