@@ -1,7 +1,6 @@
 ﻿using HandyControl.Controls;
 using Microsoft.CognitiveServices.Speech;
 using Microsoft.Scripting.Utils;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -73,20 +72,19 @@ namespace MisakaTranslator_WPF.SettingsPages.TTSPages
 
         private async void GetVoices(object sender, RoutedEventArgs? e)
         {
-            try
-            {
-                SynthesisVoicesResult synthesisVoicesResult = await azureTTS.GetVoices();
-                Voices = synthesisVoicesResult.Voices.ToList();
-                if (Voices.Count != 0)
-                {
-                    VoiceLocalComboBox.ItemsSource = Voices.Select(p => p.Locale).Distinct();
-                    UpdateVoiceNameComboBox(VoiceLocalComboBox.SelectedItem.ToString());
-                    PickSavedVoice();
-                }
-            }
-            catch (NullReferenceException)
+            SynthesisVoicesResult? synthesisVoicesResult = await azureTTS.GetVoices();
+            if (synthesisVoicesResult == null)
             {
                 Growl.Info(Application.Current.Resources["TTSSettingsPage_AzureSettingErrorInfo"].ToString());
+                return;
+            }
+
+            Voices = synthesisVoicesResult.Voices.ToList();
+            if (Voices.Count != 0)
+            {
+                VoiceLocalComboBox.ItemsSource = Voices.Select(p => p.Locale).Distinct();
+                UpdateVoiceNameComboBox(VoiceLocalComboBox.SelectedItem.ToString());
+                PickSavedVoice();
             }
         }
 

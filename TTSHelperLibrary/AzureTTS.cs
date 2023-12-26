@@ -91,11 +91,11 @@ namespace TTSHelperLibrary
             }
         }
 
-        public Task<SynthesisVoicesResult> GetVoices()
+        public Task<SynthesisVoicesResult?> GetVoices()
         {
             if (_synthesizer == null)
             {
-                throw new NullReferenceException("Synthesizer should not be null!");
+                return Task.FromResult<SynthesisVoicesResult?>(null);
             }
             else
             {

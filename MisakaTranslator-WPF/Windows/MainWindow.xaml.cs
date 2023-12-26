@@ -36,7 +36,6 @@ namespace MisakaTranslator_WPF
         {
             DataContext = GamePanelCollection;
             Instance = this;
-            Common.MainWin = this;
             Common.AppSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\data\\settings\\settings.ini").Build();
             InitializeLanguage();
             TranslatorCommon.Refresh();

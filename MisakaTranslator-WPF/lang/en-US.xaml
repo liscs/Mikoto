@@ -336,7 +336,7 @@
     <sys:String x:Key="TTSSettingsPage_VoiceName">Voice library</sys:String>
     <sys:String x:Key="TTSSettingsPage_TestBtn">Test Speech</sys:String>
     <sys:String x:Key="TTSSettingsPage_TargetVoice">Target Voice</sys:String>
-    <sys:String x:Key="TTSSettingsPage_SettingErrorInfo">Please set up Azure TTS related information and test reading</sys:String>
+    <sys:String x:Key="TTSSettingsPage_AzureSettingErrorInfo">Please set up Azure TTS related information and test reading</sys:String>
 
     <sys:String x:Key="TranslateWin_Menu_TTS">Read source text</sys:String>
     <sys:String x:Key="TranslateWin_NoTTS_Hint">You have not configured TTS related settings, the reading function cannot be used</sys:String>

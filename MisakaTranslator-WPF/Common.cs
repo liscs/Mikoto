@@ -64,8 +64,6 @@ namespace MisakaTranslator_WPF
         public static HotKeyInfo UsingHotKey { get; set; } = default!; //全局使用中的触发键信息
         public static int UsingOCRDelay { get; set; } //全局使用中的OCR延时
 
-        public static Window MainWin { get; set; } = default!; //全局的主窗口对象
-
         public static GlobalHotKey GlobalOCRHotKey { get; set; } = default!; //全局OCR热键
 
         /// <summary>
@@ -139,7 +137,7 @@ namespace MisakaTranslator_WPF
         public static double GetScale()
         {
             if (scale == 0)
-                scale = Graphics.FromHwnd(new WindowInteropHelper(MainWin).Handle).DpiX / 96;
+                scale = Graphics.FromHwnd(new WindowInteropHelper(Application.Current.MainWindow).Handle).DpiX / 96;
             return scale;
         }
 

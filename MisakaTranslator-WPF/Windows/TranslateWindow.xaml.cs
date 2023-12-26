@@ -838,7 +838,7 @@ namespace MisakaTranslator_WPF
             try
             {
                 //System.InvalidOperationException:“关闭 Window 之后，无法设置 Visibility，也无法调用 Show、ShowDialogor 或 WindowInteropHelper.EnsureHandle。”
-                Common.MainWin.Visibility = Visibility.Visible;
+                Application.Current.MainWindow.Visibility = Visibility.Visible;
             }
             catch (InvalidOperationException)
             { }
@@ -940,7 +940,7 @@ namespace MisakaTranslator_WPF
             dtimer.Tick += TickWindowTopMost;
             dtimer.Start();
 
-            Common.MainWin.Visibility = Visibility.Collapsed;
+            Application.Current.MainWindow.Visibility = Visibility.Collapsed;
         }
 
         void TickWindowTopMost(object? sender, EventArgs e)
