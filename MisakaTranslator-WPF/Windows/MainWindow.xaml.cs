@@ -278,7 +278,9 @@ namespace MisakaTranslator
             var temp = str.Remove(0, 4);
             gid = int.Parse(temp);
 
-            GameNameTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_GameName"].ToString() + GameInfoList[gid].GameName;
+            DrawGameImage.Source = GetGameIcon(gid).Source;
+
+            GameNameTag.Text = GameInfoList[gid].GameName;
             if (GameInfoList[gid].TransMode == 1)
             {
                 TransModeTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_TransMode"].ToString() + "Hook";
