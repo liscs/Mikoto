@@ -7,10 +7,10 @@
 		<NoWarn>$(NoWarn);WFAC010</NoWarn>
 		<ApplicationManifest>Properties\App.manifest</ApplicationManifest>
 		<ApplicationIcon>logo.ico</ApplicationIcon>
-		<RootNamespace>MisakaTranslator_WPF</RootNamespace>
+		<RootNamespace>MisakaTranslator</RootNamespace>
 		<PlatformTarget Condition="'$(Platform)' == 'AnyCPU'">AnyCPU</PlatformTarget>
 		<Prefer32Bit Condition="'$(Platform)' == 'AnyCPU'">false</Prefer32Bit>
-		<StartupObject>MisakaTranslator_WPF.Program</StartupObject>
+		<StartupObject>MisakaTranslator.Program</StartupObject>
 		<UseWin32>true</UseWin32>
 
 		<EnableMsixTooling>true</EnableMsixTooling>

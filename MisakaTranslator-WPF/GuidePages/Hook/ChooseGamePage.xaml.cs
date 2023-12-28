@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using TextHookLibrary;
 
-namespace MisakaTranslator_WPF.GuidePages.Hook
+namespace MisakaTranslator.GuidePages.Hook
 {
     /// <summary>
     /// ChooseGamePage.xaml 的交互逻辑

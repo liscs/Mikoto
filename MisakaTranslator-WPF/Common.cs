@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using TextHookLibrary;
 using TextRepairLibrary;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     public enum GuideMode
     {

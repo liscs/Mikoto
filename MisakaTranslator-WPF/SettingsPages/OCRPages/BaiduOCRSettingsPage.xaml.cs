@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace MisakaTranslator_WPF.SettingsPages.OCRPages
+namespace MisakaTranslator.SettingsPages.OCRPages
 {
     /// <summary>
     /// BaiduOCRPage.xaml 的交互逻辑

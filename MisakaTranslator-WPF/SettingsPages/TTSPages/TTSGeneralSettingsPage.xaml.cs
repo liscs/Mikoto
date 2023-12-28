@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using static MisakaTranslator_WPF.Common;
+using static MisakaTranslator.Common;
 
-namespace MisakaTranslator_WPF.SettingsPages.TTSPages
+namespace MisakaTranslator.SettingsPages.TTSPages
 {
     /// <summary>
     /// AzureTransSettingsPage.xaml 的交互逻辑

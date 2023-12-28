@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 
-namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
+namespace MisakaTranslator.SettingsPages.DictionaryPages
 {
     /// <summary>
     /// Interaction logic for MecabDictPage.xaml

@@ -21,7 +21,7 @@ using TextHookLibrary;
 using TextRepairLibrary;
 using TranslatorLibrary;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     public partial class MainWindow
     {

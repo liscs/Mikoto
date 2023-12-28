@@ -5,7 +5,7 @@ using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.Security;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     static internal class Program
     {

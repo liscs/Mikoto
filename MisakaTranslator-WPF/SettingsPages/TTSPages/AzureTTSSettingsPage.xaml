@@ -1,9 +1,9 @@
-﻿<Page x:Class="MisakaTranslator_WPF.SettingsPages.TTSPages.AzureTTSSettingsPage"
+﻿<Page x:Class="MisakaTranslator.SettingsPages.TTSPages.AzureTTSSettingsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:hc="https://handyorg.github.io/handycontrol"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:misakatranslator_wpf="clr-namespace:MisakaTranslator_WPF" d:DataContext="{d:DesignInstance Type=misakatranslator_wpf:ViewModel}"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:misakatranslator_wpf="clr-namespace:MisakaTranslator" d:DataContext="{d:DesignInstance Type=misakatranslator_wpf:ViewModel}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="594"
       Title="AzureTransSettingsPage">

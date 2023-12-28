@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using TTSHelperLibrary;
 
 
-namespace MisakaTranslator_WPF.SettingsPages.TTSPages
+namespace MisakaTranslator.SettingsPages.TTSPages
 {
     /// <summary>
     /// LocalTTSSettingsPage.xaml 的交互逻辑

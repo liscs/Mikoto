@@ -13,7 +13,7 @@ using TranslatorLibrary;
 using TranslatorLibrary.Translator;
 using Windows.Win32;
 
-namespace MisakaTranslator_WPF.ComicTranslator
+namespace MisakaTranslator.ComicTranslator
 {
     /// <summary>
     /// ComicTransMainWindow.xaml 的交互逻辑
@@ -272,7 +272,7 @@ namespace MisakaTranslator_WPF.ComicTranslator
             sourceTextBox.Focus();
         }
 
-        private async void transBtn_Click(object sender, RoutedEventArgs e)
+        private async void TransBtn_Click(object sender, RoutedEventArgs e)
         {
             string sourceText = sourceTextBox.Text;
 

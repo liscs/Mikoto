@@ -5,7 +5,7 @@ using System.Web;
 using System.Windows;
 using TTSHelperLibrary;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     /// <summary>
     /// DictResWindow.xaml 的交互逻辑

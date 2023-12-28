@@ -26,7 +26,7 @@ using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     /// <summary>
     /// TranslateWindow.xaml 的交互逻辑
@@ -46,7 +46,7 @@ namespace MisakaTranslator_WPF
         private string _currentsrcText = string.Empty; //当前源文本内容
 
         public string SourceTextFont = string.Empty; //源文本区域字体
-        public int SourceTextFontSize; //源文本区域字体大小
+        private int sourceTextFontSize; //源文本区域字体大小
 
         private Queue<string> _gameTextHistory; //历史文本
         private static KeyboardMouseHook? hook; //全局键盘鼠标钩子
@@ -395,6 +395,9 @@ namespace MisakaTranslator_WPF
             IsOCRingFlag = false;
         }
         DictResWindow? _dictResWindow;
+
+        public int SourceTextFontSize { get => sourceTextFontSize; set => sourceTextFontSize = value; }
+
         private void DictArea_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Controls.TextBox? textBox = sender as System.Windows.Controls.TextBox;

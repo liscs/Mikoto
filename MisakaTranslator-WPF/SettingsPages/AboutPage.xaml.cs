@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace MisakaTranslator_WPF.SettingsPages
+namespace MisakaTranslator.SettingsPages
 {
     /// <summary>
     /// AboutPage.xaml 的交互逻辑

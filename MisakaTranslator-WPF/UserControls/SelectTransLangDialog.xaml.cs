@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using TranslatorLibrary;
 
-namespace MisakaTranslator_WPF.UserControls
+namespace MisakaTranslator.UserControls
 {
     /// <summary>
     /// SelectTransLangDialog.xaml 的交互逻辑

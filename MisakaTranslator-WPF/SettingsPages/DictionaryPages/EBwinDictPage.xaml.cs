@@ -14,7 +14,7 @@ using Button = System.Windows.Controls.Button;
 using CheckBox = System.Windows.Controls.CheckBox;
 using Cursors = System.Windows.Input.Cursors;
 
-namespace MisakaTranslator_WPF.SettingsPages.DictionaryPages
+namespace MisakaTranslator.SettingsPages.DictionaryPages
 {
     /// <summary>
     /// Page1.xaml 的交互逻辑

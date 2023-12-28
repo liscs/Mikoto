@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using TranslatorLibrary.Translator;
 
-namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
+namespace MisakaTranslator.SettingsPages.TranslatorPages
 {
     /// <summary>
     /// BaiduTransSettingsPage.xaml 的交互逻辑
