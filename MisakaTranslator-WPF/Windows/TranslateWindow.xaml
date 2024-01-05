@@ -73,13 +73,23 @@
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1" Margin="10" Orientation="Vertical">
-            <ItemsControl ItemsSource="{Binding}" Name="SourceTextPanel">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel IsItemsHost="True" Margin="10,0,10,5" Orientation="Horizontal" Background="Transparent" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
+            <Grid>
+                <!--实现淡入淡出同时进行需要两个框-->
+                <ItemsControl Name="SourceTextPanel1">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True" Margin="10,0,10,5" Orientation="Horizontal" Background="Transparent" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+                <ItemsControl Name="SourceTextPanel2">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True" Margin="10,0,10,5" Orientation="Horizontal" Background="Transparent" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
             <hc:OutlineText Text="{DynamicResource TranslateWin_WaitingSource}" 
                             Fill="White" Stroke="Black" StrokeThickness="0.7" FontWeight="Bold" Name="FirstTransText" Margin="10,0,10,5" TextWrapping="Wrap" StrokePosition="Outside"></hc:OutlineText>
             <hc:OutlineText Text="" 
