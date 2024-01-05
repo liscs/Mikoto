@@ -6,6 +6,7 @@ using MecabHelperLibrary;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +15,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using TextHookLibrary;
@@ -428,7 +430,7 @@ namespace MisakaTranslator
 
             if (!Common.AppSettings.EachRowTrans) // 不启用分行翻译
             {
-                if (Common.UsingSrcLang == "zh" || Common.UsingSrcLang == "ja")
+                if (IsJaOrZh(Common.UsingSrcLang))
                 {
                     repairedText = new string(repairedText.Where(p => !char.IsWhiteSpace(p)).ToArray()).Replace("<br>", "").Replace("</br>", "");
                 }
@@ -459,11 +461,11 @@ namespace MisakaTranslator
                 _currentsrcText = repairedText;
 
                 // 3. 更新原文
-                UpdateSource(repairedText);
+                UpdateSourceAsync(repairedText);
 
                 // 分别获取两个翻译结果
-                _ = TranslateApiSubmitASync(repairedText, 1, isRenew);
-                _ = TranslateApiSubmitASync(repairedText, 2, isRenew);
+                TranslateApiSubmitASync(repairedText, 1, isRenew);
+                TranslateApiSubmitASync(repairedText, 2, isRenew);
             }
         }
 
@@ -477,168 +479,213 @@ namespace MisakaTranslator
         /// 注意执行过程中调用了StackPanel等UI组件，必须交回主线程才能执行。
         /// </summary>
         /// <param name="repairedText">原文</param>
-        private void UpdateSource(string repairedText)
+        private async void UpdateSourceAsync(string repairedText)
         {
-            Task.Run(() =>
+            if (!_enableShowSource)
             {
-                if (!_enableShowSource)
-                {
-                    return;
-                }
-                //3.分词
-                if (Common.UsingSrcLang == "ja"
-                    && _mecabHelper.EnableMecab
-                    && (Common.AppSettings.TF_EnablePhoneticNotation || Common.AppSettings.TF_EnableColorful))
-                {
-                    var mwi = _mecabHelper.SentenceHandle(repairedText);
-                    Application.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        _sourceTextCollection.Clear();
-                        //分词后结果显示
-                        foreach (MecabWordInfo v in mwi)
-                        {
-                            StackPanel stackPanel = new()
-                            {
-                                Orientation = Orientation.Vertical,
-                                Margin = new Thickness(5, 0, 0, 5)
-                            };
+                Application.Current.Dispatcher.Invoke(() => _sourceTextCollection.Clear());
+                return;
+            }
+            await Task.Run(async () =>
+              {
+                  await Application.Current.Dispatcher.Invoke(async () => await FadeOut(SourceTextPanel));
+                  //3.分词
+                  if (Common.UsingSrcLang == "ja"
+                      && _mecabHelper.EnableMecab
+                      && (Common.AppSettings.TF_EnablePhoneticNotation || Common.AppSettings.TF_EnableColorful))
+                  {
+                      var mwi = _mecabHelper.SentenceHandle(repairedText);
+                      _ = Application.Current.Dispatcher.BeginInvoke(() =>
+                          {
+                              _sourceTextCollection.Clear();
+                              //分词后结果显示
+                              foreach (MecabWordInfo v in mwi)
+                              {
+                                  StackPanel stackPanel = new()
+                                  {
+                                      Orientation = Orientation.Vertical,
+                                      Margin = new Thickness(5, 0, 0, 5)
+                                  };
 
-                            System.Windows.Controls.TextBox textBox = new()
-                            {
-                                IsReadOnly = true,
-                                BorderBrush = new SolidColorBrush(Colors.Transparent),
-                                Padding = new Thickness(0),
-                                Text = v.Word,
-                                Margin = new Thickness(0, 0, 0, 0),
-                                FontSize = SourceTextFontSize,
-                                Background = Brushes.Transparent,
-                                HorizontalAlignment = HorizontalAlignment.Center,
-                            };
-                            textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
-                            if (!string.IsNullOrEmpty(SourceTextFont))
-                            {
-                                FontFamily fontFamily = new(SourceTextFont);
-                                textBox.FontFamily = fontFamily;
-                            }
-                            if (Common.AppSettings.TF_EnableDropShadow)
-                            {
-                                //加入原文的阴影
-                                textBox.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen();
-                            }
-                            if (Common.AppSettings.TF_EnableColorful)
-                            {
-                                textBox.TextAlignment = TextAlignment.Center;
-                                //根据不同词性跟字体上色
-                                textBox.Foreground = v.PartOfSpeech switch
-                                {
-                                    "補助記号" or "空白" => Brushes.White,
-                                    "動詞" => Brushes.YellowGreen,
-                                    "形容詞" => Brushes.Orange,
-                                    "判定詞" => Brushes.Yellow,
-                                    "助動詞" => Brushes.LightGreen,
-                                    "名詞" => Brushes.SkyBlue,
-                                    "副詞" => Brushes.BlueViolet,
-                                    "助詞" => Brushes.Wheat,
-                                    "連体詞" => Brushes.Pink,
-                                    "接続詞" => Brushes.Brown,
-                                    "感動詞" => Brushes.Red,
-                                    "指示詞" => Brushes.Plum,
-                                    "代名詞" => Brushes.Olive,
-                                    "接頭辞" => Brushes.LightGreen,
-                                    "接尾辞" => Brushes.LightGoldenrodYellow,
-                                    "形状詞" => Brushes.IndianRed,
-                                    _ => Brushes.White,
-                                };
-                            }
-                            else
-                            {
-                                textBox.Foreground = Brushes.White;
-                            }
+                                  System.Windows.Controls.TextBox textBox = new()
+                                  {
+                                      IsReadOnly = true,
+                                      BorderBrush = new SolidColorBrush(Colors.Transparent),
+                                      Padding = new Thickness(0),
+                                      Text = v.Word,
+                                      Margin = new Thickness(0, 0, 0, 0),
+                                      FontSize = SourceTextFontSize,
+                                      Background = Brushes.Transparent,
+                                      HorizontalAlignment = HorizontalAlignment.Center,
+                                  };
+                                  textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
+                                  if (!string.IsNullOrEmpty(SourceTextFont))
+                                  {
+                                      FontFamily fontFamily = new(SourceTextFont);
+                                      textBox.FontFamily = fontFamily;
+                                  }
+                                  if (Common.AppSettings.TF_EnableDropShadow)
+                                  {
+                                      //加入原文的阴影
+                                      textBox.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen();
+                                  }
+                                  if (Common.AppSettings.TF_EnableColorful)
+                                  {
+                                      textBox.TextAlignment = TextAlignment.Center;
+                                      //根据不同词性跟字体上色
+                                      textBox.Foreground = v.PartOfSpeech switch
+                                      {
+                                          "補助記号" or "空白" => Brushes.White,
+                                          "動詞" => Brushes.YellowGreen,
+                                          "形容詞" => Brushes.Orange,
+                                          "判定詞" => Brushes.Yellow,
+                                          "助動詞" => Brushes.LightGreen,
+                                          "名詞" => Brushes.SkyBlue,
+                                          "副詞" => Brushes.BlueViolet,
+                                          "助詞" => Brushes.Wheat,
+                                          "連体詞" => Brushes.Pink,
+                                          "接続詞" => Brushes.Brown,
+                                          "感動詞" => Brushes.Red,
+                                          "指示詞" => Brushes.Plum,
+                                          "代名詞" => Brushes.Olive,
+                                          "接頭辞" => Brushes.LightGreen,
+                                          "接尾辞" => Brushes.LightGoldenrodYellow,
+                                          "形状詞" => Brushes.IndianRed,
+                                          _ => Brushes.White,
+                                      };
+                                  }
+                                  else
+                                  {
+                                      textBox.Foreground = Brushes.White;
+                                  }
 
-                            if (Common.AppSettings.TF_EnablePhoneticNotation)
-                            {
-                                // 假名或注释等的上标标签
-                                TextBlock NotationTextBlock = new();
-                                if (!string.IsNullOrEmpty(SourceTextFont))
-                                {
-                                    FontFamily fontFamily = new(SourceTextFont);
-                                    NotationTextBlock.FontFamily = fontFamily;
-                                }
-                                //选择平假名或者片假名
-                                NotationTextBlock.Text = Common.AppSettings.TF_PhoneticNotationType switch
-                                {
-                                    PhoneticNotationType.Hiragana => v.Hiragana,
-                                    PhoneticNotationType.Katakana => v.Katakana,
-                                    PhoneticNotationType.Romaji => v.Romaji,
-                                    _ => v.Hiragana,
-                                };
-                                NotationTextBlock.Margin = new Thickness(0, 0, 0, 2);
-                                NotationTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
-                                if (Common.AppSettings.TF_EnableDropShadow)
-                                {
-                                    //加入注音的阴影
-                                    NotationTextBlock.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen();
-                                }
-                                if (SourceTextFontSize - 6.5 > 0)
-                                {
-                                    NotationTextBlock.FontSize = SourceTextFontSize - 6.5;
-                                    if (Common.AppSettings.TF_EnableSuperBold)
-                                    {
-                                        NotationTextBlock.FontWeight = FontWeights.Bold;
-                                        //注音加粗
-                                    }
-                                }
-                                else
-                                {
-                                    NotationTextBlock.FontSize = 1;
-                                }
-                                NotationTextBlock.Background = Brushes.Transparent;
-                                NotationTextBlock.Foreground = Brushes.White;
-                                stackPanel.Children.Add(NotationTextBlock);
-                                stackPanel.Children.Add(textBox);
-                                _sourceTextCollection.Add(stackPanel);
-                            }
-                            else
-                            {
-                                _sourceTextCollection.Add(textBox);
-                            }
-                        }
-                    });
-                }
-                else
-                {
-                    Application.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        _sourceTextCollection.Clear();
-                        System.Windows.Controls.TextBox textBox = new()
-                        {
-                            TextAlignment = TextAlignment.Left,
-                            IsReadOnly = true,
-                            Background = new SolidColorBrush(Colors.Transparent),
-                            BorderBrush = new SolidColorBrush(Colors.Transparent),
-                            Padding = new Thickness(0),
-                            Margin = new Thickness(10, 0, 0, 10),
-                            HorizontalAlignment = HorizontalAlignment.Left,
-                        };
-                        if (!string.IsNullOrEmpty(SourceTextFont))
-                        {
-                            FontFamily fontFamily = new(SourceTextFont);
-                            textBox.FontFamily = fontFamily;
-                        }
-                        textBox.Text = repairedText;
-                        textBox.TextWrapping = TextWrapping.Wrap;
-                        textBox.FontSize = SourceTextFontSize;
-                        textBox.Background = Brushes.Transparent;
-                        textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
-                        if (Common.AppSettings.TF_EnableDropShadow)
-                        {
-                            textBox.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen(); ;
-                        }
-                        textBox.Foreground = Brushes.White;
-                        _sourceTextCollection.Add(textBox);
-                    });
-                }
-            });
+                                  if (Common.AppSettings.TF_EnablePhoneticNotation)
+                                  {
+                                      // 假名或注释等的上标标签
+                                      TextBlock NotationTextBlock = new();
+                                      if (!string.IsNullOrEmpty(SourceTextFont))
+                                      {
+                                          FontFamily fontFamily = new(SourceTextFont);
+                                          NotationTextBlock.FontFamily = fontFamily;
+                                      }
+                                      //选择平假名或者片假名
+                                      NotationTextBlock.Text = Common.AppSettings.TF_PhoneticNotationType switch
+                                      {
+                                          PhoneticNotationType.Hiragana => v.Hiragana,
+                                          PhoneticNotationType.Katakana => v.Katakana,
+                                          PhoneticNotationType.Romaji => v.Romaji,
+                                          _ => v.Hiragana,
+                                      };
+                                      NotationTextBlock.Margin = new Thickness(0, 0, 0, 2);
+                                      NotationTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                                      if (Common.AppSettings.TF_EnableDropShadow)
+                                      {
+                                          //加入注音的阴影
+                                          NotationTextBlock.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen();
+                                      }
+                                      if (SourceTextFontSize - 6.5 > 0)
+                                      {
+                                          NotationTextBlock.FontSize = SourceTextFontSize - 6.5;
+                                          if (Common.AppSettings.TF_EnableSuperBold)
+                                          {
+                                              NotationTextBlock.FontWeight = FontWeights.Bold;
+                                              //注音加粗
+                                          }
+                                      }
+                                      else
+                                      {
+                                          NotationTextBlock.FontSize = 1;
+                                      }
+                                      NotationTextBlock.Background = Brushes.Transparent;
+                                      NotationTextBlock.Foreground = Brushes.White;
+                                      stackPanel.Children.Add(NotationTextBlock);
+                                      stackPanel.Children.Add(textBox);
+                                      _sourceTextCollection.Add(stackPanel);
+                                  }
+                                  else
+                                  {
+                                      _sourceTextCollection.Add(textBox);
+                                  }
+                              }
+                          });
+                  }
+                  else
+                  {
+                      _ = Application.Current.Dispatcher.BeginInvoke(() =>
+                         {
+                             _sourceTextCollection.Clear();
+                             System.Windows.Controls.TextBox textBox = new()
+                             {
+                                 TextAlignment = TextAlignment.Left,
+                                 IsReadOnly = true,
+                                 Background = new SolidColorBrush(Colors.Transparent),
+                                 BorderBrush = new SolidColorBrush(Colors.Transparent),
+                                 Padding = new Thickness(0),
+                                 Margin = new Thickness(10, 0, 0, 10),
+                                 HorizontalAlignment = HorizontalAlignment.Left,
+                             };
+                             if (!string.IsNullOrEmpty(SourceTextFont))
+                             {
+                                 FontFamily fontFamily = new(SourceTextFont);
+                                 textBox.FontFamily = fontFamily;
+                             }
+                             textBox.Text = repairedText;
+                             textBox.TextWrapping = TextWrapping.Wrap;
+                             textBox.FontSize = SourceTextFontSize;
+                             textBox.Background = Brushes.Transparent;
+                             textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
+                             if (Common.AppSettings.TF_EnableDropShadow)
+                             {
+                                 textBox.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen(); ;
+                             }
+                             textBox.Foreground = Brushes.White;
+                             _sourceTextCollection.Add(textBox);
+                         });
+                  }
+                  await Application.Current.Dispatcher.Invoke(async () => await FadeIn(SourceTextPanel));
+              });
+        }
+
+        private const double FADE_DURATION = 0.15;
+        private static Task<bool> FadeIn(UIElement uiElement)
+        {
+
+            uiElement.Opacity = 0;
+
+            DoubleAnimation fadeinAnimation = new();
+            TaskCompletionSource<bool> tcs = new();
+            void onComplete(object? s, EventArgs e)
+            {
+                fadeinAnimation.Completed -= onComplete;
+                tcs.SetResult(true);
+            }
+            fadeinAnimation.Completed += onComplete;
+            fadeinAnimation.From = 0;
+            fadeinAnimation.To = 1;
+            fadeinAnimation.Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION));
+            Timeline.SetDesiredFrameRate(fadeinAnimation, 144);
+            uiElement.BeginAnimation(OpacityProperty, fadeinAnimation);
+            return tcs.Task;
+        }
+
+        private static Task<bool> FadeOut(UIElement uiElement)
+        {
+            uiElement.Opacity = 1;
+
+            DoubleAnimation fadeinAnimation = new();
+            TaskCompletionSource<bool> tcs = new();
+            void onComplete(object? s, EventArgs e)
+            {
+                fadeinAnimation.Completed -= onComplete;
+                tcs.SetResult(true);
+            }
+            fadeinAnimation.Completed += onComplete;
+            fadeinAnimation.From = 1;
+            fadeinAnimation.To = 0;
+            fadeinAnimation.Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION));
+            Timeline.SetDesiredFrameRate(fadeinAnimation, 144);
+            uiElement.BeginAnimation(OpacityProperty, fadeinAnimation);
+            return tcs.Task;
         }
 
         /// <summary>
@@ -647,7 +694,7 @@ namespace MisakaTranslator
         /// <param name="repairedText">原文</param>
         /// <param name="tranResultIndex">翻译框序号</param>
         /// <param name="isRenew">是否是重新获取翻译</param>
-        private async Task TranslateApiSubmitASync(string repairedText, int tranResultIndex, bool isRenew = false)
+        private async void TranslateApiSubmitASync(string repairedText, int tranResultIndex, bool isRenew = false)
         {
             //4.翻译前预处理 
             string beforeString = _beforeTransHandle.AutoHandle(repairedText);
@@ -910,8 +957,8 @@ namespace MisakaTranslator
             }
             else
             {
-                _ = TranslateApiSubmitASync(_currentsrcText, 1, true);
-                _ = TranslateApiSubmitASync(_currentsrcText, 2, true);
+                TranslateApiSubmitASync(_currentsrcText, 1, true);
+                TranslateApiSubmitASync(_currentsrcText, 2, true);
             }
         }
 

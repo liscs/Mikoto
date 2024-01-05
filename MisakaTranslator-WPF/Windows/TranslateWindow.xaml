@@ -73,10 +73,10 @@
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1" Margin="10" Orientation="Vertical">
-            <ItemsControl ItemsSource="{Binding}">
+            <ItemsControl ItemsSource="{Binding}" Name="SourceTextPanel">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel IsItemsHost="True" Name="SourceTextPanel" Margin="10,0,10,5" Orientation="Horizontal" Background="Transparent" />
+                        <WrapPanel IsItemsHost="True" Margin="10,0,10,5" Orientation="Horizontal" Background="Transparent" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
