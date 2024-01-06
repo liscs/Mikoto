@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
 namespace MisakaTranslator
@@ -24,6 +25,9 @@ namespace MisakaTranslator
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             //非UI线程未捕获异常处理事件
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            int systemRefreshRate = 144;
+            Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata { DefaultValue = systemRefreshRate });
         }
 
         private void App_Exit(object sender, ExitEventArgs e)

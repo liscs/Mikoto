@@ -6,7 +6,6 @@ using MecabHelperLibrary;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,7 +17,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Threading;
-using System.Xml.Linq;
 using TextHookLibrary;
 using TextRepairLibrary;
 using TranslatorLibrary;
@@ -601,8 +599,8 @@ namespace MisakaTranslator
                                     NotationTextBlock.FontSize = SourceTextFontSize - 6.5;
                                     if (Common.AppSettings.TF_EnableSuperBold)
                                     {
-                                        NotationTextBlock.FontWeight = FontWeights.Bold;
                                         //注音加粗
+                                        NotationTextBlock.FontWeight = FontWeights.Bold;
                                     }
                                 }
                                 else
@@ -672,7 +670,6 @@ namespace MisakaTranslator
         }
 
         private const double FADE_DURATION = 0.3;
-        private const int REFRESH_RATE = 60;
         private static Task<bool> FadeIn(UIElement uiElement)
         {
             uiElement.Opacity = 0;
@@ -688,7 +685,6 @@ namespace MisakaTranslator
             fadeinAnimation.From = 0;
             fadeinAnimation.To = 1;
             fadeinAnimation.Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION));
-            Timeline.SetDesiredFrameRate(fadeinAnimation, REFRESH_RATE);
             uiElement.BeginAnimation(OpacityProperty, fadeinAnimation);
             return tcs.Task;
         }
@@ -709,7 +705,6 @@ namespace MisakaTranslator
             fadeinAnimation.From = 1;
             fadeinAnimation.To = 0;
             fadeinAnimation.Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION));
-            Timeline.SetDesiredFrameRate(fadeinAnimation, REFRESH_RATE);
             uiElement.BeginAnimation(OpacityProperty, fadeinAnimation);
             return tcs.Task;
         }
