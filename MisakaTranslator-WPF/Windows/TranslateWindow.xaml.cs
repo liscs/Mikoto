@@ -481,7 +481,7 @@ namespace MisakaTranslator
 
 
         private ItemsControl _sourcePanelReference1 = new();
-        private ItemsControl _sourcePanelReference2 = new();
+        private ItemsControl _sourcePanelReference2 = new(); 
         private HandyControl.Controls.ScrollViewer _sourceScrollReference1 = new();
         private HandyControl.Controls.ScrollViewer _sourceScrollReference2 = new();
 
@@ -657,36 +657,29 @@ namespace MisakaTranslator
                         sourceCollection.Add(textBox);
                     });
                 }
-                _ = FadeInAsync(_sourcePanelReference2);
-                await FadeOutAsync(_sourcePanelReference1);
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    _sourceScrollReference2.Visibility = Visibility.Visible;
-                    _sourceScrollReference2.ScrollToHome();
-                    _sourceScrollReference1.Visibility = Visibility.Collapsed;
-                    _sourceScrollReference2.ScrollToHome();
-                });
-
-
+                _ = FadeInAsync(_sourcePanelReference2, _sourceScrollReference2);
+                await FadeOutAsync(_sourcePanelReference1, _sourceScrollReference1);
                 (_sourcePanelReference1, _sourcePanelReference2) = (_sourcePanelReference2, _sourcePanelReference1);
                 (_sourceScrollReference1, _sourceScrollReference2) = (_sourceScrollReference2, _sourceScrollReference1);
             });
         }
 
-        private static async Task FadeInAsync(UIElement uiElement)
+        private static async Task FadeInAsync(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
         {
-            await Application.Current.Dispatcher.Invoke(async () => await FadeIn(uiElement));
+            await Application.Current.Dispatcher.Invoke(async () => await FadeIn(uiElement, scrollViewer));
         }
 
-        private static async Task FadeOutAsync(UIElement uiElement)
+        private static async Task FadeOutAsync(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
         {
-            await Application.Current.Dispatcher.Invoke(async () => await FadeOut(uiElement));
+            await Application.Current.Dispatcher.Invoke(async () => await FadeOut(uiElement, scrollViewer));
         }
 
         private const double FADE_DURATION = 0.3;
-        private static Task<bool> FadeIn(UIElement uiElement)
+        private static Task<bool> FadeIn(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
         {
             uiElement.Opacity = 0;
+            scrollViewer.Visibility = Visibility.Visible;
+            scrollViewer.ScrollToHome();
             uiElement.Visibility = Visibility.Visible;
             DoubleAnimation fadeinAnimation = new();
             TaskCompletionSource<bool> tcs = new();
@@ -703,7 +696,7 @@ namespace MisakaTranslator
             return tcs.Task;
         }
 
-        private static Task<bool> FadeOut(UIElement uiElement)
+        private static Task<bool> FadeOut(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
         {
             uiElement.Opacity = 1;
 
@@ -712,6 +705,7 @@ namespace MisakaTranslator
             void onComplete(object? s, EventArgs e)
             {
                 fadeoutAnimation.Completed -= onComplete;
+                scrollViewer.Visibility = Visibility.Collapsed;
                 uiElement.Visibility = Visibility.Collapsed;
                 tcs.SetResult(true);
             }
