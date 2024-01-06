@@ -693,19 +693,19 @@ namespace MisakaTranslator
         {
             uiElement.Opacity = 1;
 
-            DoubleAnimation fadeinAnimation = new();
+            DoubleAnimation fadeoutAnimation = new();
             TaskCompletionSource<bool> tcs = new();
             void onComplete(object? s, EventArgs e)
             {
-                fadeinAnimation.Completed -= onComplete;
+                fadeoutAnimation.Completed -= onComplete;
                 uiElement.Visibility = Visibility.Collapsed;
                 tcs.SetResult(true);
             }
-            fadeinAnimation.Completed += onComplete;
-            fadeinAnimation.From = 1;
-            fadeinAnimation.To = 0;
-            fadeinAnimation.Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION));
-            uiElement.BeginAnimation(OpacityProperty, fadeinAnimation);
+            fadeoutAnimation.Completed += onComplete;
+            fadeoutAnimation.From = 1;
+            fadeoutAnimation.To = 0;
+            fadeoutAnimation.Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION));
+            uiElement.BeginAnimation(OpacityProperty, fadeoutAnimation);
             return tcs.Task;
         }
 
@@ -916,7 +916,7 @@ namespace MisakaTranslator
             try
             {
                 if (Application.Current.MainWindow != null)
-                { 
+                {
                     //System.InvalidOperationException:“关闭 Window 之后，无法设置 Visibility，也无法调用 Show、ShowDialogor 或 WindowInteropHelper.EnsureHandle。”
                     Application.Current.MainWindow.Visibility = Visibility.Visible;
                 }
