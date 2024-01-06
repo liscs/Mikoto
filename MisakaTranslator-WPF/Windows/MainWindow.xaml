@@ -95,8 +95,8 @@
                 <Border CornerRadius="4" Margin="10" Background="{DynamicResource RegionBrush}" Effect="{StaticResource EffectShadow2}">
                     <StackPanel VerticalAlignment="Center" Margin="16">
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <Button Click="ButtonPush_OnClick"  Command="hc:ControlCommands.PushMainWindow2Top" MinWidth="100" Content="打开主界面"/>
-                            <Button Command="hc:ControlCommands.ShutdownApp" Margin="16,0,0,0" MinWidth="100" Style="{DynamicResource ButtonPrimary}" Content="退出"/>
+                            <Button Click="ButtonPush_OnClick"  Command="hc:ControlCommands.PushMainWindow2Top" MinWidth="100" Content="{DynamicResource NotifyIcon_OpenMain}"/>
+                            <Button Command="hc:ControlCommands.ShutdownApp" Margin="16,0,0,0" MinWidth="100" Style="{DynamicResource ButtonPrimary}" Content="{DynamicResource NotifyIcon_Exit}"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -104,9 +104,6 @@
             <hc:Interaction.Triggers>
                 <hc:EventTrigger EventName="Click">
                     <hc:EventToCommand Command="hc:ControlCommands.PushMainWindow2Top"/>
-                </hc:EventTrigger>
-                <hc:EventTrigger EventName="MouseDoubleClick">
-                    <hc:EventToCommand Command="{Binding MouseCmd}" CommandParameter="MouseDoubleClick"/>
                 </hc:EventTrigger>
             </hc:Interaction.Triggers>
         </hc:NotifyIcon>
