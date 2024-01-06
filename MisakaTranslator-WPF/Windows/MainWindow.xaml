@@ -31,12 +31,12 @@
         <StackPanel Orientation="Horizontal" Grid.Column="2">
             <Button fa:Awesome.Content="Rocket" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="AutoStart_BtnClick" Margin="0,0,0,0.5">
                 <hc:Poptip.Instance>
-                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{DynamicResource MainWindow_Tip_AutoStart}" Placement="Right"/>
+                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="Microsoft YaHei" Content="{DynamicResource MainWindow_Tip_AutoStart}" Placement="Right"/>
                 </hc:Poptip.Instance>
             </Button>
             <Button fa:Awesome.Content="Book" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="ComicTransBtn_Click" Margin="20,0,0,0.5">
                 <hc:Poptip.Instance>
-                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{DynamicResource MainWindow_Tip_ComicTrans}" Placement="Right"/>
+                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="Microsoft YaHei" Content="{DynamicResource MainWindow_Tip_ComicTrans}" Placement="Right"/>
                 </hc:Poptip.Instance>
             </Button>
         </StackPanel>
@@ -53,7 +53,7 @@
             </Button>
             <Button fa:Awesome.Content="Cog" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="SettingsBtn_Click" Margin="0,0,0,0.5">
                 <hc:Poptip.Instance>
-                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{DynamicResource MainWindow_Tip_Settings}" Placement="Left"/>
+                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="Microsoft YaHei" Content="{DynamicResource MainWindow_Tip_Settings}" Placement="Left"/>
                 </hc:Poptip.Instance>
             </Button>
         </StackPanel>

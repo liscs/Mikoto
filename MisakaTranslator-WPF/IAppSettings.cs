@@ -382,7 +382,7 @@ namespace MisakaTranslator
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.SrcTextFont", DefaultValue = "微软雅黑")]
+        [Option(Alias = "TranslateFormSettings.SrcTextFont", DefaultValue = "Microsoft YaHei")]
         string TF_SrcTextFont
         {
             get;
@@ -396,7 +396,7 @@ namespace MisakaTranslator
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.FirstTransTextFont", DefaultValue = "微软雅黑")]
+        [Option(Alias = "TranslateFormSettings.FirstTransTextFont", DefaultValue = "Microsoft YaHei")]
         string TF_FirstTransTextFont
         {
             get;
@@ -417,7 +417,7 @@ namespace MisakaTranslator
             set;
         }
 
-        [Option(Alias = "TranslateFormSettings.SecondTransTextFont", DefaultValue = "微软雅黑")]
+        [Option(Alias = "TranslateFormSettings.SecondTransTextFont", DefaultValue = "Microsoft YaHei")]
         string TF_SecondTransTextFont
         {
             get;
