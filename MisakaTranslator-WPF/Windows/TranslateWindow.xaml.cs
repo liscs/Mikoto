@@ -121,8 +121,10 @@ namespace MisakaTranslator
             SourceTextPanel1.ItemsSource = _sourceTextCollection1;
             SourceTextPanel2.ItemsSource = _sourceTextCollection2;
 
-            sourcePanelReference1 = SourceTextPanel1;
-            sourcePanelReference2 = SourceTextPanel2;
+            _sourcePanelReference1 = SourceTextPanel1;
+            _sourcePanelReference2 = SourceTextPanel2;
+            _sourceScrollReference1 = SourceScroll1;
+            _sourceScrollReference2 = SourceScroll2;
         }
 
         private void TTS_Init()
@@ -478,8 +480,10 @@ namespace MisakaTranslator
         }
 
 
-        private ItemsControl sourcePanelReference1 = new();
-        private ItemsControl sourcePanelReference2 = new();
+        private ItemsControl _sourcePanelReference1 = new();
+        private ItemsControl _sourcePanelReference2 = new();
+        private HandyControl.Controls.ScrollViewer _sourceScrollReference1 = new();
+        private HandyControl.Controls.ScrollViewer _sourceScrollReference2 = new();
 
         /// <summary>
         /// 更新原文
@@ -488,7 +492,7 @@ namespace MisakaTranslator
         /// <param name="repairedText">原文</param>
         private async void UpdateSourceAsync(string repairedText)
         {
-            if (sourcePanelReference2.ItemsSource is not ObservableCollection<UIElement> sourceCollection) return;
+            if (_sourcePanelReference2.ItemsSource is not ObservableCollection<UIElement> sourceCollection) return;
             if (!_enableShowSource)
             {
                 Application.Current.Dispatcher.Invoke(() =>
@@ -653,9 +657,19 @@ namespace MisakaTranslator
                         sourceCollection.Add(textBox);
                     });
                 }
-                _ = FadeInAsync(sourcePanelReference2);
-                await FadeOutAsync(sourcePanelReference1);
-                (sourcePanelReference1, sourcePanelReference2) = (sourcePanelReference2, sourcePanelReference1);
+                _ = FadeInAsync(_sourcePanelReference2);
+                await FadeOutAsync(_sourcePanelReference1);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    _sourceScrollReference2.Visibility = Visibility.Visible;
+                    _sourceScrollReference2.ScrollToHome();
+                    _sourceScrollReference1.Visibility = Visibility.Collapsed;
+                    _sourceScrollReference2.ScrollToHome();
+                });
+
+
+                (_sourcePanelReference1, _sourcePanelReference2) = (_sourcePanelReference2, _sourcePanelReference1);
+                (_sourceScrollReference1, _sourceScrollReference2) = (_sourceScrollReference2, _sourceScrollReference1);
             });
         }
 
