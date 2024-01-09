@@ -308,10 +308,9 @@ namespace MisakaTranslator
         private async Task StartTranslateByGid(int gid)
         {
             var pidList = new List<Process>();
-            DateTime dateTime = DateTime.Now;
-
-            //等待游戏启动
-            while (DateTime.Now - dateTime < TimeSpan.FromSeconds(5))
+            Stopwatch s = new();
+            s.Start();
+            while (s.Elapsed < TimeSpan.FromSeconds(5))
             {
                 foreach (var (pid, path) in ProcessHelper.GetProcessesData(GameInfoList[gid].Isx64))
                 {
@@ -322,6 +321,8 @@ namespace MisakaTranslator
                     }
                 }
             }
+            s.Stop();
+
         ProcessFound:
             if (pidList.Count == 0)
             {
