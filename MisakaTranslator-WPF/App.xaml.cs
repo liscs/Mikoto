@@ -3,7 +3,10 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using Windows.Win32;
+using Windows.Win32.Graphics.Gdi;
 
 namespace MisakaTranslator
 {
@@ -24,6 +27,24 @@ namespace MisakaTranslator
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             //非UI线程未捕获异常处理事件
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            SetDefaultFrameRate();
+        }
+
+        /// <summary>
+        /// 设置目标刷新率与系统一致，获取失败则设置为60fps
+        /// </summary>
+        private static void SetDefaultFrameRate()
+        {
+            DEVMODEW dm = new();
+            if (PInvoke.EnumDisplaySettings(null, ENUM_DISPLAY_SETTINGS_MODE.ENUM_CURRENT_SETTINGS, ref dm))
+            {
+                Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata { DefaultValue = (int)dm.dmDisplayFrequency });
+            }
+            else
+            {
+                Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata { DefaultValue = 60 });
+            }
         }
 
         private void App_Exit(object sender, ExitEventArgs e)

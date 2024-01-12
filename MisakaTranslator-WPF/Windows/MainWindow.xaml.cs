@@ -278,7 +278,9 @@ namespace MisakaTranslator
             var temp = str.Remove(0, 4);
             gid = int.Parse(temp);
 
-            GameNameTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_GameName"].ToString() + GameInfoList[gid].GameName;
+            DrawGameImage.Source = GetGameIcon(gid).Source;
+
+            GameNameTag.Text = GameInfoList[gid].GameName;
             if (GameInfoList[gid].TransMode == 1)
             {
                 TransModeTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_TransMode"].ToString() + "Hook";
@@ -306,10 +308,9 @@ namespace MisakaTranslator
         private async Task StartTranslateByGid(int gid)
         {
             var pidList = new List<Process>();
-            DateTime dateTime = DateTime.Now;
-
-            //等待游戏启动
-            while (DateTime.Now - dateTime < TimeSpan.FromSeconds(5))
+            Stopwatch s = new();
+            s.Start();
+            while (s.Elapsed < TimeSpan.FromSeconds(5))
             {
                 foreach (var (pid, path) in ProcessHelper.GetProcessesData(GameInfoList[gid].Isx64))
                 {
@@ -320,6 +321,8 @@ namespace MisakaTranslator
                     }
                 }
             }
+            s.Stop();
+
         ProcessFound:
             if (pidList.Count == 0)
             {

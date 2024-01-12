@@ -435,6 +435,8 @@
     <sys:String x:Key="TesseractCliSettingsPage_Exe">可执行文件|*.exe</sys:String>
     <sys:String x:Key="TranslateWindow_OCREmpty">[OCR]自动识别三次均为空，请自行刷新！</sys:String>
     <sys:String x:Key="GameNameDialog_Modified">已修改，重启后生效！</sys:String>
+    <sys:String x:Key="NotifyIcon_OpenMain">打开主界面</sys:String>
+    <sys:String x:Key="NotifyIcon_Exit">退出</sys:String>
 
 
 

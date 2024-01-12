@@ -7,7 +7,7 @@
     xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     mc:Ignorable="d"
-    d:Height="540" d:Width="960"
+    d:Height="540" d:Width="960" MinHeight="540" MinWidth="960"
     Title="MisakaTranslator" Background="White" WindowStartupLocation="CenterScreen"
     Closing="BlurWindow_Closing">
 
@@ -31,12 +31,12 @@
         <StackPanel Orientation="Horizontal" Grid.Column="2">
             <Button fa:Awesome.Content="Rocket" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="AutoStart_BtnClick" Margin="0,0,0,0.5">
                 <hc:Poptip.Instance>
-                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{DynamicResource MainWindow_Tip_AutoStart}" Placement="Right"/>
+                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="Microsoft YaHei" Content="{DynamicResource MainWindow_Tip_AutoStart}" Placement="Right"/>
                 </hc:Poptip.Instance>
             </Button>
             <Button fa:Awesome.Content="Book" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="ComicTransBtn_Click" Margin="20,0,0,0.5">
                 <hc:Poptip.Instance>
-                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{DynamicResource MainWindow_Tip_ComicTrans}" Placement="Right"/>
+                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="Microsoft YaHei" Content="{DynamicResource MainWindow_Tip_ComicTrans}" Placement="Right"/>
                 </hc:Poptip.Instance>
             </Button>
         </StackPanel>
@@ -53,7 +53,7 @@
             </Button>
             <Button fa:Awesome.Content="Cog" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="SettingsBtn_Click" Margin="0,0,0,0.5">
                 <hc:Poptip.Instance>
-                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="微软雅黑" Content="{DynamicResource MainWindow_Tip_Settings}" Placement="Left"/>
+                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="Microsoft YaHei" Content="{DynamicResource MainWindow_Tip_Settings}" Placement="Left"/>
                 </hc:Poptip.Instance>
             </Button>
         </StackPanel>
@@ -73,32 +73,21 @@
         <!--游戏详情-->
         <hc:Drawer Name="GameInfoDrawer" ShowMode="Press" MaskCanClose="True" Dock="Left">
             <Border Background="{StaticResource TranslateWindowBackground}" Width="300" BorderBrush="{DynamicResource BorderBrush}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="2*"></RowDefinition>
-                        <RowDefinition Height="3*"></RowDefinition>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Grid.Row="0">
-                        <Button HorizontalAlignment="Right" Foreground="{DynamicResource PrimaryTextBrush}" Style="{DynamicResource ButtonIcon}" hc:IconElement.Geometry="{DynamicResource DeleteFillCircleGeometry}" Click="CloseDrawerBtn_Click"/>
-                        <TextBlock Name="GameNameTag" Margin="25,0,0,10" FontSize="15" TextWrapping="Wrap"/>
-                        <TextBlock Name="TransModeTag" Margin="25,0,0,10" FontSize="15" TextWrapping="Wrap"/>
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="1">
-                        <Border Padding="30">
-                            <hc:ButtonGroup Orientation="Vertical">
-                                <Button Content="{DynamicResource MainWindow_Drawer_Start}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource SuccessBrush}" Click="StartBtn_Click"/>
-                                <Button Content="{DynamicResource MainWindow_Drawer_LEStart}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource InfoBrush}" Click="LEStartBtn_Click"/>
-                                <Button Content="{DynamicResource MainWindow_Drawer_DeleteGame}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource DangerBrush}" Click="DeleteGameBtn_Click"/>
-                                <Button Content="{DynamicResource MainWindow_Drawer_UpdateName}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource WarningBrush}" Click="UpdateNameBtn_Click"/>
-                                <Button Name="GameInfoDrawerClearButton" Content="GAME CLEAR!" Height="50" Margin="5" Foreground="White" Background="Gold" Click="ClearBtn_Click"/>
-                            </hc:ButtonGroup>
-                        </Border>
-
-                    </StackPanel>
-
-                </Grid>
+                <StackPanel Grid.Row="0">
+                    <Button HorizontalAlignment="Right" Foreground="{DynamicResource PrimaryTextBrush}" Style="{DynamicResource ButtonIcon}" hc:IconElement.Geometry="{DynamicResource DeleteFillCircleGeometry}" Click="CloseDrawerBtn_Click"/>
+                    <Image Name="DrawGameImage" Margin="50,0,50,20"/>
+                    <TextBlock Name="GameNameTag" TextAlignment="Center" Margin="25,0,25,10" FontSize="15" TextWrapping="Wrap"/>
+                    <TextBlock Name="TransModeTag" TextAlignment="Center" Margin="25,0,25,10" FontSize="15" TextWrapping="Wrap"/>
+                    <Border Padding="30">
+                        <hc:ButtonGroup Orientation="Vertical">
+                            <Button Content="{DynamicResource MainWindow_Drawer_Start}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource SuccessBrush}" Click="StartBtn_Click"/>
+                            <Button Content="{DynamicResource MainWindow_Drawer_LEStart}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource InfoBrush}" Click="LEStartBtn_Click"/>
+                            <Button Content="{DynamicResource MainWindow_Drawer_DeleteGame}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource DangerBrush}" Click="DeleteGameBtn_Click"/>
+                            <Button Content="{DynamicResource MainWindow_Drawer_UpdateName}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource WarningBrush}" Click="UpdateNameBtn_Click"/>
+                            <Button Name="GameInfoDrawerClearButton" Content="GAME CLEAR!" Height="50" Margin="5" Foreground="White" Background="Gold" Click="ClearBtn_Click"/>
+                        </hc:ButtonGroup>
+                    </Border>
+                </StackPanel>
             </Border>
         </hc:Drawer>
         <hc:NotifyIcon Token="MisakaTranslator" Name="NotifyIconContextContent" Text="HandyControl" IsBlink="False" Visibility="Visible"  Icon="pack://application:,,,/MisakaTranslator-WPF;component/logo.ico">
@@ -106,8 +95,8 @@
                 <Border CornerRadius="4" Margin="10" Background="{DynamicResource RegionBrush}" Effect="{StaticResource EffectShadow2}">
                     <StackPanel VerticalAlignment="Center" Margin="16">
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <Button Click="ButtonPush_OnClick"  Command="hc:ControlCommands.PushMainWindow2Top" MinWidth="100" Content="打开主界面"/>
-                            <Button Command="hc:ControlCommands.ShutdownApp" Margin="16,0,0,0" MinWidth="100" Style="{DynamicResource ButtonPrimary}" Content="退出"/>
+                            <Button Click="ButtonPush_OnClick"  Command="hc:ControlCommands.PushMainWindow2Top" MinWidth="100" Content="{DynamicResource NotifyIcon_OpenMain}"/>
+                            <Button Command="hc:ControlCommands.ShutdownApp" Margin="16,0,0,0" MinWidth="100" Style="{DynamicResource ButtonPrimary}" Content="{DynamicResource NotifyIcon_Exit}"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -115,9 +104,6 @@
             <hc:Interaction.Triggers>
                 <hc:EventTrigger EventName="Click">
                     <hc:EventToCommand Command="hc:ControlCommands.PushMainWindow2Top"/>
-                </hc:EventTrigger>
-                <hc:EventTrigger EventName="MouseDoubleClick">
-                    <hc:EventToCommand Command="{Binding MouseCmd}" CommandParameter="MouseDoubleClick"/>
                 </hc:EventTrigger>
             </hc:Interaction.Triggers>
         </hc:NotifyIcon>

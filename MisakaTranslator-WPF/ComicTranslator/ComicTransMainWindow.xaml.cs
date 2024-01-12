@@ -272,7 +272,7 @@ namespace MisakaTranslator.ComicTranslator
             sourceTextBox.Focus();
         }
 
-        private async void transBtn_Click(object sender, RoutedEventArgs e)
+        private async void TransBtn_Click(object sender, RoutedEventArgs e)
         {
             string sourceText = sourceTextBox.Text;
 

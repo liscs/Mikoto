@@ -419,4 +419,25 @@
     <sys:String x:Key="SoftwareSettingsPage_Exit">Exit MisakaTranslator</sys:String>
     <sys:String x:Key="SoftwareSettingsPage_Enable">Enable</sys:String>
 
+    <!--补漏-->
+    <sys:String x:Key="AddOptWindow_PersonName">Person's name</sys:String>
+    <sys:String x:Key="AddOptWindow_PlaceName">Place name</sys:String>
+    <sys:String x:Key="ComicTranslator_TransOne">Translation one:</sys:String>
+    <sys:String x:Key="ComicTranslator_TransTwo">Translation two:</sys:String>
+    <sys:String x:Key="Common_TextractorHistory">==================The following is the historical output record of Textractor================</sys:String>
+    <sys:String x:Key="MainWindow_NoGlobalNotice">Global notifications will not be displayed.</sys:String>
+    <sys:String x:Key="ScreenCaptureWindow_Area">Hold down the left mouse button and drag the mouse to draw the area to be identified. After confirming, right-click to exit</sys:String>
+    <sys:String x:Key="ArtificialTransSettingsPage_FileExtension">MisakaTranslator manual translation file|*.txt</sys:String>
+    <sys:String x:Key="TesseractCliSettingsPage_JapaneseHorizontal">Japanese (horizontal)</sys:String>
+    <sys:String x:Key="TesseractCliSettingsPage_JapaneseVertical">Japanese (vertical)</sys:String>
+    <sys:String x:Key="TesseractCliSettingsPage_English">English</sys:String>
+    <sys:String x:Key="TesseractCliSettingsPage_Custom">Custom</sys:String>
+    <sys:String x:Key="TesseractCliSettingsPage_Exe">Executable file|*.exe</sys:String>
+    <sys:String x:Key="TranslateWindow_OCREmpty">[OCR] Automatically recognized three times but it was empty, please refresh it yourself!</sys:String>
+    <sys:String x:Key="GameNameDialog_Modified">has been modified and will take effect after restarting!</sys:String>
+    <sys:String x:Key="NotifyIcon_OpenMain">Open the main window</sys:String>
+    <sys:String x:Key="NotifyIcon_Exit">Exit</sys:String>
+
+
+
 </ResourceDictionary>

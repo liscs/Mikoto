@@ -391,15 +391,14 @@ namespace TextHookLibrary
                     // TODO 寻找更好的Hook Address确定方法，记录匹配的多个misakacode表，将不够匹配的列入排除表
                     if (HookCodeList.Count != 0
                        && obtainedMisakaCode1.Length - 4 >= 0
-                       //要求第一串后四位以及第三串相等
-                       && savedMisakaCode1.Substring(savedMisakaCode1.Length - 4) == obtainedMisakaCode1.Substring(obtainedMisakaCode1.Length - 4)
-                       && savedMisakaCode3 == obtainedMisakaCode3)
+                       //要求第一串后四位相等
+                       && savedMisakaCode1.Substring(savedMisakaCode1.Length - 4) == obtainedMisakaCode1.Substring(obtainedMisakaCode1.Length - 4))
                     {
-                        if (!excludeSet.Contains(obtainedMisakaCode2))
+                        if (!excludeSet.Contains(obtainedMisakaCode2 + obtainedMisakaCode3))
                         {
-                            if (!matchList.Contains(obtainedMisakaCode2))
+                            if (!matchList.Contains(obtainedMisakaCode2 + obtainedMisakaCode3))
                             {
-                                matchList.Add(obtainedMisakaCode2);
+                                matchList.Add(obtainedMisakaCode2 + obtainedMisakaCode3);
                             }
                             SolvedDataReceivedEventArgs e = new SolvedDataReceivedEventArgs
                             {
@@ -408,7 +407,7 @@ namespace TextHookLibrary
                             MeetHookAddressMessageReceived?.Invoke(this, e);
                             if (matchList.Count > 1)
                             {
-                                string notThatMatch = GetWorstMatchString(savedMisakaCode2, matchList[0], matchList[1]);
+                                string notThatMatch = GetWorstMatchString(savedMisakaCode2 + savedMisakaCode3, matchList[0], matchList[1]);
                                 excludeSet.Add(notThatMatch);
                                 matchList.Clear();
                             }
