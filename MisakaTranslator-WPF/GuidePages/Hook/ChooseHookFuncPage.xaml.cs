@@ -9,7 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using TextHookLibrary;
 
-namespace MisakaTranslator_WPF.GuidePages.Hook
+namespace MisakaTranslator.GuidePages.Hook
 {
     /// <summary>
     /// ChooseHookFuncPage.xaml 的交互逻辑

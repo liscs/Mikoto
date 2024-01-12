@@ -8,7 +8,7 @@ using System.Windows.Ink;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace MisakaTranslator_WPF.ComicTranslator
+namespace MisakaTranslator.ComicTranslator
 {
     /// <summary>
     /// ImageProcWindow.xaml 的交互逻辑

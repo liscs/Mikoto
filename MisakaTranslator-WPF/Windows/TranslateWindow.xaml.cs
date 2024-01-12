@@ -26,7 +26,7 @@ using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     /// <summary>
     /// TranslateWindow.xaml 的交互逻辑

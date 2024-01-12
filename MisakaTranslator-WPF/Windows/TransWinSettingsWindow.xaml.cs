@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     /// <summary>
     /// TransWinSettingsWindow.xaml 的交互逻辑

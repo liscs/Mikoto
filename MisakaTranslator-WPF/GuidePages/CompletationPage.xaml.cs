@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace MisakaTranslator_WPF.GuidePages
+namespace MisakaTranslator.GuidePages
 {
     /// <summary>
     /// CompletationPage.xaml 的交互逻辑

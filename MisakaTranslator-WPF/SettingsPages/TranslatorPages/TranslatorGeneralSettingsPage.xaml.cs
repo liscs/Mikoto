@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using TranslatorLibrary;
 
-namespace MisakaTranslator_WPF.SettingsPages
+namespace MisakaTranslator.SettingsPages
 {
     /// <summary>
     /// TranslatorGeneralSettingsPage.xaml 的交互逻辑

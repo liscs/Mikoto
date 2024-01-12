@@ -1,10 +1,10 @@
-﻿<Window x:Class="MisakaTranslator_WPF.GlobalOCRWindow"
+﻿<Window x:Class="MisakaTranslator.GlobalOCRWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:local="clr-namespace:MisakaTranslator_WPF"
+        xmlns:local="clr-namespace:MisakaTranslator"
         mc:Ignorable="d"
         Title="GlobalOCRWindow" Height="450" Width="300" Loaded="Window_Loaded" Closing="Window_Closing">
     <Grid>

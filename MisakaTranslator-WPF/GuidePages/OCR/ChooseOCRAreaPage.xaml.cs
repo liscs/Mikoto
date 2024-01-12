@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace MisakaTranslator_WPF.GuidePages.OCR
+namespace MisakaTranslator.GuidePages.OCR
 {
     /// <summary>
     /// ChooseOCRAreaPage.xaml 的交互逻辑

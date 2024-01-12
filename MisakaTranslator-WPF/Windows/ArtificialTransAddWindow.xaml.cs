@@ -1,7 +1,7 @@
 ﻿using ArtificialTransHelperLibrary;
 using System.Windows;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     /// <summary>
     /// ArtificialTransAddWindow.xaml 的交互逻辑

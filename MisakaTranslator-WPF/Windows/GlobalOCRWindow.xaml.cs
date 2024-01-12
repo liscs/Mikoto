@@ -3,7 +3,7 @@ using System.Windows;
 using TranslatorLibrary;
 using TranslatorLibrary.Translator;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     /// <summary>
     /// GlobalOCRWindow.xaml 的交互逻辑

@@ -13,7 +13,7 @@ using TranslatorLibrary;
 using TranslatorLibrary.Translator;
 using Windows.Win32;
 
-namespace MisakaTranslator_WPF.ComicTranslator
+namespace MisakaTranslator.ComicTranslator
 {
     /// <summary>
     /// ComicTransMainWindow.xaml 的交互逻辑

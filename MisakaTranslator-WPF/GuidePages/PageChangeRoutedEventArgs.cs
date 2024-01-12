@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace MisakaTranslator_WPF.GuidePages
+namespace MisakaTranslator.GuidePages
 {
     public class PageChangeRoutedEventArgs : RoutedEventArgs
     {

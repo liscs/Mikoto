@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace MisakaTranslator_WPF.SettingsPages
+namespace MisakaTranslator.SettingsPages
 {
     /// <summary>
     /// OCRGeneralSettingsPage.xaml 的交互逻辑

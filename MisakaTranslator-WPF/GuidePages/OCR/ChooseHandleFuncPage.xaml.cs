@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace MisakaTranslator_WPF.GuidePages.OCR
+namespace MisakaTranslator.GuidePages.OCR
 {
     /// <summary>
     /// ChooseHandleFuncPage.xaml 的交互逻辑

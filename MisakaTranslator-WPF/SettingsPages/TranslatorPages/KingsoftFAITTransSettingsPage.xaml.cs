@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using TranslatorLibrary.Translator;
 
-namespace MisakaTranslator_WPF.SettingsPages.TranslatorPages
+namespace MisakaTranslator.SettingsPages.TranslatorPages
 {
     /// <summary>
     /// KingsoftFAITTransSettingsPage.xaml 的交互逻辑

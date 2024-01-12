@@ -1,9 +1,9 @@
-﻿<Window x:Class="MisakaTranslator_WPF.ComicTranslator.ImageProcWindow"
+﻿<Window x:Class="MisakaTranslator.ComicTranslator.ImageProcWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MisakaTranslator_WPF.ComicTranslator"
+        xmlns:local="clr-namespace:MisakaTranslator.ComicTranslator"
         mc:Ignorable="d"
         Title="{DynamicResource ImageProcWindow_WinName}" Height="450" Width="800">
 

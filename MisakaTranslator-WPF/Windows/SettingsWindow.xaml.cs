@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     /// <summary>
     /// SettingsWindow.xaml 的交互逻辑

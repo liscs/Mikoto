@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     public partial class App
     {
@@ -37,7 +37,7 @@ namespace MisakaTranslator_WPF
         /// </summary>
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            MisakaTranslator_WPF.MainWindow.Instance.CloseNotifyIcon();
+            MisakaTranslator.MainWindow.Instance.CloseNotifyIcon();
             string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
             PrintErrorMessageToFile(nowTime, e.Exception, 0);
             DoHookCheck();
@@ -63,7 +63,7 @@ namespace MisakaTranslator_WPF
         /// </summary>
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            MisakaTranslator_WPF.MainWindow.Instance.CloseNotifyIcon();
+            MisakaTranslator.MainWindow.Instance.CloseNotifyIcon();
             string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
             if (e.ExceptionObject is Exception exception)
             {
@@ -84,7 +84,7 @@ namespace MisakaTranslator_WPF
         /// </summary>
         private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
-            MisakaTranslator_WPF.MainWindow.Instance.CloseNotifyIcon();
+            MisakaTranslator.MainWindow.Instance.CloseNotifyIcon();
             string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
             PrintErrorMessageToFile(nowTime, e.Exception, 2);
 

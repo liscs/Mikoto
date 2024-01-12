@@ -7,7 +7,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Windows.Win32;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     /// <summary>
     /// ScreenCaptureWindow.xaml 的交互逻辑

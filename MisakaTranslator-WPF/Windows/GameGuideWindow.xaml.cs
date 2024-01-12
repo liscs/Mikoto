@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     /// <summary>
     /// GameGuideWindow.xaml 的交互逻辑

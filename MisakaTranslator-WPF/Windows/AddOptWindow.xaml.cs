@@ -2,7 +2,7 @@
 using System.Windows;
 using TransOptimizationLibrary;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     /// <summary>
     /// AddOptWindow.xaml 的交互逻辑

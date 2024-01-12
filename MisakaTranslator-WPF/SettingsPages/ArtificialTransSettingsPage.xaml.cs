@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace MisakaTranslator_WPF.SettingsPages
+namespace MisakaTranslator.SettingsPages
 {
     /// <summary>
     /// ArtificialTransSettingsPage.xaml 的交互逻辑

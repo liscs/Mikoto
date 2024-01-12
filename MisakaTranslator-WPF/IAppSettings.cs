@@ -1,6 +1,6 @@
 ﻿using Config.Net;
 
-namespace MisakaTranslator_WPF
+namespace MisakaTranslator
 {
     public interface IAppSettings
     {
