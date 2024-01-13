@@ -22,8 +22,7 @@ namespace TextHookLibrary
             {
                 if (p.MainWindowHandle != IntPtr.Zero)
                 {
-                    string info = "";
-                    info = p.ProcessName + "—" + p.Id;
+                    string info = p.ProcessName + "—" + p.Id;
                     ret.Add(info, p.Id);
                 }
                 p.Dispose();

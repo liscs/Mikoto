@@ -1,6 +1,7 @@
 using Config.Net;
 using DataAccessLibrary;
 using HandyControl.Controls;
+using HandyControl.Tools.Extension;
 using KeyboardMouseHookLibrary;
 using OCRLibrary;
 using System;
@@ -132,8 +133,20 @@ namespace MisakaTranslator
 
         private Image GetGameIcon(int i)
         {
+            Image ico = new()
+            {
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Height = 64,
+                Width = 64,
+            };
+
+            if (!File.Exists(GameInfoList[i].FilePath))
+            {
+                return ico;
+            }
+
             string[] icoPaths = Directory.GetFiles(Path.GetDirectoryName(GameInfoList[i].FilePath)!, "*.ico");
-            Image ico = new();
             if (icoPaths.Length > 0)
             {
                 ico.Source = new BitmapImage(new Uri(icoPaths[0]));
@@ -307,7 +320,7 @@ namespace MisakaTranslator
 
         private async Task StartTranslateByGid(int gid)
         {
-            var pidList = new List<Process>();
+            List<Process> pidList = new();
             Stopwatch s = new();
             s.Start();
             while (s.Elapsed < TimeSpan.FromSeconds(5))
@@ -386,7 +399,31 @@ namespace MisakaTranslator
 
         private async void StartBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (!File.Exists(GameInfoList[gid].FilePath))
+            {
+                HandyControl.Controls.MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{GameInfoList[gid].FilePath}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
+                return;
+            }
             Process.Start(GameInfoList[gid].FilePath);
+            GameInfoDrawer.IsOpen = false;
+            await StartTranslateByGid(gid);
+        }
+        private async void LEStartBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (!File.Exists(GameInfoList[gid].FilePath))
+            {
+                HandyControl.Controls.MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{GameInfoList[gid].FilePath}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
+                return;
+            }
+            var filepath = GameInfoList[gid].FilePath;
+            var p = new ProcessStartInfo();
+            var lePath = Common.AppSettings.LEPath;
+            p.FileName = lePath + "\\LEProc.exe";
+            // 记住加上引号，否则可能会因为路径带空格而无法启动
+            p.Arguments = $"-run \"{filepath}\"";
+            p.UseShellExecute = false;
+            p.WorkingDirectory = lePath;
+            Process.Start(p);
             GameInfoDrawer.IsOpen = false;
             await StartTranslateByGid(gid);
         }
@@ -409,21 +446,6 @@ namespace MisakaTranslator
         private void UpdateNameBtn_Click(object sender, RoutedEventArgs e)
         {
             Dialog.Show(new GameNameDialog(this, GameInfoList, gid));
-        }
-
-        private async void LEStartBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var filepath = GameInfoList[gid].FilePath;
-            var p = new ProcessStartInfo();
-            var lePath = Common.AppSettings.LEPath;
-            p.FileName = lePath + "\\LEProc.exe";
-            // 记住加上引号，否则可能会因为路径带空格而无法启动
-            p.Arguments = $"-run \"{filepath}\"";
-            p.UseShellExecute = false;
-            p.WorkingDirectory = lePath;
-            Process.Start(p);
-            GameInfoDrawer.IsOpen = false;
-            await StartTranslateByGid(gid);
         }
 
         private void BlurWindow_Closing(object sender, CancelEventArgs e)

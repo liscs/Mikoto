@@ -42,7 +42,7 @@ namespace MisakaTranslator.SettingsPages.DictionaryPages
                 CheckBox checkBox = new()
                 {
                     Width = 20,
-                    IsChecked = dict.Active,
+                    IsChecked = dict.GetActive(),
                     Margin = new Thickness(10),
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Center
@@ -138,13 +138,13 @@ namespace MisakaTranslator.SettingsPages.DictionaryPages
 
                 checkBox.Unchecked += (_, _) =>
                 {
-                    dict.Active = false;
+                    dict.SetActive(false);
                     EbwinHelper.AddOrUpdateDictionary(dict);
                 };
 
                 checkBox.Checked += (_, _) =>
                 {
-                    dict.Active = true;
+                    dict.SetActive(true);
                     EbwinHelper.AddOrUpdateDictionary(dict);
                 };
 
@@ -185,9 +185,10 @@ namespace MisakaTranslator.SettingsPages.DictionaryPages
                     {
                         Dict d = new Dict(path)
                         {
-                            Active = true,
                             Priority = allDicts.Count + 1
                         };
+                        d.SetActive(true);
+
                         EbwinHelper.AddOrUpdateDictionary(d);
                     }
                     UpdateDictionariesDisplay();
@@ -275,9 +276,10 @@ namespace MisakaTranslator.SettingsPages.DictionaryPages
             {
                 Dict d = new Dict(path)
                 {
-                    Active = true,
                     Priority = allDicts.Count + 1
                 };
+                d.SetActive(true);
+
                 EbwinHelper.AddOrUpdateDictionary(d);
             }
             UpdateDictionariesDisplay();

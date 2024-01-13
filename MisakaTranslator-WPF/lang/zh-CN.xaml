@@ -437,6 +437,7 @@
     <sys:String x:Key="GameNameDialog_Modified">已修改，重启后生效！</sys:String>
     <sys:String x:Key="NotifyIcon_OpenMain">打开主界面</sys:String>
     <sys:String x:Key="NotifyIcon_Exit">退出</sys:String>
+    <sys:String x:Key="GameFileNotExistsCheck">游戏文件不存在，请检查</sys:String>
 
 
 

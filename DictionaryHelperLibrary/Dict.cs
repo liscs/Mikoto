@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text.Json.Serialization;
 
 namespace DictionaryHelperLibrary
 {
@@ -17,26 +16,23 @@ namespace DictionaryHelperLibrary
         public string Name { get; set; } = string.Empty;
         public string DictPath { get; set; } = string.Empty;
 
-        public bool _active { get; set; }
-        [JsonIgnore]
-        public bool Active
+        public bool Active { get; set; }
+
+        public bool GetActive()
         {
-            get
+            return Active;
+        }
+        public void SetActive(bool value)
+        {
+            if (value)
             {
-                return _active;
+                EbwinHelper.EnActive(this);
             }
-            set
+            else
             {
-                if (value)
-                {
-                    EbwinHelper.EnActive(this);
-                }
-                else
-                {
-                    EbwinHelper.InActive(this);
-                }
-                _active = value;
+                EbwinHelper.InActive(this);
             }
+            Active = value;
         }
         public int Priority { get; set; }
     }

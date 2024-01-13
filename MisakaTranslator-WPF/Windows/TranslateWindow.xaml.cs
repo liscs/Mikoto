@@ -481,7 +481,7 @@ namespace MisakaTranslator
 
 
         private ItemsControl _sourcePanelReference1 = new();
-        private ItemsControl _sourcePanelReference2 = new(); 
+        private ItemsControl _sourcePanelReference2 = new();
         private HandyControl.Controls.ScrollViewer _sourceScrollReference1 = new();
         private HandyControl.Controls.ScrollViewer _sourceScrollReference2 = new();
 
