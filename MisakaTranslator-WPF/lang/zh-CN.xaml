@@ -439,7 +439,7 @@
     <sys:String x:Key="NotifyIcon_OpenMain">打开主界面</sys:String>
     <sys:String x:Key="NotifyIcon_Exit">退出</sys:String>
     <sys:String x:Key="GameFileNotExistsCheck">游戏文件不存在，请检查</sys:String>
-    <sys:String x:Key="ChooseGamePage_NoAdminWarn">警告：目前无管理员权限，若无法找到游戏进程，请以管理员身份运行软件后再次尝试。</sys:String>
+    <sys:String x:Key="ChooseGamePage_NoAdminWarn">警告：目前无管理员权限，若无法找到游戏进程，请以管理员身份重启本软件后再次尝试。</sys:String>
 
 
 

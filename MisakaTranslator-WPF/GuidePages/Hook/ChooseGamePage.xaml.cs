@@ -1,6 +1,7 @@
 ﻿using DataAccessLibrary;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,7 +27,7 @@ namespace MisakaTranslator.GuidePages.Hook
                 NoAdminPrivilegesTextBlock.Visibility = Visibility.Collapsed;
             }
 
-            GameProcessCombox.ItemsSource = _processList.Keys;
+            GameProcessCombox.ItemsSource = _processList.Keys.OrderBy(p=>p);
         }
 
         private static bool IsAdmin()

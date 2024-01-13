@@ -15,14 +15,19 @@ namespace TextHookLibrary
         /// <returns></returns>
         public static Dictionary<string, int> GetProcessList_Name_PID()
         {
-            Dictionary<string, int> ret = new Dictionary<string, int>();
+            Dictionary<string, int> ret = new();
 
             //获取系统进程列表
             foreach (Process p in Process.GetProcesses())
             {
                 if (p.MainWindowHandle != IntPtr.Zero)
                 {
-                    string info = p.ProcessName + "—" + p.Id;
+                    string info = p.ProcessName + ": ";
+                    if (!string.IsNullOrEmpty(p.MainWindowTitle))
+                    {
+                        info += "【" + p.MainWindowTitle + "】: ";
+                    }
+                    info += p.Id;
                     ret.Add(info, p.Id);
                 }
                 p.Dispose();
