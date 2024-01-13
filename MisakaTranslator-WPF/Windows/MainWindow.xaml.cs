@@ -21,6 +21,7 @@ using System.Windows.Media.Imaging;
 using TextHookLibrary;
 using TextRepairLibrary;
 using TranslatorLibrary;
+using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace MisakaTranslator
 {
@@ -339,7 +340,7 @@ namespace MisakaTranslator
         ProcessFound:
             if (pidList.Count == 0)
             {
-                HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
+                MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
                 return;
             }
             else
@@ -377,7 +378,7 @@ namespace MisakaTranslator
 
             if (!Common.TextHooker.Init(GameInfoList[gid].Isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
             {
-                HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
+                MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
                 return;
             }
             Common.TextHooker.HookCodeList.Add(GameInfoList[gid].HookCode);
@@ -401,7 +402,7 @@ namespace MisakaTranslator
         {
             if (!File.Exists(GameInfoList[gid].FilePath))
             {
-                HandyControl.Controls.MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{GameInfoList[gid].FilePath}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
+                MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{GameInfoList[gid].FilePath}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
                 return;
             }
             Process.Start(GameInfoList[gid].FilePath);
@@ -412,7 +413,7 @@ namespace MisakaTranslator
         {
             if (!File.Exists(GameInfoList[gid].FilePath))
             {
-                HandyControl.Controls.MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{GameInfoList[gid].FilePath}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
+                MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{GameInfoList[gid].FilePath}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
                 return;
             }
             var filepath = GameInfoList[gid].FilePath;
@@ -433,7 +434,7 @@ namespace MisakaTranslator
         /// </summary>
         private void DeleteGameBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_Drawer_DeleteGameConfirmBox"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (MessageBox.Show(Application.Current.Resources["MainWindow_Drawer_DeleteGameConfirmBox"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 GameHelper.DeleteGameByID(GameInfoList[gid].GameID);
                 var b = GamePanelCollection[gid];
@@ -488,7 +489,7 @@ namespace MisakaTranslator
                 TextRepair.Refresh();
                 languageResource.Source = new Uri($"lang/{Common.AppSettings.AppLanguage}.xaml", UriKind.Relative);
                 Application.Current.Resources.MergedDictionaries[1] = languageResource;
-                HandyControl.Controls.MessageBox.Show(Application.Current.Resources["Language_Changed"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
+                MessageBox.Show(Application.Current.Resources["Language_Changed"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
             }
         }
 
@@ -546,7 +547,7 @@ namespace MisakaTranslator
             List<string>? res = await Common.CheckUpdate();
             if (res != null)
             {
-                MessageBoxResult dr = HandyControl.Controls.MessageBox.Show(res[0] + "\n" + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);
+                MessageBoxResult dr = MessageBox.Show(res[0] + "\n" + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);
 
                 if (dr == MessageBoxResult.OK)
                 {

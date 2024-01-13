@@ -24,8 +24,9 @@
     <sys:String x:Key="MainWindow_Drawer_Start">正常启动</sys:String>
     <sys:String x:Key="MainWindow_Drawer_LEStart">LE转区启动</sys:String>
     <sys:String x:Key="MainWindow_Drawer_DeleteGame">从库中删除</sys:String>
-    <sys:String x:Key="MainWindow_Drawer_UpdateName">修改游戏名</sys:String>
+    <sys:String x:Key="MainWindow_Drawer_UpdateName">修改游戏信息</sys:String>
     <sys:String x:Key="MainWindow_Drawer_NameHint">输入新的游戏名</sys:String>
+    <sys:String x:Key="MainWindow_Drawer_PathHint">输入新的游戏路径</sys:String>
     <sys:String x:Key="MainWindow_Drawer_NameConfirmBtn">确认修改</sys:String>
     <sys:String x:Key="MainWindow_Drawer_Tag_GameName">游戏名：</sys:String>
     <sys:String x:Key="MainWindow_Drawer_Tag_TransMode">翻译模式：</sys:String>
