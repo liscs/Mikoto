@@ -37,7 +37,7 @@ namespace MisakaTranslator
     /// </summary>
     public partial class TranslateWindow
     {
-        public DispatcherTimer DispatcherTimer { get; set; }//定时器 定时将窗口置顶
+        public DispatcherTimer DispatcherTimer { get; set; } = new();//定时器 定时将窗口置顶
 
         Process? _gameProcess;
         private ArtificialTransHelper _artificialTransHelper;
@@ -78,15 +78,6 @@ namespace MisakaTranslator
         {
             InitializeComponent();
             UI_Init();
-
-
-            _winHandle = (HWND)new WindowInteropHelper(this).Handle;//记录翻译窗口句柄
-            DispatcherTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
-            DispatcherTimer.Tick += TickWindowTopMost;
-            DispatcherTimer.Start();
 
 
             _enableShowSource = true;
@@ -1067,6 +1058,18 @@ namespace MisakaTranslator
             DispatcherTimer.Stop();
             ArtificialTransAddWindow win = new(_currentsrcText, FirstTransText.Text, SecondTransText.Text);
             win.ShowDialog();
+            DispatcherTimer.Start();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            _winHandle = (HWND)new WindowInteropHelper(this).Handle;//记录翻译窗口句柄
+
+            DispatcherTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            DispatcherTimer.Tick += TickWindowTopMost;
             DispatcherTimer.Start();
         }
     }
