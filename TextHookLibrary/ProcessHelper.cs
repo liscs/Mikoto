@@ -91,48 +91,18 @@ namespace TextHookLibrary
         /// <summary>
         /// 返回 pid,绝对路径 的列表
         /// </summary>
-        public static List<(int, string)> GetProcessesData(bool isx64game = false)
+        public static List<(int, string)> GetProcessesData()
         {
             var result = new List<(int, string)>();
-            // 在32位主程序、64位游戏（或想获取全部进程）、存在外部程序时调用
-            if (isx64game && !Environment.Is64BitProcess && System.IO.File.Exists(ExtPath))
+            foreach (Process p in Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero))
             {
-                var p = Process.Start(new ProcessStartInfo(ExtPath)
+                using (p)
                 {
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
-                });
-                if (p == null)
-                {
-                    throw new InvalidOperationException("Failed to execute ProcessHelperExt.exe\n");
-                }
-                string output = p.StandardOutput.ReadToEnd();
-                if (p.ExitCode != 0)
-                {
-                    throw new InvalidOperationException("Failed to execute ProcessHelperExt.exe\n" + p.StandardError.ReadToEnd());
-                }
-
-                string[] lines = output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string line in lines)
-                {
-                    var parts = line.Split('|');
-                    result.Add((int.Parse(parts[0]), parts[1]));
+                    try { result.Add((p.Id, p.MainModule!.FileName)); }
+                    catch (System.ComponentModel.Win32Exception) { } // 无权限
+                    catch (InvalidOperationException) { } // 进程已退出
                 }
             }
-            else
-            {
-                foreach (Process p in Process.GetProcesses().Where(p => (long)p.MainWindowHandle != 0).ToArray())
-                {
-                    using (p)
-                    {
-                        try { result.Add((p.Id, p.MainModule!.FileName)); }
-                        catch (System.ComponentModel.Win32Exception) { } // 无权限
-                        catch (InvalidOperationException) { } // 进程已退出
-                    }
-                }
-            }
-
             return result;
         }
 

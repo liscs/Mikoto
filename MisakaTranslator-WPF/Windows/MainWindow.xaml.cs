@@ -325,7 +325,7 @@ namespace MisakaTranslator
             s.Start();
             while (s.Elapsed < TimeSpan.FromSeconds(5))
             {
-                foreach (var (pid, path) in ProcessHelper.GetProcessesData(GameInfoList[gid].Isx64))
+                foreach (var (pid, path) in ProcessHelper.GetProcessesData())
                 {
                     if (path == GameInfoList[gid].FilePath)
                     {
@@ -513,7 +513,7 @@ namespace MisakaTranslator
         {
             GameInfoList = GameHelper.GetAllCompletedGames();
 
-            foreach ((_, string path) in ProcessHelper.GetProcessesData(true))
+            foreach ((_, string path) in ProcessHelper.GetProcessesData())
             {
                 for (int j = 0; j < GameInfoList.Count; j++)
                 {
