@@ -48,7 +48,7 @@ namespace MisakaTranslator
         public static IAppSettings AppSettings { get; set; } = default!;//应用设置
         public static IRepeatRepairSettings RepairSettings { get; set; } = default!; //去重方法参数
 
-        public static TransMode TransMode { get; set; } //全局使用中的翻译模式 1=hook 2=ocr
+        public static TransMode TransMode { get; set; } //全局使用中的翻译模式 1=_hook 2=ocr
 
         public static Guid GameID { get; set; } //全局使用中的游戏ID(数据库)
 

@@ -63,7 +63,7 @@ namespace TextHookLibrary
 
         public Queue<string> TextractorOutPutHistory;//Textractor的输出记录队列，用于查错
 
-        private int GamePID;//能够获取到文本的游戏进程ID
+        public int GamePID { get; set; }//能够获取到文本的游戏进程ID
         private Dictionary<Process, bool> PossibleGameProcessList;//与gamePID进程同名的进程列表
         private int HandleMode;//处理的方式 1=已确定的单个进程 2=多个进程寻找能搜到文本的进程
         private Process? MaxMemoryProcess;//最大内存进程，用于智能处理时单独注入这个进程而不是PossibleGameProcessList中的每个进程都注入

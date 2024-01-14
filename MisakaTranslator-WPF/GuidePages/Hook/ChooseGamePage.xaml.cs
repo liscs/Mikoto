@@ -27,7 +27,7 @@ namespace MisakaTranslator.GuidePages.Hook
                 NoAdminPrivilegesTextBlock.Visibility = Visibility.Collapsed;
             }
 
-            GameProcessCombox.ItemsSource = _processList.Keys.OrderBy(p=>p);
+            GameProcessCombox.ItemsSource = _processList.Keys.OrderBy(p => p);
         }
 
         private static bool IsAdmin()

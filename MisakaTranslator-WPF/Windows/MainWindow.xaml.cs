@@ -1,7 +1,6 @@
 using Config.Net;
 using DataAccessLibrary;
 using HandyControl.Controls;
-using HandyControl.Tools.Extension;
 using KeyboardMouseHookLibrary;
 using OCRLibrary;
 using System;
@@ -495,14 +494,14 @@ namespace MisakaTranslator
 
         private async void AutoStart_BtnClick(object sender, RoutedEventArgs e)
         {
-            var res = GetGameListHasProcessGame_PID_ID();
-            if (res == -1)
+            int gid = GetRunningGameGid();
+            if (gid == -1)
             {
                 Growl.ErrorGlobal(Application.Current.Resources["MainWindow_AutoStartError_Hint"].ToString());
             }
             else
             {
-                await StartTranslateByGid(res);
+                await StartTranslateByGid(gid);
             }
         }
 
@@ -510,18 +509,18 @@ namespace MisakaTranslator
         /// 寻找任何正在运行中的之前已保存过的游戏
         /// </summary>
         /// <returns>数组索引（非GameID），-1代表未找到</returns>
-        private int GetGameListHasProcessGame_PID_ID()
+        private int GetRunningGameGid()
         {
             GameInfoList = GameHelper.GetAllCompletedGames();
-            if (GameInfoList == null)
-                return -1;
 
-            foreach (var (_, path) in ProcessHelper.GetProcessesData(true))
+            foreach ((_, string path) in ProcessHelper.GetProcessesData(true))
+            {
                 for (int j = 0; j < GameInfoList.Count; j++)
                 {
                     if (path == GameInfoList[j].FilePath)
                         return j;
                 }
+            }
 
             return -1;
         }

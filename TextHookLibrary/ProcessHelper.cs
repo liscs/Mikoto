@@ -93,7 +93,7 @@ namespace TextHookLibrary
         /// </summary>
         public static List<(int, string)> GetProcessesData(bool isx64game = false)
         {
-            var l = new List<(int, string)>();
+            var result = new List<(int, string)>();
             // 在32位主程序、64位游戏（或想获取全部进程）、存在外部程序时调用
             if (isx64game && !Environment.Is64BitProcess && System.IO.File.Exists(ExtPath))
             {
@@ -117,7 +117,7 @@ namespace TextHookLibrary
                 foreach (string line in lines)
                 {
                     var parts = line.Split('|');
-                    l.Add((int.Parse(parts[0]), parts[1]));
+                    result.Add((int.Parse(parts[0]), parts[1]));
                 }
             }
             else
@@ -126,14 +126,14 @@ namespace TextHookLibrary
                 {
                     using (p)
                     {
-                        try { l.Add((p.Id, p.MainModule!.FileName)); }
+                        try { result.Add((p.Id, p.MainModule!.FileName)); }
                         catch (System.ComponentModel.Win32Exception) { } // 无权限
                         catch (InvalidOperationException) { } // 进程已退出
                     }
                 }
             }
 
-            return l;
+            return result;
         }
 
         /// <summary>

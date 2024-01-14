@@ -6,6 +6,7 @@ using MecabHelperLibrary;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -36,6 +37,7 @@ namespace MisakaTranslator
     {
         public DispatcherTimer dtimer = default!;//定时器 定时将窗口置顶
 
+        Process? _gameProcess;
         private ArtificialTransHelper _artificialTransHelper;
 
         private MecabHelper _mecabHelper;
@@ -47,10 +49,10 @@ namespace MisakaTranslator
         private string _currentsrcText = string.Empty; //当前源文本内容
 
         public string SourceTextFont = string.Empty; //源文本区域字体
-        private int sourceTextFontSize; //源文本区域字体大小
+        private int _sourceTextFontSize; //源文本区域字体大小
 
         private Queue<string> _gameTextHistory; //历史文本
-        private static KeyboardMouseHook? hook; //全局键盘鼠标钩子
+        private static KeyboardMouseHook? _hook; //全局键盘鼠标钩子
         public volatile bool IsOCRingFlag; //线程锁:判断是否正在OCR线程中，保证同时只有一组在跑OCR
         public bool IsNotPausedFlag; //是否处在暂停状态（专用于OCR）,为真可以翻译
 
@@ -58,13 +60,13 @@ namespace MisakaTranslator
 
         private readonly object _saveTransResultLock = new(); // 读写数据库和_gameTextHistory的线程锁
 
-        private ITTS? _TTS;
+        private ITTS? _tts;
 
-        private HWND winHandle;//窗口句柄，用于设置活动窗口，以达到全屏状态下总在最前的目的
-        private TransWinSettingsWindow transWinSettingsWindow = default!;
+        private HWND _winHandle;//窗口句柄，用于设置活动窗口，以达到全屏状态下总在最前的目的
+        private TransWinSettingsWindow _transWinSettingsWindow = default!;
 
         //Effect 疑似有内存泄露 https://github.com/dotnet/wpf/issues/6782 use frozen
-        private readonly DropShadowEffect dropShadowEffect = new();
+        private readonly DropShadowEffect _dropShadowEffect = new();
 
         private readonly ObservableCollection<UIElement> _sourceTextCollection1 = new();
         private readonly ObservableCollection<UIElement> _sourceTextCollection2 = new();
@@ -104,18 +106,25 @@ namespace MisakaTranslator
 
             _artificialTransHelper = new ArtificialTransHelper(Common.GameID.ToString());
 
-            if (Common.TransMode == TransMode.Hook)
+            switch (Common.TransMode)
             {
-                Common.TextHooker!.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
-            }
-            else if (Common.TransMode == TransMode.Ocr)
-            {
-                MouseKeyboardHook_Init();
+                case TransMode.Hook:
+                    Common.TextHooker!.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
+                    _gameProcess = Process.GetProcessById(Common.TextHooker.GamePID);
+                    _gameProcess.EnableRaisingEvents = true;
+                    _gameProcess.Exited += (_, _) =>
+                    {
+                        Application.Current.Dispatcher.Invoke(Close);
+                    };
+                    break;
+                case TransMode.Ocr:
+                    MouseKeyboardHook_Init();
+                    break;
             }
 
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
-                transWinSettingsWindow = new TransWinSettingsWindow(this);
+                _transWinSettingsWindow = new TransWinSettingsWindow(this);
             });
 
             SourceTextPanel1.ItemsSource = _sourceTextCollection1;
@@ -141,12 +150,12 @@ namespace MisakaTranslator
                                 localTTS.SetTTSVoice(Common.AppSettings.LocalTTSVoice);
                                 localTTS.SetVolume(Common.AppSettings.LoaclTTSVolume);
                                 localTTS.SetRate(Common.AppSettings.LocaTTSRate);
-                                _TTS = localTTS;
+                                _tts = localTTS;
                             });
                     }
                     else
                     {
-                        _TTS = null;
+                        _tts = null;
                     }
                     break;
                 case TTSMode.Azure:
@@ -156,18 +165,18 @@ namespace MisakaTranslator
                         )
                     {
                         AzureTTS azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSProxy);
-                        _TTS = azureTTS;
+                        _tts = azureTTS;
                     }
                     else
                     {
-                        _TTS = null;
+                        _tts = null;
                     }
                     break;
             }
             Dispatcher.BeginInvoke(() =>
             {
                 dispatcherOperation?.Wait();
-                if (_TTS == null)
+                if (_tts == null)
                 {
                     Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoTTS_Hint"].ToString());
                 }
@@ -179,28 +188,28 @@ namespace MisakaTranslator
         /// </summary>
         private void MouseKeyboardHook_Init()
         {
-            if (hook == null)
+            if (_hook == null)
             {
-                hook = new KeyboardMouseHook();
+                _hook = new KeyboardMouseHook();
                 bool r = false;
 
                 if (Common.UsingHotKey.IsMouse)
                 {
-                    hook.OnMouseActivity += Hook_OnMouseActivity;
+                    _hook.OnMouseActivity += Hook_OnMouseActivity;
                     if (Common.UsingHotKey.MouseButton == System.Windows.Forms.MouseButtons.Left)
                     {
-                        r = hook.Start(true, 1);
+                        r = _hook.Start(true, 1);
                     }
                     else if (Common.UsingHotKey.MouseButton == System.Windows.Forms.MouseButtons.Right)
                     {
-                        r = hook.Start(true, 2);
+                        r = _hook.Start(true, 2);
                     }
                 }
                 else
                 {
-                    hook.OnKeyboardActivity += Hook_OnKeyBoardActivity;
+                    _hook.OnKeyboardActivity += Hook_OnKeyBoardActivity;
                     int keycode = (int)Common.UsingHotKey.KeyCode;
-                    r = hook.Start(false, keycode);
+                    r = _hook.Start(false, keycode);
                 }
 
                 if (!r)
@@ -253,9 +262,9 @@ namespace MisakaTranslator
                 this.Height = int.Parse(Common.AppSettings.TF_SizeH);
             }
 
-            dropShadowEffect.Opacity = 1;
-            dropShadowEffect.ShadowDepth = 0;
-            dropShadowEffect.BlurRadius = 6;
+            _dropShadowEffect.Opacity = 1;
+            _dropShadowEffect.ShadowDepth = 0;
+            _dropShadowEffect.BlurRadius = 6;
         }
 
         /// <summary>
@@ -403,7 +412,7 @@ namespace MisakaTranslator
         }
         DictResWindow? _dictResWindow;
 
-        public int SourceTextFontSize { get => sourceTextFontSize; set => sourceTextFontSize = value; }
+        public int SourceTextFontSize { get => _sourceTextFontSize; set => _sourceTextFontSize = value; }
 
         private void DictArea_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -412,7 +421,7 @@ namespace MisakaTranslator
             if (!string.IsNullOrWhiteSpace(textBox.SelectedText))
             {
                 dtimer.Stop();
-                _dictResWindow ??= new DictResWindow(_TTS);
+                _dictResWindow ??= new DictResWindow(_tts);
                 _dictResWindow.Search(textBox.SelectedText);
                 _dictResWindow.Show();
                 dtimer.Start();
@@ -542,7 +551,7 @@ namespace MisakaTranslator
                             if (Common.AppSettings.TF_EnableDropShadow)
                             {
                                 //加入原文的阴影
-                                textBox.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen();
+                                textBox.Effect = (Effect)_dropShadowEffect.GetCurrentValueAsFrozen();
                             }
                             if (Common.AppSettings.TF_EnableColorful)
                             {
@@ -596,7 +605,7 @@ namespace MisakaTranslator
                                 if (Common.AppSettings.TF_EnableDropShadow)
                                 {
                                     //加入注音的阴影
-                                    NotationTextBlock.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen();
+                                    NotationTextBlock.Effect = (Effect)_dropShadowEffect.GetCurrentValueAsFrozen();
                                 }
                                 if (SourceTextFontSize - 6.5 > 0)
                                 {
@@ -651,7 +660,7 @@ namespace MisakaTranslator
                         textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
                         if (Common.AppSettings.TF_EnableDropShadow)
                         {
-                            textBox.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen(); ;
+                            textBox.Effect = (Effect)_dropShadowEffect.GetCurrentValueAsFrozen(); ;
                         }
                         textBox.Foreground = Brushes.White;
                         sourceCollection.Add(textBox);
@@ -773,7 +782,7 @@ namespace MisakaTranslator
                         FirstTransText.Text = afterString;
                         if (Common.AppSettings.TF_EnableDropShadow)
                         {
-                            FirstTransText.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen(); ;
+                            FirstTransText.Effect = (Effect)_dropShadowEffect.GetCurrentValueAsFrozen(); ;
                         }
                         else
                         {
@@ -788,7 +797,7 @@ namespace MisakaTranslator
                         SecondTransText.Text = afterString;
                         if (Common.AppSettings.TF_EnableDropShadow)
                         {
-                            SecondTransText.Effect = (Effect)dropShadowEffect.GetCurrentValueAsFrozen(); ;
+                            SecondTransText.Effect = (Effect)_dropShadowEffect.GetCurrentValueAsFrozen(); ;
                         }
                         else
                         {
@@ -904,10 +913,10 @@ namespace MisakaTranslator
             Common.AppSettings.TF_SizeW = Convert.ToString((int)this.ActualWidth);
             Common.AppSettings.TF_SizeH = Convert.ToString((int)this.ActualHeight);
 
-            if (hook != null)
+            if (_hook != null)
             {
-                hook.Stop();
-                hook = null;
+                _hook.Stop();
+                _hook = null;
             }
 
             if (Common.TextHooker != null)
@@ -936,8 +945,8 @@ namespace MisakaTranslator
         private void Settings_Item_Click(object sender, RoutedEventArgs e)
         {
             dtimer.Stop();
-            transWinSettingsWindow.WindowState = WindowState.Normal;
-            transWinSettingsWindow.Show();
+            _transWinSettingsWindow.WindowState = WindowState.Normal;
+            _transWinSettingsWindow.Show();
         }
 
         private void History_Item_Click(object sender, RoutedEventArgs e)
@@ -1015,12 +1024,12 @@ namespace MisakaTranslator
         private void TTS_Item_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(_currentsrcText))
-                _TTS?.SpeakAsync(_currentsrcText);
+                _tts?.SpeakAsync(_currentsrcText);
         }
 
         private void TransWin_Loaded(object sender, RoutedEventArgs e)
         {
-            winHandle = (HWND)new WindowInteropHelper(this).Handle;//记录翻译窗口句柄
+            _winHandle = (HWND)new WindowInteropHelper(this).Handle;//记录翻译窗口句柄
 
             dtimer = new DispatcherTimer
             {
@@ -1037,7 +1046,7 @@ namespace MisakaTranslator
             if (this.WindowState != WindowState.Minimized)
             {
                 //定时刷新窗口到顶层
-                PInvoke.SetWindowPos(winHandle, HWND.HWND_TOPMOST, 0, 0, 0, 0, SET_WINDOW_POS_FLAGS.SWP_NOSIZE | SET_WINDOW_POS_FLAGS.SWP_NOMOVE);
+                PInvoke.SetWindowPos(_winHandle, HWND.HWND_TOPMOST, 0, 0, 0, 0, SET_WINDOW_POS_FLAGS.SWP_NOSIZE | SET_WINDOW_POS_FLAGS.SWP_NOMOVE);
             }
         }
 
