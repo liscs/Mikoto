@@ -7,6 +7,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
@@ -65,6 +66,20 @@ namespace MisakaTranslator
         public static int UsingOCRDelay { get; set; } //全局使用中的OCR延时
 
         public static GlobalHotKey GlobalOCRHotKey { get; set; } = default!; //全局OCR热键
+
+        public static bool IsAdmin
+        {
+            get
+            {
+                bool isElevated;
+                using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+                {
+                    WindowsPrincipal principal = new WindowsPrincipal(identity);
+                    isElevated = principal.IsInRole(WindowsBuiltInRole.Administrator);
+                }
+                return isElevated;
+            }
+        }
 
         /// <summary>
         /// 导出Textractor历史记录，返回是否成功的结果

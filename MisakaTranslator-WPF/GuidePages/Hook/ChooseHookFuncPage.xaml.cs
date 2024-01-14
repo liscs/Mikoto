@@ -26,6 +26,11 @@ namespace MisakaTranslator.GuidePages.Hook
         {
             InitializeComponent();
 
+            if (Common.IsAdmin)
+            {
+                NoAdminPrivilegesTextBlock.Visibility = Visibility.Collapsed;
+            }
+
             LastCustomHookCode = "NULL";
 
             HookFunListView.ItemsSource = lstData;

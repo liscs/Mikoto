@@ -22,23 +22,12 @@ namespace MisakaTranslator.GuidePages.Hook
         {
             InitializeComponent();
 
-            if (IsAdmin())
+            if (Common.IsAdmin)
             {
                 NoAdminPrivilegesTextBlock.Visibility = Visibility.Collapsed;
             }
 
             GameProcessCombox.ItemsSource = _processList.Keys.OrderBy(p => p);
-        }
-
-        private static bool IsAdmin()
-        {
-            bool isElevated;
-            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
-            {
-                WindowsPrincipal principal = new WindowsPrincipal(identity);
-                isElevated = principal.IsInRole(WindowsBuiltInRole.Administrator);
-            }
-            return isElevated;
         }
 
         private void GameProcessCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
