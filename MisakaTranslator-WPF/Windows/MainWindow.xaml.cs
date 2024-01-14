@@ -10,6 +10,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -320,33 +322,24 @@ namespace MisakaTranslator
 
         private async Task StartTranslateByGid(int gid)
         {
-            List<Process> pidList = new();
+            List<Process> gameProcessList = new();
             Stopwatch s = new();
             s.Start();
             while (s.Elapsed < TimeSpan.FromSeconds(5))
             {
-                foreach (var (pid, path) in ProcessHelper.GetProcessesData())
+                //不以exe结尾的ProcessName不会自动把后缀去掉，因此对exe后缀特殊处理
+                gameProcessList = Process.GetProcessesByName(Regex.Split(Path.GetFileName(GameInfoList[gid].FilePath), ".exe", RegexOptions.IgnoreCase)[0]).ToList();
+                if (gameProcessList.Count > 0)
                 {
-                    if (path == GameInfoList[gid].FilePath)
-                    {
-                        pidList.Add(Process.GetProcessById(pid));
-                        goto ProcessFound;
-                    }
+                    break;
                 }
             }
             s.Stop();
 
-        ProcessFound:
-            if (pidList.Count == 0)
+            if (gameProcessList.Count == 0)
             {
                 MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
                 return;
-            }
-            else
-            {
-                var pid = pidList[0].Id;
-                pidList.Clear();
-                pidList = ProcessHelper.FindSameNameProcess(pid);
             }
 
             Common.GameID = GameInfoList[gid].GameID;
@@ -373,7 +366,7 @@ namespace MisakaTranslator
 
             Common.RepairFuncInit();
 
-            Common.TextHooker = pidList.Count == 1 ? new TextHookHandle(pidList[0].Id) : new TextHookHandle(pidList);
+            Common.TextHooker = gameProcessList.Count == 1 ? new TextHookHandle(gameProcessList[0].Id) : new TextHookHandle(gameProcessList);
 
             if (!Common.TextHooker.Init(GameInfoList[gid].Isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
             {
@@ -386,10 +379,27 @@ namespace MisakaTranslator
             Common.TextHooker.MisakaCodeList.Add(GameInfoList[gid].MisakaHookCode);
             await Common.TextHooker.StartHook(Convert.ToBoolean(Common.AppSettings.AutoHook));
 
-            await Task.Delay(3000);
             Common.TextHooker.Auto_AddHookToGame();
 
-            new TranslateWindow().Show();
+            try
+            {
+                new TranslateWindow().Show();
+            }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
+                return;
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
+                return;
+            }
+            catch (Win32Exception)
+            {
+                MessageBox.Show(Application.Current.Resources["MainWindow_NoAdmin_Hint"].ToString(), Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
+                return;
+            }
         }
 
         private void CloseDrawerBtn_Click(object sender, RoutedEventArgs e)
@@ -497,7 +507,7 @@ namespace MisakaTranslator
             int gid = GetRunningGameGid();
             if (gid == -1)
             {
-                Growl.ErrorGlobal(Application.Current.Resources["MainWindow_AutoStartError_Hint"].ToString());
+                Growl.WarningGlobal(Application.Current.Resources["MainWindow_AutoStartError_Hint"].ToString());
             }
             else
             {

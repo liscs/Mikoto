@@ -6,6 +6,7 @@ using MecabHelperLibrary;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ using TTSHelperLibrary;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
+using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace MisakaTranslator
 {
@@ -35,7 +37,7 @@ namespace MisakaTranslator
     /// </summary>
     public partial class TranslateWindow
     {
-        public DispatcherTimer dtimer = default!;//定时器 定时将窗口置顶
+        public DispatcherTimer DispatcherTimer { get; set; }//定时器 定时将窗口置顶
 
         Process? _gameProcess;
         private ArtificialTransHelper _artificialTransHelper;
@@ -75,13 +77,23 @@ namespace MisakaTranslator
         public TranslateWindow()
         {
             InitializeComponent();
+            UI_Init();
+
+
+            _winHandle = (HWND)new WindowInteropHelper(this).Handle;//记录翻译窗口句柄
+            DispatcherTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            DispatcherTimer.Tick += TickWindowTopMost;
+            DispatcherTimer.Start();
+
 
             _enableShowSource = true;
 
             _gameTextHistory = new Queue<string>();
 
             Topmost = true;
-            UI_Init();
             IsOCRingFlag = false;
 
 
@@ -111,12 +123,22 @@ namespace MisakaTranslator
                 case TransMode.Hook:
                     Common.TextHooker!.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
                     _gameProcess = Process.GetProcessById(Common.TextHooker.GamePID);
-                    _gameProcess.EnableRaisingEvents = true;
-                    _gameProcess.Exited += (_, _) =>
+                    try
+                    {
+                        _gameProcess.EnableRaisingEvents = true;
+                        _gameProcess.Exited += (_, _) =>
+                        {
+                            _gameProcess.Dispose();
+                            Application.Current.Dispatcher.Invoke(Close);
+                        };
+                    }
+                    catch (Win32Exception)
                     {
                         _gameProcess.Dispose();
                         Application.Current.Dispatcher.Invoke(Close);
-                    };
+                        throw;
+                    }
+
                     break;
                 case TransMode.Ocr:
                     MouseKeyboardHook_Init();
@@ -135,6 +157,9 @@ namespace MisakaTranslator
             _sourcePanelReference2 = SourceTextPanel2;
             _sourceScrollReference1 = SourceScroll1;
             _sourceScrollReference2 = SourceScroll2;
+
+
+            Application.Current.MainWindow.Hide();
         }
 
         private void TTS_Init()
@@ -421,11 +446,11 @@ namespace MisakaTranslator
             if (textBox == null) { return; }
             if (!string.IsNullOrWhiteSpace(textBox.SelectedText))
             {
-                dtimer.Stop();
+                DispatcherTimer.Stop();
                 _dictResWindow ??= new DictResWindow(_tts);
                 _dictResWindow.Search(textBox.SelectedText);
                 _dictResWindow.Show();
-                dtimer.Start();
+                DispatcherTimer.Start();
             }
         }
 
@@ -911,8 +936,8 @@ namespace MisakaTranslator
         {
             Common.AppSettings.TF_LocX = Convert.ToString((int)this.Left);
             Common.AppSettings.TF_LocY = Convert.ToString((int)this.Top);
-            Common.AppSettings.TF_SizeW = Convert.ToString((int)this.ActualWidth);
-            Common.AppSettings.TF_SizeH = Convert.ToString((int)this.ActualHeight);
+            Common.AppSettings.TF_SizeW = Convert.ToString((int)this.Width);
+            Common.AppSettings.TF_SizeH = Convert.ToString((int)this.Height);
 
             if (_hook != null)
             {
@@ -927,7 +952,7 @@ namespace MisakaTranslator
                 Common.TextHooker = null;
             }
 
-            dtimer.Stop();
+            DispatcherTimer.Stop();
 
             _mecabHelper.Dispose();
 
@@ -936,7 +961,7 @@ namespace MisakaTranslator
                 if (Application.Current.MainWindow != null)
                 {
                     //System.InvalidOperationException:“关闭 Window 之后，无法设置 Visibility，也无法调用 Show、ShowDialogor 或 WindowInteropHelper.EnsureHandle。”
-                    Application.Current.MainWindow.Visibility = Visibility.Visible;
+                    Application.Current.MainWindow.Show();
                 }
             }
             catch (InvalidOperationException)
@@ -945,7 +970,7 @@ namespace MisakaTranslator
 
         private void Settings_Item_Click(object sender, RoutedEventArgs e)
         {
-            dtimer.Stop();
+            DispatcherTimer.Stop();
             _transWinSettingsWindow.WindowState = WindowState.Normal;
             _transWinSettingsWindow.Show();
         }
@@ -977,18 +1002,18 @@ namespace MisakaTranslator
                 Owner = this,
                 Title = Application.Current.Resources["TranslateWin_History_Title"].ToString()
             };
-            dtimer.Stop();
+            DispatcherTimer.Stop();
             window.Topmost = true;
             window.ShowDialog();
-            dtimer.Start();
+            DispatcherTimer.Start();
         }
 
         private void AddNoun_Item_Click(object sender, RoutedEventArgs e)
         {
-            dtimer.Stop();
+            DispatcherTimer.Stop();
             AddOptWindow win = new(_currentsrcText);
             win.ShowDialog();
-            dtimer.Start();
+            DispatcherTimer.Start();
         }
 
         private void RenewOCR_Item_Click(object sender, RoutedEventArgs e)
@@ -1028,20 +1053,6 @@ namespace MisakaTranslator
                 _tts?.SpeakAsync(_currentsrcText);
         }
 
-        private void TransWin_Loaded(object sender, RoutedEventArgs e)
-        {
-            _winHandle = (HWND)new WindowInteropHelper(this).Handle;//记录翻译窗口句柄
-
-            dtimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
-            dtimer.Tick += TickWindowTopMost;
-            dtimer.Start();
-
-            Application.Current.MainWindow.Visibility = Visibility.Collapsed;
-        }
-
         void TickWindowTopMost(object? sender, EventArgs e)
         {
             if (this.WindowState != WindowState.Minimized)
@@ -1053,10 +1064,10 @@ namespace MisakaTranslator
 
         private void ArtificialTransAdd_Item_Click(object sender, RoutedEventArgs e)
         {
-            dtimer.Stop();
+            DispatcherTimer.Stop();
             ArtificialTransAddWindow win = new(_currentsrcText, FirstTransText.Text, SecondTransText.Text);
             win.ShowDialog();
-            dtimer.Start();
+            DispatcherTimer.Start();
         }
     }
 }

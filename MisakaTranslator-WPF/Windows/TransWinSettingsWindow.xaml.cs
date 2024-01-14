@@ -11,27 +11,26 @@ namespace MisakaTranslator
     /// </summary>
     public partial class TransWinSettingsWindow : Window
     {
-        TranslateWindow translateWin;
-
-        List<string> FontList;
+        private TranslateWindow _translateWin;
+        private List<string> _fontList;
 
         public TransWinSettingsWindow(TranslateWindow Win)
         {
-            translateWin = Win;
+            _translateWin = Win;
 
             InitializeComponent();
 
-            FontList = new List<string>();
+            _fontList = new List<string>();
 
             System.Drawing.Text.InstalledFontCollection fonts = new System.Drawing.Text.InstalledFontCollection();
             foreach (System.Drawing.FontFamily family in fonts.Families)
             {
-                FontList.Add(family.Name);
+                _fontList.Add(family.Name);
             }
 
-            sourceFont.ItemsSource = FontList;
-            firstFont.ItemsSource = FontList;
-            secondFont.ItemsSource = FontList;
+            sourceFont.ItemsSource = _fontList;
+            firstFont.ItemsSource = _fontList;
+            secondFont.ItemsSource = _fontList;
 
             EventInit();
 
@@ -47,43 +46,43 @@ namespace MisakaTranslator
         {
             sourceFont.SelectionChanged += delegate
             {
-                translateWin.SourceTextFont = FontList[sourceFont.SelectedIndex];
-                Common.AppSettings.TF_SrcTextFont = FontList[sourceFont.SelectedIndex];
+                _translateWin.SourceTextFont = _fontList[sourceFont.SelectedIndex];
+                Common.AppSettings.TF_SrcTextFont = _fontList[sourceFont.SelectedIndex];
             };
 
             firstFont.SelectionChanged += delegate
             {
-                translateWin.FirstTransText.FontFamily = new FontFamily(FontList[firstFont.SelectedIndex]);
-                Common.AppSettings.TF_FirstTransTextFont = FontList[firstFont.SelectedIndex];
+                _translateWin.FirstTransText.FontFamily = new FontFamily(_fontList[firstFont.SelectedIndex]);
+                Common.AppSettings.TF_FirstTransTextFont = _fontList[firstFont.SelectedIndex];
             };
 
             secondFont.SelectionChanged += delegate
             {
-                translateWin.SecondTransText.FontFamily = new FontFamily(FontList[secondFont.SelectedIndex]);
-                Common.AppSettings.TF_SecondTransTextFont = FontList[secondFont.SelectedIndex];
+                _translateWin.SecondTransText.FontFamily = new FontFamily(_fontList[secondFont.SelectedIndex]);
+                Common.AppSettings.TF_SecondTransTextFont = _fontList[secondFont.SelectedIndex];
             };
 
             sourceFontSize.ValueChanged += delegate
             {
-                translateWin.SourceTextFontSize = (int)sourceFontSize.Value;
+                _translateWin.SourceTextFontSize = (int)sourceFontSize.Value;
                 Common.AppSettings.TF_SrcTextSize = sourceFontSize.Value;
             };
 
             firstFontSize.ValueChanged += delegate
             {
-                translateWin.FirstTransText.FontSize = firstFontSize.Value;
+                _translateWin.FirstTransText.FontSize = firstFontSize.Value;
                 Common.AppSettings.TF_FirstTransTextSize = firstFontSize.Value;
             };
 
             secondFontSize.ValueChanged += delegate
             {
-                translateWin.SecondTransText.FontSize = secondFontSize.Value;
+                _translateWin.SecondTransText.FontSize = secondFontSize.Value;
                 Common.AppSettings.TF_SecondTransTextSize = secondFontSize.Value;
             };
 
             firstWhiteStrokeCheckBox.Click += delegate
             {
-                translateWin.FirstTransText.Stroke = firstWhiteStrokeCheckBox.IsChecked switch
+                _translateWin.FirstTransText.Stroke = firstWhiteStrokeCheckBox.IsChecked switch
                 {
                     true => Brushes.White,
                     null or false => Brushes.Black
@@ -93,10 +92,10 @@ namespace MisakaTranslator
 
             secondWhiteStrokeCheckBox.Click += delegate
             {
-                translateWin.SecondTransText.Stroke = secondWhiteStrokeCheckBox.IsChecked switch
+                _translateWin.SecondTransText.Stroke = secondWhiteStrokeCheckBox.IsChecked switch
                 {
-                    true => translateWin.SecondTransText.Stroke = Brushes.White,
-                    null or false => translateWin.SecondTransText.Stroke = Brushes.Black
+                    true => _translateWin.SecondTransText.Stroke = Brushes.White,
+                    null or false => _translateWin.SecondTransText.Stroke = Brushes.Black
                 };
 
                 Common.AppSettings.TF_SecondWhiteStrokeIsChecked = secondWhiteStrokeCheckBox.IsChecked ?? false;
@@ -153,15 +152,15 @@ namespace MisakaTranslator
             {
                 if ((sender as CheckBox)?.IsChecked ?? false)
                 {
-                    translateWin.TitleBar.Visibility = Visibility.Collapsed;
-                    translateWin.Top += translateWin.TitleBar.Height;
-                    translateWin.Height -= translateWin.TitleBar.Height;
+                    _translateWin.TitleBar.Visibility = Visibility.Collapsed;
+                    _translateWin.Top += _translateWin.TitleBar.Height;
+                    _translateWin.Height -= _translateWin.TitleBar.Height;
                 }
                 else
                 {
-                    translateWin.TitleBar.Visibility = Visibility.Visible;
-                    translateWin.Top -= translateWin.TitleBar.Height;
-                    translateWin.Height += translateWin.TitleBar.Height;
+                    _translateWin.TitleBar.Visibility = Visibility.Visible;
+                    _translateWin.Top -= _translateWin.TitleBar.Height;
+                    _translateWin.Height += _translateWin.TitleBar.Height;
                 }
             };
         }
@@ -176,19 +175,19 @@ namespace MisakaTranslator
             firstColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor) as Brush;
             secondColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_SecondTransTextColor) as Brush;
 
-            for (int i = 0; i < FontList.Count; i++)
+            for (int i = 0; i < _fontList.Count; i++)
             {
-                if (Common.AppSettings.TF_SrcTextFont == FontList[i])
+                if (Common.AppSettings.TF_SrcTextFont == _fontList[i])
                 {
                     sourceFont.SelectedIndex = i;
                 }
 
-                if (Common.AppSettings.TF_FirstTransTextFont == FontList[i])
+                if (Common.AppSettings.TF_FirstTransTextFont == _fontList[i])
                 {
                     firstFont.SelectedIndex = i;
                 }
 
-                if (Common.AppSettings.TF_SecondTransTextFont == FontList[i])
+                if (Common.AppSettings.TF_SecondTransTextFont == _fontList[i])
                 {
                     secondFont.SelectedIndex = i;
                 }
@@ -254,21 +253,21 @@ namespace MisakaTranslator
             {
                 if (sender == BgColorBtn)
                 {
-                    translateWin.LockButton.IsChecked = true;
+                    _translateWin.LockButton.IsChecked = true;
                     BgColorBlock.Background = picker.SelectedBrush;
-                    translateWin.Background = picker.SelectedBrush;
+                    _translateWin.Background = picker.SelectedBrush;
                     Common.AppSettings.TF_BackColor = picker.SelectedBrush.ToString();
                 }
                 else if (sender == firstColorBtn)
                 {
                     firstColorBlock.Background = picker.SelectedBrush;
-                    translateWin.FirstTransText.Fill = picker.SelectedBrush;
+                    _translateWin.FirstTransText.Fill = picker.SelectedBrush;
                     Common.AppSettings.TF_FirstTransTextColor = picker.SelectedBrush.ToString();
                 }
                 else if (sender == secondColorBtn)
                 {
                     secondColorBlock.Background = picker.SelectedBrush;
-                    translateWin.SecondTransText.Fill = picker.SelectedBrush;
+                    _translateWin.SecondTransText.Fill = picker.SelectedBrush;
                     Common.AppSettings.TF_SecondTransTextColor = picker.SelectedBrush.ToString();
                 }
                 window.Close();
@@ -283,7 +282,7 @@ namespace MisakaTranslator
         protected override void OnClosing(CancelEventArgs e)
         {
             e.Cancel = true;
-            translateWin.dtimer.Start();
+            _translateWin.DispatcherTimer.Start();
             Hide();
         }
     }

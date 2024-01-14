@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         WindowStyle="None" AllowsTransparency="True"
         Title="TranslateWindow" Height="450" MinHeight="32" Width="800" MinWidth="384"
-        Closing="Window_Closing" Loaded="TransWin_Loaded"
+        Closing="Window_Closing"
         hc:WindowAttach.IsDragElement="True">
     <Window.BorderBrush>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
