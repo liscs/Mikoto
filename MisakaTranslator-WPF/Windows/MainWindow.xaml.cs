@@ -556,8 +556,7 @@ namespace MisakaTranslator
             (bool available, Version latestVersion) = await Common.IsUpdateAvailable();
             if (available)
             {
-                MessageBoxResult dr = MessageBox.Show(res[0] + "\n" + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);
-                MessageBoxResult dr = HandyControl.Controls.MessageBox.Show(latestVersion + "\n" + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);
+                MessageBoxResult dr = MessageBox.Show(latestVersion + "\n" + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);
 
                 if (dr == MessageBoxResult.OK)
                 {
