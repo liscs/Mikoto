@@ -26,7 +26,6 @@
     <sys:String x:Key="MainWindow_Drawer_DeleteGame">从库中删除</sys:String>
     <sys:String x:Key="MainWindow_Drawer_UpdateName">修改游戏信息</sys:String>
     <sys:String x:Key="MainWindow_Drawer_NameHint">输入新的游戏名</sys:String>
-    <sys:String x:Key="MainWindow_Drawer_PathHint">输入新的游戏路径</sys:String>
     <sys:String x:Key="MainWindow_Drawer_NameConfirmBtn">确认修改</sys:String>
     <sys:String x:Key="MainWindow_Drawer_Tag_GameName">游戏名：</sys:String>
     <sys:String x:Key="MainWindow_Drawer_Tag_TransMode">翻译模式：</sys:String>
@@ -37,7 +36,7 @@
     <sys:String x:Key="MainWindow_GlobalOCRError_Hint">全局OCR热键注册失败！</sys:String>
     <sys:String x:Key="MainWindow_StartError_Hint">未找到游戏进程！</sys:String>
     <sys:String x:Key="MainWindow_TextractorError_Hint">Textractor不存在或启动失败</sys:String>
-    
+
     <sys:String x:Key="SettingsMenu_WinName">MisakaTranslator本体设置</sys:String>
     <sys:String x:Key="SettingsMenu_About">MisakaTranslator</sys:String>
     <sys:String x:Key="SettingsMenu_SoftwareSettings">软件本体设置</sys:String>
@@ -49,7 +48,7 @@
     <sys:String x:Key="SettingsMenu_OCRSettings_BaiduFanyi">百度翻译OCR</sys:String>
     <sys:String x:Key="SettingsMenu_OCRSettings_Tencent">腾讯云图片翻译</sys:String>
     <sys:String x:Key="SettingsMenu_OCRSettings_TesseractCli">TesseractCli OCR</sys:String>
-    
+
     <sys:String x:Key="SettingsMenu_TranslatorSettings">翻译相关设置</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_General">通用设置</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Baidu">百度翻译API</sys:String>
@@ -197,9 +196,9 @@
     <sys:String x:Key="ChooseGamePage_AutoHookTag_Begin">【智能处理】共找到</sys:String>
     <sys:String x:Key="ChooseGamePage_AutoHookTag_End">个同名进程</sys:String>
     <sys:String x:Key="ChooseGamePage_NextErrorHint">请先选择一个进程再进行下一步操作！</sys:String>
-    
+
     <sys:String x:Key="Drawer_BtnExit">关闭</sys:String>
-    
+
     <sys:String x:Key="ChooseHookFuncPage_Introduce">进行游戏并使游戏中文本发生变化，在下方找到完全包含游戏文本内容的对应项并确定。卡顿时可在本页面获取焦点情况下按Esc进行强制暂停。</sys:String>
     <sys:String x:Key="ChooseHookFuncPage_BtnAddHook">添加指定特殊码Hook</sys:String>
     <sys:String x:Key="ChooseHookFuncPage_BtnConfirm">确认方法</sys:String>
@@ -346,7 +345,7 @@
     <sys:String x:Key="AddOptWin_Error_Hint">添加名词翻译优化词条失败</sys:String>
 
     <sys:String x:Key="TransWinSettingsWin_DropShadowCbox">开启文字阴影</sys:String>
-    
+
     <sys:String x:Key="TransWinSettingsWin_Hirogana">平假名</sys:String>
     <sys:String x:Key="TransWinSettingsWin_Katakana">片假名</sys:String>
     <sys:String x:Key="TransWinSettingsWin_Romaji">罗马音</sys:String>
@@ -355,7 +354,7 @@
 
     <sys:String x:Key="TransWinSettingsWin_HirakanaCbox">使用平假名注音</sys:String>
     <sys:String x:Key="TransWinSettingsWin_KanaBoldCbox">将假名标注加粗</sys:String>
-    
+
     <sys:String x:Key="MainWindow_AutoUpdateCheck">发现新版本！点击确认进入下载页面，点击取消忽略本次更新提示。</sys:String>
 
     <sys:String x:Key="GeneralTransSettingsPage_Translimit">翻译限制字数</sys:String>
@@ -420,7 +419,7 @@
     <sys:String x:Key="SoftwareSettingsPage_Exit">退出 MisakaTranslator</sys:String>
     <sys:String x:Key="SoftwareSettingsPage_Enable">启用</sys:String>
 
-    <!--补漏-->
+    <!--补充-->
     <sys:String x:Key="AddOptWindow_PersonName">人名</sys:String>
     <sys:String x:Key="AddOptWindow_PlaceName">地名</sys:String>
     <sys:String x:Key="ComicTranslator_TransOne">翻译一：</sys:String>
@@ -442,6 +441,8 @@
     <sys:String x:Key="ChooseGamePage_NoAdminWarn">警告：目前无管理员权限，若无法找到游戏进程，请以管理员身份重启本软件后再次尝试。</sys:String>
     <sys:String x:Key="ChooseHookFuncPage_NoAdminWarn">警告：目前无管理员权限，若无法注入游戏进程，请以管理员身份重启本软件后再次尝试。</sys:String>
     <sys:String x:Key="MainWindow_NoAdmin_Hint">无法注入需要管理员身份的游戏，请以管理员身份重新启动本软件</sys:String>
+    <sys:String x:Key="MainWindow_Drawer_PathHint">输入新的游戏路径</sys:String>
+    <sys:String x:Key="SoftwareSettingsPage_EnableAutoCheckUpdate">启动时自动检查更新</sys:String>
 
 
 
