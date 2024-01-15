@@ -4,9 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
@@ -144,66 +147,43 @@ namespace MisakaTranslator
         /// <summary>
         /// 检查软件更新
         /// </summary>
-        /// <returns>如果已经是最新或获取更新失败，返回null，否则返回更新信息可直接显示</returns>
-        public static async Task<List<string>?> CheckUpdate()
+        public static async Task<(bool, Version)> IsUpdateAvailable()
         {
             Version version = Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
-            string currentVersion = version.ToString();
+            Version latestVersion = await GetLatestVersionAsync();
+            return (latestVersion > version, latestVersion);
+        }
+        private static async Task<Version> GetLatestVersionAsync()
+        {
 
-            string url = "https://hanmin0822.github.io/MisakaTranslator/index.html";
-
-            string strResult = "";
-
-            try
+            string url = "https://api.github.com/repos/liscs/MisakaTranslator/releases/latest";
+            using HttpClient httpClient = new()
             {
-                HttpClient httpClient = new HttpClient()
+                Timeout = TimeSpan.FromSeconds(30),
+            };
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("MisakaTranslator");
+            using (var request = new HttpRequestMessage())
+            {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri(url);
+                request.Headers.Add("Cache-Control", "no-cache");
+                using HttpResponseMessage response = await httpClient.SendAsync(request).ConfigureAwait(false);
+                string result = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    Timeout = TimeSpan.FromSeconds(30),
-                };
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12; // For FX4.7
-                httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("MisakaTranslator");
-                using (var request = new HttpRequestMessage())
-                {
-                    request.Method = HttpMethod.Get;
-                    request.RequestUri = new Uri(url);
-                    request.Headers.Add("Pragma", "no-cache");
-                    HttpResponseMessage response = await httpClient.SendAsync(request).ConfigureAwait(false);
-                    string result = await response.Content.ReadAsStringAsync();
-                    if (response.StatusCode == HttpStatusCode.OK)
+                    JsonNode? jsonNode = JsonSerializer.Deserialize<JsonNode>(result);
+                    string? versionString = jsonNode?["tag_name"]?.GetValue<string>();
+
+                    if (!string.IsNullOrEmpty(versionString))
                     {
-                        strResult = result;
+                        int[] versionNumber = versionString.Split('v', '.')
+                            .Where(p => !string.IsNullOrEmpty(p))
+                            .Select(int.Parse).ToArray();
+                        return new Version(versionNumber[0], versionNumber[1], versionNumber[2]);
                     }
                 }
+                return new Version();
             }
-            catch
-            {
-                return null;
-            }
-
-            if (strResult != null)
-            {
-                string? newVersion = GetMiddleStr(strResult, "LatestVersion[", "]");
-
-                if (newVersion == null)
-                {
-                    return null;
-                }
-
-                if (currentVersion == newVersion)
-                {
-                    return null;
-                }
-                else
-                {
-                    string? downloadPath = GetMiddleStr(strResult, "DownloadPath[", "]");
-                    if (downloadPath != null)
-                    {
-                        return new List<string>() { newVersion, downloadPath };
-                    }
-                }
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -226,6 +206,5 @@ namespace MisakaTranslator
                 return null;
             }
         }
-
     }
 }
