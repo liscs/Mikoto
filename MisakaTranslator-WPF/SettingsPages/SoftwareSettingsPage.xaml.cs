@@ -8,9 +8,11 @@ namespace MisakaTranslator.SettingsPages
     /// </summary>
     public partial class SoftwareSettingsPage : Page
     {
+        private SoftwareSettingsViewModel _viewModel = new();
         public SoftwareSettingsPage()
         {
             InitializeComponent();
+            DataContext = _viewModel;
 
             var appSettingsOnClickCloseButton = Common.AppSettings.OnClickCloseButton;
             switch (appSettingsOnClickCloseButton)

@@ -1,7 +1,7 @@
 ﻿using KeyboardMouseHookLibrary;
 using OCRLibrary;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -17,6 +17,7 @@ using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using TextHookLibrary;
 using TextRepairLibrary;
+using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace MisakaTranslator
 {
@@ -162,11 +163,19 @@ namespace MisakaTranslator
         /// <summary>
         /// 检查软件更新
         /// </summary>
-        public static async Task<(bool, Version)> IsUpdateAvailable()
+        public static async Task CheckUpdateAsync()
         {
-            Version version = Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
+            Version currentVersion = Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
             Version latestVersion = await GetLatestVersionAsync();
-            return (latestVersion > version, latestVersion);
+            if (latestVersion > currentVersion)
+            {
+                MessageBoxResult dr = MessageBox.Show(latestVersion + Environment.NewLine + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);
+
+                if (dr == MessageBoxResult.OK)
+                {
+                    Process.Start(new ProcessStartInfo("https://github.com/liscs/MisakaTranslator/releases/latest") { UseShellExecute = true });
+                }
+            }
         }
         private static async Task<Version> GetLatestVersionAsync()
         {

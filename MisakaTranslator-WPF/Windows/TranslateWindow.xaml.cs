@@ -28,7 +28,6 @@ using TTSHelperLibrary;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
-using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace MisakaTranslator
 {

@@ -513,6 +513,9 @@ namespace MisakaTranslator
         [Option(DefaultValue = true)]
         bool GrowlEnabled { get; set; }
 
+        [Option(DefaultValue = true)]
+        bool UpdateCheckEnabled { get; set; }
+
         [Option(Alias = "Mecab.DicPath", DefaultValue = "")]
         string Mecab_DicPath { get; set; }
 

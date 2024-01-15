@@ -553,15 +553,9 @@ namespace MisakaTranslator
 
         private async void BlurWindow_ContentRendered(object sender, EventArgs e)
         {
-            (bool available, Version latestVersion) = await Common.IsUpdateAvailable();
-            if (available)
+            if (Common.AppSettings.UpdateCheckEnabled)
             {
-                MessageBoxResult dr = MessageBox.Show(latestVersion + "\n" + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);
-
-                if (dr == MessageBoxResult.OK)
-                {
-                    Process.Start(new ProcessStartInfo("https://github.com/liscs/MisakaTranslator/releases/latest") { UseShellExecute = true });
-                }
+                await Common.CheckUpdateAsync();
             }
         }
 
