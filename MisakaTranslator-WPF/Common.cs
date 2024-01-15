@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Security.Principal;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
@@ -51,7 +52,7 @@ namespace MisakaTranslator
         public static IAppSettings AppSettings { get; set; } = default!;//应用设置
         public static IRepeatRepairSettings RepairSettings { get; set; } = default!; //去重方法参数
 
-        public static TransMode TransMode { get; set; } //全局使用中的翻译模式 1=hook 2=ocr
+        public static TransMode TransMode { get; set; } //全局使用中的翻译模式 1=_hook 2=ocr
 
         public static Guid GameID { get; set; } //全局使用中的游戏ID(数据库)
 
@@ -68,6 +69,20 @@ namespace MisakaTranslator
         public static int UsingOCRDelay { get; set; } //全局使用中的OCR延时
 
         public static GlobalHotKey GlobalOCRHotKey { get; set; } = default!; //全局OCR热键
+
+        public static bool IsAdmin
+        {
+            get
+            {
+                bool isElevated;
+                using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+                {
+                    WindowsPrincipal principal = new WindowsPrincipal(identity);
+                    isElevated = principal.IsInRole(WindowsBuiltInRole.Administrator);
+                }
+                return isElevated;
+            }
+        }
 
         /// <summary>
         /// 导出Textractor历史记录，返回是否成功的结果

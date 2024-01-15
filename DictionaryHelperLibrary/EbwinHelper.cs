@@ -39,7 +39,7 @@ namespace DictionaryHelperLibrary
             var dList = GetAllDicts().ToList().OrderBy(d => d.Priority);
             foreach (var d in dList)
             {
-                if (d.Active)
+                if (d.GetActive())
                 {
                     EBPOCKETlist.Add($"{d.DictPath}|_|_|_|_|_|");
                 }
@@ -151,7 +151,7 @@ namespace DictionaryHelperLibrary
         {
             if (dict.Name == null) { return false; }
             EBPOCKETlist.RemoveAll(s => s.Contains($"{dict.DictPath}|_|_|_|_|_|"));
-            if (dict.Active)
+            if (dict.GetActive())
             {
                 try
                 {

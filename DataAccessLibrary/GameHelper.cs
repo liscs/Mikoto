@@ -82,7 +82,7 @@ namespace DataAccessLibrary
     public static class GameHelper
     {
         //游戏信息文件夹
-        public static readonly DirectoryInfo directory = Directory.CreateDirectory($"{Environment.CurrentDirectory}\\data\\games\\");
+        private static readonly DirectoryInfo _gameInfoDirectory = Directory.CreateDirectory($"{Environment.CurrentDirectory}\\data\\games\\");
         public static Dictionary<Guid, GameInfo> AllCompletedGamesIdDict { get; set; } = new();
         public static Dictionary<string, GameInfo> AllCompletedGamesPathDict { get; set; } = new();
         /// <summary>
@@ -94,7 +94,7 @@ namespace DataAccessLibrary
         {
             if (id != Guid.Empty)
             {
-                return LoadGameInfo($"{directory.FullName}\\{id}.json");
+                return LoadGameInfo($"{_gameInfoDirectory.FullName}\\{id}.json");
             }
             else
             {
@@ -141,7 +141,7 @@ namespace DataAccessLibrary
             List<GameInfo> list = new();
             AllCompletedGamesIdDict.Clear();
             AllCompletedGamesPathDict.Clear();
-            foreach (FileInfo fileInfo in directory.GetFiles())
+            foreach (FileInfo fileInfo in _gameInfoDirectory.GetFiles())
             {
                 GameInfo gameInfo = LoadGameInfo(fileInfo.FullName);
                 if (string.IsNullOrEmpty(gameInfo.RepairFunc)
@@ -170,10 +170,10 @@ namespace DataAccessLibrary
             try
             {
                 GameInfo gameInfo = AllCompletedGamesIdDict[gameID];
-                File.Delete($"{directory.FullName}\\{gameInfo.GameID}.json");
+                File.Delete($"{_gameInfoDirectory.FullName}\\{gameInfo.GameID}.json");
                 return true;
             }
-            catch (Exception)
+            catch (IOException)
             {
                 return false;
             }
@@ -189,7 +189,7 @@ namespace DataAccessLibrary
             try
             {
                 GameInfo gameInfo = AllCompletedGamesIdDict[gameID];
-                File.Delete($"{directory.FullName}\\{gameInfo.GameID}.json");
+                File.Delete($"{_gameInfoDirectory.FullName}\\{gameInfo.GameID}.json");
                 PropertyInfo? pinfo = typeof(GameInfo).GetProperty(key);
                 if (pinfo == null) return false;
                 pinfo.SetValue(gameInfo, value);
@@ -215,7 +215,7 @@ namespace DataAccessLibrary
         /// <returns></returns>
         public static void SaveGameInfo(GameInfo gameInfo)
         {
-            string fileName = $"{directory.FullName}\\{gameInfo.GameID}.json";
+            string fileName = $"{_gameInfoDirectory.FullName}\\{gameInfo.GameID}.json";
             string jsonString = JsonSerializer.Serialize(gameInfo, options);
             File.WriteAllText(fileName, jsonString);
         }

@@ -18,7 +18,10 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="{DynamicResource ChooseGamePage_Introduce}" FontSize="15" TextWrapping="WrapWithOverflow" Margin="10"/>
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="{DynamicResource ChooseGamePage_Introduce}" FontSize="15" TextWrapping="WrapWithOverflow" Margin="10"/>
+                <TextBlock Name="NoAdminPrivilegesTextBlock" Text="{DynamicResource ChooseGamePage_NoAdminWarn}" FontSize="15" TextWrapping="WrapWithOverflow" Foreground="Red" Margin="10"/>
+            </StackPanel>
 
             <hc:ComboBox Name="GameProcessCombox" Grid.Row="1" Margin="10" VerticalAlignment="Center" SelectionChanged="GameProcessCombox_SelectionChanged"/>
 

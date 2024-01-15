@@ -10,6 +10,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,6 +22,7 @@ using System.Windows.Media.Imaging;
 using TextHookLibrary;
 using TextRepairLibrary;
 using TranslatorLibrary;
+using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace MisakaTranslator
 {
@@ -132,8 +135,20 @@ namespace MisakaTranslator
 
         private Image GetGameIcon(int i)
         {
+            Image ico = new()
+            {
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Height = 64,
+                Width = 64,
+            };
+
+            if (!File.Exists(GameInfoList[i].FilePath))
+            {
+                return ico;
+            }
+
             string[] icoPaths = Directory.GetFiles(Path.GetDirectoryName(GameInfoList[i].FilePath)!, "*.ico");
-            Image ico = new();
             if (icoPaths.Length > 0)
             {
                 ico.Source = new BitmapImage(new Uri(icoPaths[0]));
@@ -307,33 +322,24 @@ namespace MisakaTranslator
 
         private async Task StartTranslateByGid(int gid)
         {
-            var pidList = new List<Process>();
+            List<Process> gameProcessList = new();
             Stopwatch s = new();
             s.Start();
             while (s.Elapsed < TimeSpan.FromSeconds(5))
             {
-                foreach (var (pid, path) in ProcessHelper.GetProcessesData(GameInfoList[gid].Isx64))
+                //不以exe结尾的ProcessName不会自动把后缀去掉，因此对exe后缀特殊处理
+                gameProcessList = Process.GetProcessesByName(Regex.Split(Path.GetFileName(GameInfoList[gid].FilePath), ".exe", RegexOptions.IgnoreCase)[0]).ToList();
+                if (gameProcessList.Count > 0)
                 {
-                    if (path == GameInfoList[gid].FilePath)
-                    {
-                        pidList.Add(Process.GetProcessById(pid));
-                        goto ProcessFound;
-                    }
+                    break;
                 }
             }
             s.Stop();
 
-        ProcessFound:
-            if (pidList.Count == 0)
+            if (gameProcessList.Count == 0)
             {
-                HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
+                MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
                 return;
-            }
-            else
-            {
-                var pid = pidList[0].Id;
-                pidList.Clear();
-                pidList = ProcessHelper.FindSameNameProcess(pid);
             }
 
             Common.GameID = GameInfoList[gid].GameID;
@@ -360,11 +366,11 @@ namespace MisakaTranslator
 
             Common.RepairFuncInit();
 
-            Common.TextHooker = pidList.Count == 1 ? new TextHookHandle(pidList[0].Id) : new TextHookHandle(pidList);
+            Common.TextHooker = gameProcessList.Count == 1 ? new TextHookHandle(gameProcessList[0].Id) : new TextHookHandle(gameProcessList);
 
             if (!Common.TextHooker.Init(GameInfoList[gid].Isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
             {
-                HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
+                MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
                 return;
             }
             Common.TextHooker.HookCodeList.Add(GameInfoList[gid].HookCode);
@@ -373,10 +379,27 @@ namespace MisakaTranslator
             Common.TextHooker.MisakaCodeList.Add(GameInfoList[gid].MisakaHookCode);
             await Common.TextHooker.StartHook(Convert.ToBoolean(Common.AppSettings.AutoHook));
 
-            await Task.Delay(3000);
             Common.TextHooker.Auto_AddHookToGame();
 
-            new TranslateWindow().Show();
+            try
+            {
+                new TranslateWindow().Show();
+            }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
+                return;
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
+                return;
+            }
+            catch (Win32Exception)
+            {
+                MessageBox.Show(Application.Current.Resources["MainWindow_NoAdmin_Hint"].ToString(), Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
+                return;
+            }
         }
 
         private void CloseDrawerBtn_Click(object sender, RoutedEventArgs e)
@@ -386,7 +409,31 @@ namespace MisakaTranslator
 
         private async void StartBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (!File.Exists(GameInfoList[gid].FilePath))
+            {
+                MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{GameInfoList[gid].FilePath}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
+                return;
+            }
             Process.Start(GameInfoList[gid].FilePath);
+            GameInfoDrawer.IsOpen = false;
+            await StartTranslateByGid(gid);
+        }
+        private async void LEStartBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (!File.Exists(GameInfoList[gid].FilePath))
+            {
+                MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{GameInfoList[gid].FilePath}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
+                return;
+            }
+            var filepath = GameInfoList[gid].FilePath;
+            var p = new ProcessStartInfo();
+            var lePath = Common.AppSettings.LEPath;
+            p.FileName = lePath + "\\LEProc.exe";
+            // 记住加上引号，否则可能会因为路径带空格而无法启动
+            p.Arguments = $"-run \"{filepath}\"";
+            p.UseShellExecute = false;
+            p.WorkingDirectory = lePath;
+            Process.Start(p);
             GameInfoDrawer.IsOpen = false;
             await StartTranslateByGid(gid);
         }
@@ -396,7 +443,7 @@ namespace MisakaTranslator
         /// </summary>
         private void DeleteGameBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (HandyControl.Controls.MessageBox.Show(Application.Current.Resources["MainWindow_Drawer_DeleteGameConfirmBox"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (MessageBox.Show(Application.Current.Resources["MainWindow_Drawer_DeleteGameConfirmBox"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 GameHelper.DeleteGameByID(GameInfoList[gid].GameID);
                 var b = GamePanelCollection[gid];
@@ -409,21 +456,6 @@ namespace MisakaTranslator
         private void UpdateNameBtn_Click(object sender, RoutedEventArgs e)
         {
             Dialog.Show(new GameNameDialog(this, GameInfoList, gid));
-        }
-
-        private async void LEStartBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var filepath = GameInfoList[gid].FilePath;
-            var p = new ProcessStartInfo();
-            var lePath = Common.AppSettings.LEPath;
-            p.FileName = lePath + "\\LEProc.exe";
-            // 记住加上引号，否则可能会因为路径带空格而无法启动
-            p.Arguments = $"-run \"{filepath}\"";
-            p.UseShellExecute = false;
-            p.WorkingDirectory = lePath;
-            Process.Start(p);
-            GameInfoDrawer.IsOpen = false;
-            await StartTranslateByGid(gid);
         }
 
         private void BlurWindow_Closing(object sender, CancelEventArgs e)
@@ -466,20 +498,20 @@ namespace MisakaTranslator
                 TextRepair.Refresh();
                 languageResource.Source = new Uri($"lang/{Common.AppSettings.AppLanguage}.xaml", UriKind.Relative);
                 Application.Current.Resources.MergedDictionaries[1] = languageResource;
-                HandyControl.Controls.MessageBox.Show(Application.Current.Resources["Language_Changed"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
+                MessageBox.Show(Application.Current.Resources["Language_Changed"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
             }
         }
 
         private async void AutoStart_BtnClick(object sender, RoutedEventArgs e)
         {
-            var res = GetGameListHasProcessGame_PID_ID();
-            if (res == -1)
+            int gid = GetRunningGameGid();
+            if (gid == -1)
             {
-                Growl.ErrorGlobal(Application.Current.Resources["MainWindow_AutoStartError_Hint"].ToString());
+                Growl.WarningGlobal(Application.Current.Resources["MainWindow_AutoStartError_Hint"].ToString());
             }
             else
             {
-                await StartTranslateByGid(res);
+                await StartTranslateByGid(gid);
             }
         }
 
@@ -487,18 +519,18 @@ namespace MisakaTranslator
         /// 寻找任何正在运行中的之前已保存过的游戏
         /// </summary>
         /// <returns>数组索引（非GameID），-1代表未找到</returns>
-        private int GetGameListHasProcessGame_PID_ID()
+        private int GetRunningGameGid()
         {
             GameInfoList = GameHelper.GetAllCompletedGames();
-            if (GameInfoList == null)
-                return -1;
 
-            foreach (var (_, path) in ProcessHelper.GetProcessesData(true))
+            foreach ((_, string path) in ProcessHelper.GetProcessesData())
+            {
                 for (int j = 0; j < GameInfoList.Count; j++)
                 {
                     if (path == GameInfoList[j].FilePath)
                         return j;
                 }
+            }
 
             return -1;
         }
@@ -524,6 +556,7 @@ namespace MisakaTranslator
             (bool available, Version latestVersion) = await Common.IsUpdateAvailable();
             if (available)
             {
+                MessageBoxResult dr = MessageBox.Show(res[0] + "\n" + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);
                 MessageBoxResult dr = HandyControl.Controls.MessageBox.Show(latestVersion + "\n" + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);
 
                 if (dr == MessageBoxResult.OK)

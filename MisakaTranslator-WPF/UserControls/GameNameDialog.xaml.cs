@@ -1,5 +1,6 @@
 ﻿using DataAccessLibrary;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,26 +11,40 @@ namespace MisakaTranslator
     /// </summary>
     public partial class GameNameDialog : UserControl
     {
-        List<GameInfo> gameInfolst;
-        int gid; //当前选中的顺序，并非游戏ID
-        MainWindow _mainWindow;
+        private readonly List<GameInfo> gameInfolst;
+        private readonly int gid; //当前选中的顺序，并非游戏ID
+        private readonly MainWindow _mainWindow;
+
         public GameNameDialog(MainWindow mainWindow, List<GameInfo> gameInfo, int id)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
             gameInfolst = gameInfo;
             gid = id;
-            nameBox.Text = gameInfolst[gid].GameName;
+            NameBox.Text = gameInfolst[gid].GameName;
+            PathBox.Text = gameInfolst[gid].FilePath;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(nameBox.Text) && nameBox.Text != gameInfolst[gid].GameName)
+            bool needRefresh = false;
+            string newName = NameBox.Text;
+            if (!string.IsNullOrWhiteSpace(newName) && newName != gameInfolst[gid].GameName)
             {
-                GameHelper.UpdateGameInfoByID(gameInfolst[gid].GameID, "GameName", nameBox.Text);
+                GameHelper.UpdateGameInfoByID(gameInfolst[gid].GameID, "GameName", newName);
+                needRefresh = true;
+            }
+            string newPath = PathBox.Text;
+            if (File.Exists(newPath) && newPath != gameInfolst[gid].FilePath)
+            {
+                GameHelper.UpdateGameInfoByID(gameInfolst[gid].GameID, "FilePath", newPath);
+                needRefresh = true;
+            }
+            if (needRefresh)
+            {
                 _mainWindow.Refresh();
             }
-
         }
     }
 }

@@ -24,8 +24,9 @@
     <sys:String x:Key="MainWindow_Drawer_Start">正常启动</sys:String>
     <sys:String x:Key="MainWindow_Drawer_LEStart">LE转区启动</sys:String>
     <sys:String x:Key="MainWindow_Drawer_DeleteGame">从库中删除</sys:String>
-    <sys:String x:Key="MainWindow_Drawer_UpdateName">修改游戏名</sys:String>
+    <sys:String x:Key="MainWindow_Drawer_UpdateName">修改游戏信息</sys:String>
     <sys:String x:Key="MainWindow_Drawer_NameHint">输入新的游戏名</sys:String>
+    <sys:String x:Key="MainWindow_Drawer_PathHint">输入新的游戏路径</sys:String>
     <sys:String x:Key="MainWindow_Drawer_NameConfirmBtn">确认修改</sys:String>
     <sys:String x:Key="MainWindow_Drawer_Tag_GameName">游戏名：</sys:String>
     <sys:String x:Key="MainWindow_Drawer_Tag_TransMode">翻译模式：</sys:String>
@@ -437,6 +438,10 @@
     <sys:String x:Key="GameNameDialog_Modified">已修改，重启后生效！</sys:String>
     <sys:String x:Key="NotifyIcon_OpenMain">打开主界面</sys:String>
     <sys:String x:Key="NotifyIcon_Exit">退出</sys:String>
+    <sys:String x:Key="GameFileNotExistsCheck">游戏文件不存在，请检查</sys:String>
+    <sys:String x:Key="ChooseGamePage_NoAdminWarn">警告：目前无管理员权限，若无法找到游戏进程，请以管理员身份重启本软件后再次尝试。</sys:String>
+    <sys:String x:Key="ChooseHookFuncPage_NoAdminWarn">警告：目前无管理员权限，若无法注入游戏进程，请以管理员身份重启本软件后再次尝试。</sys:String>
+    <sys:String x:Key="MainWindow_NoAdmin_Hint">无法注入需要管理员身份的游戏，请以管理员身份重新启动本软件</sys:String>
 
 
 

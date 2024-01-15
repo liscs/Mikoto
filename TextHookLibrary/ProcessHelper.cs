@@ -15,15 +15,19 @@ namespace TextHookLibrary
         /// <returns></returns>
         public static Dictionary<string, int> GetProcessList_Name_PID()
         {
-            Dictionary<string, int> ret = new Dictionary<string, int>();
+            Dictionary<string, int> ret = new();
 
             //获取系统进程列表
             foreach (Process p in Process.GetProcesses())
             {
                 if (p.MainWindowHandle != IntPtr.Zero)
                 {
-                    string info = "";
-                    info = p.ProcessName + "—" + p.Id;
+                    string info = p.ProcessName + ": ";
+                    if (!string.IsNullOrEmpty(p.MainWindowTitle))
+                    {
+                        info += "【" + p.MainWindowTitle + "】: ";
+                    }
+                    info += p.Id;
                     ret.Add(info, p.Id);
                 }
                 p.Dispose();
@@ -87,49 +91,19 @@ namespace TextHookLibrary
         /// <summary>
         /// 返回 pid,绝对路径 的列表
         /// </summary>
-        public static List<(int, string)> GetProcessesData(bool isx64game = false)
+        public static List<(int, string)> GetProcessesData()
         {
-            var l = new List<(int, string)>();
-            // 在32位主程序、64位游戏（或想获取全部进程）、存在外部程序时调用
-            if (isx64game && !Environment.Is64BitProcess && System.IO.File.Exists(ExtPath))
+            var result = new List<(int, string)>();
+            foreach (Process p in Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero))
             {
-                var p = Process.Start(new ProcessStartInfo(ExtPath)
+                using (p)
                 {
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
-                });
-                if (p == null)
-                {
-                    throw new InvalidOperationException("Failed to execute ProcessHelperExt.exe\n");
-                }
-                string output = p.StandardOutput.ReadToEnd();
-                if (p.ExitCode != 0)
-                {
-                    throw new InvalidOperationException("Failed to execute ProcessHelperExt.exe\n" + p.StandardError.ReadToEnd());
-                }
-
-                string[] lines = output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string line in lines)
-                {
-                    var parts = line.Split('|');
-                    l.Add((int.Parse(parts[0]), parts[1]));
+                    try { result.Add((p.Id, p.MainModule!.FileName)); }
+                    catch (System.ComponentModel.Win32Exception) { } // 无权限
+                    catch (InvalidOperationException) { } // 进程已退出
                 }
             }
-            else
-            {
-                foreach (Process p in Process.GetProcesses().Where(p => (long)p.MainWindowHandle != 0).ToArray())
-                {
-                    using (p)
-                    {
-                        try { l.Add((p.Id, p.MainModule!.FileName)); }
-                        catch (System.ComponentModel.Win32Exception) { } // 无权限
-                        catch (InvalidOperationException) { } // 进程已退出
-                    }
-                }
-            }
-
-            return l;
+            return result;
         }
 
         /// <summary>

@@ -1,6 +1,8 @@
 ﻿using DataAccessLibrary;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
 using System.Windows;
 using System.Windows.Controls;
 using TextHookLibrary;
@@ -12,36 +14,40 @@ namespace MisakaTranslator.GuidePages.Hook
     /// </summary>
     public partial class ChooseGamePage : Page
     {
-        private Dictionary<string, int> lstProcess;
-        private int GamePid;
-        private List<System.Diagnostics.Process> SameNameGameProcessList = new();
+        private readonly Dictionary<string, int> _processList = ProcessHelper.GetProcessList_Name_PID();
+        private int _gamePid = -1;
+        private List<System.Diagnostics.Process> _sameNameGameProcessList = new();
 
         public ChooseGamePage()
         {
             InitializeComponent();
-            GamePid = -1;
-            lstProcess = ProcessHelper.GetProcessList_Name_PID();
-            GameProcessCombox.ItemsSource = lstProcess.Keys;
+
+            if (Common.IsAdmin)
+            {
+                NoAdminPrivilegesTextBlock.Visibility = Visibility.Collapsed;
+            }
+
+            GameProcessCombox.ItemsSource = _processList.Keys.OrderBy(p => p);
         }
 
         private void GameProcessCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            GamePid = lstProcess[(string)GameProcessCombox.SelectedValue];
-            SameNameGameProcessList = ProcessHelper.FindSameNameProcess(GamePid);
-            AutoHookTag.Text = Application.Current.Resources["ChooseGamePage_AutoHookTag_Begin"].ToString() + SameNameGameProcessList.Count + Application.Current.Resources["ChooseGamePage_AutoHookTag_End"].ToString();
+            _gamePid = _processList[(string)GameProcessCombox.SelectedValue];
+            _sameNameGameProcessList = ProcessHelper.FindSameNameProcess(_gamePid);
+            AutoHookTag.Text = Application.Current.Resources["ChooseGamePage_AutoHookTag_Begin"].ToString() + _sameNameGameProcessList.Count + Application.Current.Resources["ChooseGamePage_AutoHookTag_End"].ToString();
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            if (GamePid != -1)
+            if (_gamePid != -1)
             {
-                if (SameNameGameProcessList.Count == 1)
+                if (_sameNameGameProcessList.Count == 1)
                 {
-                    Common.TextHooker = new TextHookHandle(lstProcess[(string)GameProcessCombox.SelectedValue]);
+                    Common.TextHooker = new TextHookHandle(_processList[(string)GameProcessCombox.SelectedValue]);
                 }
                 else
                 {
-                    Common.TextHooker = new TextHookHandle(SameNameGameProcessList);
+                    Common.TextHooker = new TextHookHandle(_sameNameGameProcessList);
                 }
 
                 if (!Common.TextHooker.Init(x64GameCheckBox.IsChecked ?? false ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
@@ -52,7 +58,7 @@ namespace MisakaTranslator.GuidePages.Hook
 
                 Common.GameID = Guid.Empty;
                 GameInfo targetGame;
-                string filepath = ProcessHelper.FindProcessPath(GamePid, x64GameCheckBox.IsChecked ?? false);
+                string filepath = ProcessHelper.FindProcessPath(_gamePid, x64GameCheckBox.IsChecked ?? false);
                 if (filepath != "")
                 {
                     targetGame = GameHelper.GetGameByPath(filepath);
