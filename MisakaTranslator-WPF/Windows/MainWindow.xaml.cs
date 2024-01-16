@@ -141,6 +141,7 @@ namespace MisakaTranslator
                 VerticalAlignment = VerticalAlignment.Center,
                 Height = 64,
                 Width = 64,
+                Source = ImageProcFunc.ImageToBitmapImage(ImageProcFunc.GetAppIcon(GameInfoList[i].FilePath)!)
             };
 
             if (!File.Exists(GameInfoList[i].FilePath))
@@ -149,21 +150,9 @@ namespace MisakaTranslator
             }
 
             string[] icoPaths = Directory.GetFiles(Path.GetDirectoryName(GameInfoList[i].FilePath)!, "*.ico");
-            if (icoPaths.Length > 0)
+            if (icoPaths.Length > 0 && ico.Source is null)
             {
                 ico.Source = new BitmapImage(new Uri(icoPaths[0]));
-                ico.HorizontalAlignment = HorizontalAlignment.Center;
-                ico.VerticalAlignment = VerticalAlignment.Center;
-                ico.Height = 64;
-                ico.Width = 64;
-            }
-            else
-            {
-                ico.Source = ImageProcFunc.ImageToBitmapImage(ImageProcFunc.GetAppIcon(GameInfoList[i].FilePath)!);
-                ico.HorizontalAlignment = HorizontalAlignment.Center;
-                ico.VerticalAlignment = VerticalAlignment.Center;
-                ico.Height = 64;
-                ico.Width = 64;
             }
             return ico;
         }
