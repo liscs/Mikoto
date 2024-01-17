@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DataAccessLibrary;
+using MisakaTranslator.GuidePages;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 
@@ -88,50 +90,41 @@ namespace MisakaTranslator
         /// <param name="e"></param>
         private void Next_Click(object sender, RoutedEventArgs e)
         {
-            GuidePages.PageChangeRoutedEventArgs args = (e as GuidePages.PageChangeRoutedEventArgs)!;
+            PageChangeRoutedEventArgs args = (e as PageChangeRoutedEventArgs)!;
             if (args.XamlPath == "1")
             {
                 if (GuideMode == GuideMode.Hook)
                 {
                     //Hook方式设置 完成
                     Common.TransMode = TransMode.Hook;
-                    TranslateWindow translateWindow = new TranslateWindow();
-                    translateWindow.Show();
-                    isComplete = true;
-                    this.Close();
+                    GameHelper.SaveGameInfo(GameInfoBuilder.GameInfo);
                 }
                 else if (GuideMode == GuideMode.Ocr)
                 {
                     //OCR方式设置 完成
                     Common.TransMode = TransMode.Ocr;
-                    TranslateWindow translateWindow = new TranslateWindow();
-                    translateWindow.Show();
-                    isComplete = true;
-                    this.Close();
+                    GameHelper.SaveGameInfo(GameInfoBuilder.GameInfo);
+
                 }
                 else if (GuideMode == GuideMode.Rehook)
                 {
                     //Hook方式设置 完成
                     Common.TransMode = TransMode.Hook;
-                    TranslateWindow translateWindow = new TranslateWindow();
-                    translateWindow.Show();
-                    isComplete = true;
-                    this.Close();
                 }
                 else if (GuideMode == GuideMode.Clipboard)
                 {
                     //剪贴板监控方式设置 完成
                     Common.TransMode = TransMode.Hook;
-                    TranslateWindow translateWindow = new TranslateWindow();
-                    translateWindow.Show();
-                    isComplete = true;
-                    this.Close();
                 }
+                TranslateWindow translateWindow = new();
+                translateWindow.Show();
+                isComplete = true;
+                this.Close();
             }
             else
             {
                 //其他情况就跳转指定页面
-                GuidePageFrame.Navigate(new Uri(args.XamlPath, UriKind.Relative));
+                GuidePageFrame.NavigationService.Navigate(new Uri(args.XamlPath, UriKind.Relative));
                 GuideStepBar.Next();
             }
 

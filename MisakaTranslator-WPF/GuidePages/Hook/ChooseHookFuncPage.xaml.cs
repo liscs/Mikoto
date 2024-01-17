@@ -1,5 +1,4 @@
-﻿using DataAccessLibrary;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -92,54 +91,43 @@ namespace MisakaTranslator.GuidePages.Hook
                     Common.TextHooker.DetachUnrelatedHooks(pid, usedHook);
                 }
 
-                if (Common.GameID != Guid.Empty)
+                GameInfoBuilder.GameInfo.TransMode = 1;
+                GameInfoBuilder.GameInfo.HookCode = lstData[HookFunListView.SelectedIndex].HookCode;
+                GameInfoBuilder.GameInfo.MisakaHookCode = lstData[HookFunListView.SelectedIndex].MisakaHookCode;
+
+                if (LastCustomHookCode != "NULL")
                 {
-                    GameInfo? targetGame = GameHelper.GetUncompletedGameById(Common.GameID);
-                    if (targetGame == null) { throw new InvalidOperationException("Uncompleted GameInfo not Found!"); }
-                    targetGame.TransMode = 1;
-                    targetGame.HookCode = lstData[HookFunListView.SelectedIndex].HookCode;
-                    targetGame.MisakaHookCode = lstData[HookFunListView.SelectedIndex].MisakaHookCode;
-                    GameHelper.SaveGameInfo(targetGame);
+                    MessageBoxResult result = HandyControl.Controls.MessageBox.Show(
+                        Application.Current.Resources["ChooseHookFuncPage_MBOX_hookcodeConfirm_left"] + "\n" + LastCustomHookCode + "\n" + Application.Current.Resources["ChooseHookFuncPage_MBOX_hookcodeConfirm_right"],
+                        Application.Current.Resources["MessageBox_Ask"].ToString(),
+                        MessageBoxButton.YesNoCancel,
+                        MessageBoxImage.Question);
 
-
-                    if (LastCustomHookCode != "NULL")
+                    if (result == MessageBoxResult.Yes)
                     {
-                        MessageBoxResult result = HandyControl.Controls.MessageBox.Show(
-                            Application.Current.Resources["ChooseHookFuncPage_MBOX_hookcodeConfirm_left"] + "\n" + LastCustomHookCode + "\n" + Application.Current.Resources["ChooseHookFuncPage_MBOX_hookcodeConfirm_right"],
-                            Application.Current.Resources["MessageBox_Ask"].ToString(),
-                            MessageBoxButton.YesNoCancel,
-                            MessageBoxImage.Question);
-
-                        if (result == MessageBoxResult.Yes)
-                        {
-                            //记录这个特殊码到数据库
-                            targetGame.HookCodeCustom = LastCustomHookCode;
-                            GameHelper.SaveGameInfo(targetGame);
-                        }
-                        else if (result == MessageBoxResult.No)
-                        {
-                            //返回界面，否则会自动进入下一个界面
-                            return;
-                        }
-                        else
-                        {
-                            //不记录特殊码，但也要写NULL
-                            targetGame.HookCodeCustom = "NULL";
-                            GameHelper.SaveGameInfo(targetGame);
-                        }
+                        //记录这个特殊码到数据库
+                        GameInfoBuilder.GameInfo.HookCodeCustom = LastCustomHookCode;
+                    }
+                    else if (result == MessageBoxResult.No)
+                    {
+                        //返回界面，否则会自动进入下一个界面
+                        return;
                     }
                     else
                     {
-                        targetGame.HookCodeCustom = "NULL";
-                        GameHelper.SaveGameInfo(targetGame);
+                        //不记录特殊码，但也要写NULL
+                        GameInfoBuilder.GameInfo.HookCodeCustom = "NULL";
                     }
-
+                }
+                else
+                {
+                    GameInfoBuilder.GameInfo.HookCodeCustom = "NULL";
                 }
 
                 //使用路由事件机制通知窗口来完成下一步操作
-                PageChangeRoutedEventArgs args = new PageChangeRoutedEventArgs(PageChange.PageChangeRoutedEvent, this)
+                PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
                 {
-                    XamlPath = "GuidePages/Hook/ChooseTextRepairFuncPage.xaml"
+                    XamlPath = "GuidePages/Hook/ChooseTextRepairFuncPage.xaml",
                 };
                 this.RaiseEvent(args);
             }
@@ -188,5 +176,6 @@ namespace MisakaTranslator.GuidePages.Hook
 
         [GeneratedRegex("【F+:F+:F+】")]
         private static partial Regex InvalidMisakaCodeRegex();
+
     }
 }

@@ -38,13 +38,9 @@ namespace MisakaTranslator.GuidePages
                 Common.UsingDstLang = TranslatorCommon.LanguageDict[_langList[DstLangCombox.SelectedIndex]];
 
                 //写游戏信息
-                GameInfo? targetGame = GameHelper.GetUncompletedGameById(Common.GameID);
-                if (targetGame != null)
-                {
-                    targetGame.SrcLang = Common.UsingSrcLang;
-                    targetGame.DstLang = Common.UsingDstLang;
-                    GameHelper.SaveGameInfo(targetGame);
-                }
+                GameInfoBuilder.GameInfo.SrcLang = Common.UsingSrcLang;
+                GameInfoBuilder.GameInfo.DstLang = Common.UsingDstLang;
+
                 //使用路由事件机制通知窗口来完成下一步操作
                 PageChangeRoutedEventArgs args = new PageChangeRoutedEventArgs(PageChange.PageChangeRoutedEvent, this)
                 {

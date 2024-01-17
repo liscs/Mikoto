@@ -1,6 +1,4 @@
-﻿using DataAccessLibrary;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -62,40 +60,31 @@ namespace MisakaTranslator.GuidePages.Hook
             Common.UsingRepairFunc = TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]];
 
             //写入去重方法
-            if (Common.GameID != Guid.Empty)
-            {
-                GameInfo? targetGame = GameHelper.GetUncompletedGameById(Common.GameID);
-                if (targetGame != null)
-                {
-                    switch (TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])
-                    {
-                        case "RepairFun_RemoveSingleWordRepeat":
-                            targetGame.RepairFunc = Common.UsingRepairFunc;
-                            targetGame.RepairParamA = Common.RepairSettings.SingleWordRepeatTimes.ToString();
-                            GameHelper.SaveGameInfo(targetGame);
-                            break;
-                        case "RepairFun_RemoveSentenceRepeat":
-                            targetGame.RepairFunc = Common.UsingRepairFunc;
-                            targetGame.RepairParamA = Common.RepairSettings.SentenceRepeatFindCharNum.ToString();
-                            GameHelper.SaveGameInfo(targetGame);
-                            break;
-                        case "RepairFun_RegexReplace":
-                            targetGame.RepairFunc = Common.UsingRepairFunc;
-                            targetGame.RepairParamA = Common.RepairSettings.Regex.ToString();
-                            targetGame.RepairParamB = Common.RepairSettings.Regex_Replace.ToString();
-                            GameHelper.SaveGameInfo(targetGame);
-                            break;
-                        default:
-                            targetGame.RepairFunc = Common.UsingRepairFunc;
-                            GameHelper.SaveGameInfo(targetGame);
-                            break;
-                    }
-                }
-            }
 
+            switch (TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])
+            {
+                case "RepairFun_RemoveSingleWordRepeat":
+                    GameInfoBuilder.GameInfo.RepairFunc = Common.UsingRepairFunc;
+                    GameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.SingleWordRepeatTimes.ToString();
+                    break;
+                case "RepairFun_RemoveSentenceRepeat":
+                    GameInfoBuilder.GameInfo.RepairFunc = Common.UsingRepairFunc;
+                    GameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.SentenceRepeatFindCharNum.ToString();
+                    break;
+                case "RepairFun_RegexReplace":
+                    GameInfoBuilder.GameInfo.RepairFunc = Common.UsingRepairFunc;
+                    GameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.Regex.ToString();
+                    GameInfoBuilder.GameInfo.RepairParamB = Common.RepairSettings.Regex_Replace.ToString();
+                    break;
+                default:
+                    GameInfoBuilder.GameInfo.RepairFunc = Common.UsingRepairFunc;
+                    break;
+            }
             //使用路由事件机制通知窗口来完成下一步操作
-            PageChangeRoutedEventArgs args = new PageChangeRoutedEventArgs(PageChange.PageChangeRoutedEvent, this);
-            args.XamlPath = "GuidePages/ChooseLanguagePage.xaml";
+            PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
+            {
+                XamlPath = "GuidePages/ChooseLanguagePage.xaml",
+            };
             this.RaiseEvent(args);
         }
 

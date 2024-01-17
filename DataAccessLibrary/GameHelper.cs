@@ -85,22 +85,6 @@ namespace DataAccessLibrary
         private static readonly DirectoryInfo _gameInfoDirectory = Directory.CreateDirectory($"{Environment.CurrentDirectory}\\data\\games\\");
         public static Dictionary<Guid, GameInfo> AllCompletedGamesIdDict { get; set; } = new();
         public static Dictionary<string, GameInfo> AllCompletedGamesPathDict { get; set; } = new();
-        /// <summary>
-        /// 根据id获得游戏信息
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static GameInfo? GetUncompletedGameById(Guid id)
-        {
-            if (id != Guid.Empty)
-            {
-                return LoadGameInfo($"{_gameInfoDirectory.FullName}\\{id}.json");
-            }
-            else
-            {
-                return null;
-            }
-        }
 
         /// <summary>
         /// 得到一个游戏的GameInfo
@@ -128,7 +112,6 @@ namespace DataAccessLibrary
                 GameName = name,
                 FilePath = gamePath,
             };
-            SaveGameInfo(gameInfo);
             return gameInfo;
         }
 

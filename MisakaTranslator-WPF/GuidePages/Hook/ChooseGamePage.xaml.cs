@@ -56,22 +56,20 @@ namespace MisakaTranslator.GuidePages.Hook
                 }
 
                 Common.GameID = Guid.Empty;
-                GameInfo targetGame;
                 string filepath = ProcessHelper.FindProcessPath(_gamePid, x64GameCheckBox.IsChecked ?? false);
                 if (filepath != "")
                 {
-                    targetGame = GameHelper.GetGameByPath(filepath);
-                    Common.GameID = targetGame.GameID;
-                    targetGame.Isx64 = x64GameCheckBox.IsChecked ?? false;
-                    GameHelper.SaveGameInfo(targetGame);
-                }
+                    GameInfoBuilder.GameInfo = GameHelper.GetGameByPath(filepath);
+                    Common.GameID = GameInfoBuilder.GameInfo.GameID;
+                    GameInfoBuilder.GameInfo.Isx64 = x64GameCheckBox.IsChecked ?? false;
 
-                //使用路由事件机制通知窗口来完成下一步操作
-                PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
-                {
-                    XamlPath = "GuidePages/Hook/ChooseHookFuncPage.xaml"
-                };
-                this.RaiseEvent(args);
+                    //使用路由事件机制通知窗口来完成下一步操作
+                    PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
+                    {
+                        XamlPath = "GuidePages/Hook/ChooseHookFuncPage.xaml",
+                    };
+                    this.RaiseEvent(args);
+                }
             }
             else
             {
