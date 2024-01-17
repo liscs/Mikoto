@@ -68,6 +68,7 @@
                 <Button fa:Awesome.Content="Microphone" Click="TTS_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_TTS}" />
             </StackPanel>
             <StackPanel HorizontalAlignment="Right">
+                <TextBlock Name="TimeTextBlock" Foreground="PapayaWhip" Margin="8"/>
                 <Button fa:Awesome.Content="WindowMinimize" Click="Min_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_Min}" />
                 <Button fa:Awesome.Content="WindowCloseOutline" Click="Exit_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_Exit}" />
             </StackPanel>

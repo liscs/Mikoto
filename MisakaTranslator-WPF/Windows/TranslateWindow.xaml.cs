@@ -1068,8 +1068,14 @@ namespace MisakaTranslator
             {
                 Interval = TimeSpan.FromSeconds(1)
             };
-            DispatcherTimer.Tick += TickWindowTopMost;
+            DispatcherTimer.Tick += TickWindowTopMost; 
+            DispatcherTimer.Tick += TickClock;
             DispatcherTimer.Start();
+        }
+
+        private void TickClock(object? sender, EventArgs e)
+        {
+            TimeTextBlock.Text = DateTime.Now.ToShortTimeString();
         }
     }
 }
