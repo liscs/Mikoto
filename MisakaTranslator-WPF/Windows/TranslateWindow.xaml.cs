@@ -112,6 +112,7 @@ namespace MisakaTranslator
             {
                 case TransMode.Hook:
                     Common.TextHooker!.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
+                    
                     _gameProcess = Process.GetProcessById(Common.TextHooker.GamePID);
                     try
                     {
@@ -132,6 +133,9 @@ namespace MisakaTranslator
                     break;
                 case TransMode.Ocr:
                     MouseKeyboardHook_Init();
+                    break;
+                case TransMode.Clipboard:
+                    Common.TextHooker!.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
                     break;
             }
 
@@ -445,7 +449,7 @@ namespace MisakaTranslator
         }
 
         /// <summary>
-        /// Hook模式下调用的事件
+        /// Hook/Clipboard模式下调用的事件
         /// </summary>
         public void ProcessAndDisplayTranslation(object sender, SolvedDataReceivedEventArgs e)
         {

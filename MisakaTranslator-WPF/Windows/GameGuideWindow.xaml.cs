@@ -114,7 +114,7 @@ namespace MisakaTranslator
                 else if (GuideMode == GuideMode.Clipboard)
                 {
                     //剪贴板监控方式设置 完成
-                    Common.TransMode = TransMode.Hook;
+                    Common.TransMode = TransMode.Clipboard;
                 }
                 TranslateWindow translateWindow = new();
                 translateWindow.Show();

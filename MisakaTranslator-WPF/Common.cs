@@ -33,6 +33,7 @@ namespace MisakaTranslator
     {
         Hook = 1,
         Ocr = 2,
+        Clipboard = 4,
     }
 
     public enum TTSMode
