@@ -435,8 +435,7 @@ namespace MisakaTranslator
             if (MessageBox.Show(Application.Current.Resources["MainWindow_Drawer_DeleteGameConfirmBox"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 GameHelper.DeleteGameByID(GameInfoList[gid].GameID);
-                var b = GamePanelCollection[gid];
-                GamePanelCollection.Remove(b);
+                GamePanelCollection.RemoveAt(gid);
                 GameInfoDrawer.IsOpen = false;
             }
 
