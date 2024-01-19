@@ -11,8 +11,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\UtilityLibrary\UtilityLibrary.csproj" />
-  </ItemGroup>
-
 </Project>

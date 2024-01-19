@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using UtilityLibrary;
 
 namespace TextHookLibrary
 {
@@ -423,8 +422,8 @@ namespace TextHookLibrary
         /// </summary>
         private string GetWorstMatchString(string target, string s1, string s2)
         {
-            int dist1 = Algorithm.GetLevenshteinDistance(target, s1);
-            int dist2 = Algorithm.GetLevenshteinDistance(target, s2);
+            int dist1 = EditDistance.GetLevenshteinDistance(target, s1);
+            int dist2 = EditDistance.GetLevenshteinDistance(target, s2);
             if (dist1 < dist2) { return s2; }
             else { return s1; }
         }

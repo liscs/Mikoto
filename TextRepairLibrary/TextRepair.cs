@@ -66,7 +66,7 @@ namespace TextRepairLibrary
         public static string RepairFun_NoDeal(string source) => source;
 
         /// <summary>
-        /// 处理单字重复
+        /// 处理单字重复，置0以自动检测处理单字重复
         /// 可以设置重复次数更准确的进行去重
         /// </summary>
         /// <param name="source"></param>
@@ -129,6 +129,7 @@ namespace TextRepairLibrary
         /// <returns></returns>
         public static string RepairFun_RemoveSentenceRepeat(string source)
         {
+            if (SentenceRepeatFindCharNum <= 1) { return source; }
             int findNum = SentenceRepeatFindCharNum;
 
             if (source == string.Empty || source.Length < findNum)

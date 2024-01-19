@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
 
-namespace UtilityLibrary
+namespace TextHookLibrary
 {
-    public static class Algorithm
+    public static class EditDistance
     {
         /// <summary>
-        /// Levenshtein Distance Algorithm: Java Implementation by Chas Emerick
+        /// Levenshtein Distance EditDistance: Java Implementation by Chas Emerick
         /// </summary>
-        public static int GetLevenshteinDistance(String s, String t)
+        public static int GetLevenshteinDistance(string s, string t)
         {
             if (s == null || t == null)
             {
