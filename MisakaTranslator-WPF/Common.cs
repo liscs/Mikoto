@@ -1,4 +1,5 @@
-﻿using KeyboardMouseHookLibrary;
+﻿using HandyControl.Controls;
+using KeyboardMouseHookLibrary;
 using OCRLibrary;
 using System;
 using System.Diagnostics;
@@ -167,16 +168,24 @@ namespace MisakaTranslator
         public static async Task CheckUpdateAsync()
         {
             Version currentVersion = Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
-            Version latestVersion = await GetLatestVersionAsync();
-            if (latestVersion > currentVersion)
+            try
             {
-                MessageBoxResult dr = MessageBox.Show(latestVersion + Environment.NewLine + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);
-
-                if (dr == MessageBoxResult.OK)
+                Version latestVersion = await GetLatestVersionAsync();
+                if (latestVersion > currentVersion)
                 {
-                    Process.Start(new ProcessStartInfo("https://github.com/liscs/MisakaTranslator/releases/latest") { UseShellExecute = true });
+                    MessageBoxResult dr = MessageBox.Show(latestVersion + Environment.NewLine + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);
+
+                    if (dr == MessageBoxResult.OK)
+                    {
+                        Process.Start(new ProcessStartInfo("https://github.com/liscs/MisakaTranslator/releases/latest") { UseShellExecute = true });
+                    }
                 }
             }
+            catch (HttpRequestException ex)
+            {
+                Growl.WarningGlobal(ex.Message);
+            }
+
         }
         private static async Task<Version> GetLatestVersionAsync()
         {

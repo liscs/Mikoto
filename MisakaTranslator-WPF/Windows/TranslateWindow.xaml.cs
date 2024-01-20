@@ -112,7 +112,7 @@ namespace MisakaTranslator
             {
                 case TransMode.Hook:
                     Common.TextHooker!.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
-                    
+
                     _gameProcess = Process.GetProcessById(Common.TextHooker.GamePID);
                     try
                     {
@@ -1072,7 +1072,7 @@ namespace MisakaTranslator
             {
                 Interval = TimeSpan.FromSeconds(1)
             };
-            DispatcherTimer.Tick += TickWindowTopMost; 
+            DispatcherTimer.Tick += TickWindowTopMost;
             DispatcherTimer.Tick += TickClock;
             DispatcherTimer.Start();
         }
