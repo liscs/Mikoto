@@ -368,7 +368,11 @@ namespace MisakaTranslator
             Common.TextHooker.MisakaCodeList.Add(GameInfoList[gid].MisakaHookCode);
             await Common.TextHooker.StartHook(Convert.ToBoolean(Common.AppSettings.AutoHook));
 
-            Common.TextHooker.Auto_AddHookToGame();
+            if (!await Common.TextHooker.AutoAddCustomHookToGame())
+            {
+                MessageBox.Show(Application.Current.Resources["MainWindow_AutoCustomHookError"].ToString(), Application.Current.Resources["MessageBox_Error"].ToString());
+                return;
+            }
 
             try
             {

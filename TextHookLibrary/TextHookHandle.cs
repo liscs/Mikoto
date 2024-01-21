@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -305,6 +306,8 @@ namespace TextHookLibrary
         [GeneratedRegex("(?<=【).*?(?=:)")]
         private static partial Regex FirstCodeRegex();
 
+        Stopwatch LastMessageStopwatch { get; set; } = new Stopwatch();
+
         /// <summary>
         /// 控制台输出事件，在这做内部消化处理
         /// </summary>
@@ -312,6 +315,7 @@ namespace TextHookLibrary
         /// <param name="outLine"></param>
         void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
         {
+            LastMessageStopwatch.Restart();
             if (outLine.Data == null) { return; }
             AddTextractorHistory(outLine.Data);
             if (Pause) { return; }
@@ -578,12 +582,29 @@ namespace TextHookLibrary
         /// <summary>
         /// 让系统自动注入用户设定好的特殊码，没有就不注入
         /// </summary>
-        public async void Auto_AddHookToGame()
+        public async Task<bool> AutoAddCustomHookToGame()
         {
             if (HookCode_Custom != null && HookCode_Custom != "NULL" && HookCode_Custom != "")
             {
-                await AttachProcessByHookCode(GamePID, HookCode_Custom);
+                //自定义hook码需要等textractor先注入进程后再注入
+                Stopwatch timeoutStopWatch = Stopwatch.StartNew();
+                while (true)
+                {
+                    const int NO_RECEIVE_DURATION = 3;
+                    if (LastMessageStopwatch.Elapsed > TimeSpan.FromSeconds(NO_RECEIVE_DURATION))
+                    {
+                        await AttachProcessByHookCode(GamePID, HookCode_Custom);
+                        return true;
+                    }
+                    //超时
+                    const int ALWAYS_RECEIVE_TIMEOUT = 30;
+                    if (timeoutStopWatch.Elapsed > TimeSpan.FromSeconds(ALWAYS_RECEIVE_TIMEOUT))
+                    {
+                        return false;
+                    }
+                }
             }
+            return true;
         }
 
 
