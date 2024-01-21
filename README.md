@@ -28,7 +28,7 @@ Macab分词词典：https://clrd.ninjal.ac.jp/unidic
 
 游戏配置文件示例
 配置文件名：.\data\games\a3ff500d-5b56-4320-88e9-3452caa2d602.json
-```json
+```json5
 {
   "GameName": "アイコトバ-Silver Snow Sister-",//游戏名，默认使用所在文件夹名
   "FilePath": "F:\\ちゃろー！\\アイコトバ-Silver Snow Sister-\\AikotobaSSS.exe",//游戏启动路径
