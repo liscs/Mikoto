@@ -185,7 +185,7 @@ namespace DataAccessLibrary
             }
         }
 
-        private static JsonSerializerOptions options = new JsonSerializerOptions
+        private static readonly JsonSerializerOptions options = new JsonSerializerOptions
         {
             WriteIndented = true,
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),

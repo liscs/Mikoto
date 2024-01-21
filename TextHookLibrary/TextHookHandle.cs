@@ -306,7 +306,7 @@ namespace TextHookLibrary
         [GeneratedRegex("(?<=【).*?(?=:)")]
         private static partial Regex FirstCodeRegex();
 
-        Stopwatch LastMessageStopwatch { get; set; } = new Stopwatch();
+        Stopwatch LastMessageStopwatch { get; set; } = Stopwatch.StartNew();
 
         /// <summary>
         /// 控制台输出事件，在这做内部消化处理
@@ -590,17 +590,19 @@ namespace TextHookLibrary
                 Stopwatch timeoutStopWatch = Stopwatch.StartNew();
                 while (true)
                 {
-                    const int NO_RECEIVE_DURATION = 3;
-                    if (LastMessageStopwatch.Elapsed > TimeSpan.FromSeconds(NO_RECEIVE_DURATION))
+                    const int LAST_RECEIVE_DURATION = 3;
+                    //在最后一次收到消息后一段时间内无消息，认为初始化已完毕
+                    if (LastMessageStopwatch.Elapsed > TimeSpan.FromSeconds(LAST_RECEIVE_DURATION))
                     {
                         await AttachProcessByHookCode(GamePID, HookCode_Custom);
                         return true;
                     }
-                    //超时
+                    //持续收到消息，超时后直接注入
                     const int ALWAYS_RECEIVE_TIMEOUT = 30;
                     if (timeoutStopWatch.Elapsed > TimeSpan.FromSeconds(ALWAYS_RECEIVE_TIMEOUT))
                     {
-                        return false;
+                        await AttachProcessByHookCode(GamePID, HookCode_Custom);
+                        return true;
                     }
                 }
             }
