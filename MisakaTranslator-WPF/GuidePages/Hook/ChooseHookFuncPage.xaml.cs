@@ -30,7 +30,7 @@ namespace MisakaTranslator.GuidePages.Hook
                 NoAdminPrivilegesTextBlock.Visibility = Visibility.Collapsed;
             }
 
-            LastCustomHookCode = "NULL";
+            LastCustomHookCode = null;
 
             HookFunListView.ItemsSource = lstData;
             sum = 0;
@@ -95,7 +95,7 @@ namespace MisakaTranslator.GuidePages.Hook
                 GameInfoBuilder.GameInfo.HookCode = lstData[HookFunListView.SelectedIndex].HookCode;
                 GameInfoBuilder.GameInfo.MisakaHookCode = lstData[HookFunListView.SelectedIndex].MisakaHookCode;
 
-                if (LastCustomHookCode != "NULL")
+                if (LastCustomHookCode != null)
                 {
                     MessageBoxResult result = HandyControl.Controls.MessageBox.Show(
                         Application.Current.Resources["ChooseHookFuncPage_MBOX_hookcodeConfirm_left"] + "\n" + LastCustomHookCode + "\n" + Application.Current.Resources["ChooseHookFuncPage_MBOX_hookcodeConfirm_right"],
@@ -116,12 +116,12 @@ namespace MisakaTranslator.GuidePages.Hook
                     else
                     {
                         //不记录特殊码，但也要写NULL
-                        GameInfoBuilder.GameInfo.HookCodeCustom = "NULL";
+                        GameInfoBuilder.GameInfo.HookCodeCustom = null;
                     }
                 }
                 else
                 {
-                    GameInfoBuilder.GameInfo.HookCodeCustom = "NULL";
+                    GameInfoBuilder.GameInfo.HookCodeCustom =   null;
                 }
 
                 //使用路由事件机制通知窗口来完成下一步操作

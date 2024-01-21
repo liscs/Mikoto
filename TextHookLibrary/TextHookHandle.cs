@@ -584,7 +584,7 @@ namespace TextHookLibrary
         /// </summary>
         public async Task<bool> AutoAddCustomHookToGame()
         {
-            if (HookCode_Custom != null && HookCode_Custom != "NULL" && HookCode_Custom != "")
+            if (!string.IsNullOrEmpty(HookCode_Custom) && HookCode_Custom != "NULL")
             {
                 //自定义hook码需要等textractor先注入进程后再注入
                 Stopwatch timeoutStopWatch = Stopwatch.StartNew();

@@ -189,6 +189,7 @@ namespace DataAccessLibrary
         {
             WriteIndented = true,
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+            ReadCommentHandling = JsonCommentHandling.Skip
         };
 
         /// <summary>
@@ -206,7 +207,7 @@ namespace DataAccessLibrary
         private static GameInfo LoadGameInfo(string path)
         {
             string jsonString = File.ReadAllText(path);
-            GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString)!;
+            GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString, options)!;
             return gameInfo;
         }
     }
