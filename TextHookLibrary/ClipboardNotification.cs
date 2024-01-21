@@ -39,20 +39,21 @@ namespace TextHookLibrary
     public class ClipboardMonitor : Form
     {
         public event ClipboardUpdateEventHandler OnClipboardUpdate;
-        private IntPtr hWnd;
-        public ClipboardNotification cn;
+        private IntPtr _hwnd;
+
+        public ClipboardNotification ClipboardNotification { get; set; }
 
         public ClipboardMonitor(ClipboardUpdateEventHandler onClipboardUpdate)
         {
             this.OnClipboardUpdate = onClipboardUpdate;
-            this.hWnd = this.Handle;
-            cn = new ClipboardNotification(hWnd);
-            cn.RegisterClipboardViewer();
+            this._hwnd = this.Handle;
+            ClipboardNotification = new ClipboardNotification(_hwnd);
+            ClipboardNotification.RegisterClipboardViewer();
         }
 
         ~ClipboardMonitor()
         {
-            cn.UnregisterClipboardViewer();
+            ClipboardNotification.UnregisterClipboardViewer();
         }
 
         protected override void WndProc(ref Message m)

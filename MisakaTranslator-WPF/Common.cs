@@ -189,7 +189,6 @@ namespace MisakaTranslator
         }
         private static async Task<Version> GetLatestVersionAsync()
         {
-
             string url = "https://api.github.com/repos/liscs/MisakaTranslator/releases/latest";
             using HttpClient httpClient = new()
             {

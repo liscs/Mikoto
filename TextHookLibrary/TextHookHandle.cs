@@ -74,7 +74,7 @@ namespace TextHookLibrary
         private int listIndex_Re;//用于Hook功能重新选择界面的方法序号
         private Dictionary<string, int> TextractorFun_Re_Index_List;//Misaka特殊码与列表索引一一对应
 
-        private ClipboardMonitor? cm;//剪贴板监视 对象
+        private ClipboardMonitor? _clipboardMonitor;//剪贴板监视 对象
 
         public TextHookHandle(int gamePID)
         {
@@ -184,7 +184,7 @@ namespace TextHookLibrary
         /// 注入进程
         /// </summary>
         /// <param name="pid"></param>
-        public async Task AttachProcess(int pid)
+        public async Task AttachProcessAsync(int pid)
         {
             if (ProcessTextractor == null) { return; }
             await ProcessTextractor.StandardInput.WriteLineAsync("attach -P" + pid);
@@ -196,7 +196,7 @@ namespace TextHookLibrary
         /// 结束注入进程
         /// </summary>
         /// <param name="pid"></param>
-        public async Task DetachProcess(int pid)
+        public async Task DetachProcessAsync(int pid)
         {
             if (!ProcessHelper.IsProcessRunning(pid))
                 return;
@@ -215,7 +215,7 @@ namespace TextHookLibrary
         /// 给定特殊码注入，由Textractor作者指导方法
         /// </summary>
         /// <param name="pid"></param>
-        public async Task AttachProcessByHookCode(int pid, string HookCode)
+        public async Task AttachProcessByHookCodeAsync(int pid, string HookCode)
         {
             if (ProcessTextractor == null) { return; }
             await ProcessTextractor.StandardInput.WriteLineAsync(HookCode + " -P" + pid);
@@ -227,7 +227,7 @@ namespace TextHookLibrary
         /// 根据Hook入口地址卸载一个Hook，由Textractor作者指导方法
         /// </summary>
         /// <param name="pid"></param>
-        public async Task DetachProcessByHookAddress(int pid, string HookAddress)
+        public async Task DetachProcessByHookAddressAsync(int pid, string HookAddress)
         {
             //这个方法的原理是注入一个用户给定的钩子，给定一个Hook地址，由于hook地址存在，Textractor会自动卸载掉之前的
             //但是后续给定的模块并不存在，于是Textractor再卸载掉这个用户自定义钩子，达到卸载一个指定Hook办法
@@ -247,7 +247,7 @@ namespace TextHookLibrary
             {
                 if (HandleMode == 1 && ProcessHelper.IsProcessRunning(GamePID))
                 {
-                    await DetachProcess(GamePID);
+                    await DetachProcessAsync(GamePID);
                 }
                 else if (HandleMode == 2)
                 {
@@ -255,7 +255,7 @@ namespace TextHookLibrary
                         if (PossibleGameProcessList[item.Key] == true)
                         {
                             if (ProcessHelper.IsProcessRunning(item.Key.Id))
-                                await DetachProcess(item.Key.Id);
+                                await DetachProcessAsync(item.Key.Id);
                             PossibleGameProcessList[item.Key] = false;
                         }
                 }
@@ -276,7 +276,7 @@ namespace TextHookLibrary
         {
             if (HandleMode == 1)
             {
-                await AttachProcess(GamePID);
+                await AttachProcessAsync(GamePID);
             }
             else if (HandleMode == 2)
             {
@@ -288,13 +288,13 @@ namespace TextHookLibrary
                     //不进行智能注入
                     foreach (var item in PossibleGameProcessList.ToList())
                     {
-                        await AttachProcess(item.Key.Id);
+                        await AttachProcessAsync(item.Key.Id);
                         PossibleGameProcessList[item.Key] = true;
                     }
                 }
                 else
                 {
-                    await AttachProcess(MaxMemoryProcess.Id);
+                    await AttachProcessAsync(MaxMemoryProcess.Id);
                 }
             }
         }
@@ -446,7 +446,7 @@ namespace TextHookLibrary
                 string hookAddress = GetHookAddressByMisakaCode(FunList[i]) ?? string.Empty;
                 if (!UsedHookAddress.Contains(hookAddress))
                 {
-                    await DetachProcessByHookAddress(pid, hookAddress);
+                    await DetachProcessByHookAddressAsync(pid, hookAddress);
                 }
             }
         }
@@ -570,7 +570,7 @@ namespace TextHookLibrary
 
             try
             {
-                await DetachProcessByHookAddress(pid, GetHookAddressByMisakaCode(misakacode) ?? string.Empty);
+                await DetachProcessByHookAddressAsync(pid, GetHookAddressByMisakaCode(misakacode) ?? string.Empty);
             }
             catch (System.InvalidOperationException)
             {
@@ -582,7 +582,7 @@ namespace TextHookLibrary
         /// <summary>
         /// 让系统自动注入用户设定好的特殊码，没有就不注入
         /// </summary>
-        public async Task<bool> AutoAddCustomHookToGame()
+        public async Task<bool> AutoAddCustomHookToGameAsync()
         {
             if (!string.IsNullOrEmpty(HookCode_Custom) && HookCode_Custom != "NULL")
             {
@@ -594,15 +594,15 @@ namespace TextHookLibrary
                     //在最后一次收到消息后一段时间内无消息，认为初始化已完毕
                     if (LastMessageStopwatch.Elapsed > TimeSpan.FromSeconds(LAST_RECEIVE_DURATION))
                     {
-                        await AttachProcessByHookCode(GamePID, HookCode_Custom);
+                        await AttachProcessByHookCodeAsync(GamePID, HookCode_Custom);
                         return true;
                     }
                     //持续收到消息，超时后直接注入
                     const int ALWAYS_RECEIVE_TIMEOUT = 30;
                     if (timeoutStopWatch.Elapsed > TimeSpan.FromSeconds(ALWAYS_RECEIVE_TIMEOUT))
                     {
-                        await AttachProcessByHookCode(GamePID, HookCode_Custom);
-                        return true;
+                        await AttachProcessByHookCodeAsync(GamePID, HookCode_Custom);
+                        return false;
                     }
                 }
             }
@@ -616,14 +616,14 @@ namespace TextHookLibrary
         /// <param name="winHandle"></param>
         public void AddClipBoardThread()
         {
-            cm = new ClipboardMonitor(cm_ClipboardUpdate);
+            _clipboardMonitor = new ClipboardMonitor(ClipboardUpdated);
         }
 
         /// <summary>
         /// 剪贴板更新事件
         /// </summary>
         /// <param name="ClipboardText"></param>
-        private void cm_ClipboardUpdate(string ClipboardText)
+        private void ClipboardUpdated(string ClipboardText)
         {
             if (Pause) // 暂停时什么也不做
                 return;
@@ -650,11 +650,11 @@ namespace TextHookLibrary
         {
             CloseTextractor();
 
-            if (cm != null)
+            if (_clipboardMonitor != null)
             {
                 //取消注册剪贴板监听
-                cm.cn.UnregisterClipboardViewer();
-                cm = null;
+                _clipboardMonitor.ClipboardNotification.UnregisterClipboardViewer();
+                _clipboardMonitor = null;
             }
         }
 

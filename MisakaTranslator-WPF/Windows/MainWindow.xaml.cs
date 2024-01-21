@@ -317,7 +317,7 @@ namespace MisakaTranslator
             while (s.Elapsed < TimeSpan.FromSeconds(5))
             {
                 //不以exe结尾的ProcessName不会自动把后缀去掉，因此对exe后缀特殊处理
-                gameProcessList = Process.GetProcessesByName(Regex.Split(Path.GetFileName(GameInfoList[gid].FilePath), ".exe", RegexOptions.IgnoreCase)[0]).ToList();
+                gameProcessList = Process.GetProcessesByName(Regex.Split(Path.GetFileName(GameInfoList[gid].FilePath), @"\.exe", RegexOptions.IgnoreCase)[0]).ToList();
                 if (gameProcessList.Count > 0)
                 {
                     break;
@@ -368,10 +368,9 @@ namespace MisakaTranslator
             Common.TextHooker.MisakaCodeList.Add(GameInfoList[gid].MisakaHookCode);
             await Common.TextHooker.StartHook(Convert.ToBoolean(Common.AppSettings.AutoHook));
 
-            if (!await Common.TextHooker.AutoAddCustomHookToGame())
+            if (!await Common.TextHooker.AutoAddCustomHookToGameAsync())
             {
                 MessageBox.Show(Application.Current.Resources["MainWindow_AutoCustomHookError"].ToString(), Application.Current.Resources["MessageBox_Error"].ToString());
-                return;
             }
 
             try
@@ -393,7 +392,7 @@ namespace MisakaTranslator
                 MessageBoxResult messageBoxResult = MessageBox.Show(Application.Current.Resources["MainWindow_NoAdmin_Hint"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    StartAsAdmin(Process.GetCurrentProcess().MainModule!.FileName);
+                    StartAsAdmin(Environment.ProcessPath!);
                     ShutDownApp();
                 }
                 return;
@@ -402,7 +401,7 @@ namespace MisakaTranslator
 
         public static void StartAsAdmin(string fileName)
         {
-            var proc = new Process
+            using var proc = new Process
             {
                 StartInfo =
         {

@@ -143,7 +143,7 @@ namespace MisakaTranslator.GuidePages.Hook
         {
             if (PIDTextBox.Text != "" && HookCodeTextBox.Text != "" && int.TryParse(PIDTextBox.Text, out int pid))
             {
-                _ = Common.TextHooker!.AttachProcessByHookCode(pid, HookCodeTextBox.Text);
+                _ = Common.TextHooker!.AttachProcessByHookCodeAsync(pid, HookCodeTextBox.Text);
                 LastCustomHookCode = HookCodeTextBox.Text;
                 InputDrawer.IsOpen = false;
                 HandyControl.Controls.Growl.Info(Application.Current.Resources["ChooseHookFuncPage_HookApplyHint"].ToString());

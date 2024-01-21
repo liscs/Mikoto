@@ -24,7 +24,7 @@ namespace MisakaTranslator.GuidePages.Hook
             var task_1 = System.Threading.Tasks.Task.Run(async delegate
             {
                 await System.Threading.Tasks.Task.Delay(3000);
-                _ = Common.TextHooker.AutoAddCustomHookToGame();
+                _ = Common.TextHooker.AutoAddCustomHookToGameAsync();
             });
 
         }
