@@ -121,7 +121,7 @@ namespace MisakaTranslator.GuidePages.Hook
                 }
                 else
                 {
-                    GameInfoBuilder.GameInfo.HookCodeCustom =   null;
+                    GameInfoBuilder.GameInfo.HookCodeCustom = null;
                 }
 
                 //使用路由事件机制通知窗口来完成下一步操作
