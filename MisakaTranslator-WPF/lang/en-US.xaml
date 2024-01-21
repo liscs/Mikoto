@@ -440,7 +440,7 @@
     <sys:String x:Key="GameFileNotExistsCheck">The game file does not exist, please check</sys:String>
     <sys:String x:Key="ChooseGamePage_NoAdminWarn">Warning: Currently, you do not have administrator rights. If you cannot find the game process, please restart the software as an administrator and try again.</sys:String>
     <sys:String x:Key="ChooseHookFuncPage_NoAdminWarn">Warning: Currently, you do not have administrator rights. If you cannot inject the game process, please restart the software as an administrator and try again.</sys:String>
-    <sys:String x:Key="MainWindow_NoAdmin_Hint">Cannot inject games that require administrator identity, please restart the software as administrator</sys:String>
+    <sys:String x:Key="MainWindow_NoAdmin_Hint">Unable to inject games that require administrator status. Do you want to restart the software as an administrator?</sys:String>
     <sys:String x:Key="MainWindow_Drawer_PathHint">Enter new game path</sys:String>
     <sys:String x:Key="SoftwareSettingsPage_EnableAutoCheckUpdate">Automatically check for updates at startup</sys:String>
 

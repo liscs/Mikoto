@@ -386,11 +386,30 @@ namespace MisakaTranslator
             }
             catch (Win32Exception)
             {
-                MessageBox.Show(Application.Current.Resources["MainWindow_NoAdmin_Hint"].ToString(), Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
+                MessageBoxResult messageBoxResult = MessageBox.Show(Application.Current.Resources["MainWindow_NoAdmin_Hint"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    StartAsAdmin(Process.GetCurrentProcess().MainModule!.FileName);
+                    ShutDownApp();
+                }
                 return;
             }
         }
 
+        public static void StartAsAdmin(string fileName)
+        {
+            var proc = new Process
+            {
+                StartInfo =
+        {
+            FileName = fileName,
+            UseShellExecute = true,
+            Verb = "runas"
+        }
+            };
+
+            proc.Start();
+        }
         private void CloseDrawerBtn_Click(object sender, RoutedEventArgs e)
         {
             GameInfoDrawer.IsOpen = false;
@@ -455,11 +474,16 @@ namespace MisakaTranslator
                     Visibility = Visibility.Collapsed;
                     break;
                 case "Exit":
-                    Common.GlobalOCRHotKey.UnRegisterGlobalHotKey(hwnd, CallBack);
-                    CloseNotifyIcon();
-                    Application.Current.Shutdown();
+                    ShutDownApp();
                     break;
             }
+        }
+
+        private void ShutDownApp()
+        {
+            Common.GlobalOCRHotKey.UnRegisterGlobalHotKey(hwnd, CallBack);
+            CloseNotifyIcon();
+            Application.Current.Shutdown();
         }
 
         public void CloseNotifyIcon()

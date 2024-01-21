@@ -415,8 +415,8 @@ namespace MisakaTranslator
                 else
                 {
                     if (!Common.AppSettings.EachRowTrans) // 不启用分行翻译
-                        if (Common.UsingSrcLang != "zh" && Common.UsingSrcLang != "ja")
-                            srcText = srcText.Replace(Environment.NewLine, " ").Replace("\n", " ");
+                        if (IsJaOrZh(Common.UsingSrcLang))
+                            srcText = srcText.Replace(Environment.NewLine, string.Empty).Replace("\n", string.Empty);
                         else
                             srcText = new string(srcText.Where(p => !char.IsWhiteSpace(p)).ToArray());
 
@@ -926,7 +926,7 @@ namespace MisakaTranslator
             Common.AppSettings.TF_ShowSourceText = _enableShowSource;
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object sender, CancelEventArgs e)
         {
             Common.AppSettings.TF_LocX = Convert.ToString((int)this.Left);
             Common.AppSettings.TF_LocY = Convert.ToString((int)this.Top);
