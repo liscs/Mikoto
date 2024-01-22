@@ -17,7 +17,7 @@ namespace MisakaTranslator.GuidePages.Hook
     {
         BindingList<TextHookData> lstData = new BindingList<TextHookData>();
 
-        string LastCustomHookCode;
+        string? LastCustomHookCode;
 
         int sum = 0;
 
