@@ -49,7 +49,7 @@ namespace MisakaTranslator.SettingsPages
         private void HttpProxyBox_LostFocus(object sender, RoutedEventArgs e)
         {
             string text = HttpProxyBox.Text.Trim();
-            try { new Uri(text); } catch (UriFormatException) { HandyControl.Controls.Growl.Error("Proxy url unsupported."); return; };
+            try { _ = new Uri(text); } catch (UriFormatException) { HandyControl.Controls.Growl.Error("Proxy url unsupported."); return; };
             Common.AppSettings.HttpProxy = text;
         }
 

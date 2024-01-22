@@ -80,8 +80,7 @@ namespace OCRLibrary
             //由于第一轮寻找的条件相对苛刻，很难保证找到所有文字像素，所以我们需要第二轮寻找
             //找出这些像素颜色的近似（加权）几何中位数，以及标准差
             //我们猜测这个几何中位数就是文字的颜色
-            float stddiv;
-            ColorTuple median = GeometricMedian(textPixels, pixel, out stddiv);
+            ColorTuple median = GeometricMedian(textPixels, pixel, out float stddiv);
             float radius = Math.Min(1.1f * stddiv, 0.3f);
             radius = Math.Max(radius, 0.1f);
             //把颜色接近几何中位数的所有像素标记为疑似文字像素（标为1），去除其他像素（标为0）
@@ -95,9 +94,8 @@ namespace OCRLibrary
                     if (components[x, y] == 1)
                     {
                         List<(int, int)> visited = new List<(int, int)>();
-                        bool isBorder = false;
                         List<(int, int)> boundary = ComputeBoundary(median, x, y, 2,
-                            pixel, components, visited, out isBorder);
+                            pixel, components, visited, out bool isBorder);
                         //如果当前色块与边界接壤，则舍弃
                         if (!isBorder)
                         {
@@ -364,9 +362,7 @@ namespace OCRLibrary
                 }
                 boundary.Clear();
                 //交换boundary和nextBoundary
-                var temp = boundary;
-                boundary = nextBoundary;
-                nextBoundary = temp;
+                (nextBoundary, boundary) = (boundary, nextBoundary);
             }
             return level;
         }

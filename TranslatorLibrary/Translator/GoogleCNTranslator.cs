@@ -54,7 +54,7 @@ namespace TranslatorLibrary.Translator
                 return null;
             }
         }
-        public string GetLanguageCode(CultureInfo cultureInfo)
+        public static string GetLanguageCode(CultureInfo cultureInfo)
         {
             return GoogleCNLanguageCodeConverter.GetLanguageCode(cultureInfo);
         }

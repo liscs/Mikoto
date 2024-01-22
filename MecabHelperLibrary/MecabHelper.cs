@@ -72,7 +72,29 @@ namespace MecabHelperLibrary
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        bool disposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    //dispose managed resources
+                }
+            }
+            //dispose unmanaged resources
             Tagger?.Dispose();
+            disposed = true;
+        }
+
+        ~MecabHelper() // the finalizer
+        {
+            Dispose(false);
         }
 
         /// <summary>
