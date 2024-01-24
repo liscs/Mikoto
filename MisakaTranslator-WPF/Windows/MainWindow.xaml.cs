@@ -16,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -47,8 +48,8 @@ namespace MisakaTranslator
             GrowlDisableSwitch();
 
             //注册全局OCR热键
-            this.SourceInitialized += new EventHandler(MainWindow_SourceInitialized);
-        }
+            this.SourceInitialized += new EventHandler(MainWindow_SourceInitialized); 
+                    }
 
         private static void InitializeLanguage()
         {
@@ -283,8 +284,10 @@ namespace MisakaTranslator
             gid = int.Parse(temp);
 
             DrawGameImage.Source = GetGameIcon(gid).Source;
-
+            GameNameTag.Tag = gid;
             GameNameTag.Text = GameInfoList[gid].GameName;
+            GameNameTag.MouseEnter += (_, _) => GameNameTag.TextDecorations = TextDecorations.Underline;
+            GameNameTag.MouseLeave += (_, _) => GameNameTag.TextDecorations = null;
             if (GameInfoList[gid].TransMode == 1)
             {
                 TransModeTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_TransMode"].ToString() + "Hook";
@@ -307,6 +310,15 @@ namespace MisakaTranslator
 
             GameInfoDrawer.IsOpen = true;
             e.Handled = true;
+        }
+
+        private void GameNameTag_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            string? gameFileDirectory = Path.GetDirectoryName(GameInfoList[(int)((TextBlock)sender).Tag].FilePath);
+            if (Directory.Exists(gameFileDirectory))
+            {
+                _ = Process.Start("explorer.exe", gameFileDirectory);
+            }
         }
 
         private async Task StartTranslateByGid(int gid)
