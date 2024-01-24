@@ -42,10 +42,6 @@ namespace MisakaTranslator
             Instance = this;
             Common.AppSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\data\\settings\\settings.ini").Build();
             InitializeLanguage();
-            if (Common.IsAdmin)
-            {
-                RestartAsAdminBtn.Visibility = Visibility.Collapsed;
-            }
             TranslatorCommon.Refresh();
             InitializeComponent();
             Refresh();
@@ -53,6 +49,10 @@ namespace MisakaTranslator
 
             //注册全局OCR热键
             this.SourceInitialized += new EventHandler(MainWindow_SourceInitialized);
+            if (Common.IsAdmin)
+            {
+                RestartAsAdminBtn.Visibility = Visibility.Collapsed;
+            }
         }
 
         private static void InitializeLanguage()
