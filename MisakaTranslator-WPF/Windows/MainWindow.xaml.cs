@@ -416,8 +416,10 @@ namespace MisakaTranslator
 
         private void RestartAsAdmin()
         {
-            StartProcessAsAdmin(Environment.ProcessPath!);
-            ShutDownApp();
+            if (StartProcessAsAdmin(Environment.ProcessPath!))
+            {
+                ShutDownApp();
+            }
         }
 
         public static bool StartProcessAsAdmin(string fileName)
