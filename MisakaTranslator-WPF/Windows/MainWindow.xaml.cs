@@ -42,14 +42,18 @@ namespace MisakaTranslator
             Instance = this;
             Common.AppSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\data\\settings\\settings.ini").Build();
             InitializeLanguage();
+            if (Common.IsAdmin)
+            {
+                RestartAsAdminBtn.Visibility = Visibility.Collapsed;
+            }
             TranslatorCommon.Refresh();
             InitializeComponent();
             Refresh();
             GrowlDisableSwitch();
 
             //注册全局OCR热键
-            this.SourceInitialized += new EventHandler(MainWindow_SourceInitialized); 
-                    }
+            this.SourceInitialized += new EventHandler(MainWindow_SourceInitialized);
+        }
 
         private static void InitializeLanguage()
         {
@@ -404,26 +408,37 @@ namespace MisakaTranslator
                 MessageBoxResult messageBoxResult = MessageBox.Show(Application.Current.Resources["MainWindow_NoAdmin_Hint"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    StartAsAdmin(Environment.ProcessPath!);
-                    ShutDownApp();
+                    RestartAsAdmin();
                 }
                 return;
             }
         }
 
-        public static void StartAsAdmin(string fileName)
+        private void RestartAsAdmin()
         {
-            using var proc = new Process
-            {
-                StartInfo =
-        {
-            FileName = fileName,
-            UseShellExecute = true,
-            Verb = "runas"
+            StartProcessAsAdmin(Environment.ProcessPath!);
+            ShutDownApp();
         }
+
+        public static bool StartProcessAsAdmin(string fileName)
+        {
+            ProcessStartInfo processStartInfo = new()
+            {
+                FileName = fileName,
+                UseShellExecute = true,
+                Verb = "runas"
             };
 
-            proc.Start();
+            try
+            {
+                var p = Process.Start(processStartInfo);
+                Console.WriteLine(p);
+            }
+            catch (Win32Exception)
+            {
+                return false;
+            }
+            return true;
         }
         private void CloseDrawerBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -633,6 +648,15 @@ namespace MisakaTranslator
             GameHelper.UpdateGameInfoByID(GameInfoList[gid].GameID, "Cleared", GameInfoList[gid].Cleared);
             GameInfoDrawer.IsOpen = false;
 
+        }
+
+        private void RestartAsAdminBtn_Clicked(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult messageBoxResult = MessageBox.Show(Application.Current.Resources["MainWindow_RestartAdmin_Hint"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                RestartAsAdmin();
+            }
         }
     }
 }

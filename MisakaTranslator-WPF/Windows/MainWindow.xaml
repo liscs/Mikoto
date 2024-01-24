@@ -43,6 +43,8 @@
 
         <!--右下角-->
         <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button Name="RestartAsAdminBtn" fa:Awesome.Content="Shield"  Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{StaticResource EffectShadow5}"  Margin="0,0,20,0.5" Click="RestartAsAdminBtn_Clicked">
+            </Button>
             <Button fa:Awesome.Content="Language" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{StaticResource EffectShadow5}"  Margin="0,0,20,0.5" Click="LanguageBtn_Click">
                 <Button.ContextMenu>
                     <ContextMenu Name="LanguageContextMenu">

@@ -200,20 +200,26 @@ namespace MisakaTranslator
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri(url);
                 request.Headers.Add("Cache-Control", "no-cache");
-                using HttpResponseMessage response = await httpClient.SendAsync(request).ConfigureAwait(false);
-                string result = await response.Content.ReadAsStringAsync();
-                if (response.StatusCode == HttpStatusCode.OK)
+                try
                 {
-                    JsonNode? jsonNode = JsonSerializer.Deserialize<JsonNode>(result);
-                    string? versionString = jsonNode?["tag_name"]?.GetValue<string>();
-
-                    if (!string.IsNullOrEmpty(versionString))
+                    using HttpResponseMessage response = await httpClient.SendAsync(request).ConfigureAwait(false);
+                    string result = await response.Content.ReadAsStringAsync();
+                    if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        int[] versionNumber = versionString.Split('v', '.')
-                            .Where(p => !string.IsNullOrEmpty(p))
-                            .Select(int.Parse).ToArray();
-                        return new Version(versionNumber[0], versionNumber[1], versionNumber[2]);
+                        JsonNode? jsonNode = JsonSerializer.Deserialize<JsonNode>(result);
+                        string? versionString = jsonNode?["tag_name"]?.GetValue<string>();
+
+                        if (!string.IsNullOrEmpty(versionString))
+                        {
+                            int[] versionNumber = versionString.Split('v', '.')
+                                .Where(p => !string.IsNullOrEmpty(p))
+                                .Select(int.Parse).ToArray();
+                            return new Version(versionNumber[0], versionNumber[1], versionNumber[2]);
+                        }
                     }
+                }
+                catch
+                {
                 }
                 return new Version();
             }
