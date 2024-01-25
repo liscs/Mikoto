@@ -8,12 +8,8 @@
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     mc:Ignorable="d"
     d:Height="540" d:Width="960" MinHeight="540" MinWidth="960"
-    Title="MisakaTranslator" Background="White" WindowStartupLocation="CenterScreen"
+    Title="MisakaTranslator" Background="{DynamicResource TranslateWindowBackground}" WindowStartupLocation="CenterScreen"
     Closing="BlurWindow_Closing" ContentRendered="BlurWindow_ContentRendered">
-
-    <Window.Resources>
-        <ResourceDictionary Source = "Appearance.xaml"/>
-    </Window.Resources>
 
     <Grid Margin="5">
         <Grid.RowDefinitions>
@@ -70,19 +66,19 @@
         
         <!--顶部跳出栏位-->
         <hc:Drawer Name="AddNewGameDrawer" ShowMode="Press" MaskCanClose="True" Dock="Top">
-            <StackPanel Orientation="Vertical" Background="{StaticResource TranslateWindowBackground}">
+            <StackPanel Orientation="Vertical" Background="{DynamicResource TranslateWindowBackground}">
                 <Border Padding="30" Effect="{StaticResource EffectShadow3}">
                     <hc:ButtonGroup Orientation="Horizontal">
-                        <Button Background="{StaticResource BoxBtnColor}" Content="{DynamicResource BtnHookGuide}" Click="HookGuideBtn_Click" Height="50"></Button>
-                        <Button Background="{StaticResource BoxBtnColor}" Content="{DynamicResource BtnOCRGuide}" Click="OCRGuideBtn_Click" Height="50"></Button>
-                        <Button Background="{StaticResource BoxBtnColor}" Content="{DynamicResource BtnClipboardGuide}" Click="ClipboardGuideBtn_Click" Height="50"></Button>
+                        <Button Background="{DynamicResource BoxBtnColor}" Content="{DynamicResource BtnHookGuide}" Click="HookGuideBtn_Click" Height="50" Foreground="{DynamicResource ButtonTextColor}"></Button>
+                        <Button Background="{DynamicResource BoxBtnColor}" Content="{DynamicResource BtnOCRGuide}" Click="OCRGuideBtn_Click" Height="50" Foreground="{DynamicResource ButtonTextColor}"></Button>
+                        <Button Background="{DynamicResource BoxBtnColor}" Content="{DynamicResource BtnClipboardGuide}" Click="ClipboardGuideBtn_Click" Height="50" Foreground="{DynamicResource ButtonTextColor}"></Button>
                     </hc:ButtonGroup>
                 </Border>
             </StackPanel>
         </hc:Drawer>
         <!--侧边弹出游戏详情-->
         <hc:Drawer Name="GameInfoDrawer" ShowMode="Press" MaskCanClose="True" Dock="Left">
-            <Border Background="{StaticResource TranslateWindowBackground}" Width="300" BorderBrush="{DynamicResource BorderBrush}">
+            <Border Background="{DynamicResource TranslateWindowBackground}" Width="300" BorderBrush="{DynamicResource BorderBrush}">
                 <StackPanel Grid.Row="0">
                     <Button HorizontalAlignment="Right" Foreground="{DynamicResource PrimaryTextBrush}" Style="{DynamicResource ButtonIcon}" hc:IconElement.Geometry="{DynamicResource DeleteFillCircleGeometry}" Click="CloseDrawerBtn_Click"/>
                     <Image Name="DrawGameImage" Margin="50,0,50,20"/>
@@ -90,11 +86,11 @@
                     <TextBlock Name="TransModeTag" TextAlignment="Center" Margin="25,0,25,10" FontSize="15" TextWrapping="Wrap"/>
                     <Border Padding="30">
                         <hc:ButtonGroup Orientation="Vertical">
-                            <Button Content="{DynamicResource MainWindow_Drawer_Start}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource SuccessBrush}" Click="StartBtn_Click"/>
-                            <Button Content="{DynamicResource MainWindow_Drawer_LEStart}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource InfoBrush}" Click="LEStartBtn_Click"/>
-                            <Button Content="{DynamicResource MainWindow_Drawer_DeleteGame}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource DangerBrush}" Click="DeleteGameBtn_Click"/>
-                            <Button Content="{DynamicResource MainWindow_Drawer_UpdateName}" Height="50" Margin="5" Foreground="White" Background="{DynamicResource WarningBrush}" Click="UpdateNameBtn_Click"/>
-                            <Button Name="GameInfoDrawerClearButton" Content="GAME CLEAR!" Height="50" Margin="5" Foreground="White" Background="Gold" Click="ClearBtn_Click"/>
+                            <Button Content="{DynamicResource MainWindow_Drawer_Start}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" Background="{DynamicResource SuccessBrush}" Click="StartBtn_Click"/>
+                            <Button Content="{DynamicResource MainWindow_Drawer_LEStart}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" Background="{DynamicResource InfoBrush}" Click="LEStartBtn_Click"/>
+                            <Button Content="{DynamicResource MainWindow_Drawer_DeleteGame}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" Background="{DynamicResource DangerBrush}" Click="DeleteGameBtn_Click"/>
+                            <Button Content="{DynamicResource MainWindow_Drawer_UpdateName}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" Background="{DynamicResource WarningBrush}" Click="UpdateNameBtn_Click"/>
+                            <Button Name="GameInfoDrawerClearButton" Content="GAME CLEAR!" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" Background="Gold" Click="ClearBtn_Click"/>
                         </hc:ButtonGroup>
                     </Border>
                 </StackPanel>

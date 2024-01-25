@@ -72,7 +72,6 @@ namespace MisakaTranslator
 
         public void Refresh()
         {
-            this.Resources["Foreground"] = new BrushConverter().ConvertFrom(Common.AppSettings.ForegroundHex) as SolidColorBrush;
             GameInfoList = GameHelper.GetAllCompletedGames();
             Common.RepairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Environment.CurrentDirectory + "\\data\\settings\\RepairSettings.ini").Build();
             GameLibraryPanel_Init();
@@ -181,7 +180,7 @@ namespace MisakaTranslator
                 Width = 150,
                 Child = grid,
                 Margin = new Thickness(3),
-                Background = (SolidColorBrush)this.Resources["Foreground"]
+                Background = (SolidColorBrush)Application.Current.Resources["BoxBtnColor"]
             };
             border.MouseEnter += Border_MouseEnter;
             border.MouseLeave += Border_MouseLeave;
@@ -189,7 +188,7 @@ namespace MisakaTranslator
             GamePanelCollection.Add(border);
         }
 
-        private void Border_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             AddNewGameDrawer.IsOpen = true;
         }
