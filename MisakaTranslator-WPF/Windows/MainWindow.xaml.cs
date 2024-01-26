@@ -98,11 +98,12 @@ namespace MisakaTranslator
             TextBlock tb = new()
             {
                 Text = GameInfoList[i].GameName,
-                Foreground = Brushes.White,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 Margin = new Thickness(3),
                 TextWrapping = TextWrapping.Wrap,
+                Opacity = 0.6,
+                FontWeight = FontWeights.SemiBold
             };
             Image ico = ImageHelper.GetGameIcon(GameInfoList[i].FilePath);
             RenderOptions.SetBitmapScalingMode(ico, BitmapScalingMode.HighQuality);
@@ -116,8 +117,16 @@ namespace MisakaTranslator
                 Width = 150,
                 Child = gd,
                 Margin = new Thickness(3),
-                Background = GameInfoList[i].Cleared ? Brushes.Gold : ImageHelper.GetMajorBrush(ico.Source as BitmapSource),
             };
+            if (GameInfoList[i].Cleared)
+            {
+                back.Background = Brushes.Gold;
+            }
+            else
+            {
+                back.Background = ImageHelper.GetMajorBrush(ico.Source as BitmapSource);
+            }
+
             back.MouseEnter += Border_MouseEnter;
             back.MouseLeave += Border_MouseLeave;
             back.MouseLeftButtonDown += Back_MouseLeftButtonDown;

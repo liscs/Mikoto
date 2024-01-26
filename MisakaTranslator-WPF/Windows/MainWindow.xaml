@@ -79,7 +79,8 @@
         <!--侧边弹出游戏详情-->
         <hc:Drawer Name="GameInfoDrawer" ShowMode="Press" MaskCanClose="True" Dock="Left">
             <Border Background="{DynamicResource TranslateWindowBackground}" Width="300" BorderBrush="{DynamicResource BorderBrush}">
-                <StackPanel Grid.Row="0">
+                <ScrollViewer>
+                    <StackPanel Grid.Row="0">
                     <Button HorizontalAlignment="Right" Foreground="{DynamicResource PrimaryTextBrush}" Style="{DynamicResource ButtonIcon}" hc:IconElement.Geometry="{DynamicResource DeleteFillCircleGeometry}" Click="CloseDrawerBtn_Click"/>
                     <Image Name="DrawGameImage" Margin="50,0,50,20"/>
                     <TextBlock Name="GameNameTag" TextAlignment="Center" Margin="25,0,25,10" FontSize="15" TextWrapping="Wrap" PreviewMouseLeftButtonUp="GameNameTag_PreviewMouseLeftButtonUp"/>
@@ -94,6 +95,7 @@
                         </hc:ButtonGroup>
                     </Border>
                 </StackPanel>
+                </ScrollViewer>
             </Border>
         </hc:Drawer>
         <hc:NotifyIcon Token="MisakaTranslator" Name="NotifyIconContextContent" Text="HandyControl" IsBlink="False" Visibility="Visible"  Icon="pack://application:,,,/MisakaTranslator-WPF;component/logo.ico">

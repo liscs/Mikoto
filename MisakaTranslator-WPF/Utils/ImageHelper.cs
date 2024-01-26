@@ -65,7 +65,7 @@ namespace MisakaTranslator.Utils
             return ico;
         }
 
-        public static SolidColorBrush GetMajorBrush(BitmapSource? bitmapSource)
+        public static Brush GetMajorBrush(BitmapSource? bitmapSource)
         {
             if (bitmapSource == null)
             {
@@ -87,7 +87,17 @@ namespace MisakaTranslator.Utils
                 }
             }
             IOrderedEnumerable<KeyValuePair<int, int>> sortedDict = from entry in dict orderby entry.Value descending select entry;
-            return new SolidColorBrush(ColorFromHSV(sortedDict.First().Key, 1, 1));
+
+            LinearGradientBrush result = new()
+            {
+                StartPoint = new Point(0, 1),
+                EndPoint = new Point(1, 0)
+            };
+            result.GradientStops.Add(new GradientStop(ColorFromHSV(sortedDict.First().Key, 0.9, 1), 0.0));
+            result.GradientStops.Add(new GradientStop(ColorFromHSV(sortedDict.First().Key, 1, 0.9), 1.0));
+
+
+            return result;
         }
 
         public static Color ColorFromHSV(double hue, double saturation, double value)
@@ -101,18 +111,15 @@ namespace MisakaTranslator.Utils
             byte q = Convert.ToByte(value * (1 - f * saturation));
             byte t = Convert.ToByte(value * (1 - (1 - f) * saturation));
 
-            if (hi == 0)
-                return Color.FromArgb(255, v, t, p);
-            else if (hi == 1)
-                return Color.FromArgb(255, q, v, p);
-            else if (hi == 2)
-                return Color.FromArgb(255, p, v, t);
-            else if (hi == 3)
-                return Color.FromArgb(255, p, q, v);
-            else if (hi == 4)
-                return Color.FromArgb(255, t, p, v);
-            else
-                return Color.FromArgb(255, v, p, q);
+            return hi switch
+            {
+                0 => Color.FromArgb(255, v, t, p),
+                1 => Color.FromArgb(255, q, v, p),
+                2 => Color.FromArgb(255, p, v, t),
+                3 => Color.FromArgb(255, p, q, v),
+                4 => Color.FromArgb(255, t, p, v),
+                _ => Color.FromArgb(255, v, p, q)
+            };
         }
 
     }
