@@ -2,7 +2,7 @@ using Config.Net;
 using DataAccessLibrary;
 using HandyControl.Controls;
 using KeyboardMouseHookLibrary;
-using OCRLibrary;
+using MisakaTranslator.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -80,20 +80,6 @@ namespace MisakaTranslator
             Common.UsingSrcLang = "ja";
         }
 
-        private readonly List<SolidColorBrush> bushLst =
-        [
-            Brushes.CornflowerBlue,
-            Brushes.IndianRed,
-            Brushes.Orange,
-            Brushes.ForestGreen,
-            Brushes.Peru,
-            Brushes.MediumVioletRed,
-        ];
-        private SolidColorBrush GetNormalBackground(int i)
-        {
-            return bushLst[i % 6];
-        }
-
         /// <summary>
         /// 游戏库瀑布流初始化
         /// </summary>
@@ -118,7 +104,7 @@ namespace MisakaTranslator
                 Margin = new Thickness(3),
                 TextWrapping = TextWrapping.Wrap,
             };
-            Image ico = GetGameIcon(i);
+            Image ico = ImageHelper.GetGameIcon(GameInfoList[i].FilePath);
             RenderOptions.SetBitmapScalingMode(ico, BitmapScalingMode.HighQuality);
             var gd = new Grid();
             gd.Children.Add(ico);
@@ -130,36 +116,12 @@ namespace MisakaTranslator
                 Width = 150,
                 Child = gd,
                 Margin = new Thickness(3),
-                Background = GameInfoList[i].Cleared ? Brushes.Gold : GetNormalBackground(i),
+                Background = GameInfoList[i].Cleared ? Brushes.Gold : ImageHelper.GetMajorBrush(ico.Source as BitmapSource),
             };
             back.MouseEnter += Border_MouseEnter;
             back.MouseLeave += Border_MouseLeave;
             back.MouseLeftButtonDown += Back_MouseLeftButtonDown;
             GamePanelCollection.Add(back);
-        }
-
-        private Image GetGameIcon(int i)
-        {
-            Image ico = new()
-            {
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                Height = 64,
-                Width = 64,
-                Source = ImageProcFunc.ImageToBitmapImage(ImageProcFunc.GetAppIcon(GameInfoList[i].FilePath)!)
-            };
-
-            if (!File.Exists(GameInfoList[i].FilePath))
-            {
-                return ico;
-            }
-
-            string[] icoPaths = Directory.GetFiles(Path.GetDirectoryName(GameInfoList[i].FilePath)!, "*.ico");
-            if (icoPaths.Length > 0 && ico.Source is null)
-            {
-                ico.Source = new BitmapImage(new Uri(icoPaths[0]));
-            }
-            return ico;
         }
 
         private void InitAddGamePanel()
@@ -287,7 +249,7 @@ namespace MisakaTranslator
             var temp = str.Remove(0, 4);
             gid = int.Parse(temp);
 
-            DrawGameImage.Source = GetGameIcon(gid).Source;
+            DrawGameImage.Source = ImageHelper.GetGameIcon(GameInfoList[gid].FilePath).Source;
             GameNameTag.Tag = gid;
             GameNameTag.Text = GameInfoList[gid].GameName;
             GameNameTag.MouseEnter += (_, _) => GameNameTag.TextDecorations = TextDecorations.Underline;
@@ -637,7 +599,7 @@ namespace MisakaTranslator
             {
                 Growl.InfoGlobal("CLEAR CANCELED");
                 var b = GamePanelCollection[gid];
-                b.Background = GetNormalBackground(gid);
+                b.Background = ImageHelper.GetMajorBrush(ImageHelper.GetGameIcon(GameInfoList[gid].FilePath).Source as BitmapSource);
                 GameInfoList[gid].Cleared = false;
             }
             else
