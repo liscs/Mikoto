@@ -33,23 +33,23 @@
 
         <!--左下角-->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
-            <Button fa:Awesome.Content="Rocket" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="AutoStart_BtnClick" Margin="0,0,0,0.5">
+            <Button fa:Awesome.Content="Rocket" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="AutoStart_BtnClick" Margin="0,0,0,0.5" BorderBrush="Transparent">
                 <hc:Poptip.Instance>
-                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="Microsoft YaHei" Content="{DynamicResource MainWindow_Tip_AutoStart}" Placement="Right"/>
+                    <hc:Poptip FontSize="15" Foreground="{DynamicResource PrimaryForeground}" Content="{DynamicResource MainWindow_Tip_AutoStart}" Placement="Right"/>
                 </hc:Poptip.Instance>
             </Button>
-            <Button fa:Awesome.Content="Book" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="ComicTransBtn_Click" Margin="20,0,0,0.5">
+            <Button fa:Awesome.Content="Book" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="ComicTransBtn_Click" Margin="20,0,0,0.5" BorderBrush="Transparent">
                 <hc:Poptip.Instance>
-                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="Microsoft YaHei" Content="{DynamicResource MainWindow_Tip_ComicTrans}" Placement="Right"/>
+                    <hc:Poptip FontSize="15" Foreground="{DynamicResource PrimaryForeground}" Content="{DynamicResource MainWindow_Tip_ComicTrans}" Placement="Right"/>
                 </hc:Poptip.Instance>
             </Button>
         </StackPanel>
 
         <!--右下角-->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button Name="RestartAsAdminBtn" fa:Awesome.Content="Shield"  Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{StaticResource EffectShadow5}"  Margin="0,0,20,0.5" Click="RestartAsAdminBtn_Clicked">
+            <Button Name="RestartAsAdminBtn" fa:Awesome.Content="Shield"  Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{StaticResource EffectShadow5}"  Margin="0,0,20,0.5" Click="RestartAsAdminBtn_Clicked" BorderBrush="Transparent">
             </Button>
-            <Button fa:Awesome.Content="Language" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{StaticResource EffectShadow5}"  Margin="0,0,20,0.5" Click="LanguageBtn_Click">
+            <Button fa:Awesome.Content="Language" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{StaticResource EffectShadow5}"  Margin="0,0,20,0.5" Click="LanguageBtn_Click" BorderBrush="Transparent">
                 <Button.ContextMenu>
                     <ContextMenu Name="LanguageContextMenu">
                         <MenuItem Header="中文" Click="Language_MenuItem_Click" Tag="zh-CN"/>
@@ -57,21 +57,21 @@
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>
-            <Button fa:Awesome.Content="Cog" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="SettingsBtn_Click" Margin="0,0,0,0.5">
+            <Button fa:Awesome.Content="Cog" Foreground="{DynamicResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="SettingsBtn_Click" Margin="0,0,0,0.5" BorderBrush="Transparent"> 
                 <hc:Poptip.Instance>
-                    <hc:Poptip FontSize="15" Foreground="Black" FontFamily="Microsoft YaHei" Content="{DynamicResource MainWindow_Tip_Settings}" Placement="Left"/>
+                    <hc:Poptip FontSize="15" Foreground="{DynamicResource PrimaryForeground}" Content="{DynamicResource MainWindow_Tip_Settings}" Placement="Left"/>
                 </hc:Poptip.Instance>
             </Button>
         </StackPanel>
-        
+
         <!--顶部跳出栏位-->
         <hc:Drawer Name="AddNewGameDrawer" ShowMode="Press" MaskCanClose="True" Dock="Top">
             <StackPanel Orientation="Vertical" Background="{DynamicResource TranslateWindowBackground}">
                 <Border Padding="30" Effect="{StaticResource EffectShadow3}">
                     <hc:ButtonGroup Orientation="Horizontal">
-                        <Button Background="{DynamicResource BoxBtnColor}" Content="{DynamicResource BtnHookGuide}" Click="HookGuideBtn_Click" Height="50" Foreground="{DynamicResource ButtonTextColor}"></Button>
-                        <Button Background="{DynamicResource BoxBtnColor}" Content="{DynamicResource BtnOCRGuide}" Click="OCRGuideBtn_Click" Height="50" Foreground="{DynamicResource ButtonTextColor}"></Button>
-                        <Button Background="{DynamicResource BoxBtnColor}" Content="{DynamicResource BtnClipboardGuide}" Click="ClipboardGuideBtn_Click" Height="50" Foreground="{DynamicResource ButtonTextColor}"></Button>
+                        <Button Background="{DynamicResource BoxBtnColor}" Content="{DynamicResource BtnHookGuide}" Click="HookGuideBtn_Click" Height="50" Foreground="{DynamicResource ButtonTextColor}" FontWeight="{DynamicResource ButtonTextWeight}" BorderBrush="Transparent"></Button>
+                        <Button Background="{DynamicResource BoxBtnColor}" Content="{DynamicResource BtnOCRGuide}" Click="OCRGuideBtn_Click" Height="50" Foreground="{DynamicResource ButtonTextColor}" FontWeight="{DynamicResource ButtonTextWeight}" BorderBrush="Transparent"></Button>
+                        <Button Background="{DynamicResource BoxBtnColor}" Content="{DynamicResource BtnClipboardGuide}" Click="ClipboardGuideBtn_Click" Height="50" Foreground="{DynamicResource ButtonTextColor}" FontWeight="{DynamicResource ButtonTextWeight}" BorderBrush="Transparent"></Button>
                     </hc:ButtonGroup>
                 </Border>
             </StackPanel>
@@ -80,21 +80,20 @@
         <hc:Drawer Name="GameInfoDrawer" ShowMode="Press" MaskCanClose="True" Dock="Left">
             <Border Background="{DynamicResource TranslateWindowBackground}" Width="300" BorderBrush="{DynamicResource BorderBrush}">
                 <ScrollViewer>
-                    <StackPanel Grid.Row="0">
-                    <Button HorizontalAlignment="Right" Foreground="{DynamicResource PrimaryTextBrush}" Style="{DynamicResource ButtonIcon}" hc:IconElement.Geometry="{DynamicResource DeleteFillCircleGeometry}" Click="CloseDrawerBtn_Click"/>
-                    <Image Name="DrawGameImage" Margin="50,0,50,20"/>
-                    <TextBlock Name="GameNameTag" TextAlignment="Center" Margin="25,0,25,10" FontSize="15" TextWrapping="Wrap" PreviewMouseLeftButtonUp="GameNameTag_PreviewMouseLeftButtonUp"/>
-                    <TextBlock Name="TransModeTag" TextAlignment="Center" Margin="25,0,25,10" FontSize="15" TextWrapping="Wrap"/>
-                    <Border Padding="30">
-                        <hc:ButtonGroup Orientation="Vertical">
-                            <Button Content="{DynamicResource MainWindow_Drawer_Start}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" Background="{DynamicResource SuccessBrush}" Click="StartBtn_Click"/>
-                            <Button Content="{DynamicResource MainWindow_Drawer_LEStart}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" Background="{DynamicResource InfoBrush}" Click="LEStartBtn_Click"/>
-                            <Button Content="{DynamicResource MainWindow_Drawer_DeleteGame}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" Background="{DynamicResource DangerBrush}" Click="DeleteGameBtn_Click"/>
-                            <Button Content="{DynamicResource MainWindow_Drawer_UpdateName}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" Background="{DynamicResource WarningBrush}" Click="UpdateNameBtn_Click"/>
-                            <Button Name="GameInfoDrawerClearButton" Content="GAME CLEAR!" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" Background="Gold" Click="ClearBtn_Click"/>
-                        </hc:ButtonGroup>
-                    </Border>
-                </StackPanel>
+                    <StackPanel>
+                        <Button HorizontalAlignment="Right" Foreground="{DynamicResource PrimaryForeground}" Style="{DynamicResource ButtonIcon}" hc:IconElement.Geometry="{DynamicResource DeleteFillCircleGeometry}" Click="CloseDrawerBtn_Click"/>
+                        <Image Name="DrawGameImage" Margin="50,0,50,20"/>
+                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Name="GameNameTag" TextAlignment="Center" Margin="25,0,25,10" FontSize="15" TextWrapping="Wrap" PreviewMouseLeftButtonUp="GameNameTag_PreviewMouseLeftButtonUp"/>
+                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Name="TransModeTag" TextAlignment="Center" Margin="25,0,25,10" FontSize="15" TextWrapping="Wrap"/>
+                        <Border Padding="30">
+                            <hc:ButtonGroup Orientation="Vertical">
+                                <Button Content="{DynamicResource MainWindow_Drawer_Start}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" FontWeight="{DynamicResource ButtonTextWeight}" Background="{DynamicResource SuccessBrush}" Click="StartBtn_Click" BorderBrush="Transparent"/>
+                                <Button Content="{DynamicResource MainWindow_Drawer_LEStart}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" FontWeight="{DynamicResource ButtonTextWeight}" Background="{DynamicResource InfoBrush}" Click="LEStartBtn_Click" BorderBrush="Transparent"/>
+                                <Button Content="{DynamicResource MainWindow_Drawer_DeleteGame}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" FontWeight="{DynamicResource ButtonTextWeight}" Background="{DynamicResource DangerBrush}" Click="DeleteGameBtn_Click" BorderBrush="Transparent"/>
+                                <Button Content="{DynamicResource MainWindow_Drawer_UpdateName}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" FontWeight="{DynamicResource ButtonTextWeight}" Background="{DynamicResource WarningBrush}" Click="UpdateNameBtn_Click" BorderBrush="Transparent"/>
+                            </hc:ButtonGroup>
+                        </Border>
+                    </StackPanel>
                 </ScrollViewer>
             </Border>
         </hc:Drawer>

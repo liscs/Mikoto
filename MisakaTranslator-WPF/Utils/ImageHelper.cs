@@ -65,7 +65,7 @@ namespace MisakaTranslator.Utils
             return ico;
         }
 
-        public static Brush GetMajorBrush(BitmapSource? bitmapSource)
+        public static Brush GetMajorBrush(BitmapSource? bitmapSource,int theme = 1)
         {
             if (bitmapSource == null)
             {
@@ -93,9 +93,16 @@ namespace MisakaTranslator.Utils
                 StartPoint = new Point(0, 1),
                 EndPoint = new Point(1, 0)
             };
-            result.GradientStops.Add(new GradientStop(ColorFromHSV(sortedDict.First().Key, 0.9, 1), 0.0));
-            result.GradientStops.Add(new GradientStop(ColorFromHSV(sortedDict.First().Key, 1, 0.9), 1.0));
-
+            if (theme == 1)
+            {
+                result.GradientStops.Add(new GradientStop(ColorFromHSV(sortedDict.First().Key, 0.7, 1), 0.0));
+                result.GradientStops.Add(new GradientStop(ColorFromHSV(sortedDict.First().Key, 0.6, 1), 1.0));
+            }
+            else
+            {
+                result.GradientStops.Add(new GradientStop(ColorFromHSV(sortedDict.First().Key, 0.9, 0.7), 0.0));
+                result.GradientStops.Add(new GradientStop(ColorFromHSV(sortedDict.First().Key, 0.9, 0.8), 1.0));
+            }
 
             return result;
         }

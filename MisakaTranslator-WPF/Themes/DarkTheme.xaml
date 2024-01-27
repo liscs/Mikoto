@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="PrimaryBackground" Color="#FF1E1E1E"></SolidColorBrush>
+    <SolidColorBrush x:Key="PrimaryForeground" Color="White"></SolidColorBrush>
+
+    <SolidColorBrush x:Key="MainBtnColor" Color="#FF7160E8"></SolidColorBrush>
+    <SolidColorBrush x:Key="BoxBtnColor" Color="#FF7160E8"></SolidColorBrush>
+    <SolidColorBrush x:Key="TranslateWindowBackground" Color="#FF1E1E1E"></SolidColorBrush>
+    
+    <SolidColorBrush x:Key="ButtonTextColor" Color="White" Opacity="0.9"></SolidColorBrush>
+    <FontWeight x:Key="ButtonTextWeight">SemiBold</FontWeight>
+</ResourceDictionary>

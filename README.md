@@ -42,7 +42,6 @@ Macab分词词典：https://clrd.ninjal.ac.jp/unidic
   "HookCode": "HS65001#-3C@192A60",
   "HookCodeCustom": "HS65001#-3C@192A60:AikotobaSSS.exe",
   "Isx64": true,
-  "MisakaHookCode": "【140192A60:1400CC555:0】",
-  "Cleared": false
+  "MisakaHookCode": "【140192A60:1400CC555:0】"
 }
 ```

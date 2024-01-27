@@ -75,8 +75,6 @@ namespace DataAccessLibrary
         /// 包含hook地址信息的本软件特有的MisakaHookCode
         /// </summary>
         public string? MisakaHookCode { get; set; }
-
-        public bool Cleared { get; set; } = false;
     }
 
     public static class GameHelper
@@ -138,7 +136,7 @@ namespace DataAccessLibrary
                 AllCompletedGamesIdDict.Add(gameInfo.GameID, gameInfo);
                 AllCompletedGamesPathDict.Add(gameInfo.FilePath, gameInfo);
             }
-            return list.OrderByDescending(p => p.Cleared).ThenBy(p => p.GameName).ToList();
+            return list.OrderByDescending(p => p.GameName).ToList();
         }
 
 

@@ -105,6 +105,7 @@ namespace MisakaTranslator
                 Opacity = 0.6,
                 FontWeight = FontWeights.SemiBold
             };
+            tb.Foreground = (SolidColorBrush)Application.Current.Resources["PrimaryForeground"];
             Image ico = ImageHelper.GetGameIcon(GameInfoList[i].FilePath);
             RenderOptions.SetBitmapScalingMode(ico, BitmapScalingMode.HighQuality);
             var gd = new Grid();
@@ -117,15 +118,8 @@ namespace MisakaTranslator
                 Width = 150,
                 Child = gd,
                 Margin = new Thickness(3),
+                Background = ImageHelper.GetMajorBrush(ico.Source as BitmapSource)
             };
-            if (GameInfoList[i].Cleared)
-            {
-                back.Background = Brushes.Gold;
-            }
-            else
-            {
-                back.Background = ImageHelper.GetMajorBrush(ico.Source as BitmapSource);
-            }
 
             back.MouseEnter += Border_MouseEnter;
             back.MouseLeave += Border_MouseLeave;
@@ -251,14 +245,15 @@ namespace MisakaTranslator
             b.BorderThickness = new Thickness(0);
         }
 
-        private void Back_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Back_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var b = (Border)sender;
             var str = b.Name;
             var temp = str.Remove(0, 4);
             gid = int.Parse(temp);
+            DrawGameImage.Source = ImageHelper.GetGameIcon(GameInfoList[gid].FilePath).Source; 
+            RenderOptions.SetBitmapScalingMode(DrawGameImage, BitmapScalingMode.HighQuality);
 
-            DrawGameImage.Source = ImageHelper.GetGameIcon(GameInfoList[gid].FilePath).Source;
             GameNameTag.Tag = gid;
             GameNameTag.Text = GameInfoList[gid].GameName;
             GameNameTag.MouseEnter += (_, _) => GameNameTag.TextDecorations = TextDecorations.Underline;
@@ -270,17 +265,6 @@ namespace MisakaTranslator
             else
             {
                 TransModeTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_TransMode"].ToString() + "OCR";
-            }
-
-            if (GameInfoList[gid].Cleared)
-            {
-                GameInfoDrawerClearButton.Background = Brushes.Gray;
-                GameInfoDrawerClearButton.Content = "CANCEL CLEAR";
-            }
-            else
-            {
-                GameInfoDrawerClearButton.Background = Brushes.Gold;
-                GameInfoDrawerClearButton.Content = "GAME CLEAR!";
             }
 
             GameInfoDrawer.IsOpen = true;
@@ -601,28 +585,6 @@ namespace MisakaTranslator
         {
             LanguageContextMenu.IsOpen = true;
         }
-
-        private void ClearBtn_Click(object sender, RoutedEventArgs e)
-        {
-            if (GameInfoList[gid].Cleared)
-            {
-                Growl.InfoGlobal("CLEAR CANCELED");
-                var b = GamePanelCollection[gid];
-                b.Background = ImageHelper.GetMajorBrush(ImageHelper.GetGameIcon(GameInfoList[gid].FilePath).Source as BitmapSource);
-                GameInfoList[gid].Cleared = false;
-            }
-            else
-            {
-                Growl.InfoGlobal("GAME CLEARED!");
-                var b = GamePanelCollection[gid];
-                b.Background = Brushes.Gold;
-                GameInfoList[gid].Cleared = true;
-            }
-            GameHelper.UpdateGameInfoByID(GameInfoList[gid].GameID, "Cleared", GameInfoList[gid].Cleared);
-            GameInfoDrawer.IsOpen = false;
-
-        }
-
         private void RestartAsAdminBtn_Clicked(object sender, RoutedEventArgs e)
         {
             MessageBoxResult messageBoxResult = MessageBox.Show(Application.Current.Resources["MainWindow_RestartAdmin_Hint"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question);
