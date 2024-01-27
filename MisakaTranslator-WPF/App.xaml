@@ -11,7 +11,8 @@
                 <ResourceDictionary Source="lang/zh-CN.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
-                <ResourceDictionary Source="Themes/LightTheme.xaml"/>
+                <!--主题-->
+                <ResourceDictionary x:Name="Theme" Source="Themes/LightTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

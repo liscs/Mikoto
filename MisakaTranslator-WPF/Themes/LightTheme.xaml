@@ -7,7 +7,6 @@
 
     <SolidColorBrush x:Key="MainBtnColor" Color="#ffff556d"></SolidColorBrush>
     <SolidColorBrush x:Key="BoxBtnColor" Color="#ffff8e9F"></SolidColorBrush>
-    <SolidColorBrush x:Key="TranslateWindowBackground" Color="#fffcf4f2"></SolidColorBrush>
 
     <SolidColorBrush x:Key="ButtonTextColor" Color="#fffcf4f2" Opacity="0.85"></SolidColorBrush>
     <FontWeight x:Key="ButtonTextWeight">DemiBold</FontWeight>

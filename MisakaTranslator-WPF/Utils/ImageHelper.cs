@@ -65,7 +65,7 @@ namespace MisakaTranslator.Utils
             return ico;
         }
 
-        public static Brush GetMajorBrush(BitmapSource? bitmapSource,int theme = 1)
+        public static Brush GetMajorBrush(BitmapSource? bitmapSource, int theme = 2)
         {
             if (bitmapSource == null)
             {
@@ -87,21 +87,25 @@ namespace MisakaTranslator.Utils
                 }
             }
             IOrderedEnumerable<KeyValuePair<int, int>> sortedDict = from entry in dict orderby entry.Value descending select entry;
-
+            var majorColors = sortedDict.ElementAt(0).Key;
             LinearGradientBrush result = new()
             {
-                StartPoint = new Point(0, 1),
-                EndPoint = new Point(1, 0)
+                StartPoint = new Point(0.5, 1),
+                EndPoint = new Point(0.5, 0)
             };
-            if (theme == 1)
+
+            switch (Application.Current.Resources.MergedDictionaries[4].Source.OriginalString)
             {
-                result.GradientStops.Add(new GradientStop(ColorFromHSV(sortedDict.First().Key, 0.7, 1), 0.0));
-                result.GradientStops.Add(new GradientStop(ColorFromHSV(sortedDict.First().Key, 0.6, 1), 1.0));
-            }
-            else
-            {
-                result.GradientStops.Add(new GradientStop(ColorFromHSV(sortedDict.First().Key, 0.9, 0.7), 0.0));
-                result.GradientStops.Add(new GradientStop(ColorFromHSV(sortedDict.First().Key, 0.9, 0.8), 1.0));
+                case "Themes/LightTheme.xaml":
+                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 0.6, 1), 0.0));
+                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 0.9, 1), 0.2));
+                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 1, 1), 1.0));
+                    break;
+                default:
+                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 0.6, 0.7), 0.0));
+                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 0.9, 0.8), 0.2));
+                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 1, 0.8), 1.0));
+                    break;
             }
 
             return result;

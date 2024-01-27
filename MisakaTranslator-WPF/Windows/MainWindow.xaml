@@ -8,7 +8,7 @@
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     mc:Ignorable="d"
     d:Height="540" d:Width="960" MinHeight="540" MinWidth="960"
-    Title="MisakaTranslator" Background="{DynamicResource TranslateWindowBackground}" WindowStartupLocation="CenterScreen"
+    Title="MisakaTranslator" Background="{DynamicResource PrimaryBackground}" WindowStartupLocation="CenterScreen"
     Closing="BlurWindow_Closing" ContentRendered="BlurWindow_ContentRendered">
 
     <Grid Margin="5">
@@ -66,7 +66,7 @@
 
         <!--顶部跳出栏位-->
         <hc:Drawer Name="AddNewGameDrawer" ShowMode="Press" MaskCanClose="True" Dock="Top">
-            <StackPanel Orientation="Vertical" Background="{DynamicResource TranslateWindowBackground}">
+            <StackPanel Orientation="Vertical" Background="{DynamicResource PrimaryBackground}">
                 <Border Padding="30" Effect="{StaticResource EffectShadow3}">
                     <hc:ButtonGroup Orientation="Horizontal">
                         <Button Background="{DynamicResource BoxBtnColor}" Content="{DynamicResource BtnHookGuide}" Click="HookGuideBtn_Click" Height="50" Foreground="{DynamicResource ButtonTextColor}" FontWeight="{DynamicResource ButtonTextWeight}" BorderBrush="Transparent"></Button>
@@ -78,7 +78,7 @@
         </hc:Drawer>
         <!--侧边弹出游戏详情-->
         <hc:Drawer Name="GameInfoDrawer" ShowMode="Press" MaskCanClose="True" Dock="Left">
-            <Border Background="{DynamicResource TranslateWindowBackground}" Width="300" BorderBrush="{DynamicResource BorderBrush}">
+            <Border Background="{DynamicResource PrimaryBackground}" Width="300" BorderBrush="{DynamicResource BorderBrush}">
                 <ScrollViewer>
                     <StackPanel>
                         <Button HorizontalAlignment="Right" Foreground="{DynamicResource PrimaryForeground}" Style="{DynamicResource ButtonIcon}" hc:IconElement.Geometry="{DynamicResource DeleteFillCircleGeometry}" Click="CloseDrawerBtn_Click"/>

@@ -103,7 +103,7 @@ namespace MisakaTranslator
                 Margin = new Thickness(3),
                 TextWrapping = TextWrapping.Wrap,
                 Opacity = 0.6,
-                FontWeight = FontWeights.SemiBold
+                FontWeight = FontWeights.SemiBold,
             };
             tb.Foreground = (SolidColorBrush)Application.Current.Resources["PrimaryForeground"];
             Image ico = ImageHelper.GetGameIcon(GameInfoList[i].FilePath);
@@ -251,7 +251,7 @@ namespace MisakaTranslator
             var str = b.Name;
             var temp = str.Remove(0, 4);
             gid = int.Parse(temp);
-            DrawGameImage.Source = ImageHelper.GetGameIcon(GameInfoList[gid].FilePath).Source; 
+            DrawGameImage.Source = ImageHelper.GetGameIcon(GameInfoList[gid].FilePath).Source;
             RenderOptions.SetBitmapScalingMode(DrawGameImage, BitmapScalingMode.HighQuality);
 
             GameNameTag.Tag = gid;
