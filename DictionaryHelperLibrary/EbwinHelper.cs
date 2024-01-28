@@ -14,7 +14,7 @@ namespace DictionaryHelperLibrary
         //Ebwin命令行用的词典路径信息的设置文件
         private static string EBPOCKET = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EBWin4\\EBPOCKET.GRP";
         //行列表
-        static List<string> EBPOCKETlist = new List<string>()
+        static List<string> EBPOCKETlist = new()
         {
             "%%UTF-8=1"
         };
@@ -35,7 +35,6 @@ namespace DictionaryHelperLibrary
             if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EBWin4"))
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EBWin4");
             File.Create(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EBWin4\\alternate.ini").Close();
-            EBPOCKETlist = new List<string>() { "%%UTF-8=1" };
             var dList = GetAllDicts().ToList().OrderBy(d => d.Priority);
             foreach (var d in dList)
             {
@@ -51,7 +50,14 @@ namespace DictionaryHelperLibrary
         public static void EnActive(Dict d)
         {
             if (d.Priority == 0 || d.Name == null) return;
-            EBPOCKETlist[d.Priority] = $"{d.DictPath}|_|_|_|_|_|";
+            try
+            {
+                EBPOCKETlist[d.Priority] = $"{d.DictPath}|_|_|_|_|_|";
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                EBPOCKETlist.Add($"{d.DictPath}|_|_|_|_|_|");
+            }
             File.WriteAllText(EBPOCKET, string.Join(Environment.NewLine, EBPOCKETlist));
             string fileName = $"{directory.FullName}\\{d.Name}.json";
             string jsonString = JsonSerializer.Serialize(d, options);

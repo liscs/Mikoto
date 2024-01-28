@@ -16,7 +16,7 @@ namespace DictionaryHelperLibrary
         public string Name { get; set; } = string.Empty;
         public string DictPath { get; set; } = string.Empty;
 
-        public bool Active { get; set; }
+        public bool Active { get; set; } = true;
 
         public bool GetActive()
         {

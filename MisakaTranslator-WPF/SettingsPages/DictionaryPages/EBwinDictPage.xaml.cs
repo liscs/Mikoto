@@ -278,9 +278,9 @@ namespace MisakaTranslator.SettingsPages.DictionaryPages
                 {
                     Priority = allDicts.Count + 1
                 };
+                EbwinHelper.AddOrUpdateDictionary(d);
                 d.SetActive(true);
 
-                EbwinHelper.AddOrUpdateDictionary(d);
             }
             UpdateDictionariesDisplay();
         }

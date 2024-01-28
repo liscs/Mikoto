@@ -90,15 +90,14 @@ namespace MisakaTranslator.Utils
             var majorColors = sortedDict.ElementAt(0).Key;
             LinearGradientBrush result = new()
             {
-                StartPoint = new Point(0.5, 1),
-                EndPoint = new Point(0.5, 0)
+                StartPoint = new Point(0, 1),
+                EndPoint = new Point(1, 0)
             };
 
             switch (Application.Current.Resources.MergedDictionaries[4].Source.OriginalString)
             {
                 case "Themes/LightTheme.xaml":
-                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 0.6, 1), 0.0));
-                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 0.9, 1), 0.2));
+                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors-20, 0.6, 1), 0.0));
                     result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 1, 1), 1.0));
                     break;
                 default:
