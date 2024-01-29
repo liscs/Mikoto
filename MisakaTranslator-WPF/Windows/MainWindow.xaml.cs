@@ -93,39 +93,6 @@ namespace MisakaTranslator
             InitAddGamePanel();
         }
 
-        private static SolidColorBrush GetNormalBackground(int hue)
-        {
-            if (hue > 330 && hue <= 30)
-            {
-                return Brushes.IndianRed;
-            }
-            else if (hue > 30 && hue <= 90)
-            {
-                return Brushes.Peru;
-
-            }
-            else if (hue > 90 && hue <= 150)
-            {
-                return Brushes.ForestGreen;
-            }
-            else if (hue > 150 && hue <= 210)
-            {
-                return Brushes.Azure;
-            }
-            else if (hue > 210 && hue <= 270)
-            {
-                return Brushes.CornflowerBlue;
-            }
-            else if (hue > 270 && hue <= 330)
-            {
-                return Brushes.MediumVioletRed;
-            }
-            else
-            {
-                return Brushes.Orange;
-            }
-        }
-
         private void AddGame(int i)
         {
             TextBlock tb = new()
@@ -151,7 +118,7 @@ namespace MisakaTranslator
                 Width = 150,
                 Child = gd,
                 Margin = new Thickness(3),
-                Background = GetNormalBackground(ImageHelper.GetMajorHue(ico.Source as BitmapSource))
+                Background = ImageHelper.GetMajorBrush(ico.Source as BitmapSource)
             };
 
             back.MouseEnter += Border_MouseEnter;
