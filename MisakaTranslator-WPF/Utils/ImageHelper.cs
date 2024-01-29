@@ -65,11 +65,11 @@ namespace MisakaTranslator.Utils
             return ico;
         }
 
-        public static Brush GetMajorBrush(BitmapSource? bitmapSource, int theme = 2)
+        public static int GetMajorHue(BitmapSource? bitmapSource)
         {
             if (bitmapSource == null)
             {
-                return new SolidColorBrush(Color.FromRgb(51, 51, 51));
+                return 0;
             }
 
             PixelColor[,] pixels = GetPixels(bitmapSource);
@@ -87,27 +87,7 @@ namespace MisakaTranslator.Utils
                 }
             }
             IOrderedEnumerable<KeyValuePair<int, int>> sortedDict = from entry in dict orderby entry.Value descending select entry;
-            var majorColors = sortedDict.ElementAt(0).Key;
-            LinearGradientBrush result = new()
-            {
-                StartPoint = new Point(0, 1),
-                EndPoint = new Point(1, 0)
-            };
-
-            switch (Application.Current.Resources.MergedDictionaries[4].Source.OriginalString)
-            {
-                case "Themes/LightTheme.xaml":
-                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors-20, 0.6, 1), 0.0));
-                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 1, 1), 1.0));
-                    break;
-                default:
-                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 0.6, 0.7), 0.0));
-                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 0.9, 0.8), 0.2));
-                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 1, 0.8), 1.0));
-                    break;
-            }
-
-            return result;
+            return sortedDict.First().Key;
         }
 
         public static Color ColorFromHSV(double hue, double saturation, double value)
