@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -52,7 +53,7 @@ namespace MisakaTranslator
         public string SourceTextFont = string.Empty; //源文本区域字体
         private int _sourceTextFontSize; //源文本区域字体大小
 
-        private Queue<string> _gameTextHistory; //历史文本
+        private Queue<HistoryInfo> _gameTextHistory; //历史文本
         private static KeyboardMouseHook? _hook; //全局键盘鼠标钩子
         public volatile bool IsOCRingFlag; //线程锁:判断是否正在OCR线程中，保证同时只有一组在跑OCR
         public bool IsNotPausedFlag; //是否处在暂停状态（专用于OCR）,为真可以翻译
@@ -72,7 +73,7 @@ namespace MisakaTranslator
         private readonly ObservableCollection<UIElement> _sourceTextCollection1 = new();
         private readonly ObservableCollection<UIElement> _sourceTextCollection2 = new();
 
-
+        PopupWindow? _historyWindow;
         public TranslateWindow()
         {
             InitializeComponent();
@@ -81,7 +82,7 @@ namespace MisakaTranslator
 
             _enableShowSource = true;
 
-            _gameTextHistory = new Queue<string>();
+            _gameTextHistory = new Queue<HistoryInfo>();
 
             Topmost = true;
             IsOCRingFlag = false;
@@ -466,7 +467,7 @@ namespace MisakaTranslator
             {
                 if (IsJaOrZh(Common.UsingSrcLang))
                 {
-                    repairedText = new string(repairedText.Where(p => !char.IsWhiteSpace(p)).ToArray()).Replace("<br>", "").Replace("</br>", "");
+                    repairedText = repairedText.Replace(Environment.NewLine, "").Replace("\n", "").Replace("<br>", "").Replace("</br>", "");
                 }
                 else
                 {
@@ -759,35 +760,36 @@ namespace MisakaTranslator
 
             //5.提交翻译 
             string? transRes = string.Empty;
-            if (tranResultIndex == 1)
+            switch (tranResultIndex)
             {
-                if (_translator1 != null)
-                {
-                    transRes = await _translator1.TranslateAsync(beforeString, Common.UsingDstLang, Common.UsingSrcLang);
-                    if (transRes == null)
+                case 1:
+                    if (_translator1 != null)
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
+                        transRes = await _translator1.TranslateAsync(beforeString, Common.UsingDstLang, Common.UsingSrcLang);
+                        if (transRes == null)
                         {
-                            Growl.WarningGlobal(_translator1.GetType().Name + ": " + _translator1.GetLastError());
-                        });
-                        return;
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                Growl.WarningGlobal(_translator1.GetType().Name + ": " + _translator1.GetLastError());
+                            });
+                            return;
+                        }
                     }
-                }
-            }
-            else if (tranResultIndex == 2)
-            {
-                if (_translator2 != null)
-                {
-                    transRes = await _translator2.TranslateAsync(beforeString, Common.UsingDstLang, Common.UsingSrcLang);
-                    if (transRes == null)
+                    break;
+                case 2:
+                    if (_translator2 != null)
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
+                        transRes = await _translator2.TranslateAsync(beforeString, Common.UsingDstLang, Common.UsingSrcLang);
+                        if (transRes == null)
                         {
-                            Growl.WarningGlobal(_translator2.GetType().Name + ": " + _translator2.GetLastError());
-                        });
-                        return;
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                Growl.WarningGlobal(_translator2.GetType().Name + ": " + _translator2.GetLastError());
+                            });
+                            return;
+                        }
                     }
-                }
+                    break;
             }
 
             //6.翻译后处理 
@@ -834,12 +836,21 @@ namespace MisakaTranslator
                 {
                     //8.翻译结果记录到队列
                     // todo: 这是比较粗暴地添加历史记录，可以优化（时间排序等）
-                    if (_gameTextHistory.Count > 10)
+                    if (_gameTextHistory.Count > 1000)
                     {
                         _gameTextHistory.Dequeue();
                     }
-                    _gameTextHistory.Enqueue(repairedText + Environment.NewLine + afterString);
-
+                    HistoryInfo historyInfo = new();
+                    historyInfo.DateTime = DateTime.Now;
+                    historyInfo.Message = repairedText + Environment.NewLine + afterString;
+                    historyInfo.TransolatorName = tranResultIndex switch
+                    {
+                        1 => _translator1?.TranslatorDisplayName ?? string.Empty,
+                        2 => _translator2?.TranslatorDisplayName ?? string.Empty,
+                        _ => throw new UnreachableException(),
+                    };
+                    _gameTextHistory.Enqueue(historyInfo);
+                    UpdateHistoryWindow();
                     //9.翻译原句和结果记录到数据库 
                     if (Common.AppSettings.ATon)
                     {
@@ -860,7 +871,20 @@ namespace MisakaTranslator
                 }
             }
         }
-
+        private void UpdateHistoryWindow()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (_historyWindow != null && _historyWindow.IsLoaded)
+                {
+                    if (_historyWindow.PopupElement is HandyControl.Controls.TextBox textBox)
+                    {
+                        textBox.Text = GetHistoryText();
+                    }
+                }
+            }
+            );
+        }
 
         private void ChangeSize_Item_Click(object sender, RoutedEventArgs e)
         {
@@ -971,35 +995,96 @@ namespace MisakaTranslator
 
         private void History_Item_Click(object sender, RoutedEventArgs e)
         {
-            var textbox = new HandyControl.Controls.TextBox();
-            string his = string.Empty;
-            string[] history = _gameTextHistory.ToArray();
-            for (int i = history.Length - 1; i > 0; i--)
+            if (_historyWindow == null || !_historyWindow.IsLoaded)
             {
-                his += history[i] + "\n";
-                his += "==================================\n";
+                var textbox = new HandyControl.Controls.TextBox
+                {
+                    Text = GetHistoryText(),
+                    FontSize = 15,
+                    TextWrapping = TextWrapping.Wrap,
+                    TextAlignment = TextAlignment.Left,
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Visible,
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    BorderThickness = new Thickness(0),
+                };
+                _historyWindow = new PopupWindow
+                {
+                    PopupElement = textbox,
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                    BorderThickness = new Thickness(0, 0, 0, 0),
+                    MaxWidth = 600,
+                    MaxHeight = 300,
+                    MinWidth = 600,
+                    MinHeight = 300,
+                    Owner = this,
+                    Title = Application.Current.Resources["TranslateWin_History_Title"].ToString()
+                };
             }
-            textbox.Text = his;
-            textbox.FontSize = 15;
-            textbox.TextWrapping = TextWrapping.Wrap;
-            textbox.TextAlignment = TextAlignment.Left;
-            textbox.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
-            var window = new PopupWindow
+            _historyWindow.Topmost = true;
+            _historyWindow.Show();
+        }
+
+        private enum HistoryOrderOption
+        {
+            //按时间降序
+            Default, LatestFirst,
+            //按时间升序
+            OldestFirst,
+        }
+        private enum HistoryFilterOption
+        {
+            //显示所有
+            Default, All,
+            //只显示第一个
+            OnlyFirstTranslator,
+            //只显示第二个
+            OnlySecondTranslator
+        }
+        private string GetHistoryText(HistoryOrderOption historyOrderOption = HistoryOrderOption.Default, HistoryFilterOption historyFilterOption = HistoryFilterOption.Default)
+        {
+            HistoryInfo[] historyList = _gameTextHistory.ToArray();
+            switch (historyFilterOption)
             {
-                PopupElement = textbox,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                BorderThickness = new Thickness(0, 0, 0, 0),
-                MaxWidth = 600,
-                MaxHeight = 300,
-                MinWidth = 600,
-                MinHeight = 300,
-                Owner = this,
-                Title = Application.Current.Resources["TranslateWin_History_Title"].ToString()
-            };
-            DispatcherTimer.Stop();
-            window.Topmost = true;
-            window.ShowDialog();
-            DispatcherTimer.Start();
+                case HistoryFilterOption.Default:
+                case HistoryFilterOption.All:
+                    break;
+                case HistoryFilterOption.OnlyFirstTranslator:
+                    if (_translator1 != null)
+                    {
+                        historyList = historyList.Where(p => p.TransolatorName == _translator1.TranslatorDisplayName).ToArray();
+                    }
+                    break;
+                case HistoryFilterOption.OnlySecondTranslator:
+                    if (_translator1 != null)
+                    {
+                        historyList = historyList.Where(p => p.TransolatorName == _translator2!.TranslatorDisplayName).ToArray();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            StringBuilder historyStringBuilder = new();
+            switch (historyOrderOption)
+            {
+                case HistoryOrderOption.Default:
+                case HistoryOrderOption.LatestFirst:
+                    for (int i = historyList.Length - 1; i > 0; i--)
+                    {
+                        historyStringBuilder.AppendLine(historyList[i].ToString());
+                    }
+                    break;
+                case HistoryOrderOption.OldestFirst:
+                    for (int i = 0; i < historyList.Length; i++)
+                    {
+                        historyStringBuilder.AppendLine(historyList[i].ToString());
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+
+            return historyStringBuilder.ToString();
         }
 
         private void AddNoun_Item_Click(object sender, RoutedEventArgs e)

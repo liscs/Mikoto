@@ -97,7 +97,7 @@ namespace MisakaTranslator.Utils
             switch (Application.Current.Resources.MergedDictionaries[4].Source.OriginalString)
             {
                 case "Themes/LightTheme.xaml":
-                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors-20, 0.6, 1), 0.0));
+                    result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors - 20, 0.6, 1), 0.0));
                     result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 1, 1), 1.0));
                     break;
                 default:
