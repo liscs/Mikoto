@@ -22,6 +22,11 @@ using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace MisakaTranslator
 {
+    public enum Theme
+    {
+        Light,Dark,
+    }
+
     public enum GuideMode
     {
         Hook = 1,
