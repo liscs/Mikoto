@@ -22,14 +22,20 @@
                     <TextBlock Text="{DynamicResource ChooseHookFuncPage_Introduce}" Margin="10"/>
                     <TextBlock Name="NoAdminPrivilegesTextBlock" Text="{DynamicResource ChooseHookFuncPage_NoAdminWarn}" FontSize="15" TextWrapping="WrapWithOverflow" Foreground="Red" Margin="10"/>
                 </StackPanel>
-                
+
                 <ListView Name="HookFunListView" Grid.Row="1" Background="White" SelectionMode="Single">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Width="Auto" Header="{DynamicResource ChooseHookFuncPage_Header_PID}" DisplayMemberBinding="{Binding Path=GamePID}"/>
                             <GridViewColumn Width="Auto" Header="{DynamicResource ChooseHookFuncPage_Header_FunName}" DisplayMemberBinding="{Binding Path=HookFunc}"/>
                             <GridViewColumn Width="Auto" Header="{DynamicResource ChooseHookFuncPage_Header_HookCode}" DisplayMemberBinding="{Binding Path=MisakaHookCode}"/>
-                            <GridViewColumn Width="500" Header="{DynamicResource ChooseHookFuncPage_Header_Content}" DisplayMemberBinding="{Binding Path=Data}"/>
+                            <GridViewColumn Width="500" Header="{DynamicResource ChooseHookFuncPage_Header_Content}">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Data}" TextWrapping="WrapWithOverflow"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -75,5 +81,5 @@
         <StackPanel hc:Growl.GrowlParent="True" HorizontalAlignment="Right" Margin="15"/>
     </Grid>
 
-    
+
 </Page>

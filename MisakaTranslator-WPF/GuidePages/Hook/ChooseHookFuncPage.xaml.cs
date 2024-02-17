@@ -174,7 +174,7 @@ namespace MisakaTranslator.GuidePages.Hook
             Process.Start(new ProcessStartInfo("https://github.com/hanmin0822/MisakaHookFinder") { UseShellExecute = true });
         }
 
-        [GeneratedRegex("【F+:F+:F+】")]
+        [GeneratedRegex("【0:FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF】|【FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF】")]
         private static partial Regex InvalidMisakaCodeRegex();
 
     }

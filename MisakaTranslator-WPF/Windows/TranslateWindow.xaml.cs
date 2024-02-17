@@ -467,14 +467,17 @@ namespace MisakaTranslator
             {
                 if (IsJaOrZh(Common.UsingSrcLang))
                 {
-                    repairedText = repairedText.Replace(Environment.NewLine, "").Replace("\n", "").Replace("<br>", "").Replace("</br>", "");
+                    repairedText = new string(repairedText.Where(p => !char.IsWhiteSpace(p)).ToArray()).Replace("<br>", "").Replace("</br>", "").Trim();
                 }
                 else
                 {
-                    repairedText = repairedText.Replace(Environment.NewLine, " ").Replace("\n", " ").Replace("<br>", " ").Replace("</br>", " ");
+                    repairedText = repairedText.Replace(Environment.NewLine, " ").Replace("\n", " ").Replace("<br>", " ").Replace("</br>", " ").Trim();
                 }
             }
-
+            else
+            {
+                repairedText = repairedText.Trim();
+            }
             TranslateText(repairedText);
         }
 
