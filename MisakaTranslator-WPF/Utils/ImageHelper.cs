@@ -56,8 +56,8 @@ namespace MisakaTranslator.Utils
 
             BitmapImage? bitmapImage = ImageProcFunc.ImageToBitmapImage(ImageProcFunc.GetAppIcon(path)!);
             ico.Source = bitmapImage;
-            string[] icoPaths = Directory.GetFiles(Path.GetDirectoryName(path)!, "*.ico");
-            if (icoPaths.Length > 0 && ico.Source is null)
+            string[] icoPaths = Directory.GetFiles(Path.GetDirectoryName(path)!, "*icon.ico");
+            if (icoPaths.Length > 0)
             {
                 bitmapImage = new BitmapImage(new Uri(icoPaths[0]));
                 ico.Source = bitmapImage;
