@@ -392,7 +392,8 @@ namespace TextHookLibrary
                     //文本去重窗口处理&游戏翻译窗口处理
                     // TODO 寻找更好的Hook Address确定方法
                     if (HookCodeList.Count != 0
-                       && obtainedMisakaCode1.Length - 4 >= 0)
+                       && obtainedMisakaCode1.Length - 4 >= 0
+                       && !InvalidMisakaCodeRegex().IsMatch(obtainedMisakaCode) )
                     {
                         if (!matchList.Contains(obtainedMisakaCode2 + obtainedMisakaCode3))
                         {
@@ -421,7 +422,8 @@ namespace TextHookLibrary
                 }
             }
         }
-
+        [GeneratedRegex("【0:FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF】|【FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF】")]
+        private static partial Regex InvalidMisakaCodeRegex();
         /// <summary>
         /// 获得最不匹配target的字符串
         /// </summary>
