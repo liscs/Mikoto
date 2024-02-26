@@ -983,6 +983,8 @@ namespace MisakaTranslator
                 {
                     //System.InvalidOperationException:“关闭 Window 之后，无法设置 Visibility，也无法调用 Show、ShowDialogor 或 WindowInteropHelper.EnsureHandle。”
                     Application.Current.MainWindow.Show();
+                    Application.Current.MainWindow.Topmost = true;
+                    Application.Current.MainWindow.Topmost = false;
                 }
             }
             catch (InvalidOperationException)
