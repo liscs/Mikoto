@@ -6,10 +6,10 @@ namespace MisakaTranslator
     {
         public string Message { get; set; } = string.Empty;
         public DateTime DateTime { get; set; }
-        public string TransolatorName { get; set; } = string.Empty;
+        public string TranslatorName { get; set; } = string.Empty;
         public override string ToString()
         {
-            string result = $"======================================{Environment.NewLine}{DateTime} {TransolatorName}{Environment.NewLine}{Message}";
+            string result = $"======================================{Environment.NewLine}{DateTime} {TranslatorName}{Environment.NewLine}{Message}";
             return result;
         }
     }

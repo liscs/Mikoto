@@ -561,28 +561,6 @@ namespace TextHookLibrary
         }
 
         /// <summary>
-        /// 卸载无关Hook，仅用于处理事件中
-        /// </summary>
-        /// <param name="pid"></param>
-        /// <param name="misakacode"></param>
-        /// <returns></returns>
-        private async void DetachUnrelatedHookAsync(int pid, string misakacode)
-        {
-            //2020-06-08这个地方的处理不完善，因为使用控制台读写流的方法操作，很容易会冲突，这里单纯的取消掉这个钩子的移除，但这样就不能实现功能。
-            //2020-06-08对于重复码的游戏，采用和第一次找特殊码一样的方法去重复码，对于无重复码游戏，不去重，故此方法已经无用
-
-            try
-            {
-                await DetachProcessByHookAddressAsync(pid, GetHookAddressByMisakaCode(misakacode) ?? string.Empty);
-            }
-            catch (System.InvalidOperationException)
-            {
-                return;
-            }
-
-        }
-
-        /// <summary>
         /// 让系统自动注入用户设定好的特殊码，没有就不注入
         /// </summary>
         public async Task<bool> AutoAddCustomHookToGameAsync()

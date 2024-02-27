@@ -846,7 +846,7 @@ namespace MisakaTranslator
                     HistoryInfo historyInfo = new();
                     historyInfo.DateTime = DateTime.Now;
                     historyInfo.Message = repairedText + Environment.NewLine + afterString;
-                    historyInfo.TransolatorName = tranResultIndex switch
+                    historyInfo.TranslatorName = tranResultIndex switch
                     {
                         1 => _translator1?.TranslatorDisplayName ?? string.Empty,
                         2 => _translator2?.TranslatorDisplayName ?? string.Empty,
@@ -1054,13 +1054,13 @@ namespace MisakaTranslator
                 case HistoryFilterOption.OnlyFirstTranslator:
                     if (_translator1 != null)
                     {
-                        historyList = historyList.Where(p => p.TransolatorName == _translator1.TranslatorDisplayName).ToArray();
+                        historyList = historyList.Where(p => p.TranslatorName == _translator1.TranslatorDisplayName).ToArray();
                     }
                     break;
                 case HistoryFilterOption.OnlySecondTranslator:
                     if (_translator1 != null)
                     {
-                        historyList = historyList.Where(p => p.TransolatorName == _translator2!.TranslatorDisplayName).ToArray();
+                        historyList = historyList.Where(p => p.TranslatorName == _translator2!.TranslatorDisplayName).ToArray();
                     }
                     break;
                 default:
