@@ -21,8 +21,9 @@
                 <ControlTemplate TargetType="{x:Type Window}">
                     <Grid>
                         <Border Background="{DynamicResource PrimaryBackground}"
-                                BorderBrush="{DynamicResource PrimaryBackground}"
-                                BorderThickness="0,30,0,0">
+                                BorderBrush="{DynamicResource MainBtnColor}"
+                                BorderThickness="1"
+                                Initialized="Init">
                             <AdornerDecorator>
                                 <ContentPresenter />
                             </AdornerDecorator>

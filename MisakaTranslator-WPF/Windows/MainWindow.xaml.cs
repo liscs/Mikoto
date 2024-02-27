@@ -592,17 +592,5 @@ namespace MisakaTranslator
                 RestartAsAdmin();
             }
         }
-
-        private void Window_GotFocus(object sender, RoutedEventArgs e)
-        {
-            this.BorderBrush = Brushes.Red;
-            this.BorderThickness = new(10);
-        }
-
-        private void Window_LostFocus(object sender, RoutedEventArgs e)
-        {
-            this.BorderThickness = new(0);
-
-        }
     }
 }

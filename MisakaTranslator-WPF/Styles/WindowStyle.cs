@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace MisakaTranslator.Styles
 {
@@ -32,6 +35,31 @@ namespace MisakaTranslator.Styles
         {
             var window = (Window)((FrameworkElement)sender).TemplatedParent;
             window.WindowState = WindowState.Minimized;
+        }
+
+        Border? _mainBorder;
+        private void Init(object? sender, EventArgs e)
+        {
+            _mainBorder = sender as Border;
+            var window = (Window)((FrameworkElement)sender!).TemplatedParent;
+            window.Activated += Window_Activated;
+            window.Deactivated += Window_Deactivated;
+        }
+
+        private void Window_Deactivated(object? sender, EventArgs e)
+        {
+            if (_mainBorder != null)
+            {
+                _mainBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(50, 61, 85));
+            }
+        }
+
+        private void Window_Activated(object? sender, EventArgs e)
+        {
+            if (_mainBorder != null)
+            {
+                _mainBorder.BorderBrush = (SolidColorBrush)Application.Current.Resources["BoxBtnColor"];
+            }
         }
     }
 }
