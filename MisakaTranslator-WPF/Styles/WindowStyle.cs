@@ -51,6 +51,7 @@ namespace MisakaTranslator.Styles
             if (_mainBorder != null)
             {
                 _mainBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(50, 61, 85));
+                _mainBorder.BorderBrush.Opacity = 0.5;
             }
         }
 
@@ -58,7 +59,7 @@ namespace MisakaTranslator.Styles
         {
             if (_mainBorder != null)
             {
-                _mainBorder.BorderBrush = (SolidColorBrush)Application.Current.Resources["BoxBtnColor"];
+                _mainBorder.BorderBrush = (SolidColorBrush)Application.Current.Resources["MainBtnColor"];
             }
         }
     }
