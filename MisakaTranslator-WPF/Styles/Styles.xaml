@@ -97,27 +97,42 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="StandardStyle" TargetType="{x:Type local:MainWindow}">  
-    <Setter Property="WindowChrome.WindowChrome">  
-        <Setter.Value>  
-            <WindowChrome />  
-        </Setter.Value>  
-    </Setter>  
-    <Setter Property="Template">  
-        <Setter.Value>  
-            <ControlTemplate TargetType="{x:Type local:MainWindow}">  
-                <Grid>  
-                    <Border Background="Transparent"  
-                            Margin="1">  
-                        <ContentPresenter Content="{TemplateBinding Content}" />  
-                    </Border>  
-                    <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title}"   
+
+    <Style x:Key="StandardStyle" TargetType="{x:Type local:MainWindow}">
+        <Setter Property="WindowChrome.WindowChrome">
+            <Setter.Value>
+                <WindowChrome />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MainWindow}">
+                    <Grid>
+                        <Border BorderBrush="{DynamicResource MainBtnColor}"
+                                BorderThickness="1"
+                                Initialized="Init"
+                                />
+
+                        <Border                                          
+                            Background="{DynamicResource PrimaryBackground}"
+                            Margin="{Binding Source={x:Static SystemParameters.WindowNonClientFrameThickness}}"
+                            BorderThickness="0"                                                                                      
+                            >
+                            <AdornerDecorator>
+                                <ContentPresenter />
+                            </AdornerDecorator>
+                        </Border>
+                        <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title}"   
                                VerticalAlignment="Top" HorizontalAlignment="Left"   
-                               Margin="36,8,0,0"/>  
-                </Grid>  
-            </ControlTemplate>  
-        </Setter.Value>  
-    </Setter>  
-</Style>
+                               Margin="36,8,0,0"/>
+                        <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Icon}"
+                       VerticalAlignment="Top" HorizontalAlignment="Left"                                                
+                       Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(WindowChrome.WindowChrome).ResizeBorderThickness}" 
+                       Width="{Binding Source={x:Static SystemParameters.SmallIconWidth}}"
+                       WindowChrome.IsHitTestVisibleInChrome="True"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

@@ -10,7 +10,7 @@
     d:Height="540" d:Width="960" MinHeight="540" MinWidth="960"
     Title="MisakaTranslator" Background="{DynamicResource PrimaryBackground}" WindowStartupLocation="CenterScreen"
     Closing="BlurWindow_Closing" ContentRendered="BlurWindow_ContentRendered" 
-    Style="{DynamicResource CustomWindowStyle}">
+    Style="{DynamicResource StandardStyle}">
 
     <Grid Margin="5">
         <Grid.RowDefinitions>
@@ -34,16 +34,16 @@
 
         <!--左下角-->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
-            <Button fa:Awesome.Content="Rocket" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="AutoStart_BtnClick" Margin="0,0,0,0.5" BorderBrush="Transparent">
-                <hc:Poptip.Instance>
-                    <hc:Poptip FontSize="15" Foreground="{DynamicResource PrimaryForeground}" Content="{DynamicResource MainWindow_Tip_AutoStart}" Placement="Right"/>
-                </hc:Poptip.Instance>
-            </Button>
-            <Button fa:Awesome.Content="Book" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="ComicTransBtn_Click" Margin="20,0,0,0.5" BorderBrush="Transparent">
-                <hc:Poptip.Instance>
-                    <hc:Poptip FontSize="15" Foreground="{DynamicResource PrimaryForeground}" Content="{DynamicResource MainWindow_Tip_ComicTrans}" Placement="Right"/>
-                </hc:Poptip.Instance>
-            </Button>
+            <Button fa:Awesome.Content="Rocket" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                    Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  
+                    Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="AutoStart_BtnClick" 
+                    Margin="0,0,0,0.5" BorderBrush="Transparent" ToolTip="{DynamicResource MainWindow_Tip_AutoStart}"/>
+
+            <Button fa:Awesome.Content="Book" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                    Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" 
+                    Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="ComicTransBtn_Click" 
+                    Margin="20,0,0,0.5" BorderBrush="Transparent" ToolTip="{DynamicResource MainWindow_Tip_ComicTrans}"/>
+
         </StackPanel>
 
         <!--右下角-->
