@@ -9,7 +9,8 @@
     mc:Ignorable="d"
     d:Height="540" d:Width="960" MinHeight="540" MinWidth="960"
     Title="MisakaTranslator" Background="{DynamicResource PrimaryBackground}" WindowStartupLocation="CenterScreen"
-    Closing="BlurWindow_Closing" ContentRendered="BlurWindow_ContentRendered" Style="{DynamicResource CustomWindowStyle}">
+    Closing="BlurWindow_Closing" ContentRendered="BlurWindow_ContentRendered" 
+    Style="{DynamicResource CustomWindowStyle}">
 
     <Grid Margin="5">
         <Grid.RowDefinitions>
