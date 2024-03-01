@@ -47,7 +47,7 @@ namespace MisakaTranslator
             GrowlDisableSwitch();
 
             //注册全局OCR热键
-            this.SourceInitialized += new EventHandler(MainWindow_SourceInitialized);
+            this.SourceInitialized += MainWindow_SourceInitialized;
             if (Common.IsAdmin)
             {
                 RestartAsAdminBtn.Visibility = Visibility.Collapsed;
@@ -467,7 +467,7 @@ namespace MisakaTranslator
             Application.Current.Dispatcher.Invoke(NotifyIconContextContent.Dispose);
         }
 
-        private void ButtonPush_OnClick(object sender, RoutedEventArgs e) => NotifyIconContextContent.CloseContextControl();
+        private void NotifyIconMainBtn_Click(object sender, RoutedEventArgs e) => NotifyIconContextContent.CloseContextControl();
 
         /// <summary>
         /// 切换语言通用事件
@@ -490,7 +490,7 @@ namespace MisakaTranslator
             }
         }
 
-        private async void AutoStart_BtnClick(object sender, RoutedEventArgs e)
+        private async void AutoStartBtn_Click(object sender, RoutedEventArgs e)
         {
             int gid = GetRunningGameGid();
             if (gid == -1)
