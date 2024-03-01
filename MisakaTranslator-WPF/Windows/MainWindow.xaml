@@ -11,7 +11,7 @@
     Title="MisakaTranslator" Icon="/logo.ico"
     Background="{DynamicResource PrimaryBackground}" WindowStartupLocation="CenterScreen"
     Closing="BlurWindow_Closing" ContentRendered="BlurWindow_ContentRendered" 
-    Style="{DynamicResource StandardStyle}">
+    >
 
     <Grid Margin="5">
         <Grid.RowDefinitions>
