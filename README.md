@@ -3,7 +3,7 @@
   <br>
 </h1>
 
-![image](https://github.com/liscs/MisakaTranslator/assets/70057922/4e61a5c4-ec1f-402b-aa0c-e73c532c71f0)
+![image](https://github.com/liscs/MisakaTranslator/assets/70057922/0bf60266-63e6-4247-9cbb-ebe2b2008749)
 
 <p align="center">
   <b>Galgame/文字游戏/漫画多语种实时机翻工具</b>
