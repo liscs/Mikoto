@@ -40,7 +40,7 @@
                         <Border Background="{DynamicResource PrimaryBackground}"
                                 BorderBrush="{DynamicResource MainBtnColor}"
                                 BorderThickness="1"
-                                Initialized="Init">
+                                Initialized="InitMainBorder">
                             <AdornerDecorator>
                                 <ContentPresenter />
                             </AdornerDecorator>
@@ -109,15 +109,14 @@
                 <ControlTemplate TargetType="{x:Type local:MainWindow}">
                     <Grid>
                         <Border BorderBrush="{DynamicResource MainBtnColor}"
-                                BorderThickness="1"
-                                Initialized="Init"
+                                BorderThickness="2"
+                                Initialized="InitMainBorder"
+                                CornerRadius="{Binding Source={x:Static SystemParameters.WindowCornerRadius}}"
                                 />
-
                         <Border                                          
                             Background="{DynamicResource PrimaryBackground}"
                             Margin="{Binding Source={x:Static SystemParameters.WindowNonClientFrameThickness}}"
-                            BorderThickness="0"                                                                                      
-                            >
+                            BorderThickness="0" >
                             <AdornerDecorator>
                                 <ContentPresenter />
                             </AdornerDecorator>
@@ -126,8 +125,8 @@
                                VerticalAlignment="Top" HorizontalAlignment="Left"   
                                Margin="36,8,0,0"/>
                         <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Icon}"
-                       VerticalAlignment="Top" HorizontalAlignment="Left"                                                
-                       Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(WindowChrome.WindowChrome).ResizeBorderThickness}" 
+                       VerticalAlignment="Top" HorizontalAlignment="Left"     
+                       Margin="10,8,0,0"   
                        Width="{Binding Source={x:Static SystemParameters.SmallIconWidth}}"
                        WindowChrome.IsHitTestVisibleInChrome="True"/>
                     </Grid>

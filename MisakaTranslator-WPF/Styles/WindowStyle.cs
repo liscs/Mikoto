@@ -38,7 +38,7 @@ namespace MisakaTranslator.Styles
         }
 
         Border? _mainBorder;
-        private void Init(object? sender, EventArgs e)
+        private void InitMainBorder(object? sender, EventArgs e)
         {
             _mainBorder = sender as Border;
             var window = (Window)((FrameworkElement)sender!).TemplatedParent;
