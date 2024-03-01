@@ -1,7 +1,6 @@
 using Config.Net;
 using DataAccessLibrary;
 using HandyControl.Controls;
-using KeyboardMouseHookLibrary;
 using MisakaTranslator.Utils;
 using System;
 using System.Collections.Generic;
@@ -163,7 +162,6 @@ namespace MisakaTranslator
             hwnd = new WindowInteropHelper(this).Handle;
             HwndSource.FromHwnd(hwnd)?.AddHook(WndProc);
             //注册热键
-            Common.GlobalOCRHotKey = new GlobalHotKey();
             if (Common.GlobalOCRHotKey.RegisterHotKeyByStr(Common.AppSettings.GlobalOCRHotkey, hwnd, CallBack) == false)
             {
                 Growl.ErrorGlobal(Application.Current.Resources["MainWindow_GlobalOCRError_Hint"].ToString());

@@ -24,7 +24,7 @@ namespace MisakaTranslator
 {
     public enum Theme
     {
-        Light,Dark,
+        Light, Dark,
     }
 
     public enum GuideMode
@@ -76,7 +76,7 @@ namespace MisakaTranslator
         public static HotKeyInfo UsingHotKey { get; set; } = default!; //全局使用中的触发键信息
         public static int UsingOCRDelay { get; set; } //全局使用中的OCR延时
 
-        public static GlobalHotKey GlobalOCRHotKey { get; set; } = default!; //全局OCR热键
+        public static GlobalHotKey GlobalOCRHotKey { get; set; } = new GlobalHotKey(); //全局OCR热键
 
         public static bool IsAdmin
         {

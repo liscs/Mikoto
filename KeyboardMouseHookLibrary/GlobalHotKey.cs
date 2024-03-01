@@ -64,24 +64,29 @@ namespace KeyboardMouseHookLibrary
                 return false;
             HOT_KEY_MODIFIERS modifiers = 0;
             Keys vk = Keys.None;
+            Keys tk = Keys.None;
             foreach (string value in str.Split('+'))
             {
                 switch (value.Trim())
                 {
                     case "Ctrl":
-                        modifiers = HOT_KEY_MODIFIERS.MOD_CONTROL;
+                        modifiers |= HOT_KEY_MODIFIERS.MOD_CONTROL;
                         break;
                     case "Alt":
-                        modifiers = HOT_KEY_MODIFIERS.MOD_ALT;
+                        modifiers |= HOT_KEY_MODIFIERS.MOD_ALT;
                         break;
                     case "Shift":
-                        modifiers = HOT_KEY_MODIFIERS.MOD_SHIFT;
+                        modifiers |= HOT_KEY_MODIFIERS.MOD_SHIFT;
                         break;
                     default:
                         {
                             string pattern = Regex.IsMatch(value, @"[0-9]") ? "D" + value.Trim() : value.Trim();
-                            if (!Enum.TryParse<Keys>(pattern, out vk))
+                            if (!Enum.TryParse<Keys>(pattern, out tk))
+                            {
+                                vk |= tk;
                                 return false;
+                            }
+
                             break;
                         }
                 }

@@ -393,7 +393,7 @@ namespace TextHookLibrary
                     // TODO 寻找更好的Hook Address确定方法
                     if (HookCodeList.Count != 0
                        && obtainedMisakaCode1.Length - 4 >= 0
-                       && !InvalidMisakaCodeRegex().IsMatch(obtainedMisakaCode) )
+                       && !InvalidMisakaCodeRegex().IsMatch(obtainedMisakaCode))
                     {
                         if (!matchList.Contains(obtainedMisakaCode2 + obtainedMisakaCode3))
                         {
