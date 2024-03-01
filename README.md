@@ -1,19 +1,16 @@
 <h1 align="center">
-  MisakaTranslator 女生自用版
-  <br>
+  MisakaTranslator Mikoto Version
 </h1>
 
 ![image](https://github.com/liscs/MisakaTranslator/assets/70057922/0bf60266-63e6-4247-9cbb-ebe2b2008749)
 
 <p align="center">
-  <b>Galgame/文字游戏/漫画多语种实时机翻工具</b>
-  <br>
-  <b>开源 | 高效 | 易用</b>
-  <br>
+  <b>Galgame/文字游戏多语种实时机翻工具</b>
+  <br><br>
   <img src="https://github.com/liscs/MisakaTranslator/workflows/CI/badge.svg" alt="CI">
-  <br>
-  <br>
 </p>
+
+本项目将注重于界面以及Hook模式支持的改进。
 
 原始项目页：https://github.com/hanmin0822/MisakaTranslator
 
