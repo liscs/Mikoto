@@ -51,7 +51,9 @@
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Button Name="RestartAsAdminBtn" fa:Awesome.Content="Shield"  Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{StaticResource EffectShadow5}"  Margin="0,0,20,0.5" Click="RestartAsAdminBtn_Clicked" BorderBrush="Transparent">
             </Button>
-            <Button fa:Awesome.Content="Language" Foreground="{StaticResource MainBtnColor}" FontSize="40" Background="#01FFFFFF" Height="64" Width="64" Effect="{StaticResource EffectShadow5}"  Margin="0,0,20,0.5" Click="LanguageBtn_Click" BorderBrush="Transparent">
+            <Button fa:Awesome.Content="Language" Foreground="{StaticResource MainBtnColor}" FontSize="40" 
+                    Background="#01FFFFFF" Height="64" Width="64" Effect="{StaticResource EffectShadow5}"  
+                    Margin="0,0,20,0.5" Click="LanguageBtn_Click" BorderBrush="Transparent">
                 <Button.ContextMenu>
                     <ContextMenu Name="LanguageContextMenu">
                         <MenuItem Header="中文" Click="Language_MenuItem_Click" Tag="zh-CN"/>
@@ -59,11 +61,11 @@
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>
-            <Button fa:Awesome.Content="Cog" Foreground="{DynamicResource MainBtnColor}" FontSize="40" Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" Click="SettingsBtn_Click" Margin="0,0,0,0.5" BorderBrush="Transparent"> 
-                <hc:Poptip.Instance>
-                    <hc:Poptip FontSize="15" Foreground="{DynamicResource PrimaryForeground}" Content="{DynamicResource MainWindow_Tip_Settings}" Placement="Left"/>
-                </hc:Poptip.Instance>
-            </Button>
+            <Button fa:Awesome.Content="Cog" Foreground="{DynamicResource MainBtnColor}" FontSize="40" 
+                    Background="#01FFFFFF"  Height="64" Width="64"  Effect="{StaticResource EffectShadow5}" 
+                    Click="SettingsBtn_Click" Margin="0,0,0,0.5" BorderBrush="Transparent" 
+                    ToolTip="{DynamicResource MainWindow_Tip_Settings}"/>
+
         </StackPanel>
 
         <!--顶部跳出栏位-->
