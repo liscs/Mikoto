@@ -343,7 +343,7 @@ namespace MisakaTranslator
             {
                 new TranslateWindow().Show();
             }
-            catch (Exception ex)when(ex is InvalidOperationException or ArgumentException)
+            catch (Exception ex) when (ex is InvalidOperationException or ArgumentException)
             {
                 MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
                 return;
