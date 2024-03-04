@@ -205,7 +205,7 @@ namespace MisakaTranslator
             ggw.Show();
         }
 
-        private static void Border_MouseEnter(object sender, MouseEventArgs e)
+        private void Border_MouseEnter(object sender, MouseEventArgs e)
         {
             var b = (Border)sender;
             if (b.Child is Grid g)
@@ -223,7 +223,7 @@ namespace MisakaTranslator
             b.BorderThickness = new Thickness(2);
         }
 
-        private static void Border_MouseLeave(object sender, MouseEventArgs e)
+        private void Border_MouseLeave(object sender, MouseEventArgs e)
         {
             var b = (Border)sender;
             if (b.Child is Grid g)
