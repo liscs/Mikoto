@@ -81,12 +81,12 @@ namespace MisakaTranslator
         /// </summary>
         private void InitGameLibraryPanel()
         {
-            GamePanelCollection.Clear();
+            GamePanelCollection.Clear(); 
+            InitAddGamePanel();
             for (var i = 0; i < GameInfoList.Count; i++)
             {
                 AddGame(i);
             }
-            InitAddGamePanel();
         }
 
         private void AddGame(int gid)
@@ -205,7 +205,7 @@ namespace MisakaTranslator
             ggw.Show();
         }
 
-        private void Border_MouseEnter(object sender, MouseEventArgs e)
+        private static void Border_MouseEnter(object sender, MouseEventArgs e)
         {
             var b = (Border)sender;
             if (b.Child is Grid g)
@@ -223,7 +223,7 @@ namespace MisakaTranslator
             b.BorderThickness = new Thickness(2);
         }
 
-        private void Border_MouseLeave(object sender, MouseEventArgs e)
+        private static void Border_MouseLeave(object sender, MouseEventArgs e)
         {
             var b = (Border)sender;
             if (b.Child is Grid g)
