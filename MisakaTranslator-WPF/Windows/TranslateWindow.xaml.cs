@@ -1000,7 +1000,6 @@ namespace MisakaTranslator
 
         private void History_Item_Click(object sender, RoutedEventArgs e)
         {
-            DispatcherTimer.Stop();
             if (_historyWindow == null || !_historyWindow.IsLoaded)
             {
                 var textbox = new HandyControl.Controls.TextBox
@@ -1024,10 +1023,6 @@ namespace MisakaTranslator
                     MinHeight = 300,
                     Owner = this,
                     Title = Application.Current.Resources["TranslateWin_History_Title"].ToString()
-                };
-                _historyWindow.Closed += (_, _) =>
-                {
-                    DispatcherTimer.Start();
                 };
             }
             _historyWindow.Topmost = true;
