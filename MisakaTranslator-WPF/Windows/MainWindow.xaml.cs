@@ -81,12 +81,12 @@ namespace MisakaTranslator
         /// </summary>
         private void InitGameLibraryPanel()
         {
-            GamePanelCollection.Clear();
+            GamePanelCollection.Clear(); 
+            InitAddGamePanel();
             for (var i = 0; i < GameInfoList.Count; i++)
             {
                 AddGame(i);
             }
-            InitAddGamePanel();
         }
 
         private void AddGame(int gid)
