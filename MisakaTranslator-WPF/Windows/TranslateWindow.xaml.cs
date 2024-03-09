@@ -20,6 +20,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Threading;
+using System.Xml.Linq;
 using TextHookLibrary;
 using TextRepairLibrary;
 using TranslatorLibrary;
@@ -814,6 +815,8 @@ namespace MisakaTranslator
                             FirstTransText.Effect = null;
                         }
                         //添加第一翻译源的阴影
+                        //StartAnimation(FirstTransText);
+
                     }, DispatcherPriority.Send);
                     break;
                 case 2:
@@ -874,6 +877,37 @@ namespace MisakaTranslator
                 }
             }
         }
+
+        private Task<bool> StartAnimation(OutlineText firstTransText)
+        {
+            LinearGradientBrush result = new()
+            {
+                StartPoint = new Point(0, 0.5),
+                EndPoint = new Point(0, 0)
+            };
+            firstTransText.OpacityMask = result;
+
+            result.GradientStops.Add(new GradientStop(Color.FromArgb(255,255,255,255), 0.0)); 
+            result.GradientStops.Add(new GradientStop(Color.FromArgb(255, 255, 255, 255), 0.99999));
+
+            result.GradientStops.Add(new GradientStop(Color.FromArgb(0,255,255,255), 1));
+            PointAnimation endPointAnim = new PointAnimation()
+            {
+                From = new Point(0, 0.5),
+                To = new Point(1, 0.5),
+                Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION))
+
+            }; TaskCompletionSource<bool> tcs = new();
+            void onComplete(object? s, EventArgs e)
+            {
+                endPointAnim.Completed -= onComplete;
+                tcs.SetResult(true);
+            }
+            endPointAnim.Completed += onComplete;
+            result.BeginAnimation(LinearGradientBrush.EndPointProperty, endPointAnim);
+            return tcs.Task;
+        }
+
         private void UpdateHistoryWindow()
         {
             Application.Current.Dispatcher.Invoke(() =>

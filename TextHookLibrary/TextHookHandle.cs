@@ -306,6 +306,7 @@ namespace TextHookLibrary
         private static partial Regex FirstCodeRegex();
 
         Stopwatch LastMessageStopwatch { get; set; } = Stopwatch.StartNew();
+        TextHookData? _thData;
 
         /// <summary>
         /// 控制台输出事件，在这做内部消化处理
@@ -318,10 +319,10 @@ namespace TextHookLibrary
             if (outLine.Data == null) { return; }
             AddTextractorHistory(outLine.Data);
             if (Pause) { return; }
-            TextHookData? thData = DealTextratorOutput(outLine.Data);
-            if (thData != null)
+            _thData = DealTextratorOutput(outLine.Data);
+            if (_thData != null)
             {
-                TextHookData data = thData;
+                TextHookData data = _thData;
 
                 if (data.HookFunc != "Console" && data.HookFunc != "Clipboard" && data.HookFunc != "")
                 {
@@ -527,7 +528,13 @@ namespace TextHookLibrary
             string? Info = GetMiddleString(OutputText, "[", "]", 0);
             if (Info == null)
             {
-                return null;
+                if (_thData==null)
+                {
+                    return null;
+                }
+                //得到的是第二段被截开的输出，需要连到上一段内
+                _thData.Data += OutputText; 
+                return _thData;
             }
 
             string[] Infores = Info.Split(':');
@@ -537,8 +544,15 @@ namespace TextHookLibrary
                 TextHookData thd = new TextHookData();
 
                 string content = OutputText.Replace("[" + Info + "] ", "");//删除信息头部分
+                try
+                {
+                    thd.GamePID = int.Parse(Infores[1], System.Globalization.NumberStyles.HexNumber); //游戏/本体进程ID（为0一般代表Textrator本体进程ID）
 
-                thd.GamePID = int.Parse(Infores[1], System.Globalization.NumberStyles.HexNumber); //游戏/本体进程ID（为0一般代表Textrator本体进程ID）
+                }
+                catch (FormatException)
+                {
+                    return null;
+                }
 
                 thd.HookFunc = Infores[5]; //方法名：Textrator注入游戏进程获得文本时的方法名（为 Console 时代表Textrator本体控制台输出；为 Clipboard 时代表从剪贴板获取的文本）
 
