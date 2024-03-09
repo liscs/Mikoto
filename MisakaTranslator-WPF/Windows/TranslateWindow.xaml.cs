@@ -450,19 +450,21 @@ namespace MisakaTranslator
             }
         }
 
+        string? _tempData;
         /// <summary>
         /// Hook/Clipboard模式下调用的事件
         /// </summary>
-        public void ProcessAndDisplayTranslation(object sender, SolvedDataReceivedEventArgs e)
+        public async void ProcessAndDisplayTranslation(object sender, SolvedDataReceivedEventArgs e)
         {
             //1.得到原句
-            string? source = e.Data.Data;
-            if (source == null)
-            {
-                return;
-            }
+            _tempData = e.Data.Data;
+
+            //延迟极短的一段时间，若有新句子则执行后一个，前一个直接返回 针对Escu:de hook多段返回的特殊处理
+            await Task.Delay(10);
+            if (_tempData != e.Data.Data || _tempData == null) { return; }
+
             //2.进行去重
-            string repairedText = TextRepair.RepairFun_Auto(Common.UsingRepairFunc, source);
+            string repairedText = TextRepair.RepairFun_Auto(Common.UsingRepairFunc, _tempData);
 
             if (!Common.AppSettings.EachRowTrans) // 不启用分行翻译
             {
@@ -887,10 +889,9 @@ namespace MisakaTranslator
             };
             firstTransText.OpacityMask = result;
 
-            result.GradientStops.Add(new GradientStop(Color.FromArgb(255,255,255,255), 0.0)); 
+            result.GradientStops.Add(new GradientStop(Color.FromArgb(255, 255, 255, 255), 0.0));
             result.GradientStops.Add(new GradientStop(Color.FromArgb(255, 255, 255, 255), 0.99999));
-
-            result.GradientStops.Add(new GradientStop(Color.FromArgb(0,255,255,255), 1));
+            result.GradientStops.Add(new GradientStop(Color.FromArgb(0, 255, 255, 255), 1));
             PointAnimation endPointAnim = new PointAnimation()
             {
                 From = new Point(0, 0.5),
