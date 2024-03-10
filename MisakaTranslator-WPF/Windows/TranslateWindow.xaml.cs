@@ -20,7 +20,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Threading;
-using System.Xml.Linq;
 using TextHookLibrary;
 using TextRepairLibrary;
 using TranslatorLibrary;
@@ -81,7 +80,7 @@ namespace MisakaTranslator
             UI_Init();
 
 
-            _enableShowSource = true;
+            _enableShowSource = Common.AppSettings.TF_ShowSourceText;
 
             _gameTextHistory = new Queue<HistoryInfo>();
 
@@ -287,6 +286,10 @@ namespace MisakaTranslator
             _dropShadowEffect.Opacity = 1;
             _dropShadowEffect.ShadowDepth = 0;
             _dropShadowEffect.BlurRadius = 6;
+
+            //InitTranslateAnimation(FirstTransText); 
+            //InitTranslateAnimation(SecondTransText);
+
         }
 
         /// <summary>
@@ -450,7 +453,9 @@ namespace MisakaTranslator
             }
         }
 
+        SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new(); 
         string? _tempData;
+
         /// <summary>
         /// Hook/Clipboard模式下调用的事件
         /// </summary>
@@ -459,9 +464,14 @@ namespace MisakaTranslator
             //1.得到原句
             _tempData = e.Data.Data;
 
-            //延迟极短的一段时间，若有新句子则执行后一个，前一个直接返回 针对Escu:de hook多段返回的特殊处理
+            //延迟极短的一段时间，针对Escu:de hook多段返回的特殊处理
+            //延迟会导致收到两个内容相同的e
             await Task.Delay(10);
-            if (_tempData != e.Data.Data || _tempData == null) { return; }
+            if (_tempData == null || e.Data == _lastSolvedDataReceivedEventArgs.Data || _tempData != e.Data.Data)
+            {
+                return;
+            }
+            _lastSolvedDataReceivedEventArgs = e;
 
             //2.进行去重
             string repairedText = TextRepair.RepairFun_Auto(Common.UsingRepairFunc, _tempData);
@@ -816,7 +826,6 @@ namespace MisakaTranslator
                         {
                             FirstTransText.Effect = null;
                         }
-                        //添加第一翻译源的阴影
                         //StartAnimation(FirstTransText);
 
                     }, DispatcherPriority.Send);
@@ -833,7 +842,7 @@ namespace MisakaTranslator
                         {
                             SecondTransText.Effect = null;
                         }
-                        //添加第二翻译源的阴影
+                        //StartAnimation(SecondTransText);
                     }, DispatcherPriority.Send);
                     break;
             }
@@ -880,33 +889,29 @@ namespace MisakaTranslator
             }
         }
 
-        private Task<bool> StartAnimation(OutlineText firstTransText)
+
+        PointAnimation _endPointAnimation = new PointAnimation()
         {
-            LinearGradientBrush result = new()
+            From = new Point(0, 0.5),
+            To = new Point(1, 0.5),
+        };
+        private void StartAnimation(OutlineText outlineText)
+        {
+            _endPointAnimation.Duration = TimeSpan.FromSeconds(outlineText.Text.Length / 10.0);
+            outlineText.OpacityMask.BeginAnimation(LinearGradientBrush.EndPointProperty, _endPointAnimation);
+        }
+
+        private void InitTranslateAnimation(OutlineText outlineText)
+        {
+            LinearGradientBrush opacityBrush = new()
             {
                 StartPoint = new Point(0, 0.5),
                 EndPoint = new Point(0, 0)
             };
-            firstTransText.OpacityMask = result;
-
-            result.GradientStops.Add(new GradientStop(Color.FromArgb(255, 255, 255, 255), 0.0));
-            result.GradientStops.Add(new GradientStop(Color.FromArgb(255, 255, 255, 255), 0.99999));
-            result.GradientStops.Add(new GradientStop(Color.FromArgb(0, 255, 255, 255), 1));
-            PointAnimation endPointAnim = new PointAnimation()
-            {
-                From = new Point(0, 0.5),
-                To = new Point(1, 0.5),
-                Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION))
-
-            }; TaskCompletionSource<bool> tcs = new();
-            void onComplete(object? s, EventArgs e)
-            {
-                endPointAnim.Completed -= onComplete;
-                tcs.SetResult(true);
-            }
-            endPointAnim.Completed += onComplete;
-            result.BeginAnimation(LinearGradientBrush.EndPointProperty, endPointAnim);
-            return tcs.Task;
+            outlineText.OpacityMask = opacityBrush;
+            opacityBrush.GradientStops.Add(new GradientStop(Color.FromArgb(255, 255, 255, 255), 0.0));
+            opacityBrush.GradientStops.Add(new GradientStop(Color.FromArgb(255, 255, 255, 255), 0.99999));
+            opacityBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0, 255, 255, 255), 1));
         }
 
         private void UpdateHistoryWindow()

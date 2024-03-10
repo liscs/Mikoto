@@ -528,12 +528,12 @@ namespace TextHookLibrary
             string? Info = GetMiddleString(OutputText, "[", "]", 0);
             if (Info == null)
             {
-                if (_thData==null)
+                if (_thData == null)
                 {
                     return null;
                 }
                 //得到的是第二段被截开的输出，需要连到上一段内
-                _thData.Data += OutputText; 
+                _thData.Data += OutputText;
                 return _thData;
             }
 
