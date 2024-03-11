@@ -453,7 +453,7 @@ namespace MisakaTranslator
             }
         }
 
-        SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new(); 
+        SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new();
         string? _tempData;
 
         /// <summary>
@@ -712,55 +712,54 @@ namespace MisakaTranslator
 
         private static async Task FadeInAsync(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
         {
-            await Application.Current.Dispatcher.Invoke(async () => await FadeIn(uiElement, scrollViewer));
+            await Application.Current.Dispatcher.BeginInvoke(() => FadeIn(uiElement, scrollViewer));
         }
 
         private static async Task FadeOutAsync(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
         {
-            await Application.Current.Dispatcher.Invoke(async () => await FadeOut(uiElement, scrollViewer));
+            await Application.Current.Dispatcher.BeginInvoke(() => FadeOut(uiElement, scrollViewer));
         }
 
         private const double FADE_DURATION = 0.3;
-        private static Task<bool> FadeIn(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
+        private static void FadeIn(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
         {
             uiElement.Opacity = 0;
             scrollViewer.Visibility = Visibility.Visible;
             scrollViewer.ScrollToHome();
             uiElement.Visibility = Visibility.Visible;
-            DoubleAnimation fadeinAnimation = new();
-            TaskCompletionSource<bool> tcs = new();
-            void onComplete(object? s, EventArgs e)
-            {
-                fadeinAnimation.Completed -= onComplete;
-                tcs.SetResult(true);
-            }
-            fadeinAnimation.Completed += onComplete;
-            fadeinAnimation.From = 0;
-            fadeinAnimation.To = 1;
-            fadeinAnimation.Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION));
-            uiElement.BeginAnimation(OpacityProperty, fadeinAnimation);
-            return tcs.Task;
+            uiElement.BeginAnimation(OpacityProperty, _fadeinAnimation);
         }
 
-        private static Task<bool> FadeOut(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
+        readonly static DoubleAnimation _fadeinAnimation = InitFadeinAnimation();
+        private static DoubleAnimation InitFadeinAnimation()
+        {
+            DoubleAnimation fadeinAnimation = new()
+            {
+                From = 0,
+                To = 1,
+                Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION))
+            };
+            fadeinAnimation.Freeze();
+            return fadeinAnimation;
+        }
+
+        private static void FadeOut(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
         {
             uiElement.Opacity = 1;
 
-            DoubleAnimation fadeoutAnimation = new();
-            TaskCompletionSource<bool> tcs = new();
-            void onComplete(object? s, EventArgs e)
+            DoubleAnimation fadeoutAnimation = new()
             {
-                fadeoutAnimation.Completed -= onComplete;
+                From = 1,
+                To = 0,
+                Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION))
+            };
+            fadeoutAnimation.Completed += (_, _) =>
+            {
                 scrollViewer.Visibility = Visibility.Collapsed;
                 uiElement.Visibility = Visibility.Collapsed;
-                tcs.SetResult(true);
-            }
-            fadeoutAnimation.Completed += onComplete;
-            fadeoutAnimation.From = 1;
-            fadeoutAnimation.To = 0;
-            fadeoutAnimation.Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION));
+            };
+            fadeoutAnimation.Freeze();
             uiElement.BeginAnimation(OpacityProperty, fadeoutAnimation);
-            return tcs.Task;
         }
 
         /// <summary>
