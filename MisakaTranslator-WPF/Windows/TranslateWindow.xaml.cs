@@ -3,6 +3,7 @@ using FontAwesome.WPF;
 using HandyControl.Controls;
 using KeyboardMouseHookLibrary;
 using MecabHelperLibrary;
+using MisakaTranslator.SettingsPages;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -287,8 +288,8 @@ namespace MisakaTranslator
             _dropShadowEffect.ShadowDepth = 0;
             _dropShadowEffect.BlurRadius = 6;
 
-            //InitTranslateAnimation(FirstTransText); 
-            //InitTranslateAnimation(SecondTransText);
+            InitTranslateAnimation(FirstTransText);
+            InitTranslateAnimation(SecondTransText);
 
         }
 
@@ -703,8 +704,11 @@ namespace MisakaTranslator
                         sourceCollection.Add(textBox);
                     });
                 }
-                _ = FadeInAsync(_sourcePanelReference2, _sourceScrollReference2);
-                await FadeOutAsync(_sourcePanelReference1, _sourceScrollReference1);
+                if (Common.AppSettings.TF_SrcAnimationCheckEnabled)
+                {
+                    _ = FadeInAsync(_sourcePanelReference2, _sourceScrollReference2);
+                    await FadeOutAsync(_sourcePanelReference1, _sourceScrollReference1);
+                }
                 (_sourcePanelReference1, _sourcePanelReference2) = (_sourcePanelReference2, _sourcePanelReference1);
                 (_sourceScrollReference1, _sourceScrollReference2) = (_sourceScrollReference2, _sourceScrollReference1);
             });
@@ -825,7 +829,10 @@ namespace MisakaTranslator
                         {
                             FirstTransText.Effect = null;
                         }
-                        //StartAnimation(FirstTransText);
+                        if (Common.AppSettings.TF_TransAnimationCheckEnabled)
+                        {
+                            StartFadeInAnimation(FirstTransText);
+                        }
 
                     }, DispatcherPriority.Send);
                     break;
@@ -841,7 +848,10 @@ namespace MisakaTranslator
                         {
                             SecondTransText.Effect = null;
                         }
-                        //StartAnimation(SecondTransText);
+                        if (Common.AppSettings.TF_TransAnimationCheckEnabled)
+                        {
+                            StartFadeInAnimation(SecondTransText);
+                        }
                     }, DispatcherPriority.Send);
                     break;
             }
@@ -889,15 +899,10 @@ namespace MisakaTranslator
         }
 
 
-        PointAnimation _endPointAnimation = new PointAnimation()
+
+        private void StartFadeInAnimation(OutlineText outlineText)
         {
-            From = new Point(0, 0.5),
-            To = new Point(1, 0.5),
-        };
-        private void StartAnimation(OutlineText outlineText)
-        {
-            _endPointAnimation.Duration = TimeSpan.FromSeconds(outlineText.Text.Length / 10.0);
-            outlineText.OpacityMask.BeginAnimation(LinearGradientBrush.EndPointProperty, _endPointAnimation);
+            outlineText.BeginAnimation(OpacityProperty, _fadeinAnimation);
         }
 
         private void InitTranslateAnimation(OutlineText outlineText)

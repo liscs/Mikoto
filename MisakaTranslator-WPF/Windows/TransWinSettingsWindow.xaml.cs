@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MisakaTranslator.SettingsPages;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,6 +12,7 @@ namespace MisakaTranslator
     /// </summary>
     public partial class TransWinSettingsWindow : Window
     {
+        private TransWinSettingsViewModel _viewModel = new();
         private TranslateWindow _translateWin;
         private List<string> _fontList;
 
@@ -19,7 +21,7 @@ namespace MisakaTranslator
             _translateWin = Win;
 
             InitializeComponent();
-
+            DataContext = _viewModel;
             _fontList = new List<string>();
 
             System.Drawing.Text.InstalledFontCollection fonts = new System.Drawing.Text.InstalledFontCollection();
