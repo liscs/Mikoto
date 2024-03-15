@@ -126,13 +126,21 @@ namespace MisakaTranslator.GuidePages.Hook
             AutomationElement? element = src as AutomationElement;
             if (element != null)
             {
-                _focusingPid = element.Current.ProcessId;
-                if (_focusingPid == Environment.ProcessId)
+                if (element.Current.ProcessId != Environment.ProcessId)
                 {
-                    return;
+                    _focusingPid = element.Current.ProcessId;
                 }
                 using Process process = Process.GetProcessById(_focusingPid);
-                _viewModel.FocusingProcess = $"目前焦点进程：{process.MainWindowTitle}";
+                if (!string.IsNullOrEmpty(process.MainWindowTitle))
+                {
+                    _viewModel.FocusingProcess = $"目前焦点进程：{process.MainWindowTitle}";
+                    _viewModel.EnableSelectFocusButton = true;
+                }
+                else
+                {
+                    _viewModel.FocusingProcess = string.Empty;
+                    _viewModel.EnableSelectFocusButton = false;
+                }
             }
         }
     }

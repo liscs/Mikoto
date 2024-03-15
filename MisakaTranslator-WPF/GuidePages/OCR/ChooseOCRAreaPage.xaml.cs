@@ -30,7 +30,7 @@ namespace MisakaTranslator.GuidePages.OCR
             if (hook == null)
             {
                 hook = new GlobalHook();
-                hook.OnMouseActivity += new System.Windows.Forms.MouseEventHandler(Hook_OnMouseActivity);
+                hook.OnMouseActivity += Hook_OnMouseActivity;
             }
 
         }

@@ -31,5 +31,9 @@ namespace MisakaTranslator.GuidePages.Hook
                 SetProperty(ref _focusingProcess, value);
             }
         }
+
+        private bool enableSelectFocusButton;
+
+        public bool EnableSelectFocusButton { get => enableSelectFocusButton; set => SetProperty(ref enableSelectFocusButton, value); }
     }
 }
