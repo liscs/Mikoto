@@ -20,3 +20,6 @@ EnumDisplaySettings
 //获得窗口pid用
 GetForegroundWindow
 GetWindowThreadProcessId
+
+//获取顶部窗口
+GetTopWindow

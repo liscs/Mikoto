@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:hc="https://handyorg.github.io/handycontrol"
-      xmlns:local="clr-namespace:MisakaTranslator.GuidePages"
+      xmlns:local="clr-namespace:MisakaTranslator.GuidePages" xmlns:hook="clr-namespace:MisakaTranslator.GuidePages.Hook" d:DataContext="{d:DesignInstance Type=hook:ChooseGameViewModel}"
       mc:Ignorable="d" 
       d:DesignHeight="400" d:DesignWidth="800"
       Title="ChooseGamePage">
@@ -25,10 +25,13 @@
 
             <hc:ComboBox Name="GameProcessCombox" Grid.Row="1" Margin="10" VerticalAlignment="Center" SelectionChanged="GameProcessCombox_SelectionChanged"/>
 
-            <TextBlock Name="AutoHookTag" Grid.Row="2" Text="[AutoHook]" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" FontSize="15"></TextBlock>
+            <StackPanel Grid.Row="2">
+                <TextBlock Name="AutoHookTag"  Text="[AutoHook]" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" FontSize="15"></TextBlock>
+                <TextBlock Text="{Binding FocusingProcess}" TextTrimming="CharacterEllipsis"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" FontSize="15"></TextBlock>
+            </StackPanel>
 
             <CheckBox Name="x64GameCheckBox" Grid.Row="3" Margin="10" Content="{DynamicResource ChooseGamePage_CBoxX64}" FontSize="15" HorizontalAlignment="Left" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{DynamicResource ChooseGamePage_CBoxX64Hint}" hc:Poptip.Placement="Top"/>
-            <Button Grid.Row="3" Margin="10" Height="Auto" Content="选择进程窗口" HorizontalAlignment="Center" FontSize="15" Width="250" Click="SelectWindowButton_Click"/>
+            <Button Grid.Row="3" Margin="10" Height="Auto" Content="选择目前焦点进程" HorizontalAlignment="Center" FontSize="15" Width="250" Click="SelectWindowButton_Click"/>
             <Button Grid.Row="3" Margin="10" Height="Auto" Content="{DynamicResource ChooseGamePage_BtnConfirm}" HorizontalAlignment="Right" FontSize="15" Width="250" Click="ConfirmButton_Click"/>
 
         </Grid>

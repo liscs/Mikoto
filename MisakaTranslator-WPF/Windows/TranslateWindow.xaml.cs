@@ -1213,7 +1213,11 @@ namespace MisakaTranslator
 
         private void TickClock(object? sender, EventArgs e)
         {
-            TimeTextBlock.Text = DateTime.Now.ToShortTimeString();
+            string nowTime = DateTime.Now.ToShortTimeString();
+            if (TimeTextBlock.Text!= nowTime)
+            {
+                TimeTextBlock.Text = nowTime;
+            }
         }
     }
 }
