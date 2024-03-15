@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using TextHookLibrary;
+using Windows.Win32;
 
 namespace MisakaTranslator.GuidePages.Hook
 {
@@ -76,6 +77,28 @@ namespace MisakaTranslator.GuidePages.Hook
                 HandyControl.Controls.Growl.Error(Application.Current.Resources["ChooseGamePage_NextErrorHint"].ToString());
             }
 
+        }
+
+        private void SelectWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            _gamePid = GetProcessIdFromFocus();
+            GameProcessCombox.Text = "nini";
+            _sameNameGameProcessList = ProcessHelper.FindSameNameProcess(_gamePid);
+            AutoHookTag.Text = Application.Current.Resources["ChooseGamePage_AutoHookTag_Begin"].ToString() + _sameNameGameProcessList.Count + Application.Current.Resources["ChooseGamePage_AutoHookTag_End"].ToString();
+        }
+
+        unsafe private int GetProcessIdFromFocus()
+        {
+            uint thisPid;
+            PInvoke.GetWindowThreadProcessId(PInvoke.GetForegroundWindow(), &thisPid);
+            while (true)
+            {
+                uint pid;
+                if (PInvoke.GetWindowThreadProcessId(PInvoke.GetForegroundWindow(), &pid) != 0 && pid != thisPid)
+                {
+                    return (int)pid;
+                }
+            }
         }
     }
 }

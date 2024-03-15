@@ -16,3 +16,7 @@ Windows.Win32.UI.Shell.StrCmpLogicalW
 Windows.Win32.UI.WindowsAndMessaging.GetCursorPos
 Windows.Win32.UI.WindowsAndMessaging.SetWindowPos
 EnumDisplaySettings
+
+//获得窗口pid用
+GetForegroundWindow
+GetWindowThreadProcessId

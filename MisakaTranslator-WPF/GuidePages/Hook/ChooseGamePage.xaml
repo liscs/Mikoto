@@ -28,6 +28,7 @@
             <TextBlock Name="AutoHookTag" Grid.Row="2" Text="[AutoHook]" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" FontSize="15"></TextBlock>
 
             <CheckBox Name="x64GameCheckBox" Grid.Row="3" Margin="10" Content="{DynamicResource ChooseGamePage_CBoxX64}" FontSize="15" HorizontalAlignment="Left" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{DynamicResource ChooseGamePage_CBoxX64Hint}" hc:Poptip.Placement="Top"/>
+            <Button Grid.Row="3" Margin="10" Height="Auto" Content="选择进程窗口" HorizontalAlignment="Center" FontSize="15" Width="250" Click="SelectWindowButton_Click"/>
             <Button Grid.Row="3" Margin="10" Height="Auto" Content="{DynamicResource ChooseGamePage_BtnConfirm}" HorizontalAlignment="Right" FontSize="15" Width="250" Click="ConfirmButton_Click"/>
 
         </Grid>
