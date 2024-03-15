@@ -32,7 +32,7 @@ namespace MisakaTranslator.GuidePages.Hook
             }
         }
 
-        private bool enableSelectFocusButton;
+        private bool enableSelectFocusButton = true;
 
         public bool EnableSelectFocusButton { get => enableSelectFocusButton; set => SetProperty(ref enableSelectFocusButton, value); }
     }

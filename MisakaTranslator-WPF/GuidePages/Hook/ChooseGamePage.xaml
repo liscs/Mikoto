@@ -27,12 +27,15 @@
 
             <StackPanel Grid.Row="2">
                 <TextBlock Name="AutoHookTag"  Text="[AutoHook]" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" FontSize="15"></TextBlock>
-                <TextBlock Text="{Binding FocusingProcess}" TextTrimming="CharacterEllipsis"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" FontSize="15"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <Button  Margin="10" Height="Auto" IsEnabled="{Binding EnableSelectFocusButton}" Content="{DynamicResource ChooseGamePage_FocusSelectGameProcess}" Background="{DynamicResource TitleBrush}" Foreground="{DynamicResource PrimaryBackground}" HorizontalAlignment="Center" FontSize="15" Click="SelectWindowButton_Click"/>
+                    <Button  Margin="10" Height="Auto" IsEnabled="{Binding EnableSelectFocusButton}" Content="{DynamicResource ChooseGamePage_ConfirmFocusSelectGameProcess}" Background="{DynamicResource TitleBrush}" Foreground="{DynamicResource PrimaryBackground}" HorizontalAlignment="Center" FontSize="15" Click="ConfirmSelectWindowButton_Click"/>
+                    <TextBlock Text="{Binding FocusingProcess}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="10" FontSize="15"></TextBlock>
+                </StackPanel>
             </StackPanel>
-
-            <CheckBox Name="x64GameCheckBox" Grid.Row="3" Margin="10" Content="{DynamicResource ChooseGamePage_CBoxX64}" FontSize="15" HorizontalAlignment="Left" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{DynamicResource ChooseGamePage_CBoxX64Hint}" hc:Poptip.Placement="Top"/>
-            <Button Grid.Row="3" Margin="10" Height="Auto" IsEnabled="{Binding EnableSelectFocusButton}" Content="选择目前焦点进程" HorizontalAlignment="Center" FontSize="15" Width="250" Click="SelectWindowButton_Click"/>
+            <CheckBox Grid.Row="3" Name="x64GameCheckBox"  Margin="10" Content="{DynamicResource ChooseGamePage_CBoxX64}" FontSize="15" HorizontalAlignment="Left" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{DynamicResource ChooseGamePage_CBoxX64Hint}" hc:Poptip.Placement="Top"/>
             <Button Grid.Row="3" Margin="10" Height="Auto" Content="{DynamicResource ChooseGamePage_BtnConfirm}" HorizontalAlignment="Right" FontSize="15" Width="250" Click="ConfirmButton_Click"/>
+
 
         </Grid>
 

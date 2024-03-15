@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
@@ -21,12 +22,6 @@ namespace MisakaTranslator.GuidePages.Hook
         private int _gamePid = -1;
         private List<Process> _sameNameGameProcessList = new();
         static ChooseGameViewModel _viewModel = new();
-
-        private static int _focusingPid;
-        static ChooseGamePage()
-        {
-            Automation.AddAutomationFocusChangedEventHandler(OnFocusChangedHandler);
-        }
 
 
         public ChooseGamePage()
@@ -99,11 +94,15 @@ namespace MisakaTranslator.GuidePages.Hook
             }
         }
 
-        private void SelectWindowButton_Click(object sender, RoutedEventArgs e)
+        private async void SelectWindowButton_Click(object sender, RoutedEventArgs e)
         {
-            _gamePid = _focusingPid;
-            _sameNameGameProcessList = ProcessHelper.FindSameNameProcess(_gamePid);
-            GenerateHookerAndGotoNextStep(_gamePid);
+            _viewModel.EnableSelectFocusButton = false;
+            _gamePid = await Task.Run(GetProcessIdFromFocus);
+            using Process process = Process.GetProcessById(_gamePid);
+            if (!string.IsNullOrEmpty(process.MainWindowTitle))
+            {
+                _viewModel.FocusingProcess = $"目前点选进程：{process.MainWindowTitle}";
+            }
         }
 
         unsafe private int GetProcessIdFromFocus()
@@ -115,32 +114,22 @@ namespace MisakaTranslator.GuidePages.Hook
                 uint pid;
                 if (PInvoke.GetWindowThreadProcessId(PInvoke.GetForegroundWindow(), &pid) != 0 && pid != thisPid)
                 {
+                    _viewModel.EnableSelectFocusButton = true;
                     return (int)pid;
                 }
             }
         }
 
-
-        private static void OnFocusChangedHandler(object src, AutomationFocusChangedEventArgs args)
+        private void ConfirmSelectWindowButton_Click(object sender, RoutedEventArgs e)
         {
-            AutomationElement? element = src as AutomationElement;
-            if (element != null)
+            if (_gamePid != -1)
             {
-                if (element.Current.ProcessId != Environment.ProcessId)
-                {
-                    _focusingPid = element.Current.ProcessId;
-                }
-                using Process process = Process.GetProcessById(_focusingPid);
-                if (!string.IsNullOrEmpty(process.MainWindowTitle))
-                {
-                    _viewModel.FocusingProcess = $"目前焦点进程：{process.MainWindowTitle}";
-                    _viewModel.EnableSelectFocusButton = true;
-                }
-                else
-                {
-                    _viewModel.FocusingProcess = string.Empty;
-                    _viewModel.EnableSelectFocusButton = false;
-                }
+                _sameNameGameProcessList = ProcessHelper.FindSameNameProcess(_gamePid);
+                GenerateHookerAndGotoNextStep(_gamePid);
+            }
+            else
+            {
+                HandyControl.Controls.Growl.Error(Application.Current.Resources["ChooseGamePage_NextErrorHint"].ToString());
             }
         }
     }
