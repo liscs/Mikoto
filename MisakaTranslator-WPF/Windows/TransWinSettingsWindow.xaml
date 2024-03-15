@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:local="clr-namespace:MisakaTranslator"
+        xmlns:local="clr-namespace:MisakaTranslator" 
+        d:DataContext="{d:DesignInstance Type=local:TransWinSettingsViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource TransWinSettingsWin_Title}" Height="500" Width="300" MinWidth="300">
     <Grid>
@@ -16,8 +17,9 @@
                     <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}" HorizontalAlignment="Center" Margin="10" FontSize="15"/>
                     <Button Name="BgColorBtn" Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}" Margin="10" Width="200" Style="{DynamicResource ButtonPrimary}" Click="ChooseColorBtn_Click"/>
                     <Border Name="BgColorBlock" Margin="10" Width="200" Height="25"/>
-                    <CheckBox Name="DropShadowCheckBox" Content="{DynamicResource TransWinSettingsWin_DropShadowCbox}" Margin="10" HorizontalAlignment="Center"/>
-                    <CheckBox Name="ZenModeCheckBox" Content="{DynamicResource TransWinSettingsWin_ZenMode}" HorizontalAlignment="Center" Margin="10" />
+                    <CheckBox Name="DropShadowCheckBox" Content="{DynamicResource TransWinSettingsWin_DropShadowCbox}" Margin="10"/>
+                    <CheckBox Name="ZenModeCheckBox" Content="{DynamicResource TransWinSettingsWin_ZenMode}" Margin="10" />
+                    <CheckBox IsChecked="{Binding TransAnimationCheckEnabled,Mode=TwoWay}" Content="翻译框启用渐变动画" Margin="10"/>
                 </StackPanel>
 
             </TabItem>
@@ -38,15 +40,15 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <CheckBox Grid.Row="0" Grid.ColumnSpan="3" Name="PhoneticNotationCheckBox" Content="{DynamicResource TransWinSettingsWin_PhoneticNotationCheckBox}" Margin="10" HorizontalAlignment="Left"/>
+                        <CheckBox Grid.Row="0" Grid.ColumnSpan="3" Name="PhoneticNotationCheckBox" Content="{DynamicResource TransWinSettingsWin_PhoneticNotationCheckBox}" Margin="10" />
                         <RadioButton Grid.Row="1" Grid.Column="0" Name="HiraganaRadioButton" Content="{DynamicResource TransWinSettingsWin_Hirogana}" IsChecked="True"/>
                         <RadioButton Grid.Row="1" Grid.Column="1" Name="KatakanaRadioButton" Content="{DynamicResource TransWinSettingsWin_Katakana}"/>
                         <RadioButton Grid.Row="1" Grid.Column="2" Name="RomajiRadioButton" Content="{DynamicResource TransWinSettingsWin_Romaji}"/>
                     </Grid>
                     <CheckBox Name="KanaBoldCheckBox" Content="{DynamicResource TransWinSettingsWin_KanaBoldCbox}" Margin="10" HorizontalAlignment="Left"/>
-                    <CheckBox Name="ColorfulCheckBox" Content="{DynamicResource TransWinSettingsWin_ColorfulCbox}" Margin="10" HorizontalAlignment="Left"/>
-
-                    <TextBlock TextWrapping="Wrap" Text="{DynamicResource TransWinSettingsWin_srcSetNotice}" Margin="10" HorizontalAlignment="Center"/>
+                    <CheckBox Name="ColorfulCheckBox" Content="{DynamicResource TransWinSettingsWin_ColorfulCbox}" Margin="10" />
+                    <CheckBox IsChecked="{Binding SrcAnimationCheckEnabled,Mode=TwoWay}" Content="启用渐变动画" Margin="10" />
+                    <TextBlock TextWrapping="Wrap" Text="{DynamicResource TransWinSettingsWin_srcSetNotice}" Margin="10" />
 
                 </StackPanel>
 
@@ -61,7 +63,7 @@
                     <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}" HorizontalAlignment="Center" Margin="15"/>
                     <Button Name="firstColorBtn" Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}" Margin="0" Width="200" Style="{DynamicResource ButtonPrimary}" Click="ChooseColorBtn_Click"/>
                     <Border Name="firstColorBlock" Margin="10" Width="200" Height="25"/>
-                    <CheckBox Name="firstWhiteStrokeCheckBox" Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}" Margin="10" HorizontalAlignment="Center"/>
+                    <CheckBox Name="firstWhiteStrokeCheckBox" Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}" Margin="10" />
                 </StackPanel>
 
             </TabItem>
@@ -75,7 +77,7 @@
                     <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}" HorizontalAlignment="Center" Margin="15"/>
                     <Button Name="secondColorBtn" Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}" Margin="0" Width="200" Style="{DynamicResource ButtonPrimary}" Click="ChooseColorBtn_Click"/>
                     <Border Name="secondColorBlock" Margin="10" Width="200" Height="25"/>
-                    <CheckBox Name="secondWhiteStrokeCheckBox" Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}" Margin="10" HorizontalAlignment="Center"/>
+                    <CheckBox Name="secondWhiteStrokeCheckBox" Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}" Margin="10" />
                 </StackPanel>
 
             </TabItem>

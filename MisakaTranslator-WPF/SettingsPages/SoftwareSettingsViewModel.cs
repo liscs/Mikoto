@@ -18,18 +18,18 @@ namespace MisakaTranslator.SettingsPages
             return false;
         }
 
-        private bool? enableAutoUpdateCheck;
+        private bool? _enableAutoUpdateCheck;
         public bool? EnableAutoUpdateCheck
         {
             get
             {
-                enableAutoUpdateCheck = Common.AppSettings.UpdateCheckEnabled;
-                return enableAutoUpdateCheck;
+                _enableAutoUpdateCheck = Common.AppSettings.UpdateCheckEnabled;
+                return _enableAutoUpdateCheck;
             }
             set
             {
                 Common.AppSettings.UpdateCheckEnabled = value ?? true;
-                SetProperty(ref enableAutoUpdateCheck, value);
+                SetProperty(ref _enableAutoUpdateCheck, value);
             }
         }
 

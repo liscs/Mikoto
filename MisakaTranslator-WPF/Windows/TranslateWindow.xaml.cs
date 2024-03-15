@@ -3,6 +3,7 @@ using FontAwesome.WPF;
 using HandyControl.Controls;
 using KeyboardMouseHookLibrary;
 using MecabHelperLibrary;
+using MisakaTranslator.SettingsPages;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -80,7 +81,7 @@ namespace MisakaTranslator
             UI_Init();
 
 
-            _enableShowSource = true;
+            _enableShowSource = Common.AppSettings.TF_ShowSourceText;
 
             _gameTextHistory = new Queue<HistoryInfo>();
 
@@ -286,6 +287,10 @@ namespace MisakaTranslator
             _dropShadowEffect.Opacity = 1;
             _dropShadowEffect.ShadowDepth = 0;
             _dropShadowEffect.BlurRadius = 6;
+
+            InitTranslateAnimation(FirstTransText);
+            InitTranslateAnimation(SecondTransText);
+
         }
 
         /// <summary>
@@ -449,19 +454,28 @@ namespace MisakaTranslator
             }
         }
 
+        SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new();
+        string? _tempData;
+
         /// <summary>
         /// Hook/Clipboard模式下调用的事件
         /// </summary>
-        public void ProcessAndDisplayTranslation(object sender, SolvedDataReceivedEventArgs e)
+        public async void ProcessAndDisplayTranslation(object sender, SolvedDataReceivedEventArgs e)
         {
             //1.得到原句
-            string? source = e.Data.Data;
-            if (source == null)
+            _tempData = e.Data.Data;
+
+            //延迟极短的一段时间，针对Escu:de hook多段返回的特殊处理
+            //延迟会导致收到两个内容相同的e
+            await Task.Delay(10);
+            if (_tempData == null || e.Data == _lastSolvedDataReceivedEventArgs.Data || _tempData != e.Data.Data)
             {
                 return;
             }
+            _lastSolvedDataReceivedEventArgs = e;
+
             //2.进行去重
-            string repairedText = TextRepair.RepairFun_Auto(Common.UsingRepairFunc, source);
+            string repairedText = TextRepair.RepairFun_Auto(Common.UsingRepairFunc, _tempData);
 
             if (!Common.AppSettings.EachRowTrans) // 不启用分行翻译
             {
@@ -690,8 +704,11 @@ namespace MisakaTranslator
                         sourceCollection.Add(textBox);
                     });
                 }
-                _ = FadeInAsync(_sourcePanelReference2, _sourceScrollReference2);
-                await FadeOutAsync(_sourcePanelReference1, _sourceScrollReference1);
+                if (Common.AppSettings.TF_SrcAnimationCheckEnabled)
+                {
+                    _ = FadeInAsync(_sourcePanelReference2, _sourceScrollReference2);
+                    await FadeOutAsync(_sourcePanelReference1, _sourceScrollReference1);
+                }
                 (_sourcePanelReference1, _sourcePanelReference2) = (_sourcePanelReference2, _sourcePanelReference1);
                 (_sourceScrollReference1, _sourceScrollReference2) = (_sourceScrollReference2, _sourceScrollReference1);
             });
@@ -699,55 +716,54 @@ namespace MisakaTranslator
 
         private static async Task FadeInAsync(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
         {
-            await Application.Current.Dispatcher.Invoke(async () => await FadeIn(uiElement, scrollViewer));
+            await Application.Current.Dispatcher.BeginInvoke(() => FadeIn(uiElement, scrollViewer));
         }
 
         private static async Task FadeOutAsync(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
         {
-            await Application.Current.Dispatcher.Invoke(async () => await FadeOut(uiElement, scrollViewer));
+            await Application.Current.Dispatcher.BeginInvoke(() => FadeOut(uiElement, scrollViewer));
         }
 
         private const double FADE_DURATION = 0.3;
-        private static Task<bool> FadeIn(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
+        private static void FadeIn(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
         {
             uiElement.Opacity = 0;
             scrollViewer.Visibility = Visibility.Visible;
             scrollViewer.ScrollToHome();
             uiElement.Visibility = Visibility.Visible;
-            DoubleAnimation fadeinAnimation = new();
-            TaskCompletionSource<bool> tcs = new();
-            void onComplete(object? s, EventArgs e)
-            {
-                fadeinAnimation.Completed -= onComplete;
-                tcs.SetResult(true);
-            }
-            fadeinAnimation.Completed += onComplete;
-            fadeinAnimation.From = 0;
-            fadeinAnimation.To = 1;
-            fadeinAnimation.Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION));
-            uiElement.BeginAnimation(OpacityProperty, fadeinAnimation);
-            return tcs.Task;
+            uiElement.BeginAnimation(OpacityProperty, _fadeinAnimation);
         }
 
-        private static Task<bool> FadeOut(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
+        readonly static DoubleAnimation _fadeinAnimation = InitFadeinAnimation();
+        private static DoubleAnimation InitFadeinAnimation()
+        {
+            DoubleAnimation fadeinAnimation = new()
+            {
+                From = 0,
+                To = 1,
+                Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION))
+            };
+            fadeinAnimation.Freeze();
+            return fadeinAnimation;
+        }
+
+        private static void FadeOut(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
         {
             uiElement.Opacity = 1;
 
-            DoubleAnimation fadeoutAnimation = new();
-            TaskCompletionSource<bool> tcs = new();
-            void onComplete(object? s, EventArgs e)
+            DoubleAnimation fadeoutAnimation = new()
             {
-                fadeoutAnimation.Completed -= onComplete;
+                From = 1,
+                To = 0,
+                Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION))
+            };
+            fadeoutAnimation.Completed += (_, _) =>
+            {
                 scrollViewer.Visibility = Visibility.Collapsed;
                 uiElement.Visibility = Visibility.Collapsed;
-                tcs.SetResult(true);
-            }
-            fadeoutAnimation.Completed += onComplete;
-            fadeoutAnimation.From = 1;
-            fadeoutAnimation.To = 0;
-            fadeoutAnimation.Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION));
+            };
+            fadeoutAnimation.Freeze();
             uiElement.BeginAnimation(OpacityProperty, fadeoutAnimation);
-            return tcs.Task;
         }
 
         /// <summary>
@@ -813,7 +829,11 @@ namespace MisakaTranslator
                         {
                             FirstTransText.Effect = null;
                         }
-                        //添加第一翻译源的阴影
+                        if (Common.AppSettings.TF_TransAnimationCheckEnabled)
+                        {
+                            StartFadeInAnimation(FirstTransText);
+                        }
+
                     }, DispatcherPriority.Send);
                     break;
                 case 2:
@@ -828,7 +848,10 @@ namespace MisakaTranslator
                         {
                             SecondTransText.Effect = null;
                         }
-                        //添加第二翻译源的阴影
+                        if (Common.AppSettings.TF_TransAnimationCheckEnabled)
+                        {
+                            StartFadeInAnimation(SecondTransText);
+                        }
                     }, DispatcherPriority.Send);
                     break;
             }
@@ -874,6 +897,27 @@ namespace MisakaTranslator
                 }
             }
         }
+
+
+
+        private void StartFadeInAnimation(OutlineText outlineText)
+        {
+            outlineText.BeginAnimation(OpacityProperty, _fadeinAnimation);
+        }
+
+        private void InitTranslateAnimation(OutlineText outlineText)
+        {
+            LinearGradientBrush opacityBrush = new()
+            {
+                StartPoint = new Point(0, 0.5),
+                EndPoint = new Point(0, 0)
+            };
+            outlineText.OpacityMask = opacityBrush;
+            opacityBrush.GradientStops.Add(new GradientStop(Color.FromArgb(255, 255, 255, 255), 0.0));
+            opacityBrush.GradientStops.Add(new GradientStop(Color.FromArgb(255, 255, 255, 255), 0.99999));
+            opacityBrush.GradientStops.Add(new GradientStop(Color.FromArgb(0, 255, 255, 255), 1));
+        }
+
         private void UpdateHistoryWindow()
         {
             Application.Current.Dispatcher.Invoke(() =>

@@ -382,6 +382,12 @@ namespace MisakaTranslator
             set;
         }
 
+        [Option(Alias = "TranslateFormSettings.SrcAnimationCheckEnabled", DefaultValue = true)]
+        bool TF_SrcAnimationCheckEnabled { get; set; }
+
+        [Option(Alias = "TranslateFormSettings.TransAnimationCheckEnabled", DefaultValue = false)]
+        bool TF_TransAnimationCheckEnabled { get; set; }
+
         [Option(Alias = "TranslateFormSettings.SrcTextFont", DefaultValue = "Microsoft YaHei")]
         string TF_SrcTextFont
         {
