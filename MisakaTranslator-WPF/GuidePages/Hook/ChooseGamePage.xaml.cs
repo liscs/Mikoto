@@ -1,12 +1,10 @@
 ﻿using DataAccessLibrary;
-using MisakaTranslator.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Automation;
 using System.Windows.Controls;
 using TextHookLibrary;
 using Windows.Win32;

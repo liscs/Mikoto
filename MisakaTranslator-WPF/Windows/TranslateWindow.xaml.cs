@@ -3,7 +3,6 @@ using FontAwesome.WPF;
 using HandyControl.Controls;
 using KeyboardMouseHookLibrary;
 using MecabHelperLibrary;
-using MisakaTranslator.SettingsPages;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -1214,7 +1213,7 @@ namespace MisakaTranslator
         private void TickClock(object? sender, EventArgs e)
         {
             string nowTime = DateTime.Now.ToShortTimeString();
-            if (TimeTextBlock.Text!= nowTime)
+            if (TimeTextBlock.Text != nowTime)
             {
                 TimeTextBlock.Text = nowTime;
             }
