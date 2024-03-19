@@ -18,7 +18,7 @@ namespace MisakaTranslator
         {
             InitializeComponent();
 
-            this.AddHandler(GuidePages.PageChange.PageChangeRoutedEvent, new RoutedEventHandler(Next_Click));
+            this.AddHandler(PageChange.PageChangeRoutedEvent, new RoutedEventHandler(SwitchPage));
 
             isComplete = false;
             GuideMode = Mode;
@@ -88,10 +88,15 @@ namespace MisakaTranslator
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Next_Click(object sender, RoutedEventArgs e)
+        private void SwitchPage(object sender, RoutedEventArgs e)
         {
             PageChangeRoutedEventArgs args = (e as PageChangeRoutedEventArgs)!;
-            if (args.XamlPath == "1")
+            if (args.IsBack)
+            {
+                GuidePageFrame.NavigationService.GoBack();
+                GuideStepBar.Prev();
+            }
+            else if (args.XamlPath == "1")
             {
                 if (GuideMode == GuideMode.Hook)
                 {

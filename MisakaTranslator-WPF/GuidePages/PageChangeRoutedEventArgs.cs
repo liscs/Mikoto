@@ -11,6 +11,7 @@ namespace MisakaTranslator.GuidePages
         /// 下一页的XAML地址
         /// </summary>
         public string XamlPath { get; set; } = string.Empty;
+        public bool IsBack { get; internal set; }
 
         /// <summary>
         /// 部分方法需要用到的额外参数

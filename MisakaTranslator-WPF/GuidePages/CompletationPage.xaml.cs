@@ -28,5 +28,14 @@ namespace MisakaTranslator.GuidePages
             args.XamlPath = "1";//表示完成
             this.RaiseEvent(args);
         }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
+            {
+                IsBack = true
+            };
+            this.RaiseEvent(args);
+        }
     }
 }

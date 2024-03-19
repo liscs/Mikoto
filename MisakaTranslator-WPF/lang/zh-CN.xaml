@@ -447,6 +447,7 @@
     <sys:String x:Key="MainWindow_RestartAdmin_Hint">是否要以管理员身份重启本软件？</sys:String>
     <sys:String x:Key="ChooseGamePage_FocusSelectGameProcess">点选游戏进程</sys:String>
     <sys:String x:Key="ChooseGamePage_ConfirmFocusSelectGameProcess">确认点选进程</sys:String>
+    <sys:String x:Key="Guide_Back">上一步</sys:String>
 
 
 </ResourceDictionary>

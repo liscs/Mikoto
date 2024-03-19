@@ -123,5 +123,14 @@ namespace MisakaTranslator.GuidePages.Hook
             Sentence_InputDrawer.IsOpen = false;
             Regex_InputDrawer.IsOpen = false;
         }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
+            {
+                IsBack = true
+            };
+            this.RaiseEvent(args);
+        }
     }
 }

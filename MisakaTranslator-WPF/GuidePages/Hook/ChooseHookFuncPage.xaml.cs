@@ -177,5 +177,13 @@ namespace MisakaTranslator.GuidePages.Hook
         [GeneratedRegex("【0:FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF】|【FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF】")]
         private static partial Regex InvalidMisakaCodeRegex();
 
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
+            {
+                IsBack = true
+            };
+            this.RaiseEvent(args);
+        }
     }
 }

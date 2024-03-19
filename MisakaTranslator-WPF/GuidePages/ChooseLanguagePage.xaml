@@ -12,19 +12,22 @@
     <Grid>
         <Grid Background="White">
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Text="{DynamicResource ChooseLanguagePage_Introduce}" VerticalAlignment="Center" Margin="10"/>
             <hc:ComboBox Grid.Row="1" Name="SrcLangCombox" Width="380" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource ChooseLanguagePage_srcLang}"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <hc:ComboBox Grid.Row="2" Name="DstLangCombox" Width="380" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource ChooseLanguagePage_dstLang}"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Button Grid.Row="3" Content="{DynamicResource ChooseLanguagePage_BtnConfirm}" HorizontalAlignment="Right" Margin="20" Width="200" Click="ConfirmBtn_Click"></Button>
+            <StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button  Content="{DynamicResource Guide_Back}" Margin="10" Width="205" Click="BackButton_Click"></Button>
+                <Button  Content="{DynamicResource ChooseLanguagePage_BtnConfirm}" Margin="10" Width="205" Click="ConfirmBtn_Click"></Button>
+            </StackPanel>
         </Grid>
 
         <StackPanel hc:Growl.GrowlParent="True" HorizontalAlignment="Right" Margin="15"/>
     </Grid>
-    
+
 </Page>
