@@ -43,13 +43,13 @@ namespace MisakaTranslator.GuidePages.Hook
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_gamePid != -1)
+            if (_gamePid != -1 && GameProcessCombox.SelectedValue is string selectValueString)
             {
-                GenerateHookerAndGotoNextStep(_processList[(string)GameProcessCombox.SelectedValue]);
+                GenerateHookerAndGotoNextStep(_processList[selectValueString]);
             }
             else
             {
-                HandyControl.Controls.Growl.Error(Application.Current.Resources["ChooseGamePage_NextErrorHint"].ToString());
+                HandyControl.Controls.Growl.Info(Application.Current.Resources["ChooseGamePage_NextErrorHint"].ToString());
             }
         }
 
@@ -77,7 +77,7 @@ namespace MisakaTranslator.GuidePages.Hook
         {
             Common.GameID = Guid.Empty;
             string filepath = ProcessHelper.FindProcessPath(_gamePid, x64GameCheckBox.IsChecked ?? false);
-            if (filepath != "")
+            if (!string.IsNullOrEmpty(filepath))
             {
                 GameInfoBuilder.GameInfo = GameHelper.GetGameByPath(filepath);
                 Common.GameID = GameInfoBuilder.GameInfo.GameID;
