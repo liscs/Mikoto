@@ -98,28 +98,27 @@ namespace MisakaTranslator
             }
             else if (args.XamlPath == "1")
             {
-                if (GuideMode == GuideMode.Hook)
+                switch (GuideMode)
                 {
-                    //Hook方式设置 完成
-                    Common.TransMode = TransMode.Hook;
-                    GameHelper.SaveGameInfo(GameInfoBuilder.GameInfo);
-                }
-                else if (GuideMode == GuideMode.Ocr)
-                {
-                    //OCR方式设置 完成
-                    Common.TransMode = TransMode.Ocr;
-                    GameHelper.SaveGameInfo(GameInfoBuilder.GameInfo);
+                    case GuideMode.Hook:
+                        //Hook方式设置 完成
+                        Common.TransMode = TransMode.Hook;
+                        GameHelper.SaveGameInfo(GameInfoBuilder.GameInfo);
+                        break;
+                    case GuideMode.Ocr:
+                        //OCR方式设置 完成
+                        Common.TransMode = TransMode.Ocr;
+                        GameHelper.SaveGameInfo(GameInfoBuilder.GameInfo);
 
-                }
-                else if (GuideMode == GuideMode.Rehook)
-                {
-                    //Hook方式设置 完成
-                    Common.TransMode = TransMode.Hook;
-                }
-                else if (GuideMode == GuideMode.Clipboard)
-                {
-                    //剪贴板监控方式设置 完成
-                    Common.TransMode = TransMode.Clipboard;
+                        break;
+                    case GuideMode.Rehook:
+                        //Hook方式设置 完成
+                        Common.TransMode = TransMode.Hook;
+                        break;
+                    case GuideMode.Clipboard:
+                        //剪贴板监控方式设置 完成
+                        Common.TransMode = TransMode.Clipboard;
+                        break;
                 }
                 TranslateWindow translateWindow = new();
                 translateWindow.Show();
