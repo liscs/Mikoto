@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace MisakaTranslator.SettingsPages
 {
@@ -120,7 +121,7 @@ namespace MisakaTranslator.SettingsPages
             }
             else
             {
-                MessageBox.Show("找不到TextractorCLI.exe\nCan't find TextractorCLI.exe", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(messageBoxText: Application.Current.Resources["HookSettingsPage_TextractorCLINotExistError"].ToString(), caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
             }
         }
     }

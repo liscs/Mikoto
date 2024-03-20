@@ -53,7 +53,7 @@ namespace MisakaTranslator.GuidePages
         {
             PageChangeRoutedEventArgs args = new PageChangeRoutedEventArgs(PageChange.PageChangeRoutedEvent, this)
             {
-               IsBack = true
+                IsBack = true
             };
             this.RaiseEvent(args);
         }
