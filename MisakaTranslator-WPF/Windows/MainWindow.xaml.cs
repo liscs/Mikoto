@@ -393,6 +393,7 @@ namespace MisakaTranslator
 
         private async void StartBtn_Click(object sender, RoutedEventArgs e)
         {
+            GameHelper.UpdateGameInfoByID(GameInfoList[_gid].GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
             if (!File.Exists(GameInfoList[_gid].FilePath))
             {
                 MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{GameInfoList[_gid].FilePath}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
@@ -401,9 +402,11 @@ namespace MisakaTranslator
             Process.Start(GameInfoList[_gid].FilePath);
             GameInfoDrawer.IsOpen = false;
             await StartTranslateByGid(_gid);
+            Refresh();
         }
         private async void LEStartBtn_Click(object sender, RoutedEventArgs e)
         {
+            GameHelper.UpdateGameInfoByID(GameInfoList[_gid].GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
             if (!File.Exists(GameInfoList[_gid].FilePath))
             {
                 MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{GameInfoList[_gid].FilePath}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
@@ -420,6 +423,7 @@ namespace MisakaTranslator
             Process.Start(p);
             GameInfoDrawer.IsOpen = false;
             await StartTranslateByGid(_gid);
+            Refresh();
         }
 
         /// <summary>

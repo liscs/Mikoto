@@ -32,13 +32,13 @@ namespace MisakaTranslator
             string newName = NameBox.Text;
             if (!string.IsNullOrWhiteSpace(newName) && newName != gameInfolst[gid].GameName)
             {
-                GameHelper.UpdateGameInfoByID(gameInfolst[gid].GameID, "GameName", newName);
+                GameHelper.UpdateGameInfoByID(gameInfolst[gid].GameID, nameof(GameInfo.GameName), newName);
                 needRefresh = true;
             }
             string newPath = PathBox.Text;
             if (File.Exists(newPath) && newPath != gameInfolst[gid].FilePath)
             {
-                GameHelper.UpdateGameInfoByID(gameInfolst[gid].GameID, "FilePath", newPath);
+                GameHelper.UpdateGameInfoByID(gameInfolst[gid].GameID, nameof(GameInfo.FilePath), newPath);
                 needRefresh = true;
             }
             if (needRefresh)
