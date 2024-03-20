@@ -13,9 +13,9 @@
         <Grid>
             <Grid Background="White">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30*"></RowDefinition>
-                    <RowDefinition Height="205*"></RowDefinition>
-                    <RowDefinition Height="40*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" Text="{DynamicResource ChooseTextRepairFuncPage_Introduce}" Margin="10"/>
@@ -28,9 +28,10 @@
                     <hc:TextBox Name="repairedTextBox" TextWrapping="Wrap" Margin="10,0,10,0" Height="100" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource ChooseTextRepairFuncPage_RepairedText}"></hc:TextBox>
 
                 </StackPanel>
-                
-                <Button Grid.Row="2" HorizontalAlignment="Right" Margin="10" Content="{DynamicResource ChooseHookFuncPage_BtnConfirm}" Width="205" Click="ConfirmBtn_Click"/>
-
+                <StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button Margin="10" Content="{DynamicResource Guide_Back}" Width="205" Click="BackButton_Click"/>
+                    <Button HorizontalAlignment="Right" Margin="10" Content="{DynamicResource ChooseHookFuncPage_BtnConfirm}" Width="205" Click="ConfirmBtn_Click"/>
+                </StackPanel>
             </Grid>
 
             <hc:Drawer Name="Single_InputDrawer" MaskCanClose="False">

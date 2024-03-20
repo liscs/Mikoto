@@ -49,12 +49,12 @@ namespace TextHookLibrary
         /// Misaka特殊码列表：一个Misaka特殊码能固定匹配一个入口函数
         /// 此列表就表示当前进程要Hook的函数
         /// </summary>
-        public List<string?> MisakaCodeList;
+        public List<string> MisakaCodeList;
 
         /// <summary>
         /// Hook特殊码列表：用于非首次设置好游戏时，已知特殊码但未知函数入口的情况（一个特殊码对应多个函数入口），这个就是Hook的函数的特殊码列表
         /// </summary>
-        public List<string?> HookCodeList;
+        public List<string> HookCodeList;
 
         /// <summary>
         /// 用户自定义Hook特殊码：用于非首次设置好游戏时，能让系统自动注入一次
@@ -78,8 +78,8 @@ namespace TextHookLibrary
 
         public TextHookHandle(int gamePID)
         {
-            MisakaCodeList = new List<string?>();
-            HookCodeList = new List<string?>();
+            MisakaCodeList = new List<string>();
+            HookCodeList = new List<string>();
             ProcessTextractor = null;
             MaxMemoryProcess = null;
             GamePID = gamePID;
@@ -94,8 +94,8 @@ namespace TextHookLibrary
 
         public TextHookHandle(List<Process> GameProcessList)
         {
-            MisakaCodeList = new List<string?>();
-            HookCodeList = new List<string?>();
+            MisakaCodeList = new List<string>();
+            HookCodeList = new List<string>();
             ProcessTextractor = null;
             GamePID = -1;
             TextractorOutPutHistory = new Queue<string>(1000);
@@ -120,8 +120,8 @@ namespace TextHookLibrary
         public TextHookHandle()
         {
             //剪贴板方式读取专用
-            MisakaCodeList = new List<string?>();
-            HookCodeList = new List<string?>();
+            MisakaCodeList = new List<string>();
+            HookCodeList = new List<string>();
             MaxMemoryProcess = null;
             GamePID = -1;
             PossibleGameProcessList = new Dictionary<Process, bool>();

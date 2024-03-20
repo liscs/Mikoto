@@ -19,8 +19,11 @@
 
         <TextBlock Grid.Row="1" Text="{DynamicResource CompletationPage_Hint}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
 
-        <Button Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Height="Auto" Content="{DynamicResource CompletationPage_BtnConfirm}" Click="ConfirmBtn_Click" />
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Margin="10" Content="{DynamicResource Guide_Back}" FontSize="15" Height="Auto" Click="BackButton_Click"/>
 
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Height="Auto" Content="{DynamicResource CompletationPage_BtnConfirm}" Click="ConfirmBtn_Click" />
+        </StackPanel>
 
     </Grid>
 </Page>

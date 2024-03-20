@@ -160,7 +160,7 @@ namespace MisakaTranslator.SettingsPages.DictionaryPages
                 };
                 buttonRemove.Click += (_, _) =>
                 {
-                    var askResult = HandyControl.Controls.MessageBox.Ask("Do you really want to remove this dictionary?", "Confirmation");
+                    var askResult = HandyControl.Controls.MessageBox.Ask(Application.Current.Resources["EBwinDictPage_RemoveDictAsk"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString());
                     if (askResult == MessageBoxResult.OK)
                     {
                         _ = allDicts.Remove(dict);

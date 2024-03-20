@@ -11,16 +11,17 @@ namespace MisakaTranslator.SettingsPages
         public LESettingsPage()
         {
             InitializeComponent();
-
             PathBox.Text = Common.AppSettings.LEPath;
         }
 
         private void ChoosePathBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog
+            System.Windows.Forms.FolderBrowserDialog dialog = new()
             {
-                Description = Application.Current.Resources["LESettingsPage_ChooseFilePathHint"].ToString()!
+                Description = Application.Current.Resources["LESettingsPage_ChooseFilePathHint"].ToString()!,
+                UseDescriptionForTitle = true,
             };
+
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 if (string.IsNullOrEmpty(dialog.SelectedPath))
@@ -30,9 +31,21 @@ namespace MisakaTranslator.SettingsPages
                 else
                 {
                     PathBox.Text = dialog.SelectedPath;
-                    Common.AppSettings.LEPath = PathBox.Text;
+                    UpdateLEPath();
                 }
             }
+        }
+
+        private void PathBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            UpdateLEPath();
+        }
+
+        private void UpdateLEPath()
+        {
+            Common.AppSettings.LEPath = PathBox.Text;
+            MainWindow? mainWindow = Application.Current.MainWindow as MainWindow;
+            mainWindow?.RefreshLEStartButton();
         }
     }
 }

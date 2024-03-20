@@ -48,5 +48,14 @@ namespace MisakaTranslator.GuidePages
                 this.RaiseEvent(args);
             }
         }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            PageChangeRoutedEventArgs args = new PageChangeRoutedEventArgs(PageChange.PageChangeRoutedEvent, this)
+            {
+                IsBack = true
+            };
+            this.RaiseEvent(args);
+        }
     }
 }

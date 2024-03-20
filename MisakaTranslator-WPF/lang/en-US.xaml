@@ -443,6 +443,12 @@
     <sys:String x:Key="MainWindow_NoAdmin_Hint">Unable to inject games that require administrator status. Do you want to restart the software as an administrator?</sys:String>
     <sys:String x:Key="MainWindow_Drawer_PathHint">Enter new game path</sys:String>
     <sys:String x:Key="SoftwareSettingsPage_EnableAutoCheckUpdate">Automatically check for updates at startup</sys:String>
-
+    <sys:String x:Key="MainWindow_AutoCustomHookError">Waiting for Textractor initialization timeout, we will try to inject custom hooks directly</sys:String>
+    <sys:String x:Key="MainWindow_RestartAdmin_Hint">Do you want to restart the software as an administrator?</sys:String>
+    <sys:String x:Key="ChooseGamePage_FocusSelectGameProcess">Click on the game process</sys:String>
+    <sys:String x:Key="ChooseGamePage_ConfirmFocusSelectGameProcess">Confirm click process</sys:String>
+    <sys:String x:Key="Guide_Back">Previous</sys:String>
+    <sys:String x:Key="MainWindow_LEProcNotExistError"> does not exist, please check whether the LEProc.exe file exists</sys:String>
+    <sys:String x:Key="HookSettingsPage_TextractorCLINotExistError">TextractorCLI.exe not found</sys:String>
 
 </ResourceDictionary>
