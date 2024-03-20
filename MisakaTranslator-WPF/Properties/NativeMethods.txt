@@ -23,3 +23,6 @@ GetWindowThreadProcessId
 
 //获取顶部窗口
 GetTopWindow
+
+//检查进程是否64位
+IsWow64Process

@@ -33,7 +33,6 @@
                     <TextBlock Text="{Binding FocusingProcess}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="10" FontSize="15"></TextBlock>
                 </StackPanel>
             </StackPanel>
-            <CheckBox Grid.Row="3" Name="x64GameCheckBox"  Margin="10" Content="{DynamicResource ChooseGamePage_CBoxX64}" FontSize="15" HorizontalAlignment="Left" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{DynamicResource ChooseGamePage_CBoxX64Hint}" hc:Poptip.Placement="Top"/>
             <StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button Grid.Row="3" Margin="10" Height="Auto" Content="{DynamicResource ChooseGamePage_BtnConfirm}" FontSize="15" Width="250" Click="ConfirmButton_Click"/>
             </StackPanel>

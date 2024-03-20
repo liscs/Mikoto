@@ -63,9 +63,25 @@ namespace MisakaTranslator.GuidePages.Hook
             {
                 Common.TextHooker = new TextHookHandle(_sameNameGameProcessList);
             }
-            if (Common.TextHooker.Init(x64GameCheckBox.IsChecked ?? false ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
+
+            bool isx64 = Is64BitProcess(_gamePid);
+            if (Common.TextHooker.Init(isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
             {
-                GoToNextStep();
+                Common.GameID = Guid.Empty;
+                string filepath = ProcessHelper.FindProcessPath(_gamePid, isx64);
+                if (!string.IsNullOrEmpty(filepath))
+                {
+                    GameInfoBuilder.GameInfo = GameHelper.GetGameByPath(filepath);
+                    Common.GameID = GameInfoBuilder.GameInfo.GameID;
+                    GameInfoBuilder.GameInfo.Isx64 = isx64;
+
+                    //使用路由事件机制通知窗口来完成下一步操作
+                    PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
+                    {
+                        XamlPath = "GuidePages/Hook/ChooseHookFuncPage.xaml",
+                    };
+                    this.RaiseEvent(args);
+                }
             }
             else
             {
@@ -73,23 +89,10 @@ namespace MisakaTranslator.GuidePages.Hook
             }
         }
 
-        private void GoToNextStep()
+        private static bool Is64BitProcess(int pid)
         {
-            Common.GameID = Guid.Empty;
-            string filepath = ProcessHelper.FindProcessPath(_gamePid, x64GameCheckBox.IsChecked ?? false);
-            if (!string.IsNullOrEmpty(filepath))
-            {
-                GameInfoBuilder.GameInfo = GameHelper.GetGameByPath(filepath);
-                Common.GameID = GameInfoBuilder.GameInfo.GameID;
-                GameInfoBuilder.GameInfo.Isx64 = x64GameCheckBox.IsChecked ?? false;
-
-                //使用路由事件机制通知窗口来完成下一步操作
-                PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
-                {
-                    XamlPath = "GuidePages/Hook/ChooseHookFuncPage.xaml",
-                };
-                this.RaiseEvent(args);
-            }
+            PInvoke.IsWow64Process((Windows.Win32.Foundation.HANDLE)Process.GetProcessById(pid).Handle, out Windows.Win32.Foundation.BOOL result);
+            return !result;
         }
 
         private async void SelectWindowButton_Click(object sender, RoutedEventArgs e)
