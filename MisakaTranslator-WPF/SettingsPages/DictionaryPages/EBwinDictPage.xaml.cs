@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using WinRT;
 using Button = System.Windows.Controls.Button;
 using CheckBox = System.Windows.Controls.CheckBox;
 using Cursors = System.Windows.Input.Cursors;
@@ -160,7 +161,7 @@ namespace MisakaTranslator.SettingsPages.DictionaryPages
                 };
                 buttonRemove.Click += (_, _) =>
                 {
-                    var askResult = HandyControl.Controls.MessageBox.Ask("Do you really want to remove this dictionary?", "Confirmation");
+                    var askResult = HandyControl.Controls.MessageBox.Ask(Application.Current.Resources["EBwinDictPage_RemoveDictAsk"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString());
                     if (askResult == MessageBoxResult.OK)
                     {
                         _ = allDicts.Remove(dict);

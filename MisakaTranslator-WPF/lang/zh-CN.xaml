@@ -450,6 +450,7 @@
     <sys:String x:Key="Guide_Back">上一步</sys:String>
     <sys:String x:Key="MainWindow_LEProcNotExistError">不存在，请检查LEProc.exe文件是否存在</sys:String>
     <sys:String x:Key="HookSettingsPage_TextractorCLINotExistError">找不到TextractorCLI.exe</sys:String>
+    <sys:String x:Key="EBwinDictPage_RemoveDictAsk">确定要移除这个词典？</sys:String>
 
 
 </ResourceDictionary>
