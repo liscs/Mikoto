@@ -31,13 +31,13 @@ namespace MisakaTranslator
         public List<GameInfo> GameInfoList { get; set; } = new();
         private int _gid; //当前选中的顺序，并非游戏ID
         private IntPtr _hwnd;
-        public ObservableCollection<Border> GamePanelCollection { get; set; } = new();
 
         public static MainWindow Instance { get; set; } = default!;
 
+        private MainViewModel _viewModel = new();
         public MainWindow()
         {
-            DataContext = GamePanelCollection;
+            DataContext = _viewModel;
             Instance = this;
             Common.AppSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\data\\settings\\settings.ini").Build();
             InitializeLanguage();
@@ -74,6 +74,19 @@ namespace MisakaTranslator
             GameInfoList = GameHelper.GetAllCompletedGames();
             Common.RepairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Environment.CurrentDirectory + "\\data\\settings\\RepairSettings.ini").Build();
             InitGameLibraryPanel();
+            RefreshLEStartButton();
+        }
+
+        public void RefreshLEStartButton()
+        {
+            if (!Path.Exists(Common.AppSettings.LEPath))
+            {
+                _viewModel.LEEnabled = Visibility.Collapsed;
+            }
+            else
+            {
+                _viewModel.LEEnabled = Visibility.Visible;
+            }
         }
 
         /// <summary>
@@ -81,7 +94,7 @@ namespace MisakaTranslator
         /// </summary>
         private void InitGameLibraryPanel()
         {
-            GamePanelCollection.Clear();
+            _viewModel.GamePanelCollection.Clear();
             InitAddGamePanel();
             for (var i = 0; i < GameInfoList.Count; i++)
             {
@@ -120,7 +133,7 @@ namespace MisakaTranslator
             back.MouseEnter += Border_MouseEnter;
             back.MouseLeave += Border_MouseLeave;
             back.MouseLeftButtonDown += Back_MouseLeftButtonDown;
-            GamePanelCollection.Add(back);
+            _viewModel.GamePanelCollection.Add(back);
         }
 
         private void InitAddGamePanel()
@@ -146,7 +159,7 @@ namespace MisakaTranslator
             border.MouseEnter += Border_MouseEnter;
             border.MouseLeave += Border_MouseLeave;
             border.MouseLeftButtonDown += Border_MouseLeftButtonDown;
-            GamePanelCollection.Add(border);
+            _viewModel.GamePanelCollection.Add(border);
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -413,6 +426,11 @@ namespace MisakaTranslator
             var p = new ProcessStartInfo();
             var lePath = Common.AppSettings.LEPath;
             p.FileName = lePath + "\\LEProc.exe";
+            if (!File.Exists(p.FileName))
+            {
+                MessageBox.Show(messageBoxText: $"{p.FileName}{Application.Current.Resources["MainWindow_LEProcNotExistError"]}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
+                return;
+            }
             // 记住加上引号，否则可能会因为路径带空格而无法启动
             p.Arguments = $"-run \"{filepath}\"";
             p.UseShellExecute = false;
@@ -430,7 +448,7 @@ namespace MisakaTranslator
             if (MessageBox.Show(Application.Current.Resources["MainWindow_Drawer_DeleteGameConfirmBox"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 GameHelper.DeleteGameByID(GameInfoList[_gid].GameID);
-                GamePanelCollection.Remove(GamePanelCollection.Where(p => p.Name == $"game{_gid}").First());
+                _viewModel.GamePanelCollection.Remove(_viewModel.GamePanelCollection.Where(p => p.Name == $"game{_gid}").First());
                 GameInfoDrawer.IsOpen = false;
             }
 

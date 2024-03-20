@@ -56,7 +56,7 @@
             </hc:SideMenuItem>
             <hc:SideMenuItem Header="{DynamicResource SettingsMenu_ATSettings}" FontSize="15" Selected="Item_ATSettings_Selected"/>
         </hc:SideMenu>
-        <Frame Grid.Column="1" Name="SettingFrame" Source="../SettingsPages/AboutPage.xaml" NavigationUIVisibility="Hidden"/>
+        <Frame Grid.Column="1" Name="SettingFrame" Source="/SettingsPages/AboutPage.xaml" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
     

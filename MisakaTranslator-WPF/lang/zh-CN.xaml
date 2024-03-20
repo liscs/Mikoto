@@ -448,6 +448,7 @@
     <sys:String x:Key="ChooseGamePage_FocusSelectGameProcess">点选游戏进程</sys:String>
     <sys:String x:Key="ChooseGamePage_ConfirmFocusSelectGameProcess">确认点选进程</sys:String>
     <sys:String x:Key="Guide_Back">上一步</sys:String>
+    <sys:String x:Key="MainWindow_LEProcNotExistError">不存在，请检查LEProc.exe文件是否存在</sys:String>
 
 
 </ResourceDictionary>

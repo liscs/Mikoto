@@ -5,7 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:hc="https://handyorg.github.io/handycontrol"
-    xmlns:fa="http://schemas.fontawesome.io/icons/"
+    xmlns:fa="http://schemas.fontawesome.io/icons/" 
+    xmlns:misakatranslator="clr-namespace:MisakaTranslator" 
+    d:DataContext="{d:DesignInstance Type=misakatranslator:MainViewModel}"
     mc:Ignorable="d"
     d:Height="540" d:Width="960" MinHeight="540" MinWidth="960"
     Title="MisakaTranslator" Icon="/logo.ico"
@@ -24,7 +26,7 @@
         </Grid.ColumnDefinitions>
         <!--游戏列表-->
         <hc:ScrollViewer Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  Margin="10,10,10,10.5" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden" hc:ScrollViewerAttach.Orientation="Horizontal">
-            <ItemsControl ItemsSource="{Binding}">
+            <ItemsControl ItemsSource="{Binding GamePanelCollection}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <hc:WaterfallPanel IsItemsHost="True" Name="GameLibraryPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Height="375" Groups="3" Orientation="Vertical" hc:PanelElement.FluidMoveBehavior="{StaticResource BehaviorXY200}"/>
@@ -92,7 +94,8 @@
                         <Border Padding="30">
                             <hc:ButtonGroup Orientation="Vertical">
                                 <Button Content="{DynamicResource MainWindow_Drawer_Start}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" FontWeight="{DynamicResource ButtonTextWeight}" Background="{DynamicResource SuccessBrush}" Click="StartBtn_Click" BorderBrush="Transparent"/>
-                                <Button Content="{DynamicResource MainWindow_Drawer_LEStart}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" FontWeight="{DynamicResource ButtonTextWeight}" Background="{DynamicResource InfoBrush}" Click="LEStartBtn_Click" BorderBrush="Transparent"/>
+                                <!--检查LE文件存在-->
+                                <Button Visibility="{Binding LEEnabled}" Content="{DynamicResource MainWindow_Drawer_LEStart}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" FontWeight="{DynamicResource ButtonTextWeight}" Background="{DynamicResource InfoBrush}" Click="LEStartBtn_Click" BorderBrush="Transparent"/>
                                 <Button Content="{DynamicResource MainWindow_Drawer_DeleteGame}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" FontWeight="{DynamicResource ButtonTextWeight}" Background="{DynamicResource DangerBrush}" Click="DeleteGameBtn_Click" BorderBrush="Transparent"/>
                                 <Button Content="{DynamicResource MainWindow_Drawer_UpdateName}" Height="50" Margin="5" Foreground="{DynamicResource ButtonTextColor}" FontWeight="{DynamicResource ButtonTextWeight}" Background="{DynamicResource WarningBrush}" Click="UpdateNameBtn_Click" BorderBrush="Transparent"/>
                             </hc:ButtonGroup>
