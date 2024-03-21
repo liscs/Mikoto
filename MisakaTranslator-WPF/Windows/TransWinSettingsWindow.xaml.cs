@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Scripting.Utils;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing.Text;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,7 +17,6 @@ namespace MisakaTranslator
     {
         private TransWinSettingsViewModel _viewModel;
         private TranslateWindow _translateWin;
-        private List<string> _fontList;
 
         public TransWinSettingsWindow(TranslateWindow Win)
         {
@@ -22,23 +25,26 @@ namespace MisakaTranslator
 
             InitializeComponent();
             DataContext = _viewModel;
-            _fontList = new List<string>();
 
-            System.Drawing.Text.InstalledFontCollection fonts = new System.Drawing.Text.InstalledFontCollection();
-            foreach (System.Drawing.FontFamily family in fonts.Families)
-            {
-                _fontList.Add(family.Name);
-            }
-
-            sourceFont.ItemsSource = _fontList;
-            firstFont.ItemsSource = _fontList;
-            secondFont.ItemsSource = _fontList;
+            FontListInit();
 
             EventInit();
 
             UI_Init();
 
             this.Topmost = true;
+        }
+
+        private void FontListInit()
+        {
+            Dispatcher.BeginInvoke(() =>
+            {
+                InstalledFontCollection fonts = new();
+                _viewModel.FontList.AddRange(fonts.Families.Select(p => p.Name));
+                sourceFont.SelectedItem = Common.AppSettings.TF_SrcTextFont;
+                firstFont.SelectedItem = Common.AppSettings.TF_FirstTransTextFont;
+                secondFont.SelectedItem = Common.AppSettings.TF_SecondTransTextFont;
+            });
         }
 
         /// <summary>
@@ -48,20 +54,20 @@ namespace MisakaTranslator
         {
             sourceFont.SelectionChanged += delegate
             {
-                _translateWin.SourceTextFont = _fontList[sourceFont.SelectedIndex];
-                Common.AppSettings.TF_SrcTextFont = _fontList[sourceFont.SelectedIndex];
+                _translateWin.SourceTextFont = _viewModel.FontList[sourceFont.SelectedIndex];
+                Common.AppSettings.TF_SrcTextFont = _viewModel.FontList[sourceFont.SelectedIndex];
             };
 
             firstFont.SelectionChanged += delegate
             {
-                _translateWin.FirstTransText.FontFamily = new FontFamily(_fontList[firstFont.SelectedIndex]);
-                Common.AppSettings.TF_FirstTransTextFont = _fontList[firstFont.SelectedIndex];
+                _translateWin.FirstTransText.FontFamily = new FontFamily(_viewModel.FontList[firstFont.SelectedIndex]);
+                Common.AppSettings.TF_FirstTransTextFont = _viewModel.FontList[firstFont.SelectedIndex];
             };
 
             secondFont.SelectionChanged += delegate
             {
-                _translateWin.SecondTransText.FontFamily = new FontFamily(_fontList[secondFont.SelectedIndex]);
-                Common.AppSettings.TF_SecondTransTextFont = _fontList[secondFont.SelectedIndex];
+                _translateWin.SecondTransText.FontFamily = new FontFamily(_viewModel.FontList[secondFont.SelectedIndex]);
+                Common.AppSettings.TF_SecondTransTextFont = _viewModel.FontList[secondFont.SelectedIndex];
             };
 
             sourceFontSize.ValueChanged += delegate
@@ -176,24 +182,6 @@ namespace MisakaTranslator
             BgColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor) as Brush;
             firstColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor) as Brush;
             secondColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_SecondTransTextColor) as Brush;
-
-            for (int i = 0; i < _fontList.Count; i++)
-            {
-                if (Common.AppSettings.TF_SrcTextFont == _fontList[i])
-                {
-                    sourceFont.SelectedIndex = i;
-                }
-
-                if (Common.AppSettings.TF_FirstTransTextFont == _fontList[i])
-                {
-                    firstFont.SelectedIndex = i;
-                }
-
-                if (Common.AppSettings.TF_SecondTransTextFont == _fontList[i])
-                {
-                    secondFont.SelectedIndex = i;
-                }
-            }
 
             sourceFontSize.Value = Common.AppSettings.TF_SrcTextSize;
             firstFontSize.Value = Common.AppSettings.TF_FirstTransTextSize;
