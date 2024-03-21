@@ -19,7 +19,7 @@
                     <Border Name="BgColorBlock" Margin="10" Width="200" Height="25"/>
                     <CheckBox Name="DropShadowCheckBox" Content="{DynamicResource TransWinSettingsWin_DropShadowCbox}" Margin="10"/>
                     <CheckBox Name="ZenModeCheckBox" Content="{DynamicResource TransWinSettingsWin_ZenMode}" Margin="10" />
-                    <CheckBox IsChecked="{Binding TransAnimationCheckEnabled,Mode=TwoWay}" Content="翻译框启用渐变动画" Margin="10"/>
+                    <CheckBox Content="{DynamicResource TransWinSettingsWindow_EnableBackgroundBlur}" Margin="10" IsChecked="{Binding BackgroundBlurCheckEnabled,Mode=TwoWay}"/>
                 </StackPanel>
 
             </TabItem>
@@ -47,7 +47,7 @@
                     </Grid>
                     <CheckBox Name="KanaBoldCheckBox" Content="{DynamicResource TransWinSettingsWin_KanaBoldCbox}" Margin="10" HorizontalAlignment="Left"/>
                     <CheckBox Name="ColorfulCheckBox" Content="{DynamicResource TransWinSettingsWin_ColorfulCbox}" Margin="10" />
-                    <CheckBox IsChecked="{Binding SrcAnimationCheckEnabled,Mode=TwoWay}" Content="启用渐变动画" Margin="10" />
+                    <CheckBox IsChecked="{Binding SrcAnimationCheckEnabled,Mode=TwoWay}" Content="{DynamicResource TransWinSettingsWindow_EnableFadeAnimation}" Margin="10" />
                     <TextBlock TextWrapping="Wrap" Text="{DynamicResource TransWinSettingsWin_srcSetNotice}" Margin="10" />
 
                 </StackPanel>
@@ -64,6 +64,7 @@
                     <Button Name="firstColorBtn" Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}" Margin="0" Width="200" Style="{DynamicResource ButtonPrimary}" Click="ChooseColorBtn_Click"/>
                     <Border Name="firstColorBlock" Margin="10" Width="200" Height="25"/>
                     <CheckBox Name="firstWhiteStrokeCheckBox" Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}" Margin="10" />
+                    <CheckBox IsChecked="{Binding TransAnimationCheckEnabled,Mode=TwoWay}" Content="{DynamicResource TransWinSettingsWindow_EnableFadeAnimation}" Margin="10"/>
                 </StackPanel>
 
             </TabItem>

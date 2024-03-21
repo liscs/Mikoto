@@ -388,6 +388,9 @@ namespace MisakaTranslator
         [Option(Alias = "TranslateFormSettings.TransAnimationCheckEnabled", DefaultValue = false)]
         bool TF_TransAnimationCheckEnabled { get; set; }
 
+        [Option(Alias = "TranslateFormSettings.BackgroundBlurCheckEnabled", DefaultValue = true)]
+        bool TF_BackgroundBlurCheckEnabled { get; set; }
+
         [Option(Alias = "TranslateFormSettings.SrcTextFont", DefaultValue = "Microsoft YaHei")]
         string TF_SrcTextFont
         {

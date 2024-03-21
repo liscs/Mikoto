@@ -1,10 +1,19 @@
-﻿using System.ComponentModel;
+﻿using MisakaTranslator.Utils;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace MisakaTranslator
 {
     public class TransWinSettingsViewModel : INotifyPropertyChanged
     {
+        readonly Window _translateWindow;
+        public TransWinSettingsViewModel(Window translateWindow)
+        {
+            _translateWindow = translateWindow;
+        }
+
+
         public event PropertyChangedEventHandler? PropertyChanged;
         protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
         {
@@ -46,6 +55,32 @@ namespace MisakaTranslator
             {
                 Common.AppSettings.TF_TransAnimationCheckEnabled = value ?? false;
                 SetProperty(ref _transAnimationCheckEnabled, value);
+            }
+        }
+
+        private bool? _backgroundBlurCheckEnabled;
+
+
+        public bool? BackgroundBlurCheckEnabled
+        {
+            get
+            {
+                _backgroundBlurCheckEnabled = Common.AppSettings.TF_BackgroundBlurCheckEnabled;
+                return _backgroundBlurCheckEnabled;
+            }
+
+            set
+            {
+                if (value ?? true)
+                {
+                    BackgroundBlurHelper.EnableBlur(_translateWindow);
+                }
+                else
+                {
+                    BackgroundBlurHelper.DisableBlur(_translateWindow);
+                }
+                Common.AppSettings.TF_BackgroundBlurCheckEnabled = value ?? true;
+                SetProperty(ref _backgroundBlurCheckEnabled, value);
             }
         }
     }

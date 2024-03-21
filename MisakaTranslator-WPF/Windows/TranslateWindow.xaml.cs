@@ -3,6 +3,7 @@ using FontAwesome.WPF;
 using HandyControl.Controls;
 using KeyboardMouseHookLibrary;
 using MecabHelperLibrary;
+using MisakaTranslator.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -65,7 +66,7 @@ namespace MisakaTranslator
         private ITTS? _tts;
 
         private HWND _winHandle;//窗口句柄，用于设置活动窗口，以达到全屏状态下总在最前的目的
-        private TransWinSettingsWindow _transWinSettingsWindow = default!;
+        private TransWinSettingsWindow? _transWinSettingsWindow;
 
         //Effect 疑似有内存泄露 https://github.com/dotnet/wpf/issues/6782 use frozen
         private readonly DropShadowEffect _dropShadowEffect = new();
@@ -139,11 +140,6 @@ namespace MisakaTranslator
                     Common.TextHooker!.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
                     break;
             }
-
-            Application.Current.Dispatcher.BeginInvoke(() =>
-            {
-                _transWinSettingsWindow = new TransWinSettingsWindow(this);
-            });
 
             SourceTextPanel1.ItemsSource = _sourceTextCollection1;
             SourceTextPanel2.ItemsSource = _sourceTextCollection2;
@@ -1037,6 +1033,7 @@ namespace MisakaTranslator
         private void Settings_Item_Click(object sender, RoutedEventArgs e)
         {
             DispatcherTimer.Stop();
+            _transWinSettingsWindow ??= new TransWinSettingsWindow(this);
             _transWinSettingsWindow.WindowState = WindowState.Normal;
             _transWinSettingsWindow.Show();
         }
@@ -1201,6 +1198,16 @@ namespace MisakaTranslator
         {
             _winHandle = (HWND)new WindowInteropHelper(this).Handle;//记录翻译窗口句柄
 
+            StartDispacherTimer();
+
+            if (Common.AppSettings.TF_BackgroundBlurCheckEnabled)
+            {
+                BackgroundBlurHelper.EnableBlur(this);
+            }
+        }
+
+        private void StartDispacherTimer()
+        {
             DispatcherTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(1)

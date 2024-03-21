@@ -138,7 +138,7 @@ namespace DataAccessLibrary
                 AllCompletedGamesIdDict.Add(gameInfo.GameID, gameInfo);
                 AllCompletedGamesPathDict.Add(gameInfo.FilePath, gameInfo);
             }
-            return list.OrderByDescending(p=>p.LastPlayAt).ThenByDescending(p => p.GameName).ToList();
+            return list.OrderByDescending(p => p.LastPlayAt).ThenByDescending(p => p.GameName).ToList();
         }
 
 
