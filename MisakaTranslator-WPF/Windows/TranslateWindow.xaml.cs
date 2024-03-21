@@ -1163,11 +1163,13 @@ namespace MisakaTranslator
             if (!((sender as ToggleButton)?.IsChecked ?? false))
             {
                 this.Background = new SolidColorBrush(Colors.Transparent);
+                BackgroundBlurHelper.DisableBlur(this);
             }
             else
             {
                 BrushConverter brushConverter = new();
-                this.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor) as Brush;
+                this.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor) as Brush; 
+                BackgroundBlurHelper.EnableBlur(this);
             }
         }
 
