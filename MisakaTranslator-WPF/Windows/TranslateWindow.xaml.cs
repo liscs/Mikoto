@@ -576,7 +576,7 @@ namespace MisakaTranslator
 
         private void UpdateSourceCollection(SuppressibleObservableCollection<UIElement> sourceCollection, string repairedText)
         {
-            if (sourceCollection.Count == 0 || sourceCollection.First() is not TextBox textBox)
+            if (sourceCollection.Count != 1 || sourceCollection.First() is not TextBox textBox)
             {
                 textBox = new()
                 {
@@ -585,7 +585,7 @@ namespace MisakaTranslator
                     Background = Brushes.Transparent,
                     BorderBrush = Brushes.Transparent,
                     Padding = new Thickness(0),
-                    Margin = new Thickness(10, 0, 0, 10),
+                    Margin = new Thickness(0, 0, 0, 0),
                     HorizontalAlignment = HorizontalAlignment.Left,
                     TextWrapping = TextWrapping.Wrap,
                     FontSize = SourceTextFontSize,
@@ -910,7 +910,7 @@ namespace MisakaTranslator
                         FirstTransText.Text = afterString;
                         if (Common.AppSettings.TF_EnableDropShadow)
                         {
-                            FirstTransText.Effect = _dropShadowEffect; ;
+                            FirstTransText.Effect = _dropShadowEffect;
                         }
                         else
                         {
