@@ -39,7 +39,9 @@ namespace MisakaTranslator
             Dispatcher.BeginInvoke(() =>
             {
                 InstalledFontCollection fonts = new();
+                _viewModel.FontList.SuppressNotification = true;
                 _viewModel.FontList.AddRange(fonts.Families.Select(p => p.Name));
+                _viewModel.FontList.SuppressNotification = false;
                 sourceFont.SelectedItem = Common.AppSettings.TF_SrcTextFont;
                 firstFont.SelectedItem = Common.AppSettings.TF_FirstTransTextFont;
                 secondFont.SelectedItem = Common.AppSettings.TF_SecondTransTextFont;

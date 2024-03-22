@@ -576,33 +576,35 @@ namespace MisakaTranslator
 
         private void UpdateSourceCollection(SuppressibleObservableCollection<UIElement> sourceCollection, string repairedText)
         {
-            System.Windows.Controls.TextBox textBox = new()
+            if (sourceCollection.Count == 0 || sourceCollection.First() is not TextBox textBox)
             {
-                TextAlignment = TextAlignment.Left,
-                IsReadOnly = true,
-                Background = new SolidColorBrush(Colors.Transparent),
-                BorderBrush = new SolidColorBrush(Colors.Transparent),
-                Padding = new Thickness(0),
-                Margin = new Thickness(10, 0, 0, 10),
-                HorizontalAlignment = HorizontalAlignment.Left,
-            };
+                textBox = new()
+                {
+                    TextAlignment = TextAlignment.Left,
+                    IsReadOnly = true,
+                    Background = Brushes.Transparent,
+                    BorderBrush = Brushes.Transparent,
+                    Padding = new Thickness(0),
+                    Margin = new Thickness(10, 0, 0, 10),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    TextWrapping = TextWrapping.Wrap,
+                    FontSize = SourceTextFontSize,
+                    Foreground = Brushes.White
+                };
+                textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
+                sourceCollection.Clear();
+                sourceCollection.Add(textBox);
+            }
             if (!string.IsNullOrEmpty(SourceTextFont))
             {
                 FontFamily fontFamily = new(SourceTextFont);
                 textBox.FontFamily = fontFamily;
             }
-            textBox.Text = repairedText;
-            textBox.TextWrapping = TextWrapping.Wrap;
-            textBox.FontSize = SourceTextFontSize;
-            textBox.Background = Brushes.Transparent;
-            textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
             if (Common.AppSettings.TF_EnableDropShadow)
             {
                 textBox.Effect = _dropShadowEffect;
             }
-            textBox.Foreground = Brushes.White;
-            sourceCollection.Clear();
-            sourceCollection.Add(textBox);
+            textBox.Text = repairedText;
         }
 
         private void UpdateSourceCollection(SuppressibleObservableCollection<UIElement> sourceCollection, List<MecabWordInfo> mwi)

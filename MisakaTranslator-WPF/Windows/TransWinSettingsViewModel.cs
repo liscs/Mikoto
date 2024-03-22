@@ -14,7 +14,7 @@ namespace MisakaTranslator
             _translateWindow = translateWindow;
         }
 
-        public ObservableCollection<string> FontList { get; set; } = new();
+        public SuppressibleObservableCollection<string> FontList { get; set; } = new();
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
