@@ -569,6 +569,17 @@ namespace MisakaTranslator
                     _ = FadeInAsync(_sourcePanelReference2, _sourceScrollReference2);
                     await FadeOutAsync(_sourcePanelReference1, _sourceScrollReference1);
                 }
+                else
+                {
+                    Dispatcher.Invoke(() => {
+                        _sourcePanelReference2.Visibility = Visibility.Visible;
+                        _sourcePanelReference2.Opacity = 1;
+                        _sourceScrollReference2.Visibility = Visibility.Visible;
+                        _sourceScrollReference2.ScrollToHome();
+                        _sourcePanelReference1.Visibility = Visibility.Collapsed;
+                        _sourceScrollReference1.Visibility = Visibility.Collapsed;
+                    });
+                }
                 (_sourcePanelReference1, _sourcePanelReference2) = (_sourcePanelReference2, _sourcePanelReference1);
                 (_sourceScrollReference1, _sourceScrollReference2) = (_sourceScrollReference2, _sourceScrollReference1);
             });
