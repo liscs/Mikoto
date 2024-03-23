@@ -65,5 +65,20 @@ namespace MisakaTranslator
                 SetProperty(ref _showSourceIcon, value);
             }
         }
+
+        private bool _copyRubyVisibility = true;
+
+        public bool CopyRubyVisibility
+        {
+            get
+            {
+                return _copyRubyVisibility;
+            }
+
+            set
+            {
+                SetProperty(ref _copyRubyVisibility, value);
+            }
+        }
     }
 }

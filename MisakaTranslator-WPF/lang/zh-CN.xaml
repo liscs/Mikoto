@@ -453,6 +453,8 @@
     <sys:String x:Key="EBwinDictPage_RemoveDictAsk">确定要移除这个词典？</sys:String>
     <sys:String x:Key="TransWinSettingsWindow_EnableFadeAnimation">启用渐变动画</sys:String>
     <sys:String x:Key="TransWinSettingsWindow_EnableBackgroundBlur">启用背景模糊效果</sys:String>
+    <sys:String x:Key="SourceTextMenuItem_Consult">查询</sys:String>
+    <sys:String x:Key="SourceTextMenuItem_CopyRuby">复制注音</sys:String>
 
 
 </ResourceDictionary>

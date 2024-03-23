@@ -153,7 +153,7 @@ namespace MisakaTranslator
             if (!string.IsNullOrWhiteSpace(e.DataObject.GetData("UnicodeText").ToString())) { return; }
 
 
-            string result = await GetSelectionTextFromStackPanelsInRichTextBox(richTextBox);
+            (_, string result) = await GetRubyAndText(richTextBox);
 
             if (!string.IsNullOrEmpty(result))
             {
@@ -162,7 +162,7 @@ namespace MisakaTranslator
             }
         }
 
-        private async Task<string> GetSelectionTextFromStackPanelsInRichTextBox(RichTextBox richTextBox)
+        private async Task<(string, string)> GetRubyAndText(RichTextBox richTextBox)
         {
             FlowDocument flowDocument = _flowDocuments[_updatingFlowDocumentNumber];
             if (flowDocument.Blocks.FirstBlock is Paragraph paragraph)
@@ -176,23 +176,32 @@ namespace MisakaTranslator
                 int start = (int)charOffsetProperty.GetValue(richTextBox.Selection.Start)!;
                 int end = (int)charOffsetProperty.GetValue(richTextBox.Selection.End)!;
 
+
+                StringBuilder copyRubyStringBuilder = new();
                 StringBuilder copyStringBuilder = new();
                 for (int i = start; i < end; i++)
                 {
                     if (list.Count <= i || list[i] is not InlineUIContainer item)
                     {
-                        return string.Empty;
+                        return (string.Empty, string.Empty);
                     }
-                    if (item.Child is StackPanel stackPanel && stackPanel.Children[1] is TextBlock textBlock)
+                    if (item.Child is StackPanel stackPanel)
                     {
-                        copyStringBuilder.Append(textBlock.Text);
+                        if (stackPanel.Children[0] is TextBlock rubyTextBlock)
+                        {
+                            copyRubyStringBuilder.Append(rubyTextBlock.Text);
+                        }
+                        if (stackPanel.Children[1] is TextBlock textBlock)
+                        {
+                            copyStringBuilder.Append(textBlock.Text);
+                        }
                     }
                 }
-                string result = copyStringBuilder.ToString();
+                (string ruby, string text) = (copyRubyStringBuilder.ToString(), copyStringBuilder.ToString());
                 await Task.Delay(1); //莫名需要的延迟
-                return result;
+                return (ruby, text);
             }
-            return string.Empty;
+            return (string.Empty, string.Empty);
         }
 
         private void TTS_Init()
@@ -467,22 +476,9 @@ namespace MisakaTranslator
 
         public int SourceTextFontSize { get => _sourceTextFontSize; set => _sourceTextFontSize = value; }
 
-        private async void DictArea_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is not RichTextBox textBox) { return; }
-
-            string text = await GetSelectdText(textBox);
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                _dictResWindow ??= new DictResWindow(_tts);
-                _dictResWindow.Search(text);
-                _dictResWindow.Show();
-            }
-        }
-
         private async Task<string> GetSelectdText(RichTextBox textBox)
         {
-            string result = await GetSelectionTextFromStackPanelsInRichTextBox(textBox);
+            (_, string result) = await GetRubyAndText(textBox);
             if (string.IsNullOrWhiteSpace(result))
             {
                 result = textBox.Selection.Text;
@@ -1290,6 +1286,45 @@ namespace MisakaTranslator
             }
         }
 
+        private async void SourceRichTextBoxRightClickMenu_Opening(object sender, ContextMenuEventArgs e)
+        {
+            if (sender is RichTextBox richTextBox)
+            {
+                if (await CanCopyRuby(richTextBox))
+                {
+                    _viewModel.CopyRubyVisibility = true;
+                }
+                else
+                {
+                    _viewModel.CopyRubyVisibility = false;
+                }
+            }
+        }
 
+        private async Task<bool> CanCopyRuby(RichTextBox richTextBox)
+        {
+            return !string.IsNullOrWhiteSpace((await GetRubyAndText(richTextBox)).Item2);
+        }
+
+        private async void CopyRubyMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            string ruby = (await GetRubyAndText(_richTextBoxs[_updatingFlowDocumentNumber])).Item1;
+            if (!string.IsNullOrEmpty(ruby))
+            {
+                Clipboard.SetText(ruby);
+                e.Handled = true;
+            }
+        }
+
+        private async void ConsultMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            string text = await GetSelectdText(_richTextBoxs[_updatingFlowDocumentNumber]);
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                _dictResWindow ??= new DictResWindow(_tts);
+                _dictResWindow.Search(text);
+                _dictResWindow.Show();
+            }
+        }
     }
 }

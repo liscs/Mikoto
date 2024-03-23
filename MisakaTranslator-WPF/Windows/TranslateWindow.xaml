@@ -77,8 +77,15 @@
             <hc:SimplePanel Visibility="{Binding SourcePanelVisibility}">
                 <RichTextBox Name="SourceRichTextBox1" Background="Transparent" Foreground="White" 
                              BorderThickness="0" IsReadOnly="True" HorizontalScrollBarVisibility="Auto"
-                             PreviewMouseLeftButtonUp="DictArea_MouseLeftButtonUp"
+                             ContextMenuOpening="SourceRichTextBoxRightClickMenu_Opening"
                              >
+                    <RichTextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="ApplicationCommands.Copy"/>
+                            <MenuItem Header="{DynamicResource SourceTextMenuItem_Consult}" Click="ConsultMenuItem_Click"/>
+                            <MenuItem Header="{DynamicResource SourceTextMenuItem_CopyRuby}" Click="CopyRubyMenuItem_Click" IsEnabled="{Binding CopyRubyVisibility}"/>
+                        </ContextMenu>
+                    </RichTextBox.ContextMenu>
                     <FlowDocument Name="SourceFlowDocument1">
                         <Paragraph/>
                     </FlowDocument>
@@ -86,8 +93,15 @@
                 <RichTextBox Name="SourceRichTextBox2" Background="Transparent" Foreground="White" 
                              BorderThickness="0" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" 
                              Visibility="Collapsed"
-                             PreviewMouseLeftButtonUp="DictArea_MouseLeftButtonUp"
+                             ContextMenuOpening="SourceRichTextBoxRightClickMenu_Opening"
                              >
+                    <RichTextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="ApplicationCommands.Copy"/>
+                            <MenuItem Header="{DynamicResource SourceTextMenuItem_Consult}" Click="ConsultMenuItem_Click"/>
+                            <MenuItem Header="{DynamicResource SourceTextMenuItem_CopyRuby}" Click="CopyRubyMenuItem_Click"  IsEnabled="{Binding CopyRubyVisibility}"/>
+                        </ContextMenu>
+                    </RichTextBox.ContextMenu>
                     <FlowDocument Name="SourceFlowDocument2">
                         <Paragraph/>
                     </FlowDocument>
