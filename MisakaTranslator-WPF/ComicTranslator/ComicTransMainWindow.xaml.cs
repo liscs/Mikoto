@@ -345,7 +345,7 @@ namespace MisakaTranslator.ComicTranslator
 
         private void RealsizeTBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(DicPath + "\\" + ComicImgList[CurrentPos]);
+            Bitmap bitmap = new Bitmap(DicPath + "\\" + ComicImgList[CurrentPos]);
             sourceComicImg.Width = bitmap.Width;
             sourceComicImg.Height = bitmap.Height;
 

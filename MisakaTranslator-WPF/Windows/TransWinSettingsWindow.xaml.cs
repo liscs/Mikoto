@@ -273,7 +273,6 @@ namespace MisakaTranslator
         protected override void OnClosing(CancelEventArgs e)
         {
             e.Cancel = true;
-            _translateWin.DispatcherTimer.Start();
             Hide();
         }
     }

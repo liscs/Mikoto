@@ -441,11 +441,9 @@ namespace MisakaTranslator
             if (textBox == null) { return; }
             if (!string.IsNullOrWhiteSpace(textBox.SelectedText))
             {
-                DispatcherTimer.Stop();
                 _dictResWindow ??= new DictResWindow(_tts);
                 _dictResWindow.Search(textBox.SelectedText);
                 _dictResWindow.Show();
-                DispatcherTimer.Start();
             }
         }
 
@@ -487,6 +485,8 @@ namespace MisakaTranslator
             {
                 repairedText = repairedText.Trim();
             }
+
+            Dispatcher.Invoke(SetWindowTopMost);
             TranslateText(repairedText);
         }
 
@@ -571,7 +571,8 @@ namespace MisakaTranslator
                 }
                 else
                 {
-                    Dispatcher.Invoke(() => {
+                    Dispatcher.Invoke(() =>
+                    {
                         _sourcePanelReference2.Visibility = Visibility.Visible;
                         _sourcePanelReference2.Opacity = 1;
                         _sourceScrollReference2.Visibility = Visibility.Visible;
@@ -1115,7 +1116,6 @@ namespace MisakaTranslator
                 Common.TextHooker = null;
             }
 
-            DispatcherTimer.Stop();
 
             _mecabHelper.Dispose();
 
@@ -1135,7 +1135,6 @@ namespace MisakaTranslator
 
         private void Settings_Item_Click(object sender, RoutedEventArgs e)
         {
-            DispatcherTimer.Stop();
             _transWinSettingsWindow ??= new TransWinSettingsWindow(this);
             _transWinSettingsWindow.WindowState = WindowState.Normal;
             _transWinSettingsWindow.Show();
@@ -1237,10 +1236,8 @@ namespace MisakaTranslator
 
         private void AddNoun_Item_Click(object sender, RoutedEventArgs e)
         {
-            DispatcherTimer.Stop();
             AddOptWindow win = new(_currentsrcText);
             win.ShowDialog();
-            DispatcherTimer.Start();
         }
 
         private void RenewOCR_Item_Click(object sender, RoutedEventArgs e)
@@ -1282,21 +1279,18 @@ namespace MisakaTranslator
                 _tts?.SpeakAsync(_currentsrcText);
         }
 
-        void TickWindowTopMost(object? sender, EventArgs e)
+        void SetWindowTopMost()
         {
             if (this.WindowState != WindowState.Minimized)
             {
-                //定时刷新窗口到顶层
                 PInvoke.SetWindowPos(_winHandle, HWND.HWND_TOPMOST, 0, 0, 0, 0, SET_WINDOW_POS_FLAGS.SWP_NOSIZE | SET_WINDOW_POS_FLAGS.SWP_NOMOVE);
             }
         }
 
         private void ArtificialTransAdd_Item_Click(object sender, RoutedEventArgs e)
         {
-            DispatcherTimer.Stop();
             ArtificialTransAddWindow win = new(_currentsrcText, FirstTransText.Text, SecondTransText.Text);
             win.ShowDialog();
-            DispatcherTimer.Start();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -1317,7 +1311,6 @@ namespace MisakaTranslator
             {
                 Interval = TimeSpan.FromSeconds(1)
             };
-            DispatcherTimer.Tick += TickWindowTopMost;
             DispatcherTimer.Tick += TickClock;
             DispatcherTimer.Start();
         }
