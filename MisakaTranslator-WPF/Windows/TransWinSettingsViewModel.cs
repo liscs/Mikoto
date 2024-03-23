@@ -43,7 +43,6 @@ namespace MisakaTranslator
         }
 
         private bool? _transAnimationCheckEnabled;
-
         public bool? TransAnimationCheckEnabled
         {
             get
@@ -60,8 +59,6 @@ namespace MisakaTranslator
         }
 
         private bool? _backgroundBlurCheckEnabled;
-
-
         public bool? BackgroundBlurCheckEnabled
         {
             get

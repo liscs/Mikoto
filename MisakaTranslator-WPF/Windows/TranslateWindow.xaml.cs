@@ -9,11 +9,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -29,7 +31,7 @@ using TTSHelperLibrary;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
-using TextBox = HandyControl.Controls.TextBox;
+using RichTextBox = System.Windows.Controls.RichTextBox;
 
 namespace MisakaTranslator
 {
@@ -38,7 +40,9 @@ namespace MisakaTranslator
     /// </summary>
     public partial class TranslateWindow
     {
-        public DispatcherTimer DispatcherTimer { get; set; } = new();//定时器 定时将窗口置顶
+        TranslateViewModel _viewModel = new();
+
+        public DispatcherTimer DispatcherTimer { get; set; } = new();//定时器
 
         Process? _gameProcess;
         private ArtificialTransHelper _artificialTransHelper;
@@ -59,8 +63,6 @@ namespace MisakaTranslator
         public volatile bool IsOCRingFlag; //线程锁:判断是否正在OCR线程中，保证同时只有一组在跑OCR
         public bool IsNotPausedFlag; //是否处在暂停状态（专用于OCR）,为真可以翻译
 
-        private bool _enableShowSource; //是否显示原文
-
         private readonly object _saveTransResultLock = new(); // 读写数据库和_gameTextHistory的线程锁
 
         private ITTS? _tts;
@@ -70,17 +72,17 @@ namespace MisakaTranslator
 
         private readonly DropShadowEffect _dropShadowEffect = new();
 
-        private readonly SuppressibleObservableCollection<UIElement> _sourceTextCollection1 = new();
-        private readonly SuppressibleObservableCollection<UIElement> _sourceTextCollection2 = new();
-
         PopupWindow? _historyWindow;
         public TranslateWindow()
         {
             InitializeComponent();
+            DataObject.AddCopyingHandler(SourceRichTextBox1, OnCopy);
+            DataObject.AddCopyingHandler(SourceRichTextBox2, OnCopy);
+
+            DataContext = _viewModel;
             UI_Init();
-
-
-            _enableShowSource = Common.AppSettings.TF_ShowSourceText;
+            _flowDocuments = [SourceFlowDocument1, SourceFlowDocument2];
+            _richTextBoxs = [SourceRichTextBox1, SourceRichTextBox2];
 
             _gameTextHistory = new Queue<HistoryInfo>();
 
@@ -139,17 +141,58 @@ namespace MisakaTranslator
                     Common.TextHooker!.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
                     break;
             }
-
-            SourceTextPanel1.ItemsSource = _sourceTextCollection1;
-            SourceTextPanel2.ItemsSource = _sourceTextCollection2;
-
-            _sourcePanelReference1 = SourceTextPanel1;
-            _sourcePanelReference2 = SourceTextPanel2;
-            _sourceScrollReference1 = SourceScroll1;
-            _sourceScrollReference2 = SourceScroll2;
-
-
             Application.Current.MainWindow.Hide();
+        }
+
+        /// <summary>
+        /// 重写复制有两行内容的富文本框
+        /// </summary>
+        private async void OnCopy(object sender, DataObjectCopyingEventArgs e)
+        {
+            if (sender is not RichTextBox richTextBox) { return; }
+            if (!string.IsNullOrWhiteSpace(e.DataObject.GetData("UnicodeText").ToString())) { return; }
+
+
+            string result = await GetSelectionTextFromStackPanelsInRichTextBox(richTextBox);
+
+            if (!string.IsNullOrEmpty(result))
+            {
+                Clipboard.SetText(result);
+                e.Handled = true;
+            }
+        }
+
+        private async Task<string> GetSelectionTextFromStackPanelsInRichTextBox(RichTextBox richTextBox)
+        {
+            FlowDocument flowDocument = _flowDocuments[_updatingFlowDocumentNumber];
+            if (flowDocument.Blocks.FirstBlock is Paragraph paragraph)
+            {
+                System.Collections.IList list = paragraph.Inlines;
+
+                //从debugger里找出来的这个属性所在的类型
+                Type type = Type.GetType("System.Windows.Documents.ITextPointer, PresentationFramework")!;
+                //莫名的，恰恰符合我们需要的属性
+                PropertyInfo charOffsetProperty = type.GetProperty("CharOffset")!;
+                int start = (int)charOffsetProperty.GetValue(richTextBox.Selection.Start)!;
+                int end = (int)charOffsetProperty.GetValue(richTextBox.Selection.End)!;
+
+                StringBuilder copyStringBuilder = new();
+                for (int i = start; i < end; i++)
+                {
+                    if (list.Count <= i || list[i] is not InlineUIContainer item)
+                    {
+                        return string.Empty;
+                    }
+                    if (item.Child is StackPanel stackPanel && stackPanel.Children[1] is TextBlock textBlock)
+                    {
+                        copyStringBuilder.Append(textBlock.Text);
+                    }
+                }
+                string result = copyStringBuilder.ToString();
+                await Task.Delay(1); //莫名需要的延迟
+                return result;
+            }
+            return string.Empty;
         }
 
         private void TTS_Init()
@@ -242,17 +285,6 @@ namespace MisakaTranslator
         /// </summary>
         private void UI_Init()
         {
-
-            _enableShowSource = Common.AppSettings.TF_ShowSourceText;
-            if (_enableShowSource)
-            {
-                ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Eye);
-            }
-            else
-            {
-                ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.EyeSlash);
-            }
-
             SourceTextFontSize = (int)Common.AppSettings.TF_SrcTextSize;
             FirstTransText.FontSize = Common.AppSettings.TF_FirstTransTextSize;
             SecondTransText.FontSize = Common.AppSettings.TF_SecondTransTextSize;
@@ -435,16 +467,27 @@ namespace MisakaTranslator
 
         public int SourceTextFontSize { get => _sourceTextFontSize; set => _sourceTextFontSize = value; }
 
-        private void DictArea_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private async void DictArea_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            System.Windows.Controls.TextBox? textBox = sender as System.Windows.Controls.TextBox;
-            if (textBox == null) { return; }
-            if (!string.IsNullOrWhiteSpace(textBox.SelectedText))
+            if (sender is not RichTextBox textBox) { return; }
+
+            string text = await GetSelectdText(textBox);
+            if (!string.IsNullOrWhiteSpace(text))
             {
                 _dictResWindow ??= new DictResWindow(_tts);
-                _dictResWindow.Search(textBox.SelectedText);
+                _dictResWindow.Search(text);
                 _dictResWindow.Show();
             }
+        }
+
+        private async Task<string> GetSelectdText(RichTextBox textBox)
+        {
+            string result = await GetSelectionTextFromStackPanelsInRichTextBox(textBox);
+            if (string.IsNullOrWhiteSpace(result))
+            {
+                result = textBox.Selection.Text;
+            }
+            return result;
         }
 
         SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new();
@@ -522,11 +565,6 @@ namespace MisakaTranslator
         }
 
 
-        private ItemsControl _sourcePanelReference1 = new();
-        private ItemsControl _sourcePanelReference2 = new();
-        private HandyControl.Controls.ScrollViewer _sourceScrollReference1 = new();
-        private HandyControl.Controls.ScrollViewer _sourceScrollReference2 = new();
-
         /// <summary>
         /// 更新原文
         /// 注意执行过程中调用了StackPanel等UI组件，必须交回主线程才能执行。
@@ -534,17 +572,11 @@ namespace MisakaTranslator
         /// <param name="repairedText">原文</param>
         private async void UpdateSourceAsync(string repairedText)
         {
-            if (_sourcePanelReference2.ItemsSource is not SuppressibleObservableCollection<UIElement> sourceCollection) return;
-            if (!_enableShowSource)
+            if (!Common.AppSettings.TF_ShowSourceText)
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    _sourceTextCollection1.Clear();
-                    _sourceTextCollection2.Clear();
-                });
                 return;
             }
-            await Task.Run(async () =>
+            await Task.Run(() =>
             {
                 //3.分词
                 if (Common.UsingSrcLang == "ja"
@@ -552,211 +584,156 @@ namespace MisakaTranslator
                     && (Common.AppSettings.TF_EnablePhoneticNotation || Common.AppSettings.TF_EnableColorful))
                 {
                     var mwi = _mecabHelper.SentenceHandle(repairedText);
-                    _ = Application.Current.Dispatcher.BeginInvoke(() =>
+                    Application.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        UpdateSourceCollection(sourceCollection, mwi);
+                        UpdateSourceCollectionAsync(mwi);
                     });
                 }
                 else
                 {
-                    _ = Application.Current.Dispatcher.BeginInvoke(() =>
+                    Application.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        UpdateSourceCollection(sourceCollection, repairedText);
+                        UpdateSourceCollectionAsync(repairedText);
                     });
                 }
-                if (Common.AppSettings.TF_SrcAnimationCheckEnabled)
-                {
-                    _ = FadeInAsync(_sourcePanelReference2, _sourceScrollReference2);
-                    await FadeOutAsync(_sourcePanelReference1, _sourceScrollReference1);
-                }
-                else
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        _sourcePanelReference2.Visibility = Visibility.Visible;
-                        _sourcePanelReference2.Opacity = 1;
-                        _sourceScrollReference2.Visibility = Visibility.Visible;
-                        _sourceScrollReference2.ScrollToHome();
-                        _sourcePanelReference1.Visibility = Visibility.Collapsed;
-                        _sourceScrollReference1.Visibility = Visibility.Collapsed;
-                    });
-                }
-                (_sourcePanelReference1, _sourcePanelReference2) = (_sourcePanelReference2, _sourcePanelReference1);
-                (_sourceScrollReference1, _sourceScrollReference2) = (_sourceScrollReference2, _sourceScrollReference1);
             });
         }
 
-        private void UpdateSourceCollection(SuppressibleObservableCollection<UIElement> sourceCollection, string repairedText)
+        private async void UpdateSourceCollectionAsync(string repairedText)
         {
-            if (sourceCollection.Count != 1 || sourceCollection.First() is not TextBox textBox)
-            {
-                textBox = new()
-                {
-                    TextAlignment = TextAlignment.Left,
-                    IsReadOnly = true,
-                    Background = Brushes.Transparent,
-                    BorderBrush = Brushes.Transparent,
-                    Padding = new Thickness(0),
-                    Margin = new Thickness(0, 0, 0, 0),
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    TextWrapping = TextWrapping.Wrap,
-                    FontSize = SourceTextFontSize,
-                    Foreground = Brushes.White
-                };
-                textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
-                sourceCollection.Clear();
-                sourceCollection.Add(textBox);
-            }
+            Paragraph p = new();
+
+            p.Inlines.Add(new Run(repairedText));
+
+            await AnimatedUpdateFlowDocument(p);
+        }
+
+        private async Task AnimatedUpdateFlowDocument(Paragraph p)
+        {
+            SwitchUpdatingNumber();
+
+            RichTextBox richTextBox = _richTextBoxs[_updatingFlowDocumentNumber];
+            richTextBox.FontSize = SourceTextFontSize;
             if (!string.IsNullOrEmpty(SourceTextFont))
             {
-                FontFamily fontFamily = new(SourceTextFont);
-                textBox.FontFamily = fontFamily;
+                richTextBox.FontFamily = new FontFamily(SourceTextFont);
             }
             if (Common.AppSettings.TF_EnableDropShadow)
             {
-                textBox.Effect = _dropShadowEffect;
+                richTextBox.Effect = _dropShadowEffect;
             }
-            textBox.Text = repairedText;
+            else
+            {
+                richTextBox.Effect = null;
+            }
+
+            if (Common.AppSettings.TF_SrcAnimationCheckEnabled)
+            {
+                await StartSourceSwitchAnimationAsync();
+            }
+            FlowDocument flowDocument = _flowDocuments[_updatingFlowDocumentNumber];
+            flowDocument.Blocks.Remove(flowDocument.Blocks.LastBlock);
+            flowDocument.Blocks.Add(p);
         }
 
-        private void UpdateSourceCollection(SuppressibleObservableCollection<UIElement> sourceCollection, List<MecabWordInfo> mwi)
+        private async void UpdateSourceCollectionAsync(List<MecabWordInfo> mwi)
         {
-            sourceCollection.SuppressNotification = true;
+            Paragraph p = new();
+
             //分词后结果显示
             for (int i = 0; i < mwi.Count; i++)
             {
                 MecabWordInfo v = mwi[i];
                 if (Common.AppSettings.TF_EnablePhoneticNotation)
                 {
-                    if (sourceCollection.Count > i)
+                    StackPanel stackPanel = new()
                     {
-                        if (sourceCollection[i] is StackPanel stackPanel)
-                        {
-                            UpdateNotationTextBlock(v, (TextBlock)stackPanel.Children[0]);
-                            UpdateTextBox(v, (TextBox)stackPanel.Children[1]);
-                        }
-                        else
-                        {
-                            StackPanel newStackPanel = new()
-                            {
-                                Orientation = Orientation.Vertical,
-                                Margin = new Thickness(5, 0, 0, 5)
-                            };
-                            newStackPanel.Children.Add(CreateNotationTextBlock(v));
-                            newStackPanel.Children.Add(CreateTextBox(v));
-                            sourceCollection[i] = newStackPanel;
-                        }
-                    }
-                    else
-                    {
-                        StackPanel stackPanel = new()
-                        {
-                            Orientation = Orientation.Vertical,
-                            Margin = new Thickness(5, 0, 0, 5)
-                        };
-                        stackPanel.Children.Add(CreateNotationTextBlock(v));
-                        stackPanel.Children.Add(CreateTextBox(v));
-                        sourceCollection.Add(stackPanel);
-                    }
+                        Orientation = Orientation.Vertical,
+                        Margin = new Thickness(0)
+                    };
+                    stackPanel.Children.Add(CreateRubyTextBlock(v));
+                    stackPanel.Children.Add(CreateSourceTextBlock(v));
+                    p.Inlines.Add(stackPanel);
                 }
                 else
                 {
-                    if (sourceCollection.Count > i)
-                    {
-                        if (sourceCollection[i] is TextBox textBox)
-                        {
-                            UpdateTextBox(v, textBox);
-                        }
-                        else
-                        {
-                            sourceCollection[i] = CreateTextBox(v);
-                        }
-                    }
-                    else
-                    {
-                        sourceCollection.Add(CreateTextBox(v));
-                    }
+                    p.Inlines.Add(CreateColoredRun(v));
                 }
-                sourceCollection[i].Visibility = Visibility.Visible;
             }
-            const int INVISIBLE_LIMIT = 50;
-            while (sourceCollection.Count > mwi.Count + INVISIBLE_LIMIT)
-            {
-                sourceCollection.RemoveAt(sourceCollection.Count - 1);
-            }
-            for (int i = mwi.Count; i < sourceCollection.Count; i++)
-            {
-                sourceCollection[i].Visibility = Visibility.Collapsed;
-            }
-            sourceCollection.SuppressNotification = false;
+
+            await AnimatedUpdateFlowDocument(p);
         }
 
-        private TextBox CreateTextBox(MecabWordInfo info)
+        private static Run CreateColoredRun(MecabWordInfo info)
         {
-            TextBox textBox = new()
+            Run run = new(info.Word);
+            if (Common.AppSettings.TF_EnableColorful)
             {
-                IsReadOnly = true,
-                BorderBrush = new SolidColorBrush(Colors.Transparent),
+                run.Foreground = GetWordColorBrush(info.PartOfSpeech);
+            }
+            return run;
+        }
+
+        static int _updatingFlowDocumentNumber = 0;
+        private List<FlowDocument> _flowDocuments;
+        private List<RichTextBox> _richTextBoxs;
+
+        static void SwitchUpdatingNumber()
+        {
+            _updatingFlowDocumentNumber = 1 - _updatingFlowDocumentNumber;
+        }
+
+        private async Task StartSourceSwitchAnimationAsync()
+        {
+            _ = FadeInAsync(_richTextBoxs[_updatingFlowDocumentNumber]);
+            await FadeOutAsync(_richTextBoxs[1 - _updatingFlowDocumentNumber]);
+        }
+
+        private TextBlock CreateSourceTextBlock(MecabWordInfo info)
+        {
+            TextBlock textBox = new()
+            {
                 Padding = new Thickness(0),
-                Margin = new Thickness(0, 0, 0, 0),
+                Margin = new Thickness(0),
                 FontSize = SourceTextFontSize,
                 Background = Brushes.Transparent,
                 HorizontalAlignment = HorizontalAlignment.Center,
             };
-            textBox.PreviewMouseLeftButtonUp += DictArea_MouseLeftButtonUp;
             return UpdateTextBox(info, textBox);
         }
 
-        private TextBox UpdateTextBox(MecabWordInfo info, TextBox textBox)
+        private static TextBlock UpdateTextBox(MecabWordInfo info, TextBlock textBlock)
         {
-            textBox.Text = info.Word;
-
-            if (!string.IsNullOrEmpty(SourceTextFont))
-            {
-                FontFamily fontFamily = new(SourceTextFont);
-                textBox.FontFamily = fontFamily;
-            }
-
-            if (Common.AppSettings.TF_EnableDropShadow)
-            {
-                //加入原文的阴影
-                textBox.Effect = _dropShadowEffect;
-            }
-
+            textBlock.Text = info.Word;
             if (Common.AppSettings.TF_EnableColorful)
             {
-                PaintWord(info.PartOfSpeech, textBox);
+                textBlock.Foreground = GetWordColorBrush(info.PartOfSpeech);
             }
-            else
-            {
-                textBox.Foreground = Brushes.White;
-            }
-
-            return textBox;
+            return textBlock;
         }
 
-        private TextBlock CreateNotationTextBlock(MecabWordInfo info)
+        private TextBlock CreateRubyTextBlock(MecabWordInfo info)
         {
-            TextBlock NotationTextBlock = new()
+            TextBlock rubyTextBlock = new()
             {
                 Background = Brushes.Transparent,
                 Foreground = Brushes.White,
-                Margin = new Thickness(0, 0, 0, 2),
+                Margin = new Thickness(0),
                 HorizontalAlignment = HorizontalAlignment.Center
             };
 
-            return UpdateNotationTextBlock(info, NotationTextBlock);
+            return UpdateRubyTextBlock(info, rubyTextBlock);
         }
 
-        private TextBlock UpdateNotationTextBlock(MecabWordInfo info, TextBlock NotationTextBlock)
+        private TextBlock UpdateRubyTextBlock(MecabWordInfo info, TextBlock rubyTextBlock)
         {
-            if (!string.IsNullOrEmpty(SourceTextFont))
+            if (Common.AppSettings.TF_EnableColorful)
             {
-                FontFamily fontFamily = new(SourceTextFont);
-                NotationTextBlock.FontFamily = fontFamily;
+                rubyTextBlock.Foreground = GetWordColorBrush(info.PartOfSpeech);
             }
+
             //选择平假名或者片假名
-            NotationTextBlock.Text = Common.AppSettings.TF_PhoneticNotationType switch
+            rubyTextBlock.Text = Common.AppSettings.TF_PhoneticNotationType switch
             {
                 PhoneticNotationType.Hiragana => info.Hiragana,
                 PhoneticNotationType.Katakana => info.Katakana,
@@ -764,34 +741,27 @@ namespace MisakaTranslator
                 _ => info.Hiragana,
             };
 
-            if (Common.AppSettings.TF_EnableDropShadow)
-            {
-                //加入注音的阴影
-                NotationTextBlock.Effect = _dropShadowEffect;
-            }
-
             if (SourceTextFontSize - 6.5 > 0)
             {
-                NotationTextBlock.FontSize = SourceTextFontSize - 6.5;
+                rubyTextBlock.FontSize = SourceTextFontSize - 6.5;
                 if (Common.AppSettings.TF_EnableSuperBold)
                 {
                     //注音加粗
-                    NotationTextBlock.FontWeight = FontWeights.Bold;
+                    rubyTextBlock.FontWeight = FontWeights.Bold;
                 }
             }
             else
             {
-                NotationTextBlock.FontSize = 1;
+                rubyTextBlock.FontSize = 1;
             }
 
-            return NotationTextBlock;
+            return rubyTextBlock;
         }
 
-        private static void PaintWord(string partOfSpeech, System.Windows.Controls.TextBox textBox)
+        private static SolidColorBrush GetWordColorBrush(string partOfSpeech)
         {
-            textBox.TextAlignment = TextAlignment.Center;
             //根据不同词性跟字体上色
-            textBox.Foreground = partOfSpeech switch
+            return partOfSpeech switch
             {
                 "補助記号" or "空白" => Brushes.White,
                 "動詞" => Brushes.YellowGreen,
@@ -813,24 +783,23 @@ namespace MisakaTranslator
             };
         }
 
-        private static async Task FadeInAsync(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
+        private static async Task FadeInAsync(RichTextBox richTextBox)
         {
-            await Application.Current.Dispatcher.BeginInvoke(() => FadeIn(uiElement, scrollViewer));
+            await Application.Current.Dispatcher.BeginInvoke(() => FadeIn(richTextBox));
         }
 
-        private static async Task FadeOutAsync(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
+        private static async Task FadeOutAsync(RichTextBox richTextBox)
         {
-            await Application.Current.Dispatcher.BeginInvoke(() => FadeOut(uiElement, scrollViewer));
+            await Application.Current.Dispatcher.BeginInvoke(() => FadeOut(richTextBox));
         }
 
         private const double FADE_DURATION = 0.3;
-        private static void FadeIn(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
+        private static void FadeIn(RichTextBox richTextBox)
         {
-            uiElement.Opacity = 0;
-            scrollViewer.Visibility = Visibility.Visible;
-            scrollViewer.ScrollToHome();
-            uiElement.Visibility = Visibility.Visible;
-            uiElement.BeginAnimation(OpacityProperty, _fadeinAnimation);
+            richTextBox.Visibility = Visibility.Visible;
+            richTextBox.Opacity = 0;
+            richTextBox.ScrollToHome();
+            richTextBox.BeginAnimation(OpacityProperty, _fadeinAnimation);
         }
 
         readonly static DoubleAnimation _fadeinAnimation = InitFadeinAnimation();
@@ -846,9 +815,9 @@ namespace MisakaTranslator
             return fadeinAnimation;
         }
 
-        private static void FadeOut(UIElement uiElement, HandyControl.Controls.ScrollViewer scrollViewer)
+        private static void FadeOut(RichTextBox richTextBox)
         {
-            uiElement.Opacity = 1;
+            richTextBox.Opacity = 1;
 
             DoubleAnimation fadeoutAnimation = new()
             {
@@ -858,11 +827,10 @@ namespace MisakaTranslator
             };
             fadeoutAnimation.Completed += (_, _) =>
             {
-                scrollViewer.Visibility = Visibility.Collapsed;
-                uiElement.Visibility = Visibility.Collapsed;
+                richTextBox.Visibility = Visibility.Collapsed;
             };
             fadeoutAnimation.Freeze();
-            uiElement.BeginAnimation(OpacityProperty, fadeoutAnimation);
+            richTextBox.BeginAnimation(OpacityProperty, fadeoutAnimation);
         }
 
         /// <summary>
@@ -1084,16 +1052,14 @@ namespace MisakaTranslator
 
         private void ShowSource_Item_Click(object sender, RoutedEventArgs e)
         {
-            _enableShowSource = !_enableShowSource;
-            if (_enableShowSource)
+            if (_viewModel.ShowSourceIcon == FontAwesomeIcon.Eye)
             {
-                ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Eye);
+                _viewModel.ShowSourceIcon = FontAwesomeIcon.EyeSlash;
             }
             else
             {
-                ShowSourceButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.EyeSlash);
+                _viewModel.ShowSourceIcon = FontAwesomeIcon.Eye;
             }
-            Common.AppSettings.TF_ShowSourceText = _enableShowSource;
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -1323,5 +1289,7 @@ namespace MisakaTranslator
                 TimeTextBlock.Text = nowTime;
             }
         }
+
+
     }
 }

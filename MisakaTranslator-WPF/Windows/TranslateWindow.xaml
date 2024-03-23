@@ -5,7 +5,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
-        xmlns:local="clr-namespace:MisakaTranslator"
+        xmlns:local="clr-namespace:MisakaTranslator" d:DataContext="{d:DesignInstance Type=local:TranslateViewModel}"
         mc:Ignorable="d"
         WindowStyle="None" AllowsTransparency="True"
         Title="TranslateWindow" Height="450" MinHeight="32" Width="800" MinWidth="384"
@@ -60,7 +60,7 @@
             <StackPanel HorizontalAlignment="Center">
                 <Button fa:Awesome.Content="Pause" Name="PauseButton" Click="Pause_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_Pause}" />
                 <Button fa:Awesome.Content="Repeat" Click="RenewOCR_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_RenewOCR}" />
-                <Button fa:Awesome.Content="EyeSlash" Name="ShowSourceButton" Click="ShowSource_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_ShowSource}" />
+                <Button fa:Awesome.Content="{Binding ShowSourceIcon,Mode=TwoWay}" Name="ShowSourceButton" Click="ShowSource_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_ShowSource}" />
                 <Button fa:Awesome.Content="History" Click="History_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_History}" />
                 <Button fa:Awesome.Content="Edit" Click="AddNoun_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_AddNounTrans}" />
                 <Button fa:Awesome.Content="UserPlus" Click="ArtificialTransAdd_Item_Click" ToolTip="{DynamicResource TranslateWin_Menu_ATadd}" />
@@ -74,26 +74,24 @@
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1" Margin="10" Orientation="Vertical">
-            <hc:SimplePanel>
-                <!--实现淡入淡出同时进行需要两个框-->
-                <hc:ScrollViewer Name="SourceScroll1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden" hc:ScrollViewerAttach.Orientation="Horizontal">
-                    <ItemsControl Name="SourceTextPanel1">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel IsItemsHost="True" Margin="10,0,10,5" Orientation="Horizontal" Background="Transparent" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                </hc:ScrollViewer>
-                <hc:ScrollViewer Name="SourceScroll2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden" hc:ScrollViewerAttach.Orientation="Horizontal">
-                    <ItemsControl Name="SourceTextPanel2">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel IsItemsHost="True" Margin="10,0,10,5" Orientation="Horizontal" Background="Transparent" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                </hc:ScrollViewer>
+            <hc:SimplePanel Visibility="{Binding SourcePanelVisibility}">
+                <RichTextBox Name="SourceRichTextBox1" Background="Transparent" Foreground="White" 
+                             BorderThickness="0" IsReadOnly="True" HorizontalScrollBarVisibility="Auto"
+                             PreviewMouseLeftButtonUp="DictArea_MouseLeftButtonUp"
+                             >
+                    <FlowDocument Name="SourceFlowDocument1">
+                        <Paragraph/>
+                    </FlowDocument>
+                </RichTextBox>
+                <RichTextBox Name="SourceRichTextBox2" Background="Transparent" Foreground="White" 
+                             BorderThickness="0" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" 
+                             Visibility="Collapsed"
+                             PreviewMouseLeftButtonUp="DictArea_MouseLeftButtonUp"
+                             >
+                    <FlowDocument Name="SourceFlowDocument2">
+                        <Paragraph/>
+                    </FlowDocument>
+                </RichTextBox>
             </hc:SimplePanel>
             <hc:OutlineText Text="{DynamicResource TranslateWin_WaitingSource}" 
                             Fill="White" Stroke="Black" StrokeThickness="0.7" FontWeight="Bold" Name="FirstTransText" Margin="10,0,10,5" TextWrapping="Wrap" StrokePosition="Outside"></hc:OutlineText>
