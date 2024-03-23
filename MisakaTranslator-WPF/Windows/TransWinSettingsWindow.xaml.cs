@@ -25,8 +25,6 @@ namespace MisakaTranslator
             InitializeComponent();
             DataContext = _viewModel;
 
-            FontListInit();
-
             EventInit();
 
             UI_Init();
@@ -36,16 +34,23 @@ namespace MisakaTranslator
 
         private void FontListInit()
         {
-            Dispatcher.BeginInvoke(() =>
-            {
-                InstalledFontCollection fonts = new();
-                _viewModel.FontList.SuppressNotification = true;
-                _viewModel.FontList.AddRange(fonts.Families.Select(p => p.Name));
-                _viewModel.FontList.SuppressNotification = false;
-                sourceFont.SelectedItem = Common.AppSettings.TF_SrcTextFont;
-                firstFont.SelectedItem = Common.AppSettings.TF_FirstTransTextFont;
-                secondFont.SelectedItem = Common.AppSettings.TF_SecondTransTextFont;
-            });
+            Application.Current.Dispatcher.BeginInvoke(() =>
+               {
+                   InstalledFontCollection fonts = new();
+                   _viewModel.FontList.Clear();
+                   _viewModel.FontList.SuppressNotification = true;
+                   sourceFont.BeginInit();
+                   firstFont.BeginInit();
+                   secondFont.BeginInit();
+                   _viewModel.FontList.AddRange(fonts.Families.Select(p => p.Name));
+                   _viewModel.FontList.SuppressNotification = false;
+                   sourceFont.SelectedItem = Common.AppSettings.TF_SrcTextFont;
+                   firstFont.SelectedItem = Common.AppSettings.TF_FirstTransTextFont;
+                   secondFont.SelectedItem = Common.AppSettings.TF_SecondTransTextFont;
+                   sourceFont.EndInit();
+                   firstFont.EndInit();
+                   secondFont.EndInit();
+               });
         }
 
         /// <summary>
@@ -55,18 +60,30 @@ namespace MisakaTranslator
         {
             sourceFont.SelectionChanged += delegate
             {
+                if (sourceFont.SelectedIndex == -1)
+                {
+                    return;
+                }
                 _translateWin.SourceTextFont = _viewModel.FontList[sourceFont.SelectedIndex];
                 Common.AppSettings.TF_SrcTextFont = _viewModel.FontList[sourceFont.SelectedIndex];
             };
 
             firstFont.SelectionChanged += delegate
             {
+                if (sourceFont.SelectedIndex == -1)
+                {
+                    return;
+                }
                 _translateWin.FirstTransText.FontFamily = new FontFamily(_viewModel.FontList[firstFont.SelectedIndex]);
                 Common.AppSettings.TF_FirstTransTextFont = _viewModel.FontList[firstFont.SelectedIndex];
             };
 
             secondFont.SelectionChanged += delegate
             {
+                if (sourceFont.SelectedIndex == -1)
+                {
+                    return;
+                }
                 _translateWin.SecondTransText.FontFamily = new FontFamily(_viewModel.FontList[secondFont.SelectedIndex]);
                 Common.AppSettings.TF_SecondTransTextFont = _viewModel.FontList[secondFont.SelectedIndex];
             };
@@ -179,6 +196,14 @@ namespace MisakaTranslator
         /// </summary>
         private void UI_Init()
         {
+
+            _viewModel.FontList.Add(Common.AppSettings.TF_SrcTextFont);
+            _viewModel.FontList.Add(Common.AppSettings.TF_FirstTransTextFont);
+            _viewModel.FontList.Add(Common.AppSettings.TF_SecondTransTextFont);
+            sourceFont.SelectedItem = Common.AppSettings.TF_SrcTextFont;
+            firstFont.SelectedItem = Common.AppSettings.TF_FirstTransTextFont;
+            secondFont.SelectedItem = Common.AppSettings.TF_SecondTransTextFont;
+
             BrushConverter brushConverter = new BrushConverter();
             BgColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor) as Brush;
             firstColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor) as Brush;
@@ -274,6 +299,18 @@ namespace MisakaTranslator
         {
             e.Cancel = true;
             Hide();
+        }
+
+
+        bool _fontInited = false;
+
+        private void Font_ContextMenuOpening(object sender, System.EventArgs e)
+        {
+            if (_fontInited == false)
+            {
+                FontListInit();
+                _fontInited = true;
+            }
         }
     }
 }
