@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -16,7 +17,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -149,11 +149,10 @@ namespace MisakaTranslator
         /// </summary>
         private async void OnCopy(object sender, DataObjectCopyingEventArgs e)
         {
-            if (sender is not RichTextBox richTextBox) { return; }
             if (!string.IsNullOrWhiteSpace(e.DataObject.GetData("UnicodeText").ToString())) { return; }
 
 
-            (_, string result) = await GetRubyAndText(richTextBox);
+            (_, string result) = await GetRubyAndText(_richTextBoxs[_updatingFlowDocumentNumber], _flowDocuments[_updatingFlowDocumentNumber]);
 
             if (!string.IsNullOrEmpty(result))
             {
@@ -162,20 +161,13 @@ namespace MisakaTranslator
             }
         }
 
-        private async Task<(string, string)> GetRubyAndText(RichTextBox richTextBox)
+        private static async Task<(string, string)> GetRubyAndText(RichTextBox richTextBox, FlowDocument flowDocument)
         {
-            FlowDocument flowDocument = _flowDocuments[_updatingFlowDocumentNumber];
             if (flowDocument.Blocks.FirstBlock is Paragraph paragraph)
             {
                 System.Collections.IList list = paragraph.Inlines;
 
-                //从debugger里找出来的这个属性所在的类型
-                Type type = Type.GetType("System.Windows.Documents.ITextPointer, PresentationFramework")!;
-                //莫名的，恰恰符合我们需要的属性
-                PropertyInfo charOffsetProperty = type.GetProperty("CharOffset")!;
-                int start = (int)charOffsetProperty.GetValue(richTextBox.Selection.Start)!;
-                int end = (int)charOffsetProperty.GetValue(richTextBox.Selection.End)!;
-
+                GetSelectionRangeIndex(richTextBox, out int start, out int end);
 
                 StringBuilder copyRubyStringBuilder = new();
                 StringBuilder copyStringBuilder = new();
@@ -202,6 +194,16 @@ namespace MisakaTranslator
                 return (ruby, text);
             }
             return (string.Empty, string.Empty);
+        }
+
+        private static void GetSelectionRangeIndex(RichTextBox richTextBox, out int start, out int end)
+        {
+            //从debugger里找出来的这个属性所在的类型
+            Type type = Type.GetType("System.Windows.Documents.ITextPointer, PresentationFramework")!;
+            //莫名的，恰恰符合我们需要的属性
+            PropertyInfo charOffsetProperty = type.GetProperty("CharOffset")!;
+            start = (int)charOffsetProperty.GetValue(richTextBox.Selection.Start)!;
+            end = (int)charOffsetProperty.GetValue(richTextBox.Selection.End)!;
         }
 
         private void TTS_Init()
@@ -476,9 +478,9 @@ namespace MisakaTranslator
 
         public int SourceTextFontSize { get => _sourceTextFontSize; set => _sourceTextFontSize = value; }
 
-        private async Task<string> GetSelectdText(RichTextBox textBox)
+        private static async Task<string> GetSelectdText(RichTextBox textBox, FlowDocument flowDocument)
         {
-            (_, string result) = await GetRubyAndText(textBox);
+            (_, string result) = await GetRubyAndText(textBox, flowDocument);
             if (string.IsNullOrWhiteSpace(result))
             {
                 result = textBox.Selection.Text;
@@ -623,13 +625,79 @@ namespace MisakaTranslator
                 richTextBox.Effect = null;
             }
 
+
+            FlowDocument flowDocument = _flowDocuments[_updatingFlowDocumentNumber];
+            flowDocument.Blocks.Remove(flowDocument.Blocks.LastBlock);
+            flowDocument.Blocks.Add(p);
+
+            double contentWidth = GetContentWidth(flowDocument, richTextBox);
+            if (Common.AppSettings.TF_SrcSingleLineDisplay)
+            {
+                flowDocument.PageWidth = double.Max(contentWidth, 150);
+            }
+            else
+            {
+                flowDocument.PageWidth = Width * 0.95;
+            }
+
             if (Common.AppSettings.TF_SrcAnimationCheckEnabled)
             {
                 await StartSourceSwitchAnimationAsync();
             }
-            FlowDocument flowDocument = _flowDocuments[_updatingFlowDocumentNumber];
-            flowDocument.Blocks.Remove(flowDocument.Blocks.LastBlock);
-            flowDocument.Blocks.Add(p);
+        }
+
+        private static double GetContentWidth(FlowDocument flowDocument, RichTextBox richTextBox)
+        {
+            double result = 0;
+            if (flowDocument.Blocks.FirstBlock is Paragraph paragraph)
+            {
+                System.Collections.IList list = paragraph.Inlines;
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i] is Run run)
+                    {
+                        //Run列表，没有注音符号的情况
+                        result += GetDisiredWidth(run, richTextBox);
+                    }
+                    if (list[i] is InlineUIContainer item && item.Child is StackPanel stackPanel)
+                    {
+                        //注音和正文组成的StackPanel列表，每个Panel内有两个元素
+                        result += double.Max(GetDisiredWidth((TextBlock)stackPanel.Children[0]), GetDisiredWidth((TextBlock)stackPanel.Children[1]));
+                    }
+                }
+            }
+            return result * 1.1;
+
+        }
+
+        private static double GetDisiredWidth(TextBlock textBlock)
+        {
+            var formattedText = new FormattedText(
+                textBlock.Text,
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(textBlock.FontFamily, textBlock.FontStyle, textBlock.FontWeight, textBlock.FontStretch),
+                textBlock.FontSize,
+                Brushes.Black,
+                new NumberSubstitution(),
+                VisualTreeHelper.GetDpi(textBlock).PixelsPerDip);
+            formattedText.Trimming = TextTrimming.None;
+            return formattedText.Width;
+        }
+        private static double GetDisiredWidth(Run run, RichTextBox richTextBox)
+        {
+            var formattedText = new FormattedText(
+                run.Text,
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(run.FontFamily, run.FontStyle, run.FontWeight, run.FontStretch),
+                run.FontSize,
+                Brushes.Black,
+                new NumberSubstitution(),
+                VisualTreeHelper.GetDpi(richTextBox).PixelsPerDip);
+            formattedText.Trimming = TextTrimming.None;
+            return formattedText.Width;
         }
 
         private async void UpdateSourceCollectionAsync(List<MecabWordInfo> mwi)
@@ -1288,27 +1356,24 @@ namespace MisakaTranslator
 
         private async void SourceRichTextBoxRightClickMenu_Opening(object sender, ContextMenuEventArgs e)
         {
-            if (sender is RichTextBox richTextBox)
+            if (await CanCopyRuby(_richTextBoxs[_updatingFlowDocumentNumber], _flowDocuments[_updatingFlowDocumentNumber]))
             {
-                if (await CanCopyRuby(richTextBox))
-                {
-                    _viewModel.CopyRubyVisibility = true;
-                }
-                else
-                {
-                    _viewModel.CopyRubyVisibility = false;
-                }
+                _viewModel.CopyRubyVisibility = true;
+            }
+            else
+            {
+                _viewModel.CopyRubyVisibility = false;
             }
         }
 
-        private async Task<bool> CanCopyRuby(RichTextBox richTextBox)
+        private async Task<bool> CanCopyRuby(RichTextBox richTextBox, FlowDocument flowDocument)
         {
-            return !string.IsNullOrWhiteSpace((await GetRubyAndText(richTextBox)).Item2);
+            return !string.IsNullOrWhiteSpace((await GetRubyAndText(richTextBox, flowDocument)).Item2);
         }
 
         private async void CopyRubyMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string ruby = (await GetRubyAndText(_richTextBoxs[_updatingFlowDocumentNumber])).Item1;
+            string ruby = (await GetRubyAndText(_richTextBoxs[_updatingFlowDocumentNumber], _flowDocuments[_updatingFlowDocumentNumber])).Item1;
             if (!string.IsNullOrEmpty(ruby))
             {
                 Clipboard.SetText(ruby);
@@ -1318,7 +1383,7 @@ namespace MisakaTranslator
 
         private async void ConsultMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string text = await GetSelectdText(_richTextBoxs[_updatingFlowDocumentNumber]);
+            string text = await GetSelectdText(_richTextBoxs[_updatingFlowDocumentNumber], _flowDocuments[_updatingFlowDocumentNumber]);
             if (!string.IsNullOrWhiteSpace(text))
             {
                 _dictResWindow ??= new DictResWindow(_tts);

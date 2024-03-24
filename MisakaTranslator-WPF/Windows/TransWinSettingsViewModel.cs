@@ -81,5 +81,21 @@ namespace MisakaTranslator
                 SetProperty(ref _backgroundBlurCheckEnabled, value);
             }
         }
+
+        private bool? _srcSingleLineEnabled = true;
+
+        public bool? SrcSingleLineEnabled
+        {
+            get
+            {
+                _srcSingleLineEnabled = Common.AppSettings.TF_SrcSingleLineDisplay;
+                return _srcSingleLineEnabled;
+            }
+            set
+            {
+                Common.AppSettings.TF_SrcSingleLineDisplay = value ?? true;
+                SetProperty(ref _srcSingleLineEnabled, value);
+            }
+        }
     }
 }

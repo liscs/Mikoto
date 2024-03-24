@@ -385,6 +385,10 @@ namespace MisakaTranslator
         [Option(Alias = "TranslateFormSettings.SrcAnimationCheckEnabled", DefaultValue = true)]
         bool TF_SrcAnimationCheckEnabled { get; set; }
 
+        [Option(Alias = "TranslateFormSettings.SrcSingleLineDisplay", DefaultValue = true)]
+        bool TF_SrcSingleLineDisplay { get; set; }
+
+
         [Option(Alias = "TranslateFormSettings.TransAnimationCheckEnabled", DefaultValue = false)]
         bool TF_TransAnimationCheckEnabled { get; set; }
 

@@ -450,5 +450,11 @@
     <sys:String x:Key="Guide_Back">Previous</sys:String>
     <sys:String x:Key="MainWindow_LEProcNotExistError"> does not exist, please check whether the LEProc.exe file exists</sys:String>
     <sys:String x:Key="HookSettingsPage_TextractorCLINotExistError">TextractorCLI.exe not found</sys:String>
+    <sys:String x:Key="EBwinDictPage_RemoveDictAsk">Are you sure you want to remove this dictionary?</sys:String>
+    <sys:String x:Key="TransWinSettingsWindow_EnableFadeAnimation">Enable gradient animation</sys:String>
+    <sys:String x:Key="TransWinSettingsWindow_EnableBackgroundBlur">Enable background blur effect</sys:String>
+    <sys:String x:Key="SourceTextMenuItem_Consult">Consult</sys:String>
+    <sys:String x:Key="SourceTextMenuItem_CopyRuby">Copy Ruby</sys:String>
+    
 
 </ResourceDictionary>

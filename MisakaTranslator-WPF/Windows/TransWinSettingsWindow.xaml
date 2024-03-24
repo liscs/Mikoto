@@ -48,6 +48,7 @@
                     <CheckBox Name="KanaBoldCheckBox" Content="{DynamicResource TransWinSettingsWin_KanaBoldCbox}" Margin="10" HorizontalAlignment="Left"/>
                     <CheckBox Name="ColorfulCheckBox" Content="{DynamicResource TransWinSettingsWin_ColorfulCbox}" Margin="10" />
                     <CheckBox IsChecked="{Binding SrcAnimationCheckEnabled,Mode=TwoWay}" Content="{DynamicResource TransWinSettingsWindow_EnableFadeAnimation}" Margin="10" />
+                    <CheckBox IsChecked="{Binding SrcSingleLineEnabled,Mode=TwoWay}" Content="单行显示" Margin="10" />
                     <TextBlock TextWrapping="Wrap" Text="{DynamicResource TransWinSettingsWin_srcSetNotice}" Margin="10" />
 
                 </StackPanel>
