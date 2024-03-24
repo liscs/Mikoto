@@ -1,4 +1,4 @@
-﻿using MisakaTranslator.Utils;
+﻿using MisakaTranslator.Helpers;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;

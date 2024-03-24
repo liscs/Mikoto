@@ -3,7 +3,7 @@ using FontAwesome.WPF;
 using HandyControl.Controls;
 using KeyboardMouseHookLibrary;
 using MecabHelperLibrary;
-using MisakaTranslator.Utils;
+using MisakaTranslator.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -82,7 +82,7 @@ namespace MisakaTranslator
             DataContext = _viewModel;
             UI_Init();
             _flowDocuments = [SourceFlowDocument1, SourceFlowDocument2];
-            _richTextBoxs = [SourceRichTextBox1, SourceRichTextBox2];
+            _richTextBoxes = [SourceRichTextBox1, SourceRichTextBox2];
 
             _gameTextHistory = new Queue<HistoryInfo>();
 
@@ -142,7 +142,21 @@ namespace MisakaTranslator
                     break;
             }
             Application.Current.MainWindow.Hide();
+            
+            StoryBoardInit();
         }
+
+        private void StoryBoardInit()
+        {
+            NameScope.SetNameScope(this, new NameScope());
+            (var i1, var o1) = InitSrcFadeStoryboard(SourceRichTextBox1);
+            (var i2, var o2) = InitSrcFadeStoryboard(SourceRichTextBox2);
+            _srcFadeInStoryBoard = [i1, i2];
+            _srcFadeOutStoryBoard = [o1, o2];
+        }
+
+        private Storyboard[] _srcFadeInStoryBoard;
+        private Storyboard[] _srcFadeOutStoryBoard;
 
         /// <summary>
         /// 重写复制有两行内容的富文本框
@@ -152,7 +166,7 @@ namespace MisakaTranslator
             if (!string.IsNullOrWhiteSpace(e.DataObject.GetData("UnicodeText").ToString())) { return; }
 
 
-            (_, string result) = await GetRubyAndText(_richTextBoxs[_updatingFlowDocumentNumber], _flowDocuments[_updatingFlowDocumentNumber]);
+            (_, string result) = await GetRubyAndText(_richTextBoxes[_updatingSouceNumber], _flowDocuments[_updatingSouceNumber]);
 
             if (!string.IsNullOrEmpty(result))
             {
@@ -296,6 +310,7 @@ namespace MisakaTranslator
         /// </summary>
         private void UI_Init()
         {
+            //TODO MVVM重写
             SourceTextFontSize = (int)Common.AppSettings.TF_SrcTextSize;
             FirstTransText.FontSize = Common.AppSettings.TF_FirstTransTextSize;
             SecondTransText.FontSize = Common.AppSettings.TF_SecondTransTextSize;
@@ -584,33 +599,38 @@ namespace MisakaTranslator
                     var mwi = _mecabHelper.SentenceHandle(repairedText);
                     Application.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        UpdateSourceCollectionAsync(mwi);
+                        UpdateSourceRichBoxes(mwi);
                     });
                 }
                 else
                 {
                     Application.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        UpdateSourceCollectionAsync(repairedText);
+                        UpdateSourceRichBoxes(repairedText);
                     });
                 }
             });
         }
 
-        private async void UpdateSourceCollectionAsync(string repairedText)
+        private void UpdateSourceRichBoxes(string repairedText)
         {
-            Paragraph p = new();
+            Paragraph paragraph = GenerateParagraph(repairedText);
 
-            p.Inlines.Add(new Run(repairedText));
-
-            await AnimatedUpdateFlowDocument(p);
+            AnimatedUpdateFlowDocument(paragraph);
         }
 
-        private async Task AnimatedUpdateFlowDocument(Paragraph p)
+        private static Paragraph GenerateParagraph(string repairedText)
+        {
+            Paragraph paragraph = new();
+            paragraph.Inlines.Add(new Run(repairedText));
+            return paragraph;
+        }
+
+        private void AnimatedUpdateFlowDocument(Paragraph paragraph)
         {
             SwitchUpdatingNumber();
 
-            RichTextBox richTextBox = _richTextBoxs[_updatingFlowDocumentNumber];
+            RichTextBox richTextBox = _richTextBoxes[_updatingSouceNumber];
             richTextBox.FontSize = SourceTextFontSize;
             if (!string.IsNullOrEmpty(SourceTextFont))
             {
@@ -626,11 +646,11 @@ namespace MisakaTranslator
             }
 
 
-            FlowDocument flowDocument = _flowDocuments[_updatingFlowDocumentNumber];
+            FlowDocument flowDocument = _flowDocuments[_updatingSouceNumber];
             flowDocument.Blocks.Remove(flowDocument.Blocks.LastBlock);
-            flowDocument.Blocks.Add(p);
+            flowDocument.Blocks.Add(paragraph);
 
-            double contentWidth = GetContentWidth(flowDocument, richTextBox);
+            double contentWidth = SourceTextMeasureHelper.GetContentWidth(flowDocument, richTextBox);
             if (Common.AppSettings.TF_SrcSingleLineDisplay)
             {
                 flowDocument.PageWidth = double.Max(contentWidth, 150);
@@ -642,73 +662,25 @@ namespace MisakaTranslator
 
             if (Common.AppSettings.TF_SrcAnimationCheckEnabled)
             {
-                await StartSourceSwitchAnimationAsync();
+                StartSourceSwitchAnimation();
             }
         }
 
-        private static double GetContentWidth(FlowDocument flowDocument, RichTextBox richTextBox)
+        private void UpdateSourceRichBoxes(List<MecabWordInfo> mwi)
         {
-            double result = 0;
-            if (flowDocument.Blocks.FirstBlock is Paragraph paragraph)
-            {
-                System.Collections.IList list = paragraph.Inlines;
-
-                for (int i = 0; i < list.Count; i++)
-                {
-                    if (list[i] is Run run)
-                    {
-                        //Run列表，没有注音符号的情况
-                        result += GetDisiredWidth(run, richTextBox);
-                    }
-                    if (list[i] is InlineUIContainer item && item.Child is StackPanel stackPanel)
-                    {
-                        //注音和正文组成的StackPanel列表，每个Panel内有两个元素
-                        result += double.Max(GetDisiredWidth((TextBlock)stackPanel.Children[0]), GetDisiredWidth((TextBlock)stackPanel.Children[1]));
-                    }
-                }
-            }
-            return result * 1.1;
-
+            Paragraph paragraph = GenerateParagraph(mwi);
+            AnimatedUpdateFlowDocument(paragraph);
         }
 
-        private static double GetDisiredWidth(TextBlock textBlock)
+        private Paragraph GenerateParagraph(List<MecabWordInfo> mwi)
         {
-            var formattedText = new FormattedText(
-                textBlock.Text,
-                CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                new Typeface(textBlock.FontFamily, textBlock.FontStyle, textBlock.FontWeight, textBlock.FontStretch),
-                textBlock.FontSize,
-                Brushes.Black,
-                new NumberSubstitution(),
-                VisualTreeHelper.GetDpi(textBlock).PixelsPerDip);
-            formattedText.Trimming = TextTrimming.None;
-            return formattedText.Width;
-        }
-        private static double GetDisiredWidth(Run run, RichTextBox richTextBox)
-        {
-            var formattedText = new FormattedText(
-                run.Text,
-                CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                new Typeface(run.FontFamily, run.FontStyle, run.FontWeight, run.FontStretch),
-                run.FontSize,
-                Brushes.Black,
-                new NumberSubstitution(),
-                VisualTreeHelper.GetDpi(richTextBox).PixelsPerDip);
-            formattedText.Trimming = TextTrimming.None;
-            return formattedText.Width;
-        }
-
-        private async void UpdateSourceCollectionAsync(List<MecabWordInfo> mwi)
-        {
-            Paragraph p = new();
+            Paragraph paragraph = new();
 
             //分词后结果显示
-            for (int i = 0; i < mwi.Count; i++)
+            if (Common.AppSettings.TF_EnablePhoneticNotation)
             {
-                MecabWordInfo v = mwi[i];
-                if (Common.AppSettings.TF_EnablePhoneticNotation)
+                //显示注音的情况
+                foreach (MecabWordInfo v in mwi)
                 {
                     StackPanel stackPanel = new()
                     {
@@ -717,15 +689,19 @@ namespace MisakaTranslator
                     };
                     stackPanel.Children.Add(CreateRubyTextBlock(v));
                     stackPanel.Children.Add(CreateSourceTextBlock(v));
-                    p.Inlines.Add(stackPanel);
+                    paragraph.Inlines.Add(stackPanel);
                 }
-                else
+            }
+            else
+            {
+                //不显示注音的情况
+                foreach (MecabWordInfo v in mwi)
                 {
-                    p.Inlines.Add(CreateColoredRun(v));
+                    paragraph.Inlines.Add(CreateColoredRun(v));
                 }
             }
 
-            await AnimatedUpdateFlowDocument(p);
+            return paragraph;
         }
 
         private static Run CreateColoredRun(MecabWordInfo info)
@@ -738,20 +714,54 @@ namespace MisakaTranslator
             return run;
         }
 
-        static int _updatingFlowDocumentNumber = 0;
+        static int _updatingSouceNumber = 0;
         private List<FlowDocument> _flowDocuments;
-        private List<RichTextBox> _richTextBoxs;
+        private List<RichTextBox> _richTextBoxes
+            ;
 
         static void SwitchUpdatingNumber()
         {
-            _updatingFlowDocumentNumber = 1 - _updatingFlowDocumentNumber;
+            _updatingSouceNumber = 1 - _updatingSouceNumber;
         }
 
-        private async Task StartSourceSwitchAnimationAsync()
+        private void StartSourceSwitchAnimation()
         {
-            _ = FadeInAsync(_richTextBoxs[_updatingFlowDocumentNumber]);
-            await FadeOutAsync(_richTextBoxs[1 - _updatingFlowDocumentNumber]);
+            foreach (var item in _srcFadeInStoryBoard)
+            {
+                item.Stop(this);
+            }
+            foreach (var item in _srcFadeOutStoryBoard)
+            {
+                item.Stop(this);
+            }
+            _richTextBoxes[_updatingSouceNumber].Visibility = Visibility.Visible;
+            _richTextBoxes[1 - _updatingSouceNumber].Visibility = Visibility.Visible;
+            _srcFadeInStoryBoard[_updatingSouceNumber].Begin(this, true);
+            _srcFadeOutStoryBoard[1 - _updatingSouceNumber].Begin(this, true);
         }
+
+        public (Storyboard, Storyboard) InitSrcFadeStoryboard(RichTextBox richTextBox)
+        {
+            this.RegisterName(richTextBox.Name, richTextBox);
+
+            DoubleAnimation fadeInAnimation = InitFadeInAnimation();
+            Storyboard.SetTargetName(fadeInAnimation, richTextBox.Name);
+            Storyboard.SetTargetProperty(fadeInAnimation, new PropertyPath(OpacityProperty));
+            Storyboard fadeInStoryBoard = new();
+            fadeInStoryBoard.Children.Add(fadeInAnimation);
+
+
+            DoubleAnimation fadeOutAnimation = InitFadeOutAnimation(richTextBox);
+            Storyboard.SetTargetName(fadeOutAnimation, richTextBox.Name);
+            Storyboard.SetTargetProperty(fadeOutAnimation, new PropertyPath(OpacityProperty));
+            Storyboard fadeoutStoryboard = new();
+            fadeoutStoryboard.Children.Add(fadeOutAnimation);
+
+            fadeInAnimation.Freeze();
+            fadeoutStoryboard.Freeze();
+            return (fadeInStoryBoard, fadeoutStoryboard);
+        }
+
 
         private TextBlock CreateSourceTextBlock(MecabWordInfo info)
         {
@@ -847,27 +857,8 @@ namespace MisakaTranslator
             };
         }
 
-        private static async Task FadeInAsync(RichTextBox richTextBox)
-        {
-            await Application.Current.Dispatcher.BeginInvoke(() => FadeIn(richTextBox));
-        }
-
-        private static async Task FadeOutAsync(RichTextBox richTextBox)
-        {
-            await Application.Current.Dispatcher.BeginInvoke(() => FadeOut(richTextBox));
-        }
-
         private const double FADE_DURATION = 0.3;
-        private static void FadeIn(RichTextBox richTextBox)
-        {
-            richTextBox.Visibility = Visibility.Visible;
-            richTextBox.Opacity = 0;
-            richTextBox.ScrollToHome();
-            richTextBox.BeginAnimation(OpacityProperty, _fadeinAnimation);
-        }
-
-        readonly static DoubleAnimation _fadeinAnimation = InitFadeinAnimation();
-        private static DoubleAnimation InitFadeinAnimation()
+        private static DoubleAnimation InitFadeInAnimation()
         {
             DoubleAnimation fadeinAnimation = new()
             {
@@ -875,14 +866,10 @@ namespace MisakaTranslator
                 To = 1,
                 Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION))
             };
-            fadeinAnimation.Freeze();
             return fadeinAnimation;
         }
-
-        private static void FadeOut(RichTextBox richTextBox)
+        private static DoubleAnimation InitFadeOutAnimation(RichTextBox richTextBox)
         {
-            richTextBox.Opacity = 1;
-
             DoubleAnimation fadeoutAnimation = new()
             {
                 From = 1,
@@ -893,8 +880,7 @@ namespace MisakaTranslator
             {
                 richTextBox.Visibility = Visibility.Collapsed;
             };
-            fadeoutAnimation.Freeze();
-            richTextBox.BeginAnimation(OpacityProperty, fadeoutAnimation);
+            return fadeoutAnimation;
         }
 
         /// <summary>
@@ -1030,13 +1016,13 @@ namespace MisakaTranslator
         }
 
 
-
+        private readonly DoubleAnimation _translateFadeInAnimation = (DoubleAnimation)InitFadeInAnimation().GetAsFrozen();
         private void StartFadeInAnimation(OutlineText outlineText)
         {
-            outlineText.BeginAnimation(OpacityProperty, _fadeinAnimation);
+            outlineText.BeginAnimation(OpacityProperty, _translateFadeInAnimation);
         }
 
-        private void InitTranslateAnimation(OutlineText outlineText)
+        private static void InitTranslateAnimation(OutlineText outlineText)
         {
             LinearGradientBrush opacityBrush = new()
             {
@@ -1356,7 +1342,7 @@ namespace MisakaTranslator
 
         private async void SourceRichTextBoxRightClickMenu_Opening(object sender, ContextMenuEventArgs e)
         {
-            if (await CanCopyRuby(_richTextBoxs[_updatingFlowDocumentNumber], _flowDocuments[_updatingFlowDocumentNumber]))
+            if (await CanCopyRuby(_richTextBoxes[_updatingSouceNumber], _flowDocuments[_updatingSouceNumber]))
             {
                 _viewModel.CopyRubyVisibility = true;
             }
@@ -1366,14 +1352,14 @@ namespace MisakaTranslator
             }
         }
 
-        private async Task<bool> CanCopyRuby(RichTextBox richTextBox, FlowDocument flowDocument)
+        private static async Task<bool> CanCopyRuby(RichTextBox richTextBox, FlowDocument flowDocument)
         {
             return !string.IsNullOrWhiteSpace((await GetRubyAndText(richTextBox, flowDocument)).Item2);
         }
 
         private async void CopyRubyMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string ruby = (await GetRubyAndText(_richTextBoxs[_updatingFlowDocumentNumber], _flowDocuments[_updatingFlowDocumentNumber])).Item1;
+            string ruby = (await GetRubyAndText(_richTextBoxes[_updatingSouceNumber], _flowDocuments[_updatingSouceNumber])).Item1;
             if (!string.IsNullOrEmpty(ruby))
             {
                 Clipboard.SetText(ruby);
@@ -1383,7 +1369,7 @@ namespace MisakaTranslator
 
         private async void ConsultMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string text = await GetSelectdText(_richTextBoxs[_updatingFlowDocumentNumber], _flowDocuments[_updatingFlowDocumentNumber]);
+            string text = await GetSelectdText(_richTextBoxes[_updatingSouceNumber], _flowDocuments[_updatingSouceNumber]);
             if (!string.IsNullOrWhiteSpace(text))
             {
                 _dictResWindow ??= new DictResWindow(_tts);

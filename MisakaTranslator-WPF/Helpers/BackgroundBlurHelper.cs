@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace MisakaTranslator.Utils
+namespace MisakaTranslator.Helpers
 {
     public static class BackgroundBlurHelper
     {

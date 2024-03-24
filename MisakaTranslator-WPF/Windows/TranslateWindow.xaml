@@ -75,7 +75,7 @@
         </Grid>
         <StackPanel Grid.Row="1" Margin="10" Orientation="Vertical">
             <hc:SimplePanel Visibility="{Binding SourcePanelVisibility}">
-                <RichTextBox Name="SourceRichTextBox1" Background="Transparent" Foreground="White" 
+                <RichTextBox x:Name="SourceRichTextBox1" Background="Transparent" Foreground="White" 
                              BorderThickness="0" IsReadOnly="True" HorizontalScrollBarVisibility="Auto"
                              HorizontalAlignment="Left" 
                              ContextMenuOpening="SourceRichTextBoxRightClickMenu_Opening"
@@ -91,7 +91,7 @@
                         <Paragraph/>
                     </FlowDocument>
                 </RichTextBox>
-                <RichTextBox Name="SourceRichTextBox2" Background="Transparent" Foreground="White" 
+                <RichTextBox x:Name="SourceRichTextBox2" Background="Transparent" Foreground="White" 
                              BorderThickness="0" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" 
                              HorizontalAlignment="Left" 
                              Visibility="Collapsed"

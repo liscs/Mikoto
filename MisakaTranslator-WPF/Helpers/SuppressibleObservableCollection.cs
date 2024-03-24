@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
-namespace MisakaTranslator.Utils
+namespace MisakaTranslator.Helpers
 {
     public class SuppressibleObservableCollection<T> : ObservableCollection<T>
     {

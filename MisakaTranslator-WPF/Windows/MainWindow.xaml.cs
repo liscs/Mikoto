@@ -1,7 +1,7 @@
 using Config.Net;
 using DataAccessLibrary;
 using HandyControl.Controls;
-using MisakaTranslator.Utils;
+using MisakaTranslator.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
