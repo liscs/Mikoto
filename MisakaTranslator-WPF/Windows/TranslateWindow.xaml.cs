@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -142,7 +141,7 @@ namespace MisakaTranslator
                     break;
             }
             Application.Current.MainWindow.Hide();
-            
+
             StoryBoardInit();
         }
 
@@ -155,8 +154,8 @@ namespace MisakaTranslator
             _srcFadeOutStoryBoard = [o1, o2];
         }
 
-        private Storyboard[] _srcFadeInStoryBoard;
-        private Storyboard[] _srcFadeOutStoryBoard;
+        private Storyboard[] _srcFadeInStoryBoard = [];
+        private Storyboard[] _srcFadeOutStoryBoard = [];
 
         /// <summary>
         /// 重写复制有两行内容的富文本框
