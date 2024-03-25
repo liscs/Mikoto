@@ -14,15 +14,14 @@ namespace MisakaTranslator
     /// </summary>
     public partial class TransWinSettingsWindow : Window
     {
-        private TransWinSettingsViewModel _viewModel;
+        private TranslateViewModel _viewModel;
         private TranslateWindow _translateWin;
 
         public TransWinSettingsWindow(TranslateWindow Win)
         {
-            _translateWin = Win;
-            _viewModel = new TransWinSettingsViewModel(Win);
-
             InitializeComponent();
+            _translateWin = Win;
+            _viewModel = Win.ViewModel;
             DataContext = _viewModel;
 
             EventInit();

@@ -35,11 +35,11 @@ using RichTextBox = System.Windows.Controls.RichTextBox;
 namespace MisakaTranslator
 {
     /// <summary>
-    /// TranslateWindow.xaml 的交互逻辑
+    /// _translateWindow.xaml 的交互逻辑
     /// </summary>
     public partial class TranslateWindow
     {
-        TranslateViewModel _viewModel = new();
+        public TranslateViewModel ViewModel { get; set; }
 
         public DispatcherTimer DispatcherTimer { get; set; } = new();//定时器
 
@@ -75,10 +75,11 @@ namespace MisakaTranslator
         public TranslateWindow()
         {
             InitializeComponent();
+            ViewModel = new(this);
             DataObject.AddCopyingHandler(SourceRichTextBox1, OnCopy);
             DataObject.AddCopyingHandler(SourceRichTextBox2, OnCopy);
 
-            DataContext = _viewModel;
+            DataContext = ViewModel;
             UI_Init();
             _flowDocuments = [SourceFlowDocument1, SourceFlowDocument2];
             _richTextBoxes = [SourceRichTextBox1, SourceRichTextBox2];
@@ -663,6 +664,26 @@ namespace MisakaTranslator
             {
                 StartSourceSwitchAnimation();
             }
+            else
+            {
+                StopSourceAnimations();
+                _richTextBoxes[_updatingSouceNumber].Visibility = Visibility.Visible;
+                _richTextBoxes[_updatingSouceNumber].Opacity = 1;
+                _richTextBoxes[1 - _updatingSouceNumber].Visibility = Visibility.Collapsed;
+
+            }
+        }
+
+        private void StopSourceAnimations()
+        {
+            foreach (var item in _srcFadeInStoryBoard)
+            {
+                item.Stop(this);
+            }
+            foreach (var item in _srcFadeOutStoryBoard)
+            {
+                item.Stop(this);
+            }
         }
 
         private void UpdateSourceRichBoxes(List<MecabWordInfo> mwi)
@@ -725,14 +746,7 @@ namespace MisakaTranslator
 
         private void StartSourceSwitchAnimation()
         {
-            foreach (var item in _srcFadeInStoryBoard)
-            {
-                item.Stop(this);
-            }
-            foreach (var item in _srcFadeOutStoryBoard)
-            {
-                item.Stop(this);
-            }
+            StopSourceAnimations();
             _richTextBoxes[_updatingSouceNumber].Visibility = Visibility.Visible;
             _richTextBoxes[1 - _updatingSouceNumber].Visibility = Visibility.Visible;
             _srcFadeInStoryBoard[_updatingSouceNumber].Begin(this, true);
@@ -1101,13 +1115,13 @@ namespace MisakaTranslator
 
         private void ShowSource_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (_viewModel.ShowSourceIcon == FontAwesomeIcon.Eye)
+            if (ViewModel.ShowSourceIcon == FontAwesomeIcon.Eye)
             {
-                _viewModel.ShowSourceIcon = FontAwesomeIcon.EyeSlash;
+                ViewModel.ShowSourceIcon = FontAwesomeIcon.EyeSlash;
             }
             else
             {
-                _viewModel.ShowSourceIcon = FontAwesomeIcon.Eye;
+                ViewModel.ShowSourceIcon = FontAwesomeIcon.Eye;
             }
         }
 
@@ -1282,9 +1296,11 @@ namespace MisakaTranslator
             }
             else
             {
-                BrushConverter brushConverter = new();
-                this.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor) as Brush;
-                BackgroundBlurHelper.EnableBlur(this);
+                this.Background = new BrushConverter().ConvertFromString(Common.AppSettings.TF_BackColor) as Brush;
+                if (Common.AppSettings.TF_BackgroundBlurCheckEnabled)
+                {
+                    BackgroundBlurHelper.EnableBlur(this);
+                }
             }
         }
 
@@ -1343,11 +1359,11 @@ namespace MisakaTranslator
         {
             if (await CanCopyRuby(_richTextBoxes[_updatingSouceNumber], _flowDocuments[_updatingSouceNumber]))
             {
-                _viewModel.CopyRubyVisibility = true;
+                ViewModel.CopyRubyVisibility = true;
             }
             else
             {
-                _viewModel.CopyRubyVisibility = false;
+                ViewModel.CopyRubyVisibility = false;
             }
         }
 

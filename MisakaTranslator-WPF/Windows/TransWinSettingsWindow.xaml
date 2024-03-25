@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:MisakaTranslator" 
-        d:DataContext="{d:DesignInstance Type=local:TransWinSettingsViewModel}"
+        d:DataContext="{d:DesignInstance Type=local:TranslateViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource TransWinSettingsWin_Title}" Height="500" Width="300" MinWidth="300">
     <Grid>
