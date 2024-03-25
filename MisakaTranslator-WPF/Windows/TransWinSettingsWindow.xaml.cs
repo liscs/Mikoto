@@ -36,19 +36,12 @@ namespace MisakaTranslator
             Application.Current.Dispatcher.BeginInvoke(() =>
                {
                    InstalledFontCollection fonts = new();
-                   _viewModel.FontList.Clear();
                    _viewModel.FontList.SuppressNotification = true;
-                   sourceFont.BeginInit();
-                   firstFont.BeginInit();
-                   secondFont.BeginInit();
                    _viewModel.FontList.AddRange(fonts.Families.Select(p => p.Name));
                    _viewModel.FontList.SuppressNotification = false;
-                   sourceFont.SelectedItem = Common.AppSettings.TF_SrcTextFont;
-                   firstFont.SelectedItem = Common.AppSettings.TF_FirstTransTextFont;
-                   secondFont.SelectedItem = Common.AppSettings.TF_SecondTransTextFont;
-                   sourceFont.EndInit();
-                   firstFont.EndInit();
-                   secondFont.EndInit();
+                   _viewModel.SourceTextFontFamilyString = Common.AppSettings.TF_SrcTextFont;
+                   _viewModel.FirstTextFontFamilyString = Common.AppSettings.TF_FirstTransTextFont;
+                   _viewModel.SecondTextFontFamilyString = Common.AppSettings.TF_SecondTransTextFont;
                });
         }
 
@@ -57,54 +50,6 @@ namespace MisakaTranslator
         /// </summary>
         private void EventInit()
         {
-            sourceFont.SelectionChanged += delegate
-            {
-                if (sourceFont.SelectedIndex == -1)
-                {
-                    return;
-                }
-                _translateWin.SourceTextFont = _viewModel.FontList[sourceFont.SelectedIndex];
-                Common.AppSettings.TF_SrcTextFont = _viewModel.FontList[sourceFont.SelectedIndex];
-            };
-
-            firstFont.SelectionChanged += delegate
-            {
-                if (sourceFont.SelectedIndex == -1)
-                {
-                    return;
-                }
-                _translateWin.FirstTransText.FontFamily = new FontFamily(_viewModel.FontList[firstFont.SelectedIndex]);
-                Common.AppSettings.TF_FirstTransTextFont = _viewModel.FontList[firstFont.SelectedIndex];
-            };
-
-            secondFont.SelectionChanged += delegate
-            {
-                if (sourceFont.SelectedIndex == -1)
-                {
-                    return;
-                }
-                _translateWin.SecondTransText.FontFamily = new FontFamily(_viewModel.FontList[secondFont.SelectedIndex]);
-                Common.AppSettings.TF_SecondTransTextFont = _viewModel.FontList[secondFont.SelectedIndex];
-            };
-
-            sourceFontSize.ValueChanged += delegate
-            {
-                _translateWin.SourceTextFontSize = (int)sourceFontSize.Value;
-                Common.AppSettings.TF_SrcTextSize = sourceFontSize.Value;
-            };
-
-            firstFontSize.ValueChanged += delegate
-            {
-                _translateWin.FirstTransText.FontSize = firstFontSize.Value;
-                Common.AppSettings.TF_FirstTransTextSize = firstFontSize.Value;
-            };
-
-            secondFontSize.ValueChanged += delegate
-            {
-                _translateWin.SecondTransText.FontSize = secondFontSize.Value;
-                Common.AppSettings.TF_SecondTransTextSize = secondFontSize.Value;
-            };
-
             firstWhiteStrokeCheckBox.Click += delegate
             {
                 _translateWin.FirstTransText.Stroke = firstWhiteStrokeCheckBox.IsChecked switch
@@ -196,21 +141,10 @@ namespace MisakaTranslator
         private void UI_Init()
         {
 
-            _viewModel.FontList.Add(Common.AppSettings.TF_SrcTextFont);
-            _viewModel.FontList.Add(Common.AppSettings.TF_FirstTransTextFont);
-            _viewModel.FontList.Add(Common.AppSettings.TF_SecondTransTextFont);
-            sourceFont.SelectedItem = Common.AppSettings.TF_SrcTextFont;
-            firstFont.SelectedItem = Common.AppSettings.TF_FirstTransTextFont;
-            secondFont.SelectedItem = Common.AppSettings.TF_SecondTransTextFont;
-
             BrushConverter brushConverter = new BrushConverter();
             BgColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor) as Brush;
             firstColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor) as Brush;
             secondColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_SecondTransTextColor) as Brush;
-
-            sourceFontSize.Value = Common.AppSettings.TF_SrcTextSize;
-            firstFontSize.Value = Common.AppSettings.TF_FirstTransTextSize;
-            secondFontSize.Value = Common.AppSettings.TF_SecondTransTextSize;
 
             firstWhiteStrokeCheckBox.IsChecked = Common.AppSettings.TF_FirstWhiteStrokeIsChecked;
 

@@ -54,9 +54,6 @@ namespace MisakaTranslator
 
         private string _currentsrcText = string.Empty; //当前源文本内容
 
-        public string SourceTextFont = string.Empty; //源文本区域字体
-        private int _sourceTextFontSize; //源文本区域字体大小
-
         private Queue<HistoryInfo> _gameTextHistory; //历史文本
         private static KeyboardMouseHook? _hook; //全局键盘鼠标钩子
         public volatile bool IsOCRingFlag; //线程锁:判断是否正在OCR线程中，保证同时只有一组在跑OCR
@@ -311,14 +308,6 @@ namespace MisakaTranslator
         private void UI_Init()
         {
             //TODO MVVM重写
-            SourceTextFontSize = (int)Common.AppSettings.TF_SrcTextSize;
-            FirstTransText.FontSize = Common.AppSettings.TF_FirstTransTextSize;
-            SecondTransText.FontSize = Common.AppSettings.TF_SecondTransTextSize;
-
-            SourceTextFont = Common.AppSettings.TF_SrcTextFont;
-            FirstTransText.FontFamily = new FontFamily(Common.AppSettings.TF_FirstTransTextFont);
-            SecondTransText.FontFamily = new FontFamily(Common.AppSettings.TF_SecondTransTextFont);
-
             FirstTransText.Stroke = Common.AppSettings.TF_FirstWhiteStrokeIsChecked ? Brushes.White : Brushes.Black;
             SecondTransText.Stroke = Common.AppSettings.TF_SecondWhiteStrokeIsChecked ? Brushes.White : Brushes.Black;
 
@@ -491,7 +480,6 @@ namespace MisakaTranslator
         }
         DictResWindow? _dictResWindow;
 
-        public int SourceTextFontSize { get => _sourceTextFontSize; set => _sourceTextFontSize = value; }
 
         private static async Task<string> GetSelectdText(RichTextBox textBox, FlowDocument flowDocument)
         {
@@ -631,11 +619,6 @@ namespace MisakaTranslator
             SwitchUpdatingNumber();
 
             RichTextBox richTextBox = _richTextBoxes[_updatingSouceNumber];
-            richTextBox.FontSize = SourceTextFontSize;
-            if (!string.IsNullOrEmpty(SourceTextFont))
-            {
-                richTextBox.FontFamily = new FontFamily(SourceTextFont);
-            }
             if (Common.AppSettings.TF_EnableDropShadow)
             {
                 richTextBox.Effect = _dropShadowEffect;
@@ -782,7 +765,6 @@ namespace MisakaTranslator
             {
                 Padding = new Thickness(0),
                 Margin = new Thickness(0),
-                FontSize = SourceTextFontSize,
                 Background = Brushes.Transparent,
                 HorizontalAlignment = HorizontalAlignment.Center,
             };
@@ -828,9 +810,9 @@ namespace MisakaTranslator
                 _ => info.Hiragana,
             };
 
-            if (SourceTextFontSize - 6.5 > 0)
+            if (ViewModel.SourceTextFontSize - 6.5 > 0)
             {
-                rubyTextBlock.FontSize = SourceTextFontSize - 6.5;
+                rubyTextBlock.FontSize = ViewModel.SourceTextFontSize - 6.5;
                 if (Common.AppSettings.TF_EnableSuperBold)
                 {
                     //注音加粗

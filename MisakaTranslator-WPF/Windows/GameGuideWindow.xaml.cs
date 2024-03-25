@@ -120,8 +120,7 @@ namespace MisakaTranslator
                         Common.TransMode = TransMode.Clipboard;
                         break;
                 }
-                TranslateWindow translateWindow = new();
-                translateWindow.Show();
+                new TranslateWindow().Show();
                 isComplete = true;
                 this.Close();
             }

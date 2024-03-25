@@ -77,7 +77,7 @@
             <hc:SimplePanel Visibility="{Binding SourcePanelVisibility}">
                 <RichTextBox x:Name="SourceRichTextBox1" Background="Transparent" Foreground="White" 
                              BorderThickness="0" IsReadOnly="True" HorizontalScrollBarVisibility="Auto"
-                             HorizontalAlignment="Left" 
+                             HorizontalAlignment="Left" FontFamily="{Binding SourceTextFontFamily}" FontSize="{Binding SourceTextFontSize}"
                              ContextMenuOpening="SourceRichTextBoxRightClickMenu_Opening"
                              >
                     <RichTextBox.ContextMenu>
@@ -93,7 +93,7 @@
                 </RichTextBox>
                 <RichTextBox x:Name="SourceRichTextBox2" Background="Transparent" Foreground="White" 
                              BorderThickness="0" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" 
-                             HorizontalAlignment="Left" 
+                             HorizontalAlignment="Left" FontFamily="{Binding SourceTextFontFamily}" FontSize="{Binding SourceTextFontSize}"
                              Visibility="Collapsed"
                              ContextMenuOpening="SourceRichTextBoxRightClickMenu_Opening"
                              >
@@ -109,9 +109,11 @@
                     </FlowDocument>
                 </RichTextBox>
             </hc:SimplePanel>
-            <hc:OutlineText Text="{DynamicResource TranslateWin_WaitingSource}" 
+            <hc:OutlineText Text="{DynamicResource TranslateWin_WaitingSource}"
+                            FontFamily="{Binding FirstTextFontFamily}" FontSize="{Binding FirstTextFontSize}"
                             Fill="White" Stroke="Black" StrokeThickness="0.7" FontWeight="Bold" Name="FirstTransText" Margin="10,0,10,5" TextWrapping="Wrap" StrokePosition="Outside"></hc:OutlineText>
             <hc:OutlineText Text="" 
+                            FontFamily="{Binding SecondTextFontFamily}" FontSize="{Binding SecondTextFontSize}"
                             Fill="White" Stroke="Black" StrokeThickness="0.7" FontWeight="Bold" Name="SecondTransText" Margin="10,0,10,0" TextWrapping="Wrap" StrokePosition="Outside"></hc:OutlineText>
         </StackPanel>
     </Grid>

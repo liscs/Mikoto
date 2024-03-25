@@ -26,9 +26,9 @@
             <TabItem Header="{DynamicResource TransWinSettingsWin_Tab_source}">
 
                 <StackPanel>
-                    <hc:ComboBox Name="sourceFont" DropDownOpened="Font_ContextMenuOpening" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
+                    <hc:ComboBox DropDownOpened="Font_ContextMenuOpening" SelectedItem="{Binding SourceTextFontFamilyString, Mode=TwoWay}" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
 
-                    <hc:NumericUpDown Name="sourceFontSize" Minimum="8" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}" Margin="10" Style="{DynamicResource NumericUpDownExtend}"/>
+                    <hc:NumericUpDown Value="{Binding SourceTextFontSize,Mode=TwoWay}" Minimum="8" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}" Margin="10" Style="{DynamicResource NumericUpDownExtend}" />
 
                     <Grid>
                         <Grid.RowDefinitions>
@@ -57,9 +57,9 @@
             <TabItem Header="{DynamicResource TransWinSettingsWin_Tab_first}">
 
                 <StackPanel>
-                    <hc:ComboBox Name="firstFont" DropDownOpened="Font_ContextMenuOpening" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
+                    <hc:ComboBox SelectedItem="{Binding FirstTextFontFamilyString, Mode=TwoWay}" DropDownOpened="Font_ContextMenuOpening" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
 
-                    <hc:NumericUpDown Name="firstFontSize" Minimum="8" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}" Margin="10" Style="{DynamicResource NumericUpDownExtend}" />
+                    <hc:NumericUpDown Value="{Binding FirstTextFontSize,Mode=TwoWay}" Minimum="8" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}" Margin="10" Style="{DynamicResource NumericUpDownExtend}" />
 
                     <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}" HorizontalAlignment="Center" Margin="15"/>
                     <Button Name="firstColorBtn" Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}" Margin="0" Width="200" Style="{DynamicResource ButtonPrimary}" Click="ChooseColorBtn_Click"/>
@@ -72,9 +72,9 @@
             <TabItem Header="{DynamicResource TransWinSettingsWin_Tab_second}">
 
                 <StackPanel>
-                    <hc:ComboBox Name="secondFont" DropDownOpened="Font_ContextMenuOpening" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
+                    <hc:ComboBox SelectedItem="{Binding SecondTextFontFamilyString,Mode=TwoWay}"  DropDownOpened="Font_ContextMenuOpening" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
 
-                    <hc:NumericUpDown Name="secondFontSize" Minimum="8" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}" Margin="10" Style="{DynamicResource NumericUpDownExtend}"/>
+                    <hc:NumericUpDown Value="{Binding SecondTextFontSize,Mode=TwoWay}" Minimum="8" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}" Margin="10" Style="{DynamicResource NumericUpDownExtend}"/>
 
                     <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}" HorizontalAlignment="Center" Margin="15"/>
                     <Button Name="secondColorBtn" Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}" Margin="0" Width="200" Style="{DynamicResource ButtonPrimary}" Click="ChooseColorBtn_Click"/>

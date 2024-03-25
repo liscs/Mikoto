@@ -3,6 +3,7 @@ using MisakaTranslator.Helpers;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Media;
 
 namespace MisakaTranslator
 {
@@ -85,7 +86,12 @@ namespace MisakaTranslator
             }
         }
 
-        public SuppressibleObservableCollection<string> FontList { get; set; } = new();
+        public SuppressibleObservableCollection<string> FontList { get; set; } =
+            [
+            Common.AppSettings.TF_SrcTextFont,
+            Common.AppSettings.TF_FirstTransTextFont,
+            Common.AppSettings.TF_SecondTransTextFont
+            ];
 
 
         private bool? _srcAnimationCheckEnabled;
@@ -156,6 +162,144 @@ namespace MisakaTranslator
             {
                 Common.AppSettings.TF_SrcSingleLineDisplay = value ?? true;
                 SetProperty(ref _srcSingleLineEnabled, value);
+            }
+        }
+
+        private string _sourceTextFontFamilyString;
+        public string SourceTextFontFamilyString
+        {
+            get
+            {
+                _sourceTextFontFamilyString = Common.AppSettings.TF_SrcTextFont;
+                return _sourceTextFontFamilyString;
+            }
+            set
+            {
+                Common.AppSettings.TF_SrcTextFont = value;
+                SourceTextFontFamily = new FontFamily(value);
+                SetProperty(ref _sourceTextFontFamilyString, value);
+            }
+        }
+
+        private FontFamily _sourceTextFontFamily;
+        public FontFamily SourceTextFontFamily
+        {
+            get
+            {
+                _sourceTextFontFamily = new FontFamily(SourceTextFontFamilyString);
+                return _sourceTextFontFamily;
+            }
+            set
+            {
+                SetProperty(ref _sourceTextFontFamily, value);
+            }
+        }
+
+        private double _sourceTextFontSize;
+        public double SourceTextFontSize
+        {
+            get
+            {
+                _sourceTextFontSize = Common.AppSettings.TF_SrcTextSize;
+                return _sourceTextFontSize;
+            }
+
+            set
+            {
+                Common.AppSettings.TF_SrcTextSize = value;
+                SetProperty(ref _sourceTextFontSize, value);
+            }
+        }
+
+        private string _firstTextFontFamilyString;
+        public string FirstTextFontFamilyString
+        {
+            get
+            {
+                _firstTextFontFamilyString = Common.AppSettings.TF_FirstTransTextFont;
+                return _firstTextFontFamilyString;
+            }
+            set
+            {
+                Common.AppSettings.TF_FirstTransTextFont = value;
+                FirstTextFontFamily = new FontFamily(value);
+                SetProperty(ref _firstTextFontFamilyString, value);
+            }
+        }
+
+        private FontFamily _firstTextFontFamily;
+        public FontFamily FirstTextFontFamily
+        {
+            get
+            {
+                _firstTextFontFamily = new FontFamily(FirstTextFontFamilyString);
+                return _firstTextFontFamily;
+            }
+            set
+            {
+                SetProperty(ref _firstTextFontFamily, value);
+            }
+        }
+
+        private double _firstTextFontSize;
+        public double FirstTextFontSize
+        {
+            get
+            {
+                _firstTextFontSize = Common.AppSettings.TF_FirstTransTextSize;
+                return _firstTextFontSize;
+            }
+
+            set
+            {
+                Common.AppSettings.TF_FirstTransTextSize = value;
+                SetProperty(ref _firstTextFontSize, value);
+            }
+        }
+
+        private string _secondTextFontFamilyString;
+        public string SecondTextFontFamilyString
+        {
+            get
+            {
+                _secondTextFontFamilyString = Common.AppSettings.TF_SecondTransTextFont;
+                return _secondTextFontFamilyString;
+            }
+            set
+            {
+                Common.AppSettings.TF_SecondTransTextFont = value;
+                SecondTextFontFamily = new FontFamily(value);
+                SetProperty(ref _secondTextFontFamilyString, value);
+            }
+        }
+
+        private FontFamily _secondTextFontFamily;
+        public FontFamily SecondTextFontFamily
+        {
+            get
+            {
+                _secondTextFontFamily = new FontFamily(SecondTextFontFamilyString);
+                return _secondTextFontFamily;
+            }
+            set
+            {
+                SetProperty(ref _secondTextFontFamily, value);
+            }
+        }
+
+        private double _secondTextFontSize;
+        public double SecondTextFontSize
+        {
+            get
+            {
+                _secondTextFontSize = Common.AppSettings.TF_SecondTransTextSize;
+                return _secondTextFontSize;
+            }
+
+            set
+            {
+                Common.AppSettings.TF_SecondTransTextSize = value;
+                SetProperty(ref _secondTextFontSize, value);
             }
         }
     }
