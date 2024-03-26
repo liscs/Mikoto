@@ -104,22 +104,21 @@
                 </ScrollViewer>
             </Border>
         </hc:Drawer>
-        <hc:NotifyIcon Token="MisakaTranslator" Name="NotifyIconContextContent" Text="MisakaTranslator" IsBlink="False" Visibility="Visible"  Icon="/logo.ico">
-            <hc:NotifyIcon.ContextContent>
-                <Border CornerRadius="4" Margin="10" Background="{DynamicResource RegionBrush}" Effect="{StaticResource EffectShadow2}">
-                    <StackPanel VerticalAlignment="Center" Margin="16">
-                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <Button Click="NotifyIconMainBtn_Click"  Command="hc:ControlCommands.PushMainWindow2Top" MinWidth="100" Content="{DynamicResource NotifyIcon_OpenMain}"/>
-                            <Button Command="hc:ControlCommands.ShutdownApp" Margin="16,0,0,0" MinWidth="100" Style="{DynamicResource ButtonPrimary}" Content="{DynamicResource NotifyIcon_Exit}"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-            </hc:NotifyIcon.ContextContent>
-            <hc:Interaction.Triggers>
-                <hc:EventTrigger EventName="Click">
-                    <hc:EventToCommand Command="hc:ControlCommands.PushMainWindow2Top"/>
-                </hc:EventTrigger>
-            </hc:Interaction.Triggers>
+
+        <!--任务栏图标-->
+        <hc:NotifyIcon Token="MisakaTranslator" 
+                       Name="NotifyIconContextContent" 
+                       Text="MisakaTranslator" 
+                       IsBlink="False" Visibility="Visible"  
+                       Icon="/logo.ico"
+                       MouseDoubleClick="NotifyIconMainBtn_Click"
+                       >
+            <hc:NotifyIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Click="NotifyIconMainBtn_Click"  MinWidth="100" Header="{DynamicResource NotifyIcon_OpenMain}"/>
+                    <MenuItem Command="hc:ControlCommands.ShutdownApp" MinWidth="100" Header="{DynamicResource NotifyIcon_Exit}"/>
+                </ContextMenu>
+            </hc:NotifyIcon.ContextMenu>
         </hc:NotifyIcon>
     </Grid>
 

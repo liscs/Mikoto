@@ -488,7 +488,13 @@ namespace MisakaTranslator
             Application.Current.Dispatcher.Invoke(NotifyIconContextContent.Dispose);
         }
 
-        private void NotifyIconMainBtn_Click(object sender, RoutedEventArgs e) => NotifyIconContextContent.CloseContextControl();
+        private void NotifyIconMainBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Normal;
+            this.Show();
+            this.Focus();
+            NotifyIconContextContent.CloseContextControl();
+        }
 
         /// <summary>
         /// 切换语言通用事件
