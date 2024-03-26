@@ -165,7 +165,7 @@ namespace MisakaTranslator
             }
         }
 
-        private string _sourceTextFontFamilyString;
+        private string _sourceTextFontFamilyString = Common.AppSettings.TF_SrcTextFont;
         public string SourceTextFontFamilyString
         {
             get
@@ -181,7 +181,7 @@ namespace MisakaTranslator
             }
         }
 
-        private FontFamily _sourceTextFontFamily;
+        private FontFamily _sourceTextFontFamily = new(Common.AppSettings.TF_SrcTextFont);
         public FontFamily SourceTextFontFamily
         {
             get
@@ -211,7 +211,7 @@ namespace MisakaTranslator
             }
         }
 
-        private string _firstTextFontFamilyString;
+        private string _firstTextFontFamilyString = Common.AppSettings.TF_FirstTransTextFont;
         public string FirstTextFontFamilyString
         {
             get
@@ -227,7 +227,7 @@ namespace MisakaTranslator
             }
         }
 
-        private FontFamily _firstTextFontFamily;
+        private FontFamily _firstTextFontFamily = new(Common.AppSettings.TF_FirstTransTextFont);
         public FontFamily FirstTextFontFamily
         {
             get
@@ -257,7 +257,7 @@ namespace MisakaTranslator
             }
         }
 
-        private string _secondTextFontFamilyString;
+        private string _secondTextFontFamilyString = Common.AppSettings.TF_SecondTransTextFont;
         public string SecondTextFontFamilyString
         {
             get
@@ -273,7 +273,7 @@ namespace MisakaTranslator
             }
         }
 
-        private FontFamily _secondTextFontFamily;
+        private FontFamily _secondTextFontFamily = new(Common.AppSettings.TF_SecondTransTextFont);
         public FontFamily SecondTextFontFamily
         {
             get
