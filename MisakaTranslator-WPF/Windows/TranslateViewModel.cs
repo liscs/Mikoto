@@ -45,7 +45,6 @@ namespace MisakaTranslator
                 {
                     _showSourceIcon = FontAwesomeIcon.Eye;
                     SourcePanelVisibility = Visibility.Visible;
-
                 }
                 else
                 {
@@ -86,20 +85,14 @@ namespace MisakaTranslator
             }
         }
 
-        public SuppressibleObservableCollection<string> FontList { get; set; } =
-            [
-            Common.AppSettings.TF_SrcTextFont,
-            Common.AppSettings.TF_FirstTransTextFont,
-            Common.AppSettings.TF_SecondTransTextFont
-            ];
+        public SuppressibleObservableCollection<string> FontList { get; set; } = [];
 
 
-        private bool? _srcAnimationCheckEnabled;
+        private bool? _srcAnimationCheckEnabled = Common.AppSettings.TF_SrcAnimationCheckEnabled;
         public bool? SrcAnimationCheckEnabled
         {
             get
             {
-                _srcAnimationCheckEnabled = Common.AppSettings.TF_SrcAnimationCheckEnabled;
                 return _srcAnimationCheckEnabled;
             }
             set
@@ -109,12 +102,11 @@ namespace MisakaTranslator
             }
         }
 
-        private bool? _transAnimationCheckEnabled;
+        private bool? _transAnimationCheckEnabled = Common.AppSettings.TF_TransAnimationCheckEnabled;
         public bool? TransAnimationCheckEnabled
         {
             get
             {
-                _transAnimationCheckEnabled = Common.AppSettings.TF_TransAnimationCheckEnabled;
                 return _transAnimationCheckEnabled;
             }
 
@@ -125,12 +117,11 @@ namespace MisakaTranslator
             }
         }
 
-        private bool? _backgroundBlurCheckEnabled;
+        private bool? _backgroundBlurCheckEnabled = Common.AppSettings.TF_BackgroundBlurCheckEnabled;
         public bool? BackgroundBlurCheckEnabled
         {
             get
             {
-                _backgroundBlurCheckEnabled = Common.AppSettings.TF_BackgroundBlurCheckEnabled;
                 return _backgroundBlurCheckEnabled;
             }
 
@@ -150,12 +141,11 @@ namespace MisakaTranslator
             }
         }
 
-        private bool? _srcSingleLineEnabled = true;
+        private bool? _srcSingleLineEnabled = Common.AppSettings.TF_SrcSingleLineDisplay;
         public bool? SrcSingleLineEnabled
         {
             get
             {
-                _srcSingleLineEnabled = Common.AppSettings.TF_SrcSingleLineDisplay;
                 return _srcSingleLineEnabled;
             }
             set
@@ -170,7 +160,6 @@ namespace MisakaTranslator
         {
             get
             {
-                _sourceTextFontFamilyString = Common.AppSettings.TF_SrcTextFont;
                 return _sourceTextFontFamilyString;
             }
             set
@@ -186,21 +175,19 @@ namespace MisakaTranslator
         {
             get
             {
-                _sourceTextFontFamily = new FontFamily(SourceTextFontFamilyString);
                 return _sourceTextFontFamily;
             }
             set
             {
-                SetProperty(ref _sourceTextFontFamily, value);
+               SetProperty(ref _sourceTextFontFamily, value);
             }
         }
 
-        private double _sourceTextFontSize;
+        private double _sourceTextFontSize = Common.AppSettings.TF_SrcTextSize;
         public double SourceTextFontSize
         {
             get
             {
-                _sourceTextFontSize = Common.AppSettings.TF_SrcTextSize;
                 return _sourceTextFontSize;
             }
 
@@ -216,7 +203,6 @@ namespace MisakaTranslator
         {
             get
             {
-                _firstTextFontFamilyString = Common.AppSettings.TF_FirstTransTextFont;
                 return _firstTextFontFamilyString;
             }
             set
@@ -232,7 +218,6 @@ namespace MisakaTranslator
         {
             get
             {
-                _firstTextFontFamily = new FontFamily(FirstTextFontFamilyString);
                 return _firstTextFontFamily;
             }
             set
@@ -241,12 +226,11 @@ namespace MisakaTranslator
             }
         }
 
-        private double _firstTextFontSize;
+        private double _firstTextFontSize = Common.AppSettings.TF_FirstTransTextSize;
         public double FirstTextFontSize
         {
             get
             {
-                _firstTextFontSize = Common.AppSettings.TF_FirstTransTextSize;
                 return _firstTextFontSize;
             }
 
@@ -262,7 +246,6 @@ namespace MisakaTranslator
         {
             get
             {
-                _secondTextFontFamilyString = Common.AppSettings.TF_SecondTransTextFont;
                 return _secondTextFontFamilyString;
             }
             set
@@ -278,7 +261,6 @@ namespace MisakaTranslator
         {
             get
             {
-                _secondTextFontFamily = new FontFamily(SecondTextFontFamilyString);
                 return _secondTextFontFamily;
             }
             set
@@ -287,12 +269,11 @@ namespace MisakaTranslator
             }
         }
 
-        private double _secondTextFontSize;
+        private double _secondTextFontSize = Common.AppSettings.TF_SecondTransTextSize;
         public double SecondTextFontSize
         {
             get
             {
-                _secondTextFontSize = Common.AppSettings.TF_SecondTransTextSize;
                 return _secondTextFontSize;
             }
 

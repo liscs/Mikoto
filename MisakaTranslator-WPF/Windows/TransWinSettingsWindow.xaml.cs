@@ -35,14 +35,11 @@ namespace MisakaTranslator
         {
             Application.Current.Dispatcher.BeginInvoke(() =>
                {
-                   InstalledFontCollection fonts = new();
+                   using InstalledFontCollection fonts = new();
                    _viewModel.FontList.SuppressNotification = true;
                    _viewModel.FontList.AddRange(fonts.Families.Select(p => p.Name));
                    _viewModel.FontList.SuppressNotification = false;
-                   _viewModel.SourceTextFontFamilyString = Common.AppSettings.TF_SrcTextFont;
-                   _viewModel.FirstTextFontFamilyString = Common.AppSettings.TF_FirstTransTextFont;
-                   _viewModel.SecondTextFontFamilyString = Common.AppSettings.TF_SecondTransTextFont;
-               });
+                });
         }
 
         /// <summary>

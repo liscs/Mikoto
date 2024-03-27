@@ -26,7 +26,7 @@
             <TabItem Header="{DynamicResource TransWinSettingsWin_Tab_source}">
 
                 <StackPanel>
-                    <hc:ComboBox DropDownOpened="Font_ContextMenuOpening" SelectedItem="{Binding SourceTextFontFamilyString, Mode=TwoWay}" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
+                    <hc:ComboBox IsEditable="True" Text="{Binding SourceTextFontFamilyString,Mode=OneTime}" DropDownOpened="Font_ContextMenuOpening" SelectedItem="{Binding SourceTextFontFamilyString, Mode=TwoWay}" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
 
                     <hc:NumericUpDown Value="{Binding SourceTextFontSize,Mode=TwoWay}" Minimum="8" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}" Margin="10" Style="{DynamicResource NumericUpDownExtend}" />
 
@@ -57,7 +57,7 @@
             <TabItem Header="{DynamicResource TransWinSettingsWin_Tab_first}">
 
                 <StackPanel>
-                    <hc:ComboBox SelectedItem="{Binding FirstTextFontFamilyString, Mode=TwoWay}" DropDownOpened="Font_ContextMenuOpening" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
+                    <hc:ComboBox IsEditable="True" Text="{Binding FirstTextFontFamilyString,Mode=OneTime}" SelectedItem="{Binding FirstTextFontFamilyString, Mode=TwoWay}" DropDownOpened="Font_ContextMenuOpening" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
 
                     <hc:NumericUpDown Value="{Binding FirstTextFontSize,Mode=TwoWay}" Minimum="8" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}" Margin="10" Style="{DynamicResource NumericUpDownExtend}" />
 
@@ -72,7 +72,7 @@
             <TabItem Header="{DynamicResource TransWinSettingsWin_Tab_second}">
 
                 <StackPanel>
-                    <hc:ComboBox SelectedItem="{Binding SecondTextFontFamilyString,Mode=TwoWay}"  DropDownOpened="Font_ContextMenuOpening" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
+                    <hc:ComboBox IsEditable="True" Text="{Binding SecondTextFontFamilyString,Mode=OneTime}" SelectedItem="{Binding SecondTextFontFamilyString,Mode=TwoWay}"  DropDownOpened="Font_ContextMenuOpening" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
 
                     <hc:NumericUpDown Value="{Binding SecondTextFontSize,Mode=TwoWay}" Minimum="8" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}" Margin="10" Style="{DynamicResource NumericUpDownExtend}"/>
 
