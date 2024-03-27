@@ -125,7 +125,7 @@ namespace TranslatorLibrary.Translator
     }
 
 #pragma warning disable 0649
-    struct CaiyunTransResult
+    internal struct CaiyunTransResult
     {
         public string message;
         public double confidence;

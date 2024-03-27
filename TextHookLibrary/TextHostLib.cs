@@ -32,12 +32,12 @@ namespace TextHookLibrary
         public static extern Int32 RemoveHook(UInt32 processId, Int64 address);
 
         [DllImport("texthost.dll")]
-        public extern static Int32 InjectProcess(UInt32 processId);
+        public static extern Int32 InjectProcess(UInt32 processId);
 
         [DllImport("texthost.dll")]
-        public extern static Int32 DetachProcess(UInt32 processId);
+        public static extern Int32 DetachProcess(UInt32 processId);
 
         [DllImport("texthost.dll")]
-        public extern static Int32 AddClipboardThread(IntPtr windowHandle);
+        public static extern Int32 AddClipboardThread(IntPtr windowHandle);
     }
 }

@@ -10,15 +10,14 @@ namespace MisakaTranslator.GuidePages.OCR
     /// </summary>
     public partial class ChooseHotKeyPage : Page
     {
-        GlobalHook? hook;
-        List<string> lstHotKeySource = new List<string>()
+        private GlobalHook? hook;
+        private List<string> lstHotKeySource = new List<string>()
         {
             Application.Current.Resources["ChooseHotKeyPage_List_Keyboard"].ToString()!,
             Application.Current.Resources["ChooseHotKeyPage_List_MouseL"].ToString()!,
             Application.Current.Resources["ChooseHotKeyPage_List_MouseR"].ToString()!
         };
-
-        HotKeyInfo HotKey;
+        private HotKeyInfo HotKey;
 
         public ChooseHotKeyPage()
         {
@@ -33,7 +32,7 @@ namespace MisakaTranslator.GuidePages.OCR
         /// <summary>
         /// 键盘点击事件
         /// </summary>
-        void Hook_OnKeyBoardActivity(object? sender, System.Windows.Forms.KeyEventArgs e)
+        private void Hook_OnKeyBoardActivity(object? sender, System.Windows.Forms.KeyEventArgs e)
         {
             HotKey.IsMouse = false;
             HotKey.KeyCode = e.KeyCode;

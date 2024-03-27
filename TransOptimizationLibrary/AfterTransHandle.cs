@@ -2,7 +2,7 @@
 {
     public class AfterTransHandle
     {
-        BeforeTransHandle bth;
+        private BeforeTransHandle bth;
 
         public AfterTransHandle(BeforeTransHandle b)
         {

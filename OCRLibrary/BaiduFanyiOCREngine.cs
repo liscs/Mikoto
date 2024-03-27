@@ -12,7 +12,7 @@ namespace OCRLibrary
     {
         public string? appId;
         public string? secretKey;
-        const string salt = "123456";
+        private const string salt = "123456";
         private string langCode = string.Empty;
 
         public override async Task<string?> OCRProcessAsync(Bitmap img)
@@ -131,13 +131,14 @@ namespace OCRLibrary
         }
 
 #pragma warning disable 0649
-        struct Result
+        private struct Result
         {
             public string error_code;
             public string error_msg;
             public Data data;
         }
-        struct Data
+
+        private struct Data
         {
             public string sumDst;
         }

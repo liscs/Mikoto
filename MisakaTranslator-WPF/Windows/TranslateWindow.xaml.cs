@@ -43,7 +43,7 @@ namespace MisakaTranslator
 
         public DispatcherTimer DispatcherTimer { get; set; } = new();//定时器
 
-        Process? _gameProcess;
+        private Process? _gameProcess;
         private ArtificialTransHelper _artificialTransHelper;
 
         private MecabHelper _mecabHelper;
@@ -67,8 +67,7 @@ namespace MisakaTranslator
         private TransWinSettingsWindow? _transWinSettingsWindow;
 
         private readonly DropShadowEffect _dropShadowEffect = new();
-
-        PopupWindow? _historyWindow;
+        private PopupWindow? _historyWindow;
         public TranslateWindow()
         {
             InitializeComponent();
@@ -413,7 +412,7 @@ namespace MisakaTranslator
         /// <summary>
         /// 键盘点击事件
         /// </summary>
-        void Hook_OnKeyBoardActivity(object sender)
+        private void Hook_OnKeyBoardActivity(object sender)
         {
             TranslateEventOcr();
         }
@@ -478,7 +477,8 @@ namespace MisakaTranslator
 
             IsOCRingFlag = false;
         }
-        DictResWindow? _dictResWindow;
+
+        private DictResWindow? _dictResWindow;
 
 
         private static async Task<string> GetSelectdText(RichTextBox textBox, FlowDocument flowDocument)
@@ -491,8 +491,8 @@ namespace MisakaTranslator
             return result;
         }
 
-        SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new();
-        string? _tempData;
+        private SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new();
+        private string? _tempData;
 
         /// <summary>
         /// Hook/Clipboard模式下调用的事件
@@ -717,12 +717,12 @@ namespace MisakaTranslator
             return run;
         }
 
-        static int _updatingSouceNumber = 0;
+        private static int _updatingSouceNumber = 0;
         private List<FlowDocument> _flowDocuments;
         private List<RichTextBox> _richTextBoxes
             ;
 
-        static void SwitchUpdatingNumber()
+        private static void SwitchUpdatingNumber()
         {
             _updatingSouceNumber = 1 - _updatingSouceNumber;
         }
@@ -1292,7 +1292,7 @@ namespace MisakaTranslator
                 _tts?.SpeakAsync(_currentsrcText);
         }
 
-        void SetWindowTopMost()
+        private void SetWindowTopMost()
         {
             if (this.WindowState != WindowState.Minimized)
             {

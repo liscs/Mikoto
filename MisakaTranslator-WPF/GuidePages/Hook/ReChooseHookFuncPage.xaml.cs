@@ -11,8 +11,8 @@ namespace MisakaTranslator.GuidePages.Hook
     /// </summary>
     public partial class ReChooseHookFuncPage : Page
     {
-        BindingList<TextHookData> lstData = new BindingList<TextHookData>();
-        int sum = 0;
+        private BindingList<TextHookData> lstData = new BindingList<TextHookData>();
+        private int sum = 0;
 
         public ReChooseHookFuncPage()
         {

@@ -37,7 +37,7 @@ namespace MisakaTranslator.Styles
             window.WindowState = WindowState.Minimized;
         }
 
-        Border? _mainBorder;
+        private Border? _mainBorder;
         private void InitMainBorder(object? sender, EventArgs e)
         {
             _mainBorder = sender as Border;

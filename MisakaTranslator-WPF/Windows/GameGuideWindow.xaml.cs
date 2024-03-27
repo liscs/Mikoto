@@ -11,8 +11,8 @@ namespace MisakaTranslator
     /// </summary>
     public partial class GameGuideWindow : Window
     {
-        GuideMode GuideMode;
-        bool isComplete;//是否是在完成状态下退出的，作为检验，默认为假
+        private GuideMode GuideMode;
+        private bool isComplete;//是否是在完成状态下退出的，作为检验，默认为假
 
         public GameGuideWindow(GuideMode Mode)
         {

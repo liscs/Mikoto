@@ -14,16 +14,14 @@ namespace MisakaTranslator
     /// </summary>
     public partial class ScreenCaptureWindow : Window
     {
-        BitmapImage img;
-
-        Point iniP;
+        private BitmapImage img;
+        private Point iniP;
         private ViewModel viewModel;
-        Rect selectRect;
-        double scale;
+        private Rect selectRect;
+        private double scale;
 
         public static System.Drawing.Rectangle OCRArea;
-
-        int capMode;
+        private int capMode;
 
         public ScreenCaptureWindow(BitmapImage i, int mode = 1)
         {
@@ -106,7 +104,7 @@ namespace MisakaTranslator
             }
         }
 
-        void Capture()
+        private void Capture()
         {
             OCRArea = new System.Drawing.Rectangle((int)selectRect.X, (int)selectRect.Y, (int)selectRect.Width, (int)selectRect.Height);
 
@@ -129,7 +127,7 @@ namespace MisakaTranslator
 
     }
 
-    class ViewModel : INotifyPropertyChanged
+    internal class ViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 

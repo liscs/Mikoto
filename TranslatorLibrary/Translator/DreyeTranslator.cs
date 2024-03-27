@@ -11,10 +11,10 @@ namespace TranslatorLibrary.Translator
 
     public class DreyeTranslator : ITranslator
     {
-        const int EC_DAT = 1;   //英中
-        const int CE_DAT = 2;   //中英
-        const int CJ_DAT = 3;   //中日
-        const int JC_DAT = 10;  //日中
+        private const int EC_DAT = 1;   //英中
+        private const int CE_DAT = 2;   //中英
+        private const int CJ_DAT = 3;   //中日
+        private const int JC_DAT = 10;  //日中
 
         [DllImport("TransCOM.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int MTInitCJ(int dat_index);

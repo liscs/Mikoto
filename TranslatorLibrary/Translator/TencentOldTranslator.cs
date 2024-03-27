@@ -137,12 +137,12 @@ namespace TranslatorLibrary.Translator
     }
 
 #pragma warning disable 0649
-    struct TencentOldTransOutInfo
+    internal struct TencentOldTransOutInfo
     {
         public TencentOldTransResult Response;
     }
 
-    struct TencentOldTransResult
+    internal struct TencentOldTransResult
     {
         public string RequestId;
         public string TargetText;
@@ -151,7 +151,7 @@ namespace TranslatorLibrary.Translator
         public TencentOldTransOutError? Error;
     }
 
-    struct TencentOldTransOutError
+    internal struct TencentOldTransOutError
     {
         public string Code;
         public string Message;

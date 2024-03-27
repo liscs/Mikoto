@@ -247,11 +247,10 @@ namespace TextRepairLibrary
             }
         }
 
-
-        static ScriptEngine pythonEngine = Python.CreateEngine();
-        static ScriptScope scope = pythonEngine.CreateScope();
-        static string nowHandler = "example";
-        static ScriptSource pythonScript = pythonEngine.CreateScriptSourceFromString(
+        private static ScriptEngine pythonEngine = Python.CreateEngine();
+        private static ScriptScope scope = pythonEngine.CreateScope();
+        private static string nowHandler = "example";
+        private static ScriptSource pythonScript = pythonEngine.CreateScriptSourceFromString(
                 $"import textRepairPlugins.example as customHandler\n" +
                 "ResultStr = customHandler.process(SourceStr)\n"
                 );

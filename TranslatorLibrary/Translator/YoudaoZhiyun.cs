@@ -150,7 +150,7 @@ namespace TranslatorLibrary.Translator
     }
 
 #pragma warning disable 0649
-    struct YoudaoZhiyunResult
+    internal struct YoudaoZhiyunResult
     {
         public string errorCode, query, l;
         public string[] translation;

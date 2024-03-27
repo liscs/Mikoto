@@ -94,12 +94,12 @@ namespace TranslatorLibrary.Translator
     }
 
 #pragma warning disable 0649
-    struct DeepLTranslateResult
+    internal struct DeepLTranslateResult
     {
         public DeepLTranslations[] translations;
     }
 
-    struct DeepLTranslations
+    internal struct DeepLTranslations
     {
         public string detected_source_language;
         public string text;

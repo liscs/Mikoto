@@ -299,21 +299,21 @@ namespace TextHookLibrary
             }
         }
 
-
-        List<string> matchList = new List<string>();
+        private List<string> matchList = new List<string>();
 
         [GeneratedRegex("(?<=【).*?(?=:)")]
         private static partial Regex FirstCodeRegex();
 
-        Stopwatch LastMessageStopwatch { get; set; } = Stopwatch.StartNew();
-        TextHookData? _thData;
+        private Stopwatch LastMessageStopwatch { get; set; } = Stopwatch.StartNew();
+
+        private TextHookData? _thData;
 
         /// <summary>
         /// 控制台输出事件，在这做内部消化处理
         /// </summary>
         /// <param name="sendingProcess"></param>
         /// <param name="outLine"></param>
-        void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
+        private void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
         {
             LastMessageStopwatch.Restart();
             if (outLine.Data == null) { return; }

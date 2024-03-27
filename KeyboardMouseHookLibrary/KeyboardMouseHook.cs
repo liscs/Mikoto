@@ -20,7 +20,7 @@ namespace KeyboardMouseHookLibrary
 
     public class KeyboardMouseHook
     {
-        Process? processMonitor;
+        private Process? processMonitor;
 
         public event MouseButtonEventHandler? OnMouseActivity;
         public event KeyboardEventHandler? OnKeyboardActivity;
@@ -86,7 +86,7 @@ namespace KeyboardMouseHookLibrary
             }
         }
 
-        void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
+        private void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
         {
             string? output = outLine.Data;
 

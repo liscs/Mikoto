@@ -74,7 +74,7 @@ namespace TranslatorLibrary.Translator
         }
 
 #pragma warning disable 0649
-        struct Result
+        private struct Result
         {
             public int code;
             public string[] text;

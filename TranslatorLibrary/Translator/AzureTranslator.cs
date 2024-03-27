@@ -129,17 +129,19 @@ namespace TranslatorLibrary.Translator
     }
 
 #pragma warning disable 0649
-    struct AzureTransOutInfo
+    internal struct AzureTransOutInfo
     {
         public AzureTransResult[] translations;
         public AzureErrorResult error;
     }
-    struct AzureTransResult
+
+    internal struct AzureTransResult
     {
         public string text;
         public string to;
     }
-    struct AzureErrorResult
+
+    internal struct AzureErrorResult
     {
         public int code;
         public string message;

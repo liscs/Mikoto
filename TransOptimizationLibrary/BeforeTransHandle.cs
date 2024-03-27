@@ -5,7 +5,7 @@ namespace TransOptimizationLibrary
 {
     public class BeforeTransHandle
     {
-        NounTransOptimization nto;
+        private NounTransOptimization nto;
 
 
         public BeforeTransHandle(string gameName, string srcLang, string dstLang)

@@ -10,7 +10,7 @@ namespace MisakaTranslator
     /// </summary>
     public partial class GlobalOCRWindow : Window
     {
-        System.Drawing.Bitmap img;
+        private System.Drawing.Bitmap img;
 
         public GlobalOCRWindow(System.Drawing.Bitmap i)
         {

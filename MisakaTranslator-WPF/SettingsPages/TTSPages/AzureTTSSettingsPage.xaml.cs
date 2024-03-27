@@ -102,7 +102,7 @@ namespace MisakaTranslator.SettingsPages.TTSPages
             }
         }
 
-        void SetSavedVoice()
+        private void SetSavedVoice()
         {
             if (string.IsNullOrEmpty(Common.AppSettings.AzureTTSVoice))
             {

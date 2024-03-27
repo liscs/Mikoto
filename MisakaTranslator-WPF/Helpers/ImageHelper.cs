@@ -140,7 +140,7 @@ namespace MisakaTranslator.Helpers
     //necessary to convert the array between one-dimensional and two-dimensional.
     public static class BitmapSourceExtension
     {
-        public unsafe static void CopyPixelColors(this BitmapSource source, PixelColor[,] pixels, int stride, int offset)
+        public static unsafe void CopyPixelColors(this BitmapSource source, PixelColor[,] pixels, int stride, int offset)
         {
             fixed (PixelColor* buffer = &pixels[0, 0])
                 source.CopyPixels(

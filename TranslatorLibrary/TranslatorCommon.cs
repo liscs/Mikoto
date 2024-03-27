@@ -113,7 +113,7 @@ namespace TranslatorLibrary
             return -1;
         }
 
-        static HttpClient? HC;
+        private static HttpClient? HC;
         /// <summary>
         /// 获得HttpClient单例，第一次调用自动初始化
         /// </summary>

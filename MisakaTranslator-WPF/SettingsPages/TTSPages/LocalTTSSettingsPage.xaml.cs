@@ -11,7 +11,7 @@ namespace MisakaTranslator.SettingsPages.TTSPages
     /// </summary>
     public partial class LocalTTSSettingsPage : Page
     {
-        LocalTTS localTTS = new LocalTTS();
+        private LocalTTS localTTS = new LocalTTS();
         public LocalTTSSettingsPage()
         {
             InitializeComponent();

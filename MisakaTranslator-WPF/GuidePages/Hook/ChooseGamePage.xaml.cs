@@ -19,7 +19,7 @@ namespace MisakaTranslator.GuidePages.Hook
         private readonly Dictionary<string, int> _processList = ProcessHelper.GetProcessList_Name_PID();
         private int _gamePid = -1;
         private List<Process> _sameNameGameProcessList = new();
-        static ChooseGameViewModel _viewModel = new();
+        private static ChooseGameViewModel _viewModel = new();
 
 
         public ChooseGamePage()
@@ -106,7 +106,7 @@ namespace MisakaTranslator.GuidePages.Hook
             }
         }
 
-        unsafe private int GetProcessIdFromFocus()
+        private unsafe int GetProcessIdFromFocus()
         {
             uint thisPid;
             PInvoke.GetWindowThreadProcessId(PInvoke.GetForegroundWindow(), &thisPid);

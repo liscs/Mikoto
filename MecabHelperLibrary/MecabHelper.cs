@@ -76,7 +76,7 @@ namespace MecabHelperLibrary
             GC.SuppressFinalize(this);
         }
 
-        bool disposed;
+        private bool disposed;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -136,7 +136,7 @@ namespace MecabHelperLibrary
             return ret;
         }
 
-        static string KatakanaToHiragana(string s)
+        private static string KatakanaToHiragana(string s)
         {
             StringBuilder sb = new();
             char[] target = s.ToCharArray();
@@ -153,7 +153,7 @@ namespace MecabHelperLibrary
             return sb.ToString();
         }
 
-        static string ConvertHiraganaToRomaji(string s)
+        private static string ConvertHiraganaToRomaji(string s)
         {
             return s switch
             {
@@ -326,7 +326,7 @@ namespace MecabHelperLibrary
         }
 
         //平假名转罗马音
-        static string HiraganaToAlphabet(string kana)
+        private static string HiraganaToAlphabet(string kana)
         {
             string romaji = "";
             for (int i = 0; i < kana.Length; i++)

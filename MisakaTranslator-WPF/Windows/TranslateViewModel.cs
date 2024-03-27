@@ -179,7 +179,7 @@ namespace MisakaTranslator
             }
             set
             {
-               SetProperty(ref _sourceTextFontFamily, value);
+                SetProperty(ref _sourceTextFontFamily, value);
             }
         }
 

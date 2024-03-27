@@ -14,11 +14,11 @@ namespace MisakaTranslator.GuidePages.OCR
     /// </summary>
     public partial class ChooseOCRAreaPage : Page
     {
-        bool isAllWin;
-        IntPtr SelectedHwnd;
-        System.Drawing.Rectangle OCRArea;
-        GlobalHook hook;
-        bool IsChoosingWin;
+        private bool isAllWin;
+        private IntPtr SelectedHwnd;
+        private System.Drawing.Rectangle OCRArea;
+        private GlobalHook hook;
+        private bool IsChoosingWin;
 
         public ChooseOCRAreaPage()
         {
@@ -75,7 +75,7 @@ namespace MisakaTranslator.GuidePages.OCR
         /// <summary>
         /// 鼠标点击事件
         /// </summary>
-        void Hook_OnMouseActivity(object? sender, System.Windows.Forms.MouseEventArgs e)
+        private void Hook_OnMouseActivity(object? sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {

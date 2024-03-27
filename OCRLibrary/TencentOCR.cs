@@ -16,7 +16,7 @@ namespace OCRLibrary
         public string? SecretId;
         public string? SecretKey;
         private string langCode = string.Empty;
-        static int SessionUuid = 0;
+        private static int SessionUuid = 0;
 
         public override async Task<string?> OCRProcessAsync(Bitmap img)
         {
@@ -126,11 +126,12 @@ namespace OCRLibrary
         }
 
 #pragma warning disable 0649
-        struct Result
+        private struct Result
         {
             public Response Response;
         }
-        struct Response
+
+        private struct Response
         {
             public string SessionUuid;
             public string Source;
@@ -139,17 +140,20 @@ namespace OCRLibrary
             public Record? ImageRecord;
             public Error? Error;
         }
-        struct Record
+
+        private struct Record
         {
             public ItemValue[] Value;
         }
-        struct ItemValue
+
+        private struct ItemValue
         {
             public string SourceText;
             public string TargetText;
             public int X, Y, W, H;
         }
-        struct Error
+
+        private struct Error
         {
             public string Code, Message;
         }

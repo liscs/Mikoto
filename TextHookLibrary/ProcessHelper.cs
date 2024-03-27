@@ -7,7 +7,7 @@ namespace TextHookLibrary
 {
     public static class ProcessHelper
     {
-        const string ExtPath = "lib\\ProcessHelperExt.exe";
+        private const string ExtPath = "lib\\ProcessHelperExt.exe";
 
         /// <summary>
         /// 获得当前系统进程列表 形式：直接用于显示的字串和进程PID

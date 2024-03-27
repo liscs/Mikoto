@@ -47,7 +47,7 @@ namespace KeyboardMouseMonitor
             return 0;
         }
 
-        private unsafe static LRESULT mymouse(int nCode, WPARAM wParam, LPARAM lParam)
+        private static unsafe LRESULT mymouse(int nCode, WPARAM wParam, LPARAM lParam)
         {
             MOUSEHOOKSTRUCT* mhookstruct = (MOUSEHOOKSTRUCT*)lParam.Value;
             Point pt = mhookstruct->pt;
@@ -68,7 +68,7 @@ namespace KeyboardMouseMonitor
             return PInvoke.CallNextHookEx(HHOOK.Null, nCode, wParam, lParam);
         }
 
-        private unsafe static LRESULT mykeyboard(int nCode, WPARAM wParam, LPARAM lParam)
+        private static unsafe LRESULT mykeyboard(int nCode, WPARAM wParam, LPARAM lParam)
         {
             KBDLLHOOKSTRUCT* pKeyboardHookStruct = (KBDLLHOOKSTRUCT*)lParam.Value;
 

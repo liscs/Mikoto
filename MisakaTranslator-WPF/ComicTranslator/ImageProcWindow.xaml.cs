@@ -15,12 +15,11 @@ namespace MisakaTranslator.ComicTranslator
     /// </summary>
     public partial class ImageProcWindow : Window
     {
-        System.Drawing.Bitmap bmp;
-        Image img;
+        private System.Drawing.Bitmap bmp;
+        private Image img;
+        private Stack<StrokeCollection> tempList;//操作栈，用于撤销
 
-        Stack<StrokeCollection> tempList;//操作栈，用于撤销
-
-        DrawingAttributes da;
+        private DrawingAttributes da;
 
         public ImageProcWindow(System.Drawing.Bitmap bitmap)
         {

@@ -7,8 +7,8 @@ namespace TextHookLibrary
 {
     public class ClipboardNotification
     {
-        HWND winHandle;
-        HWND ClipboardViewerNext;
+        private HWND winHandle;
+        private HWND ClipboardViewerNext;
 
         public ClipboardNotification(IntPtr winH)
         {

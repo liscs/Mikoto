@@ -131,7 +131,7 @@ namespace TranslatorLibrary.Translator
     }
 
 #pragma warning disable 0649
-    struct BaiduTransOutInfo
+    internal struct BaiduTransOutInfo
     {
         public string from;
         public string to;
@@ -139,7 +139,7 @@ namespace TranslatorLibrary.Translator
         public string error_code;
     }
 
-    struct BaiduTransResult
+    internal struct BaiduTransResult
     {
         public string src;
         public string dst;

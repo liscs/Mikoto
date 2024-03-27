@@ -10,10 +10,9 @@ namespace TranslatorLibrary.Translator
 
     public class KingsoftFastAITTranslator : ITranslator
     {
-        const string DEFAULT_DIC = "DCT";
-
-        int buffersize = 0x4f4;
-        int key = 0x4f4;
+        private const string DEFAULT_DIC = "DCT";
+        private int buffersize = 0x4f4;
+        private int key = 0x4f4;
 
         //=====================================日译汉===================================
 

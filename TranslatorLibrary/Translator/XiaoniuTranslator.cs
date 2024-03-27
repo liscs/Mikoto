@@ -115,7 +115,7 @@ namespace TranslatorLibrary.Translator
     }
 
 #pragma warning disable 0649
-    struct XiaoniuTransOutInfo
+    internal struct XiaoniuTransOutInfo
     {
         public string from;
         public string to;

@@ -11,11 +11,10 @@ namespace TTSHelperLibrary
         //形如127.0.0.1:7890的代理字符串
         public string ProxyString { get; set; } = string.Empty;
         private SpeechSynthesizer? _synthesizer;
+        private string subscriptionKey = string.Empty;
+        private string subscriptionRegion = string.Empty;
 
-        string subscriptionKey = string.Empty;
-        string subscriptionRegion = string.Empty;
-
-        string Voice { get; set; } = string.Empty;
+        private string Voice { get; set; } = string.Empty;
         public AzureTTS(string key, string location, string voice, string proxy)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(location) || string.IsNullOrEmpty(voice))
@@ -68,7 +67,7 @@ namespace TTSHelperLibrary
             _synthesizer = new SpeechSynthesizer(config);
         }
 
-        HashSet<SpeechSynthesizer> disposeList = new();
+        private HashSet<SpeechSynthesizer> disposeList = new();
 
         public async Task SpeakAsync(string text)
         {

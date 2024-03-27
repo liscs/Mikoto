@@ -30,8 +30,9 @@ namespace TranslatorLibrary.Translator
                     }
                 }
             }
-            SortedSet<(int, double)> nextCursorsSet = new SortedSet<(int, double)>(new CPQComparator());
-            int maxSize;
+
+            private SortedSet<(int, double)> nextCursorsSet = new SortedSet<(int, double)>(new CPQComparator());
+            private int maxSize;
             public CursorPriorityQueue(int maxSize)
             {
                 this.maxSize = maxSize;
@@ -269,7 +270,7 @@ namespace TranslatorLibrary.Translator
             return Task.FromResult<string?>(cn_text[maxI] == "" ? jp_text[maxI] : cn_text[maxI]);
         }
 
-        int addNoiseState = 0;
+        private int addNoiseState = 0;
         //for test
         private string addNoise(string input)
         {
@@ -388,7 +389,7 @@ namespace TranslatorLibrary.Translator
 
         private List<string> jp_text = new List<string>();
         private List<string> cn_text = new List<string>();
-        Random random = new Random();
+        private Random random = new Random();
         private int[,] r = new int[2, R_MAX_LEN];
         private const int R_MAX_LEN = 64;
         private const int MAX_CURSOR = 8;

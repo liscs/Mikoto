@@ -15,11 +15,9 @@ namespace MisakaTranslator.GuidePages.Hook
     /// </summary>
     public partial class ChooseHookFuncPage : Page
     {
-        BindingList<TextHookData> lstData = new BindingList<TextHookData>();
-
-        string? LastCustomHookCode;
-
-        int sum = 0;
+        private BindingList<TextHookData> lstData = new BindingList<TextHookData>();
+        private string? LastCustomHookCode;
+        private int sum = 0;
 
         public ChooseHookFuncPage()
         {

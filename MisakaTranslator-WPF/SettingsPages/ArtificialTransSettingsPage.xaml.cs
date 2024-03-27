@@ -11,7 +11,7 @@ namespace MisakaTranslator.SettingsPages
     /// </summary>
     public partial class ArtificialTransSettingsPage : Page
     {
-        string[] strNames = [];
+        private string[] strNames = [];
 
         public ArtificialTransSettingsPage()
         {

@@ -583,7 +583,7 @@ namespace MisakaTranslator
         /// <summary>
         /// 允许关闭全局通知。实际做法是新建了一个无关联的panel，那些通知本质上还是会生成。
         /// </summary>
-        void GrowlDisableSwitch()
+        private void GrowlDisableSwitch()
         {
             if (!Common.AppSettings.GrowlEnabled)
             {

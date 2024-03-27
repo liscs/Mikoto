@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace MisakaTranslator.SettingsPages
 {
-    class SoftwareSettingsViewModel : INotifyPropertyChanged
+    internal class SoftwareSettingsViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)

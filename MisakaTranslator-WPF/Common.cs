@@ -154,7 +154,7 @@ namespace MisakaTranslator
             scw.Show();
         }
 
-        static double scale;
+        private static double scale;
 
         /// <summary>
         /// 获取DPI缩放倍数

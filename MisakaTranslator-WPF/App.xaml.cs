@@ -82,7 +82,7 @@ namespace MisakaTranslator
         /// <summary>
         /// 非UI线程未捕获异常处理事件
         /// </summary>
-        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             MisakaTranslator.MainWindow.Instance.CloseNotifyIcon();
             string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");

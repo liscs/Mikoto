@@ -111,13 +111,13 @@ namespace TranslatorLibrary.Translator
         }
 
 #pragma warning disable 0649
-        struct Result
+        private struct Result
         {
             public Translations[] translations;
             public string error;
         }
 
-        struct Translations
+        private struct Translations
         {
             public string translation;
         }

@@ -20,28 +20,25 @@ namespace MisakaTranslator.ComicTranslator
     /// </summary>
     public partial class ComicTransMainWindow : Window
     {
-        BindingList<ComicTransData> lstData = new BindingList<ComicTransData>();
-
-
-        List<string> ComicImgList;//图片数组
-        string DicPath = string.Empty;//文件夹路径
-        int CurrentPos;//当前指针
+        private BindingList<ComicTransData> lstData = new BindingList<ComicTransData>();
+        private List<string> ComicImgList;//图片数组
+        private string DicPath = string.Empty;//文件夹路径
+        private int CurrentPos;//当前指针
 
         private ITranslator? _translator1; //第一翻译源
         private ITranslator? _translator2; //第二翻译源
 
         private OCREngine ocr;//OCR对象
 
-        string transRes1;
-        string transRes2;
+        private string transRes1;
+        private string transRes2;
 
         public string DstLang = string.Empty;
         public string SrcLang = string.Empty;
-
-        System.Windows.Point iniP;
+        private System.Windows.Point iniP;
         private ViewModel viewModel;
-        Rectangle selectRect;
-        double scale;
+        private Rectangle selectRect;
+        private double scale;
 
         public ComicTransMainWindow()
         {

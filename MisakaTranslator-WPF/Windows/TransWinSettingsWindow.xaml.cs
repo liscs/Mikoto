@@ -39,7 +39,7 @@ namespace MisakaTranslator
                    _viewModel.FontList.SuppressNotification = true;
                    _viewModel.FontList.AddRange(fonts.Families.Select(p => p.Name));
                    _viewModel.FontList.SuppressNotification = false;
-                });
+               });
         }
 
         /// <summary>
@@ -231,8 +231,7 @@ namespace MisakaTranslator
             Hide();
         }
 
-
-        bool _fontInited = false;
+        private bool _fontInited = false;
 
         private void Font_ContextMenuOpening(object sender, System.EventArgs e)
         {

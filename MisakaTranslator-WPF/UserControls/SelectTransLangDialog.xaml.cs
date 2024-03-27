@@ -12,7 +12,7 @@ namespace MisakaTranslator.UserControls
     public partial class SelectTransLangDialog : UserControl
     {
         private readonly List<string> _langList;
-        ComicTranslator.ComicTransMainWindow _win;
+        private ComicTranslator.ComicTransMainWindow _win;
 
         public SelectTransLangDialog(ComicTranslator.ComicTransMainWindow win)
         {

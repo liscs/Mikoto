@@ -13,7 +13,7 @@ namespace MisakaTranslator
     public partial class DictResWindow : System.Windows.Window
     {
         private ITTS? _textSpeechHelper;
-        static private EbwinHelper _ebwinHelper = new EbwinHelper();
+        private static EbwinHelper _ebwinHelper = new EbwinHelper();
 
         public DictResWindow(ITTS? tsh)
         {

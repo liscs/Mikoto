@@ -13,8 +13,9 @@ namespace DictionaryHelperLibrary
     {
         //Ebwin命令行用的词典路径信息的设置文件
         private static string EBPOCKET = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EBWin4\\EBPOCKET.GRP";
+
         //行列表
-        static List<string> EBPOCKETlist = new()
+        private static List<string> EBPOCKETlist = new()
         {
             "%%UTF-8=1"
         };

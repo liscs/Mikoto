@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace OCRLibrary
 {
-    class ConnectComponentImageProcImpl
+    internal class ConnectComponentImageProcImpl
     {
         private static int[,] ds = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
         /// <summary>

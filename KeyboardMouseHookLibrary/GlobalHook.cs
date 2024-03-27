@@ -60,20 +60,22 @@ namespace KeyboardMouseHookLibrary
         /// <summary>
         /// 定义鼠标钩子句柄.
         /// </summary>
-        static HHOOK _hMouseHook = HHOOK.Null;
+        private static HHOOK _hMouseHook = HHOOK.Null;
+
         /// <summary>
         /// 定义键盘钩子句柄
         /// </summary>
-        static HHOOK _hKeyboardHook = HHOOK.Null;
+        private static HHOOK _hKeyboardHook = HHOOK.Null;
 
         /// <summary>
         /// 定义鼠标处理过程的委托对象
         /// </summary>
-        HOOKPROC? MouseHookProcedure;
+        private HOOKPROC? MouseHookProcedure;
+
         /// <summary>
         /// 键盘处理过程的委托对象
         /// </summary>
-        HOOKPROC? KeyboardHookProcedure;
+        private HOOKPROC? KeyboardHookProcedure;
 
         public bool Start(string _moduleName)
         {

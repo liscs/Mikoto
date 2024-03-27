@@ -144,7 +144,7 @@ namespace OCRLibrary
         }
     }
 
-    class BaiduTokenOutInfo
+    internal class BaiduTokenOutInfo
     {
         public string? access_token { get; set; }
         public int expires_in { get; set; }
@@ -157,7 +157,7 @@ namespace OCRLibrary
         public string? session_secret { get; set; }
     }
 
-    class BaiduOCRresOutInfo
+    internal class BaiduOCRresOutInfo
     {
         public long log_id { get; set; }
         public List<BaiduOCRresDataOutInfo>? words_result { get; set; }
@@ -165,12 +165,12 @@ namespace OCRLibrary
 
     }
 
-    class BaiduOCRresDataOutInfo
+    internal class BaiduOCRresDataOutInfo
     {
         public string? words { get; set; }
     }
 
-    class BaiduOCRErrorInfo
+    internal class BaiduOCRErrorInfo
     {
         public short error_code { get; set; }
         public string? error_msg { get; set; }

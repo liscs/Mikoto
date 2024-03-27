@@ -2,10 +2,10 @@
 
 namespace MisakaTranslator
 {
-    static internal class Program
+    internal static class Program
     {
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             App.Main();
         }
