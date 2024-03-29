@@ -73,19 +73,6 @@ namespace MisakaTranslator
             GameInfoList = GameHelper.GetAllCompletedGames();
             Common.RepairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Environment.CurrentDirectory + "\\data\\settings\\RepairSettings.ini").Build();
             InitGameLibraryPanel();
-            RefreshLEStartButton();
-        }
-
-        public void RefreshLEStartButton()
-        {
-            if (!Path.Exists(Common.AppSettings.LEPath))
-            {
-                _viewModel.LEEnabled = Visibility.Collapsed;
-            }
-            else
-            {
-                _viewModel.LEEnabled = Visibility.Visible;
-            }
         }
 
         /// <summary>

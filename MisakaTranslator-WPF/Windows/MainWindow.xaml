@@ -215,8 +215,8 @@
                                         Background="{DynamicResource SuccessBrush}"
                                         Click="StartBtn_Click"
                                         BorderBrush="Transparent" />
-                                <!--检查LE文件存在-->
-                                <Button Visibility="{Binding LEEnabled}"
+                                <!--binding会导致xaml 设计器报错-->
+                                <Button Name="LEStartButton"
                                         Content="{DynamicResource MainWindow_Drawer_LEStart}"
                                         Height="50"
                                         Margin="5"
