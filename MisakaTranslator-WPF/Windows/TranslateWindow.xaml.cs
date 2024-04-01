@@ -208,12 +208,12 @@ namespace MisakaTranslator
 
         private static void GetSelectionRangeIndex(RichTextBox richTextBox, out int start, out int end)
         {
-            //从debugger里找出来的这个属性所在的类型
-            Type type = Type.GetType("System.Windows.Documents.ITextPointer, PresentationFramework")!;
-            //莫名的，恰恰符合我们需要的属性
-            PropertyInfo charOffsetProperty = type.GetProperty("CharOffset")!;
-            start = (int)charOffsetProperty.GetValue(richTextBox.Selection.Start)!;
-            end = (int)charOffsetProperty.GetValue(richTextBox.Selection.End)!;
+            TextPointer docStart = richTextBox.Document.ContentStart;
+            TextPointer selectionStart = richTextBox.Selection.Start;
+            TextPointer selectionEnd = richTextBox.Selection.End;
+
+            start = new TextRange(docStart, selectionStart).Text.Length;
+            end = new TextRange(docStart, selectionEnd).Text.Length;
         }
 
         private void TTS_Init()
