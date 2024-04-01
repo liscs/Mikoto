@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace MisakaTranslator.SettingsPages
@@ -44,8 +45,17 @@ namespace MisakaTranslator.SettingsPages
         private void UpdateLEPath()
         {
             Common.AppSettings.LEPath = PathBox.Text;
-            MainWindow? mainWindow = Application.Current.MainWindow as MainWindow;
-            mainWindow?.RefreshLEStartButton();
+            if (Application.Current.MainWindow is MainWindow mainWindow)
+            {
+                if (Path.Exists(Common.AppSettings.LEPath))
+                {
+                    mainWindow.LEStartButton.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    mainWindow.LEStartButton.Visibility = Visibility.Collapsed;
+                }
+            }
         }
     }
 }
