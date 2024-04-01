@@ -12,9 +12,10 @@ namespace MisakaTranslator.Helpers
         /// <summary>
         /// 计算源文本RichTextBox的尺寸
         /// </summary>
-        public static double GetContentWidth(FlowDocument flowDocument, RichTextBox richTextBox)
+        public static double GetContentWidth(RichTextBox richTextBox)
         {
             double result = 0;
+            FlowDocument flowDocument = richTextBox.Document;
             if (flowDocument.Blocks.FirstBlock is Paragraph paragraph)
             {
                 System.Collections.IList list = paragraph.Inlines;

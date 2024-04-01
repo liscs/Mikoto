@@ -77,7 +77,6 @@ namespace MisakaTranslator
 
             DataContext = ViewModel;
             UI_Init();
-            _flowDocuments = [SourceFlowDocument1, SourceFlowDocument2];
             _richTextBoxes = [SourceRichTextBox1, SourceRichTextBox2];
 
             _gameTextHistory = new Queue<HistoryInfo>();
@@ -162,7 +161,7 @@ namespace MisakaTranslator
             if (!string.IsNullOrWhiteSpace(e.DataObject.GetData("UnicodeText").ToString())) { return; }
 
 
-            (_, string result) = await GetRubyAndText(_richTextBoxes[_updatingSouceNumber], _flowDocuments[_updatingSouceNumber]);
+            (_, string result) = await GetRubyAndText(_richTextBoxes[_updatingSouceNumber]);
 
             if (!string.IsNullOrEmpty(result))
             {
@@ -171,8 +170,9 @@ namespace MisakaTranslator
             }
         }
 
-        private static async Task<(string, string)> GetRubyAndText(RichTextBox richTextBox, FlowDocument flowDocument)
+        private static async Task<(string, string)> GetRubyAndText(RichTextBox richTextBox)
         {
+            FlowDocument flowDocument = richTextBox.Document;
             if (flowDocument.Blocks.FirstBlock is Paragraph paragraph)
             {
                 System.Collections.IList list = paragraph.Inlines;
@@ -481,9 +481,9 @@ namespace MisakaTranslator
         private DictResWindow? _dictResWindow;
 
 
-        private static async Task<string> GetSelectdText(RichTextBox textBox, FlowDocument flowDocument)
+        private static async Task<string> GetSelectdText(RichTextBox textBox)
         {
-            (_, string result) = await GetRubyAndText(textBox, flowDocument);
+            (_, string result) = await GetRubyAndText(textBox);
             if (string.IsNullOrWhiteSpace(result))
             {
                 result = textBox.Selection.Text;
@@ -629,11 +629,11 @@ namespace MisakaTranslator
             }
 
 
-            FlowDocument flowDocument = _flowDocuments[_updatingSouceNumber];
+            FlowDocument flowDocument = richTextBox.Document;
             flowDocument.Blocks.Remove(flowDocument.Blocks.LastBlock);
             flowDocument.Blocks.Add(paragraph);
 
-            double contentWidth = SourceTextMeasureHelper.GetContentWidth(flowDocument, richTextBox);
+            double contentWidth = SourceTextMeasureHelper.GetContentWidth(richTextBox);
             if (Common.AppSettings.TF_SrcSingleLineDisplay)
             {
                 flowDocument.PageWidth = double.Max(contentWidth, 150);
@@ -718,9 +718,7 @@ namespace MisakaTranslator
         }
 
         private static int _updatingSouceNumber = 0;
-        private List<FlowDocument> _flowDocuments;
-        private List<RichTextBox> _richTextBoxes
-            ;
+        private List<RichTextBox> _richTextBoxes;
 
         private static void SwitchUpdatingNumber()
         {
@@ -1339,7 +1337,7 @@ namespace MisakaTranslator
 
         private async void SourceRichTextBoxRightClickMenu_Opening(object sender, ContextMenuEventArgs e)
         {
-            if (await CanCopyRuby(_richTextBoxes[_updatingSouceNumber], _flowDocuments[_updatingSouceNumber]))
+            if (await CanCopyRuby(_richTextBoxes[_updatingSouceNumber]))
             {
                 ViewModel.CopyRubyVisibility = true;
             }
@@ -1349,14 +1347,14 @@ namespace MisakaTranslator
             }
         }
 
-        private static async Task<bool> CanCopyRuby(RichTextBox richTextBox, FlowDocument flowDocument)
+        private static async Task<bool> CanCopyRuby(RichTextBox richTextBox)
         {
-            return !string.IsNullOrWhiteSpace((await GetRubyAndText(richTextBox, flowDocument)).Item2);
+            return !string.IsNullOrWhiteSpace((await GetRubyAndText(richTextBox)).Item2);
         }
 
         private async void CopyRubyMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string ruby = (await GetRubyAndText(_richTextBoxes[_updatingSouceNumber], _flowDocuments[_updatingSouceNumber])).Item1;
+            string ruby = (await GetRubyAndText(_richTextBoxes[_updatingSouceNumber])).Item1;
             if (!string.IsNullOrEmpty(ruby))
             {
                 Clipboard.SetText(ruby);
@@ -1366,7 +1364,7 @@ namespace MisakaTranslator
 
         private async void ConsultMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string text = await GetSelectdText(_richTextBoxes[_updatingSouceNumber], _flowDocuments[_updatingSouceNumber]);
+            string text = await GetSelectdText(_richTextBoxes[_updatingSouceNumber]);
             if (!string.IsNullOrWhiteSpace(text))
             {
                 _dictResWindow ??= new DictResWindow(_tts);
