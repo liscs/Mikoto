@@ -6,57 +6,109 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:MisakaTranslator"
         mc:Ignorable="d"
-        Title="{DynamicResource SettingsMenu_WinName}" Height="476" MinHeight="476" Width="800" MinWidth="800">
+        Title="{DynamicResource SettingsMenu_WinName}"
+        Height="476"
+        MinHeight="476"
+        Width="800"
+        MinWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <hc:SideMenu BorderThickness="1" MinWidth="200" HorizontalAlignment="Left" VerticalAlignment="Stretch" >
+        <hc:SideMenu BorderThickness="1"
+                     MinWidth="200"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Stretch">
             <hc:Interaction.Triggers>
                 <hc:EventTrigger EventName="SelectionChanged">
-                    <hc:EventToCommand Command="{Binding SwitchItemCmd}" PassEventArgsToCommand="True"/>
+                    <hc:EventToCommand Command="{Binding SwitchItemCmd}"
+                                       PassEventArgsToCommand="True" />
                 </hc:EventTrigger>
             </hc:Interaction.Triggers>
-            <hc:SideMenuItem IsSelected="True" Header="{DynamicResource SettingsMenu_About}" FontSize="15" Selected="Item_About_Selected"/>
-            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_SoftwareSettings}" FontSize="15" Selected="Item_SoftwareSettings_Selected"/>
-            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_LESettings}" FontSize="15" Selected="Item_LESettings_Selected"/>
-            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_HookSettings}" FontSize="15" Selected="Item_HookSettings_Selected"/>
-            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings}" FontSize="15">
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_General}" Selected="Item_OCRGeneral_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_Baidu}" Selected="Item_BaiduOCR_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_BaiduFanyi}" Selected="Item_BaiduFanyiOCR_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_Tencent}" Selected="Item_TencentOCR_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_TesseractCli}" Selected="Item_TesseractCli_Selected"/>
+            <hc:SideMenuItem IsSelected="True"
+                             Header="{DynamicResource SettingsMenu_About}"
+                             FontSize="15"
+                             Selected="Item_About_Selected" />
+            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_SoftwareSettings}"
+                             FontSize="15"
+                             Selected="Item_SoftwareSettings_Selected" />
+            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_LESettings}"
+                             FontSize="15"
+                             Selected="Item_LESettings_Selected" />
+            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_HookSettings}"
+                             FontSize="15"
+                             Selected="Item_HookSettings_Selected" />
+            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings}"
+                             FontSize="15">
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_General}"
+                                 Selected="Item_OCRGeneral_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_Baidu}"
+                                 Selected="Item_BaiduOCR_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_BaiduFanyi}"
+                                 Selected="Item_BaiduFanyiOCR_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_Tencent}"
+                                 Selected="Item_TencentOCR_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_TesseractCli}"
+                                 Selected="Item_TesseractCli_Selected" />
             </hc:SideMenuItem>
-            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings}" FontSize="15">
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_General}" Selected="Item_TransGeneral_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Baidu}" Selected="Item_BaiduTrans_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_TencentOld}" Selected="Item_TXOTrans_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_YoudaoZhiyun}" Selected="Item_YDZYTrans_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Caiyun}" Selected="Item_Caiyun_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Xiaoniu}" Selected="Item_Xiaoniu_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Jbeijing}" Selected="Item_JBeijing_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_KingsoftFAIT}" Selected="Item_KingsoftFAIT_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Dreye}" Selected="Item_Dreye_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_DeepL}" Selected="Item_DeepLTrans_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_ChatGPT}" Selected="Item_ChatGPTTrans_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Azure}" Selected="Item_AzureTrans_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_IBM}" Selected="Item_IBM_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Yandex}" Selected="Item_Yandex_Selected"/>
+            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings}"
+                             FontSize="15">
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_General}"
+                                 Selected="Item_TransGeneral_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Baidu}"
+                                 Selected="Item_BaiduTrans_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_TencentOld}"
+                                 Selected="Item_TXOTrans_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Volcano}"
+                                 Selected="Item_Volcano_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_YoudaoZhiyun}"
+                                 Selected="Item_YDZYTrans_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Caiyun}"
+                                 Selected="Item_Caiyun_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Xiaoniu}"
+                                 Selected="Item_Xiaoniu_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Jbeijing}"
+                                 Selected="Item_JBeijing_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_KingsoftFAIT}"
+                                 Selected="Item_KingsoftFAIT_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Dreye}"
+                                 Selected="Item_Dreye_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_DeepL}"
+                                 Selected="Item_DeepLTrans_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_ChatGPT}"
+                                 Selected="Item_ChatGPTTrans_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Azure}"
+                                 Selected="Item_AzureTrans_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_IBM}"
+                                 Selected="Item_IBM_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Yandex}"
+                                 Selected="Item_Yandex_Selected" />
             </hc:SideMenuItem>
-            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_DictSettings}" FontSize="15">
-                <hc:SideMenuItem Header="EBWin" Selected="Item_EBWinSettings_Selected"/>
-                <hc:SideMenuItem Header="MeCab" Selected="Item_MeCabSettings_Selected"/>
+            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_DictSettings}"
+                             FontSize="15">
+                <hc:SideMenuItem Header="EBWin"
+                                 Selected="Item_EBWinSettings_Selected" />
+                <hc:SideMenuItem Header="MeCab"
+                                 Selected="Item_MeCabSettings_Selected" />
             </hc:SideMenuItem>
-            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TTSSettings}" FontSize="15">
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_SelectTTS}" Selected="Item_ChooseTTS_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_AzureTTS}" Selected="Item_AzureTTS_Selected"/>
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_LocalTTS}" Selected="Item_LocalTTS_Selected"/>
+            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TTSSettings}"
+                             FontSize="15">
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_SelectTTS}"
+                                 Selected="Item_ChooseTTS_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_AzureTTS}"
+                                 Selected="Item_AzureTTS_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_LocalTTS}"
+                                 Selected="Item_LocalTTS_Selected" />
             </hc:SideMenuItem>
-            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_ATSettings}" FontSize="15" Selected="Item_ATSettings_Selected"/>
+            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_ATSettings}"
+                             FontSize="15"
+                             Selected="Item_ATSettings_Selected" />
         </hc:SideMenu>
-        <Frame Grid.Column="1" Name="SettingFrame" Source="/SettingsPages/AboutPage.xaml" NavigationUIVisibility="Hidden"/>
+        <Frame Grid.Column="1"
+               Name="SettingFrame"
+               Source="/SettingsPages/AboutPage.xaml"
+               NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>
     

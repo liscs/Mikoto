@@ -81,6 +81,12 @@ namespace MisakaTranslator
             set;
         }
 
+        [Option(Alias = "VolcanoTranslator.VolcanoId", DefaultValue = "")]
+        string VolcanoId { get; set; }
+
+        [Option(Alias = "VolcanoTranslator.VolcanoKey", DefaultValue = "")]
+        string VolcanoKey { get; set; }
+
         [Option(Alias = "BaiduTranslator.AppID", DefaultValue = "")]
         string BDappID
         {

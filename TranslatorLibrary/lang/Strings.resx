@@ -156,6 +156,9 @@
   <data name="TencentOldTranslator" xml:space="preserve">
     <value>腾讯云翻译</value>
   </data>
+  <data name="VolcanoTranslator" xml:space="preserve">
+    <value>火山翻译</value>
+  </data>
   <data name="XiaoniuTranslator" xml:space="preserve">
     <value>小牛翻译</value>
   </data>

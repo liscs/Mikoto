@@ -16,4 +16,3 @@ Add settings left column items in MisakaTranslator-WPF/SettingsWindow.xaml
 Add the code to navigate and display the settings page in MisakaTranslator-WPF/SettingsWindow.xaml.cs
 Create a LanguageCodeConverter class to convert special (non-iso) language codes
 
-//TODO 利用反射简化

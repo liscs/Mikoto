@@ -160,5 +160,10 @@ namespace MisakaTranslator
         {
             this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/YandexTransSettingsPage.xaml", UriKind.Relative));
         }
+
+        private void Item_Volcano_Selected(object sender, RoutedEventArgs e)
+        {
+            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/VolcanoTransSettingsPage.xaml", UriKind.Relative));
+        }
     }
 }

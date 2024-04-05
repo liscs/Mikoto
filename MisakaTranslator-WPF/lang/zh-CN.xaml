@@ -456,6 +456,8 @@
     <sys:String x:Key="SourceTextMenuItem_Consult">查询</sys:String>
     <sys:String x:Key="SourceTextMenuItem_CopyRuby">复制注音</sys:String>
     <sys:String x:Key="MainWindow_Tip_AdminStart">以管理员身份重启</sys:String>
+    <sys:String x:Key="VolcanoTransSettingsPage_Introduce">火山翻译简介</sys:String>
+    <sys:String x:Key="SettingsMenu_TranslatorSettings_Volcano">火山翻译</sys:String>
 
 
 

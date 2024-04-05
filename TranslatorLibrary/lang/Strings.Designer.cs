@@ -178,6 +178,15 @@ namespace TranslatorLibrary.lang {
         }
         
         /// <summary>
+        ///   查找类似 火山翻译 的本地化字符串。
+        /// </summary>
+        internal static string VolcanoTranslator {
+            get {
+                return ResourceManager.GetString("VolcanoTranslator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 小牛翻译 的本地化字符串。
         /// </summary>
         internal static string XiaoniuTranslator {

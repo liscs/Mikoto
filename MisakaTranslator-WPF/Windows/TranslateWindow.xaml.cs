@@ -404,6 +404,10 @@ namespace MisakaTranslator
                     translator = new ArtificialTranslator();
                     translator.TranslatorInit(Common.AppSettings.ArtificialPatchPath);
                     return translator;
+                case "VolcanoTranslator":
+                    translator = new VolcanoTranslator();
+                    translator.TranslatorInit(Common.AppSettings.VolcanoId, Common.AppSettings.VolcanoKey);
+                    return translator;
                 default:
                     return null;
             }
