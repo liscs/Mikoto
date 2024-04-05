@@ -149,7 +149,6 @@ namespace TranslatorLibrary.Translator
                 errorInfo = "ErrorCodeN: " + jsonNode!["ResponseMetadata"]!["Error"]!["CodeN"]!.GetValue<int>() + Environment.NewLine
                 + "ErrorCode: " + jsonNode["ResponseMetadata"]!["Error"]!["Code"]!.GetValue<string>() + Environment.NewLine
                 + "ErrorMessage: " + jsonNode["ResponseMetadata"]!["Error"]!["Message"]!.GetValue<string>();
-                await Console.Out.WriteLineAsync(errorInfo);
                 return null;
             }
             else
@@ -260,7 +259,7 @@ namespace TranslatorLibrary.Translator
         }
     }
 
-    class VolcanoRequest
+    internal class VolcanoRequest
     {
         public string? SourceLanguage { get; set; }
         public string TargetLanguage { get; set; }
