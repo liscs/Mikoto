@@ -1,7 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
 using SQLitePCL;
-using System;
-using System.Collections.Generic;
 
 namespace DataAccessLibrary
 {

@@ -1,7 +1,5 @@
 ﻿using DataAccessLibrary;
 using MisakaTranslator.GuidePages;
-using System;
-using System.Collections.Generic;
 using System.Windows;
 
 namespace MisakaTranslator

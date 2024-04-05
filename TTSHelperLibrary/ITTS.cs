@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace TTSHelperLibrary
+﻿namespace TTSHelperLibrary
 {
     public interface ITTS
     {

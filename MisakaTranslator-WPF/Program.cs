@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MisakaTranslator
+﻿namespace MisakaTranslator
 {
     internal static class Program
     {

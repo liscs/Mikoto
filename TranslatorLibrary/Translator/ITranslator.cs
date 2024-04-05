@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace TranslatorLibrary.Translator
+﻿namespace TranslatorLibrary.Translator
 {
     public interface ITranslator
     {

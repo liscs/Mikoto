@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using TranslatorLibrary.lang;
+﻿using TranslatorLibrary.lang;
 
 namespace TranslatorLibrary.Translator
 {

@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Threading.Tasks;
 using System.Web;
 using TranslatorLibrary.lang;
 using TranslatorLibrary.LanguageCode;

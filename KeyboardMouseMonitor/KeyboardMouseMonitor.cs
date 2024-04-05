@@ -7,7 +7,6 @@
 *   使用时将这个项目单独编译，生成的EXE文件放入lib中即可
 *************************************************/
 
-using System;
 using System.Drawing;
 using Windows.Win32;
 using Windows.Win32.Foundation;

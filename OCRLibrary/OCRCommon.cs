@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace OCRLibrary
+﻿namespace OCRLibrary
 {
     public static class OCRCommon
     {

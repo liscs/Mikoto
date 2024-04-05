@@ -1,15 +1,18 @@
 <Project Condition="'$(MSBuildProjectExtension)' == '.csproj'">
 
-  <ItemGroup Condition="'$(UseWin32)' == 'true'">
-    <None Remove="NativeMethods.txt" Condition="Exists('NativeMethods.txt')" />
-    <AdditionalFiles Update="NativeMethods.txt" Link="Properties\NativeMethods.txt"
-      Condition="Exists('NativeMethods.txt')" />
-    <AdditionalFiles Include="Properties\NativeMethods.txt"
-      Condition="Exists('Properties\NativeMethods.txt')" />
-    <None Remove="NativeMethods.json" Condition="Exists('NativeMethods.json')" />
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\NativeMethods.json"
-      Link="Properties\NativeMethods.json"
-      Condition="Exists('$(MSBuildThisFileDirectory)\NativeMethods.json')" />
-  </ItemGroup>
-
+	<ItemGroup Condition="'$(UseWin32)' == 'true'">
+		<None Remove="NativeMethods.txt" Condition="Exists('NativeMethods.txt')" />
+		<AdditionalFiles Update="NativeMethods.txt" Link="Properties\NativeMethods.txt"
+		  Condition="Exists('NativeMethods.txt')" />
+		<AdditionalFiles Include="Properties\NativeMethods.txt"
+		  Condition="Exists('Properties\NativeMethods.txt')" />
+		<None Remove="NativeMethods.json" Condition="Exists('NativeMethods.json')" />
+		<AdditionalFiles Include="$(MSBuildThisFileDirectory)\NativeMethods.json"
+		  Link="Properties\NativeMethods.json"
+		  Condition="Exists('$(MSBuildThisFileDirectory)\NativeMethods.json')" />
+	</ItemGroup>
+	<ItemGroup>
+		<Using Remove="System.Windows.Forms" />
+		<Using Remove="System.Drawing" />
+	</ItemGroup>
 </Project>

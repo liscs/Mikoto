@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Speech.Synthesis;
-using System.Threading.Tasks;
+﻿using System.Speech.Synthesis;
 
 namespace TTSHelperLibrary
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace TextHookLibrary
+﻿namespace TextHookLibrary
 {
     public static class EditDistance
     {

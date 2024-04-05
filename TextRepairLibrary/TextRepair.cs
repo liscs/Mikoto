@@ -1,8 +1,5 @@
 ﻿using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using TextRepairLibrary.lang;

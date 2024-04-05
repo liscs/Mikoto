@@ -1,9 +1,7 @@
 ﻿using HandyControl.Controls;
 using Microsoft.CognitiveServices.Speech;
 using Microsoft.Scripting.Utils;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using TTSHelperLibrary;

@@ -1,8 +1,6 @@
 ﻿using Microsoft.Scripting.Utils;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Text;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;

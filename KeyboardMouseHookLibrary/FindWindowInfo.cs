@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 

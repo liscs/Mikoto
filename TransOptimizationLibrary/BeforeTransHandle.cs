@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace TransOptimizationLibrary
+﻿namespace TransOptimizationLibrary
 {
     public class BeforeTransHandle
     {

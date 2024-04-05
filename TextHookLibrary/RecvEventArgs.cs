@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TextHookLibrary
+﻿namespace TextHookLibrary
 {
     /// <summary>
     /// TextHook数据结构体
