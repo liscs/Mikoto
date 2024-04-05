@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -115,9 +117,9 @@ namespace TranslatorLibrary.Translator
             string nowTime = dateTimeSign.ToString("HHmmss");
             string dateTimeSignStr = nowDate + "T" + nowTime + "Z";
 
-            using HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(URL);
+            HttpClient httpClient = TranslatorCommon.GetHttpClient();
             using HttpRequestMessage httpRequestMessage = new();
+            httpRequestMessage.RequestUri = new Uri(URL);
             httpRequestMessage.Method = HttpMethod.Post;
             httpRequestMessage.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
             httpRequestMessage.Headers.Add("X-Date", dateTimeSignStr);
