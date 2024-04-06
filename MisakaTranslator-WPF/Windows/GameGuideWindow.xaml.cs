@@ -101,6 +101,7 @@ namespace MisakaTranslator
                     case GuideMode.Hook:
                         //Hook方式设置 完成
                         Common.TransMode = TransMode.Hook;
+                        GameInfoBuilder.GameInfo.LastPlayAt = DateTime.Now;
                         GameHelper.SaveGameInfo(GameInfoBuilder.GameInfo);
                         break;
                     case GuideMode.Ocr:
