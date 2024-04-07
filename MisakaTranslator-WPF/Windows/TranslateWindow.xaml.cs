@@ -6,7 +6,6 @@ using MecabHelperLibrary;
 using MisakaTranslator.Helpers;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -494,6 +493,7 @@ namespace MisakaTranslator
         /// <param name="repairedText">原文</param>
         private async void UpdateSourceAsync(string repairedText)
         {
+            _maxOffset = 0;//重置scrollbar最大偏移
             if (!Common.AppSettings.TF_ShowSourceText)
             {
                 return;
@@ -1294,23 +1294,23 @@ namespace MisakaTranslator
             }
         }
 
-        double scrollOffset;
-        double maxOffset;
+        private double _scrollOffset;
+        private double _maxOffset;
         private void SourceRichTextBox_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
             if (sender is RichTextBox richTextBox)
             {
-                scrollOffset -= e.Delta;
-                richTextBox.ScrollToHorizontalOffset(scrollOffset);
+                _scrollOffset -= e.Delta;
+                richTextBox.ScrollToHorizontalOffset(_scrollOffset);
 
-                scrollOffset = Math.Min(maxOffset, scrollOffset);
-                scrollOffset = Math.Max(0, scrollOffset);
+                _scrollOffset = Math.Min(_maxOffset, _scrollOffset);
+                _scrollOffset = Math.Max(0, _scrollOffset);
             }
         }
 
         private void SourceRichTextBox_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            maxOffset = Math.Max(e.HorizontalOffset, maxOffset);
+            _maxOffset = Math.Max(e.HorizontalOffset, _maxOffset);
         }
     }
 }
