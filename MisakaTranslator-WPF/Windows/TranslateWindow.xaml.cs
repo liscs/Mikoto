@@ -1068,6 +1068,16 @@ namespace MisakaTranslator
             }
             catch (InvalidOperationException)
             { }
+
+            CloseSubWindows();
+        }
+
+        private void CloseSubWindows()
+        {
+            _addOptWindow?.Close();
+            _dictResWindow?.Close();
+            _transWinSettingsWindow?.Close();
+            _historyWindow?.Close();
         }
 
         private void Settings_Item_Click(object sender, RoutedEventArgs e)
@@ -1171,10 +1181,11 @@ namespace MisakaTranslator
             return historyStringBuilder.ToString();
         }
 
+        AddOptWindow? _addOptWindow;
         private void AddNoun_Item_Click(object sender, RoutedEventArgs e)
         {
-            AddOptWindow win = new(_currentsrcText);
-            win.ShowDialog();
+            _addOptWindow = new AddOptWindow(_currentsrcText);
+            _addOptWindow.ShowDialog();
         }
 
         private void RenewOCR_Item_Click(object sender, RoutedEventArgs e)

@@ -137,18 +137,26 @@ namespace TranslatorLibrary.Translator
             }
 
             string responseJson = await httpResponseMessage.Content.ReadAsStringAsync();
-            JsonNode? jsonNode = JsonSerializer.Deserialize<JsonNode>(responseJson);
-            string? result = jsonNode?["TranslationList"]?[0]?["Translation"]?.GetValue<string>();
-            if (result == null)
+            try
             {
-                errorInfo = "ErrorCodeN: " + jsonNode!["ResponseMetadata"]!["Error"]!["CodeN"]!.GetValue<int>() + Environment.NewLine
-                + "ErrorCode: " + jsonNode["ResponseMetadata"]!["Error"]!["Code"]!.GetValue<string>() + Environment.NewLine
-                + "ErrorMessage: " + jsonNode["ResponseMetadata"]!["Error"]!["Message"]!.GetValue<string>();
-                return null;
+                JsonNode? jsonNode = JsonSerializer.Deserialize<JsonNode>(responseJson);
+                string? result = jsonNode?["TranslationList"]?[0]?["Translation"]?.GetValue<string>();
+                if (result == null)
+                {
+                    errorInfo = "ErrorCodeN: " + jsonNode!["ResponseMetadata"]!["Error"]!["CodeN"]!.GetValue<int>() + Environment.NewLine
+                    + "ErrorCode: " + jsonNode["ResponseMetadata"]!["Error"]!["Code"]!.GetValue<string>() + Environment.NewLine
+                    + "ErrorMessage: " + jsonNode["ResponseMetadata"]!["Error"]!["Message"]!.GetValue<string>();
+                    return null;
+                }
+                else
+                {
+                    return result;
+                }
             }
-            else
+            catch (JsonException ex)
             {
-                return result;
+                errorInfo = ex.Message;
+                return null;
             }
         }
 
