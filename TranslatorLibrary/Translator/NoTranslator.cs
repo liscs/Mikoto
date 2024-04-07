@@ -16,9 +16,9 @@ namespace TranslatorLibrary.Translator
             return Task.FromResult<string?>(null);
         }
 
-        public void TranslatorInit(string? param1 = null, string? param2 = null)
+        public static ITranslator TranslatorInit(params string[] param)
         {
-            return;
+            return new NoTranslator();
         }
     }
 }

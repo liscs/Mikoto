@@ -19,8 +19,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
         private async void AuthTestBtn_Click(object sender, RoutedEventArgs e)
         {
             Common.AppSettings.CaiyunToken = TransTokenBox.Text;
-            CaiyunTranslator Trans = new CaiyunTranslator();
-            Trans.TranslatorInit(TransTokenBox.Text, "");
+            ITranslator Trans = CaiyunTranslator.TranslatorInit(TransTokenBox.Text, "");
             if (await Trans.TranslateAsync("apple", "zh", "en") != null)
             {
                 HandyControl.Controls.Growl.Success($"彩云小译{Application.Current.Resources["APITest_Success_Hint"]}");
@@ -48,8 +47,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            CaiyunTranslator Trans = new CaiyunTranslator();
-            Trans.TranslatorInit(Common.AppSettings.CaiyunToken, "");
+            ITranslator Trans = CaiyunTranslator.TranslatorInit(Common.AppSettings.CaiyunToken);
             string? res = await Trans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
             if (res != null)
             {

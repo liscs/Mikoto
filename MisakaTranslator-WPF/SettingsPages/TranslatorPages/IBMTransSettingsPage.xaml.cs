@@ -21,8 +21,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
         {
             Common.AppSettings.IBMApiKey = IBMTransApiKeyBox.Text;
             Common.AppSettings.IBMURL = IBMTransURLBox.Text;
-            ITranslator IBMTrans = new IBMTranslator();
-            IBMTrans.TranslatorInit(IBMTransApiKeyBox.Text, IBMTransURLBox.Text);
+            ITranslator IBMTrans = IBMTranslator.TranslatorInit(IBMTransApiKeyBox.Text, IBMTransURLBox.Text);
 
             if (await IBMTrans.TranslateAsync("apple", "zh", "en") != null)
             {
@@ -51,8 +50,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator IBMTrans = new IBMTranslator();
-            IBMTrans.TranslatorInit(IBMTransApiKeyBox.Text, IBMTransURLBox.Text);
+            ITranslator IBMTrans = IBMTranslator.TranslatorInit(IBMTransApiKeyBox.Text, IBMTransURLBox.Text);
             string? res = await IBMTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)

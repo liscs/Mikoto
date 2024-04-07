@@ -80,9 +80,11 @@ namespace TranslatorLibrary.Translator
             }
         }
 
-        public void TranslatorInit(string param1, string param2)
+        public static ITranslator TranslatorInit(params string[] param)
         {
-            secretKey = param1;
+            DeepLTranslator deepLTranslator = new();
+            deepLTranslator.secretKey = param.First();
+            return deepLTranslator;
         }
 
         private string GetLanguageCode(CultureInfo cultureInfo)

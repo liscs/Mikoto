@@ -28,7 +28,7 @@ namespace TranslatorLibrary.Translator
                 var doc = JsonSerializer.Deserialize<Result>(retString, TranslatorCommon.JsonOP);
                 return doc.text[0];
             }
-            catch (System.Net.Http.HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 errorInfo = ex.Message;
                 return null;
@@ -40,9 +40,11 @@ namespace TranslatorLibrary.Translator
             }
         }
 
-        public void TranslatorInit(string param1, string param2 = "")
+        public static ITranslator TranslatorInit(params string[] param)
         {
-            ApiKey = param1;
+            YandexTranslator yandexTranslator = new();
+            yandexTranslator.ApiKey = param.First();
+            return yandexTranslator;
         }
 
         /// <summary>

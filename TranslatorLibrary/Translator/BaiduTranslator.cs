@@ -84,10 +84,14 @@ namespace TranslatorLibrary.Translator
 
         }
 
-        public void TranslatorInit(string param1, string param2)
+        public static ITranslator TranslatorInit(params string[] param)
         {
-            appId = param1;
-            secretKey = param2;
+            BaiduTranslator baiduTranslator = new()
+            {
+                appId = param.First(),
+                secretKey = param.Last(),
+            };
+            return baiduTranslator;
         }
 
 

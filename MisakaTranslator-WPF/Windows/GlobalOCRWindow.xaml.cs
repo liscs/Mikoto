@@ -1,3 +1,4 @@
+using MisakaTranslator.Helpers;
 using OCRLibrary;
 using System.Windows;
 using TranslatorLibrary;
@@ -174,8 +175,8 @@ namespace MisakaTranslator
                 {
                     TranslatorCommon.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
                 }
-                ITranslator? translator1 = TranslateWindow.TranslatorAuto(Common.AppSettings.FirstTranslator);
-                ITranslator? translator2 = TranslateWindow.TranslatorAuto(Common.AppSettings.SecondTranslator);
+                ITranslator? translator1 = TranslatorHelper.GetTranslator(Common.AppSettings.FirstTranslator);
+                ITranslator? translator2 = TranslatorHelper.GetTranslator(Common.AppSettings.SecondTranslator);
                 //5.提交翻译
                 string transRes1 = string.Empty;
                 string transRes2 = string.Empty;

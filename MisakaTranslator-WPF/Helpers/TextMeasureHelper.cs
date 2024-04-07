@@ -7,7 +7,7 @@ using RichTextBox = System.Windows.Controls.RichTextBox;
 
 namespace MisakaTranslator.Helpers
 {
-    internal static class SourceTextMeasureHelper
+    internal static class TextMeasureHelper
     {
         /// <summary>
         /// 计算源文本RichTextBox的尺寸

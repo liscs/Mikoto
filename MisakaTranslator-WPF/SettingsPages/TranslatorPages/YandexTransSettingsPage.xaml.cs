@@ -19,8 +19,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
         private async void AuthTestBtn_Click(object sender, RoutedEventArgs e)
         {
             Common.AppSettings.YandexApiKey = YandexTransApiKeyBox.Text;
-            ITranslator YandexTrans = new YandexTranslator();
-            YandexTrans.TranslatorInit(YandexTransApiKeyBox.Text, "");
+            ITranslator YandexTrans = YandexTranslator.TranslatorInit(YandexTransApiKeyBox.Text, "");
 
             if (await YandexTrans.TranslateAsync("apple", "zh", "en") != null)
             {
@@ -49,8 +48,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator YandexTrans = new YandexTranslator();
-            YandexTrans.TranslatorInit(YandexTransApiKeyBox.Text, "");
+            ITranslator YandexTrans = YandexTranslator.TranslatorInit(YandexTransApiKeyBox.Text);
             string? res = await YandexTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)

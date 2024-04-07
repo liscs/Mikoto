@@ -227,10 +227,12 @@ namespace TranslatorLibrary.Translator
             return Convert.ToHexString(bytes).ToLower();
         }
 
-        public void TranslatorInit(string param1, string param2)
+        public static ITranslator TranslatorInit(params string[] param)
         {
-            _apiKey = param1;
-            _apiSecret = param2;
+            VolcanoTranslator volcanoTranslator = new();
+            volcanoTranslator._apiKey = param.First();
+            volcanoTranslator._apiSecret = param.Last();
+            return volcanoTranslator;
         }
 
         public static string GetUrl_lang()

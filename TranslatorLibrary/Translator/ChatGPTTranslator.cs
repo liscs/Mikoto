@@ -91,10 +91,14 @@ namespace TranslatorLibrary.Translator
             }
         }
 
-        public void TranslatorInit(string param1, string param2)
+        public static ITranslator TranslatorInit(params string[] param)
         {
-            apiKey = param1;
-            apiUrl = param2;
+            ChatGPTTranslator chatGPTTranslator = new()
+            {
+                apiKey = param.First(),
+                apiUrl = param.Last(),
+            };
+            return chatGPTTranslator;
         }
     }
 

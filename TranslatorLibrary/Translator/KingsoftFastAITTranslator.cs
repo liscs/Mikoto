@@ -175,9 +175,11 @@ namespace TranslatorLibrary.Translator
             return Task.FromResult<string?>(to.ToString());
         }
 
-        public void TranslatorInit(string param1, string param2 = "")
+        public static ITranslator TranslatorInit(params string[] param)
         {
-            FilePath = param1;
+            KingsoftFastAITTranslator kingsoftFastAITTranslator = new();
+            kingsoftFastAITTranslator.FilePath = param.First();
+            return kingsoftFastAITTranslator;
         }
     }
 }

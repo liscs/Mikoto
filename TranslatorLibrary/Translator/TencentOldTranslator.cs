@@ -11,7 +11,7 @@ namespace TranslatorLibrary.Translator
 
         private string errorInfo = string.Empty;//错误信息
         public string? SecretId;//腾讯旧版API SecretId
-        public string? SecretKey;//腾讯旧版API SecretKey
+        public string? SecretKey;//腾讯旧版API _secretKey
 
         public string TranslatorDisplayName { get { return Strings.TencentOldTranslator; } }
 
@@ -99,10 +99,14 @@ namespace TranslatorLibrary.Translator
 
         }
 
-        public void TranslatorInit(string param1, string param2)
+        public static ITranslator TranslatorInit(params string[] param)
         {
-            SecretId = param1;
-            SecretKey = param2;
+            TencentOldTranslator tencentOldTranslator = new()
+            {
+                SecretId = param.First(),
+                SecretKey = param.Last(),
+            };
+            return tencentOldTranslator;
         }
 
 

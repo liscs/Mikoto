@@ -90,9 +90,11 @@ namespace TranslatorLibrary.Translator
             return Task.FromResult(ret);
         }
 
-        public void TranslatorInit(string param1, string param2 = "")
+        public static ITranslator TranslatorInit(params string[] param)
         {
-            JBJCTDllPath = param1;
+            JBeijingTranslator jBeijingTranslator = new();
+            jBeijingTranslator.JBJCTDllPath = param.First();
+            return jBeijingTranslator;
         }
     }
 }

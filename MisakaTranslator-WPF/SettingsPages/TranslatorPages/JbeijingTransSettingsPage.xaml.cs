@@ -17,8 +17,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            JBeijingTranslator Trans = new JBeijingTranslator();
-            Trans.TranslatorInit(Common.AppSettings.JBJCTDllPath);
+            ITranslator Trans = JBeijingTranslator.TranslatorInit(Common.AppSettings.JBJCTDllPath);
             string? res = await Trans.TranslateAsync(TestSrcText.Text, "", "");
             if (res != null)
             {

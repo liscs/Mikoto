@@ -74,10 +74,12 @@ namespace TranslatorLibrary.Translator
             }
         }
 
-        public void TranslatorInit(string param1, string param2)
+        public static ITranslator TranslatorInit(params string[] param)
         {
-            secretKey = param1;
-            location = param2;
+            AzureTranslator azureTranslator = new();
+            azureTranslator.secretKey = param.First();
+            azureTranslator.location = param.Last();
+            return azureTranslator;
         }
 
 

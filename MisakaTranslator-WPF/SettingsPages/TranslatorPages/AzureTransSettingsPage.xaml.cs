@@ -22,8 +22,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
             Common.AppSettings.AzureSecretKey = AzureTransSecretKeyBox.Text;
             Common.AppSettings.AzureLocation = AzureTransLocationBox.Text;
 
-            ITranslator AzureTrans = new AzureTranslator();
-            AzureTrans.TranslatorInit(AzureTransSecretKeyBox.Text, AzureTransLocationBox.Text);
+            ITranslator AzureTrans = AzureTranslator.TranslatorInit(AzureTransSecretKeyBox.Text, AzureTransLocationBox.Text);
 
             if (await AzureTrans.TranslateAsync("apple", "zh", "en") != null)
             {
@@ -56,8 +55,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator AzureTrans = new AzureTranslator();
-            AzureTrans.TranslatorInit(Common.AppSettings.AzureSecretKey, Common.AppSettings.AzureLocation);
+            ITranslator AzureTrans = AzureTranslator.TranslatorInit(Common.AppSettings.AzureSecretKey, Common.AppSettings.AzureLocation);
             string? res = await AzureTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)

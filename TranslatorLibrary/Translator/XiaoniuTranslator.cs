@@ -78,10 +78,12 @@ namespace TranslatorLibrary.Translator
 
         }
 
-        public void TranslatorInit(string param1, string param2 = "")
+        public static ITranslator TranslatorInit(params string[] param)
         {
             //第二参数无用
-            apiKey = param1;
+            XiaoniuTranslator xiaoniuTranslator = new();
+            xiaoniuTranslator.apiKey = param.First();
+            return xiaoniuTranslator;
         }
 
         /// <summary>

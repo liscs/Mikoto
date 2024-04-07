@@ -28,8 +28,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
                 return;
             }
 
-            ITranslator BDTrans = new BaiduTranslator();
-            BDTrans.TranslatorInit(BDTransAppIDBox.Text, BDTransSecretKeyBox.Text);
+            ITranslator BDTrans = BaiduTranslator.TranslatorInit(BDTransAppIDBox.Text, BDTransSecretKeyBox.Text);
 
             if (await BDTrans.TranslateAsync("apple", "zh", "en") != null)
             {
@@ -58,8 +57,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator BDTrans = new BaiduTranslator();
-            BDTrans.TranslatorInit(Common.AppSettings.BDappID, Common.AppSettings.BDsecretKey);
+            ITranslator BDTrans = BaiduTranslator.TranslatorInit(Common.AppSettings.BDappID, Common.AppSettings.BDsecretKey);
             string? res = await BDTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)

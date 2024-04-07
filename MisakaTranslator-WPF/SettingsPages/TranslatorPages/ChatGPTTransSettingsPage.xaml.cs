@@ -22,8 +22,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
             Common.AppSettings.ChatGPTapiKey = ChatGPTTransSecretKeyBox.Text;
             Common.AppSettings.ChatGPTapiUrl = ChatGPTTransUrlBox.Text;
 
-            ITranslator chatGPTTrans = new ChatGPTTranslator();
-            chatGPTTrans.TranslatorInit(ChatGPTTransSecretKeyBox.Text, ChatGPTTransUrlBox.Text);
+            ITranslator chatGPTTrans = ChatGPTTranslator.TranslatorInit(ChatGPTTransSecretKeyBox.Text, ChatGPTTransUrlBox.Text);
 
             if (await chatGPTTrans.TranslateAsync("apple", "zh", "en") != null)
             {
@@ -52,8 +51,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator chatGPTTrans = new ChatGPTTranslator();
-            chatGPTTrans.TranslatorInit(ChatGPTTransSecretKeyBox.Text, ChatGPTTransUrlBox.Text);
+            ITranslator chatGPTTrans = ChatGPTTranslator.TranslatorInit(ChatGPTTransSecretKeyBox.Text, ChatGPTTransUrlBox.Text);
             string? res = await chatGPTTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)

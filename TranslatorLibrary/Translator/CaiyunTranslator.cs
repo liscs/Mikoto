@@ -86,9 +86,13 @@ namespace TranslatorLibrary.Translator
 
         }
 
-        public void TranslatorInit(string param1, string param2 = "")
+        public static ITranslator TranslatorInit(params string[] param)
         {
-            caiyunToken = param1;
+            CaiyunTranslator caiyunTranslator = new()
+            {
+                caiyunToken = param.First()
+            };
+            return caiyunTranslator;
         }
 
 

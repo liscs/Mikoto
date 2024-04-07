@@ -121,9 +121,13 @@ namespace TranslatorLibrary.Translator
             return Task.FromResult<string?>(ret);
         }
 
-        public void TranslatorInit(string param1 = "", string param2 = "")
+        public static ITranslator TranslatorInit(params string[] param)
         {
-            FilePath = param1;
+            DreyeTranslator dreyeTranslator = new()
+            {
+                FilePath = param.First()
+            };
+            return dreyeTranslator;
         }
     }
 }

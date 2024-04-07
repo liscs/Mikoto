@@ -1,4 +1,5 @@
-﻿using OCRLibrary;
+﻿using MisakaTranslator.Helpers;
+using OCRLibrary;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -53,8 +54,8 @@ namespace MisakaTranslator.ComicTranslator
             }
             transRes1 = "";
             transRes2 = "";
-            _translator1 = TranslateWindow.TranslatorAuto(Common.AppSettings.FirstTranslator);
-            _translator2 = TranslateWindow.TranslatorAuto(Common.AppSettings.SecondTranslator);
+            _translator1 = TranslatorHelper.GetTranslator(Common.AppSettings.FirstTranslator);
+            _translator2 = TranslatorHelper.GetTranslator(Common.AppSettings.SecondTranslator);
 
             ocr = OCRCommon.OCRAuto(Common.AppSettings.OCRsource);
             ocr.SetOCRSourceLang("jpn");

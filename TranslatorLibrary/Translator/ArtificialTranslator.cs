@@ -63,8 +63,10 @@ namespace TranslatorLibrary.Translator
         /// </summary>
         /// <param name="param1">参数一 汉化补丁路径</param>
         /// <param name="param2">参数二 不使用</param>
-        public void TranslatorInit(string patchPath, string param2 = "")
+        public static ITranslator TranslatorInit(params string[] param)
         {
+            ArtificialTranslator artificialTranslator = new();
+            string patchPath = param.First();
             /*
              * 汉化补丁格式，只支持单个文本文件：
              * 
@@ -86,20 +88,26 @@ namespace TranslatorLibrary.Translator
                 
                 
              */
-            if (System.IO.File.Exists(patchPath) == false)
+            if (File.Exists(patchPath) == false)
             {
                 throw new Exception("Patch File is not Exists.");
             }
 
-            string[] lines = System.IO.File.ReadAllLines(patchPath);
+            string[] lines = File.ReadAllLines(patchPath);
             string temp = "";
             bool jp = true, first = true;
             void add()
             {
                 if (!first)
                 {
-                    if (jp) jp_text.Add(temp);
-                    else cn_text.Add(temp);
+                    if (jp)
+                    {
+                        artificialTranslator.jp_text.Add(temp);
+                    }
+                    else
+                    {
+                        artificialTranslator.cn_text.Add(temp);
+                    }
                 }
                 else
                 {
@@ -130,8 +138,12 @@ namespace TranslatorLibrary.Translator
                 }
             }
             add();
-            if (jp_text.Count != cn_text.Count)
+            if (artificialTranslator.jp_text.Count != artificialTranslator.cn_text.Count)
+            {
                 throw new Exception("Total sentence number not match, please check your patch.");
+            }
+
+            return artificialTranslator;
         }
 
         /// <summary>

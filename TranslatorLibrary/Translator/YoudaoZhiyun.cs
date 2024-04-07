@@ -85,10 +85,12 @@ namespace TranslatorLibrary.Translator
             }
         }
 
-        public void TranslatorInit(string appId, string appSecret)
+        public static ITranslator TranslatorInit(params string[] param)
         {
-            this.appId = appId;
-            this.appSecret = appSecret;
+            YoudaoZhiyun youdaoZhiyun = new();
+            youdaoZhiyun.appId = param.First();
+            youdaoZhiyun.appSecret = param.Last();
+            return youdaoZhiyun;
         }
 
 

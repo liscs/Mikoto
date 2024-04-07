@@ -73,10 +73,12 @@ namespace TranslatorLibrary.Translator
             return result.translations[0].translation;
         }
 
-        public void TranslatorInit(string param1, string param2)
+        public static ITranslator TranslatorInit(params string[] param)
         {
-            ApiKey = "apikey:" + param1;
-            URL = param2 + "/v3/translate?version=2018-05-01";
+            IBMTranslator iBMTranslator = new();
+            iBMTranslator.ApiKey = "apikey:" + param.First();
+            iBMTranslator.URL = param.Last() + "/v3/translate?version=2018-05-01";
+            return iBMTranslator;
         }
 
         /// <summary>

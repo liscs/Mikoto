@@ -93,8 +93,8 @@ namespace MisakaTranslator
             {
                 TranslatorCommon.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
             }
-            _translator1 = TranslatorAuto(Common.AppSettings.FirstTranslator);
-            _translator2 = TranslatorAuto(Common.AppSettings.SecondTranslator);
+            _translator1 = TranslatorHelper.GetTranslator(Common.AppSettings.FirstTranslator);
+            _translator2 = TranslatorHelper.GetTranslator(Common.AppSettings.SecondTranslator);
 
             _beforeTransHandle = new BeforeTransHandle(Common.GameID.ToString(), Common.UsingSrcLang, Common.UsingDstLang);
             _afterTransHandle = new AfterTransHandle(_beforeTransHandle);
@@ -330,85 +330,6 @@ namespace MisakaTranslator
         }
 
         /// <summary>
-        /// 根据翻译器名称自动返回翻译器类实例(包括初始化)
-        /// </summary>
-        /// <param name="translatorName"></param>
-        /// <returns></returns>
-        public static ITranslator? TranslatorAuto(string translatorName)
-        {
-            ITranslator translator;
-            switch (translatorName)
-            {
-                case "BaiduTranslator":
-                    translator = new BaiduTranslator();
-                    translator.TranslatorInit(Common.AppSettings.BDappID, Common.AppSettings.BDsecretKey);
-                    return translator;
-                case "TencentOldTranslator":
-                    translator = new TencentOldTranslator();
-                    translator.TranslatorInit(Common.AppSettings.TXOSecretId, Common.AppSettings.TXOSecretKey);
-                    return translator;
-                case "CaiyunTranslator":
-                    translator = new CaiyunTranslator();
-                    translator.TranslatorInit(Common.AppSettings.CaiyunToken);
-                    return translator;
-                case "XiaoniuTranslator":
-                    translator = new XiaoniuTranslator();
-                    translator.TranslatorInit(Common.AppSettings.xiaoniuApiKey);
-                    return translator;
-                case "IBMTranslator":
-                    translator = new IBMTranslator();
-                    translator.TranslatorInit(Common.AppSettings.IBMApiKey, Common.AppSettings.IBMURL);
-                    return translator;
-                case "YandexTranslator":
-                    translator = new YandexTranslator();
-                    translator.TranslatorInit(Common.AppSettings.YandexApiKey);
-                    return translator;
-                case "YoudaoZhiyun":
-                    translator = new YoudaoZhiyun();
-                    translator.TranslatorInit(Common.AppSettings.YDZYAppId, Common.AppSettings.YDZYAppSecret);
-                    return translator;
-                case "GoogleCNTranslator":
-                    translator = new GoogleCNTranslator();
-                    translator.TranslatorInit();
-                    return translator;
-                case "JBeijingTranslator":
-                    translator = new JBeijingTranslator();
-                    translator.TranslatorInit(Common.AppSettings.JBJCTDllPath);
-                    return translator;
-                case "KingsoftFastAITTranslator":
-                    translator = new KingsoftFastAITTranslator();
-                    translator.TranslatorInit(Common.AppSettings.KingsoftFastAITPath);
-                    return translator;
-                case "DreyeTranslator":
-                    translator = new DreyeTranslator();
-                    translator.TranslatorInit(Common.AppSettings.DreyePath);
-                    return translator;
-                case "DeepLTranslator":
-                    translator = new DeepLTranslator();
-                    translator.TranslatorInit(Common.AppSettings.DeepLsecretKey, Common.AppSettings.DeepLsecretKey);
-                    return translator;
-                case "ChatGPTTranslator":
-                    translator = new ChatGPTTranslator();
-                    translator.TranslatorInit(Common.AppSettings.ChatGPTapiKey, Common.AppSettings.ChatGPTapiUrl);
-                    return translator;
-                case "AzureTranslator":
-                    translator = new AzureTranslator();
-                    translator.TranslatorInit(Common.AppSettings.AzureSecretKey, Common.AppSettings.AzureLocation);
-                    return translator;
-                case "ArtificialTranslator":
-                    translator = new ArtificialTranslator();
-                    translator.TranslatorInit(Common.AppSettings.ArtificialPatchPath);
-                    return translator;
-                case "VolcanoTranslator":
-                    translator = new VolcanoTranslator();
-                    translator.TranslatorInit(Common.AppSettings.VolcanoId, Common.AppSettings.VolcanoKey);
-                    return translator;
-                default:
-                    return null;
-            }
-        }
-
-        /// <summary>
         /// 键盘点击事件
         /// </summary>
         private void Hook_OnKeyBoardActivity(object sender)
@@ -632,7 +553,7 @@ namespace MisakaTranslator
             flowDocument.Blocks.Remove(flowDocument.Blocks.LastBlock);
             flowDocument.Blocks.Add(paragraph);
 
-            double contentWidth = SourceTextMeasureHelper.GetContentWidth(richTextBox);
+            double contentWidth = TextMeasureHelper.GetContentWidth(richTextBox);
             if (Common.AppSettings.TF_SrcSingleLineDisplay)
             {
                 flowDocument.PageWidth = double.Max(contentWidth, 150);

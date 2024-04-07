@@ -21,8 +21,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
         {
             Common.AppSettings.TXOSecretId = TransAppIDBox.Text;
             Common.AppSettings.TXOSecretKey = TransSecretKeyBox.Text;
-            TencentOldTranslator Trans = new TencentOldTranslator();
-            Trans.TranslatorInit(TransAppIDBox.Text, TransSecretKeyBox.Text);
+            ITranslator Trans = TencentOldTranslator.TranslatorInit(TransAppIDBox.Text, TransSecretKeyBox.Text);
             if (await Trans.TranslateAsync("apple", "zh", "en") != null)
             {
                 HandyControl.Controls.Growl.Success($"腾讯云{Application.Current.Resources["APITest_Success_Hint"]}");
@@ -50,8 +49,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            TencentOldTranslator Trans = new TencentOldTranslator();
-            Trans.TranslatorInit(Common.AppSettings.TXOSecretId, Common.AppSettings.TXOSecretKey);
+            ITranslator Trans = TencentOldTranslator.TranslatorInit(Common.AppSettings.TXOSecretId, Common.AppSettings.TXOSecretKey);
             string? res = await Trans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
             if (res != null)
             {

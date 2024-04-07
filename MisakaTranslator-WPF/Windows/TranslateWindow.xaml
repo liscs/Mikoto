@@ -195,7 +195,7 @@
                             StrokeThickness="0.7"
                             FontWeight="Bold"
                             Name="FirstTransText"
-                            Margin="10,0,10,5"
+                            Margin="10,10,10,5"
                             TextWrapping="Wrap"
                             StrokePosition="Outside"></hc:OutlineText>
             <hc:OutlineText Text=""

@@ -35,8 +35,7 @@ namespace MisakaTranslator.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            DreyeTranslator Trans = new DreyeTranslator();
-            Trans.TranslatorInit(Common.AppSettings.DreyePath, "");
+            ITranslator Trans = DreyeTranslator.TranslatorInit(Common.AppSettings.DreyePath);
             string? res = await Trans.TranslateAsync(TestSrcText.Text, "zh", TestSrcLang.Text);
             if (res != null)
             {
