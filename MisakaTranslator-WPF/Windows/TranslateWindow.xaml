@@ -146,7 +146,9 @@
                              HorizontalAlignment="Left"
                              FontFamily="{Binding SourceTextFontFamily}"
                              FontSize="{Binding SourceTextFontSize}"
-                             ContextMenuOpening="SourceRichTextBoxRightClickMenu_Opening">
+                             ContextMenuOpening="SourceRichTextBoxRightClickMenu_Opening"
+                             PreviewMouseWheel="SourceRichTextBox_PreviewMouseWheel"
+                             ScrollViewer.ScrollChanged="SourceRichTextBox_ScrollChanged">
                     <RichTextBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Command="ApplicationCommands.Copy" />
@@ -171,7 +173,9 @@
                              FontFamily="{Binding SourceTextFontFamily}"
                              FontSize="{Binding SourceTextFontSize}"
                              Visibility="Collapsed"
-                             ContextMenuOpening="SourceRichTextBoxRightClickMenu_Opening">
+                             ContextMenuOpening="SourceRichTextBoxRightClickMenu_Opening"
+                             PreviewMouseWheel="SourceRichTextBox_PreviewMouseWheel"
+                             ScrollViewer.ScrollChanged="SourceRichTextBox_ScrollChanged">
                     <RichTextBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Command="ApplicationCommands.Copy" />

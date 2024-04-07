@@ -6,6 +6,7 @@ using MecabHelperLibrary;
 using MisakaTranslator.Helpers;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -1291,6 +1292,25 @@ namespace MisakaTranslator
                 _dictResWindow.Search(text);
                 _dictResWindow.Show();
             }
+        }
+
+        double scrollOffset;
+        double maxOffset;
+        private void SourceRichTextBox_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            if (sender is RichTextBox richTextBox)
+            {
+                scrollOffset -= e.Delta;
+                richTextBox.ScrollToHorizontalOffset(scrollOffset);
+
+                scrollOffset = Math.Min(maxOffset, scrollOffset);
+                scrollOffset = Math.Max(0, scrollOffset);
+            }
+        }
+
+        private void SourceRichTextBox_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            maxOffset = Math.Max(e.HorizontalOffset, maxOffset);
         }
     }
 }
