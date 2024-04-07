@@ -900,31 +900,38 @@ namespace MisakaTranslator
                     HistoryInfo historyInfo = new();
                     historyInfo.DateTime = DateTime.Now;
                     historyInfo.Message = repairedText + Environment.NewLine + afterString;
-                    historyInfo.TranslatorName = tranResultIndex switch
+
+                    string? name = tranResultIndex switch
                     {
-                        1 => _translator1?.TranslatorDisplayName ?? string.Empty,
-                        2 => _translator2?.TranslatorDisplayName ?? string.Empty,
+                        1 => _translator1?.TranslatorDisplayName,
+                        2 => _translator2?.TranslatorDisplayName,
                         _ => throw new UnreachableException(),
                     };
-                    _gameTextHistory.Enqueue(historyInfo);
-                    UpdateHistoryWindow();
-                    //9.翻译原句和结果记录到数据库 
-                    if (Common.AppSettings.ATon)
+
+                    if (name != null)
                     {
-                        bool addRes = _artificialTransHelper.AddTrans(repairedText, afterString);
-                        if (addRes == false)
+                        historyInfo.TranslatorName = name;
+                        _gameTextHistory.Enqueue(historyInfo);
+                        UpdateHistoryWindow();
+                        //9.翻译原句和结果记录到数据库 
+                        if (Common.AppSettings.ATon)
                         {
-                            Application.Current.Dispatcher.Invoke(() =>
+                            bool addRes = _artificialTransHelper.AddTrans(repairedText, afterString);
+                            if (addRes == false)
                             {
-                                HandyControl.Data.GrowlInfo growlInfo = new()
+                                Application.Current.Dispatcher.Invoke(() =>
                                 {
-                                    Message = Application.Current.Resources["ArtificialTransAdd_Error_Hint"].ToString(),
-                                    WaitTime = 2
-                                };
-                                Growl.InfoGlobal(growlInfo);
-                            });
+                                    HandyControl.Data.GrowlInfo growlInfo = new()
+                                    {
+                                        Message = Application.Current.Resources["ArtificialTransAdd_Error_Hint"].ToString(),
+                                        WaitTime = 2
+                                    };
+                                    Growl.InfoGlobal(growlInfo);
+                                });
+                            }
                         }
                     }
+
                 }
             }
         }
