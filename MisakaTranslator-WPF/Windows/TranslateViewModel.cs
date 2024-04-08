@@ -1,5 +1,4 @@
-﻿using FontAwesome.WPF;
-using MisakaTranslator.Helpers;
+﻿using MisakaTranslator.Helpers;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -36,40 +35,6 @@ namespace MisakaTranslator
             set => SetProperty(ref _sourcePanelVisibility, value);
         }
 
-        private FontAwesomeIcon _showSourceIcon = FontAwesomeIcon.Eye;
-        public FontAwesomeIcon ShowSourceIcon
-        {
-            get
-            {
-                if (Common.AppSettings.TF_ShowSourceText)
-                {
-                    _showSourceIcon = FontAwesomeIcon.Eye;
-                    SourcePanelVisibility = Visibility.Visible;
-                }
-                else
-                {
-                    _showSourceIcon = FontAwesomeIcon.EyeSlash;
-                    SourcePanelVisibility = Visibility.Collapsed;
-                }
-                return _showSourceIcon;
-            }
-
-            set
-            {
-                if (value == FontAwesomeIcon.Eye)
-                {
-                    Common.AppSettings.TF_ShowSourceText = true;
-                    SourcePanelVisibility = Visibility.Visible;
-                }
-                else
-                {
-                    Common.AppSettings.TF_ShowSourceText = false;
-                    SourcePanelVisibility = Visibility.Collapsed;
-
-                }
-                SetProperty(ref _showSourceIcon, value);
-            }
-        }
 
         private bool _copyRubyVisibility = true;
         public bool CopyRubyVisibility
@@ -281,6 +246,46 @@ namespace MisakaTranslator
             {
                 Common.AppSettings.TF_SecondTransTextSize = value;
                 SetProperty(ref _secondTextFontSize, value);
+            }
+        }
+
+        private string pauseButtonIconText = "\uF8AE";
+
+        public string PauseButtonIconText { get => pauseButtonIconText; set => SetProperty(ref pauseButtonIconText, value); }
+
+        private string showSourceButtonIconText = "\uE8C5";
+
+        public string ShowSourceButtonIconText
+        {
+            get
+            {
+                if (Common.AppSettings.TF_ShowSourceText)
+                {
+                    showSourceButtonIconText = "\uE8C5";
+                    SourcePanelVisibility = Visibility.Visible;
+                }
+                else
+                {
+                    showSourceButtonIconText = "\uE8C4";
+                    SourcePanelVisibility = Visibility.Collapsed;
+                }
+                return showSourceButtonIconText;
+            }
+
+            set
+            {
+                if (value.ToString() == "\uE8C5")
+                {
+                    Common.AppSettings.TF_ShowSourceText = true;
+                    SourcePanelVisibility = Visibility.Visible;
+                }
+                else
+                {
+                    Common.AppSettings.TF_ShowSourceText = false;
+                    SourcePanelVisibility = Visibility.Collapsed;
+
+                }
+                SetProperty(ref showSourceButtonIconText, value);
             }
         }
     }

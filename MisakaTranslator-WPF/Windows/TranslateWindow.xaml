@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:MisakaTranslator"
         d:DataContext="{d:DesignInstance Type=local:TranslateViewModel}"
         mc:Ignorable="d"
@@ -83,41 +82,51 @@
                 </Style>
             </Grid.Resources>
             <StackPanel HorizontalAlignment="Left">
-                <ToggleButton fa:Awesome.Content="MousePointer"
+                <ToggleButton Content="&#xF8AF;"
+                              FontFamily="Segoe MDL2 Assets"
                               Name="LockButton"
                               IsChecked="True"
                               Click="Lock_Item_Click"
                               ToolTip="{DynamicResource TranslateWin_Menu_Lock}" />
-                <ToggleButton fa:Awesome.Content="Expand"
+                <ToggleButton Content="&#xE92D;"
+                              FontFamily="Segoe MDL2 Assets"
                               Name="ChangeSizeButton"
                               Click="ChangeSize_Item_Click"
                               ToolTip="{DynamicResource TranslateWin_Menu_ChangeSize}" />
             </StackPanel>
             <StackPanel HorizontalAlignment="Center">
-                <Button fa:Awesome.Content="Pause"
+                <Button Content="{Binding PauseButtonIconText}"
+                        FontFamily="Segoe MDL2 Assets"
                         Name="PauseButton"
                         Click="Pause_Item_Click"
                         ToolTip="{DynamicResource TranslateWin_Menu_Pause}" />
-                <Button fa:Awesome.Content="Repeat"
+                <Button Content="&#xE8EE;"
+                        FontFamily="Segoe MDL2 Assets"
                         Click="RenewOCR_Item_Click"
                         ToolTip="{DynamicResource TranslateWin_Menu_RenewOCR}" />
-                <Button fa:Awesome.Content="{Binding ShowSourceIcon,Mode=TwoWay}"
+                <Button Content="{Binding ShowSourceButtonIconText}"
+                        FontFamily="Segoe MDL2 Assets"
                         Name="ShowSourceButton"
                         Click="ShowSource_Item_Click"
                         ToolTip="{DynamicResource TranslateWin_Menu_ShowSource}" />
-                <Button fa:Awesome.Content="History"
+                <Button Content="&#xE81C;"
+                        FontFamily="Segoe MDL2 Assets"
                         Click="History_Item_Click"
                         ToolTip="{DynamicResource TranslateWin_Menu_History}" />
-                <Button fa:Awesome.Content="Edit"
+                <Button Content="&#xE82E;"
+                        FontFamily="Segoe MDL2 Assets"
                         Click="AddNoun_Item_Click"
                         ToolTip="{DynamicResource TranslateWin_Menu_AddNounTrans}" />
-                <Button fa:Awesome.Content="UserPlus"
+                <Button Content="&#xE932;"
+                        FontFamily="Segoe MDL2 Assets"
                         Click="ArtificialTransAdd_Item_Click"
                         ToolTip="{DynamicResource TranslateWin_Menu_ATadd}" />
-                <Button fa:Awesome.Content="Cog"
+                <Button Content="&#xF8B0;"
+                        FontFamily="Segoe MDL2 Assets"
                         Click="Settings_Item_Click"
                         ToolTip="{DynamicResource TranslateWin_Menu_Settings}" />
-                <Button fa:Awesome.Content="Microphone"
+                <Button Content="&#xF8B2;"
+                        FontFamily="Segoe MDL2 Assets"
                         Click="TTS_Item_Click"
                         ToolTip="{DynamicResource TranslateWin_Menu_TTS}" />
             </StackPanel>
@@ -125,10 +134,12 @@
                 <TextBlock Name="TimeTextBlock"
                            Foreground="PapayaWhip"
                            Margin="8" />
-                <Button fa:Awesome.Content="WindowMinimize"
+                <Button Content="&#xE921;"
+                        FontFamily="Segoe MDL2 Assets"
                         Click="Min_Item_Click"
                         ToolTip="{DynamicResource TranslateWin_Menu_Min}" />
-                <Button fa:Awesome.Content="WindowCloseOutline"
+                <Button Content="&#xE8BB;"
+                        FontFamily="Segoe MDL2 Assets"
                         Click="Exit_Item_Click"
                         ToolTip="{DynamicResource TranslateWin_Menu_Exit}" />
             </StackPanel>

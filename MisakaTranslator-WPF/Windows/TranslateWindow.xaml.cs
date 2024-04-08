@@ -1,5 +1,4 @@
 ﻿using ArtificialTransHelperLibrary;
-using FontAwesome.WPF;
 using HandyControl.Controls;
 using KeyboardMouseHookLibrary;
 using MecabHelperLibrary;
@@ -998,11 +997,11 @@ namespace MisakaTranslator
             {
                 if (Common.TextHooker!.Pause)
                 {
-                    PauseButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Pause);
+                    ViewModel.PauseButtonIconText = "\uF8AE";
                 }
                 else
                 {
-                    PauseButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Play);
+                    ViewModel.PauseButtonIconText = "\uF5B0";
                 }
                 Common.TextHooker.Pause = !Common.TextHooker.Pause;
             }
@@ -1010,11 +1009,11 @@ namespace MisakaTranslator
             {
                 if (IsNotPausedFlag)
                 {
-                    PauseButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Play);
+                    ViewModel.PauseButtonIconText = "\uF5B0";
                 }
                 else
                 {
-                    PauseButton.SetValue(Awesome.ContentProperty, FontAwesomeIcon.Pause);
+                    ViewModel.PauseButtonIconText = "\uF8AE";
                 }
                 IsNotPausedFlag = !IsNotPausedFlag;
             }
@@ -1023,13 +1022,13 @@ namespace MisakaTranslator
 
         private void ShowSource_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (ViewModel.ShowSourceIcon == FontAwesomeIcon.Eye)
+            if (ViewModel.ShowSourceButtonIconText.ToString() == "\uE8C4")
             {
-                ViewModel.ShowSourceIcon = FontAwesomeIcon.EyeSlash;
+                ViewModel.ShowSourceButtonIconText = "\uE8C5";
             }
             else
             {
-                ViewModel.ShowSourceIcon = FontAwesomeIcon.Eye;
+                ViewModel.ShowSourceButtonIconText = "\uE8C4";
             }
         }
 

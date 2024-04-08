@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:misakatranslator="clr-namespace:MisakaTranslator"
         d:DataContext="{d:DesignInstance Type=misakatranslator:MainViewModel}"
         mc:Ignorable="d"
@@ -56,7 +55,8 @@
         <StackPanel Orientation="Horizontal"
                     Grid.Row="1"
                     Grid.Column="0">
-            <Button fa:Awesome.Content="Rocket"
+            <Button Content="&#xE945;"
+                    FontFamily="Segoe MDL2 Assets"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
                     Foreground="{StaticResource MainBtnColor}"
@@ -70,7 +70,8 @@
                     BorderBrush="Transparent"
                     ToolTip="{DynamicResource MainWindow_Tip_AutoStart}" />
 
-            <Button fa:Awesome.Content="Book"
+            <Button Content="&#xE790;"
+                    FontFamily="Segoe MDL2 Assets"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
                     Foreground="{StaticResource MainBtnColor}"
@@ -93,7 +94,8 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom">
             <Button Name="RestartAsAdminBtn"
-                    fa:Awesome.Content="Shield"
+                    Content="&#xE7EF;"
+                    FontFamily="Segoe MDL2 Assets"
                     Foreground="{StaticResource MainBtnColor}"
                     FontSize="40"
                     Background="#01FFFFFF"
@@ -105,7 +107,8 @@
                     BorderBrush="Transparent"
                     ToolTip="{DynamicResource MainWindow_Tip_AdminStart}">
             </Button>
-            <Button fa:Awesome.Content="Language"
+            <Button Content="&#xE8C1;"
+                    FontFamily="Segoe MDL2 Assets"
                     Foreground="{StaticResource MainBtnColor}"
                     FontSize="40"
                     Background="#01FFFFFF"
@@ -126,7 +129,8 @@
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>
-            <Button fa:Awesome.Content="Cog"
+            <Button Content="&#xE713;"
+                    FontFamily="Segoe MDL2 Assets"
                     Foreground="{DynamicResource MainBtnColor}"
                     FontSize="40"
                     Background="#01FFFFFF"
