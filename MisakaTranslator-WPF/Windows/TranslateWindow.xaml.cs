@@ -677,7 +677,7 @@ namespace MisakaTranslator
         }
 
 
-        private TextBlock CreateSourceTextBlock(MecabWordInfo info)
+        private static TextBlock CreateSourceTextBlock(MecabWordInfo info)
         {
             TextBlock textBox = new()
             {
@@ -1180,7 +1180,7 @@ namespace MisakaTranslator
             return historyStringBuilder.ToString();
         }
 
-        AddOptWindow? _addOptWindow;
+        private AddOptWindow? _addOptWindow;
         private void AddNoun_Item_Click(object sender, RoutedEventArgs e)
         {
             _addOptWindow = new AddOptWindow(_currentsrcText);

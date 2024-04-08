@@ -8,7 +8,7 @@ namespace MisakaTranslator
 {
     public class TranslateViewModel : INotifyPropertyChanged
     {
-        public Window _translateWindow { get; set; }
+        private Window _translateWindow;
         public TranslateViewModel(Window translateWindow)
         {
             _translateWindow = translateWindow;

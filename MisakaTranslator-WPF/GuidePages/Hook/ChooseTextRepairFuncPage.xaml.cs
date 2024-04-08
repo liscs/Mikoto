@@ -130,5 +130,13 @@ namespace MisakaTranslator.GuidePages.Hook
             };
             this.RaiseEvent(args);
         }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!this.NavigationService.CanGoBack)
+            {
+                BackButton.Visibility = Visibility.Collapsed;
+            }
+        }
     }
 }
