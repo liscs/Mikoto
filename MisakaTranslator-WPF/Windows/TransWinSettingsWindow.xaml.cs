@@ -138,8 +138,11 @@ namespace MisakaTranslator
 
             BrushConverter brushConverter = new BrushConverter();
             BgColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor) as Brush;
+            sourceColorBlock.Background = brushConverter.ConvertFrom(Common.AppSettings.TF_SrcTextColor) as Brush;
             firstColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor) as Brush;
             secondColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_SecondTransTextColor) as Brush;
+
+            _viewModel.SourceTextColor = brushConverter.ConvertFromString(Common.AppSettings.TF_SrcTextColor) as SolidColorBrush ?? Brushes.White;
 
             firstWhiteStrokeCheckBox.IsChecked = Common.AppSettings.TF_FirstWhiteStrokeIsChecked;
 
@@ -182,6 +185,26 @@ namespace MisakaTranslator
         private void ChooseColorBtn_Click(object sender, RoutedEventArgs e)
         {
             var picker = HandyControl.Tools.SingleOpenHelper.CreateControl<HandyControl.Controls.ColorPicker>();
+            BrushConverter brushConverter = new();
+
+            if (sender == BgColorBtn)
+            {
+                picker.SelectedBrush = brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor) as SolidColorBrush ?? Brushes.Black;
+            }
+            else if (sender == firstColorBtn)
+            {
+                picker.SelectedBrush = brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor) as SolidColorBrush ?? Brushes.White;
+            }
+            else if (sender == secondColorBtn)
+            {
+                picker.SelectedBrush = brushConverter.ConvertFromString(Common.AppSettings.TF_SecondTransTextColor) as SolidColorBrush ?? Brushes.White;
+            }
+            else if (sender == sourceColorBtn)
+            {
+                picker.SelectedBrush = _viewModel.SourceTextColor;
+            }
+
+
             var window = new HandyControl.Controls.PopupWindow
             {
                 PopupElement = picker,
@@ -213,6 +236,11 @@ namespace MisakaTranslator
                     secondColorBlock.Background = picker.SelectedBrush;
                     _translateWin.SecondTransText.Fill = picker.SelectedBrush;
                     Common.AppSettings.TF_SecondTransTextColor = picker.SelectedBrush.ToString();
+                }
+                else if (sender == sourceColorBtn)
+                {
+                    _viewModel.SourceTextColor = picker.SelectedBrush;
+                    sourceColorBlock.Background = picker.SelectedBrush;
                 }
                 window.Close();
             };

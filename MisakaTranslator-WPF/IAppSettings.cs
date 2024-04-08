@@ -1,4 +1,5 @@
 ﻿using Config.Net;
+using System.Windows.Media;
 
 namespace MisakaTranslator
 {
@@ -414,6 +415,9 @@ namespace MisakaTranslator
             get;
             set;
         }
+
+        [Option(Alias = "TranslateFormSettings.SrcTextColor", DefaultValue = "#FFFFFFFF")]
+        string TF_SrcTextColor { get; set; }
 
         [Option(Alias = "TranslateFormSettings.FirstTransTextFont", DefaultValue = "Microsoft YaHei")]
         string TF_FirstTransTextFont

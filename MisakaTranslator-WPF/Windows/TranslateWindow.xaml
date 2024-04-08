@@ -150,7 +150,7 @@
                             Margin="10,0,10,5">
                 <RichTextBox x:Name="SourceRichTextBox1"
                              Background="Transparent"
-                             Foreground="White"
+                             Foreground="{Binding SourceTextColor}"
                              BorderThickness="0"
                              IsReadOnly="True"
                              HorizontalScrollBarVisibility="Auto"
@@ -176,7 +176,7 @@
                 </RichTextBox>
                 <RichTextBox x:Name="SourceRichTextBox2"
                              Background="Transparent"
-                             Foreground="White"
+                             Foreground="{Binding SourceTextColor}"
                              BorderThickness="0"
                              IsReadOnly="True"
                              HorizontalScrollBarVisibility="Auto"

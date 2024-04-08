@@ -288,5 +288,21 @@ namespace MisakaTranslator
                 SetProperty(ref showSourceButtonIconText, value);
             }
         }
+
+        private SolidColorBrush sourceTextColor = Brushes.White;
+
+        public SolidColorBrush SourceTextColor
+        {
+            get
+            {
+                return sourceTextColor;
+            }
+
+            set
+            {
+                Common.AppSettings.TF_SrcTextColor = value.ToString();
+                SetProperty(ref sourceTextColor, value);
+            }
+        }
     }
 }

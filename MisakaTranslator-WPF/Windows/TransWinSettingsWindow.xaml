@@ -4,84 +4,208 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:local="clr-namespace:MisakaTranslator" 
+        xmlns:local="clr-namespace:MisakaTranslator"
         d:DataContext="{d:DesignInstance Type=local:TranslateViewModel}"
         mc:Ignorable="d"
-        Title="{DynamicResource TransWinSettingsWin_Title}" Height="500" Width="300" MinWidth="300">
+        Title="{DynamicResource TransWinSettingsWin_Title}"
+        Height="500"
+        Width="300"
+        MinWidth="300">
     <Grid>
 
         <TabControl Style="{DynamicResource TabControlInLine}">
             <TabItem Header="{DynamicResource TransWinSettingsWin_Tab_Window}">
-
-                <StackPanel>
-                    <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}" HorizontalAlignment="Center" Margin="10" FontSize="15"/>
-                    <Button Name="BgColorBtn" Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}" Margin="10" Width="200" Style="{DynamicResource ButtonPrimary}" Click="ChooseColorBtn_Click"/>
-                    <Border Name="BgColorBlock" Margin="10" Width="200" Height="25"/>
-                    <CheckBox Name="DropShadowCheckBox" Content="{DynamicResource TransWinSettingsWin_DropShadowCbox}" Margin="10"/>
-                    <CheckBox Name="ZenModeCheckBox" Content="{DynamicResource TransWinSettingsWin_ZenMode}" Margin="10" />
-                    <CheckBox Content="{DynamicResource TransWinSettingsWindow_EnableBackgroundBlur}" Margin="10" IsChecked="{Binding BackgroundBlurCheckEnabled,Mode=TwoWay}"/>
-                </StackPanel>
-
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}"
+                                   HorizontalAlignment="Center"
+                                   Margin="10"
+                                   FontSize="15" />
+                        <Button Name="BgColorBtn"
+                                Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}"
+                                Margin="10"
+                                Width="200"
+                                Style="{DynamicResource ButtonPrimary}"
+                                Click="ChooseColorBtn_Click" />
+                        <Border Name="BgColorBlock"
+                                Margin="10"
+                                Width="200"
+                                Height="25" />
+                        <CheckBox Name="DropShadowCheckBox"
+                                  Content="{DynamicResource TransWinSettingsWin_DropShadowCbox}"
+                                  Margin="10" />
+                        <CheckBox Name="ZenModeCheckBox"
+                                  Content="{DynamicResource TransWinSettingsWin_ZenMode}"
+                                  Margin="10" />
+                        <CheckBox Content="{DynamicResource TransWinSettingsWindow_EnableBackgroundBlur}"
+                                  Margin="10"
+                                  IsChecked="{Binding BackgroundBlurCheckEnabled,Mode=TwoWay}" />
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="{DynamicResource TransWinSettingsWin_Tab_source}">
+                <ScrollViewer>
+                    <StackPanel>
+                        <hc:ComboBox IsEditable="True"
+                                     Text="{Binding SourceTextFontFamilyString,Mode=OneTime}"
+                                     DropDownOpened="Font_ContextMenuOpening"
+                                     SelectedItem="{Binding SourceTextFontFamilyString, Mode=TwoWay}"
+                                     ItemsSource="{Binding FontList}"
+                                     hc:InfoElement.TitleWidth="140"
+                                     hc:InfoElement.TitlePlacement="Top"
+                                     hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}"
+                                     Margin="10" />
 
-                <StackPanel>
-                    <hc:ComboBox IsEditable="True" Text="{Binding SourceTextFontFamilyString,Mode=OneTime}" DropDownOpened="Font_ContextMenuOpening" SelectedItem="{Binding SourceTextFontFamilyString, Mode=TwoWay}" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
+                        <hc:NumericUpDown Value="{Binding SourceTextFontSize,Mode=TwoWay}"
+                                          Minimum="8"
+                                          hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}"
+                                          Margin="10"
+                                          Style="{DynamicResource NumericUpDownExtend}" />
 
-                    <hc:NumericUpDown Value="{Binding SourceTextFontSize,Mode=TwoWay}" Minimum="8" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}" Margin="10" Style="{DynamicResource NumericUpDownExtend}" />
+                        <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}"
+                                   HorizontalAlignment="Center"
+                                   Margin="15" />
+                        <Button Name="sourceColorBtn"
+                                Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}"
+                                Margin="0"
+                                Width="200"
+                                Style="{DynamicResource ButtonPrimary}"
+                                Click="ChooseColorBtn_Click" />
+                        <Border Name="sourceColorBlock"
+                                Margin="10"
+                                Width="200"
+                                Height="25" />
 
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <CheckBox Grid.Row="0" Grid.ColumnSpan="3" Name="PhoneticNotationCheckBox" Content="{DynamicResource TransWinSettingsWin_PhoneticNotationCheckBox}" Margin="10" />
-                        <RadioButton Grid.Row="1" Grid.Column="0" Name="HiraganaRadioButton" Content="{DynamicResource TransWinSettingsWin_Hirogana}" IsChecked="True"/>
-                        <RadioButton Grid.Row="1" Grid.Column="1" Name="KatakanaRadioButton" Content="{DynamicResource TransWinSettingsWin_Katakana}"/>
-                        <RadioButton Grid.Row="1" Grid.Column="2" Name="RomajiRadioButton" Content="{DynamicResource TransWinSettingsWin_Romaji}"/>
-                    </Grid>
-                    <CheckBox Name="KanaBoldCheckBox" Content="{DynamicResource TransWinSettingsWin_KanaBoldCbox}" Margin="10" HorizontalAlignment="Left"/>
-                    <CheckBox Name="ColorfulCheckBox" Content="{DynamicResource TransWinSettingsWin_ColorfulCbox}" Margin="10" />
-                    <CheckBox IsChecked="{Binding SrcAnimationCheckEnabled,Mode=TwoWay}" Content="{DynamicResource TransWinSettingsWindow_EnableFadeAnimation}" Margin="10" />
-                    <CheckBox IsChecked="{Binding SrcSingleLineEnabled,Mode=TwoWay}" Content="单行显示" Margin="10" />
-                    <TextBlock TextWrapping="Wrap" Text="{DynamicResource TransWinSettingsWin_srcSetNotice}" Margin="10" />
 
-                </StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Row="0"
+                                      Grid.ColumnSpan="3"
+                                      Name="PhoneticNotationCheckBox"
+                                      Content="{DynamicResource TransWinSettingsWin_PhoneticNotationCheckBox}"
+                                      Margin="10" />
+                            <RadioButton Grid.Row="1"
+                                         Grid.Column="0"
+                                         Name="HiraganaRadioButton"
+                                         Content="{DynamicResource TransWinSettingsWin_Hirogana}"
+                                         IsChecked="True" />
+                            <RadioButton Grid.Row="1"
+                                         Grid.Column="1"
+                                         Name="KatakanaRadioButton"
+                                         Content="{DynamicResource TransWinSettingsWin_Katakana}" />
+                            <RadioButton Grid.Row="1"
+                                         Grid.Column="2"
+                                         Name="RomajiRadioButton"
+                                         Content="{DynamicResource TransWinSettingsWin_Romaji}" />
+                        </Grid>
+                        <CheckBox Name="KanaBoldCheckBox"
+                                  Content="{DynamicResource TransWinSettingsWin_KanaBoldCbox}"
+                                  Margin="10"
+                                  HorizontalAlignment="Left" />
+                        <CheckBox Name="ColorfulCheckBox"
+                                  Content="{DynamicResource TransWinSettingsWin_ColorfulCbox}"
+                                  Margin="10" />
+                        
+                        
+                        <CheckBox IsChecked="{Binding SrcAnimationCheckEnabled,Mode=TwoWay}"
+                                  Content="{DynamicResource TransWinSettingsWindow_EnableFadeAnimation}"
+                                  Margin="10" />
+                        <CheckBox IsChecked="{Binding SrcSingleLineEnabled,Mode=TwoWay}"
+                                  Content="单行显示"
+                                  Margin="10" />
+                        <TextBlock TextWrapping="Wrap"
+                                   Text="{DynamicResource TransWinSettingsWin_srcSetNotice}"
+                                   Margin="10" />
 
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="{DynamicResource TransWinSettingsWin_Tab_first}">
+                <ScrollViewer>
+                    <StackPanel>
+                        <hc:ComboBox IsEditable="True"
+                                     Text="{Binding FirstTextFontFamilyString,Mode=OneTime}"
+                                     SelectedItem="{Binding FirstTextFontFamilyString, Mode=TwoWay}"
+                                     DropDownOpened="Font_ContextMenuOpening"
+                                     ItemsSource="{Binding FontList}"
+                                     hc:InfoElement.TitleWidth="140"
+                                     hc:InfoElement.TitlePlacement="Top"
+                                     hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}"
+                                     Margin="10" />
 
-                <StackPanel>
-                    <hc:ComboBox IsEditable="True" Text="{Binding FirstTextFontFamilyString,Mode=OneTime}" SelectedItem="{Binding FirstTextFontFamilyString, Mode=TwoWay}" DropDownOpened="Font_ContextMenuOpening" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
+                        <hc:NumericUpDown Value="{Binding FirstTextFontSize,Mode=TwoWay}"
+                                          Minimum="8"
+                                          hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}"
+                                          Margin="10"
+                                          Style="{DynamicResource NumericUpDownExtend}" />
 
-                    <hc:NumericUpDown Value="{Binding FirstTextFontSize,Mode=TwoWay}" Minimum="8" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}" Margin="10" Style="{DynamicResource NumericUpDownExtend}" />
-
-                    <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}" HorizontalAlignment="Center" Margin="15"/>
-                    <Button Name="firstColorBtn" Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}" Margin="0" Width="200" Style="{DynamicResource ButtonPrimary}" Click="ChooseColorBtn_Click"/>
-                    <Border Name="firstColorBlock" Margin="10" Width="200" Height="25"/>
-                    <CheckBox Name="firstWhiteStrokeCheckBox" Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}" Margin="10" />
-                    <CheckBox IsChecked="{Binding TransAnimationCheckEnabled,Mode=TwoWay}" Content="{DynamicResource TransWinSettingsWindow_EnableFadeAnimation}" Margin="10"/>
-                </StackPanel>
-
+                        <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}"
+                                   HorizontalAlignment="Center"
+                                   Margin="15" />
+                        <Button Name="firstColorBtn"
+                                Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}"
+                                Margin="0"
+                                Width="200"
+                                Style="{DynamicResource ButtonPrimary}"
+                                Click="ChooseColorBtn_Click" />
+                        <Border Name="firstColorBlock"
+                                Margin="10"
+                                Width="200"
+                                Height="25" />
+                        <CheckBox Name="firstWhiteStrokeCheckBox"
+                                  Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}"
+                                  Margin="10" />
+                        <CheckBox IsChecked="{Binding TransAnimationCheckEnabled,Mode=TwoWay}"
+                                  Content="{DynamicResource TransWinSettingsWindow_EnableFadeAnimation}"
+                                  Margin="10" />
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="{DynamicResource TransWinSettingsWin_Tab_second}">
+                <ScrollViewer>
+                    <StackPanel>
+                        <hc:ComboBox IsEditable="True"
+                                     Text="{Binding SecondTextFontFamilyString,Mode=OneTime}"
+                                     SelectedItem="{Binding SecondTextFontFamilyString,Mode=TwoWay}"
+                                     DropDownOpened="Font_ContextMenuOpening"
+                                     ItemsSource="{Binding FontList}"
+                                     hc:InfoElement.TitleWidth="140"
+                                     hc:InfoElement.TitlePlacement="Top"
+                                     hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}"
+                                     Margin="10" />
 
-                <StackPanel>
-                    <hc:ComboBox IsEditable="True" Text="{Binding SecondTextFontFamilyString,Mode=OneTime}" SelectedItem="{Binding SecondTextFontFamilyString,Mode=TwoWay}"  DropDownOpened="Font_ContextMenuOpening" ItemsSource="{Binding FontList}" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}" Margin="10" />
+                        <hc:NumericUpDown Value="{Binding SecondTextFontSize,Mode=TwoWay}"
+                                          Minimum="8"
+                                          hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}"
+                                          Margin="10"
+                                          Style="{DynamicResource NumericUpDownExtend}" />
 
-                    <hc:NumericUpDown Value="{Binding SecondTextFontSize,Mode=TwoWay}" Minimum="8" hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}" Margin="10" Style="{DynamicResource NumericUpDownExtend}"/>
-
-                    <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}" HorizontalAlignment="Center" Margin="15"/>
-                    <Button Name="secondColorBtn" Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}" Margin="0" Width="200" Style="{DynamicResource ButtonPrimary}" Click="ChooseColorBtn_Click"/>
-                    <Border Name="secondColorBlock" Margin="10" Width="200" Height="25"/>
-                    <CheckBox Name="secondWhiteStrokeCheckBox" Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}" Margin="10" />
-                </StackPanel>
-
+                        <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}"
+                                   HorizontalAlignment="Center"
+                                   Margin="15" />
+                        <Button Name="secondColorBtn"
+                                Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}"
+                                Margin="0"
+                                Width="200"
+                                Style="{DynamicResource ButtonPrimary}"
+                                Click="ChooseColorBtn_Click" />
+                        <Border Name="secondColorBlock"
+                                Margin="10"
+                                Width="200"
+                                Height="25" />
+                        <CheckBox Name="secondWhiteStrokeCheckBox"
+                                  Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}"
+                                  Margin="10" />
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
 
         </TabControl>
