@@ -556,7 +556,7 @@ namespace MisakaTranslator
             double contentWidth = TextMeasureHelper.GetContentWidth(richTextBox);
             if (Common.AppSettings.TF_SrcSingleLineDisplay)
             {
-                flowDocument.PageWidth = double.Max(contentWidth, 150);
+                flowDocument.PageWidth = contentWidth;
             }
             else
             {

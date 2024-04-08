@@ -34,7 +34,7 @@ namespace MisakaTranslator.Helpers
                     }
                 }
             }
-            return result * 1.1 + 12;
+            return result * 1.1 + 50;
         }
 
         private static double GetDesiredWidth(TextBlock textBlock)
