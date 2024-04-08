@@ -325,7 +325,14 @@ namespace MisakaTranslator
 
             InitTranslateAnimation(FirstTransText);
             InitTranslateAnimation(SecondTransText);
+            
+            ViewModelInit();
+        }
 
+        private void ViewModelInit()
+        {
+            BrushConverter brushConverter = new();
+            ViewModel.SourceTextColor = brushConverter.ConvertFromString(Common.AppSettings.TF_SrcTextColor) as SolidColorBrush ?? Brushes.White;
         }
 
         /// <summary>
@@ -704,7 +711,7 @@ namespace MisakaTranslator
             TextBlock rubyTextBlock = new()
             {
                 Background = Brushes.Transparent,
-                Foreground = Brushes.White,
+                Foreground = ViewModel.SourceTextColor,
                 Margin = new Thickness(0),
                 HorizontalAlignment = HorizontalAlignment.Center
             };

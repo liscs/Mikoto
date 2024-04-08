@@ -142,8 +142,6 @@ namespace MisakaTranslator
             firstColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor) as Brush;
             secondColorBlock.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_SecondTransTextColor) as Brush;
 
-            _viewModel.SourceTextColor = brushConverter.ConvertFromString(Common.AppSettings.TF_SrcTextColor) as SolidColorBrush ?? Brushes.White;
-
             firstWhiteStrokeCheckBox.IsChecked = Common.AppSettings.TF_FirstWhiteStrokeIsChecked;
 
             DropShadowCheckBox.IsChecked = Common.AppSettings.TF_EnableDropShadow;

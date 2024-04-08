@@ -1,5 +1,4 @@
 ﻿using Config.Net;
-using System.Windows.Media;
 
 namespace MisakaTranslator
 {
