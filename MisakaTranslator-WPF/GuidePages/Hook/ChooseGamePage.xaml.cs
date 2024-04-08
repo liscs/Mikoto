@@ -91,18 +91,7 @@ namespace MisakaTranslator.GuidePages.Hook
             return !result;
         }
 
-        private async void SelectWindowButton_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.EnableSelectFocusButton = false;
-            _gamePid = await Task.Run(GetProcessIdFromFocus);
-            using Process process = Process.GetProcessById(_gamePid);
-            if (!string.IsNullOrEmpty(process.MainWindowTitle))
-            {
-                _viewModel.FocusingProcess = $"目前点选进程：{process.MainWindowTitle}";
-            }
-        }
-
-        private unsafe int GetProcessIdFromFocus()
+        private static unsafe int GetProcessIdFromFocus()
         {
             uint thisPid;
             PInvoke.GetWindowThreadProcessId(PInvoke.GetForegroundWindow(), &thisPid);

@@ -1,12 +1,15 @@
 ﻿<Page x:Class="MisakaTranslator.GuidePages.Hook.ChooseGamePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:hc="https://handyorg.github.io/handycontrol"
-      xmlns:local="clr-namespace:MisakaTranslator.GuidePages" xmlns:hook="clr-namespace:MisakaTranslator.GuidePages.Hook" d:DataContext="{d:DesignInstance Type=hook:ChooseGameViewModel}"
-      mc:Ignorable="d" 
-      d:DesignHeight="400" d:DesignWidth="800"
+      xmlns:local="clr-namespace:MisakaTranslator.GuidePages"
+      xmlns:hook="clr-namespace:MisakaTranslator.GuidePages.Hook"
+      d:DataContext="{d:DesignInstance Type=hook:ChooseGameViewModel}"
+      mc:Ignorable="d"
+      d:DesignHeight="400"
+      d:DesignWidth="800"
       Title="ChooseGamePage">
 
     <Grid>
@@ -15,31 +18,50 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0">
-                <TextBlock Text="{DynamicResource ChooseGamePage_Introduce}" FontSize="15" TextWrapping="WrapWithOverflow" Margin="10"/>
-                <TextBlock Name="NoAdminPrivilegesTextBlock" Text="{DynamicResource ChooseGamePage_NoAdminWarn}" FontSize="15" TextWrapping="WrapWithOverflow" Foreground="Red" Margin="10"/>
+                <TextBlock Text="{DynamicResource ChooseGamePage_Introduce}"
+                           FontSize="15"
+                           TextWrapping="WrapWithOverflow"
+                           Margin="10" />
+                <TextBlock Name="NoAdminPrivilegesTextBlock"
+                           Text="{DynamicResource ChooseGamePage_NoAdminWarn}"
+                           FontSize="15"
+                           TextWrapping="WrapWithOverflow"
+                           Foreground="Red"
+                           Margin="10" />
             </StackPanel>
 
-            <hc:ComboBox Name="GameProcessCombox" Grid.Row="1" Margin="10" VerticalAlignment="Center" SelectionChanged="GameProcessCombox_SelectionChanged"/>
+            <hc:ComboBox Name="GameProcessCombox"
+                         Grid.Row="1"
+                         Margin="10"
+                         VerticalAlignment="Center"
+                         SelectionChanged="GameProcessCombox_SelectionChanged" />
 
-            <StackPanel Grid.Row="2">
-                <TextBlock Name="AutoHookTag"  Text="[AutoHook]" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" FontSize="15"></TextBlock>
-                <StackPanel Orientation="Horizontal">
-                    <Button  Margin="10" Height="Auto" IsEnabled="{Binding EnableSelectFocusButton}" Content="{DynamicResource ChooseGamePage_FocusSelectGameProcess}" Background="{DynamicResource TitleBrush}" Foreground="{DynamicResource PrimaryBackground}" HorizontalAlignment="Center" FontSize="15" Click="SelectWindowButton_Click"/>
-                    <Button  Margin="10" Height="Auto" IsEnabled="{Binding EnableSelectFocusButton}" Content="{DynamicResource ChooseGamePage_ConfirmFocusSelectGameProcess}" Background="{DynamicResource TitleBrush}" Foreground="{DynamicResource PrimaryBackground}" HorizontalAlignment="Center" FontSize="15" Click="ConfirmSelectWindowButton_Click"/>
-                    <TextBlock Text="{Binding FocusingProcess}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="10" FontSize="15"></TextBlock>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button Grid.Row="3" Margin="10" Height="Auto" Content="{DynamicResource ChooseGamePage_BtnConfirm}" FontSize="15" Width="250" Click="ConfirmButton_Click"/>
+                <TextBlock Grid.Row="2"
+                           Name="AutoHookTag"
+                           Text="[AutoHook]"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="10"
+                           FontSize="15"></TextBlock>
+            <StackPanel Grid.Row="3"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                <Button Grid.Row="3"
+                        Margin="10"
+                        Width="205"
+                        Content="{DynamicResource ChooseGamePage_BtnConfirm}"
+                        Click="ConfirmButton_Click" />
             </StackPanel>
 
 
         </Grid>
 
-        <StackPanel hc:Growl.GrowlParent="True" HorizontalAlignment="Right" Margin="15"/>
+        <StackPanel hc:Growl.GrowlParent="True"
+                    HorizontalAlignment="Right"
+                    Margin="15" />
     </Grid>
 </Page>
