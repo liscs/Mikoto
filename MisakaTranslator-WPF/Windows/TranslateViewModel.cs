@@ -249,11 +249,11 @@ namespace MisakaTranslator
             }
         }
 
-        private string pauseButtonIconText = "\uF8AE";
+        private double firstTextStrokeThickness = 0.7;
 
-        public string PauseButtonIconText { get => pauseButtonIconText; set => SetProperty(ref pauseButtonIconText, value); }
+        public double FirstTextStrokeThickness { get => firstTextStrokeThickness; set => SetProperty(ref firstTextStrokeThickness, value); }
 
-        private string showSourceButtonIconText = "\uE8C5";
+        private FontWeight firstTextFontWeight = FontWeights.Bold;
 
         public string ShowSourceButtonIconText
         {
