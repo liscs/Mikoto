@@ -124,7 +124,7 @@ namespace KeyboardMouseHookLibrary
             return true;
         }
 
-        public static void Stop()
+        public void Stop()
         {
             bool retMouse = true;
             bool retKeyboard = true;
