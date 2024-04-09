@@ -51,7 +51,7 @@
 
     <sys:String x:Key="SettingsMenu_TranslatorSettings">翻译相关设置</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_General">通用设置</sys:String>
-    <sys:String x:Key="SettingsMenu_TranslatorSettings_Baidu">百度翻译API</sys:String>
+    <sys:String x:Key="SettingsMenu_TranslatorSettings_Baidu">百度翻译</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_TencentFYJ">腾讯翻译君</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_TencentOld">腾讯云</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_YoudaoZhiyun">有道智云</sys:String>

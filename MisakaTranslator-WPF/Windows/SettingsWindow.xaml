@@ -62,8 +62,6 @@
                                  Selected="Item_TXOTrans_Selected" />
                 <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Volcano}"
                                  Selected="Item_Volcano_Selected" />
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Amazon}"
-                                 Selected="Item_Amazon_Selected" />
                 <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_YoudaoZhiyun}"
                                  Selected="Item_YDZYTrans_Selected" />
                 <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Caiyun}"
@@ -82,6 +80,8 @@
                                  Selected="Item_ChatGPTTrans_Selected" />
                 <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Azure}"
                                  Selected="Item_AzureTrans_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Amazon}"
+                                 Selected="Item_Amazon_Selected" />
                 <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_IBM}"
                                  Selected="Item_IBM_Selected" />
                 <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Yandex}"

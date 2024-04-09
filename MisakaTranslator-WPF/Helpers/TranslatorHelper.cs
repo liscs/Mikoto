@@ -30,6 +30,7 @@ namespace MisakaTranslator.Helpers
                 "AzureTranslator" => AzureTranslator.TranslatorInit(Common.AppSettings.AzureSecretKey, Common.AppSettings.AzureLocation),
                 "ArtificialTranslator" => ArtificialTranslator.TranslatorInit(Common.AppSettings.ArtificialPatchPath),
                 "VolcanoTranslator" => VolcanoTranslator.TranslatorInit(Common.AppSettings.VolcanoId, Common.AppSettings.VolcanoKey),
+                "AwsTranslator" => AwsTranslator.TranslatorInit(Common.AppSettings.AwsAccessKey, Common.AppSettings.AwsSecretKey),
                 _ => null,
             };
         }
