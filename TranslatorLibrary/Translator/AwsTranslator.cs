@@ -7,14 +7,14 @@ using System.Text.Json.Nodes;
 
 namespace TranslatorLibrary.Translator
 {
-    internal class AwsTranslator : ITranslator
+    public class AwsTranslator : ITranslator
     {
         private string? _accessKey;
         private string? _secretKey;
 
         private string errorInfo = string.Empty;
 
-        public string TranslatorDisplayName { get { return "AWS"; } }
+        public string TranslatorDisplayName { get { return "Amazon Translate"; } }
 
         public string GetLastError()
         {
@@ -182,6 +182,26 @@ namespace TranslatorLibrary.Translator
             awsTranslator._accessKey = param.First();
             awsTranslator._secretKey = param.Last();
             return awsTranslator;
+        }
+
+        public static string GetUrl_API()
+        {
+            return "https://aws.amazon.com/translate/";
+        }
+
+        public static string GetUrl_ErrorCode()
+        {
+            return "https://docs.aws.amazon.com/translate/latest/APIReference/API_ListLanguages.html#API_ListLanguages_Errors";
+        }
+
+        public static string GetUrl_Bill()
+        {
+            return "https://console.aws.amazon.com/console/home";
+        }
+
+        public static string GetUrl_Lang()
+        {
+            return "https://docs.aws.amazon.com/translate/latest/dg/what-is-languages.html";
         }
     }
 

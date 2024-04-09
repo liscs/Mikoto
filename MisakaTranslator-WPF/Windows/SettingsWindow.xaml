@@ -62,6 +62,8 @@
                                  Selected="Item_TXOTrans_Selected" />
                 <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Volcano}"
                                  Selected="Item_Volcano_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Amazon}"
+                                 Selected="Item_Amazon_Selected" />
                 <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_YoudaoZhiyun}"
                                  Selected="Item_YDZYTrans_Selected" />
                 <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Caiyun}"

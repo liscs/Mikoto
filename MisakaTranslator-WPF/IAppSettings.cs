@@ -87,6 +87,12 @@ namespace MisakaTranslator
         [Option(Alias = "VolcanoTranslator.VolcanoKey", DefaultValue = "")]
         string VolcanoKey { get; set; }
 
+        [Option(Alias = "AwsTranslator.AwsAccessKey", DefaultValue = "")]
+        string AwsAccessKey { get; set; }
+
+        [Option(Alias = "AwsTranslator.AwsSecretKey", DefaultValue = "")]
+        string AwsSecretKey { get; set; }
+
         [Option(Alias = "BaiduTranslator.AppID", DefaultValue = "")]
         string BDappID
         {
@@ -535,6 +541,7 @@ namespace MisakaTranslator
 
         [Option(Alias = "Textractor.Path64", DefaultValue = "")]
         string Textractor_Path64 { get; set; }
+
     }
 
     public interface IRepeatRepairSettings
