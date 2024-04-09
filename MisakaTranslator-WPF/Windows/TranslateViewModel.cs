@@ -249,60 +249,12 @@ namespace MisakaTranslator
             }
         }
 
-        private string pauseButtonIconText = "\uF8AE";
+        private double firstTextStrokeThickness = 0.7;
 
-        public string PauseButtonIconText { get => pauseButtonIconText; set => SetProperty(ref pauseButtonIconText, value); }
+        public double FirstTextStrokeThickness { get => firstTextStrokeThickness; set => SetProperty(ref firstTextStrokeThickness, value); }
 
-        private string showSourceButtonIconText = "\uE8C5";
+        private FontWeight firstTextFontWeight = FontWeights.Bold;
 
-        public string ShowSourceButtonIconText
-        {
-            get
-            {
-                if (Common.AppSettings.TF_ShowSourceText)
-                {
-                    showSourceButtonIconText = "\uE8C5";
-                    SourcePanelVisibility = Visibility.Visible;
-                }
-                else
-                {
-                    showSourceButtonIconText = "\uE8C4";
-                    SourcePanelVisibility = Visibility.Collapsed;
-                }
-                return showSourceButtonIconText;
-            }
-
-            set
-            {
-                if (value.ToString() == "\uE8C5")
-                {
-                    Common.AppSettings.TF_ShowSourceText = true;
-                    SourcePanelVisibility = Visibility.Visible;
-                }
-                else
-                {
-                    Common.AppSettings.TF_ShowSourceText = false;
-                    SourcePanelVisibility = Visibility.Collapsed;
-
-                }
-                SetProperty(ref showSourceButtonIconText, value);
-            }
-        }
-
-        private SolidColorBrush sourceTextColor = Brushes.White;
-
-        public SolidColorBrush SourceTextColor
-        {
-            get
-            {
-                return sourceTextColor;
-            }
-
-            set
-            {
-                Common.AppSettings.TF_SrcTextColor = value.ToString();
-                SetProperty(ref sourceTextColor, value);
-            }
-        }
+        public FontWeight FirstTextFontWeight { get => firstTextFontWeight; set => SetProperty(ref firstTextFontWeight, value); }
     }
 }
