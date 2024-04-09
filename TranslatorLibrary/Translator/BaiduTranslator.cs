@@ -127,7 +127,7 @@ namespace TranslatorLibrary.Translator
             return "https://api.fanyi.baidu.com/doc/21";
         }
 
-        private string GetLanguageCode(CultureInfo cultureInfo)
+        private static string GetLanguageCode(CultureInfo cultureInfo)
         {
             return BaiduLanguageCodeConverter.GetLanguageCode(cultureInfo);
         }

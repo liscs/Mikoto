@@ -36,7 +36,7 @@ namespace OCRLibrary
             request.ContentLength = buffer.Length;
             using (var requestStream = request.GetRequestStream())
             {
-                await requestStream.WriteAsync(buffer, 0, buffer.Length);
+                await requestStream.WriteAsync(buffer);
             }
 
             string result;

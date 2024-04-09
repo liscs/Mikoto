@@ -66,7 +66,7 @@ namespace MisakaTranslator.GuidePages.OCR
             }
             else if (IsChoosingWin == true)
             {
-                hook.Stop();
+                GlobalHook.Stop();
                 IsChoosingWin = false;
             }
         }
@@ -87,7 +87,7 @@ namespace MisakaTranslator.GuidePages.OCR
                 {
                     WinNameTag.Text = $"[实时] {gameName} - {pid} - {className}";
                 }
-                hook.Stop();
+                GlobalHook.Stop();
                 IsChoosingWin = false;
             }
         }

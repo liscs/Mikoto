@@ -423,7 +423,7 @@ namespace TextHookLibrary
         /// <summary>
         /// 获得最不匹配target的字符串
         /// </summary>
-        private string GetWorstMatchString(string target, string s1, string s2)
+        private static string GetWorstMatchString(string target, string s1, string s2)
         {
             int dist1 = EditDistance.GetLevenshteinDistance(target, s1);
             int dist2 = EditDistance.GetLevenshteinDistance(target, s2);
@@ -455,7 +455,7 @@ namespace TextHookLibrary
         /// </summary>
         /// <param name="MisakaCode"></param>
         /// <returns></returns>
-        public string? GetHookAddressByMisakaCode(string MisakaCode)
+        public static string? GetHookAddressByMisakaCode(string MisakaCode)
         {
             return GetMiddleString(MisakaCode, "【", ":", 0);
         }
@@ -481,7 +481,7 @@ namespace TextHookLibrary
         /// <param name="back">后面的文本</param>
         /// <param name="location">起始搜寻位置</param>
         /// <returns></returns>
-        private string? GetMiddleString(string Text, string front, string back, int location)
+        private static string? GetMiddleString(string Text, string front, string back, int location)
         {
 
             if (front == "" || back == "")

@@ -124,7 +124,7 @@ namespace KeyboardMouseHookLibrary
             return true;
         }
 
-        public void Stop()
+        public static void Stop()
         {
             bool retMouse = true;
             bool retKeyboard = true;
@@ -148,7 +148,7 @@ namespace KeyboardMouseHookLibrary
         /// <summary>
         /// 卸载hook,如果进程强制结束,记录上次钩子id,并把根据钩子id来卸载它
         /// </summary>
-        public void Stop(IntPtr hMouseHook, IntPtr hKeyboardHook)
+        public static void Stop(IntPtr hMouseHook, IntPtr hKeyboardHook)
         {
             if (hMouseHook != IntPtr.Zero)
             {

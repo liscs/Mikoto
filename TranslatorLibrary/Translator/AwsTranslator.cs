@@ -147,7 +147,6 @@ namespace TranslatorLibrary.Translator
         }
 
 
-
         private static byte[] GetSignatureKey(String key, String dateStamp, String regionName, String serviceName)
         {
             byte[] kDate = HmacSha256(dateStamp, ToBytes("AWS4" + key));

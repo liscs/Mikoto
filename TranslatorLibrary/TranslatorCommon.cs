@@ -33,7 +33,7 @@ namespace TranslatorLibrary
         }
 
         // 默认使用cultureinfo的语言代码
-        public static Dictionary<string, string> LanguageDict = new Dictionary<string, string>()
+        public static Dictionary<string, string> LanguageDict { get; } = new()
         {
             { "中文" , "zh" },
             { "English" , "en" },
@@ -47,7 +47,7 @@ namespace TranslatorLibrary
             { "Italiano", "it" }
         };
 
-        public static Dictionary<string, string> TranslatorDict = new Dictionary<string, string>();
+        public static Dictionary<string, string> TranslatorDict { get; } = new();
         /// <summary>
         /// 计算MD5值
         /// </summary>
@@ -55,14 +55,12 @@ namespace TranslatorLibrary
         /// <returns></returns>
         public static string EncryptString(string str)
         {
-            MD5 md5 = MD5.Create();
             // 将字符串转换成字节数组
             byte[] byteOld = Encoding.UTF8.GetBytes(str);
             // 调用加密方法
-            byte[] byteNew = md5.ComputeHash(byteOld);
-            md5.Dispose();
+            byte[] byteNew = MD5.HashData(byteOld);
             // 将加密结果转换为字符串
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             foreach (byte b in byteNew)
             {
                 // 将字节转换成16进制表示的字符串，
@@ -135,9 +133,9 @@ namespace TranslatorLibrary
             }
         }
 
-        public static Random RD = new Random();
+        public static Random RD { get; } = new Random();
 
-        public static System.Text.Json.JsonSerializerOptions JsonOP = new()
+        public static System.Text.Json.JsonSerializerOptions JsonOP { get; } = new()
         {
             IncludeFields = true
         };

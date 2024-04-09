@@ -5,6 +5,7 @@
 在MisakaTranslator-WPF/IAppSettings中添加需要保存的信息（密钥等）
 在MisakaTranslator-WPF/SettingsWindow.xaml中添加设置左列项目
 在MisakaTranslator-WPF/SettingsWindow.xaml.cs中添加导航显示设置页面的代码
+在MisakaTranslator-WPF/Helpers/TranslatorHelper.cs中添加初始化代码
 对特殊（非iso）语言代码创建LanguageCodeConverter类进行转换
 
 Add a class that implements ITranslator in TranslatorLibrary/Translator
@@ -14,5 +15,6 @@ Add localized strings for the translator settings page in MisakaTranslator-WPF/l
 Add the information that needs to be saved (keys, etc.) in MisakaTranslator-WPF/IAppSettings
 Add settings left column items in MisakaTranslator-WPF/SettingsWindow.xaml
 Add the code to navigate and display the settings page in MisakaTranslator-WPF/SettingsWindow.xaml.cs
+Add initialization code in MisakaTranslator-WPF/Helpers/TranslatorHelper.cs
 Create a LanguageCodeConverter class to convert special (non-iso) language codes
 

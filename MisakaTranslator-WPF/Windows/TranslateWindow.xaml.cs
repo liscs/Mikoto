@@ -325,7 +325,7 @@ namespace MisakaTranslator
 
             InitTranslateAnimation(FirstTransText);
             InitTranslateAnimation(SecondTransText);
-            
+
             ViewModelInit();
         }
 
