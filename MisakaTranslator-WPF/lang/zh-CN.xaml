@@ -460,6 +460,8 @@
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Volcano">火山翻译</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Amazon">Amazon Translate</sys:String>
     <sys:String x:Key="AwsTransSettingsPage_Introduce">Amazon Translate简介</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_FontStrokeThickness">字体描边宽度</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_FontWeight">字重</sys:String>
 
 
 </ResourceDictionary>

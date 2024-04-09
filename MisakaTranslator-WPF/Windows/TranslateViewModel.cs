@@ -307,10 +307,56 @@ namespace MisakaTranslator
 
         private double firstTextStrokeThickness = 0.7;
 
-        public double FirstTextStrokeThickness { get => firstTextStrokeThickness; set => SetProperty(ref firstTextStrokeThickness, value); }
+        public double FirstTextStrokeThickness
+        {
+            get => firstTextStrokeThickness; 
+            set
+            {
+                Common.AppSettings.TF_FirstTextStrokeThickness = value;
+                SetProperty(ref firstTextStrokeThickness, value);
+            }
+        }
 
         private FontWeight firstTextFontWeight = FontWeights.Bold;
 
         public FontWeight FirstTextFontWeight { get => firstTextFontWeight; set => SetProperty(ref firstTextFontWeight, value); }
+
+        public int FirstTextFontWeightOpenTypeWeight
+        {
+            get => firstTextFontWeight.ToOpenTypeWeight();
+            set
+            {
+                Common.AppSettings.TF_FirstTextFontWeight = value;
+                FirstTextFontWeight = FontWeight.FromOpenTypeWeight(value);
+                SetProperty(ref firstTextFontWeight, FirstTextFontWeight);
+            }
+        }
+
+        private double secondTextStrokeThickness = 0.7;
+
+        public double SecondTextStrokeThickness
+        {
+            get => secondTextStrokeThickness;
+            set
+            {
+                Common.AppSettings.TF_SecondTextStrokeThickness = value;
+                SetProperty(ref secondTextStrokeThickness, value);
+            }
+        }
+
+        private FontWeight secondTextFontWeight = FontWeights.Bold;
+
+        public FontWeight SecondTextFontWeight { get => secondTextFontWeight; set => SetProperty(ref secondTextFontWeight, value); }
+
+        public int SecondTextFontWeightOpenTypeWeight
+        {
+            get => secondTextFontWeight.ToOpenTypeWeight();
+            set
+            {
+                Common.AppSettings.TF_SecondTextFontWeight = value;
+                SecondTextFontWeight = FontWeight.FromOpenTypeWeight(value);
+                SetProperty(ref secondTextFontWeight, SecondTextFontWeight);
+            }
+        }
     }
 }

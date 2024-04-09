@@ -325,7 +325,7 @@ namespace MisakaTranslator
 
             InitTranslateAnimation(FirstTransText);
             InitTranslateAnimation(SecondTransText);
-            
+
             ViewModelInit();
         }
 
@@ -333,6 +333,11 @@ namespace MisakaTranslator
         {
             BrushConverter brushConverter = new();
             ViewModel.SourceTextColor = brushConverter.ConvertFromString(Common.AppSettings.TF_SrcTextColor) as SolidColorBrush ?? Brushes.White;
+
+            ViewModel.FirstTextStrokeThickness = Common.AppSettings.TF_FirstTextStrokeThickness;
+            ViewModel.FirstTextFontWeight = FontWeight.FromOpenTypeWeight(Common.AppSettings.TF_FirstTextFontWeight); 
+            ViewModel.SecondTextStrokeThickness = Common.AppSettings.TF_SecondTextStrokeThickness;
+            ViewModel.SecondTextFontWeight = FontWeight.FromOpenTypeWeight(Common.AppSettings.TF_SecondTextFontWeight);
         }
 
         /// <summary>

@@ -445,6 +445,13 @@ namespace MisakaTranslator
             set;
         }
 
+        [Option(Alias = "TranslateFormSettings.FirstTransFontWeight", DefaultValue = "700")]
+        int TF_FirstTextFontWeight { get; set; }
+
+        [Option(Alias = "TranslateFormSettings.FirstTransStrokeThickness", DefaultValue = "0.7")]
+        double TF_FirstTextStrokeThickness { get; set; }
+
+
         [Option(Alias = "TranslateFormSettings.SecondTransTextFont", DefaultValue = "Microsoft YaHei")]
         string TF_SecondTransTextFont
         {
@@ -465,6 +472,12 @@ namespace MisakaTranslator
             get;
             set;
         }
+
+        [Option(Alias = "TranslateFormSettings.SecondTransFontWeight", DefaultValue = "700")]
+        int TF_SecondTextFontWeight { get; set; }
+
+        [Option(Alias = "TranslateFormSettings.SecondTransStrokeThickness", DefaultValue = "0.7")]
+        double TF_SecondTextStrokeThickness { get; set; }
 
         [Option(Alias = "TranslateFormSettings.FirstWhiteStrokeIsChecked", DefaultValue = false)]
         bool TF_FirstWhiteStrokeIsChecked
