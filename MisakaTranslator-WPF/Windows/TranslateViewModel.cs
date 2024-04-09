@@ -304,5 +304,13 @@ namespace MisakaTranslator
                 SetProperty(ref sourceTextColor, value);
             }
         }
+
+        private double firstTextStrokeThickness = 0.7;
+
+        public double FirstTextStrokeThickness { get => firstTextStrokeThickness; set => SetProperty(ref firstTextStrokeThickness, value); }
+
+        private FontWeight firstTextFontWeight = FontWeights.Bold;
+
+        public FontWeight FirstTextFontWeight { get => firstTextFontWeight; set => SetProperty(ref firstTextFontWeight, value); }
     }
 }

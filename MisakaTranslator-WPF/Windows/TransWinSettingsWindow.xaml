@@ -160,6 +160,15 @@
                                 Margin="10"
                                 Width="200"
                                 Height="25" />
+                        <hc:NumericUpDown Value="{Binding FirstTextStrokeThickness,Mode=TwoWay}"
+                                          Minimum="0"
+                                          Maximum="1"
+                                          hc:InfoElement.Title="字体描边宽度"
+                                          DecimalPlaces="2"
+                                          Increment="0.1"
+                                          Margin="10"
+                                          Style="{DynamicResource NumericUpDownExtend}" />
+
                         <CheckBox Name="firstWhiteStrokeCheckBox"
                                   Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}"
                                   Margin="10" />
