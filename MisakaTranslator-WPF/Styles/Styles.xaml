@@ -148,4 +148,12 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="Border"
+           x:Key="ColorBlockBorder">
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ColorPickerOpacityBrush}" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+    </Style>
 </ResourceDictionary>

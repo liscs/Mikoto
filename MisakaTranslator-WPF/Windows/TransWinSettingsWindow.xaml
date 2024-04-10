@@ -23,9 +23,7 @@
                                 Margin="10,10,10,0"
                                 Height="25"
                                 PreviewMouseDown="ChooseColorBorder_Click"
-                                BorderBrush="{DynamicResource BackgroundBrush}"
-                                BorderThickness="1"
-                                CornerRadius="{DynamicResource DefaultCornerRadius}" />
+                                Style="{DynamicResource ColorBlockBorder}" />
                         <CheckBox Name="DropShadowCheckBox"
                                   Content="{DynamicResource TransWinSettingsWin_DropShadowCbox}"
                                   Margin="10,10,10,0" />
@@ -63,9 +61,7 @@
                                 Margin="10,10,10,0"
                                 Height="25"
                                 PreviewMouseDown="ChooseColorBorder_Click"
-                                BorderBrush="{DynamicResource BorderBrush}"
-                                BorderThickness="1"
-                                CornerRadius="{DynamicResource DefaultCornerRadius}" />
+                                Style="{DynamicResource ColorBlockBorder}" />
 
 
                         <Grid>
@@ -144,9 +140,7 @@
                                 Margin="10,10,10,0"
                                 Height="25"
                                 PreviewMouseDown="ChooseColorBorder_Click"
-                                BorderBrush="{DynamicResource BorderBrush}"
-                                BorderThickness="1"
-                                CornerRadius="{DynamicResource DefaultCornerRadius}" />
+                                Style="{DynamicResource ColorBlockBorder}" />
                         <hc:NumericUpDown Value="{Binding FirstTextStrokeThickness,Mode=TwoWay}"
                                           Minimum="0"
                                           Maximum="1"
@@ -196,9 +190,7 @@
                                 Height="25"
                                 Margin="10,10,10,0"
                                 PreviewMouseDown="ChooseColorBorder_Click"
-                                BorderBrush="{DynamicResource BorderBrush}"
-                                BorderThickness="1"
-                                CornerRadius="{DynamicResource DefaultCornerRadius}" />
+                                Style="{DynamicResource ColorBlockBorder}" />
                         <hc:NumericUpDown Value="{Binding SecondTextStrokeThickness,Mode=TwoWay}"
                                           Minimum="0"
                                           Maximum="1"
