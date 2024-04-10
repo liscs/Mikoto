@@ -8,7 +8,7 @@
         d:DataContext="{d:DesignInstance Type=local:TranslateViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource TransWinSettingsWin_Title}"
-        Height="500"
+        Height="550"
         Width="300"
         MinWidth="300">
     <Grid>
@@ -19,26 +19,26 @@
                     <StackPanel>
                         <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}"
                                    HorizontalAlignment="Center"
-                                   Margin="10"
+                                   Margin="10,10,10,0"
                                    FontSize="15" />
                         <Button Name="BgColorBtn"
                                 Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}"
-                                Margin="10"
+                                Margin="10,10,10,0"
                                 Width="200"
                                 Style="{DynamicResource ButtonPrimary}"
                                 Click="ChooseColorBtn_Click" />
                         <Border Name="BgColorBlock"
-                                Margin="10"
+                                Margin="10,10,10,0"
                                 Width="200"
                                 Height="25" />
                         <CheckBox Name="DropShadowCheckBox"
                                   Content="{DynamicResource TransWinSettingsWin_DropShadowCbox}"
-                                  Margin="10" />
+                                  Margin="10,10,10,0" />
                         <CheckBox Name="ZenModeCheckBox"
                                   Content="{DynamicResource TransWinSettingsWin_ZenMode}"
-                                  Margin="10" />
+                                  Margin="10,10,10,0" />
                         <CheckBox Content="{DynamicResource TransWinSettingsWindow_EnableBackgroundBlur}"
-                                  Margin="10"
+                                  Margin="10,10,10,0"
                                   IsChecked="{Binding BackgroundBlurCheckEnabled,Mode=TwoWay}" />
                     </StackPanel>
                 </ScrollViewer>
@@ -54,25 +54,25 @@
                                      hc:InfoElement.TitleWidth="140"
                                      hc:InfoElement.TitlePlacement="Top"
                                      hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}"
-                                     Margin="10" />
+                                     Margin="10,10,10,0" />
 
                         <hc:NumericUpDown Value="{Binding SourceTextFontSize,Mode=TwoWay}"
                                           Minimum="8"
                                           hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}"
-                                          Margin="10"
+                                          Margin="10,10,10,0"
                                           Style="{DynamicResource NumericUpDownExtend}" />
 
                         <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}"
                                    HorizontalAlignment="Center"
-                                   Margin="15" />
+                                   Margin="10,10,10,0" />
                         <Button Name="sourceColorBtn"
                                 Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}"
-                                Margin="0"
+                                Margin="10,10,10,0"
                                 Width="200"
                                 Style="{DynamicResource ButtonPrimary}"
                                 Click="ChooseColorBtn_Click" />
                         <Border Name="sourceColorBlock"
-                                Margin="10"
+                                Margin="10,10,10,0"
                                 Width="200"
                                 Height="25" />
 
@@ -108,22 +108,22 @@
                         </Grid>
                         <CheckBox Name="KanaBoldCheckBox"
                                   Content="{DynamicResource TransWinSettingsWin_KanaBoldCbox}"
-                                  Margin="10"
+                                  Margin="10,10,10,0"
                                   HorizontalAlignment="Left" />
                         <CheckBox Name="ColorfulCheckBox"
                                   Content="{DynamicResource TransWinSettingsWin_ColorfulCbox}"
-                                  Margin="10" />
+                                  Margin="10,10,10,0" />
 
 
                         <CheckBox IsChecked="{Binding SrcAnimationCheckEnabled,Mode=TwoWay}"
                                   Content="{DynamicResource TransWinSettingsWindow_EnableFadeAnimation}"
-                                  Margin="10" />
+                                  Margin="10,10,10,0" />
                         <CheckBox IsChecked="{Binding SrcSingleLineEnabled,Mode=TwoWay}"
                                   Content="单行显示"
-                                  Margin="10" />
+                                  Margin="10,10,10,0" />
                         <TextBlock TextWrapping="Wrap"
                                    Text="{DynamicResource TransWinSettingsWin_srcSetNotice}"
-                                   Margin="10" />
+                                   Margin="10,10,10,0" />
 
                     </StackPanel>
                 </ScrollViewer>
@@ -139,25 +139,25 @@
                                      hc:InfoElement.TitleWidth="140"
                                      hc:InfoElement.TitlePlacement="Top"
                                      hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}"
-                                     Margin="10" />
+                                     Margin="10,10,10,0" />
 
                         <hc:NumericUpDown Value="{Binding FirstTextFontSize,Mode=TwoWay}"
                                           Minimum="8"
                                           hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}"
-                                          Margin="10"
+                                          Margin="10,10,10,0"
                                           Style="{DynamicResource NumericUpDownExtend}" />
 
                         <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}"
                                    HorizontalAlignment="Center"
-                                   Margin="15" />
+                                   Margin="10,10,10,0" />
                         <Button Name="firstColorBtn"
                                 Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}"
-                                Margin="0"
+                                Margin="10,10,10,0"
                                 Width="200"
                                 Style="{DynamicResource ButtonPrimary}"
                                 Click="ChooseColorBtn_Click" />
                         <Border Name="firstColorBlock"
-                                Margin="10"
+                                Margin="10,10,10,0"
                                 Width="200"
                                 Height="25" />
                         <hc:NumericUpDown Value="{Binding FirstTextStrokeThickness,Mode=TwoWay}"
@@ -166,21 +166,21 @@
                                           hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontStrokeThickness}"
                                           DecimalPlaces="2"
                                           Increment="0.1"
-                                          Margin="10"
+                                          Margin="10,10,10,0"
                                           Style="{DynamicResource NumericUpDownExtend}" />
                         <hc:NumericUpDown Value="{Binding FirstTextFontWeightOpenTypeWeight,Mode=TwoWay}"
                                           Minimum="1"
                                           Maximum="999"
                                           hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontWeight}"
                                           Increment="100"
-                                          Margin="10"
+                                          Margin="10,10,10,0"
                                           Style="{DynamicResource NumericUpDownExtend}" />
                         <CheckBox Name="firstWhiteStrokeCheckBox"
                                   Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}"
-                                  Margin="10" />
+                                  Margin="10,10,10,0" />
                         <CheckBox IsChecked="{Binding TransAnimationCheckEnabled,Mode=TwoWay}"
                                   Content="{DynamicResource TransWinSettingsWindow_EnableFadeAnimation}"
-                                  Margin="10" />
+                                  Margin="10,10,10,0" />
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
@@ -195,25 +195,25 @@
                                      hc:InfoElement.TitleWidth="140"
                                      hc:InfoElement.TitlePlacement="Top"
                                      hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}"
-                                     Margin="10" />
+                                     Margin="10,10,10,0" />
 
                         <hc:NumericUpDown Value="{Binding SecondTextFontSize,Mode=TwoWay}"
                                           Minimum="8"
                                           hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}"
-                                          Margin="10"
+                                          Margin="10,10,10,0"
                                           Style="{DynamicResource NumericUpDownExtend}" />
 
                         <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}"
                                    HorizontalAlignment="Center"
-                                   Margin="15" />
+                                   Margin="10,10,10,0" />
                         <Button Name="secondColorBtn"
                                 Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}"
-                                Margin="0"
+                                Margin="10,10,10,0"
                                 Width="200"
                                 Style="{DynamicResource ButtonPrimary}"
                                 Click="ChooseColorBtn_Click" />
                         <Border Name="secondColorBlock"
-                                Margin="10"
+                                Margin="10,10,10,0"
                                 Width="200"
                                 Height="25" />
                         <hc:NumericUpDown Value="{Binding SecondTextStrokeThickness,Mode=TwoWay}"
@@ -222,18 +222,18 @@
                                           hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontStrokeThickness}"
                                           DecimalPlaces="2"
                                           Increment="0.1"
-                                          Margin="10"
+                                          Margin="10,10,10,0"
                                           Style="{DynamicResource NumericUpDownExtend}" />
                         <hc:NumericUpDown Value="{Binding SecondTextFontWeightOpenTypeWeight,Mode=TwoWay}"
                                           Minimum="1"
                                           Maximum="999"
                                           hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontWeight}"
                                           Increment="100"
-                                          Margin="10"
+                                          Margin="10,10,10,0"
                                           Style="{DynamicResource NumericUpDownExtend}" />
                         <CheckBox Name="secondWhiteStrokeCheckBox"
                                   Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}"
-                                  Margin="10" />
+                                  Margin="10,10,10,0" />
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
