@@ -180,24 +180,24 @@ namespace MisakaTranslator
             ColorfulCheckBox.IsChecked = Common.AppSettings.TF_EnableColorful;
         }
 
-        private void ChooseColorBtn_Click(object sender, RoutedEventArgs e)
+        private void ChooseColorBorder_Click(object sender, RoutedEventArgs e)
         {
             var picker = HandyControl.Tools.SingleOpenHelper.CreateControl<HandyControl.Controls.ColorPicker>();
             BrushConverter brushConverter = new();
 
-            if (sender == BgColorBtn)
+            if (sender == BgColorBlock)
             {
                 picker.SelectedBrush = brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor) as SolidColorBrush ?? Brushes.Black;
             }
-            else if (sender == firstColorBtn)
+            else if (sender == firstColorBlock)
             {
                 picker.SelectedBrush = brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor) as SolidColorBrush ?? Brushes.White;
             }
-            else if (sender == secondColorBtn)
+            else if (sender == secondColorBlock)
             {
                 picker.SelectedBrush = brushConverter.ConvertFromString(Common.AppSettings.TF_SecondTransTextColor) as SolidColorBrush ?? Brushes.White;
             }
-            else if (sender == sourceColorBtn)
+            else if (sender == sourceColorBlock)
             {
                 picker.SelectedBrush = _viewModel.SourceTextColor;
             }
@@ -216,26 +216,27 @@ namespace MisakaTranslator
             };
             picker.Confirmed += delegate
             {
-                if (sender == BgColorBtn)
+                if (sender is Border border)
+                {
+                    border.Background = picker.SelectedBrush;
+                }
+                if (sender == BgColorBlock)
                 {
                     _translateWin.LockButton.IsChecked = true;
-                    BgColorBlock.Background = picker.SelectedBrush;
                     _translateWin.Background = picker.SelectedBrush;
                     Common.AppSettings.TF_BackColor = picker.SelectedBrush.ToString();
                 }
-                else if (sender == firstColorBtn)
+                else if (sender == firstColorBlock)
                 {
-                    firstColorBlock.Background = picker.SelectedBrush;
                     _translateWin.FirstTransText.Fill = picker.SelectedBrush;
                     Common.AppSettings.TF_FirstTransTextColor = picker.SelectedBrush.ToString();
                 }
-                else if (sender == secondColorBtn)
+                else if (sender == secondColorBlock)
                 {
-                    secondColorBlock.Background = picker.SelectedBrush;
                     _translateWin.SecondTransText.Fill = picker.SelectedBrush;
                     Common.AppSettings.TF_SecondTransTextColor = picker.SelectedBrush.ToString();
                 }
-                else if (sender == sourceColorBtn)
+                else if (sender == sourceColorBlock)
                 {
                     _viewModel.SourceTextColor = picker.SelectedBrush;
                     sourceColorBlock.Background = picker.SelectedBrush;

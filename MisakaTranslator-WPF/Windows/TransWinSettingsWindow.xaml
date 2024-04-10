@@ -18,19 +18,14 @@
                 <ScrollViewer>
                     <StackPanel>
                         <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}"
-                                   HorizontalAlignment="Center"
-                                   Margin="10,10,10,0"
-                                   FontSize="15" />
-                        <Button Name="BgColorBtn"
-                                Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}"
-                                Margin="10,10,10,0"
-                                Width="200"
-                                Style="{DynamicResource ButtonPrimary}"
-                                Click="ChooseColorBtn_Click" />
+                                   Margin="10,10,10,0" />
                         <Border Name="BgColorBlock"
                                 Margin="10,10,10,0"
-                                Width="200"
-                                Height="25" />
+                                Height="25"
+                                PreviewMouseDown="ChooseColorBorder_Click"
+                                BorderBrush="{DynamicResource BackgroundBrush}"
+                                BorderThickness="1"
+                                CornerRadius="{DynamicResource DefaultCornerRadius}" />
                         <CheckBox Name="DropShadowCheckBox"
                                   Content="{DynamicResource TransWinSettingsWin_DropShadowCbox}"
                                   Margin="10,10,10,0" />
@@ -62,19 +57,15 @@
                                           Margin="10,10,10,0"
                                           Style="{DynamicResource NumericUpDownExtend}" />
 
-                        <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}"
-                                   HorizontalAlignment="Center"
+                        <TextBlock Text="{DynamicResource TransWinSettingsWin_FontColor}"
                                    Margin="10,10,10,0" />
-                        <Button Name="sourceColorBtn"
-                                Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}"
-                                Margin="10,10,10,0"
-                                Width="200"
-                                Style="{DynamicResource ButtonPrimary}"
-                                Click="ChooseColorBtn_Click" />
                         <Border Name="sourceColorBlock"
                                 Margin="10,10,10,0"
-                                Width="200"
-                                Height="25" />
+                                Height="25"
+                                PreviewMouseDown="ChooseColorBorder_Click"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="{DynamicResource DefaultCornerRadius}" />
 
 
                         <Grid>
@@ -147,19 +138,15 @@
                                           Margin="10,10,10,0"
                                           Style="{DynamicResource NumericUpDownExtend}" />
 
-                        <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}"
-                                   HorizontalAlignment="Center"
+                        <TextBlock Text="{DynamicResource TransWinSettingsWin_FontColor}"
                                    Margin="10,10,10,0" />
-                        <Button Name="firstColorBtn"
-                                Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}"
-                                Margin="10,10,10,0"
-                                Width="200"
-                                Style="{DynamicResource ButtonPrimary}"
-                                Click="ChooseColorBtn_Click" />
                         <Border Name="firstColorBlock"
                                 Margin="10,10,10,0"
-                                Width="200"
-                                Height="25" />
+                                Height="25"
+                                PreviewMouseDown="ChooseColorBorder_Click"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="{DynamicResource DefaultCornerRadius}" />
                         <hc:NumericUpDown Value="{Binding FirstTextStrokeThickness,Mode=TwoWay}"
                                           Minimum="0"
                                           Maximum="1"
@@ -203,19 +190,15 @@
                                           Margin="10,10,10,0"
                                           Style="{DynamicResource NumericUpDownExtend}" />
 
-                        <TextBlock Text="{DynamicResource TransWinSettingsWin_BgColor}"
-                                   HorizontalAlignment="Center"
+                        <TextBlock Text="{DynamicResource TransWinSettingsWin_FontColor}"
                                    Margin="10,10,10,0" />
-                        <Button Name="secondColorBtn"
-                                Content="{DynamicResource TransWinSettingsWin_BtnChooseColor}"
-                                Margin="10,10,10,0"
-                                Width="200"
-                                Style="{DynamicResource ButtonPrimary}"
-                                Click="ChooseColorBtn_Click" />
                         <Border Name="secondColorBlock"
+                                Height="25"
                                 Margin="10,10,10,0"
-                                Width="200"
-                                Height="25" />
+                                PreviewMouseDown="ChooseColorBorder_Click"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="{DynamicResource DefaultCornerRadius}" />
                         <hc:NumericUpDown Value="{Binding SecondTextStrokeThickness,Mode=TwoWay}"
                                           Minimum="0"
                                           Maximum="1"

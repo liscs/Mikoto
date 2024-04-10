@@ -335,7 +335,7 @@ namespace MisakaTranslator
             ViewModel.SourceTextColor = brushConverter.ConvertFromString(Common.AppSettings.TF_SrcTextColor) as SolidColorBrush ?? Brushes.White;
 
             ViewModel.FirstTextStrokeThickness = Common.AppSettings.TF_FirstTextStrokeThickness;
-            ViewModel.FirstTextFontWeight = FontWeight.FromOpenTypeWeight(Common.AppSettings.TF_FirstTextFontWeight); 
+            ViewModel.FirstTextFontWeight = FontWeight.FromOpenTypeWeight(Common.AppSettings.TF_FirstTextFontWeight);
             ViewModel.SecondTextStrokeThickness = Common.AppSettings.TF_SecondTextStrokeThickness;
             ViewModel.SecondTextFontWeight = FontWeight.FromOpenTypeWeight(Common.AppSettings.TF_SecondTextFontWeight);
         }
@@ -516,11 +516,19 @@ namespace MisakaTranslator
                     && _mecabHelper.EnableMecab
                     && (Common.AppSettings.TF_EnablePhoneticNotation || Common.AppSettings.TF_EnableColorful))
                 {
-                    var mwi = _mecabHelper.SentenceHandle(repairedText);
-                    Application.Current.Dispatcher.BeginInvoke(() =>
+                    try
+                    {
+                        var mwi = _mecabHelper.SentenceHandle(repairedText);
+                        Application.Current.Dispatcher.BeginInvoke(() =>
                     {
                         UpdateSourceRichBoxes(mwi);
                     });
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        //说明翻译窗口已经关闭，mecab资源已Dispose
+                    }
+
                 }
                 else
                 {
