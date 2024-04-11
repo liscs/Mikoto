@@ -16,7 +16,8 @@
         Background="{DynamicResource PrimaryBackground}"
         WindowStartupLocation="CenterScreen"
         Closing="BlurWindow_Closing"
-        ContentRendered="BlurWindow_ContentRendered">
+        ContentRendered="BlurWindow_ContentRendered"
+        IsVisibleChanged="Window_IsVisibleChanged">
 
     <Grid Margin="5">
         <Grid.RowDefinitions>

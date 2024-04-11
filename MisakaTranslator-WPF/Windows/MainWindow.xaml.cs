@@ -1,6 +1,7 @@
 using Config.Net;
 using DataAccessLibrary;
 using HandyControl.Controls;
+using HandyControl.Tools.Extension;
 using MisakaTranslator.Helpers;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -332,7 +333,12 @@ namespace MisakaTranslator
             {
                 MessageBox.Show(Application.Current.Resources["MainWindow_AutoCustomHookError"].ToString(), Application.Current.Resources["MessageBox_Error"].ToString());
             }
+            NotifyIconContextContent.Collapse();
+            OpenTranslateWindow();
+        }
 
+        private void OpenTranslateWindow()
+        {
             try
             {
                 new TranslateWindow().Show();
@@ -340,7 +346,6 @@ namespace MisakaTranslator
             catch (Exception ex) when (ex is InvalidOperationException or ArgumentException)
             {
                 MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
-                return;
             }
             catch (Win32Exception)
             {
@@ -349,7 +354,6 @@ namespace MisakaTranslator
                 {
                     RestartAsAdmin();
                 }
-                return;
             }
         }
 
@@ -589,6 +593,14 @@ namespace MisakaTranslator
             if (messageBoxResult == MessageBoxResult.Yes)
             {
                 RestartAsAdmin();
+            }
+        }
+
+        private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is bool newValue && newValue == true)
+            {
+                NotifyIconContextContent.Show();
             }
         }
     }
