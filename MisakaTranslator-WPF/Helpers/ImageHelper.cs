@@ -84,6 +84,11 @@ namespace MisakaTranslator.Helpers
                 }
             }
             IOrderedEnumerable<KeyValuePair<int, int>> sortedDict = from entry in dict orderby entry.Value descending select entry;
+            if (!sortedDict.Any())
+            {
+                //纯黑白图标
+                return new SolidColorBrush(Color.FromRgb(51, 51, 51));
+            }
             var majorColors = sortedDict.ElementAt(0).Key;
 
 
