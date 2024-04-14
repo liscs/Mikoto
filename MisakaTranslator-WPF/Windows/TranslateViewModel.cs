@@ -309,7 +309,7 @@ namespace MisakaTranslator
 
         public double FirstTextStrokeThickness
         {
-            get => firstTextStrokeThickness; 
+            get => firstTextStrokeThickness;
             set
             {
                 Common.AppSettings.TF_FirstTextStrokeThickness = value;

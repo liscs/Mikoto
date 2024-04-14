@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using System.Web;
+using System.Text.Json.Nodes;
 using TranslatorLibrary.lang;
 
 namespace TranslatorLibrary.Translator
@@ -20,60 +20,106 @@ namespace TranslatorLibrary.Translator
             return errorInfo;
         }
 
-        public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
+        public static string SHA256Hex(string s)
         {
-            if (sourceText == "" || desLang == "" || srcLang == "")
+            byte[] hashbytes = SHA256.HashData(Encoding.UTF8.GetBytes(s));
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < hashbytes.Length; ++i)
+            {
+                builder.Append(hashbytes[i].ToString("x2"));
+            }
+            return builder.ToString();
+        }
+
+        public static byte[] HmacSHA256(byte[] key, byte[] msg)
+        {
+            using HMACSHA256 mac = new(key);
+            return mac.ComputeHash(msg);
+        }
+
+        public static Dictionary<string, string> BuildHeaders(string secretid, string secretkey, string service,
+                                                              string endpoint, string region, string action,
+                                                              string version, DateTime date, string requestPayload)
+        {
+            string datestr = date.ToString("yyyy-MM-dd");
+            long requestTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            // ************* 步骤 1：拼接规范请求串 *************
+            string algorithm = "TC3-HMAC-SHA256";
+            string httpRequestMethod = "POST";
+            string canonicalUri = "/";
+            string canonicalQueryString = "";
+            string contentType = "application/json";
+            string canonicalHeaders = $"content-type:{contentType}; charset=utf-8\nhost:{endpoint}\nx-tc-action:{action.ToLower()}\n";
+            string signedHeaders = "content-type;host;x-tc-action";
+            string hashedRequestPayload = SHA256Hex(requestPayload);
+            string canonicalRequest = $"{httpRequestMethod}\n{canonicalUri}\n{canonicalQueryString}\n{canonicalHeaders}\n{signedHeaders}\n{hashedRequestPayload}";
+
+            // ************* 步骤 2：拼接待签名字符串 *************
+            string credentialScope = $"{datestr}/{service}/tc3_request";
+            string hashedCanonicalRequest = SHA256Hex(canonicalRequest);
+            string stringToSign = $"{algorithm}\n{requestTimestamp}\n{credentialScope}\n{hashedCanonicalRequest}";
+
+            // ************* 步骤 3：计算签名 *************
+            byte[] tc3SecretKey = Encoding.UTF8.GetBytes("TC3" + secretkey);
+            byte[] secretDate = HmacSHA256(tc3SecretKey, Encoding.UTF8.GetBytes(datestr));
+            byte[] secretService = HmacSHA256(secretDate, Encoding.UTF8.GetBytes(service));
+            byte[] secretSigning = HmacSHA256(secretService, Encoding.UTF8.GetBytes("tc3_request"));
+            byte[] signatureBytes = HmacSHA256(secretSigning, Encoding.UTF8.GetBytes(stringToSign));
+            string signature = BitConverter.ToString(signatureBytes).Replace("-", "").ToLower();
+
+            // ************* 步骤 4：拼接 Authorization *************
+            string authorization = $"{algorithm} Credential={secretid}/{credentialScope}, SignedHeaders={signedHeaders}, Signature={signature}";
+
+            Dictionary<string, string> headers = new Dictionary<string, string>
+            {
+                { "Authorization", authorization },
+                { "Host", endpoint },
+                { "Content-Type", $"{contentType}; charset=utf-8" },
+                { "X-TC-Timestamp", requestTimestamp.ToString() },
+                { "X-TC-Version", version },
+                { "X-TC-Action", action },
+                { "X-TC-Region", region }
+            };
+            return headers;
+        }
+
+        private const string SERVICE = "tmt";
+        private const string ENDPOINT = "tmt.tencentcloudapi.com";
+        private const string REGION = "ap-shanghai";
+        private const string ACTION = "TextTranslate";
+        private const string VERSION = "2018-03-21";
+
+        public async Task<string?> TranslateAsync(string text, string dstLang, string srcLang)
+        {
+            string?[] paramStrs = [text, dstLang, srcLang, SecretId, SecretKey];
+            if (paramStrs.Any(string.IsNullOrEmpty))
             {
                 errorInfo = "Param Missing";
                 return null;
             }
 
-            string salt = TranslatorCommon.RD.Next(100000).ToString();
-            string ts = TranslatorCommon.GetTimeStamp().ToString();
+            DateTime date = DateTime.UtcNow;
+            string requestPayload = $"{{\"SourceText\": \"{text}\",\"Source\": \"{srcLang}\",\"Target\": \"{dstLang}\",\"ProjectId\": 0}}";
 
-            string url = "https://tmt.tencentcloudapi.com/?";
+            Dictionary<string, string> headers = BuildHeaders(SecretId!, SecretKey!, SERVICE, ENDPOINT, REGION, ACTION,
+                                                              VERSION, date, requestPayload);
 
-            // 签名，参数使用未URL编码的值
-            var sb = new StringBuilder()
-                .Append("Action=TextTranslate")
-                .Append("&Nonce=").Append(salt)
-                .Append("&ProjectId=0")
-                .Append("&Region=ap-shanghai")
-                .Append("&SecretId=").Append(SecretId)
-                .Append("&Source=").Append(srcLang)
-                .Append("&SourceText=").Append(sourceText)
-                .Append("&Target=").Append(desLang)
-                .Append("&Timestamp=").Append(ts)
-                .Append("&Version=2018-03-21");
-            string req = sb.ToString();
+            HttpClient httpClient = new();
+            HttpRequestMessage httpRequestMessage = new();
+            httpRequestMessage.RequestUri = new Uri($"https://{ENDPOINT}");
+            httpRequestMessage.Method = HttpMethod.Post;
+            foreach (KeyValuePair<string, string> kv in headers)
+            {
+                httpRequestMessage.Headers.TryAddWithoutValidation(kv.Key, kv.Value);
+            }
+            httpRequestMessage.Content = new StringContent(requestPayload, Encoding.UTF8, "application/json");
 
-            HMACSHA1 hmac = new HMACSHA1(Encoding.UTF8.GetBytes(SecretKey!));
-            byte[] data = Encoding.UTF8.GetBytes("GETtmt.tencentcloudapi.com/?" + req);
-            var result = hmac.ComputeHash(data);
-            hmac.Dispose();
-
-            // 请求参数，参数使用URL编码后的值
-            sb = new StringBuilder()
-                .Append("Action=TextTranslate")
-                .Append("&Nonce=").Append(salt)
-                .Append("&ProjectId=0")
-                .Append("&Region=ap-shanghai")
-                .Append("&SecretId=").Append(SecretId)
-                .Append("&Source=").Append(srcLang)
-                .Append("&SourceText=").Append(HttpUtility.UrlEncode(sourceText))
-                .Append("&Target=").Append(desLang)
-                .Append("&Timestamp=").Append(ts)
-                .Append("&Version=2018-03-21")
-                .Append("&Signature=").Append(HttpUtility.UrlEncode(Convert.ToBase64String(result)));
-            req = sb.ToString();
-
-            string retString;
-            var hc = TranslatorCommon.GetHttpClient();
+            HttpResponseMessage httpResponseMessage;
             try
             {
-                retString = await hc.GetStringAsync(url + req);
+                httpResponseMessage = await httpClient.SendAsync(httpRequestMessage);
             }
-            catch (System.Net.Http.HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 errorInfo = ex.Message;
                 return null;
@@ -84,20 +130,32 @@ namespace TranslatorLibrary.Translator
                 return null;
             }
 
-            TencentOldTransOutInfo oinfo = JsonSerializer.Deserialize<TencentOldTransOutInfo>(retString, TranslatorCommon.JsonOP);
-
-            if (oinfo.Response.Error == null)
+            string responseJson = await httpResponseMessage.Content.ReadAsStringAsync();
+            try
             {
-                //得到翻译结果
-                return oinfo.Response.TargetText;
+                JsonNode? jsonNode = JsonSerializer.Deserialize<JsonNode>(responseJson);
+                string? result = jsonNode?["Response"]?["TargetText"]?.GetValue<string>();
+                if (result == null)
+                {
+                    errorInfo = "Code: "
+                        + jsonNode!["Response"]!["Error"]!["Code"]!.GetValue<string>()
+                        + Environment.NewLine
+                        + "ErrorMessage: "
+                        + jsonNode["Response"]!["Error"]!["Message"]!.GetValue<string>();
+                    return null;
+                }
+                else
+                {
+                    return result;
+                }
             }
-            else
+            catch (JsonException ex)
             {
-                errorInfo = "ErrorID:" + oinfo.Response.Error.Value.Code + " ErrorInfo:" + oinfo.Response.Error.Value.Message;
+                errorInfo = ex.Message;
                 return null;
             }
-
         }
+
 
         public static ITranslator TranslatorInit(params string[] param)
         {
@@ -136,27 +194,6 @@ namespace TranslatorLibrary.Translator
         {
             return "https://cloud.tencent.com/document/api/551/15619";
         }
-    }
-
-#pragma warning disable 0649
-    internal struct TencentOldTransOutInfo
-    {
-        public TencentOldTransResult Response;
-    }
-
-    internal struct TencentOldTransResult
-    {
-        public string RequestId;
-        public string TargetText;
-        public string Source;
-        public string Target;
-        public TencentOldTransOutError? Error;
-    }
-
-    internal struct TencentOldTransOutError
-    {
-        public string Code;
-        public string Message;
     }
 
 }
