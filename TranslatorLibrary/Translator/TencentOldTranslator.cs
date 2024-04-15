@@ -99,7 +99,14 @@ namespace TranslatorLibrary.Translator
             }
 
             DateTime date = DateTime.UtcNow;
-            string requestPayload = $"{{\"SourceText\": \"{text}\",\"Source\": \"{srcLang}\",\"Target\": \"{dstLang}\",\"ProjectId\": 0}}";
+            string requestPayload = JsonSerializer.Serialize(new
+            {
+                SourceText = text,
+                Source = srcLang,
+                Target = dstLang,
+                ProjectId = 0
+
+            });
 
             Dictionary<string, string> headers = BuildHeaders(SecretId!, SecretKey!, SERVICE, ENDPOINT, REGION, ACTION,
                                                               VERSION, date, requestPayload);
