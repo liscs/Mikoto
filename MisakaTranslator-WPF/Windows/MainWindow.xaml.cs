@@ -35,9 +35,12 @@ namespace MisakaTranslator
             DataContext = _viewModel;
             Instance = this;
             Common.AppSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\data\\settings\\settings.ini").Build();
+            Common.RepairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Environment.CurrentDirectory + "\\data\\settings\\RepairSettings.ini").Build();
+
             InitializeLanguage();
             TranslatorCommon.Refresh();
             InitializeComponent();
+
             Refresh();
             GrowlDisableSwitch();
 
@@ -47,6 +50,9 @@ namespace MisakaTranslator
             {
                 RestartAsAdminBtn.Visibility = Visibility.Collapsed;
             }
+
+
+            SetRandomBlurredBackground();
         }
 
         private static void InitializeLanguage()
@@ -67,8 +73,17 @@ namespace MisakaTranslator
         public void Refresh()
         {
             GameInfoList = GameHelper.GetAllCompletedGames();
-            Common.RepairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Environment.CurrentDirectory + "\\data\\settings\\RepairSettings.ini").Build();
             InitGameLibraryPanel();
+        }
+
+        private void SetRandomBlurredBackground()
+        {
+            if (GameInfoList.Count > 0)
+            {
+                int randomId = new Random().Next(GameInfoList.Count);
+                Image ico = ImageHelper.GetGameIcon(GameInfoList[randomId].FilePath);
+                Background = ImageHelper.GetBlurBrush(ico.Source as BitmapSource);
+            }
         }
 
         /// <summary>

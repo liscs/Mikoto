@@ -23,10 +23,12 @@ namespace MisakaTranslator.Helpers
 
     public static class ImageHelper
     {
-        public static PixelColor[,] GetPixels(BitmapSource source)
+        private static PixelColor[,] GetPixels(BitmapSource? source)
         {
-            if (source.Format != PixelFormats.Bgra32)
+            if (source == null || source.Format != PixelFormats.Bgra32)
+            {
                 source = new FormatConvertedBitmap(source, PixelFormats.Bgra32, null, 0);
+            }
 
             int width = source.PixelWidth;
             int height = source.PixelHeight;
@@ -62,6 +64,7 @@ namespace MisakaTranslator.Helpers
             return ico;
         }
 
+
         public static Brush GetMajorBrush(BitmapSource? bitmapSource, Theme theme = Theme.Light)
         {
             if (bitmapSource == null)
@@ -75,9 +78,15 @@ namespace MisakaTranslator.Helpers
             {
                 int hue = (int)System.Drawing.Color.FromArgb(pixelColor.Alpha, pixelColor.Red, pixelColor.Green, pixelColor.Blue).GetHue();
                 //跳过透明
-                if (hue == 0) continue;
+                if (hue == 0)
+                {
+                    continue;
+                }
+
                 if (dict.TryGetValue(hue, out _))
+                {
                     dict[hue]++;
+                }
                 else
                 {
                     dict.Add(hue, 1);
@@ -114,7 +123,7 @@ namespace MisakaTranslator.Helpers
 
         }
 
-        public static Color ColorFromHSV(double hue, double saturation, double value)
+        private static Color ColorFromHSV(double hue, double saturation, double value)
         {
             int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
             double f = hue / 60 - Math.Floor(hue / 60);
@@ -136,20 +145,117 @@ namespace MisakaTranslator.Helpers
             };
         }
 
-    }
+        public static Brush GetBlurBrush(BitmapSource? bitmapSource)
+        {
+            PixelColor[,] pixels = GetPixels(bitmapSource);
+            pixels = Normalize(pixels);
+            pixels = CropRorate(pixels);
+            var colors = pixels.Cast<PixelColor>().ToArray();
+            GaussianBlur gaussianBlur = new(colors);
+            return new ImageBrush(ImageProcFunc.ImageToBitmapImage(gaussianBlur.Process(5)));
 
-    //Since BitmapSource.CopyPixels doesn't accept a two-dimensional array it is
-    //necessary to convert the array between one-dimensional and two-dimensional.
-    public static class BitmapSourceExtension
-    {
+        }
+
+        private static PixelColor[,] Normalize(PixelColor[,] origin)
+        {
+            const int NORMAL_WIDTH = 32;
+            int width = origin.GetLength(0);
+            double scale = NORMAL_WIDTH / (double)width;
+            PixelColor[,] result = new PixelColor[NORMAL_WIDTH, NORMAL_WIDTH];
+
+            Parallel.For(0, NORMAL_WIDTH, i =>
+            {
+                for (int j = 0; j < NORMAL_WIDTH; j++)
+                {
+                    result[i, j] = origin[(int)(i / scale), (int)(j / scale)];
+                }
+            });
+            return result;
+        }
+
+        public static double Next(this Random random, double minimum, double maximum)
+        {
+            return random.NextDouble() * (maximum - minimum) + minimum;
+        }
+
+        private static PixelColor[,] CropRorate(PixelColor[,] pixels)
+        {
+            int width = pixels.GetLength(0);
+            Random random = new Random();
+            double angle = random.Next(-Math.PI / 2, Math.PI / 2);
+
+            PixelColor[,] crop1 = Rorate(pixels, width, angle);
+            angle = random.Next(-Math.PI / 2, Math.PI / 2);
+            PixelColor[,] crop2 = Rorate(pixels, width, angle);
+
+            PixelColor[,] merge1 = Merge(pixels, width, crop1, crop2);
+            angle = random.Next(-Math.PI / 2, Math.PI / 2);
+            PixelColor[,] merge2 = Rorate(merge1, width, angle);
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < width / 2; j++)
+                {
+                    (merge2[i, j], merge2[i, width - j - 1]) = (merge2[i, width - j - 1], merge2[i, j]);
+                }
+            }
+
+
+            PixelColor[,] result = Merge(pixels, width, merge1, merge2);
+            return result;
+
+        }
+
+        private static PixelColor[,] Merge(PixelColor[,] baseImage, int width, params object[] images)
+        {
+            PixelColor[,] result = (PixelColor[,])baseImage.Clone();
+            Parallel.ForEach(images, image =>
+            {
+                for (int i = 0; i < width; i++)
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        if (((PixelColor[,])image)[i, j].ColorBGRA != 0 && ((PixelColor[,])image)[i, j].ColorBGRA != 0xFFFFFFFF)
+                        {
+                            result[i, j] = ((PixelColor[,])image)[i, j];
+                        }
+                    }
+                }
+            });
+            return result;
+        }
+
+        private static PixelColor[,] Rorate(PixelColor[,] pixels, int width, double angle)
+        {
+            PixelColor[,] crop = new PixelColor[width, width];
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    var x = (int)(i * Math.Cos(angle) - j * Math.Sin(angle));
+                    var y = (int)(j * Math.Cos(angle) + i * Math.Sin(angle));
+                    if (x > 0 && y > 0 && x < width && y < width)
+                    {
+                        crop[i, j] = pixels[x, y];
+                    }
+                }
+            }
+            return crop;
+        }
+
+        //Since BitmapSource.CopyPixels doesn't accept a two-dimensional array it is
+        //necessary to convert the array between one-dimensional and two-dimensional.
         public static unsafe void CopyPixelColors(this BitmapSource source, PixelColor[,] pixels, int stride, int offset)
         {
             fixed (PixelColor* buffer = &pixels[0, 0])
+            {
                 source.CopyPixels(
                   new Int32Rect(0, 0, source.PixelWidth, source.PixelHeight),
                   (IntPtr)(buffer + offset),
                   pixels.GetLength(0) * pixels.GetLength(1) * sizeof(PixelColor),
                   stride);
+            }
         }
     }
+
+
 }
