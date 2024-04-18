@@ -7,6 +7,7 @@ MisakaTranslator Mikoto Version 是一款基于 MisakaTranslator 的互动文字
 * 默认使用黑色文字描边，以利于视力健康。
 * 使用json文件而非数据库管理游戏相关数据，以便于修改游戏信息。
 * 加入了Azure翻译以及TTS（文本转语音）支持。
+* 加入了火山翻译、Amazon Translate支持。
 * 添加了更多的设置选项。
 
 ## 游戏信息配置文件示例
@@ -22,8 +23,8 @@ MisakaTranslator Mikoto Version 是一款基于 MisakaTranslator 的互动文字
   "RepairFunc": "RepairFun_NoDeal",//文本预处理选项
   "RepairParamA": null,//文本预处理选项参数
   "RepairParamB": null,//文本预处理选项参数
-  "HookCode": "HS65001#-3C@192A60",//Textractor特殊吗
-  "HookCodeCustom": "HS65001#-3C@192A60:AikotobaSSS.exe",//Textractor特殊吗
+  "HookCode": "HS65001#-3C@192A60",//Textractor特殊码
+  "HookCodeCustom": "HS65001#-3C@192A60:AikotobaSSS.exe",//Textractor特殊码
   "Isx64": true,//64位游戏标记
   "MisakaHookCode": "【140192A60:1400CC555:0】"
 }
