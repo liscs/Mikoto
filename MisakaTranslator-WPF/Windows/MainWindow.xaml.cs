@@ -15,7 +15,6 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TextHookLibrary;
-using TextRepairLibrary;
 using TranslatorLibrary;
 using MessageBox = HandyControl.Controls.MessageBox;
 
@@ -372,6 +371,17 @@ namespace MisakaTranslator
             }
         }
 
+        private void Restart()
+        {
+            ProcessStartInfo processStartInfo = new()
+            {
+                FileName = Environment.ProcessPath,
+                UseShellExecute = true,
+            };
+            Process.Start(processStartInfo);
+            ShutDownApp();
+        }
+
         private void RestartAsAdmin()
         {
             if (StartProcessAsAdmin(Environment.ProcessPath!))
@@ -504,17 +514,14 @@ namespace MisakaTranslator
         /// <param name="e"></param>
         private void Language_MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            ResourceDictionary languageResource = new ResourceDictionary();
             if (sender is MenuItem menuItem)
             {
-                Common.AppSettings.AppLanguage = menuItem.Tag.ToString() ?? "zh";
-                Thread.CurrentThread.CurrentCulture = new CultureInfo(Common.AppSettings.AppLanguage);
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Common.AppSettings.AppLanguage);
-                TranslatorCommon.Refresh();
-                TextRepair.Refresh();
-                languageResource.Source = new Uri($"lang/{Common.AppSettings.AppLanguage}.xaml", UriKind.Relative);
-                Application.Current.Resources.MergedDictionaries[1] = languageResource;
-                MessageBox.Show(Application.Current.Resources["Language_Changed"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
+                if (Common.AppSettings.AppLanguage!= menuItem.Tag.ToString())
+                {
+                    Common.AppSettings.AppLanguage = menuItem.Tag.ToString()!;
+                    MessageBox.Show(Application.Current.Resources["Language_Changed"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
+                    Restart();
+                }
             }
         }
 

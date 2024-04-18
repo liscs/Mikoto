@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="Language_Changed">Language configuration has been modified!</sys:String>
+    <sys:String x:Key="Language_Changed">Language configuration has been modified! Take effect after restart</sys:String>
 
     <sys:String x:Key="MessageBox_Error">Error</sys:String>
     <sys:String x:Key="MessageBox_Result">Result</sys:String>
