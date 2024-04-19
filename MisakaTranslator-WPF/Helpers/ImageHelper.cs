@@ -152,7 +152,7 @@ namespace MisakaTranslator.Helpers
             pixels = CropRorate(pixels);
             var colors = pixels.Cast<PixelColor>().ToArray();
             GaussianBlur gaussianBlur = new(colors);
-            return new ImageBrush(ImageProcFunc.ImageToBitmapImage(gaussianBlur.Process(5)));
+            return new ImageBrush(ImageProcFunc.ImageToBitmapImage(gaussianBlur.Process(3)));
 
         }
 
@@ -191,18 +191,24 @@ namespace MisakaTranslator.Helpers
             PixelColor[,] merge1 = Merge(pixels, width, crop1, crop2);
             angle = random.Next(-Math.PI / 2, Math.PI / 2);
             PixelColor[,] merge2 = Rorate(merge1, width, angle);
-            for (int i = 0; i < width; i++)
-            {
-                for (int j = 0; j < width / 2; j++)
-                {
-                    (merge2[i, j], merge2[i, width - j - 1]) = (merge2[i, width - j - 1], merge2[i, j]);
-                }
-            }
-
+            merge2 = Mirror(merge2, width);
 
             PixelColor[,] result = Merge(pixels, width, merge1, merge2);
             return result;
 
+        }
+
+        private static PixelColor[,] Mirror(PixelColor[,] image, int width)
+        {
+            PixelColor[,] result = new PixelColor[width, width];
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    result[i, j] = image[i, width - j - 1];
+                }
+            }
+            return result;
         }
 
         private static PixelColor[,] Merge(PixelColor[,] baseImage, int width, params object[] images)
