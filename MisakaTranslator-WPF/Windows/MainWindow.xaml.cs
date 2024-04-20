@@ -51,7 +51,6 @@ namespace MisakaTranslator
             }
 
 
-            SetRandomBlurredBackground();
         }
 
         private static void InitializeLanguage()
@@ -77,12 +76,22 @@ namespace MisakaTranslator
 
         private void SetRandomBlurredBackground()
         {
-            if (GameInfoList.Count > 0)
+            if (GameInfoList.Count > 5)
             {
-                int randomId = new Random().Next(GameInfoList.Count);
-                Image ico = ImageHelper.GetGameIcon(GameInfoList[randomId].FilePath);
-                Background = ImageHelper.GetBlurBrush(ico.Source as BitmapSource);
+                Task.Run(() =>
+                  {
+                      BitmapImage? image = GetRandomBlurredImage();
+                      Dispatcher.BeginInvoke(() => Background = new ImageBrush(image));
+                  });
             }
+        }
+
+        private BitmapImage? GetRandomBlurredImage()
+        {
+            int randomId = new Random().Next(GameInfoList.Count);
+            System.Drawing.Bitmap ico = ImageHelper.GetGameDrawingBitmapIcon(GameInfoList[randomId].FilePath);
+
+            return ImageHelper.GetBlurImage(ico);
         }
 
         /// <summary>
@@ -516,7 +525,7 @@ namespace MisakaTranslator
         {
             if (sender is MenuItem menuItem)
             {
-                if (Common.AppSettings.AppLanguage!= menuItem.Tag.ToString())
+                if (Common.AppSettings.AppLanguage != menuItem.Tag.ToString())
                 {
                     Common.AppSettings.AppLanguage = menuItem.Tag.ToString()!;
                     MessageBox.Show(Application.Current.Resources["Language_Changed"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
@@ -622,6 +631,7 @@ namespace MisakaTranslator
         {
             if (e.NewValue is bool newValue && newValue == true)
             {
+                SetRandomBlurredBackground();
                 NotifyIconContextContent.Show();
             }
         }

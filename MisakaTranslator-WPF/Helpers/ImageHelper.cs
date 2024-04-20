@@ -13,7 +13,7 @@ namespace MisakaTranslator.Helpers
     public struct PixelColor
     {
         // 32 bit BGRA 
-        [FieldOffset(0)] public UInt32 ColorBGRA;
+        [FieldOffset(0)] public uint ColorBGRA;
         // 8 bit components
         [FieldOffset(0)] public byte Blue;
         [FieldOffset(1)] public byte Green;
@@ -37,7 +37,32 @@ namespace MisakaTranslator.Helpers
             source.CopyPixelColors(result, width * 4, 0);
             return result;
         }
+        private static PixelColor[,] GetPixels(System.Drawing.Bitmap bmp)
+        {
+            int width = bmp.Width;
+            int height = bmp.Height;
+            PixelColor[,] result = new PixelColor[width, height];
+            System.Drawing.Imaging.BitmapData bmpData =
+            bmp.LockBits(new System.Drawing.Rectangle(0, 0, width, height), System.Drawing.Imaging.ImageLockMode.ReadWrite,
+            bmp.PixelFormat);
 
+            var length = bmpData.Stride * bmpData.Height;
+            byte[] bytes = new byte[length];
+            Marshal.Copy(bmpData.Scan0, bytes, 0, length);
+            bmp.UnlockBits(bmpData);
+
+
+            int k = 0;
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    result[i, j].ColorBGRA = BitConverter.ToUInt32(bytes, k);
+                    k += 4;
+                }
+            }
+            return result;
+        }
         public static Image GetGameIcon(string path)
         {
             Image ico = new()
@@ -60,6 +85,25 @@ namespace MisakaTranslator.Helpers
             {
                 bitmapImage = new BitmapImage(new Uri(icoPaths[0]));
                 ico.Source = bitmapImage;
+            }
+            return ico;
+        }
+
+        public static System.Drawing.Bitmap GetGameDrawingBitmapIcon(string path)
+        {
+            System.Drawing.Bitmap ico = new(64, 64);
+
+            if (!File.Exists(path))
+            {
+                return ico;
+            }
+
+            ico = ImageProcFunc.GetAppIcon(path) ?? ico;
+
+            string[] icoPaths = Directory.GetFiles(Path.GetDirectoryName(path)!, "*icon.ico");
+            if (icoPaths.Length > 0)
+            {
+                ico = new System.Drawing.Bitmap(icoPaths[0]);
             }
             return ico;
         }
@@ -145,14 +189,14 @@ namespace MisakaTranslator.Helpers
             };
         }
 
-        public static Brush GetBlurBrush(BitmapSource? bitmapSource)
+        public static BitmapImage? GetBlurImage(System.Drawing.Bitmap bitmap)
         {
-            PixelColor[,] pixels = GetPixels(bitmapSource);
+            PixelColor[,] pixels = GetPixels(bitmap);
             pixels = Normalize(pixels);
             pixels = CropRorate(pixels);
             var colors = pixels.Cast<PixelColor>().ToArray();
             GaussianBlur gaussianBlur = new(colors);
-            return new ImageBrush(ImageProcFunc.ImageToBitmapImage(gaussianBlur.Process(3)));
+            return ImageProcFunc.ImageToBitmapImage(gaussianBlur.Process(3));
 
         }
 
