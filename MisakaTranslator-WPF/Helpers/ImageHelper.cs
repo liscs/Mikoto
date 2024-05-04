@@ -152,7 +152,7 @@ namespace MisakaTranslator.Helpers
                         LinearGradientBrush result = new()
                         {
                             StartPoint = new Point(0, 1),
-                            EndPoint = new Point(1, 0)
+                            EndPoint = new Point(1, 0),
                         };
                         result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors - 20, 0.6, 1), 0.0));
                         result.GradientStops.Add(new GradientStop(ColorFromHSV(majorColors, 1, 1), 1.0));

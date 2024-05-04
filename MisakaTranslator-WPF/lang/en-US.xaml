@@ -315,7 +315,7 @@
     <sys:String x:Key="ChooseHookFuncPage_MBOX_hookcodeConfirm_right">If you confirm that this H-code can get text, please select "Yes"; if it can't, select "No" to re-inject a custom H-code; if you do not need a custom H-code, please select "Cancel" to enter the next interface.</sys:String>
     <sys:String x:Key="ChooseHookFuncPage_BtnCannotfindHook">Can not find correct Hook?</sys:String>
     
-    <sys:String x:Key="App_Global_ErrorHint_left">MisakaTranslator encountered an exception that cannot be resolved. It is about to exit. Details about this exception have been stored in the "</sys:String>
+    <sys:String x:Key="App_Global_ErrorHint_left">MisakaTranslator encountered an exception that cannot be resolved. Details about this exception have been stored in the "</sys:String>
     <sys:String x:Key="App_Global_ErrorHint_right">" file in the "logs" Directory. To better the Translator, sending these files to the developer on GitHub to troubleshoot is appreciated.</sys:String>
 
     <sys:String x:Key="TTSGeneralSettingsPage_Selection">TTS selection</sys:String>

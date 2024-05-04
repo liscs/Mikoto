@@ -12,11 +12,18 @@ namespace TextRepairLibrary
         public static string? RegexPattern { get; set; }
         public static int SentenceRepeatFindCharNum { get; set; }
         public static int SingleWordRepeatTimes { get; set; }
-        public static Dictionary<string, string> LstRepairFun { get; set; } = new();
+        public static Dictionary<string, string> LstRepairFun { get; set; } = new Dictionary<string, string>() {
+            { Strings.NoDeal , nameof(RepairFun_NoDeal) },
+            { Strings.RemoveSingleWordRepeat , nameof(RepairFun_RemoveSingleWordRepeat) },
+            { Strings.RemoveSentenceRepeat , nameof(RepairFun_RemoveSentenceRepeat) },
+            { Strings.RemoveLetterNumber , nameof(RepairFun_RemoveLetterNumber) },
+            { Strings.RemoveHTML , nameof(RepairFun_RemoveHTML) },
+            { Strings.RegexReplace , nameof(RepairFun_RegexReplace) },
+            { Strings.Custom , nameof(RepairFun_Custom) }
+            };
 
         static TextRepair()
         {
-            Refresh();
             try
             {
                 string[] handlers = Directory.GetFiles("textRepairPlugins");
@@ -49,13 +56,13 @@ namespace TextRepairLibrary
             }
             return functionName switch
             {
-                "RepairFun_NoDeal" => RepairFun_NoDeal(sourceText),
-                "RepairFun_RemoveSingleWordRepeat" => RepairFun_RemoveSingleWordRepeat(sourceText),
-                "RepairFun_RemoveSentenceRepeat" => RepairFun_RemoveSentenceRepeat(sourceText),
-                "RepairFun_RemoveLetterNumber" => RepairFun_RemoveLetterNumber(sourceText),
-                "RepairFun_RemoveHTML" => RepairFun_RemoveHTML(sourceText),
-                "RepairFun_RegexReplace" => RepairFun_RegexReplace(sourceText),
-                "RepairFun_Custom" => RepairFun_Custom(sourceText),
+                nameof(RepairFun_NoDeal) => RepairFun_NoDeal(sourceText),
+                nameof(RepairFun_RemoveSingleWordRepeat) => RepairFun_RemoveSingleWordRepeat(sourceText),
+                nameof(RepairFun_RemoveSentenceRepeat) => RepairFun_RemoveSentenceRepeat(sourceText),
+                nameof(RepairFun_RemoveLetterNumber) => RepairFun_RemoveLetterNumber(sourceText),
+                nameof(RepairFun_RemoveHTML) => RepairFun_RemoveHTML(sourceText),
+                nameof(RepairFun_RegexReplace) => RepairFun_RegexReplace(sourceText),
+                nameof(RepairFun_Custom) => RepairFun_Custom(sourceText),
                 _ => Strings.MethodError,
             };
         }
@@ -131,7 +138,7 @@ namespace TextRepairLibrary
 
             if (source == string.Empty || source.Length < findNum)
             {
-                return string.Empty;
+                return source;
             }
 
             char[] arr = source.ToCharArray();
@@ -282,18 +289,5 @@ namespace TextRepairLibrary
             return (string)scope.GetVariable("ResultStr");
         }
 
-        public static void Refresh()
-        {
-            LstRepairFun = new Dictionary<string, string>() {
-            { Strings.NoDeal , "RepairFun_NoDeal" },
-            { Strings.RemoveSingleWordRepeat , "RepairFun_RemoveSingleWordRepeat" },
-            { Strings.RemoveSentenceRepeat , "RepairFun_RemoveSentenceRepeat" },
-            { Strings.RemoveLetterNumber , "RepairFun_RemoveLetterNumber" },
-            { Strings.RemoveHTML , "RepairFun_RemoveHTML" },
-            { Strings.RegexReplace , "RepairFun_RegexReplace" },
-            { Strings.Custom , "RepairFun_Custom" }
-            };
-
-        }
     }
 }

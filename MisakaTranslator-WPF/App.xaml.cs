@@ -48,7 +48,7 @@ namespace MisakaTranslator
         private void App_Exit(object sender, ExitEventArgs e)
         {
             //程序退出时检查是否断开Hook
-            DoHookCheck();
+            EndHook();
         }
 
         /// <summary>
@@ -56,25 +56,16 @@ namespace MisakaTranslator
         /// </summary>
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            MisakaTranslator.MainWindow.Instance.CloseNotifyIcon();
+            e.Handled = true;
             string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-            PrintErrorMessageToFile(nowTime, e.Exception, 0);
-            DoHookCheck();
+            PrintErrorMessageToFile(nowTime, e.Exception);
             ShowExceptionMessageBox(e.Exception, nowTime);
         }
 
         private static void ShowExceptionMessageBox(object e, string nowTime)
         {
-            if (e is Exception ex)
-            {
-                MessageBox.Show($"{Current.Resources["App_Global_ErrorHint_left"]}{nowTime}{Current.Resources["App_Global_ErrorHint_right"]}{Environment.NewLine}{ex.Message}{Environment.NewLine}{ex.StackTrace}"
-                    , Current.Resources["MessageBox_Error"].ToString());
-            }
-            else
-            {
-                MessageBox.Show($"{Current.Resources["App_Global_ErrorHint_left"]}{nowTime}{Current.Resources["App_Global_ErrorHint_right"]}{Environment.NewLine}{e}"
-                , Current.Resources["MessageBox_Error"].ToString());
-            }
+            MessageBox.Show($"{Current.Resources["App_Global_ErrorHint_left"]}{nowTime}{Current.Resources["App_Global_ErrorHint_right"]}{Environment.NewLine}{e}",
+                            Current.Resources["MessageBox_Error"].ToString());
         }
 
         /// <summary>
@@ -84,18 +75,9 @@ namespace MisakaTranslator
         {
             MisakaTranslator.MainWindow.Instance.CloseNotifyIcon();
             string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-            if (e.ExceptionObject is Exception exception)
-            {
-                PrintErrorMessageToFile(nowTime, exception, 1);
-            }
-            else
-            {
-                PrintErrorMessageToFile(nowTime, null, 1, e.ExceptionObject.ToString());
-            }
-
-            DoHookCheck();
-            ShowExceptionMessageBox((e.ExceptionObject as Exception) ?? e.ExceptionObject, nowTime);
-
+            PrintErrorMessageToFile(nowTime, e.ExceptionObject);
+            EndHook();
+            ShowExceptionMessageBox(e.ExceptionObject, nowTime);
         }
 
         /// <summary>
@@ -103,13 +85,11 @@ namespace MisakaTranslator
         /// </summary>
         private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
+            e.SetObserved();
             MisakaTranslator.MainWindow.Instance.CloseNotifyIcon();
             string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-            PrintErrorMessageToFile(nowTime, e.Exception, 2);
-
-            DoHookCheck();
+            PrintErrorMessageToFile(nowTime, e.Exception);
             ShowExceptionMessageBox(e.Exception, nowTime);
-
         }
 
         /// <summary>
@@ -117,17 +97,15 @@ namespace MisakaTranslator
         /// </summary>
         /// <param name="fileName">文件名</param>
         /// <param name="e">异常</param>
-        /// <param name="exceptionThread">异常线程</param>
-        /// <param name="errorMessage">错误消息</param>
-        private static void PrintErrorMessageToFile(string fileName, Exception? e, int exceptionThread, string? errorMessage = null)
+        private static void PrintErrorMessageToFile(string fileName, object e)
         {
             if (!Directory.Exists($"{Environment.CurrentDirectory}\\data\\logs"))
             {
                 Directory.CreateDirectory($"{Environment.CurrentDirectory}\\data\\logs");
             }
-            FileStream fs = new FileStream($"{Environment.CurrentDirectory}\\data\\logs\\{fileName}.txt", FileMode.Create);
+            using FileStream fs = new($"{Environment.CurrentDirectory}\\data\\logs\\{fileName}.txt", FileMode.Create);
 
-            StreamWriter sw = new StreamWriter(fs);
+            using StreamWriter sw = new(fs);
 
             sw.WriteLine("==============System Info================");
             sw.WriteLine("System:" + Environment.OSVersion);
@@ -136,36 +114,14 @@ namespace MisakaTranslator
             Version version = Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
             sw.WriteLine("MisakaTranslatorVersion:" + version.ToString());
 
-            if (errorMessage != null)
+            sw.WriteLine("==============Exception Info================");
+            sw.WriteLine(e);
+
+            Exception? exceptionPointer = e as Exception;
+            while (exceptionPointer != null && exceptionPointer.InnerException != null)
             {
-                sw.WriteLine("==============Exception Info================");
-                sw.WriteLine("ExceptionType:" + "Non UI Thread But not Exception");
-                sw.WriteLine("ErrorMessage:" + errorMessage);
-            }
-            else
-            {
-                sw.WriteLine("==============Exception Info================");
-                switch (exceptionThread)
-                {
-                    case 0:
-                        sw.WriteLine("ExceptionType:" + "UI Thread");
-                        break;
-                    case 1:
-                        sw.WriteLine("ExceptionType:" + "Non UI Thread");
-                        break;
-                    case 2:
-                        sw.WriteLine("ExceptionType:" + "Task Thread");
-                        break;
-                }
-                if (e != null)
-                {
-                    sw.WriteLine("ExceptionName:" + e.GetType());
-                    sw.WriteLine("ExceptionSource:" + e.Source);
-                    sw.WriteLine("ExceptionMessage:" + e.Message);
-                    sw.WriteLine("ExceptionStackTrace:" + e.StackTrace);
-                    if (e.InnerException != null)
-                        sw.WriteLine("InnerExceptionStackTrace:" + e.InnerException);
-                }
+                sw.WriteLine("InnerException:" + exceptionPointer.InnerException);
+                exceptionPointer = exceptionPointer.InnerException;
             }
 
             sw.Flush();
@@ -177,7 +133,7 @@ namespace MisakaTranslator
         /// <summary>
         /// 执行Hook是否完全卸载的检查
         /// </summary>
-        public void DoHookCheck()
+        private void EndHook()
         {
             if (Common.TextHooker != null)
             {

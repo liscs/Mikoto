@@ -264,7 +264,7 @@ namespace MisakaTranslator
             var str = b.Name;
             var temp = str.Remove(0, 4);
             _gid = int.Parse(temp);
-            DrawGameImage.Source = ImageHelper.GetGameIcon(GameInfoList[_gid].FilePath).Source;
+            DrawGameImage.Source = ((b.Child as Grid)?.Children.Cast<UIElement>().First(p => p is Image) as Image)?.Source;
             RenderOptions.SetBitmapScalingMode(DrawGameImage, BitmapScalingMode.HighQuality);
 
             GameNameTag.Tag = _gid;
