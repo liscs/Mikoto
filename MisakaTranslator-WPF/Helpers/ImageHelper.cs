@@ -69,8 +69,7 @@ namespace MisakaTranslator.Helpers
             {
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
-                Height = 64,
-                Width = 64,
+                Margin = new Thickness(43,0,43,0),
             };
 
             if (!File.Exists(path))

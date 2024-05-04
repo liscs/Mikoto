@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using TextHookLibrary;
 using TranslatorLibrary;
@@ -123,6 +124,11 @@ namespace MisakaTranslator
             Image ico = ImageHelper.GetGameIcon(GameInfoList[gid].FilePath);
             RenderOptions.SetBitmapScalingMode(ico, BitmapScalingMode.HighQuality);
             var gd = new Grid();
+            gd.Children.Add(new Border()
+            {
+                Background = ImageHelper.GetMajorBrush(ico.Source as BitmapSource),
+            }
+);
             gd.Children.Add(ico);
             gd.Children.Add(tb);
             var back = new Border()
@@ -131,8 +137,7 @@ namespace MisakaTranslator
                 Name = "game" + gid,
                 Width = 150,
                 Child = gd,
-                Margin = new Thickness(3),
-                Background = ImageHelper.GetMajorBrush(ico.Source as BitmapSource)
+                Padding = new Thickness(3),
             };
 
             back.MouseEnter += Border_MouseEnter;
@@ -148,18 +153,22 @@ namespace MisakaTranslator
                 Foreground = Brushes.White,
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Center,
-                Margin = new Thickness(3)
+                TextWrapping = TextWrapping.Wrap,
+                FontWeight = FontWeights.SemiBold,
             };
             textBlock.SetResourceReference(TextBlock.TextProperty, "MainWindow_ScrollViewer_AddNewGame");
             var grid = new Grid();
+            grid.Children.Add(new Border()
+            {
+                Background = (SolidColorBrush)Application.Current.Resources["BoxBtnColor"],
+            });
             grid.Children.Add(textBlock);
             var border = new Border()
             {
                 Name = "AddNewName",
                 Width = 150,
                 Child = grid,
-                Margin = new Thickness(3),
-                Background = (SolidColorBrush)Application.Current.Resources["BoxBtnColor"]
+                Padding = new Thickness(3),
             };
             border.MouseEnter += Border_MouseEnter;
             border.MouseLeave += Border_MouseLeave;
@@ -223,39 +232,36 @@ namespace MisakaTranslator
             ggw.Show();
         }
 
-        private static void Border_MouseEnter(object sender, MouseEventArgs e)
+        private void Border_MouseEnter(object sender, MouseEventArgs e)
         {
             var b = (Border)sender;
-            if (b.Child is Grid g)
+
+            ThicknessAnimation myThicknessAnimation = new(new Thickness(0), TimeSpan.FromSeconds(0.1))
             {
-                foreach (var item in g.Children)
-                {
-                    if (item is Image image)
-                    {
-                        image.Width -= 4;
-                        image.Height -= 4;
-                    }
-                }
-            }
-            b.BorderBrush = Brushes.Transparent;
-            b.BorderThickness = new Thickness(2);
+                AccelerationRatio = 0.8,
+                DecelerationRatio = 0.2,
+            };
+            Storyboard.SetTarget(myThicknessAnimation, b);
+            Storyboard.SetTargetProperty(myThicknessAnimation, new PropertyPath(Border.PaddingProperty));
+            Storyboard ellipseStoryboard = new();
+            ellipseStoryboard.Children.Add(myThicknessAnimation);
+            ellipseStoryboard.Begin(this);
         }
 
-        private static void Border_MouseLeave(object sender, MouseEventArgs e)
+        private void Border_MouseLeave(object sender, MouseEventArgs e)
         {
             var b = (Border)sender;
-            if (b.Child is Grid g)
+
+            ThicknessAnimation myThicknessAnimation = new(new Thickness(3), TimeSpan.FromSeconds(0.1))
             {
-                foreach (var item in g.Children)
-                {
-                    if (item is Image image)
-                    {
-                        image.Width += 4;
-                        image.Height += 4;
-                    }
-                }
-            }
-            b.BorderThickness = new Thickness(0);
+                AccelerationRatio = 0.8,
+                DecelerationRatio = 0.2,
+            };
+            Storyboard.SetTarget(myThicknessAnimation, b);
+            Storyboard.SetTargetProperty(myThicknessAnimation, new PropertyPath(Border.PaddingProperty));
+            Storyboard ellipseStoryboard = new();
+            ellipseStoryboard.Children.Add(myThicknessAnimation);
+            ellipseStoryboard.Begin(this);
         }
 
         private void Back_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
