@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using TextHookLibrary;
 using TranslatorLibrary;
@@ -235,16 +236,20 @@ namespace MisakaTranslator
         private void Border_MouseEnter(object sender, MouseEventArgs e)
         {
             var b = (Border)sender;
-
-            ThicknessAnimation myThicknessAnimation = new(new Thickness(0), TimeSpan.FromSeconds(0.1))
+            b.Effect ??= new DropShadowEffect()
+            {
+                BlurRadius = 10,
+                Opacity = 0,
+            };
+            DoubleAnimation doubleAnimation = new(0.6, TimeSpan.FromSeconds(0.1))
             {
                 AccelerationRatio = 0.8,
                 DecelerationRatio = 0.2,
             };
-            Storyboard.SetTarget(myThicknessAnimation, b);
-            Storyboard.SetTargetProperty(myThicknessAnimation, new PropertyPath(Border.PaddingProperty));
+            Storyboard.SetTarget(doubleAnimation, b);
+            Storyboard.SetTargetProperty(doubleAnimation, new PropertyPath("(Effect).Opacity"));
             Storyboard ellipseStoryboard = new();
-            ellipseStoryboard.Children.Add(myThicknessAnimation);
+            ellipseStoryboard.Children.Add(doubleAnimation);
             ellipseStoryboard.Begin(this);
         }
 
@@ -252,15 +257,15 @@ namespace MisakaTranslator
         {
             var b = (Border)sender;
 
-            ThicknessAnimation myThicknessAnimation = new(new Thickness(3), TimeSpan.FromSeconds(0.1))
+            DoubleAnimation doubleAnimation = new(0, TimeSpan.FromSeconds(0.1))
             {
                 AccelerationRatio = 0.8,
                 DecelerationRatio = 0.2,
             };
-            Storyboard.SetTarget(myThicknessAnimation, b);
-            Storyboard.SetTargetProperty(myThicknessAnimation, new PropertyPath(Border.PaddingProperty));
+            Storyboard.SetTarget(doubleAnimation, b);
+            Storyboard.SetTargetProperty(doubleAnimation, new PropertyPath("(Effect).Opacity"));
             Storyboard ellipseStoryboard = new();
-            ellipseStoryboard.Children.Add(myThicknessAnimation);
+            ellipseStoryboard.Children.Add(doubleAnimation);
             ellipseStoryboard.Begin(this);
         }
 

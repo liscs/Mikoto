@@ -147,7 +147,7 @@
         <StackPanel Grid.Row="1"
                     Orientation="Vertical">
             <hc:SimplePanel Visibility="{Binding SourcePanelVisibility}"
-                            Margin="10,0,10,5">
+                            Margin="10,0,10,0">
                 <RichTextBox x:Name="SourceRichTextBox1"
                              Background="Transparent"
                              Foreground="{Binding SourceTextColor}"
@@ -210,9 +210,14 @@
                             StrokeThickness="{Binding FirstTextStrokeThickness}"
                             FontWeight="{Binding FirstTextFontWeight}"
                             Name="FirstTransText"
-                            Margin="10,10,10,5"
+                            Margin="10,0,10,0"
                             TextWrapping="Wrap"
-                            StrokePosition="Outside"></hc:OutlineText>
+                            StrokePosition="Outside">
+                <hc:OutlineText.RenderTransform>
+                    <TranslateTransform Y="-4" />
+                </hc:OutlineText.RenderTransform>
+                
+            </hc:OutlineText>
             <hc:OutlineText Text=""
                             FontFamily="{Binding SecondTextFontFamily}"
                             FontSize="{Binding SecondTextFontSize}"
@@ -223,7 +228,8 @@
                             Name="SecondTransText"
                             Margin="10,0,10,0"
                             TextWrapping="Wrap"
-                            StrokePosition="Outside"></hc:OutlineText>
+                            StrokePosition="Outside">
+            </hc:OutlineText>
         </StackPanel>
     </Grid>
 </Window>
