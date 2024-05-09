@@ -69,7 +69,7 @@ namespace MisakaTranslator.Helpers
             {
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(43,0,43,0),
+                Margin = new Thickness(43, 0, 43, 0),
             };
 
             if (!File.Exists(path))
@@ -201,18 +201,17 @@ namespace MisakaTranslator.Helpers
 
         private static PixelColor[,] Normalize(PixelColor[,] origin)
         {
-            const int NORMAL_WIDTH = 32;
+            const int NORMAL_LENGTH = 32;
             int width = origin.GetLength(0);
-            double scale = NORMAL_WIDTH / (double)width;
-            PixelColor[,] result = new PixelColor[NORMAL_WIDTH, NORMAL_WIDTH];
-
-            Parallel.For(0, NORMAL_WIDTH, i =>
+            double scale = NORMAL_LENGTH / (double)width;
+            PixelColor[,] result = new PixelColor[NORMAL_LENGTH, NORMAL_LENGTH];
+            for (int i = 0; i < NORMAL_LENGTH; i++)
             {
-                for (int j = 0; j < NORMAL_WIDTH; j++)
+                for (int j = 0; j < NORMAL_LENGTH; j++)
                 {
                     result[i, j] = origin[(int)(i / scale), (int)(j / scale)];
                 }
-            });
+            }
             return result;
         }
 
@@ -241,27 +240,27 @@ namespace MisakaTranslator.Helpers
 
         }
 
-        private static PixelColor[,] Mirror(PixelColor[,] image, int width)
+        private static PixelColor[,] Mirror(PixelColor[,] image, int length)
         {
-            PixelColor[,] result = new PixelColor[width, width];
-            for (int i = 0; i < width; i++)
+            PixelColor[,] result = new PixelColor[length, length];
+            for (int i = 0; i < length; i++)
             {
-                for (int j = 0; j < width; j++)
+                for (int j = 0; j < length; j++)
                 {
-                    result[i, j] = image[i, width - j - 1];
+                    result[i, j] = image[i, length - j - 1];
                 }
             }
             return result;
         }
 
-        private static PixelColor[,] Merge(PixelColor[,] baseImage, int width, params object[] images)
+        private static PixelColor[,] Merge(PixelColor[,] baseImage, int length, params object[] images)
         {
             PixelColor[,] result = (PixelColor[,])baseImage.Clone();
-            Parallel.ForEach(images, image =>
+            foreach (var image in images)
             {
-                for (int i = 0; i < width; i++)
+                for (int i = 0; i < length; i++)
                 {
-                    for (int j = 0; j < width; j++)
+                    for (int j = 0; j < length; j++)
                     {
                         if (((PixelColor[,])image)[i, j].ColorBGRA != 0 && ((PixelColor[,])image)[i, j].ColorBGRA != 0xFFFFFFFF)
                         {
@@ -269,20 +268,20 @@ namespace MisakaTranslator.Helpers
                         }
                     }
                 }
-            });
+            }
             return result;
         }
 
-        private static PixelColor[,] Rorate(PixelColor[,] pixels, int width, double angle)
+        private static PixelColor[,] Rorate(PixelColor[,] pixels, int length, double angle)
         {
-            PixelColor[,] crop = new PixelColor[width, width];
-            for (int i = 0; i < width; i++)
+            PixelColor[,] crop = new PixelColor[length, length];
+            for (int i = 0; i < length; i++)
             {
-                for (int j = 0; j < width; j++)
+                for (int j = 0; j < length; j++)
                 {
                     var x = (int)(i * Math.Cos(angle) - j * Math.Sin(angle));
                     var y = (int)(j * Math.Cos(angle) + i * Math.Sin(angle));
-                    if (x > 0 && y > 0 && x < width && y < width)
+                    if (x > 0 && y > 0 && x < length && y < length)
                     {
                         crop[i, j] = pixels[x, y];
                     }
