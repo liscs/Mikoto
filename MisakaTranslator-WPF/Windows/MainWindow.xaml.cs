@@ -241,31 +241,34 @@ namespace MisakaTranslator
                 BlurRadius = 10,
                 Opacity = 0,
             };
-            DoubleAnimation doubleAnimation = new(0.6, TimeSpan.FromSeconds(0.1))
+            DoubleAnimation doubleAnimation = new(0.3, TimeSpan.FromSeconds(0.3))
             {
                 AccelerationRatio = 0.8,
                 DecelerationRatio = 0.2,
             };
-            Storyboard.SetTarget(doubleAnimation, b);
-            Storyboard.SetTargetProperty(doubleAnimation, new PropertyPath("(Effect).Opacity"));
-            Storyboard ellipseStoryboard = new();
-            ellipseStoryboard.Children.Add(doubleAnimation);
-            ellipseStoryboard.Begin(this);
+            StartAnimation(b, doubleAnimation);
         }
 
         private void Border_MouseLeave(object sender, MouseEventArgs e)
         {
             var b = (Border)sender;
 
-            DoubleAnimation doubleAnimation = new(0, TimeSpan.FromSeconds(0.1))
+            DoubleAnimation doubleAnimation = new(0, TimeSpan.FromSeconds(0.3))
             {
                 AccelerationRatio = 0.8,
                 DecelerationRatio = 0.2,
             };
+            StartAnimation(b, doubleAnimation);
+        }
+
+        private void StartAnimation(Border b, DoubleAnimation doubleAnimation)
+        {
             Storyboard.SetTarget(doubleAnimation, b);
             Storyboard.SetTargetProperty(doubleAnimation, new PropertyPath("(Effect).Opacity"));
             Storyboard ellipseStoryboard = new();
             ellipseStoryboard.Children.Add(doubleAnimation);
+            doubleAnimation.Freeze();
+            ellipseStoryboard.Freeze();
             ellipseStoryboard.Begin(this);
         }
 
