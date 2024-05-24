@@ -1,23 +1,7 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
-namespace MisakaTranslator.GuidePages.Hook
+﻿namespace MisakaTranslator.GuidePages.Hook
 {
-    public class ChooseGameViewModel : INotifyPropertyChanged
+    public class ChooseGameViewModel : ViewModelBase
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
-        {
-            if (!(object.Equals(field, newValue)))
-            {
-                field = (newValue);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
-
-            return false;
-        }
-
         private string _focusingProcess = string.Empty;
 
         public string FocusingProcess

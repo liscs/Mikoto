@@ -1,30 +1,15 @@
 ﻿using MisakaTranslator.Helpers;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 
 namespace MisakaTranslator
 {
-    public class TranslateViewModel : INotifyPropertyChanged
+    public class TranslateViewModel : ViewModelBase
     {
         private Window _translateWindow;
         public TranslateViewModel(Window translateWindow)
         {
             _translateWindow = translateWindow;
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
-        {
-            if (!(object.Equals(field, newValue)))
-            {
-                field = (newValue);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
-
-            return false;
         }
 
         private Visibility _sourcePanelVisibility;

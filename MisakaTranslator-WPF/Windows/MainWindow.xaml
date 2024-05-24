@@ -18,7 +18,10 @@
         Closing="BlurWindow_Closing"
         ContentRendered="BlurWindow_ContentRendered"
         IsVisibleChanged="Window_IsVisibleChanged">
-
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding OpenLog}"
+                    Gesture="OEM3" />
+    </Window.InputBindings>
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="8*" />

@@ -24,6 +24,31 @@ namespace MisakaTranslator
 {
     public partial class MainWindow
     {
+        public static RoutedCommand ColorCmd = new RoutedCommand();
+        // ExecutedRoutedEventHandler for the custom color command.
+        private void ColorCmdExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            var target = e.Source as Panel;
+            if (target != null)
+            {
+                target.Background = target.Background == Brushes.AliceBlue ? Brushes.LemonChiffon : Brushes.AliceBlue;
+            }
+        }
+
+        // CanExecuteRoutedEventHandler for the custom color command.
+        private void ColorCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (e.Source is Panel)
+            {
+                e.CanExecute = true;
+            }
+            else
+            {
+                e.CanExecute = false;
+            }
+        }
+
+
         public List<GameInfo> GameInfoList { get; set; } = new();
         private int _gid; //当前选中的顺序，并非游戏ID
         private IntPtr _hwnd;

@@ -1,23 +1,7 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
-namespace MisakaTranslator.SettingsPages
+﻿namespace MisakaTranslator.SettingsPages
 {
-    internal class SoftwareSettingsViewModel : INotifyPropertyChanged
+    internal class SoftwareSettingsViewModel : ViewModelBase
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
-        {
-            if (!Equals(field, newValue))
-            {
-                field = newValue;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
-
-            return false;
-        }
-
         private bool? _enableAutoUpdateCheck;
         public bool? EnableAutoUpdateCheck
         {
