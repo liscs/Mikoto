@@ -23,7 +23,7 @@ namespace TranslatorLibrary
                 foreach (Type item in types)
                 {
                     object? obj = Activator.CreateInstance(item);
-                    string? displayName = item.GetProperty("TranslatorDisplayName")?.GetValue(obj)?.ToString();
+                    string? displayName = item.GetProperty(nameof(ITranslator.TranslatorDisplayName))?.GetValue(obj)?.ToString();
                     if (!string.IsNullOrEmpty(displayName))
                     {
                         TranslatorDict.Add(displayName, item.Name);

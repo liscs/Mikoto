@@ -1266,7 +1266,7 @@ namespace MisakaTranslator
         {
             _winHandle = (HWND)new WindowInteropHelper(this).Handle;//记录翻译窗口句柄
 
-            StartDispacherTimer();
+            StartDispatcherTimer();
 
             if (Common.AppSettings.TF_BackgroundBlurCheckEnabled)
             {
@@ -1274,7 +1274,7 @@ namespace MisakaTranslator
             }
         }
 
-        private void StartDispacherTimer()
+        private void StartDispatcherTimer()
         {
             DispatcherTimer = new DispatcherTimer
             {

@@ -88,27 +88,22 @@ namespace DataAccessLibrary
         /// </summary>
         public static GameInfo GetGameByPath(string gamePath)
         {
-            try
+            if (AllCompletedGamesPathDict.TryGetValue(gamePath, out GameInfo? value))
             {
-                return AllCompletedGamesPathDict[gamePath];
+                return value;
             }
-            catch (KeyNotFoundException)
+            else
             {
-                return AddGame(gamePath);
+                string name = Path.GetFileName(Path.GetDirectoryName(gamePath))!;
+                Guid id = Guid.NewGuid();
+                GameInfo gameInfo = new()
+                {
+                    GameID = id,
+                    GameName = name,
+                    FilePath = gamePath,
+                };
+                return gameInfo;
             }
-        }
-
-        private static GameInfo AddGame(string gamePath)
-        {
-            string name = Path.GetFileName(Path.GetDirectoryName(gamePath)) ?? string.Empty;
-            Guid id = Guid.NewGuid();
-            GameInfo gameInfo = new GameInfo()
-            {
-                GameID = id,
-                GameName = name,
-                FilePath = gamePath,
-            };
-            return gameInfo;
         }
 
 
