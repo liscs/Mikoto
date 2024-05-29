@@ -39,19 +39,6 @@
             <hc:SideMenuItem Header="{DynamicResource SettingsMenu_HookSettings}"
                              FontSize="15"
                              Selected="Item_HookSettings_Selected" />
-            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings}"
-                             FontSize="15">
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_General}"
-                                 Selected="Item_OCRGeneral_Selected" />
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_Baidu}"
-                                 Selected="Item_BaiduOCR_Selected" />
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_BaiduFanyi}"
-                                 Selected="Item_BaiduFanyiOCR_Selected" />
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_Tencent}"
-                                 Selected="Item_TencentOCR_Selected" />
-                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_OCRSettings_TesseractCli}"
-                                 Selected="Item_TesseractCli_Selected" />
-            </hc:SideMenuItem>
             <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings}"
                              FontSize="15">
                 <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_General}"

@@ -269,7 +269,7 @@
     <sys:String x:Key="TranslateWin_Menu_ShowSource">显示/隐藏原文</sys:String>
     <sys:String x:Key="TranslateWin_Menu_Settings">翻译界面设置</sys:String>
     <sys:String x:Key="TranslateWin_Menu_History">查看历史文本</sys:String>
-    <sys:String x:Key="TranslateWin_Menu_RenewOCR">重新翻译/OCR</sys:String>
+    <sys:String x:Key="TranslateWin_Menu_Repeat">重新翻译</sys:String>
     <sys:String x:Key="TranslateWin_Menu_Pause">暂停/恢复</sys:String>
     <sys:String x:Key="TranslateWin_Menu_Min">最小化界面</sys:String>
     <sys:String x:Key="TranslateWin_Menu_Exit">退出翻译</sys:String>

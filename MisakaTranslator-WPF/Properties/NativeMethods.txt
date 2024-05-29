@@ -26,3 +26,9 @@ GetTopWindow
 
 //检查进程是否64位
 IsWow64Process
+
+
+//图片
+Windows.Win32.UI.WindowsAndMessaging.IMAGE_FLAGS
+Windows.Win32.UI.WindowsAndMessaging.DestroyIcon
+Windows.Win32.UI.WindowsAndMessaging.PrivateExtractIcons

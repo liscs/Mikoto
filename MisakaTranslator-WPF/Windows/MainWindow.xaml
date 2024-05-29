@@ -71,20 +71,6 @@
                     BorderBrush="Transparent"
                     ToolTip="{DynamicResource MainWindow_Tip_AutoStart}" />
 
-            <Button Content="&#xE790;"
-                    FontFamily="Segoe MDL2 Assets"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Foreground="{StaticResource MainBtnColor}"
-                    FontSize="40"
-                    Background="#01FFFFFF"
-                    Height="64"
-                    Width="64"
-                    Effect="{StaticResource EffectShadow5}"
-                    Click="ComicTransBtn_Click"
-                    Margin="20,0,0,0.5"
-                    BorderBrush="Transparent"
-                    ToolTip="{DynamicResource MainWindow_Tip_ComicTrans}" />
 
         </StackPanel>
 
@@ -158,13 +144,6 @@
                         <Button Background="{DynamicResource BoxBtnColor}"
                                 Content="{DynamicResource BtnHookGuide}"
                                 Click="HookGuideBtn_Click"
-                                Height="50"
-                                Foreground="{DynamicResource ButtonTextColor}"
-                                FontWeight="{DynamicResource ButtonTextWeight}"
-                                BorderBrush="Transparent"></Button>
-                        <Button Background="{DynamicResource BoxBtnColor}"
-                                Content="{DynamicResource BtnOCRGuide}"
-                                Click="OCRGuideBtn_Click"
                                 Height="50"
                                 Foreground="{DynamicResource ButtonTextColor}"
                                 FontWeight="{DynamicResource ButtonTextWeight}"

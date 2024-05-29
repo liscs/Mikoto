@@ -23,7 +23,7 @@ namespace DataAccessLibrary
         public Guid GameID { get; set; }
 
         /// <summary>
-        /// 翻译模式,1=hook 2=ocr
+        /// 翻译模式,1=hook
         /// </summary>
         public int TransMode { get; set; }
 
@@ -160,9 +160,8 @@ namespace DataAccessLibrary
         /// <param name="value">属性值</param>
         public static bool UpdateGameInfoByID(Guid gameID, string key, object value)
         {
-            try
+            if (AllCompletedGamesIdDict.TryGetValue(gameID, out GameInfo? gameInfo))
             {
-                GameInfo gameInfo = AllCompletedGamesIdDict[gameID];
                 File.Delete($"{_gameInfoDirectory.FullName}\\{gameInfo.GameID}.json");
                 PropertyInfo? pinfo = typeof(GameInfo).GetProperty(key);
                 if (pinfo == null) return false;
@@ -170,7 +169,7 @@ namespace DataAccessLibrary
                 SaveGameInfo(gameInfo);
                 return true;
             }
-            catch (KeyNotFoundException)
+            else
             {
                 return false;
             }

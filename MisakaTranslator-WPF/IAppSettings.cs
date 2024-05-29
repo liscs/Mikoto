@@ -150,7 +150,7 @@ namespace MisakaTranslator
         }
 
         [Option(Alias = "XiaoniuTranslator.XiaoniuApiKey", DefaultValue = "")]
-        string xiaoniuApiKey
+        string XiaoniuApiKey
         {
             get;
             set;
@@ -221,62 +221,6 @@ namespace MisakaTranslator
 
         [Option(Alias = "Translate_All.TransLimitNums", DefaultValue = 100)]
         int TransLimitNums
-        {
-            get;
-            set;
-        }
-
-        [Option(Alias = "OCR_All.OCRsource", DefaultValue = "BaiduOCR")]
-        string OCRsource
-        {
-            get;
-            set;
-        }
-
-        [Option(Alias = "OCR_All.GlobalOCRHotkey", DefaultValue = "Ctrl + Alt + Q")]
-        string GlobalOCRHotkey
-        {
-            get;
-            set;
-        }
-
-        [Option(Alias = "OCR_All.GlobalOCRLang", DefaultValue = "jpn")]
-        string GlobalOCRLang
-        {
-            get;
-            set;
-        }
-
-        [Option(Alias = "BaiduOCR.APIKEY", DefaultValue = "")]
-        string BDOCR_APIKEY
-        {
-            get;
-            set;
-        }
-
-        [Option(Alias = "BaiduOCR.SecretKey", DefaultValue = "")]
-        string BDOCR_SecretKey
-        {
-            get;
-            set;
-        }
-
-        [Option(Alias = "TesseractCli.Path", DefaultValue = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe")]
-        string TesseractCli_Path
-        {
-            get;
-            set;
-        }
-
-        [Option(Alias = "TesseractCli.Mode", DefaultValue = "jpn")]
-        string TesseractCli_Mode
-        {
-            get;
-            set;
-        }
-
-        [Option(Alias = "TesseractCli.Args", DefaultValue = "")]
-        string TesseractCli_Args
         {
             get;
             set;

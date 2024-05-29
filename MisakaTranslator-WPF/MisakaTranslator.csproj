@@ -4,36 +4,13 @@
 		<OutputType>WinExe</OutputType>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
-		<NoWarn>$(NoWarn);WFAC010</NoWarn>
 		<ApplicationManifest>Properties\App.manifest</ApplicationManifest>
 		<ApplicationIcon>logo.ico</ApplicationIcon>
 		<RootNamespace>MisakaTranslator</RootNamespace>
-		<PlatformTarget Condition="'$(Platform)' == 'AnyCPU'">AnyCPU</PlatformTarget>
-		<Prefer32Bit Condition="'$(Platform)' == 'AnyCPU'">false</Prefer32Bit>
 		<StartupObject>MisakaTranslator.Program</StartupObject>
 		<UseWin32>true</UseWin32>
-
-		<EnableMsixTooling>true</EnableMsixTooling>
-		<WindowsPackageType>MSIX</WindowsPackageType>
 		<AllowNeutralPackageWithAppHost>true</AllowNeutralPackageWithAppHost>
 		<WindowsAppSDKFrameworkPackageReference>false</WindowsAppSDKFrameworkPackageReference>
-		<CustomBeforeMicrosoftCommonTargets>
-			$(CustomBeforeMicrosoftCommonTargets);
-			$(PkgMicrosoft_WindowsAppSDK)\build\Microsoft.Build.Msix.props
-		</CustomBeforeMicrosoftCommonTargets>
-		<CustomAfterMicrosoftCommonTargets>
-			$(CustomAfterMicrosoftCommonTargets);
-			$(PkgMicrosoft_WindowsAppSDK)\build\Microsoft.Build.Msix.targets
-		</CustomAfterMicrosoftCommonTargets>
-		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<Optimize>True</Optimize>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<Optimize>True</Optimize>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -55,7 +32,6 @@
 			<TreatAsUsed>true</TreatAsUsed>
 		</ProjectReference>
 		<ProjectReference Include="..\MecabHelperLibrary\MecabHelperLibrary.csproj" />
-		<ProjectReference Include="..\OCRLibrary\OCRLibrary.csproj" />
 		<ProjectReference Include="..\TextHookLibrary\TextHookLibrary.csproj" />
 		<ProjectReference Include="..\TextRepairLibrary\TextRepairLibrary.csproj" />
 		<ProjectReference Include="..\TranslatorLibrary\TranslatorLibrary.csproj" />
@@ -73,16 +49,4 @@
 		<PackageReference Include="Microsoft.Windows.SDK.Win32Metadata" Version="56.0.13-preview" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000" IncludeAssets="none" ExcludeAssets="all" PrivateAssets="all" GeneratePathProperty="true" />
 	</ItemGroup>
-
-	<!-- Workaround for Desktop Bridge -->
-	<Target Name="BeforeGenerateCurrentProjectAppxManifest" BeforeTargets="_GenerateCurrentProjectAppxManifest">
-		<PropertyGroup>
-			<TargetPlatformMinVersion Condition="$([System.Version]::Parse('$(TargetPlatformMinVersion)').ToString(2)) &lt; 10.0">10.0.14257.0</TargetPlatformMinVersion>
-		</PropertyGroup>
-	</Target>
-	<Target Name="AfterGenerateCurrentProjectAppxManifest" AfterTargets="_GenerateCurrentProjectAppxManifest">
-		<PropertyGroup>
-			<TargetPlatformMinVersion Condition="$(TargetPlatformMinVersion) == '10.0.14257.0'">$(SupportedOSPlatformVersion)</TargetPlatformMinVersion>
-		</PropertyGroup>
-	</Target>
 </Project>

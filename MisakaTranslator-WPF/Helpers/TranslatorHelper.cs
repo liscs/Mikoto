@@ -17,7 +17,7 @@ namespace MisakaTranslator.Helpers
                 "BaiduTranslator" => BaiduTranslator.TranslatorInit(Common.AppSettings.BDappID, Common.AppSettings.BDsecretKey),
                 "TencentOldTranslator" => TencentOldTranslator.TranslatorInit(Common.AppSettings.TXOSecretId, Common.AppSettings.TXOSecretKey),
                 "CaiyunTranslator" => CaiyunTranslator.TranslatorInit(Common.AppSettings.CaiyunToken),
-                "XiaoniuTranslator" => XiaoniuTranslator.TranslatorInit(Common.AppSettings.xiaoniuApiKey),
+                "XiaoniuTranslator" => XiaoniuTranslator.TranslatorInit(Common.AppSettings.XiaoniuApiKey),
                 "IBMTranslator" => IBMTranslator.TranslatorInit(Common.AppSettings.IBMApiKey, Common.AppSettings.IBMURL),
                 "YandexTranslator" => YandexTranslator.TranslatorInit(Common.AppSettings.YandexApiKey),
                 "YoudaoZhiyun" => YoudaoZhiyun.TranslatorInit(Common.AppSettings.YDZYAppId, Common.AppSettings.YDZYAppSecret),

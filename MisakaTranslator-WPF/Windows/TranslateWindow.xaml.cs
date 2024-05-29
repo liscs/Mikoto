@@ -50,8 +50,6 @@ namespace MisakaTranslator
 
         private Queue<HistoryInfo> _gameTextHistory; //历史文本
         private static KeyboardMouseHook? _hook; //全局键盘鼠标钩子
-        public volatile bool IsOCRingFlag; //线程锁:判断是否正在OCR线程中，保证同时只有一组在跑OCR
-        public bool IsNotPausedFlag; //是否处在暂停状态（专用于OCR）,为真可以翻译
 
         private readonly object _saveTransResultLock = new(); // 读写数据库和_gameTextHistory的线程锁
 
@@ -76,8 +74,6 @@ namespace MisakaTranslator
             _gameTextHistory = new Queue<HistoryInfo>();
 
             Topmost = true;
-            IsOCRingFlag = false;
-
 
             _mecabHelper = new MecabHelper(Common.AppSettings.Mecab_DicPath);
             if (!_mecabHelper.EnableMecab && Common.AppSettings.Mecab_DicPath != string.Empty)
@@ -87,7 +83,6 @@ namespace MisakaTranslator
 
             TTS_Init();
 
-            IsNotPausedFlag = true;
             if (Common.AppSettings.HttpProxy != "")
             {
                 TranslatorCommon.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
@@ -122,9 +117,6 @@ namespace MisakaTranslator
                         throw;
                     }
 
-                    break;
-                case TransMode.Ocr:
-                    MouseKeyboardHook_Init();
                     break;
                 case TransMode.Clipboard:
                     Common.TextHooker!.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
@@ -258,44 +250,6 @@ namespace MisakaTranslator
         }
 
         /// <summary>
-        /// 键盘鼠标钩子初始化
-        /// </summary>
-        private void MouseKeyboardHook_Init()
-        {
-            if (_hook == null)
-            {
-                _hook = new KeyboardMouseHook();
-                bool r = false;
-
-                if (Common.UsingHotKey.IsMouse)
-                {
-                    _hook.OnMouseActivity += Hook_OnMouseActivity;
-                    if (Common.UsingHotKey.MouseButton == System.Windows.Forms.MouseButtons.Left)
-                    {
-                        r = _hook.Start(true, 1);
-                    }
-                    else if (Common.UsingHotKey.MouseButton == System.Windows.Forms.MouseButtons.Right)
-                    {
-                        r = _hook.Start(true, 2);
-                    }
-                }
-                else
-                {
-                    _hook.OnKeyboardActivity += Hook_OnKeyBoardActivity;
-                    int keycode = (int)Common.UsingHotKey.KeyCode;
-                    r = _hook.Start(false, keycode);
-                }
-
-                if (!r)
-                {
-                    Growl.ErrorGlobal(Application.Current.Resources["Hook_Error_Hint"].ToString());
-                }
-            }
-
-
-        }
-
-        /// <summary>
         /// UI方面的初始化
         /// </summary>
         private void UI_Init()
@@ -338,75 +292,6 @@ namespace MisakaTranslator
             ViewModel.FirstTextFontWeight = FontWeight.FromOpenTypeWeight(Common.AppSettings.TF_FirstTextFontWeight);
             ViewModel.SecondTextStrokeThickness = Common.AppSettings.TF_SecondTextStrokeThickness;
             ViewModel.SecondTextFontWeight = FontWeight.FromOpenTypeWeight(Common.AppSettings.TF_SecondTextFontWeight);
-        }
-
-        /// <summary>
-        /// 键盘点击事件
-        /// </summary>
-        private void Hook_OnKeyBoardActivity(object sender)
-        {
-            TranslateEventOcr();
-        }
-
-        /// <summary>
-        /// 鼠标点击事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Hook_OnMouseActivity(object sender, System.Drawing.Point e)
-        {
-            if (Common.IsAllWindowCap && Environment.ProcessId != FindWindowInfo.GetProcessIDByHWND(FindWindowInfo.GetWindowHWND(e))
-                || Common.OCRWinHwnd == FindWindowInfo.GetWindowHWND(e))
-            {
-                TranslateEventOcr();
-            }
-        }
-
-        /// <summary>
-        /// OCR事件
-        /// </summary>
-        /// <param name="isRenew">是否是重新获取翻译</param>
-        private async void TranslateEventOcr(bool isRenew = false)
-        {
-            if (!IsNotPausedFlag && IsOCRingFlag)
-                return;
-
-            IsOCRingFlag = true;
-
-            string? srcText = null;
-            for (int i = 0; i < 3; i++)
-            {
-                // 重新OCR不需要等待
-                if (!isRenew)
-                    await Task.Delay(Common.UsingOCRDelay);
-
-                srcText = await Common.Ocr!.OCRProcessAsync()!;
-
-                if (!string.IsNullOrEmpty(srcText))
-                    break;
-            }
-
-            if (!string.IsNullOrEmpty(srcText))
-            {
-                if (Common.AppSettings.OCRsource == "BaiduFanyiOCR" || Common.AppSettings.OCRsource == "TencentOCR")
-                    Application.Current.Dispatcher.Invoke(() => { FirstTransText.Text = srcText; });
-                else
-                {
-                    if (!Common.AppSettings.EachRowTrans) // 不启用分行翻译
-                        if (IsJaOrZh(Common.UsingSrcLang))
-                            srcText = srcText.Replace(Environment.NewLine, string.Empty).Replace("\n", string.Empty);
-                        else
-                            srcText = new string(srcText.Where(p => !char.IsWhiteSpace(p)).ToArray());
-
-                    TranslateText(srcText, isRenew);
-                }
-            }
-            else if (!string.IsNullOrEmpty(Common.Ocr!.GetLastError()))
-                Growl.WarningGlobal(Common.AppSettings.OCRsource + " Error: " + Common.Ocr.GetLastError());
-            else
-                Growl.WarningGlobal(Application.Current.Resources["TranslateWindow_OCREmpty"].ToString());
-
-            IsOCRingFlag = false;
         }
 
         private DictResWindow? _dictResWindow;
@@ -486,8 +371,8 @@ namespace MisakaTranslator
                 UpdateSourceAsync(repairedText);
 
                 // 分别获取两个翻译结果
-                TranslateApiSubmitASync(repairedText, 1, isRenew);
-                TranslateApiSubmitASync(repairedText, 2, isRenew);
+                TranslateApiSubmit(repairedText, 1, isRenew);
+                TranslateApiSubmit(repairedText, 2, isRenew);
             }
         }
 
@@ -822,7 +707,7 @@ namespace MisakaTranslator
         /// <param name="repairedText">原文</param>
         /// <param name="tranResultIndex">翻译框序号</param>
         /// <param name="isRenew">是否是重新获取翻译</param>
-        private async void TranslateApiSubmitASync(string repairedText, int tranResultIndex, bool isRenew = false)
+        private async void TranslateApiSubmit(string repairedText, int tranResultIndex, bool isRenew = false)
         {
             //4.翻译前预处理 
             string beforeString = _beforeTransHandle.AutoHandle(repairedText);
@@ -1025,19 +910,6 @@ namespace MisakaTranslator
                 }
                 Common.TextHooker.Pause = !Common.TextHooker.Pause;
             }
-            else
-            {
-                if (IsNotPausedFlag)
-                {
-                    ViewModel.PauseButtonIconText = "\uF5B0";
-                }
-                else
-                {
-                    ViewModel.PauseButtonIconText = "\uF8AE";
-                }
-                IsNotPausedFlag = !IsNotPausedFlag;
-            }
-
         }
 
         private void ShowSource_Item_Click(object sender, RoutedEventArgs e)
@@ -1207,17 +1079,10 @@ namespace MisakaTranslator
             _addOptWindow.ShowDialog();
         }
 
-        private void RenewOCR_Item_Click(object sender, RoutedEventArgs e)
+        private void Repeat_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (Common.TransMode == TransMode.Ocr)
-            {
-                TranslateEventOcr(true);
-            }
-            else
-            {
-                TranslateApiSubmitASync(_currentsrcText, 1, true);
-                TranslateApiSubmitASync(_currentsrcText, 2, true);
-            }
+            TranslateApiSubmit(_currentsrcText, 1, true);
+            TranslateApiSubmit(_currentsrcText, 2, true);
         }
 
         private void Min_Item_Click(object sender, RoutedEventArgs e)

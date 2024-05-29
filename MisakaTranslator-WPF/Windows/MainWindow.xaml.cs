@@ -45,14 +45,10 @@ namespace MisakaTranslator
             Refresh();
             GrowlDisableSwitch();
 
-            //注册全局OCR热键
-            this.SourceInitialized += MainWindow_SourceInitialized;
             if (Common.IsAdmin)
             {
                 RestartAsAdminBtn.Visibility = Visibility.Collapsed;
             }
-
-
         }
 
         private static void InitializeLanguage()
@@ -64,11 +60,6 @@ namespace MisakaTranslator
             Application.Current.Resources.MergedDictionaries[1] = languageResource;
         }
 
-        //按下快捷键时被调用的方法
-        public static void GlobalOcrHotKey_Pressed()
-        {
-            Common.GlobalOCR();
-        }
 
         public void Refresh()
         {
@@ -186,11 +177,6 @@ namespace MisakaTranslator
         {
             _hwnd = new WindowInteropHelper(this).Handle;
             HwndSource.FromHwnd(_hwnd)?.AddHook(WndProc);
-            //注册热键
-            if (Common.GlobalOCRHotKey.RegisterHotKeyByStr(Common.AppSettings.GlobalOCRHotkey, _hwnd, GlobalOcrHotKey_Pressed) == false)
-            {
-                Growl.ErrorGlobal(Application.Current.Resources["MainWindow_GlobalOCRError_Hint"].ToString());
-            }
             //解决UAC选择No后窗口会被Explorer覆盖 并通过TopMost调整窗口Z Order
             base.Activate();
             base.Topmost = true;
@@ -199,7 +185,6 @@ namespace MisakaTranslator
 
         private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            Common.GlobalOCRHotKey.ProcessHotKey(System.Windows.Forms.Message.Create(hwnd, msg, wParam, lParam));
             return IntPtr.Zero;
         }
 
@@ -224,12 +209,6 @@ namespace MisakaTranslator
         private void HookGuideBtn_Click(object sender, RoutedEventArgs e)
         {
             var ggw = new GameGuideWindow(GuideMode.Hook);
-            ggw.Show();
-        }
-
-        private void OCRGuideBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var ggw = new GameGuideWindow(GuideMode.Ocr);
             ggw.Show();
         }
 
@@ -288,10 +267,6 @@ namespace MisakaTranslator
             if (GameInfoList[_gid].TransMode == 1)
             {
                 TransModeTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_TransMode"].ToString() + "Hook";
-            }
-            else
-            {
-                TransModeTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_TransMode"].ToString() + "OCR";
             }
 
             GameInfoDrawer.IsOpen = true;
@@ -512,7 +487,6 @@ namespace MisakaTranslator
 
         private void ShutDownApp()
         {
-            Common.GlobalOCRHotKey.UnRegisterGlobalHotKey(_hwnd, GlobalOcrHotKey_Pressed);
             CloseNotifyIcon();
             Application.Current.Shutdown();
         }
@@ -603,12 +577,6 @@ namespace MisakaTranslator
             {
                 await Common.CheckUpdateAsync();
             }
-        }
-
-        private void ComicTransBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var ctmw = new ComicTranslator.ComicTransMainWindow();
-            ctmw.Show();
         }
 
         /// <summary>

@@ -36,22 +36,6 @@ namespace MisakaTranslator
                 FuncHint.Text = Application.Current.Resources["GameGuideWin_FuncHint_Hook"].ToString();
                 GuidePageFrame.Navigate(new Uri("GuidePages/Hook/ChooseGamePage.xaml", UriKind.Relative));
             }
-            else if (Mode == GuideMode.Ocr)
-            {
-                //OCR模式
-                List<string> lstStep = new List<string>()
-                {
-                Application.Current.Resources["GameGuideWin_OCR_Step_1"].ToString()!,
-                Application.Current.Resources["GameGuideWin_OCR_Step_2"].ToString()!,
-                Application.Current.Resources["GameGuideWin_OCR_Step_3"].ToString()!,
-                Application.Current.Resources["GameGuideWin_Step_4"].ToString()!,
-                Application.Current.Resources["GameGuideWin_Step_5"].ToString()!
-                };
-
-                GuideStepBar.ItemsSource = lstStep;
-                FuncHint.Text = Application.Current.Resources["GameGuideWin_FuncHint_OCR"].ToString();
-                GuidePageFrame.Navigate(new Uri("GuidePages/OCR/ChooseOCRAreaPage.xaml", UriKind.Relative));
-            }
             else if (Mode == GuideMode.Rehook)
             {
                 //重新选择Hook方法
@@ -103,12 +87,6 @@ namespace MisakaTranslator
                         Common.TransMode = TransMode.Hook;
                         GameInfoBuilder.GameInfo.LastPlayAt = DateTime.Now;
                         GameHelper.SaveGameInfo(GameInfoBuilder.GameInfo);
-                        break;
-                    case GuideMode.Ocr:
-                        //OCR方式设置 完成
-                        Common.TransMode = TransMode.Ocr;
-                        GameHelper.SaveGameInfo(GameInfoBuilder.GameInfo);
-
                         break;
                     case GuideMode.Rehook:
                         //Hook方式设置 完成

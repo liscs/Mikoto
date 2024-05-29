@@ -102,8 +102,8 @@
                         ToolTip="{DynamicResource TranslateWin_Menu_Pause}" />
                 <Button Content="&#xE8EE;"
                         FontFamily="Segoe MDL2 Assets"
-                        Click="RenewOCR_Item_Click"
-                        ToolTip="{DynamicResource TranslateWin_Menu_RenewOCR}" />
+                        Click="Repeat_Item_Click"
+                        ToolTip="{DynamicResource TranslateWin_Menu_Repeat}" />
                 <Button Content="{Binding ShowSourceButtonIconText}"
                         FontFamily="Segoe MDL2 Assets"
                         Name="ShowSourceButton"

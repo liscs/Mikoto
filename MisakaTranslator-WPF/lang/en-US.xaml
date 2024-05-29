@@ -269,7 +269,7 @@
     <sys:String x:Key="TranslateWin_Menu_ShowSource">Show/Hide source text</sys:String>
     <sys:String x:Key="TranslateWin_Menu_Settings">Translator Window Settings</sys:String>
     <sys:String x:Key="TranslateWin_Menu_History">View texts history</sys:String>
-    <sys:String x:Key="TranslateWin_Menu_RenewOCR">Re-translate/OCR</sys:String>
+    <sys:String x:Key="TranslateWin_Menu_Repeat">Re-translate</sys:String>
     <sys:String x:Key="TranslateWin_Menu_Pause">Pause/Resume Translator</sys:String>
     <sys:String x:Key="TranslateWin_Menu_Min">Minimize the Translator</sys:String>
     <sys:String x:Key="TranslateWin_Menu_Exit">Stop the Translator</sys:String>

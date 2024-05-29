@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MisakaTranslator", "MisakaT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranslatorLibrary", "TranslatorLibrary\TranslatorLibrary.csproj", "{BBEBCF78-7BBB-4B19-99EE-87DDEA4F3793}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OCRLibrary", "OCRLibrary\OCRLibrary.csproj", "{B66D98EC-FE39-45B4-9808-AC737C1A49FB}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextRepairLibrary", "TextRepairLibrary\TextRepairLibrary.csproj", "{722C0650-3D77-42B2-A754-50F2CB3F4C8B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardMouseHookLibrary", "KeyboardMouseHookLibrary\KeyboardMouseHookLibrary.csproj", "{1AE9EA11-9FA0-4D30-B16E-ECF7183DEC7A}"
@@ -63,10 +61,6 @@ Global
 		{BBEBCF78-7BBB-4B19-99EE-87DDEA4F3793}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBEBCF78-7BBB-4B19-99EE-87DDEA4F3793}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBEBCF78-7BBB-4B19-99EE-87DDEA4F3793}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B66D98EC-FE39-45B4-9808-AC737C1A49FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B66D98EC-FE39-45B4-9808-AC737C1A49FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B66D98EC-FE39-45B4-9808-AC737C1A49FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B66D98EC-FE39-45B4-9808-AC737C1A49FB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{722C0650-3D77-42B2-A754-50F2CB3F4C8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{722C0650-3D77-42B2-A754-50F2CB3F4C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{722C0650-3D77-42B2-A754-50F2CB3F4C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU

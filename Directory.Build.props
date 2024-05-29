@@ -2,12 +2,11 @@
 
 	<PropertyGroup>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-		<TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
-		<TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 		<Platforms>AnyCPU</Platforms>
 		<LangVersion>12.0</LangVersion>
-		<Version>1.2.6</Version>
+		<Version>1.3.0</Version>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>

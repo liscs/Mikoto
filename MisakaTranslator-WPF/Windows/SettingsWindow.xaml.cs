@@ -68,28 +68,6 @@ namespace MisakaTranslator
             this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/JbeijingTransSettingsPage.xaml", UriKind.Relative));
         }
 
-        private void Item_BaiduOCR_Selected(object sender, RoutedEventArgs e)
-        {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/OCRPages/BaiduOCRSettingsPage.xaml", UriKind.Relative));
-        }
-        private void Item_BaiduFanyiOCR_Selected(object sender, RoutedEventArgs e)
-        {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/OCRPages/BaiduFanyiOCRSettingsPage.xaml", UriKind.Relative));
-        }
-        private void Item_TencentOCR_Selected(object sender, RoutedEventArgs e)
-        {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/OCRPages/TencentOCRSettingsPage.xaml", UriKind.Relative));
-        }
-        private void Item_TesseractCli_Selected(object sender, RoutedEventArgs e)
-        {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/OCRPages/TesseractCliSettingsPage.xaml", UriKind.Relative));
-        }
-
-        private void Item_OCRGeneral_Selected(object sender, RoutedEventArgs e)
-        {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/OCRPages/OCRGeneralSettingsPage.xaml", UriKind.Relative));
-        }
-
         private void Item_HookSettings_Selected(object sender, RoutedEventArgs e)
         {
             this.SettingFrame.Navigate(new Uri("/SettingsPages/HookSettingsPage.xaml", UriKind.Relative));
