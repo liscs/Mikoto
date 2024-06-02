@@ -1,7 +1,7 @@
+using MisakaTranslator.Translators;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using MisakaTranslator.Translators;
 
 namespace MisakaTranslator.SettingsPages.TranslatorPages
 {

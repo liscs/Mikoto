@@ -2,6 +2,7 @@
 using HandyControl.Controls;
 using MecabHelperLibrary;
 using MisakaTranslator.Helpers;
+using MisakaTranslator.Translators;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
@@ -16,8 +17,6 @@ using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using TextHookLibrary;
 using TextRepairLibrary;
-using MisakaTranslator;
-using MisakaTranslator.Translators;
 using TransOptimizationLibrary;
 using TTSHelperLibrary;
 using Windows.Win32;

@@ -1,7 +1,7 @@
-﻿using System.Globalization;
+﻿using MisakaTranslator.LanguageCode;
+using System.Globalization;
 using System.Web;
 using System.Windows;
-using MisakaTranslator.LanguageCode;
 
 namespace MisakaTranslator.Translators
 {

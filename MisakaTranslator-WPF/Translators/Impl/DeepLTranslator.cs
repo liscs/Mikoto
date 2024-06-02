@@ -1,8 +1,8 @@
-﻿using System.Globalization;
+﻿using MisakaTranslator.LanguageCode;
+using System.Globalization;
 using System.Net.Http;
 using System.Text.Json;
 using System.Windows;
-using MisakaTranslator.LanguageCode;
 
 /*
  * DeepL translator integration

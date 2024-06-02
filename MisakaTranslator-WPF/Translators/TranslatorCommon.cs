@@ -1,8 +1,8 @@
-﻿using System.Net;
+﻿using MisakaTranslator.Translators;
+using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
-using MisakaTranslator.Translators;
 
 namespace MisakaTranslator
 {
