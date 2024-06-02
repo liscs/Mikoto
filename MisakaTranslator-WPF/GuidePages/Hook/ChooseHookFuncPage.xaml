@@ -13,22 +13,21 @@
 
     <Grid>
         <Grid>
-            <Grid Background="White">
+            <Grid Background="{DynamicResource PrimaryBackground}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0">
+                <StackPanel Grid.Row="0"
+                            Margin="10">
                     <TextBlock Text="{DynamicResource ChooseHookFuncPage_Introduce}"
-                               Margin="10" />
+                               TextWrapping="Wrap" />
                     <TextBlock Name="NoAdminPrivilegesTextBlock"
                                Text="{DynamicResource ChooseHookFuncPage_NoAdminWarn}"
-                               FontSize="15"
-                               TextWrapping="WrapWithOverflow"
-                               Foreground="Red"
-                               Margin="10" />
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource WarningBrush}" />
                 </StackPanel>
 
                 <ListView Name="HookFunListView"
@@ -67,7 +66,8 @@
                             Click="AddHookBtn_Click" />
 
                     <TextBlock Margin="10"
-                               VerticalAlignment="Center">
+                               VerticalAlignment="Center"
+                               TextWrapping="Wrap">
                         <Hyperlink Click="CannotfindHookBtn_Click"> 
                             <TextBlock Text="{DynamicResource ChooseHookFuncPage_BtnCannotfindHook}" />
                         </Hyperlink>
@@ -107,7 +107,8 @@
                                    Text="{DynamicResource ChooseHookFuncPage_Drawer_Header}"
                                    FontSize="20"
                                    HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"></TextBlock>
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap" />
 
                         <TextBox Name="PIDTextBox"
                                  hc:InfoElement.Placeholder="{DynamicResource ChooseHookFuncPage_Drawer_PidBox}"

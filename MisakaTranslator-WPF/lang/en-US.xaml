@@ -174,14 +174,14 @@
 
     <sys:String x:Key="GameGuideWin_WinName">Game Translation Wizard</sys:String>
     <sys:String x:Key="GameGuideWin_AlwaysTop">Always on top</sys:String>
-    <sys:String x:Key="GameGuideWin_Hook_Step_1">Select a game</sys:String>
-    <sys:String x:Key="GameGuideWin_Hook_Step_2">Select the hook method</sys:String>
-    <sys:String x:Key="GameGuideWin_Hook_Step_3">Select how to remove duplicates</sys:String>
+    <sys:String x:Key="GameGuideWin_Hook_Step_1">Select Game</sys:String>
+    <sys:String x:Key="GameGuideWin_Hook_Step_2">Select Hook Method</sys:String>
+    <sys:String x:Key="GameGuideWin_Hook_Step_3">Replacement</sys:String>
     <sys:String x:Key="GameGuideWin_OCR_Step_1">Select the screenshot area</sys:String>
     <sys:String x:Key="GameGuideWin_OCR_Step_2">OCR pretreatment</sys:String>
     <sys:String x:Key="GameGuideWin_OCR_Step_3">Set the trigger</sys:String>
     <sys:String x:Key="GameGuideWin_ReHook_Step_1">Re-select the hook method</sys:String>
-    <sys:String x:Key="GameGuideWin_Step_4">Select translation languages</sys:String>
+    <sys:String x:Key="GameGuideWin_Step_4">Translation</sys:String>
     <sys:String x:Key="GameGuideWin_Step_5">Finish</sys:String>
     <sys:String x:Key="GameGuideWin_FuncHint_Hook">Extract Texts with TextHook</sys:String>
     <sys:String x:Key="GameGuideWin_FuncHint_ReHook">Re-select the hook method to match the previous settings</sys:String>
@@ -193,8 +193,8 @@
     <sys:String x:Key="ChooseGamePage_BtnConfirm">Confirm process</sys:String>
     <sys:String x:Key="ChooseGamePage_CBoxX64">Hook with x64 version</sys:String>
     <sys:String x:Key="ChooseGamePage_CBoxX64Hint">Once enabled, the x64 version of Textractor is used to hook the 64-bit game.</sys:String>
-    <sys:String x:Key="ChooseGamePage_AutoHookTag_Begin">Auto: Found </sys:String>
-    <sys:String x:Key="ChooseGamePage_AutoHookTag_End">  process(es).</sys:String>
+    <sys:String x:Key="ChooseGamePage_AutoHookTag_Begin">Auto: Found</sys:String>
+    <sys:String x:Key="ChooseGamePage_AutoHookTag_End">process(es).</sys:String>
     <sys:String x:Key="ChooseGamePage_NextErrorHint">Please select a process before proceeding!</sys:String>
 
     <sys:String x:Key="Drawer_BtnExit">Close</sys:String>
@@ -226,8 +226,8 @@
     <sys:String x:Key="ChooseTextRepairFuncPage_Drawer_RegexReplace">Enter the text to be replaced</sys:String>
 
     <sys:String x:Key="ChooseLanguagePage_Introduce">Choose the game's source language and target translation language. Note: Some translation APIs may only support one-to-one language translation.</sys:String>
-    <sys:String x:Key="ChooseLanguagePage_srcLang">Source language</sys:String>
-    <sys:String x:Key="ChooseLanguagePage_dstLang">Target translation language</sys:String>
+    <sys:String x:Key="ChooseLanguagePage_srcLang">From</sys:String>
+    <sys:String x:Key="ChooseLanguagePage_dstLang">To</sys:String>
     <sys:String x:Key="ChooseLanguagePage_BtnConfirm">Confirm</sys:String>
     <sys:String x:Key="ChooseLanguagePage_NextErrorHint">The two languages cannot be the same.</sys:String>
 
@@ -283,7 +283,7 @@
 
     <sys:String x:Key="TransWinSettingsWin_Title">Translator window settings</sys:String>
     <sys:String x:Key="TransWinSettingsWin_Tab_Window">Window</sys:String>
-    <sys:String x:Key="TransWinSettingsWin_Tab_source">Source text</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_Tab_source">Source</sys:String>
     <sys:String x:Key="TransWinSettingsWin_Tab_first">Trans 1</sys:String>
     <sys:String x:Key="TransWinSettingsWin_Tab_second">Trans 2</sys:String>
     <sys:String x:Key="TransWinSettingsWin_BgColor">Background color and opacity</sys:String>
@@ -294,7 +294,7 @@
     <sys:String x:Key="TransWinSettingsWin_BtnChooseColor">Choose a color</sys:String>
     <sys:String x:Key="TransWinSettingsWin_srcSetNotice">Changes to the source text takes effect after texts updated.</sys:String>
     <sys:String x:Key="TransWinSettingsWin_enableWhiteStroke">Use white stroke</sys:String>
-    
+
     <sys:String x:Key="AddOptWin_Introduce">Enter the word you want to add into the thesaurus, which will be replaced directly in the original sentence before submitting for translation.</sys:String>
     <sys:String x:Key="AddOptWin_beforeBox">Original word</sys:String>
     <sys:String x:Key="AddOptWin_afterBox">Translation</sys:String>
@@ -305,7 +305,7 @@
     <sys:String x:Key="EBwinDictPage_AddDictionary">Add dictionary</sys:String>
     <sys:String x:Key="EBwinDictPage_EditDictionary">Edit</sys:String>
     <sys:String x:Key="EBwinDictPage_RemoveDictionary">Remove</sys:String>
-    
+
     <sys:String x:Key="MecabDictPage_Introduce">Please download the dictionary's databases of MeCab, and fill in its location.</sys:String>
     <sys:String x:Key="MecabDictPage_DBPath">Database folder path</sys:String>
     <sys:String x:Key="MecabDictPage_ClearPath">Clear</sys:String>
@@ -314,7 +314,7 @@
     <sys:String x:Key="ChooseHookFuncPage_MBOX_hookcodeConfirm_left">MisakaTranslator has detected that you have input custom H-code behavior. The last H-code recorded is</sys:String>
     <sys:String x:Key="ChooseHookFuncPage_MBOX_hookcodeConfirm_right">If you confirm that this H-code can get text, please select "Yes"; if it can't, select "No" to re-inject a custom H-code; if you do not need a custom H-code, please select "Cancel" to enter the next interface.</sys:String>
     <sys:String x:Key="ChooseHookFuncPage_BtnCannotfindHook">Can not find correct Hook?</sys:String>
-    
+
     <sys:String x:Key="App_Global_ErrorHint_left">MisakaTranslator encountered an exception that cannot be resolved. Details about this exception have been stored in the "</sys:String>
     <sys:String x:Key="App_Global_ErrorHint_right">" file in the "logs" Directory. To better the Translator, sending these files to the developer on GitHub to troubleshoot is appreciated.</sys:String>
 
@@ -350,7 +350,7 @@
     <sys:String x:Key="TransWinSettingsWin_Katakana">Katakana</sys:String>
     <sys:String x:Key="TransWinSettingsWin_Romaji">Romaji</sys:String>
     <sys:String x:Key="TransWinSettingsWin_PhoneticNotationCheckBox">Enable Japanese phonetic notation</sys:String>
-    <sys:String x:Key="TransWinSettingsWin_ColorfulCbox">Enable source text word segmentation coloring</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_ColorfulCbox">Enable source coloring</sys:String>
 
     <sys:String x:Key="TransWinSettingsWin_HirakanaCbox">Use Hiragana phonetic notation</sys:String>
     <sys:String x:Key="TransWinSettingsWin_KanaBoldCbox">Bold the kana label</sys:String>
@@ -448,7 +448,7 @@
     <sys:String x:Key="ChooseGamePage_FocusSelectGameProcess">Click on the game process</sys:String>
     <sys:String x:Key="ChooseGamePage_ConfirmFocusSelectGameProcess">Confirm click process</sys:String>
     <sys:String x:Key="Guide_Back">Previous</sys:String>
-    <sys:String x:Key="MainWindow_LEProcNotExistError"> does not exist, please check whether the LEProc.exe file exists</sys:String>
+    <sys:String x:Key="MainWindow_LEProcNotExistError">does not exist, please check whether the LEProc.exe file exists</sys:String>
     <sys:String x:Key="HookSettingsPage_TextractorCLINotExistError">TextractorCLI.exe not found</sys:String>
     <sys:String x:Key="EBwinDictPage_RemoveDictAsk">Are you sure you want to remove this dictionary?</sys:String>
     <sys:String x:Key="TransWinSettingsWindow_EnableFadeAnimation">Enable gradient animation</sys:String>
@@ -466,5 +466,34 @@
     <sys:String x:Key="SoftwareSettingsPage_AlreadyLatest">No update available</sys:String>
     <sys:String x:Key="SoftwareSettingsPage_RequestUpdateError">Failed to obtain update</sys:String>
     <sys:String x:Key="TransWinSettingsWindow_SingleLineDisplay">Single line display</sys:String>
+
+    <sys:String x:Key="ArtificialTranslator">Local human translation (see description)</sys:String>
+    <sys:String x:Key="AzureTranslator">Azure</sys:String>
+    <sys:String x:Key="BaiduTranslator">Baidu Translate</sys:String>
+    <sys:String x:Key="CaiyunTranslator">Lingocloud</sys:String>
+    <sys:String x:Key="ChatGPTTranslator">ChatGPT</sys:String>
+    <sys:String x:Key="DeepLTranslator">DeepL</sys:String>
+    <sys:String x:Key="DreyeTranslator">Dr.eye</sys:String>
+    <sys:String x:Key="GoogleCNTranslator">Google Translator (Public Interface)</sys:String>
+    <sys:String x:Key="IBMTranslator">IBM</sys:String>
+    <sys:String x:Key="JBeijingTranslator">JBeijing</sys:String>
+    <sys:String x:Key="KingsoftFastAITTranslator">Kingsoft Fast AIT</sys:String>
+    <sys:String x:Key="NoTranslator">No Translator</sys:String>
+    <sys:String x:Key="TencentOldTranslator">Tencent TMT</sys:String>
+    <sys:String x:Key="XiaoniuTranslator">Xiaoniu Translation</sys:String>
+    <sys:String x:Key="YandexTranslator">Yandex Translator</sys:String>
+    <sys:String x:Key="YoudaoZhiyun">Youdao AI</sys:String>
+    <sys:String x:Key="VolcanoTranslator">Volcano</sys:String>
+
+    <sys:String x:Key="Custom">User-defined DLL (see instructions)</sys:String>
+    <sys:String x:Key="CustomPythonScript">User-defined Python script:</sys:String>
+    <sys:String x:Key="MethodError">This method handles an error!</sys:String>
+    <sys:String x:Key="NoDeal">No processing</sys:String>
+    <sys:String x:Key="RegexReplace">Regular expression replacement (see instructions)</sys:String>
+    <sys:String x:Key="RemoveHTML">Remove HTML tags</sys:String>
+    <sys:String x:Key="RemoveLetterNumber">Remove letters and numbers</sys:String>
+    <sys:String x:Key="RemoveSentenceRepeat">Sentence repetition processing</sys:String>
+    <sys:String x:Key="RemoveSingleWordRepeat">Single word repetition processing</sys:String>
+    <sys:String x:Key="SentenceRepeatError">Sentence repetition error</sys:String>
 
 </ResourceDictionary>

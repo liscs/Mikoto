@@ -460,4 +460,33 @@
     <sys:String x:Key="SoftwareSettingsPage_RequestUpdateError">获取更新失败</sys:String>
     <sys:String x:Key="TransWinSettingsWindow_SingleLineDisplay">单行显示</sys:String>
 
+    <sys:String x:Key="ArtificialTranslator">本地人工翻译(见说明)</sys:String>
+    <sys:String x:Key="AzureTranslator">Azure</sys:String>
+    <sys:String x:Key="BaiduTranslator">百度翻译</sys:String>
+    <sys:String x:Key="CaiyunTranslator">彩云小译</sys:String>
+    <sys:String x:Key="ChatGPTTranslator">ChatGPT</sys:String>
+    <sys:String x:Key="DeepLTranslator">DeepL</sys:String>
+    <sys:String x:Key="DreyeTranslator">译典通</sys:String>
+    <sys:String x:Key="GoogleCNTranslator">谷歌翻译(公共接口)</sys:String>
+    <sys:String x:Key="IBMTranslator">IBM翻译</sys:String>
+    <sys:String x:Key="JBeijingTranslator">JBeijing</sys:String>
+    <sys:String x:Key="KingsoftFastAITTranslator">金山快译</sys:String>
+    <sys:String x:Key="NoTranslator">无翻译</sys:String>
+    <sys:String x:Key="TencentOldTranslator">腾讯云翻译</sys:String>
+    <sys:String x:Key="VolcanoTranslator">火山翻译</sys:String>
+    <sys:String x:Key="XiaoniuTranslator">小牛翻译</sys:String>
+    <sys:String x:Key="YandexTranslator">Yandex翻译</sys:String>
+    <sys:String x:Key="YoudaoZhiyun">有道智云</sys:String>
+
+    <sys:String x:Key="Custom">用户自定义DLL(见说明)</sys:String>
+    <sys:String x:Key="CustomPythonScript">用户自定义Python脚本:</sys:String>
+    <sys:String x:Key="MethodError">该方法处理错误！</sys:String>
+    <sys:String x:Key="NoDeal">不进行处理</sys:String>
+    <sys:String x:Key="RegexReplace">正则表达式替换(见说明)</sys:String>
+    <sys:String x:Key="RemoveHTML">去除HTML标签</sys:String>
+    <sys:String x:Key="RemoveLetterNumber">去除字母和数字</sys:String>
+    <sys:String x:Key="RemoveSentenceRepeat">句子重复处理</sys:String>
+    <sys:String x:Key="RemoveSingleWordRepeat">单字重复处理</sys:String>
+    <sys:String x:Key="SentenceRepeatError">句子去重出错</sys:String>
+
 </ResourceDictionary>

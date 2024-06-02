@@ -13,25 +13,22 @@
       Title="ChooseGamePage">
 
     <Grid>
-        <Grid Background="White">
+        <Grid Background="{DynamicResource PrimaryBackground}">
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0">
+            <StackPanel Grid.Row="0"
+                        Margin="10">
                 <TextBlock Text="{DynamicResource ChooseGamePage_Introduce}"
-                           FontSize="15"
-                           TextWrapping="WrapWithOverflow"
-                           Margin="10" />
+                           TextWrapping="WrapWithOverflow" />
                 <TextBlock Name="NoAdminPrivilegesTextBlock"
                            Text="{DynamicResource ChooseGamePage_NoAdminWarn}"
-                           FontSize="15"
                            TextWrapping="WrapWithOverflow"
-                           Foreground="Red"
-                           Margin="10" />
+                           Foreground="{DynamicResource WarningBrush}"/>
             </StackPanel>
 
             <hc:ComboBox Name="GameProcessCombox"
@@ -40,13 +37,13 @@
                          VerticalAlignment="Center"
                          SelectionChanged="GameProcessCombox_SelectionChanged" />
 
-                <TextBlock Grid.Row="2"
-                           Name="AutoHookTag"
-                           Text="[AutoHook]"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Margin="10"
-                           FontSize="15"></TextBlock>
+            <TextBlock Grid.Row="2"
+                       Name="AutoHookTag"
+                       Text="[AutoHook]"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="10"
+                       FontSize="15"></TextBlock>
             <StackPanel Grid.Row="3"
                         HorizontalAlignment="Right"
                         Orientation="Horizontal">

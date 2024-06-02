@@ -16,8 +16,8 @@ using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using TextHookLibrary;
 using TextRepairLibrary;
-using TranslatorLibrary;
-using TranslatorLibrary.Translator;
+using MisakaTranslator;
+using MisakaTranslator.Translators;
 using TransOptimizationLibrary;
 using TTSHelperLibrary;
 using Windows.Win32;
@@ -85,8 +85,8 @@ namespace MisakaTranslator
             {
                 TranslatorCommon.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
             }
-            _translator1 = TranslatorHelper.GetTranslator(Common.AppSettings.FirstTranslator);
-            _translator2 = TranslatorHelper.GetTranslator(Common.AppSettings.SecondTranslator);
+            _translator1 = TranslatorCommon.GetTranslator(Common.AppSettings.FirstTranslator);
+            _translator2 = TranslatorCommon.GetTranslator(Common.AppSettings.SecondTranslator);
 
             _beforeTransHandle = new BeforeTransHandle(Common.GameID.ToString(), Common.UsingSrcLang, Common.UsingDstLang);
             _afterTransHandle = new AfterTransHandle(_beforeTransHandle);

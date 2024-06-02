@@ -79,7 +79,8 @@
                                    Text="{DynamicResource ChooseTextRepairFuncPage_Drawer_Single}"
                                    FontSize="20"
                                    HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"></TextBlock>
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap"></TextBlock>
 
                         <TextBox Name="Single_TextBox"
                                  Grid.Row="1"
@@ -129,7 +130,8 @@
                                    Text="{DynamicResource ChooseTextRepairFuncPage_Drawer_Sentence}"
                                    FontSize="20"
                                    HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"></TextBlock>
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap" />
 
                         <TextBox Name="Sentence_TextBox"
                                  Grid.Row="1"
@@ -180,7 +182,8 @@
                                    Text="{DynamicResource ChooseTextRepairFuncPage_Drawer_RegexIntrduce}"
                                    FontSize="20"
                                    HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"></TextBlock>
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap" />
 
                         <TextBox Name="Regex_TextBox"
                                  hc:InfoElement.Placeholder="{DynamicResource ChooseTextRepairFuncPage_Drawer_Regex}"

@@ -27,8 +27,6 @@
 		<ProjectReference Include="..\DictionaryHelperLibrary\DictionaryHelperLibrary.csproj" />
 		<ProjectReference Include="..\MecabHelperLibrary\MecabHelperLibrary.csproj" />
 		<ProjectReference Include="..\TextHookLibrary\TextHookLibrary.csproj" />
-		<ProjectReference Include="..\TextRepairLibrary\TextRepairLibrary.csproj" />
-		<ProjectReference Include="..\TranslatorLibrary\TranslatorLibrary.csproj" />
 		<ProjectReference Include="..\TransOptimizationLibrary\TransOptimizationLibrary.csproj" />
 		<ProjectReference Include="..\TTSHelperLibrary\TTSHelperLibrary.csproj" />
 	</ItemGroup>
@@ -36,15 +34,12 @@
 	<ItemGroup>
 		<PackageReference Include="Config.Net" Version="5.2.0" />
 		<PackageReference Include="HandyControl" Version="3.5.1" />
+		<PackageReference Include="IronPython" Version="3.4.1" />
 		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.49-beta">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" />
 		<PackageReference Include="Microsoft.Windows.SDK.Win32Metadata" Version="56.0.13-preview" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000" IncludeAssets="none" ExcludeAssets="all" PrivateAssets="all" GeneratePathProperty="true" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Translators\" />
 	</ItemGroup>
 </Project>

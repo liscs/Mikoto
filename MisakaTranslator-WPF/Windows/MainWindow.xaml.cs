@@ -17,7 +17,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using TextHookLibrary;
-using TranslatorLibrary;
+using MisakaTranslator;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace MisakaTranslator
