@@ -106,7 +106,7 @@
                                   Content="{DynamicResource TransWinSettingsWindow_EnableFadeAnimation}"
                                   Margin="10,10,10,0" />
                         <CheckBox IsChecked="{Binding SrcSingleLineEnabled,Mode=TwoWay}"
-                                  Content="单行显示"
+                                  Content="{DynamicResource TransWinSettingsWindow_SingleLineDisplay}"
                                   Margin="10,10,10,0" />
                         <TextBlock TextWrapping="Wrap"
                                    Text="{DynamicResource TransWinSettingsWin_srcSetNotice}"

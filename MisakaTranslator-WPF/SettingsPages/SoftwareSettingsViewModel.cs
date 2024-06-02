@@ -17,5 +17,8 @@
             }
         }
 
+
+        public string CurrentVersion => Common.CurrentVersion.ToString(3);
+
     }
 }

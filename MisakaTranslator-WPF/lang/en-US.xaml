@@ -38,7 +38,7 @@
     <sys:String x:Key="MainWindow_TextractorError_Hint">Textractor doesn't exist or failed to start.</sys:String>
 
     <sys:String x:Key="SettingsMenu_WinName">Preferences</sys:String>
-    <sys:String x:Key="SettingsMenu_About">MisakaTranslator</sys:String>
+    <sys:String x:Key="SettingsMenu_Feedback">About</sys:String>
     <sys:String x:Key="SettingsMenu_SoftwareSettings">Software Settings</sys:String>
     <sys:String x:Key="SettingsMenu_LESettings">Locale Emulator Settings</sys:String>
     <sys:String x:Key="SettingsMenu_HookSettings">Hook Settings</sys:String>
@@ -455,6 +455,16 @@
     <sys:String x:Key="TransWinSettingsWindow_EnableBackgroundBlur">Enable background blur effect</sys:String>
     <sys:String x:Key="SourceTextMenuItem_Consult">Consult</sys:String>
     <sys:String x:Key="SourceTextMenuItem_CopyRuby">Copy Ruby</sys:String>
-    
+    <sys:String x:Key="MainWindow_Tip_AdminStart">Restart as Administrator</sys:String>
+    <sys:String x:Key="VolcanoTransSettingsPage_Introduce">Volcano Translate Introduction</sys:String>
+    <sys:String x:Key="SettingsMenu_TranslatorSettings_Volcano">Volcano Translate</sys:String>
+    <sys:String x:Key="SettingsMenu_TranslatorSettings_Amazon">Amazon Translate</sys:String>
+    <sys:String x:Key="AwsTransSettingsPage_Introduce">Amazon Translate Introduction</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_FontStrokeThickness">Font Stroke Thickness</sys:String>
+    <sys:String x:Key="TransWinSettingsWin_FontWeight">Font Weight</sys:String>
+    <sys:String x:Key="SoftwareSettingsPage_CheckUpdate">Check for Updates</sys:String>
+    <sys:String x:Key="SoftwareSettingsPage_AlreadyLatest">No update available</sys:String>
+    <sys:String x:Key="SoftwareSettingsPage_RequestUpdateError">Failed to obtain update</sys:String>
+    <sys:String x:Key="TransWinSettingsWindow_SingleLineDisplay">Single line display</sys:String>
 
 </ResourceDictionary>

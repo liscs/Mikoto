@@ -571,11 +571,11 @@ namespace MisakaTranslator
         }
 
 
-        private async void BlurWindow_ContentRendered(object sender, EventArgs e)
+        private void BlurWindow_ContentRendered(object sender, EventArgs e)
         {
             if (Common.AppSettings.UpdateCheckEnabled)
             {
-                await Common.CheckUpdateAsync();
+                Common.AutoCheckUpdate();
             }
         }
 

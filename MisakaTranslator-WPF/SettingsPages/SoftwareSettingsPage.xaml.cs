@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using HandyControl.Controls;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace MisakaTranslator.SettingsPages
@@ -46,6 +47,33 @@ namespace MisakaTranslator.SettingsPages
         private void GrowlEnabledCheckBox_Click(object sender, RoutedEventArgs e)
         {
             Common.AppSettings.GrowlEnabled = GrowlEnabledCheckBox.IsChecked ?? true;
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.IsEnabled = false;
+                LoadingCircle.Visibility = Visibility.Visible;
+                var result = await Common.CheckUpdateAsync();
+                switch (result.Item1)
+                {
+                    case CheckUpdateResult.CanUpdate:
+                        Common.ShowUpdateMessageBox(result.Item2!);
+                        break;
+                    case CheckUpdateResult.AlreadyLatest:
+                        Growl.InfoGlobal(Application.Current.Resources["SoftwareSettingsPage_AlreadyLatest"].ToString());
+                        break;
+                    case CheckUpdateResult.RequestError:
+                        Growl.InfoGlobal(Application.Current.Resources["SoftwareSettingsPage_RequestUpdateError"].ToString());
+                        break;
+                    default:
+                        break;
+                }
+                LoadingCircle.Visibility = Visibility.Hidden;
+                button.IsEnabled = true;
+            }
+
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using ArtificialTransHelperLibrary;
 using HandyControl.Controls;
-using KeyboardMouseHookLibrary;
 using MecabHelperLibrary;
 using MisakaTranslator.Helpers;
 using System.ComponentModel;
@@ -49,7 +48,6 @@ namespace MisakaTranslator
         private string _currentsrcText = string.Empty; //当前源文本内容
 
         private Queue<HistoryInfo> _gameTextHistory; //历史文本
-        private static KeyboardMouseHook? _hook; //全局键盘鼠标钩子
 
         private readonly object _saveTransResultLock = new(); // 读写数据库和_gameTextHistory的线程锁
 
@@ -931,11 +929,6 @@ namespace MisakaTranslator
             Common.AppSettings.TF_SizeW = Convert.ToString((int)this.Width);
             Common.AppSettings.TF_SizeH = Convert.ToString((int)this.Height);
 
-            if (_hook != null)
-            {
-                _hook.Stop();
-                _hook = null;
-            }
 
             if (Common.TextHooker != null)
             {

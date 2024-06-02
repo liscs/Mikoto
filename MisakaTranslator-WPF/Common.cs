@@ -1,5 +1,4 @@
 ﻿using HandyControl.Controls;
-using KeyboardMouseHookLibrary;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -11,7 +10,6 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Windows;
 using System.Windows.Interop;
-using System.Windows.Media.Imaging;
 using TextHookLibrary;
 using TextRepairLibrary;
 using MessageBox = HandyControl.Controls.MessageBox;
@@ -64,8 +62,6 @@ namespace MisakaTranslator
         public static string UsingSrcLang { get; set; } = "ja";//全局使用中的源语言
         public static string UsingDstLang { get; set; } = "zh"; //全局使用中的目标翻译语言
 
-        public static bool IsAllWindowCap { get; set; } //是否全屏截图
-        public static HotKeyInfo UsingHotKey { get; set; } = default!; //全局使用中的触发键信息
         public static bool IsAdmin
         {
             get
@@ -144,7 +140,7 @@ namespace MisakaTranslator
         /// <summary>
         /// 检查软件更新
         /// </summary>
-        public static async Task CheckUpdateAsync()
+        public static async void AutoCheckUpdate()
         {
             Version currentVersion = Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
             try
@@ -152,20 +148,60 @@ namespace MisakaTranslator
                 Version latestVersion = await GetLatestVersionAsync();
                 if (latestVersion > currentVersion)
                 {
-                    MessageBoxResult dr = MessageBox.Show(latestVersion + Environment.NewLine + Application.Current.Resources["MainWindow_AutoUpdateCheck"].ToString(), "AutoUpdateCheck", MessageBoxButton.OKCancel);
-
-                    if (dr == MessageBoxResult.OK)
-                    {
-                        Process.Start(new ProcessStartInfo("https://github.com/liscs/MisakaTranslator/releases/latest") { UseShellExecute = true });
-                    }
+                    ShowUpdateMessageBox(latestVersion);
                 }
             }
             catch (HttpRequestException ex)
             {
                 Growl.WarningGlobal(ex.Message);
             }
-
         }
+
+        public static void ShowUpdateMessageBox(Version latestVersion)
+        {
+            MessageBoxResult dr = MessageBox.Show($"{CurrentVersion.ToString(3)}->{latestVersion}{Environment.NewLine}{Application.Current.Resources["MainWindow_AutoUpdateCheck"]}",
+                                                  Application.Current.Resources["MessageBox_Ask"].ToString(),
+                                                  MessageBoxButton.OKCancel);
+
+            if (dr == MessageBoxResult.OK)
+            {
+                Process.Start(new ProcessStartInfo("https://github.com/liscs/MisakaTranslator/releases/latest") { UseShellExecute = true });
+            }
+        }
+
+        /// <summary>
+        /// 检查软件更新
+        /// </summary>
+        public static async Task<(CheckUpdateResult, Version?)> CheckUpdateAsync()
+        {
+            Version currentVersion = CurrentVersion;
+            try
+            {
+                Version latestVersion = await GetLatestVersionAsync();
+                if (latestVersion > currentVersion)
+                {
+                    return (CheckUpdateResult.CanUpdate, latestVersion);
+                }
+                else
+                {
+                    return (CheckUpdateResult.AlreadyLatest, null);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Growl.WarningGlobal(ex.Message);
+            }
+            return (CheckUpdateResult.RequestError, null);
+        }
+
+        public static Version CurrentVersion
+        {
+            get
+            {
+                return Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
+            }
+        }
+
         private static async Task<Version> GetLatestVersionAsync()
         {
             string url = "https://api.github.com/repos/liscs/MisakaTranslator/releases/latest";
@@ -179,26 +215,21 @@ namespace MisakaTranslator
                 request.Method = HttpMethod.Get;
                 request.RequestUri = new Uri(url);
                 request.Headers.Add("Cache-Control", "no-cache");
-                try
+                using HttpResponseMessage response = await httpClient.SendAsync(request).ConfigureAwait(false);
+                string result = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    using HttpResponseMessage response = await httpClient.SendAsync(request).ConfigureAwait(false);
-                    string result = await response.Content.ReadAsStringAsync();
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        JsonNode? jsonNode = JsonSerializer.Deserialize<JsonNode>(result);
-                        string? versionString = jsonNode?["tag_name"]?.GetValue<string>();
+                    JsonNode? jsonNode = JsonSerializer.Deserialize<JsonNode>(result);
+                    string? versionString = jsonNode?["tag_name"]?.GetValue<string>();
 
-                        if (!string.IsNullOrEmpty(versionString))
-                        {
-                            int[] versionNumber = versionString.Split('v', '.')
-                                .Where(p => !string.IsNullOrEmpty(p))
-                                .Select(int.Parse).ToArray();
-                            return new Version(versionNumber[0], versionNumber[1], versionNumber[2]);
-                        }
+                    if (!string.IsNullOrEmpty(versionString))
+                    {
+                        int[] versionNumber = versionString.Split('v', '.')
+                                                           .Where(p => !string.IsNullOrEmpty(p))
+                                                           .Select(int.Parse)
+                                                           .ToArray();
+                        return new Version(versionNumber[0], versionNumber[1], versionNumber[2]);
                     }
-                }
-                catch
-                {
                 }
                 return new Version();
             }
@@ -224,5 +255,12 @@ namespace MisakaTranslator
                 return null;
             }
         }
+    }
+
+    public enum CheckUpdateResult
+    {
+        CanUpdate,
+        AlreadyLatest,
+        RequestError,
     }
 }

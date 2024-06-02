@@ -1,20 +1,28 @@
 ﻿<Page x:Class="MisakaTranslator.SettingsPages.AboutPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:MisakaTranslator.SettingsPages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="594"
+      xmlns:hc="https://handyorg.github.io/handycontrol"
+      mc:Ignorable="d"
+      d:DesignHeight="450"
+      d:DesignWidth="594"
       Title="AboutPage">
 
-    <Grid Background="White">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="5*" />
-            <RowDefinition Height="1*" />
-        </Grid.RowDefinitions>
-        <Image Grid.Row="0" Source="AboutV2_small.jpg" Margin="20"></Image>
-        <Button Grid.Row="1" Content="{DynamicResource AboutPage_BtnHelp}" HorizontalAlignment="Left" Margin="20" Click="BtnHelp_Click"></Button>
-        <Button Grid.Row="1" Content="{DynamicResource AboutPage_BtnGithub}" HorizontalAlignment="Right" Margin="20" Click="BtnGithub_Click"></Button>
+    <Grid>
+        <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Background="White"
+                        Margin="10">
+                <Button Content="{DynamicResource AboutPage_BtnHelp}"
+                        Click="BtnHelp_Click"
+                        HorizontalAlignment="Left"
+                        Margin="0,10,0,0" />
+                <Button Content="{DynamicResource AboutPage_BtnGithub}"
+                        Click="BtnGithub_Click"
+                        HorizontalAlignment="Left"
+                        Margin="0,10,0,0" />
+            </StackPanel>
+        </hc:ScrollViewer>
     </Grid>
 </Page>

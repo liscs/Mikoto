@@ -18,8 +18,6 @@
 		<Resource Include="logo.ico" />
 		<Resource Include="GuidePages\Completation.png" />
 		<Resource Include="GuidePages\Completation_small.png" />
-		<Resource Include="SettingsPages\AboutV2.jpg" />
-		<Resource Include="SettingsPages\AboutV2_small.jpg" />
 		<None Update="textRepairPlugins\*" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 
@@ -27,10 +25,6 @@
 		<ProjectReference Include="..\ArtificialTransHelperLibrary\ArtificialTransHelperLibrary.csproj" />
 		<ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
 		<ProjectReference Include="..\DictionaryHelperLibrary\DictionaryHelperLibrary.csproj" />
-		<ProjectReference Include="..\KeyboardMouseHookLibrary\KeyboardMouseHookLibrary.csproj" />
-		<ProjectReference Include="..\KeyboardMouseMonitor\KeyboardMouseMonitor.csproj">
-			<TreatAsUsed>true</TreatAsUsed>
-		</ProjectReference>
 		<ProjectReference Include="..\MecabHelperLibrary\MecabHelperLibrary.csproj" />
 		<ProjectReference Include="..\TextHookLibrary\TextHookLibrary.csproj" />
 		<ProjectReference Include="..\TextRepairLibrary\TextRepairLibrary.csproj" />
@@ -48,5 +42,9 @@
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" />
 		<PackageReference Include="Microsoft.Windows.SDK.Win32Metadata" Version="56.0.13-preview" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000" IncludeAssets="none" ExcludeAssets="all" PrivateAssets="all" GeneratePathProperty="true" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Translators\" />
 	</ItemGroup>
 </Project>

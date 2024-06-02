@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranslatorLibrary", "Transl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextRepairLibrary", "TextRepairLibrary\TextRepairLibrary.csproj", "{722C0650-3D77-42B2-A754-50F2CB3F4C8B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardMouseHookLibrary", "KeyboardMouseHookLibrary\KeyboardMouseHookLibrary.csproj", "{1AE9EA11-9FA0-4D30-B16E-ECF7183DEC7A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextHookLibrary", "TextHookLibrary\TextHookLibrary.csproj", "{A976D07E-0B39-41B6-B6F7-7022BBFBD3FF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MecabHelperLibrary", "MecabHelperLibrary\MecabHelperLibrary.csproj", "{82FDE770-321E-4433-8E05-8803850F24DB}"
@@ -26,8 +24,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DictionaryHelperLibrary", "
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTSHelperLibrary", "TTSHelperLibrary\TTSHelperLibrary.csproj", "{DD77C61B-AF8A-44BE-BAC7-745381F84753}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardMouseMonitor", "KeyboardMouseMonitor\KeyboardMouseMonitor.csproj", "{259361ED-FE9C-4F15-864D-88587EE19BD9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtificialTransHelperLibrary", "ArtificialTransHelperLibrary\ArtificialTransHelperLibrary.csproj", "{A6568552-A4D0-4546-ACE5-D8A710EE7E0E}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -65,10 +61,6 @@ Global
 		{722C0650-3D77-42B2-A754-50F2CB3F4C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{722C0650-3D77-42B2-A754-50F2CB3F4C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{722C0650-3D77-42B2-A754-50F2CB3F4C8B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1AE9EA11-9FA0-4D30-B16E-ECF7183DEC7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1AE9EA11-9FA0-4D30-B16E-ECF7183DEC7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1AE9EA11-9FA0-4D30-B16E-ECF7183DEC7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1AE9EA11-9FA0-4D30-B16E-ECF7183DEC7A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A976D07E-0B39-41B6-B6F7-7022BBFBD3FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A976D07E-0B39-41B6-B6F7-7022BBFBD3FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A976D07E-0B39-41B6-B6F7-7022BBFBD3FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -89,10 +81,6 @@ Global
 		{DD77C61B-AF8A-44BE-BAC7-745381F84753}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD77C61B-AF8A-44BE-BAC7-745381F84753}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD77C61B-AF8A-44BE-BAC7-745381F84753}.Release|Any CPU.Build.0 = Release|Any CPU
-		{259361ED-FE9C-4F15-864D-88587EE19BD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{259361ED-FE9C-4F15-864D-88587EE19BD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{259361ED-FE9C-4F15-864D-88587EE19BD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{259361ED-FE9C-4F15-864D-88587EE19BD9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A6568552-A4D0-4546-ACE5-D8A710EE7E0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A6568552-A4D0-4546-ACE5-D8A710EE7E0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6568552-A4D0-4546-ACE5-D8A710EE7E0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
