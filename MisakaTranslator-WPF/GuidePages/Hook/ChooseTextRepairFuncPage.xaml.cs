@@ -81,7 +81,7 @@ namespace MisakaTranslator.GuidePages.Hook
             //使用路由事件机制通知窗口来完成下一步操作
             PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
             {
-                XamlPath = "GuidePages/ChooseLanguagePage.xaml",
+                Page = new ChooseLanguagePage(),
             };
             this.RaiseEvent(args);
         }

@@ -1,5 +1,6 @@
 ﻿using DataAccessLibrary;
 using MisakaTranslator.GuidePages;
+using MisakaTranslator.GuidePages.Hook;
 using System.Windows;
 
 namespace MisakaTranslator
@@ -34,7 +35,7 @@ namespace MisakaTranslator
 
                 GuideStepBar.ItemsSource = lstStep;
                 FuncHint.Text = Application.Current.Resources["GameGuideWin_FuncHint_Hook"].ToString();
-                GuidePageFrame.Navigate(new Uri("GuidePages/Hook/ChooseGamePage.xaml", UriKind.Relative));
+                GuidePageFrame.Navigate(new ChooseGamePage());
             }
             else if (Mode == GuideMode.Rehook)
             {
@@ -47,7 +48,7 @@ namespace MisakaTranslator
 
                 GuideStepBar.ItemsSource = lstStep;
                 FuncHint.Text = Application.Current.Resources["GameGuideWin_FuncHint_ReHook"].ToString();
-                GuidePageFrame.Navigate(new Uri("GuidePages/Hook/ReChooseHookFuncPage.xaml", UriKind.Relative));
+                GuidePageFrame.Navigate(new ReChooseHookFuncPage());
             }
             else if (Mode == GuideMode.Clipboard)
             {
@@ -61,7 +62,7 @@ namespace MisakaTranslator
 
                 GuideStepBar.ItemsSource = lstStep;
                 FuncHint.Text = Application.Current.Resources["GameGuideWin_FuncHint_ClipBoard"].ToString();
-                GuidePageFrame.Navigate(new Uri("GuidePages/Hook/ChooseTextRepairFuncPage.xaml", UriKind.Relative));
+                GuidePageFrame.Navigate(new ChooseTextRepairFuncPage());
             }
         }
 
@@ -78,7 +79,7 @@ namespace MisakaTranslator
                 GuidePageFrame.NavigationService.GoBack();
                 GuideStepBar.Prev();
             }
-            else if (args.XamlPath == "1")
+            else if (args.Page == null)
             {
                 switch (GuideMode)
                 {
@@ -104,7 +105,7 @@ namespace MisakaTranslator
             else
             {
                 //其他情况就跳转指定页面
-                GuidePageFrame.NavigationService.Navigate(new Uri(args.XamlPath, UriKind.Relative));
+                GuidePageFrame.NavigationService.Navigate(args.Page);
                 GuideStepBar.Next();
             }
 

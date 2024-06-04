@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace MisakaTranslator.GuidePages
 {
@@ -6,10 +7,7 @@ namespace MisakaTranslator.GuidePages
     {
         public PageChangeRoutedEventArgs(RoutedEvent routedEvent, object source) : base(routedEvent, source) { }
 
-        /// <summary>
-        /// 下一页的XAML地址
-        /// </summary>
-        public string XamlPath { get; set; } = string.Empty;
+        public Page? Page { get; set; }
         public bool IsBack { get; internal set; }
 
         /// <summary>

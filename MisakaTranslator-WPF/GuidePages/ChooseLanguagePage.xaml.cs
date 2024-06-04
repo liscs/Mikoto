@@ -38,9 +38,9 @@ namespace MisakaTranslator.GuidePages
                 GameInfoBuilder.GameInfo.DstLang = Common.UsingDstLang;
 
                 //使用路由事件机制通知窗口来完成下一步操作
-                PageChangeRoutedEventArgs args = new PageChangeRoutedEventArgs(PageChange.PageChangeRoutedEvent, this)
+                PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
                 {
-                    XamlPath = "GuidePages/CompletationPage.xaml"
+                    Page = new CompletationPage()
                 };
                 this.RaiseEvent(args);
             }
