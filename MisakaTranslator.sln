@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决�
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MisakaTranslator.Tests", "MisakaTranslator.Tests\MisakaTranslator.Tests.csproj", "{C35CDF1A-D6FA-4063-A9F5-0CEFF98841B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalizationTool", "LocalizationTool\LocalizationTool.csproj", "{FF130DB9-22AF-4504-892D-73EAF0E305AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{C35CDF1A-D6FA-4063-A9F5-0CEFF98841B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C35CDF1A-D6FA-4063-A9F5-0CEFF98841B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C35CDF1A-D6FA-4063-A9F5-0CEFF98841B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF130DB9-22AF-4504-892D-73EAF0E305AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF130DB9-22AF-4504-892D-73EAF0E305AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF130DB9-22AF-4504-892D-73EAF0E305AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF130DB9-22AF-4504-892D-73EAF0E305AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

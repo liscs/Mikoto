@@ -23,7 +23,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <hc:TextBox hc:InfoElement.TitlePlacement="Left"
-                                    hc:InfoElement.Title="访问密钥"
+                                    hc:InfoElement.Title="{DynamicResource AwsTransSettingsPage_Id}"
                                     Name="AwsTransIdBox"
                                     hc:InfoElement.ShowClearButton="True" />
                         <Button Grid.Column="1"
@@ -40,7 +40,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <hc:TextBox hc:InfoElement.TitlePlacement="Left"
-                                    hc:InfoElement.Title="秘密访问密钥"
+                                    hc:InfoElement.Title="{DynamicResource AwsTransSettingsPage_SecretKey}"
                                     Name="AwsTransKeyBox"
                                     hc:InfoElement.ShowClearButton="True" />
                         <Button Grid.Column="1"

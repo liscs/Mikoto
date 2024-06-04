@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using MisakaTranslator.SettingsPages;
+using MisakaTranslator.SettingsPages.DictionaryPages;
+using MisakaTranslator.SettingsPages.TranslatorPages;
+using MisakaTranslator.SettingsPages.TTSPages;
+using System.Windows;
 
 namespace MisakaTranslator
 {
@@ -20,132 +24,132 @@ namespace MisakaTranslator
 
         private void Item_About_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/AboutPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new AboutPage());
         }
 
         private void Item_TransGeneral_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/TranslatorGeneralSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new TranslatorGeneralSettingsPage());
         }
 
         private void Item_BaiduTrans_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/BaiduTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new BaiduTransSettingsPage());
         }
 
         private void Item_DeepLTrans_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/DeepLTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new DeepLTransSettingsPage());
         }
 
         private void Item_ChatGPTTrans_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/ChatGPTTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new ChatGPTTransSettingsPage());
         }
 
         private void Item_AzureTrans_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/AzureTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new AzureTransSettingsPage());
         }
 
         private void Item_TXOTrans_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/TencentOldTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new TencentOldTransSettingsPage());
         }
 
         private void Item_YDZYTrans_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/YoudaoZhiyunTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new YoudaoZhiyunTransSettingsPage());
         }
 
         private void Item_Caiyun_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/CaiyunTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new CaiyunTransSettingsPage());
         }
 
         private void Item_JBeijing_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/JbeijingTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new JbeijingTransSettingsPage());
         }
 
         private void Item_HookSettings_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/HookSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new HookSettingsPage());
         }
 
         private void Item_SoftwareSettings_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/SoftwareSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new SoftwareSettingsPage());
         }
 
         private void Item_LESettings_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/LESettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new LESettingsPage());
         }
 
         private void Item_EBWinSettings_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/DictionaryPages/EBwinDictPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new ManageDictionariesPage());
         }
 
         private void Item_MeCabSettings_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/DictionaryPages/MecabDictPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new MecabDictPage());
         }
 
         private void Item_KingsoftFAIT_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/KingsoftFAITTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new KingsoftFAITTransSettingsPage());
         }
 
         private void Item_Dreye_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/DreyeTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new DreyeTransSettingsPage());
         }
 
         private void Item_ChooseTTS_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TTSPages/TTSGeneralSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new TTSGeneralSettingsPage());
         }
 
         private void Item_LocalTTS_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TTSPages/LocalTTSSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new LocalTTSSettingsPage());
         }
 
         private void Item_AzureTTS_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TTSPages/AzureTTSSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new AzureTTSSettingsPage());
         }
 
         private void Item_ATSettings_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/ArtificialTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new ArtificialTransSettingsPage());
         }
 
         private void Item_Xiaoniu_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/XiaoniuTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new XiaoniuTransSettingsPage());
         }
 
         private void Item_IBM_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/IBMTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new IBMTransSettingsPage());
         }
 
         private void Item_Yandex_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/YandexTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new YandexTransSettingsPage());
         }
 
         private void Item_Volcano_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/VolcanoTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new VolcanoTransSettingsPage());
         }
 
         private void Item_Amazon_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new Uri("/SettingsPages/TranslatorPages/AwsTransSettingsPage.xaml", UriKind.Relative));
+            this.SettingFrame.Navigate(new AwsTransSettingsPage());
 
         }
     }

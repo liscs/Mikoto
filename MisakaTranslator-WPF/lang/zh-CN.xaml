@@ -371,6 +371,8 @@
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Volcano">火山翻译</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Amazon">Amazon Translate</sys:String>
     <sys:String x:Key="AwsTransSettingsPage_Introduce">Amazon Translate简介</sys:String>
+    <sys:String x:Key="AwsTransSettingsPage_Id">访问密钥</sys:String>
+    <sys:String x:Key="AwsTransSettingsPage_SecretKey">秘密访问密钥</sys:String>
     <sys:String x:Key="TransWinSettingsWin_FontStrokeThickness">字体描边宽度</sys:String>
     <sys:String x:Key="TransWinSettingsWin_FontWeight">字重</sys:String>
     <sys:String x:Key="SoftwareSettingsPage_CheckUpdate">检查更新</sys:String>
@@ -406,5 +408,6 @@
     <sys:String x:Key="RemoveSentenceRepeat">句子重复处理</sys:String>
     <sys:String x:Key="RemoveSingleWordRepeat">单字重复处理</sys:String>
     <sys:String x:Key="SentenceRepeatError">句子去重出错</sys:String>
+    
 
 </ResourceDictionary>

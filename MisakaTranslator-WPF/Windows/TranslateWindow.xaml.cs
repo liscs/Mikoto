@@ -294,7 +294,7 @@ namespace MisakaTranslator
         private DictResWindow? _dictResWindow;
 
 
-        private static async Task<string> GetSelectdText(RichTextBox textBox)
+        private static async Task<string> GetSelectedText(RichTextBox textBox)
         {
             (_, string result) = await GetRubyAndText(textBox);
             if (string.IsNullOrWhiteSpace(result))
@@ -409,6 +409,7 @@ namespace MisakaTranslator
                     catch (ObjectDisposedException)
                     {
                         //说明翻译窗口已经关闭，mecab资源已Dispose
+                        Logger.Info("翻译窗口已经关闭，mecab资源已Dispose");
                     }
 
                 }
@@ -1179,7 +1180,7 @@ namespace MisakaTranslator
 
         private async void ConsultMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string text = await GetSelectdText(_richTextBoxes[_updatingSouceNumber]);
+            string text = await GetSelectedText(_richTextBoxes[_updatingSouceNumber]);
             if (!string.IsNullOrWhiteSpace(text))
             {
                 _dictResWindow ??= new DictResWindow(_tts);

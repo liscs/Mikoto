@@ -2,7 +2,7 @@
 {
     public class Logger
     {
-        public static void WriteLine(string? str)
+        public static void Info(string? str)
         {
             if (str != null)
             {
