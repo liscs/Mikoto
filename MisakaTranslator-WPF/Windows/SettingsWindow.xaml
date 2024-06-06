@@ -10,7 +10,8 @@
         Height="476"
         MinHeight="476"
         Width="800"
-        MinWidth="800">
+        MinWidth="800"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
