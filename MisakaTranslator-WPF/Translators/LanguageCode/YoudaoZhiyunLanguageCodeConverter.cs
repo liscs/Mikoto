@@ -1,18 +1,16 @@
 ﻿using System.Globalization;
 
-namespace MisakaTranslator.LanguageCode
+namespace MisakaTranslator
 {
-    public static class YoudaoZhiyunLanguageCodeConverter
+    public class YoudaoZhiyunLanguageCodeConverter : ILanguageCodeConverter
     {
         public static string GetLanguageCode(CultureInfo cultureInfo)
         {
-            switch (cultureInfo.TwoLetterISOLanguageName)
+            return cultureInfo.TwoLetterISOLanguageName switch
             {
-                case "zh":
-                    return "zh-CHS";
-                default:
-                    return cultureInfo.TwoLetterISOLanguageName;
-            }
+                "zh" => "zh-CHS",
+                _ => cultureInfo.TwoLetterISOLanguageName,
+            };
         }
     }
 }

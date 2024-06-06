@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Globalization;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -99,6 +100,9 @@ namespace MisakaTranslator.Translators
                 return null;
             }
 
+            srcLang = GetLanguageCode(new CultureInfo(srcLang));
+            dstLang = GetLanguageCode(new CultureInfo(dstLang));
+
             DateTime date = DateTime.UtcNow;
             string requestPayload = JsonSerializer.Serialize(new
             {
@@ -164,6 +168,10 @@ namespace MisakaTranslator.Translators
             }
         }
 
+        private string GetLanguageCode(CultureInfo cultureInfo)
+        {
+            return TencentOldLanguageCodeConverter.GetLanguageCode(cultureInfo);
+        }
 
         public static ITranslator TranslatorInit(params string[] param)
         {

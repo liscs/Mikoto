@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using System.Text.Json;
 using System.Windows;
 
@@ -18,6 +19,8 @@ namespace MisakaTranslator.Translators
 
         public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
+            srcLang = GetLanguageCode(new CultureInfo(srcLang));
+            desLang = GetLanguageCode(new CultureInfo(desLang));
             // 原文
             string q = sourceText;
 
@@ -76,6 +79,11 @@ namespace MisakaTranslator.Translators
                 }
             }
 
+        }
+
+        private string GetLanguageCode(CultureInfo cultureInfo)
+        {
+            return XiaoniuLanguageCodeConverter.GetLanguageCode(cultureInfo);
         }
 
         public static ITranslator TranslatorInit(params string[] param)

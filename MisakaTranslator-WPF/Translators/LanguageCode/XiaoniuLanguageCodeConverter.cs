@@ -2,14 +2,13 @@
 
 namespace MisakaTranslator
 {
-    public class GoogleCNLanguageCodeConverter : ILanguageCodeConverter
+    public class XiaoniuLanguageCodeConverter : ILanguageCodeConverter
     {
         public static string GetLanguageCode(CultureInfo cultureInfo)
         {
             return cultureInfo.TwoLetterISOLanguageName switch
             {
-                "zh" => "zh-CN",
-                "zh-Hant" => "zh-TW",
+                "zh-Hant" => "cht",
                 _ => cultureInfo.TwoLetterISOLanguageName,
             };
         }

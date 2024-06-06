@@ -1,5 +1,4 @@
-﻿using MisakaTranslator.LanguageCode;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Web;
 using System.Windows;
 

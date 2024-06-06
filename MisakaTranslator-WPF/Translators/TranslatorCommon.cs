@@ -66,7 +66,8 @@ namespace MisakaTranslator
         // 默认使用cultureinfo的语言代码
         public static Dictionary<string, string> LanguageDict = new Dictionary<string, string>()
         {
-            { "中文" , "zh" },
+            { "简体中文" , "zh" },
+            { "繁體中文" , "zh-Hant" },
             { "English" , "en" },
             { "日本語" ,  "ja" },
             { "한국어" , "ko" },

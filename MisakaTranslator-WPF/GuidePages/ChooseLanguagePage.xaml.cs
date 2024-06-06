@@ -18,7 +18,7 @@ namespace MisakaTranslator.GuidePages
             SrcLangCombox.ItemsSource = _langList;
             DstLangCombox.ItemsSource = _langList;
 
-            SrcLangCombox.SelectedIndex = 2;
+            SrcLangCombox.SelectedIndex = 3;
             DstLangCombox.SelectedIndex = 0;
         }
 

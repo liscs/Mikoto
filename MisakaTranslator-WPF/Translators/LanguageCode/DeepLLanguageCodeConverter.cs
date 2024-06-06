@@ -1,20 +1,17 @@
 ﻿using System.Globalization;
 
-namespace MisakaTranslator.LanguageCode
+namespace MisakaTranslator
 {
-    public static class DeepLLanguageCodeConverter
+    public class DeepLLanguageCodeConverter : ILanguageCodeConverter
     {
         public static string GetLanguageCode(CultureInfo cultureInfo)
         {
-            switch (cultureInfo.TwoLetterISOLanguageName)
+            return cultureInfo.TwoLetterISOLanguageName switch
             {
-                case "en":
-                    return "EN-US";
-                case "pt":
-                    return "PT-BR";
-                default:
-                    return cultureInfo.TwoLetterISOLanguageName.ToUpper();
-            }
+                "en" => "EN-US",
+                "pt" => "PT-BR",
+                _ => cultureInfo.TwoLetterISOLanguageName.ToUpper(),
+            };
         }
     }
 }

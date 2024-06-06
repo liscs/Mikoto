@@ -166,6 +166,9 @@ namespace MisakaTranslator
             if (dr == MessageBoxResult.OK)
             {
                 Process.Start(new ProcessStartInfo("https://github.com/liscs/MisakaTranslator/releases/latest") { UseShellExecute = true });
+                //点击确认，自动下载最新版并替换重启
+                //需要多进程
+
             }
         }
 
@@ -202,6 +205,9 @@ namespace MisakaTranslator
             }
         }
 
+        /// <summary>
+        /// 获取github最新release的tag作为最新版本
+        /// </summary>
         private static async Task<Version> GetLatestVersionAsync()
         {
             string url = "https://api.github.com/repos/liscs/MisakaTranslator/releases/latest";
