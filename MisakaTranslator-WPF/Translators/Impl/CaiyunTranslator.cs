@@ -7,6 +7,7 @@ namespace MisakaTranslator.Translators
 {
     public class CaiyunTranslator : ITranslator
     {
+        private CaiyunTranslator() { }
         public string? caiyunToken;//彩云小译 令牌
         private string errorInfo = string.Empty;//错误信息
 
@@ -41,7 +42,7 @@ namespace MisakaTranslator.Translators
                 {"detect", true}
             });
 
-            var hc = TranslatorCommon.GetHttpClient();
+            var hc = TranslatorCommon.HttpClientInstance;
             var req = new StringContent(jsonParam, null, "application/json");
             req.Headers.Add("X-Authorization", "token " + caiyunToken);
             try
@@ -66,7 +67,7 @@ namespace MisakaTranslator.Translators
             CaiyunTransResult oinfo;
             try
             {
-                oinfo = JsonSerializer.Deserialize<CaiyunTransResult>(retString, TranslatorCommon.JsonOP);
+                oinfo = JsonSerializer.Deserialize<CaiyunTransResult>(retString, TranslatorCommon.JsonSerializerOptions);
             }
             catch
             {

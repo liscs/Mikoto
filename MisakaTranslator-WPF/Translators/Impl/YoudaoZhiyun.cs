@@ -10,6 +10,7 @@ namespace MisakaTranslator.Translators
 {
     public class YoudaoZhiyun : ITranslator
     {
+        private YoudaoZhiyun() { }
         private static readonly string TRANSLATE_API_URL = "https://openapi.youdao.com/api";
         private string? appId, appSecret;
         private string errorInfo = string.Empty;
@@ -29,7 +30,7 @@ namespace MisakaTranslator.Translators
             string q = sourceText;
             string input = q.Length <= 20 ? q : q.Substring(0, 10) + q.Length + q.Substring(q.Length - 10);
             string salt = DateTime.Now.Millisecond.ToString();
-            string curtime = TranslatorCommon.GetTimeStamp();
+            string curtime = GetTimeStamp();
             SHA256 sha = SHA256.Create();
             string sign = BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(appId + input + salt + curtime + appSecret))).Replace("-", "").ToLower();
             sha.Dispose();
@@ -52,7 +53,7 @@ namespace MisakaTranslator.Translators
 
             try
             {
-                HttpResponseMessage response = await TranslatorCommon.GetHttpClient().PostAsync(TRANSLATE_API_URL, request);
+                HttpResponseMessage response = await TranslatorCommon.HttpClientInstance.PostAsync(TRANSLATE_API_URL, request);
                 if (response.IsSuccessStatusCode)
                 {
                     string resultStr = await response.Content.ReadAsStringAsync();
@@ -93,7 +94,14 @@ namespace MisakaTranslator.Translators
             return youdaoZhiyun;
         }
 
-
+        /// <summary>
+        /// 计算时间戳
+        /// </summary>
+        /// <returns></returns>
+        public static string GetTimeStamp()
+        {
+            return DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+        }
         public string GetLastError()
         {
             return errorInfo;

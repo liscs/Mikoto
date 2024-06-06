@@ -11,6 +11,7 @@ namespace MisakaTranslator.Translators
 {
     public class ChatGPTTranslator : ITranslator
     {
+        private ChatGPTTranslator() { }
         public static readonly string SIGN_UP_URL = "https://platform.openai.com";
         public static readonly string BILL_URL = "https://platform.openai.com/account/usage";
         public static readonly string DOCUMENT_URL = "https://platform.openai.com/docs/introduction/overview";
@@ -38,7 +39,7 @@ namespace MisakaTranslator.Translators
             }
             string retString;
             string jsonParam = $"{{\"model\": \"{openai_model}\",\"messages\": [{{\"role\": \"system\", \"content\": \"Translate {srcLang} To {desLang}\"}},{{\"role\": \"user\", \"content\": \"{q}\"}}]}}";
-            var hc = TranslatorCommon.GetHttpClient();
+            var hc = TranslatorCommon.HttpClientInstance;
             var req = new StringContent(jsonParam, null, "application/json");
             hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
             try
@@ -64,7 +65,7 @@ namespace MisakaTranslator.Translators
 
             try
             {
-                oinfo = JsonSerializer.Deserialize<ChatResponse>(retString, TranslatorCommon.JsonOP);
+                oinfo = JsonSerializer.Deserialize<ChatResponse>(retString, TranslatorCommon.JsonSerializerOptions);
             }
             catch
             {
@@ -80,7 +81,7 @@ namespace MisakaTranslator.Translators
             {
                 try
                 {
-                    var err = JsonSerializer.Deserialize<ChatResErr>(retString, TranslatorCommon.JsonOP);
+                    var err = JsonSerializer.Deserialize<ChatResErr>(retString, TranslatorCommon.JsonSerializerOptions);
                     errorInfo = err.error.message;
                     return null;
                 }

@@ -10,6 +10,7 @@ namespace MisakaTranslator.Translators
 {
     public class AwsTranslator : ITranslator
     {
+        private AwsTranslator() { }
         private string? _accessKey;
         private string? _secretKey;
 

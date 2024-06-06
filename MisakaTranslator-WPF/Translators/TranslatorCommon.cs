@@ -1,8 +1,6 @@
 ﻿using MisakaTranslator.Translators;
 using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace MisakaTranslator
 {
@@ -49,8 +47,8 @@ namespace MisakaTranslator
                 TranslatorDict.Clear();
                 Type type = typeof(ITranslator);
                 var types = AppDomain.CurrentDomain.GetAssemblies()
-                    .SelectMany(s => s.GetTypes())
-                    .Where(p => type.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract);
+                                                   .SelectMany(s => s.GetTypes())
+                                                   .Where(p => type.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract);
                 foreach (Type item in types)
                 {
                     object? obj = Activator.CreateInstance(item);
@@ -79,39 +77,7 @@ namespace MisakaTranslator
             { "Italiano", "it" }
         };
 
-        public static Dictionary<string, string> TranslatorDict = new Dictionary<string, string>();
-        /// <summary>
-        /// 计算MD5值
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public static string EncryptString(string str)
-        {
-            MD5 md5 = MD5.Create();
-            // 将字符串转换成字节数组
-            byte[] byteOld = Encoding.UTF8.GetBytes(str);
-            // 调用加密方法
-            byte[] byteNew = md5.ComputeHash(byteOld);
-            md5.Dispose();
-            // 将加密结果转换为字符串
-            StringBuilder sb = new StringBuilder();
-            foreach (byte b in byteNew)
-            {
-                // 将字节转换成16进制表示的字符串，
-                sb.Append(b.ToString("x2"));
-            }
-            // 返回加密的字符串
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// 计算时间戳
-        /// </summary>
-        /// <returns></returns>
-        public static string GetTimeStamp()
-        {
-            return DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
-        }
+        public static Dictionary<string, string> TranslatorDict { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// 获取所有可用的翻译API列表
@@ -140,36 +106,39 @@ namespace MisakaTranslator
             return -1;
         }
 
-        private static HttpClient? HC;
+        private static HttpClient? _httpClient;
         /// <summary>
         /// 获得HttpClient单例，第一次调用自动初始化
         /// </summary>
-        public static HttpClient GetHttpClient()
+        public static HttpClient HttpClientInstance
         {
-            if (HC == null)
-                lock (typeof(TranslatorCommon))
-                    if (HC == null)
-                    {
-                        HC = new HttpClient() { Timeout = TimeSpan.FromSeconds(8) };
-                        HC.DefaultRequestHeaders.UserAgent.ParseAdd("MisakaTranslator");
-                        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12; // For FX4.7
-                    }
-            return HC;
-        }
-        public static void SetHttpProxiedClient(string addr)
-        {
-            if (HC == null)
+            get
             {
-                var px = new WebProxy() { Address = new Uri(addr), UseDefaultCredentials = true };
-                var ph = new HttpClientHandler() { Proxy = px };
-                HC = new HttpClient(ph) { Timeout = TimeSpan.FromSeconds(8) };
-                HC.DefaultRequestHeaders.UserAgent.ParseAdd("MisakaTranslator");
+                if (_httpClient == null)
+                    lock (typeof(TranslatorCommon))
+                        if (_httpClient == null)
+                        {
+                            _httpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(8) };
+                            _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("MisakaTranslator");
+                            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12; // For FX4.7
+                        }
+                return _httpClient;
             }
         }
 
-        public static Random RD = new Random();
+        public static void SetHttpProxiedClient(string addr)
+        {
+            if (_httpClient == null)
+            {
+                var px = new WebProxy() { Address = new Uri(addr), UseDefaultCredentials = true };
+                var ph = new HttpClientHandler() { Proxy = px };
+                _httpClient = new HttpClient(ph) { Timeout = TimeSpan.FromSeconds(8) };
+                _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("MisakaTranslator");
+            }
+        }
 
-        public static System.Text.Json.JsonSerializerOptions JsonOP = new()
+
+        public static System.Text.Json.JsonSerializerOptions JsonSerializerOptions { get; set; } = new()
         {
             IncludeFields = true
         };

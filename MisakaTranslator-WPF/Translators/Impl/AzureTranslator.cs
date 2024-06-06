@@ -8,6 +8,7 @@ namespace MisakaTranslator.Translators
 {
     public class AzureTranslator : ITranslator
     {
+        private AzureTranslator() { }
         //快速入门：Azure AI 翻译 REST API https://learn.microsoft.com/zh-cn/azure/ai-services/translator/quickstart-text-rest-api?tabs=csharp
         //语言简写列表 https://learn.microsoft.com/zh-CN/azure/ai-services/translator/language-support
 
@@ -31,7 +32,7 @@ namespace MisakaTranslator.Translators
             object[] body = new object[] { new { Text = textToTranslate } };
             var requestBody = JsonSerializer.Serialize(body);
             AzureTransOutInfo oinfo;
-            var client = TranslatorCommon.GetHttpClient();
+            var client = TranslatorCommon.HttpClientInstance;
             using (var request = new HttpRequestMessage())
             {
                 // Build the request.
@@ -47,7 +48,7 @@ namespace MisakaTranslator.Translators
                     string result = await response.Content.ReadAsStringAsync();
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        oinfo = JsonSerializer.Deserialize<List<AzureTransOutInfo>>(result, TranslatorCommon.JsonOP)!.ElementAt(0);
+                        oinfo = JsonSerializer.Deserialize<List<AzureTransOutInfo>>(result, TranslatorCommon.JsonSerializerOptions)!.ElementAt(0);
                         if (oinfo.translations.Length == 0)
                             return string.Empty;
                         else if (oinfo.translations.Length == 1)
@@ -62,7 +63,7 @@ namespace MisakaTranslator.Translators
                     }
                     else
                     {
-                        oinfo = JsonSerializer.Deserialize<AzureTransOutInfo>(result, TranslatorCommon.JsonOP);
+                        oinfo = JsonSerializer.Deserialize<AzureTransOutInfo>(result, TranslatorCommon.JsonSerializerOptions);
                         errorInfo = $"ErrorCode: {oinfo.error.code}, Message: {oinfo.error.message}";
                         return null;
                     }

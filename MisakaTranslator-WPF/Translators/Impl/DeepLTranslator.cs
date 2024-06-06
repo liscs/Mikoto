@@ -12,6 +12,7 @@ namespace MisakaTranslator.Translators
 {
     public class DeepLTranslator : ITranslator
     {
+        private DeepLTranslator() { }
         public static readonly string SIGN_UP_URL = "https://www.deepl.com/pro?cta=menu-login-signup";
         public static readonly string BILL_URL = "https://www.deepl.com/pro-account/usage";
         public static readonly string DOCUMENT_URL = "https://www.deepl.com/docs-api/accessing-the-api/error-handling/";
@@ -47,11 +48,11 @@ namespace MisakaTranslator.Translators
 
             try
             {
-                HttpResponseMessage response = await TranslatorCommon.GetHttpClient().PostAsync(TRANSLATE_API_URL, request);
+                HttpResponseMessage response = await TranslatorCommon.HttpClientInstance.PostAsync(TRANSLATE_API_URL, request);
                 if (response.IsSuccessStatusCode)
                 {
                     string resultStr = await response.Content.ReadAsStringAsync();
-                    DeepLTranslateResult translateResult = JsonSerializer.Deserialize<DeepLTranslateResult>(resultStr, TranslatorCommon.JsonOP);
+                    DeepLTranslateResult translateResult = JsonSerializer.Deserialize<DeepLTranslateResult>(resultStr, TranslatorCommon.JsonSerializerOptions);
                     if (translateResult.translations?.Length > 0)
                     {
                         return translateResult.translations[0].text;

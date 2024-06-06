@@ -12,6 +12,7 @@ namespace MisakaTranslator.Translators
 {
     public class VolcanoTranslator : ITranslator
     {
+        private VolcanoTranslator() { }
         private string? _apiKey;
         private string? _apiSecret;
 
@@ -111,7 +112,7 @@ namespace MisakaTranslator.Translators
             string nowTime = dateTimeSign.ToString("HHmmss");
             string dateTimeSignStr = nowDate + "T" + nowTime + "Z";
 
-            HttpClient httpClient = TranslatorCommon.GetHttpClient();
+            HttpClient httpClient = TranslatorCommon.HttpClientInstance;
             using HttpRequestMessage httpRequestMessage = new();
             httpRequestMessage.RequestUri = new Uri(URL);
             httpRequestMessage.Method = HttpMethod.Post;

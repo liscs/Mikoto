@@ -10,6 +10,7 @@ namespace MisakaTranslator.Translators
 {
     public class TencentOldTranslator : ITranslator
     {
+        private TencentOldTranslator() { }
 
         private string errorInfo = string.Empty;//错误信息
         public string? SecretId;//腾讯旧版API SecretId

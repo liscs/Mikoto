@@ -5,6 +5,7 @@ namespace MisakaTranslator.Translators
 {
     public class JBeijingTranslator : ITranslator
     {
+        private JBeijingTranslator() { }
         /*
          * 根据猜测得到的DLL函数 来源 https://github.com/Artikash/VNR-Core/blob/6ed038bda9dcd35696040bd45d31afa6a30e8978/py/libs/jbeijing/jbjct.py
         int __cdecl JC_Transfer_Unicode(

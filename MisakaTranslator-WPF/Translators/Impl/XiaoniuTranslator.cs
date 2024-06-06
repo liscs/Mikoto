@@ -7,6 +7,7 @@ namespace MisakaTranslator.Translators
 {
     public class XiaoniuTranslator : ITranslator
     {
+        private XiaoniuTranslator() { }
         public string? apiKey;//小牛翻译API 的APIKEY
         private string errorInfo = string.Empty;//错误信息
 
@@ -34,7 +35,7 @@ namespace MisakaTranslator.Translators
 
             string url = sb.ToString();
 
-            var hc = TranslatorCommon.GetHttpClient();
+            var hc = TranslatorCommon.HttpClientInstance;
             try
             {
                 retString = await hc.GetStringAsync(url);
@@ -50,7 +51,7 @@ namespace MisakaTranslator.Translators
                 return null;
             }
 
-            XiaoniuTransOutInfo oinfo = JsonSerializer.Deserialize<XiaoniuTransOutInfo>(retString, TranslatorCommon.JsonOP);
+            XiaoniuTransOutInfo oinfo = JsonSerializer.Deserialize<XiaoniuTransOutInfo>(retString, TranslatorCommon.JsonSerializerOptions);
 
             if (oinfo.error_code == null || oinfo.error_code == "52000")
             {

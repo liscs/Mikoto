@@ -8,6 +8,7 @@ namespace MisakaTranslator.Translators
 {
     public class YandexTranslator : ITranslator
     {
+        private YandexTranslator() { }
         public string? ApiKey;
 
         private string errorInfo = string.Empty;
@@ -21,13 +22,13 @@ namespace MisakaTranslator.Translators
 
         public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
-            var hc = TranslatorCommon.GetHttpClient();
+            var hc = TranslatorCommon.HttpClientInstance;
             string apiurl = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + ApiKey + "&lang=" + srcLang + "-" + desLang + "&text=";
 
             try
             {
                 string retString = await hc.GetStringAsync(apiurl + HttpUtility.UrlEncode(sourceText));
-                var doc = JsonSerializer.Deserialize<Result>(retString, TranslatorCommon.JsonOP);
+                var doc = JsonSerializer.Deserialize<Result>(retString, TranslatorCommon.JsonSerializerOptions);
                 return doc.text[0];
             }
             catch (HttpRequestException ex)

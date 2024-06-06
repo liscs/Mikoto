@@ -8,6 +8,7 @@ namespace MisakaTranslator.Translators
 
     public class KingsoftFastAITTranslator : ITranslator
     {
+        private KingsoftFastAITTranslator() { }
         private const string DEFAULT_DIC = "DCT";
         private int buffersize = 0x4f4;
         private int key = 0x4f4;

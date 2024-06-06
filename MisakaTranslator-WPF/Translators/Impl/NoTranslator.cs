@@ -4,6 +4,7 @@ namespace MisakaTranslator.Translators
 {
     public class NoTranslator : ITranslator
     {
+        private NoTranslator() { }
         public string TranslatorDisplayName { get { return Application.Current.Resources["NoTranslator"].ToString()!; } }
 
         public string GetLastError()

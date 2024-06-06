@@ -9,6 +9,7 @@ namespace MisakaTranslator.Translators
 
     public class DreyeTranslator : ITranslator
     {
+        private DreyeTranslator() { }
         private const int EC_DAT = 1;   //英中
         private const int CE_DAT = 2;   //中英
         private const int CJ_DAT = 3;   //中日

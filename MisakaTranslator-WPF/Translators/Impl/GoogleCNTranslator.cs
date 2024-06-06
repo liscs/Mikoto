@@ -6,6 +6,7 @@ namespace MisakaTranslator.Translators
 {
     public class GoogleCNTranslator : ITranslator
     {
+        private GoogleCNTranslator() { }
         private string errorInfo = string.Empty;//错误信息
 
         public string TranslatorDisplayName { get { return Application.Current.Resources["GoogleCNTranslator"].ToString()!; } }
@@ -24,13 +25,13 @@ namespace MisakaTranslator.Translators
 
             string googleTransUrl = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&sl=" + srcLang + "&tl=" + desLang + "&q=" + HttpUtility.UrlEncode(sourceText);
 
-            var hc = TranslatorCommon.GetHttpClient();
+            var hc = TranslatorCommon.HttpClientInstance;
 
             try
             {
                 var ResultHtml = await hc.GetStringAsync(googleTransUrl);
 
-                dynamic TempResult = System.Text.Json.JsonSerializer.Deserialize<dynamic>(ResultHtml, TranslatorCommon.JsonOP)!;
+                dynamic TempResult = System.Text.Json.JsonSerializer.Deserialize<dynamic>(ResultHtml, TranslatorCommon.JsonSerializerOptions)!;
 
                 string ResultText = "";
 

@@ -7,6 +7,7 @@ namespace MisakaTranslator.Translators
 {
     public class IBMTranslator : ITranslator
     {
+        private IBMTranslator() { }
         public string? ApiKey;
         public string? URL;
 
@@ -33,7 +34,7 @@ namespace MisakaTranslator.Translators
             }
 
             HttpResponseMessage resp;
-            var hc = TranslatorCommon.GetHttpClient();
+            var hc = TranslatorCommon.HttpClientInstance;
             var req = new HttpRequestMessage(HttpMethod.Post, URL);
             string jsonParam = JsonSerializer.Serialize(new Dictionary<string, object>
             {
@@ -63,7 +64,7 @@ namespace MisakaTranslator.Translators
             }
 
             string retString = await resp.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<Result>(retString, TranslatorCommon.JsonOP);
+            var result = JsonSerializer.Deserialize<Result>(retString, TranslatorCommon.JsonSerializerOptions);
 
             if (!resp.IsSuccessStatusCode)
             {

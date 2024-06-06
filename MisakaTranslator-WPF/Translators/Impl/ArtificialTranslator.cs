@@ -9,6 +9,7 @@ namespace MisakaTranslator.Translators
      */
     public class ArtificialTranslator : ITranslator
     {
+        private ArtificialTranslator() { }
         private class CursorPriorityQueue
         {
             public class CPQComparator : IComparer<(int, double)>
