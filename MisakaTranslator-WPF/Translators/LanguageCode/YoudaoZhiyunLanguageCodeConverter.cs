@@ -6,10 +6,10 @@ namespace MisakaTranslator
     {
         public static string GetLanguageCode(CultureInfo cultureInfo)
         {
-            return cultureInfo.TwoLetterISOLanguageName switch
+            return cultureInfo.Name switch
             {
                 "zh" => "zh-CHS",
-                _ => cultureInfo.TwoLetterISOLanguageName,
+                _ => cultureInfo.Name,
             };
         }
     }

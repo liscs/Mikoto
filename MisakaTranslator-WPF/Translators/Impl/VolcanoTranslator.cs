@@ -33,7 +33,6 @@ namespace MisakaTranslator.Translators
         private const string ALGORITHM = "HMAC-SHA256";
         private readonly List<string> H_INCLUDE = ["Content-Type", "Content-Md5", "Host"];
 
-        public VolcanoTranslator() { }
 
 
         public async Task<string?> TranslateAsync(string text, string sourceLanguage, string targetLanguage)

@@ -6,11 +6,11 @@ namespace MisakaTranslator
     {
         public static string GetLanguageCode(CultureInfo cultureInfo)
         {
-            return cultureInfo.TwoLetterISOLanguageName switch
+            return cultureInfo.Name switch
             {
                 "zh" => "zh-CN",
                 "zh-Hant" => "zh-TW",
-                _ => cultureInfo.TwoLetterISOLanguageName,
+                _ => cultureInfo.Name,
             };
         }
     }

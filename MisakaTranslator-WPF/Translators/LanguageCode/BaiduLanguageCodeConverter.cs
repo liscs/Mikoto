@@ -36,7 +36,7 @@ namespace MisakaTranslator
 
         public static string GetLanguageCode(CultureInfo cultureInfo)
         {
-            return cultureInfo.TwoLetterISOLanguageName switch
+            return cultureInfo.Name switch
             {
                 "ja" => "jp",
                 "ko" => "kor",
@@ -53,7 +53,7 @@ namespace MisakaTranslator
                 "zh-Hant" => "cht",
                 "vi" => "vie",
 
-                _ => cultureInfo.TwoLetterISOLanguageName,
+                _ => cultureInfo.Name,
             };
         }
     }

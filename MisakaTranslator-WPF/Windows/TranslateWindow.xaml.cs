@@ -1029,13 +1029,13 @@ namespace MisakaTranslator
                 case HistoryFilterOption.OnlyFirstTranslator:
                     if (_translator1 != null)
                     {
-                        historyList = historyList.Where(p => p.TranslatorName == _translator1.TranslatorDisplayName).ToArray();
+                        historyList = historyList.Where(p => p.TranslatorName == _translator1?.GetType().GetProperty(nameof(ITranslator.TranslatorDisplayName))?.GetValue(null)?.ToString()).ToArray();
                     }
                     break;
                 case HistoryFilterOption.OnlySecondTranslator:
                     if (_translator1 != null)
                     {
-                        historyList = historyList.Where(p => p.TranslatorName == _translator2!.TranslatorDisplayName).ToArray();
+                        historyList = historyList.Where(p => p.TranslatorName == _translator1?.GetType().GetProperty(nameof(ITranslator.TranslatorDisplayName))?.GetValue(null)?.ToString()).ToArray();
                     }
                     break;
                 default:

@@ -51,7 +51,7 @@ namespace MisakaTranslator
                                                    .Where(p => type.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract);
                 foreach (Type item in types)
                 {
-                    object? obj = Activator.CreateInstance(item);
+                    object? obj = Activator.CreateInstance(item, true);
                     string? displayName = item.GetProperty(nameof(ITranslator.TranslatorDisplayName))?.GetValue(obj)?.ToString();
                     if (!string.IsNullOrEmpty(displayName))
                     {

@@ -6,11 +6,11 @@ namespace MisakaTranslator
     {
         public static string GetLanguageCode(CultureInfo cultureInfo)
         {
-            return cultureInfo.TwoLetterISOLanguageName switch
+            return cultureInfo.Name switch
             {
                 "en" => "EN-US",
                 "pt" => "PT-BR",
-                _ => cultureInfo.TwoLetterISOLanguageName.ToUpper(),
+                _ => cultureInfo.Name.ToUpper(),
             };
         }
     }
