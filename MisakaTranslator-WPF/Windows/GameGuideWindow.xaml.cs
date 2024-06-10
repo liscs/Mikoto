@@ -8,7 +8,7 @@ namespace MisakaTranslator
     /// <summary>
     /// GameGuideWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class GameGuideWindow : Window
+    public partial class GameGuideWindow 
     {
         private GuideMode GuideMode;
         private bool isComplete;//是否是在完成状态下退出的，作为检验，默认为假

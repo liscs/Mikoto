@@ -12,7 +12,7 @@
 
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
-            <StackPanel Background="White"
+            <StackPanel 
                         Margin="10">
                 <Button Content="{DynamicResource AboutPage_BtnHelp}"
                         Click="BtnHelp_Click"

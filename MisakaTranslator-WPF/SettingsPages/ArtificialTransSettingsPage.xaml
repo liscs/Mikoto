@@ -12,7 +12,7 @@
     <Grid>
         <Grid>
             <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
-                <StackPanel Background="White">
+                <StackPanel >
                     <TextBlock Text="{DynamicResource ArtificialTransSettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
                     <StackPanel Margin="20,10,10,10" Height="348">
                         <TextBlock Text="{DynamicResource ArtificialTransSettingsPage_ATon_Hint}" Margin="0,20,0,0" TextWrapping="WrapWithOverflow"/>

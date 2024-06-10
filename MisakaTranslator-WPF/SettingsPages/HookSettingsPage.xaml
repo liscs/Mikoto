@@ -11,7 +11,7 @@
 
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
-            <StackPanel Background="White">
+            <StackPanel >
                 <TextBlock Text="{DynamicResource HookSettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
                 <StackPanel Margin="20,10,10,10" Height="348" >
                     <Grid Margin="0,10">

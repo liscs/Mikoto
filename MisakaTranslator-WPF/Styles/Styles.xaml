@@ -111,6 +111,25 @@
         </Setter>
     </Style>
 
+    <Style x:Key="MicaWindowStyle"
+           TargetType="{x:Type Window}">
+        <Setter Property="WindowChrome.WindowChrome">
+            <Setter.Value>
+                <WindowChrome CaptionHeight="32"
+                              GlassFrameThickness="-1" />
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="Background">
+            <Setter.Value>
+                <Brush>
+                    #00FFFFFF
+                </Brush>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
     <Style x:Key="StandardStyle"
            TargetType="{x:Type local:MainWindow}">
         <Setter Property="WindowChrome.WindowChrome">

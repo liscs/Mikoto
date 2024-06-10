@@ -14,8 +14,7 @@
 
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
-            <StackPanel Background="{DynamicResource PrimaryBackground}"
-                        Margin="10">
+            <StackPanel Margin="10">
                 <TextBlock Text="Mikoto Version"
                            FontSize="{DynamicResource SubHeadFontSize}"
                            FontWeight="{DynamicResource SettinrTitleTextWeight}"

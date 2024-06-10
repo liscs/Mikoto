@@ -11,7 +11,7 @@
 
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
-            <StackPanel Background="White">
+            <StackPanel >
                 <TextBlock Text="{DynamicResource KingsoftFAITTransSettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
                 <StackPanel Margin="20,20,20,0">
                     <hc:TextBox hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource KingsoftFAITTransSettingsPage_Path}" Name="PathBox" hc:InfoElement.ShowClearButton="True"/>

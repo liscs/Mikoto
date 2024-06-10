@@ -9,8 +9,8 @@
       d:DesignHeight="450" d:DesignWidth="594"
       Title="LESettingsPage">
 
-    <Grid Background="White">
-        <StackPanel Background="White">
+    <Grid >
+        <StackPanel >
             <TextBlock Text="{DynamicResource LESettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
 
             <hc:TextBox Margin="10" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource LESettingsPage_LEbox}" Name="PathBox" hc:InfoElement.ShowClearButton="True" LostFocus="PathBox_LostFocus"/>

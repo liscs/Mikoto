@@ -13,7 +13,7 @@
       Title="ChooseGamePage">
 
     <Grid>
-        <Grid Background="{DynamicResource PrimaryBackground}">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition></RowDefinition>

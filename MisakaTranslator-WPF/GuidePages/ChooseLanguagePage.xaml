@@ -11,7 +11,7 @@
       Title="ChooseLanguagePage">
 
     <Grid>
-        <Grid Background="White">
+        <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="0.5*" />

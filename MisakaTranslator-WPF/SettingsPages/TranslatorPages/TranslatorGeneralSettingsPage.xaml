@@ -10,7 +10,7 @@
       Title="TranslatorGeneralSettingsPage">
 
     <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Background="White">
+        <StackPanel >
             <TextBlock Text="{DynamicResource GeneralTransSettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
             <StackPanel Margin="20,36,0,0">
                 <hc:ComboBox Name="FirstTransCombox" MinWidth="380" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource GeneralTransSettingsPage_FirstTranslator}" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{DynamicResource GeneralTransSettingsPage_TransSourceHint}" hc:Poptip.Placement="Top" SelectionChanged="FirstTransCombox_SelectionChanged" HorizontalAlignment="Left"/>

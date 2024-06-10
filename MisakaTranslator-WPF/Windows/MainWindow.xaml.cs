@@ -263,10 +263,6 @@ namespace MisakaTranslator
             GameNameTag.Text = GameInfoList[_gid].GameName;
             GameNameTag.MouseEnter += (_, _) => GameNameTag.TextDecorations = TextDecorations.Underline;
             GameNameTag.MouseLeave += (_, _) => GameNameTag.TextDecorations = null;
-            if (GameInfoList[_gid].TransMode == 1)
-            {
-                TransModeTag.Text = Application.Current.Resources["MainWindow_Drawer_Tag_TransMode"].ToString() + "Hook";
-            }
 
             GameInfoDrawer.IsOpen = true;
             e.Handled = true;

@@ -13,7 +13,7 @@
 
     <Grid>
         <Grid>
-            <Grid Background="White">
+            <Grid >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
@@ -64,7 +64,7 @@
 
             <hc:Drawer Name="Single_InputDrawer"
                        MaskCanClose="False">
-                <Border Background="White"
+                <Border 
                         Width="300"
                         BorderThickness="0,1,0,0"
                         BorderBrush="{DynamicResource BorderBrush}">
@@ -115,7 +115,7 @@
 
             <hc:Drawer Name="Sentence_InputDrawer"
                        MaskCanClose="False">
-                <Border Background="White"
+                <Border 
                         Width="300"
                         BorderThickness="0,1,0,0"
                         BorderBrush="{DynamicResource BorderBrush}">
@@ -166,7 +166,7 @@
 
             <hc:Drawer Name="Regex_InputDrawer"
                        MaskCanClose="False">
-                <Border Background="White"
+                <Border 
                         Width="300"
                         BorderThickness="0,1,0,0"
                         BorderBrush="{DynamicResource BorderBrush}">

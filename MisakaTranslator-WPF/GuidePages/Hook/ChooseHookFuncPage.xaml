@@ -13,7 +13,7 @@
 
     <Grid>
         <Grid>
-            <Grid Background="{DynamicResource PrimaryBackground}">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
@@ -32,7 +32,6 @@
 
                 <ListView Name="HookFunListView"
                           Grid.Row="1"
-                          Background="White"
                           SelectionMode="Single">
                     <ListView.View>
                         <GridView>
@@ -91,8 +90,7 @@
 
             <hc:Drawer Name="InputDrawer"
                        MaskCanClose="False">
-                <Border Background="White"
-                        Width="300"
+                <Border Width="300"
                         BorderThickness="0,1,0,0"
                         BorderBrush="{DynamicResource BorderBrush}">
                     <Grid>
