@@ -137,9 +137,9 @@ namespace MisakaTranslator.GuidePages.Hook
 
         private void HookCodeConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (PIDTextBox.Text != "" && HookCodeTextBox.Text != "" && int.TryParse(PIDTextBox.Text, out int pid))
+            if (HookCodeTextBox.Text != "")
             {
-                _ = Common.TextHooker!.AttachProcessByHookCodeAsync(pid, HookCodeTextBox.Text);
+                _ = Common.TextHooker!.AttachProcessByHookCodeAsync(GameInfoBuilder.GameProcessId, HookCodeTextBox.Text);
                 LastCustomHookCode = HookCodeTextBox.Text;
                 InputDrawer.IsOpen = false;
                 HandyControl.Controls.Growl.Info(Application.Current.Resources["ChooseHookFuncPage_HookApplyHint"].ToString());

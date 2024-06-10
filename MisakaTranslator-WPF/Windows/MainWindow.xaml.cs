@@ -261,8 +261,9 @@ namespace MisakaTranslator
 
             GameNameTag.Tag = _gid;
             GameNameTag.Text = GameInfoList[_gid].GameName;
-            GameNameTag.MouseEnter += (_, _) => GameNameTag.TextDecorations = TextDecorations.Underline;
-            GameNameTag.MouseLeave += (_, _) => GameNameTag.TextDecorations = null;
+
+
+            _viewModel.LastStartTime = GameInfoList[_gid].LastPlayAt.ToString();
 
             GameInfoDrawer.IsOpen = true;
             e.Handled = true;
@@ -612,5 +613,9 @@ namespace MisakaTranslator
                 NotifyIconContextContent.Show();
             }
         }
+
+        private void GameNameTag_MouseEnter(object sender, MouseEventArgs e) => GameNameTag.TextDecorations = TextDecorations.Underline;
+
+        private void GameNameTag_MouseLeave(object sender, MouseEventArgs e) => GameNameTag.TextDecorations = null;
     }
 }

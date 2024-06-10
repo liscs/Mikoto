@@ -32,7 +32,7 @@
 
                 <ListView Name="HookFunListView"
                           Grid.Row="1"
-                          SelectionMode="Single">
+                          SelectionMode="Single" Background="Transparent">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Width="Auto"
@@ -107,17 +107,6 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    TextWrapping="Wrap" />
-
-                        <TextBox Name="PIDTextBox"
-                                 hc:InfoElement.Placeholder="{DynamicResource ChooseHookFuncPage_Drawer_PidBox}"
-                                 hc:InfoElement.Necessary="True"
-                                 Style="{DynamicResource TextBoxExtend}"
-                                 Grid.Row="1"
-                                 HorizontalAlignment="Center"
-                                 Margin="10"
-                                 VerticalAlignment="Center"
-                                 FontSize="15"
-                                 Width="200" />
 
                         <TextBox Name="HookCodeTextBox"
                                  hc:InfoElement.Placeholder="{DynamicResource ChooseHookFuncPage_Drawer_HookCodeBox}"

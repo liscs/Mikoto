@@ -1,5 +1,4 @@
-﻿using MicaWPF.Controls;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -11,10 +10,10 @@ namespace MisakaTranslator
     /// <summary>
     /// 提供打开日志快捷键的窗口基类
     /// </summary>
-    public partial class MajorWindow : MicaWindow
+    public partial class MajorWindow : Window
     {
 
-        private unsafe static int SetWindowAttribute(IntPtr hwnd, Windows.Win32.Graphics.Dwm.DWMWINDOWATTRIBUTE attribute, int parameter)
+        private static unsafe int SetWindowAttribute(IntPtr hwnd, Windows.Win32.Graphics.Dwm.DWMWINDOWATTRIBUTE attribute, int parameter)
         {
             return PInvoke.DwmSetWindowAttribute((Windows.Win32.Foundation.HWND)hwnd,
                 attribute,

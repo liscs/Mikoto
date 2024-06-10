@@ -67,6 +67,8 @@ namespace MisakaTranslator.GuidePages.Hook
                 string filepath = ProcessHelper.FindProcessPath(_gamePid, isx64);
                 if (!string.IsNullOrEmpty(filepath))
                 {
+                    GameInfoBuilder.Reset();
+                    GameInfoBuilder.GameProcessId = _gamePid;
                     GameInfoBuilder.GameInfo = GameHelper.GetGameByPath(filepath);
                     Common.GameID = GameInfoBuilder.GameInfo.GameID;
                     GameInfoBuilder.GameInfo.Isx64 = isx64;
@@ -103,19 +105,6 @@ namespace MisakaTranslator.GuidePages.Hook
                     _viewModel.EnableSelectFocusButton = true;
                     return (int)pid;
                 }
-            }
-        }
-
-        private void ConfirmSelectWindowButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_gamePid != -1)
-            {
-                _sameNameGameProcessList = ProcessHelper.FindSameNameProcess(_gamePid);
-                GenerateHookerAndGotoNextStep(_gamePid);
-            }
-            else
-            {
-                HandyControl.Controls.Growl.Error(Application.Current.Resources["ChooseGamePage_NextErrorHint"].ToString());
             }
         }
     }

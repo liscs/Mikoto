@@ -20,6 +20,10 @@ namespace MisakaTranslator
                 SetProperty(ref _LEEnabled, value);
             }
         }
+
+        private string lastStartTime;
+
+        public string LastStartTime { get => lastStartTime; set => SetProperty(ref lastStartTime, value); }
     }
 
 }
