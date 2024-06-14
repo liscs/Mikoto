@@ -21,8 +21,6 @@ namespace MisakaTranslator.Translators
             srcLang = GetLanguageCode(new CultureInfo(srcLang));
             desLang = GetLanguageCode(new CultureInfo(desLang));
 
-            string fun = string.Format(@"TL('{0}')", sourceText);
-
             string googleTransUrl = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&sl=" + srcLang + "&tl=" + desLang + "&q=" + HttpUtility.UrlEncode(sourceText);
 
             var hc = TranslatorCommon.HttpClientInstance;

@@ -107,6 +107,7 @@ namespace MisakaTranslator
         }
 
         private static HttpClient? _httpClient;
+        private static readonly object _httpClientLock = new object();
         /// <summary>
         /// 获得HttpClient单例，第一次调用自动初始化
         /// </summary>
@@ -115,13 +116,17 @@ namespace MisakaTranslator
             get
             {
                 if (_httpClient == null)
-                    lock (typeof(TranslatorCommon))
+                {
+                    lock (_httpClientLock)
+                    {
                         if (_httpClient == null)
                         {
                             _httpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(8) };
                             _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("MisakaTranslator");
-                            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12; // For FX4.7
                         }
+                    }
+                }
+
                 return _httpClient;
             }
         }

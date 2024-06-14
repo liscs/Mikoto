@@ -14,7 +14,6 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using TextHookLibrary;
 using MessageBox = HandyControl.Controls.MessageBox;
@@ -240,7 +239,7 @@ namespace MisakaTranslator
         private void StartAnimation(Border b, ThicknessAnimation doubleAnimation)
         {
             Storyboard.SetTarget(doubleAnimation, b);
-            Storyboard.SetTargetProperty(doubleAnimation, new PropertyPath("BorderThickness"));
+            Storyboard.SetTargetProperty(doubleAnimation, new PropertyPath(Border.BorderThicknessProperty));
             Storyboard ellipseStoryboard = new();
             ellipseStoryboard.Children.Add(doubleAnimation);
             doubleAnimation.Freeze();

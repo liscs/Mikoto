@@ -31,9 +31,7 @@ namespace MisakaTranslator.Translators
             string input = q.Length <= 20 ? q : q.Substring(0, 10) + q.Length + q.Substring(q.Length - 10);
             string salt = DateTime.Now.Millisecond.ToString();
             string curtime = GetTimeStamp();
-            SHA256 sha = SHA256.Create();
-            string sign = BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(appId + input + salt + curtime + appSecret))).Replace("-", "").ToLower();
-            sha.Dispose();
+            string sign = BitConverter.ToString(SHA256.HashData(Encoding.UTF8.GetBytes(appId + input + salt + curtime + appSecret))).Replace("-", "").ToLower();
 
             Dictionary<string, string?> dic = new Dictionary<string, string?>
             {
@@ -141,7 +139,7 @@ namespace MisakaTranslator.Translators
             foreach (var item in dic)
             {
                 if (i > 0)
-                    builder.Append("&");
+                    builder.Append('&');
                 builder.AppendFormat("{0}={1}", item.Key, item.Value);
                 i++;
             }

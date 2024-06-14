@@ -120,7 +120,7 @@ namespace MisakaTranslator.Translators
 
             foreach (string line in lines)
             {
-                if (line == "\n" || line == "\r\n" || line.StartsWith("#"))
+                if (line == "\n" || line == "\r\n" || line.StartsWith('#'))
                 {
                     //pass
                 }
@@ -251,9 +251,9 @@ namespace MisakaTranslator.Translators
             for (int i = 0; i < z_softmax.Count; i++)
             {
                 int j = nextCursorsIdx[i];
-                if (possibleCursors.ContainsKey(j))
+                if (possibleCursors.TryGetValue(j, out double value))
                 {
-                    possibleCursors[j] = Math.Max(possibleCursors[j], z_softmax[i]);
+                    possibleCursors[j] = Math.Max(value, z_softmax[i]);
                 }
                 else
                 {
@@ -282,7 +282,7 @@ namespace MisakaTranslator.Translators
 
         private int addNoiseState = 0;
         //for test
-        private string addNoise(string input)
+        private string AddNoise(string input)
         {
             if (addNoiseState++ % 2 == 0)
                 return input;

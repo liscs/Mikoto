@@ -105,12 +105,10 @@ namespace MisakaTranslator.Translators
         /// <returns></returns>
         public static string EncryptString(string str)
         {
-            MD5 md5 = MD5.Create();
             // 将字符串转换成字节数组
             byte[] byteOld = Encoding.UTF8.GetBytes(str);
             // 调用加密方法
-            byte[] byteNew = md5.ComputeHash(byteOld);
-            md5.Dispose();
+            byte[] byteNew = MD5.HashData(byteOld);
             // 将加密结果转换为字符串
             StringBuilder sb = new StringBuilder();
             foreach (byte b in byteNew)

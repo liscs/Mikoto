@@ -31,8 +31,7 @@ namespace MisakaTranslator.SettingsPages
 
         private void RadioButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            var radioButton = sender as RadioButton;
-            if (radioButton == null) { return; }
+            if (sender is not RadioButton radioButton) { return; }
             switch (radioButton.Name)
             {
                 case "MinimizationRadioButton":
