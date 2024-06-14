@@ -118,17 +118,18 @@ namespace MisakaTranslator
             gd.Children.Add(new Border()
             {
                 Background = ImageHelper.GetMajorBrush(ico.Source as BitmapSource),
+                CornerRadius = SystemParameters.WindowCornerRadius,
             }
 );
             gd.Children.Add(ico);
             gd.Children.Add(tb);
             var back = new Border()
             {
-                CornerRadius = new CornerRadius(1),
+                CornerRadius = SystemParameters.WindowCornerRadius,
                 Name = "game" + gid,
                 Width = 150,
                 Child = gd,
-                Padding = new Thickness(3),
+                Margin = new Thickness(3),
             };
 
             back.MouseEnter += Border_MouseEnter;
@@ -152,6 +153,7 @@ namespace MisakaTranslator
             grid.Children.Add(new Border()
             {
                 Background = (SolidColorBrush)Application.Current.Resources["BoxBtnColor"],
+                CornerRadius = SystemParameters.WindowCornerRadius,
             });
             grid.Children.Add(textBlock);
             var border = new Border()
@@ -159,7 +161,8 @@ namespace MisakaTranslator
                 Name = "AddNewName",
                 Width = 150,
                 Child = grid,
-                Padding = new Thickness(3),
+                Margin = new Thickness(3),
+                CornerRadius = SystemParameters.WindowCornerRadius,
             };
             border.MouseEnter += Border_MouseEnter;
             border.MouseLeave += Border_MouseLeave;
@@ -214,12 +217,8 @@ namespace MisakaTranslator
         private void Border_MouseEnter(object sender, MouseEventArgs e)
         {
             var b = (Border)sender;
-            b.Effect ??= new DropShadowEffect()
-            {
-                BlurRadius = 10,
-                Opacity = 0,
-            };
-            DoubleAnimation doubleAnimation = new(0.3, TimeSpan.FromSeconds(0.3))
+            b.BorderBrush = ImageHelper.GetReverseColor(Background);
+            ThicknessAnimation doubleAnimation = new(new Thickness(3), TimeSpan.FromSeconds(0.3))
             {
                 AccelerationRatio = 0.8,
                 DecelerationRatio = 0.2,
@@ -230,8 +229,7 @@ namespace MisakaTranslator
         private void Border_MouseLeave(object sender, MouseEventArgs e)
         {
             var b = (Border)sender;
-
-            DoubleAnimation doubleAnimation = new(0, TimeSpan.FromSeconds(0.3))
+            ThicknessAnimation doubleAnimation = new(new Thickness(0), TimeSpan.FromSeconds(0.3))
             {
                 AccelerationRatio = 0.8,
                 DecelerationRatio = 0.2,
@@ -239,10 +237,10 @@ namespace MisakaTranslator
             StartAnimation(b, doubleAnimation);
         }
 
-        private void StartAnimation(Border b, DoubleAnimation doubleAnimation)
+        private void StartAnimation(Border b, ThicknessAnimation doubleAnimation)
         {
             Storyboard.SetTarget(doubleAnimation, b);
-            Storyboard.SetTargetProperty(doubleAnimation, new PropertyPath("(Effect).Opacity"));
+            Storyboard.SetTargetProperty(doubleAnimation, new PropertyPath("BorderThickness"));
             Storyboard ellipseStoryboard = new();
             ellipseStoryboard.Children.Add(doubleAnimation);
             doubleAnimation.Freeze();
