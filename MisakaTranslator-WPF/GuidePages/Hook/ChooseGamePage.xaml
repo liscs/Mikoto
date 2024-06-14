@@ -31,11 +31,11 @@
                            Foreground="{DynamicResource WarningBrush}"/>
             </StackPanel>
 
-            <hc:ComboBox Name="GameProcessCombox"
+            <hc:ComboBox Name="GameProcessComboBox"
                          Grid.Row="1"
                          Margin="10"
                          VerticalAlignment="Center"
-                         SelectionChanged="GameProcessCombox_SelectionChanged" />
+                         SelectionChanged="GameProcessComboBox_SelectionChanged" />
 
             <TextBlock Grid.Row="2"
                        Name="AutoHookTag"

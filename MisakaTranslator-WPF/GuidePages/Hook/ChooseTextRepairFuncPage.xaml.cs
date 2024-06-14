@@ -16,8 +16,8 @@ namespace MisakaTranslator.GuidePages.Hook
         {
             InitializeComponent();
 
-            RepairFuncCombox.ItemsSource = lstRepairFun;
-            RepairFuncCombox.SelectedIndex = 0;
+            RepairFuncComboBox.ItemsSource = lstRepairFun;
+            RepairFuncComboBox.SelectedIndex = 0;
 
             Common.TextHooker!.MeetHookAddressMessageReceived += FilterAndDisplayData;
         }
@@ -27,13 +27,13 @@ namespace MisakaTranslator.GuidePages.Hook
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 sourceTextBox.Text = e.Data.Data;
-                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]], sourceTextBox.Text ?? string.Empty);
+                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.LstRepairFun[lstRepairFun[RepairFuncComboBox.SelectedIndex]], sourceTextBox.Text ?? string.Empty);
             });
         }
 
-        private void RepairFuncCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void RepairFuncComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])
+            switch (TextRepair.LstRepairFun[lstRepairFun[RepairFuncComboBox.SelectedIndex]])
             {
                 case "RepairFun_RemoveSingleWordRepeat":
                     Single_InputDrawer.IsOpen = true;
@@ -46,7 +46,7 @@ namespace MisakaTranslator.GuidePages.Hook
                     break;
             }
 
-            repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]], sourceTextBox.Text);
+            repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.LstRepairFun[lstRepairFun[RepairFuncComboBox.SelectedIndex]], sourceTextBox.Text);
         }
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
@@ -55,11 +55,11 @@ namespace MisakaTranslator.GuidePages.Hook
             {
                 Common.TextHooker.MeetHookAddressMessageReceived -= FilterAndDisplayData;
             }
-            Common.UsingRepairFunc = TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]];
+            Common.UsingRepairFunc = TextRepair.LstRepairFun[lstRepairFun[RepairFuncComboBox.SelectedIndex]];
 
             //写入去重方法
 
-            switch (TextRepair.LstRepairFun[lstRepairFun[RepairFuncCombox.SelectedIndex]])
+            switch (TextRepair.LstRepairFun[lstRepairFun[RepairFuncComboBox.SelectedIndex]])
             {
                 case "RepairFun_RemoveSingleWordRepeat":
                     GameInfoBuilder.GameInfo.RepairFunc = Common.UsingRepairFunc;

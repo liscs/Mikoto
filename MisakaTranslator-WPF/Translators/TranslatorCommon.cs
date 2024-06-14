@@ -121,7 +121,10 @@ namespace MisakaTranslator
                     {
                         if (_httpClient == null)
                         {
-                            _httpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(8) };
+                            _httpClient = new HttpClient()
+                            {
+                                Timeout = TimeSpan.FromSeconds(8)
+                            };
                             _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("MisakaTranslator");
                         }
                     }
@@ -131,13 +134,22 @@ namespace MisakaTranslator
             }
         }
 
-        public static void SetHttpProxiedClient(string addr)
+        public static void SetHttpProxiedClient(string uriString)
         {
             if (_httpClient == null)
             {
-                var px = new WebProxy() { Address = new Uri(addr), UseDefaultCredentials = true };
-                var ph = new HttpClientHandler() { Proxy = px };
-                _httpClient = new HttpClient(ph) { Timeout = TimeSpan.FromSeconds(8) };
+                HttpClientHandler handler = new()
+                {
+                    Proxy = new WebProxy()
+                    {
+                        Address = new Uri(uriString),
+                        UseDefaultCredentials = true
+                    }
+                };
+                _httpClient = new HttpClient(handler)
+                {
+                    Timeout = TimeSpan.FromSeconds(8),
+                };
                 _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("MisakaTranslator");
             }
         }

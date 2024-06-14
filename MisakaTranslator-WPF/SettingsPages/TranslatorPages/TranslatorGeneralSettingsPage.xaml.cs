@@ -14,11 +14,11 @@ namespace MisakaTranslator.SettingsPages
         {
             InitializeComponent();
             TranslatorList = TranslatorCommon.GetTranslatorList();
-            FirstTransCombox.ItemsSource = TranslatorList;
-            SecondTransCombox.ItemsSource = TranslatorList;
+            FirstTransComboBox.ItemsSource = TranslatorList;
+            SecondTransComboBox.ItemsSource = TranslatorList;
 
-            FirstTransCombox.SelectedIndex = TranslatorCommon.GetTranslatorIndex(Common.AppSettings.FirstTranslator);
-            SecondTransCombox.SelectedIndex = TranslatorCommon.GetTranslatorIndex(Common.AppSettings.SecondTranslator);
+            FirstTransComboBox.SelectedIndex = TranslatorCommon.GetTranslatorIndex(Common.AppSettings.FirstTranslator);
+            SecondTransComboBox.SelectedIndex = TranslatorCommon.GetTranslatorIndex(Common.AppSettings.SecondTranslator);
 
             EachRowTransCheckBox.IsChecked = Common.AppSettings.EachRowTrans;
             HttpProxyBox.Text = Common.AppSettings.HttpProxy;
@@ -28,14 +28,14 @@ namespace MisakaTranslator.SettingsPages
             TransLimitBox.ValueChanged += TransLimitBox_ValueChanged;
         }
 
-        private void FirstTransCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void FirstTransComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Common.AppSettings.FirstTranslator = TranslatorCommon.TranslatorDict[(string)FirstTransCombox.SelectedValue];
+            Common.AppSettings.FirstTranslator = TranslatorCommon.TranslatorDict[(string)FirstTransComboBox.SelectedValue];
         }
 
-        private void SecondTransCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SecondTransComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Common.AppSettings.SecondTranslator = TranslatorCommon.TranslatorDict[(string)SecondTransCombox.SelectedValue];
+            Common.AppSettings.SecondTranslator = TranslatorCommon.TranslatorDict[(string)SecondTransComboBox.SelectedValue];
         }
 
         private void EachRowTransCheckBox_Click(object sender, RoutedEventArgs e)
@@ -46,8 +46,14 @@ namespace MisakaTranslator.SettingsPages
         private void HttpProxyBox_LostFocus(object sender, RoutedEventArgs e)
         {
             string text = HttpProxyBox.Text.Trim();
-            try { _ = new Uri(text); } catch (UriFormatException) { HandyControl.Controls.Growl.Error("Proxy url unsupported."); return; };
-            Common.AppSettings.HttpProxy = text;
+            if (Uri.TryCreate(text, UriKind.RelativeOrAbsolute, out _))
+            {
+                Common.AppSettings.HttpProxy = text;
+            }
+            else
+            {
+                HandyControl.Controls.Growl.Error("Proxy url unsupported.");
+            }
         }
 
         private void TransLimitBox_ValueChanged(object? sender, HandyControl.Data.FunctionEventArgs<double> e)

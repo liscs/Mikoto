@@ -15,23 +15,23 @@ namespace MisakaTranslator.GuidePages
             InitializeComponent();
 
             _langList = TranslatorCommon.LanguageDict.Keys.ToList();
-            SrcLangCombox.ItemsSource = _langList;
-            DstLangCombox.ItemsSource = _langList;
+            SrcLangComboBox.ItemsSource = _langList;
+            DstLangComboBox.ItemsSource = _langList;
 
-            SrcLangCombox.SelectedIndex = 3;
-            DstLangCombox.SelectedIndex = 0;
+            SrcLangComboBox.SelectedIndex = 3;
+            DstLangComboBox.SelectedIndex = 0;
         }
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (SrcLangCombox.SelectedIndex == DstLangCombox.SelectedIndex)
+            if (SrcLangComboBox.SelectedIndex == DstLangComboBox.SelectedIndex)
             {
                 HandyControl.Controls.Growl.Error(Application.Current.Resources["ChooseLanguagePage_NextErrorHint"].ToString());
             }
             else
             {
-                Common.UsingSrcLang = TranslatorCommon.LanguageDict[_langList[SrcLangCombox.SelectedIndex]];
-                Common.UsingDstLang = TranslatorCommon.LanguageDict[_langList[DstLangCombox.SelectedIndex]];
+                Common.UsingSrcLang = TranslatorCommon.LanguageDict[_langList[SrcLangComboBox.SelectedIndex]];
+                Common.UsingDstLang = TranslatorCommon.LanguageDict[_langList[DstLangComboBox.SelectedIndex]];
 
                 //写游戏信息
                 GameInfoBuilder.GameInfo.SrcLang = Common.UsingSrcLang;

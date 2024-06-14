@@ -44,7 +44,7 @@ namespace MisakaTranslator
         private ITranslator? _translator1; //第一翻译源
         private ITranslator? _translator2; //第二翻译源
 
-        private string _currentsrcText = string.Empty; //当前源文本内容
+        private string _currentSrcText = string.Empty; //当前源文本内容
 
         private Queue<HistoryInfo> _gameTextHistory; //历史文本
 
@@ -362,7 +362,7 @@ namespace MisakaTranslator
                 )
             {
 
-                _currentsrcText = repairedText;
+                _currentSrcText = repairedText;
 
                 // 3. 更新原文
                 UpdateSourceAsync(repairedText);
@@ -1068,14 +1068,14 @@ namespace MisakaTranslator
         private AddOptWindow? _addOptWindow;
         private void AddNoun_Item_Click(object sender, RoutedEventArgs e)
         {
-            _addOptWindow = new AddOptWindow(_currentsrcText);
+            _addOptWindow = new AddOptWindow(_currentSrcText);
             _addOptWindow.ShowDialog();
         }
 
         private void Repeat_Item_Click(object sender, RoutedEventArgs e)
         {
-            TranslateApiSubmit(_currentsrcText, 1, true);
-            TranslateApiSubmit(_currentsrcText, 2, true);
+            TranslateApiSubmit(_currentSrcText, 1, true);
+            TranslateApiSubmit(_currentSrcText, 2, true);
         }
 
         private void Min_Item_Click(object sender, RoutedEventArgs e)
@@ -1102,8 +1102,8 @@ namespace MisakaTranslator
 
         private void TTS_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(_currentsrcText))
-                _tts?.SpeakAsync(_currentsrcText);
+            if (!string.IsNullOrWhiteSpace(_currentSrcText))
+                _tts?.SpeakAsync(_currentSrcText);
         }
 
         private void SetWindowTopMost()
@@ -1116,7 +1116,7 @@ namespace MisakaTranslator
 
         private void ArtificialTransAdd_Item_Click(object sender, RoutedEventArgs e)
         {
-            ArtificialTransAddWindow win = new(_currentsrcText, FirstTransText.Text, SecondTransText.Text);
+            ArtificialTransAddWindow win = new(_currentSrcText, FirstTransText.Text, SecondTransText.Text);
             win.ShowDialog();
         }
 

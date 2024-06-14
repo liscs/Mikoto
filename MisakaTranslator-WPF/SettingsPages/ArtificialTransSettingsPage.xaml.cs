@@ -29,11 +29,11 @@ namespace MisakaTranslator.SettingsPages
                     fileList.Add(Path.GetFileName(v));
                 }
 
-                PatchFileCombox.ItemsSource = fileList;
+                PatchFileComboBox.ItemsSource = fileList;
 
                 if (fileList.Count > 0)
                 {
-                    PatchFileCombox.SelectedIndex = 0;
+                    PatchFileComboBox.SelectedIndex = 0;
                 }
             }
 
@@ -73,7 +73,7 @@ namespace MisakaTranslator.SettingsPages
             if (dialog.ShowDialog().GetValueOrDefault())
             {
                 string savePath = dialog.FileName;
-                bool res = ArtificialTransHelperLibrary.ArtificialTransHelper.ExportDBtoFile(savePath, strNames[PatchFileCombox.SelectedIndex]);
+                bool res = ArtificialTransHelperLibrary.ArtificialTransHelper.ExportDBtoFile(savePath, strNames[PatchFileComboBox.SelectedIndex]);
 
                 if (res)
                 {

@@ -27,7 +27,7 @@ namespace DictionaryHelperLibrary
             //%appdata%\EBWin4\EBPOCKET.GRP
             //EBPOCKET.GRP内容格式如下，采用UTF-8编码
             //%%UTF-8=1
-            //C:\Users\dream\Desktop\新世纪日汉双解\xsjrihanshuangjie.mdx|_|_|_|_|_|
+            //{path}\{name}.mdx|_|_|_|_|_|
             //
             if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EBWin4"))
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EBWin4");

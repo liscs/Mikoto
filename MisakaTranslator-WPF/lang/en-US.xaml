@@ -497,4 +497,6 @@
     <sys:String x:Key="RemoveSingleWordRepeat">Single word repetition processing</sys:String>
     <sys:String x:Key="SentenceRepeatError">Sentence repetition error</sys:String>
 
+    <sys:String x:Key="TranslatorGeneralSettingsPage_ProxyError">Proxy url unsupported</sys:String>
+
 </ResourceDictionary>

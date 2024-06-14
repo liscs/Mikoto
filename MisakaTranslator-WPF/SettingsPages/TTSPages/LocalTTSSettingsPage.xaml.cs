@@ -16,13 +16,13 @@ namespace MisakaTranslator.SettingsPages.TTSPages
             InitializeComponent();
 
             List<string> lst = localTTS.GetAllTTSEngine();
-            TTSSourceCombox.ItemsSource = lst;
+            TTSSourceComboBox.ItemsSource = lst;
 
             for (int i = 0; i < lst.Count; i++)
             {
                 if (lst[i] == Common.AppSettings.LocalTTSVoice)
                 {
-                    TTSSourceCombox.SelectedIndex = i;
+                    TTSSourceComboBox.SelectedIndex = i;
                     break;
                 }
             }
@@ -30,15 +30,15 @@ namespace MisakaTranslator.SettingsPages.TTSPages
             RateBar.Value = Common.AppSettings.LocaTTSRate;
         }
 
-        private void TTSSourceCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TTSSourceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            localTTS.SetTTSVoice((string)TTSSourceCombox.SelectedValue);
+            localTTS.SetTTSVoice((string)TTSSourceComboBox.SelectedValue);
         }
 
         private void TestBtn_Click(object sender, RoutedEventArgs e)
         {
             localTTS.SpeakAsync(TestSrcText.Text);
-            Common.AppSettings.LocalTTSVoice = (string)TTSSourceCombox.SelectedValue;
+            Common.AppSettings.LocalTTSVoice = (string)TTSSourceComboBox.SelectedValue;
             Common.AppSettings.LoaclTTSVolume = (int)VolumeBar.Value;
             Common.AppSettings.LocaTTSRate = (int)RateBar.Value;
         }

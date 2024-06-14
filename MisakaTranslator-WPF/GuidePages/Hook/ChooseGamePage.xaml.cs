@@ -27,19 +27,19 @@ namespace MisakaTranslator.GuidePages.Hook
                 NoAdminPrivilegesTextBlock.Visibility = Visibility.Collapsed;
             }
 
-            GameProcessCombox.ItemsSource = _processList.Keys.OrderBy(p => p);
+            GameProcessComboBox.ItemsSource = _processList.Keys.OrderBy(p => p);
         }
 
-        private void GameProcessCombox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void GameProcessComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _gamePid = _processList[(string)GameProcessCombox.SelectedValue];
+            _gamePid = _processList[(string)GameProcessComboBox.SelectedValue];
             _sameNameGameProcessList = ProcessHelper.FindSameNameProcess(_gamePid);
             AutoHookTag.Text = Application.Current.Resources["ChooseGamePage_AutoHookTag_Begin"].ToString() + _sameNameGameProcessList.Count + Application.Current.Resources["ChooseGamePage_AutoHookTag_End"].ToString();
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_gamePid != -1 && GameProcessCombox.SelectedValue is string selectValueString)
+            if (_gamePid != -1 && GameProcessComboBox.SelectedValue is string selectValueString)
             {
                 GenerateHookerAndGotoNextStep(_processList[selectValueString]);
             }

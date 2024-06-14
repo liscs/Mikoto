@@ -13,7 +13,7 @@
             <StackPanel >
                 <TextBlock Text="{DynamicResource TTSSettingsPage_Hint}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
                 <StackPanel Margin="20,20,20,0">
-                    <hc:ComboBox Name="TTSSourceCombox" Margin="10,10,10,10"  Width="500" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="100" hc:InfoElement.Title="{DynamicResource TTSSettingsPage_TTSSourceLabel}" SelectionChanged="TTSSourceCombox_SelectionChanged" HorizontalAlignment="Left" />
+                    <hc:ComboBox Name="TTSSourceComboBox" Margin="10,10,10,10"  Width="500" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="100" hc:InfoElement.Title="{DynamicResource TTSSettingsPage_TTSSourceLabel}" SelectionChanged="TTSSourceComboBox_SelectionChanged" HorizontalAlignment="Left" />
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{DynamicResource TTSSettingsPage_TTSVolumeLabel}" VerticalAlignment="Center" Margin="10"/>

@@ -24,7 +24,7 @@
                         <hc:Divider/>
 
                         <StackPanel Orientation="Horizontal">
-                            <hc:ComboBox Name="PatchFileCombox" Margin="0,0,0,0" Width="380" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource ArtificialTransSettingsPage_GameChoose}"  HorizontalAlignment="Left"/>
+                            <hc:ComboBox Name="PatchFileComboBox" Margin="0,0,0,0" Width="380" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource ArtificialTransSettingsPage_GameChoose}"  HorizontalAlignment="Left"/>
                             <Button Content="{DynamicResource ArtificialTransSettingsPage_ExportBtn}" Margin="10,0,0,0"  HorizontalAlignment="Right" Click="ExportBtn_Click"/>
                         </StackPanel>
                         

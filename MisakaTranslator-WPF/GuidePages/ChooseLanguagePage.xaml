@@ -25,7 +25,7 @@
                        Margin="10"
                        TextWrapping="Wrap" />
             <hc:ComboBox Grid.Row="1"
-                         Name="SrcLangCombox"
+                         Name="SrcLangComboBox"
                          Width="380"
                          hc:InfoElement.TitleWidth="140"
                          hc:InfoElement.TitlePlacement="Left"
@@ -33,7 +33,7 @@
                          HorizontalAlignment="Center"
                          VerticalAlignment="Center" />
             <hc:ComboBox Grid.Row="2"
-                         Name="DstLangCombox"
+                         Name="DstLangComboBox"
                          Width="380"
                          hc:InfoElement.TitleWidth="140"
                          hc:InfoElement.TitlePlacement="Left"

@@ -289,7 +289,7 @@ namespace MisakaTranslator.Translators
             return "";
         }
         //for test
-        private string addNoise2(string input)
+        private string AddNoise2(string input)
         {
             StringBuilder result = new StringBuilder(input);
             for (int i = 0; i < input.Length; i++)

@@ -408,6 +408,8 @@
     <sys:String x:Key="RemoveSentenceRepeat">句子重复处理</sys:String>
     <sys:String x:Key="RemoveSingleWordRepeat">单字重复处理</sys:String>
     <sys:String x:Key="SentenceRepeatError">句子去重出错</sys:String>
-    
+
+    <sys:String x:Key="TranslatorGeneralSettingsPage_ProxyError">代理格式不合法</sys:String>
+
 
 </ResourceDictionary>

@@ -25,10 +25,10 @@
                            Margin="10" />
 
                 <StackPanel Grid.Row="1">
-                    <hc:ComboBox Name="RepairFuncCombox"
+                    <hc:ComboBox Name="RepairFuncComboBox"
                                  Margin="10,10,10,0"
                                  VerticalAlignment="Center"
-                                 SelectionChanged="RepairFuncCombox_SelectionChanged" />
+                                 SelectionChanged="RepairFuncComboBox_SelectionChanged" />
 
                     <hc:TextBox Name="sourceTextBox"
                                 TextWrapping="Wrap"

@@ -6,7 +6,7 @@
         public Dict() { }
         public Dict(string path)
         {
-            ArgumentException.ThrowIfNullOrEmpty("path");
+            ArgumentException.ThrowIfNullOrEmpty(path);
             DictPath = path;
             Name = Path.GetFileName(Path.GetDirectoryName(path)) ?? Guid.NewGuid().ToString();
         }

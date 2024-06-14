@@ -20,15 +20,15 @@ namespace MisakaTranslator
             ];
 
             srcText.Text = src;
-            wordTypeCombox.ItemsSource = wordtype;
+            wordTypeComboBox.ItemsSource = wordtype;
         }
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (srcWord.Text != "" && dstWord.Text != "" && wordTypeCombox.SelectedIndex != -1)
+            if (srcWord.Text != "" && dstWord.Text != "" && wordTypeComboBox.SelectedIndex != -1)
             {
                 NounTransOptimization opt = new NounTransOptimization("" + Common.GameID, Common.UsingSrcLang, Common.UsingDstLang);
-                bool res = opt.AddNounTrans(srcWord.Text, wordTypeCombox.SelectedIndex + 1, dstWord.Text);
+                bool res = opt.AddNounTrans(srcWord.Text, wordTypeComboBox.SelectedIndex + 1, dstWord.Text);
                 if (res)
                 {
                     HandyControl.Controls.Growl.InfoGlobal(Application.Current.Resources["AddOptWin_Success_Hint"].ToString());
