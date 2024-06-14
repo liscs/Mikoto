@@ -358,16 +358,6 @@ namespace MisakaTranslator.Helpers
             }
 
         }
-
-        internal static Brush GetReverseColor(Brush brush)
-        {
-            if (brush is SolidColorBrush solidColorBrush)
-            {
-                var ori = solidColorBrush.Color;
-                return new SolidColorBrush(Color.FromRgb(Convert.ToByte(255 - ori.R), Convert.ToByte(255 - ori.G), Convert.ToByte(255 - ori.B)));
-            }
-            return Brushes.Black;
-        }
     }
 
 

@@ -117,14 +117,14 @@ namespace MisakaTranslator
             gd.Children.Add(new Border()
             {
                 Background = ImageHelper.GetMajorBrush(ico.Source as BitmapSource),
-                CornerRadius = SystemParameters.WindowCornerRadius,
+                CornerRadius = new CornerRadius(4),
             }
 );
             gd.Children.Add(ico);
             gd.Children.Add(tb);
             var back = new Border()
             {
-                CornerRadius = SystemParameters.WindowCornerRadius,
+                CornerRadius = new CornerRadius(4),
                 Name = "game" + gid,
                 Width = 150,
                 Child = gd,
@@ -145,14 +145,14 @@ namespace MisakaTranslator
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 TextWrapping = TextWrapping.Wrap,
-                FontWeight = FontWeights.SemiBold,
+                FontSize = (double)Application.Current.Resources["SubHeadFontSize"]
             };
             textBlock.SetResourceReference(TextBlock.TextProperty, "MainWindow_ScrollViewer_AddNewGame");
             var grid = new Grid();
             grid.Children.Add(new Border()
             {
                 Background = (SolidColorBrush)Application.Current.Resources["BoxBtnColor"],
-                CornerRadius = SystemParameters.WindowCornerRadius,
+                CornerRadius = new CornerRadius(4),
             });
             grid.Children.Add(textBlock);
             var border = new Border()
@@ -161,7 +161,7 @@ namespace MisakaTranslator
                 Width = 150,
                 Child = grid,
                 Margin = new Thickness(3),
-                CornerRadius = SystemParameters.WindowCornerRadius,
+                CornerRadius = new CornerRadius(4),
             };
             border.MouseEnter += Border_MouseEnter;
             border.MouseLeave += Border_MouseLeave;
@@ -216,7 +216,7 @@ namespace MisakaTranslator
         private void Border_MouseEnter(object sender, MouseEventArgs e)
         {
             var b = (Border)sender;
-            b.BorderBrush = ImageHelper.GetReverseColor(Background);
+            b.BorderBrush = new SolidColorBrush(((SolidColorBrush)Application.Current.Resources["PrimaryForeground"]).Color with { A = 10 });
             ThicknessAnimation doubleAnimation = new(new Thickness(3), TimeSpan.FromSeconds(0.3))
             {
                 AccelerationRatio = 0.8,

@@ -21,7 +21,7 @@ namespace MisakaTranslator
             }
         }
 
-        private string lastStartTime;
+        private string lastStartTime = string.Empty;
 
         public string LastStartTime { get => lastStartTime; set => SetProperty(ref lastStartTime, value); }
     }

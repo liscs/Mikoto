@@ -155,14 +155,14 @@
                                 Click="HookGuideBtn_Click"
                                 Height="50"
                                 Foreground="{DynamicResource ButtonTextColor}"
-                                FontWeight="{DynamicResource ButtonTextWeight}"
+                                FontSize="{DynamicResource SubHeadFontSize}"
                                 BorderBrush="Transparent"></Button>
                         <Button Background="{DynamicResource BoxBtnColor}"
                                 Content="{DynamicResource BtnClipboardGuide}"
                                 Click="ClipboardGuideBtn_Click"
                                 Height="50"
                                 Foreground="{DynamicResource ButtonTextColor}"
-                                FontWeight="{DynamicResource ButtonTextWeight}"
+                                FontSize="{DynamicResource SubHeadFontSize}"
                                 BorderBrush="Transparent"></Button>
                     </hc:ButtonGroup>
                 </Border>
