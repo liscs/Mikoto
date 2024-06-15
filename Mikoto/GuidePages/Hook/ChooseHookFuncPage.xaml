@@ -1,0 +1,152 @@
+﻿<Page x:Class="Mikoto.GuidePages.Hook.ChooseHookFuncPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:local="clr-namespace:Mikoto.GuidePages.Hook"
+      mc:Ignorable="d"
+      d:DesignHeight="400"
+      d:DesignWidth="800"
+      Title="ChooseHookFuncPage"
+      KeyDown="Page_KeyDown">
+
+    <Grid>
+        <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0"
+                            Margin="10">
+                    <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource ChooseHookFuncPage_Introduce}"
+                               TextWrapping="Wrap" />
+                    <TextBlock Name="NoAdminPrivilegesTextBlock"
+                               Text="{DynamicResource ChooseHookFuncPage_NoAdminWarn}"
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource WarningBrush}" />
+                </StackPanel>
+
+                <ListView Name="HookFunListView"
+                          Grid.Row="1"
+                          SelectionMode="Single" Background="Transparent">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="Auto"
+                                            Header="{DynamicResource ChooseHookFuncPage_Header_PID}"
+                                            DisplayMemberBinding="{Binding Path=GamePID}" />
+                            <GridViewColumn Width="Auto"
+                                            Header="{DynamicResource ChooseHookFuncPage_Header_FunName}"
+                                            DisplayMemberBinding="{Binding Path=HookFunc}" />
+                            <GridViewColumn Width="Auto"
+                                            Header="{DynamicResource ChooseHookFuncPage_Header_HookCode}"
+                                            DisplayMemberBinding="{Binding Path=MisakaHookCode}" />
+                            <GridViewColumn Width="500"
+                                            Header="{DynamicResource ChooseHookFuncPage_Header_Content}">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{Binding Path=Data}"
+                                                   TextWrapping="WrapWithOverflow" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <StackPanel Grid.Row="2"
+                            Orientation="Horizontal">
+                    <Button HorizontalAlignment="Left"
+                            Margin="10"
+                            Content="{DynamicResource ChooseHookFuncPage_BtnAddHook}"
+                            Click="AddHookBtn_Click" />
+
+                    <TextBlock Foreground="{DynamicResource PrimaryForeground}" Margin="10"
+                               VerticalAlignment="Center"
+                               TextWrapping="Wrap">
+                        <Hyperlink Click="CannotfindHookBtn_Click"> 
+                            <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource ChooseHookFuncPage_BtnCannotfindHook}" />
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+
+                <StackPanel Grid.Row="3"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                    <Button Margin="10"
+                            Content="{DynamicResource Guide_Back}"
+                            Width="205"
+                            Click="BackButton_Click" />
+                    <Button Margin="10"
+                            Content="{DynamicResource ChooseHookFuncPage_BtnConfirm}"
+                            Width="205"
+                            Click="ConfirmBtn_Click" />
+                </StackPanel>
+
+            </Grid>
+
+            <hc:Drawer Name="InputDrawer"
+                       MaskCanClose="False">
+                <Border Width="300"
+                        BorderThickness="0,1,0,0"
+                        BorderBrush="{DynamicResource BorderBrush}" Background="{DynamicResource PrimaryBackground}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="0"
+                                   Text="{DynamicResource ChooseHookFuncPage_Drawer_Header}"
+                                   FontSize="20"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap" />
+
+                        <TextBox Name="HookCodeTextBox"
+                                 hc:InfoElement.Placeholder="{DynamicResource ChooseHookFuncPage_Drawer_HookCodeBox}"
+                                 hc:InfoElement.Necessary="True"
+                                 Style="{DynamicResource TextBoxExtend}"
+                                 Grid.Row="2"
+                                 HorizontalAlignment="Center"
+                                 Margin="10"
+                                 VerticalAlignment="Center"
+                                 FontSize="15"
+                                 Width="200"></TextBox>
+
+                        <Button Grid.Row="3"
+                                Style="{DynamicResource ButtonInfo}"
+                                HorizontalAlignment="Left"
+                                Margin="30"
+                                VerticalAlignment="Center"
+                                Content="{DynamicResource ChooseHookFuncPage_Drawer_BtnConfirm}"
+                                FontSize="15"
+                                Height="Auto"
+                                Click="HookCodeConfirmBtn_Click"></Button>
+                        <Button Grid.Row="3"
+                                Style="{DynamicResource ButtonDanger}"
+                                HorizontalAlignment="Right"
+                                Margin="30"
+                                VerticalAlignment="Center"
+                                Content="{DynamicResource Drawer_BtnExit}"
+                                FontSize="15"
+                                Height="Auto"
+                                Click="ExitBtn_Click"></Button>
+
+                    </Grid>
+                </Border>
+            </hc:Drawer>
+        </Grid>
+
+        <StackPanel hc:Growl.GrowlParent="True"
+                    HorizontalAlignment="Right"
+                    Margin="15" />
+    </Grid>
+
+
+</Page>

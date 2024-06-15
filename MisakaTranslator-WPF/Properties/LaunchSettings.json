@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "MisakaTranslator": {
-      "commandName": "Project",
-      "nativeDebugging": true
-    }
-  }
-}

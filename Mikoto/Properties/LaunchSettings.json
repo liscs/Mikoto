@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Mikoto": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

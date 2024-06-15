@@ -1,8 +1,8 @@
-# MisakaTranslator Mikoto Version
-![image](https://github.com/liscs/MisakaTranslator/workflows/CI/badge.svg)
-![image](https://github.com/liscs/MisakaTranslator/assets/70057922/0bf60266-63e6-4247-9cbb-ebe2b2008749)
+# Mikoto
+![image](https://github.com/liscs/Mikoto/workflows/CI/badge.svg)
+![image](https://github.com/liscs/Mikoto/assets/70057922/0bf60266-63e6-4247-9cbb-ebe2b2008749)
 
-MisakaTranslator Mikoto Version 是一款基于 MisakaTranslator 的互动文字小说阅读工具。
+Mikoto 是一款基于 MisakaTranslator 的互动文字小说阅读工具。
 ## 相较于原项目的重大变更
 * 默认使用黑色文字描边，以利于视力健康。
 * 使用json文件而非数据库管理游戏相关数据，以便于修改游戏信息。
@@ -30,4 +30,4 @@ MisakaTranslator Mikoto Version 是一款基于 MisakaTranslator 的互动文字
 }
 ```
 ## 相关链接
-[原始项目页](https://github.com/hanmin0822/MisakaTranslator)、[Textractor](https://github.com/Artikash/Textractor)、[Locale-Emulator](https://github.com/xupefei/Locale-Emulator)、[Macab分词词典](https://clrd.ninjal.ac.jp/unidic)、[本地翻译词典](https://freemdict.com)
+[原始项目页](https://github.com/hanmin0822/Mikoto)、[Textractor](https://github.com/Artikash/Textractor)、[Locale-Emulator](https://github.com/xupefei/Locale-Emulator)、[Macab分词词典](https://clrd.ninjal.ac.jp/unidic)、[本地翻译词典](https://freemdict.com)

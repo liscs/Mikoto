@@ -15,4 +15,4 @@ jobs:
     - run: dotnet build
     - uses: actions/upload-artifact@master
       with:
-        path: MisakaTranslator-WPF/bin
+        path: Mikoto/bin

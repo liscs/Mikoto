@@ -1,0 +1,21 @@
+<Page x:Class="Mikoto.SettingsPages.LESettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:local="clr-namespace:Mikoto.SettingsPages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="594"
+      Title="LESettingsPage">
+
+    <Grid >
+        <StackPanel >
+            <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource LESettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
+
+            <hc:TextBox Margin="10" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource LESettingsPage_LEbox}" Name="PathBox" hc:InfoElement.ShowClearButton="True" LostFocus="PathBox_LostFocus"/>
+            <Button Margin="10" Content="{DynamicResource JbeijingTransSettingsPage_ChoosePath}" Width="122" Click="ChoosePathBtn_Click" HorizontalAlignment="Right" ></Button>
+
+        </StackPanel>
+    </Grid>
+</Page>

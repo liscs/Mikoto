@@ -1,0 +1,16 @@
+﻿using System.Globalization;
+
+namespace Mikoto
+{
+    public class YoudaoZhiyunLanguageCodeConverter : ILanguageCodeConverter
+    {
+        public static string GetLanguageCode(CultureInfo cultureInfo)
+        {
+            return cultureInfo.Name switch
+            {
+                "zh" => "zh-CHS",
+                _ => cultureInfo.Name,
+            };
+        }
+    }
+}

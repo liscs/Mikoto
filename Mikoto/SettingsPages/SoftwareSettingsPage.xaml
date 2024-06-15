@@ -1,0 +1,70 @@
+﻿<Page x:Class="Mikoto.SettingsPages.SoftwareSettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:Mikoto.SettingsPages"
+      xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:Mikoto="clr-namespace:Mikoto"
+      d:DataContext="{d:DesignInstance Type=local:SoftwareSettingsViewModel}"
+      mc:Ignorable="d"
+      d:DesignHeight="450"
+      d:DesignWidth="800"
+      Title="SoftwareSettingsPage">
+
+    <Grid>
+        <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="10">
+                <TextBlock Text="Mikoto Version"
+                           FontSize="{DynamicResource SubHeadFontSize}"
+                           FontWeight="{DynamicResource SettinrTitleTextWeight}"
+                           Foreground="{DynamicResource PrimaryForeground}"
+                           Margin="0,0,0,5" />
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{Binding CurrentVersion}"
+                           FontWeight="{DynamicResource SettinrTitleTextWeight}"
+                           Margin="0,0,0,5" />
+                <StackPanel Margin="0,0,0,5"
+                            Orientation="Horizontal">
+                    <Button Content="{DynamicResource SoftwareSettingsPage_CheckUpdate}"
+                            HorizontalAlignment="Left"
+                            Click="Button_Click" />
+                    <hc:LoadingCircle Name="LoadingCircle"
+                                      Margin="10,0,0,0"
+                                      Visibility="Hidden" />
+                </StackPanel>
+
+                <CheckBox Name="UpdateCheckEnabledCheckBox"
+                          IsChecked="{Binding EnableAutoUpdateCheck,Mode=TwoWay}"
+                          Content="{DynamicResource SoftwareSettingsPage_EnableAutoCheckUpdate}"
+                          HorizontalAlignment="Left"
+                          Margin="0,0,0,10" />
+
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource SoftwareSettingsPage_ClickCloseButton}"
+                           FontSize="{DynamicResource SubHeadFontSize}"
+                           FontWeight="{DynamicResource SettinrTitleTextWeight}"
+                           Margin="0,0,0,10" />
+                <RadioButton Name="MinimizationRadioButton"
+                             Content="{DynamicResource SoftwareSettingsPage_Minimize}"
+                             HorizontalAlignment="Left"
+                             Margin="0,0,0,5"
+                             Click="RadioButtonBase_OnClick" />
+                <RadioButton Name="ExitRadioButton"
+                             Content="{DynamicResource SoftwareSettingsPage_Exit}"
+                             HorizontalAlignment="Left"
+                             Margin="0,0,0,10"
+                             Click="RadioButtonBase_OnClick" />
+
+                <TextBlock Text="{DynamicResource SoftwareSettingsPage_EnableGlobalNotification}"
+                           FontSize="{DynamicResource SubHeadFontSize}"
+                           FontWeight="{DynamicResource SettinrTitleTextWeight}"
+                           Foreground="{DynamicResource PrimaryForeground}"
+                           Margin="0,0,0,10" />
+                <CheckBox Name="GrowlEnabledCheckBox"
+                          Content="{DynamicResource SoftwareSettingsPage_Enable}"
+                          HorizontalAlignment="Left"
+                          Margin="0,0,0,10"
+                          Click="GrowlEnabledCheckBox_Click" />
+            </StackPanel>
+        </hc:ScrollViewer>
+    </Grid>
+</Page>

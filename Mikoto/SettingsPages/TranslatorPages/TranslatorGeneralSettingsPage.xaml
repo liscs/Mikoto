@@ -1,0 +1,26 @@
+﻿<Page x:Class="Mikoto.SettingsPages.TranslatorGeneralSettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:local="clr-namespace:Mikoto.SettingsPages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="594"
+      Title="TranslatorGeneralSettingsPage">
+
+    <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel >
+            <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource GeneralTransSettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
+            <StackPanel Margin="20,36,0,0">
+                <hc:ComboBox Name="FirstTransComboBox" MinWidth="380" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource GeneralTransSettingsPage_FirstTranslator}" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{DynamicResource GeneralTransSettingsPage_TransSourceHint}" hc:Poptip.Placement="Top" SelectionChanged="FirstTransComboBox_SelectionChanged" HorizontalAlignment="Left"/>
+                <hc:ComboBox Name="SecondTransComboBox" Margin="0,10,0,0" MinWidth="380" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource GeneralTransSettingsPage_SecondTranslator}" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{DynamicResource GeneralTransSettingsPage_TransSourceHint}" hc:Poptip.Placement="Top" SelectionChanged="SecondTransComboBox_SelectionChanged" HorizontalAlignment="Left"/>
+                <hc:TextBox Margin="0,10,0,0" MinWidth="480" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource GeneralTransSettingsPage_HttpProxy}" Name="HttpProxyBox" hc:InfoElement.ShowClearButton="True" LostFocus="HttpProxyBox_LostFocus" HorizontalAlignment="Left"/>
+
+                <hc:NumericUpDown Name="TransLimitBox" Minimum="1" Margin="0,10,0,0" MinWidth="380" Style="{DynamicResource NumericUpDownExtend}" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="140" hc:InfoElement.Title="{DynamicResource GeneralTransSettingsPage_Translimit}"  HorizontalAlignment="Left"/>
+
+                <CheckBox Name="EachRowTransCheckBox" Margin="0,10,0,0" Content="{DynamicResource GeneralTransSettingsPage_EachRowTransCheckBox}" IsChecked="True" hc:InfoElement.Title="{DynamicResource GeneralTransSettingsPage_SecondTranslator}" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{DynamicResource GeneralTransSettingsPage_EachRowTransHint}" hc:Poptip.Placement="Right" Click="EachRowTransCheckBox_Click" HorizontalAlignment="Left"/>
+            </StackPanel>
+        </StackPanel>
+    </hc:ScrollViewer>
+</Page>

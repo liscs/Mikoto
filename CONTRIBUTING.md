@@ -2,11 +2,11 @@
 
 ## 反馈BUG
 
-请[新建Issue](https://github.com/hanmin0822/MisakaTranslator/issues/new/choose)，并选择Bug Report模板，按照模板中的说明反馈BUG。
+请[新建Issue](https://github.com/hanmin0822/Mikoto/issues/new/choose)，并选择Bug Report模板，按照模板中的说明反馈BUG。
 
 ## 功能建议
 
-请[新建Issue](https://github.com/hanmin0822/MisakaTranslator/issues/new/choose)，并选择Feature Request模板，按照模板中的说明提交功能建议。
+请[新建Issue](https://github.com/hanmin0822/Mikoto/issues/new/choose)，并选择Feature Request模板，按照模板中的说明提交功能建议。
 
 ## 贡献代码
 

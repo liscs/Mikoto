@@ -1,0 +1,18 @@
+﻿在Mikoto/Translator中添加实现ITranslator的类
+在Mikoto/lang/Strings.resx中添加翻译器的本地化名称
+在Mikoto/SettingsPages中添加翻译器的设置xaml页
+在Mikoto/lang中添加翻译器设置页的本地化字符串
+在Mikoto/IAppSettings中添加需要保存的信息（密钥等）
+在Mikoto/SettingsWindow.xaml中添加设置左列项目
+在Mikoto/SettingsWindow.xaml.cs中添加导航显示设置页面的代码
+对特殊（非iso）语言代码创建LanguageCodeConverter类进行转换
+
+Add a class that implements ITranslator in Mikoto/Translator
+Add the localized name of the translator in Mikoto/lang/Strings.resx
+Add the translator's settings xaml page in Mikoto/SettingsPages
+Add localized strings for the translator settings page in Mikoto/lang
+Add the information that needs to be saved (keys, etc.) in Mikoto/IAppSettings
+Add settings left column items in Mikoto/SettingsWindow.xaml
+Add the code to navigate and display the settings page in Mikoto/SettingsWindow.xaml.cs
+Create a LanguageCodeConverter class to convert special (non-iso) language codes
+
