@@ -30,9 +30,8 @@ namespace Mikoto.SettingsPages.DictionaryPages
             PathBox.Text = Common.AppSettings.Mecab_DicPath;
         }
 
-        private void ClearPathBtn_Click(object sender, RoutedEventArgs e)
+        private void PathBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            PathBox.Text = string.Empty;
             Common.AppSettings.Mecab_DicPath = PathBox.Text;
         }
     }
