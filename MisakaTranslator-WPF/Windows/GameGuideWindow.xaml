@@ -13,7 +13,7 @@
                    Width="800"
                    x:Name="guide"
                    Closing="GuideWindow_Closing"
-                   Topmost="True">
+                   Topmost="True" Background="{DynamicResource PrimaryBackground}">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -22,7 +22,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TextBlock Name="FuncHint"
+        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Name="FuncHint"
                    Grid.Row="0"
                    Text="Loading"
                    HorizontalAlignment="Left"

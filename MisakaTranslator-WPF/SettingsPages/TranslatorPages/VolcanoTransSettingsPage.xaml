@@ -12,7 +12,7 @@
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel >
-                <TextBlock Text="{DynamicResource VolcanoTransSettingsPage_Introduce}"
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource VolcanoTransSettingsPage_Introduce}"
                            FontSize="16"
                            Margin="10"
                            TextWrapping="WrapWithOverflow" />

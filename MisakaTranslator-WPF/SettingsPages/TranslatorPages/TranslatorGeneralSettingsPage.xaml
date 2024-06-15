@@ -11,7 +11,7 @@
 
     <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel >
-            <TextBlock Text="{DynamicResource GeneralTransSettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
+            <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource GeneralTransSettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
             <StackPanel Margin="20,36,0,0">
                 <hc:ComboBox Name="FirstTransComboBox" MinWidth="380" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource GeneralTransSettingsPage_FirstTranslator}" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{DynamicResource GeneralTransSettingsPage_TransSourceHint}" hc:Poptip.Placement="Top" SelectionChanged="FirstTransComboBox_SelectionChanged" HorizontalAlignment="Left"/>
                 <hc:ComboBox Name="SecondTransComboBox" Margin="0,10,0,0" MinWidth="380" hc:InfoElement.TitleWidth="140" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource GeneralTransSettingsPage_SecondTranslator}" hc:Poptip.HitMode="None" hc:Poptip.IsOpen="{Binding IsMouseOver,RelativeSource={RelativeSource Self}}" hc:Poptip.Content="{DynamicResource GeneralTransSettingsPage_TransSourceHint}" hc:Poptip.Placement="Top" SelectionChanged="SecondTransComboBox_SelectionChanged" HorizontalAlignment="Left"/>

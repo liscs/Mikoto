@@ -23,7 +23,7 @@
 
             <StackPanel Grid.Row="0"
                         Margin="10">
-                <TextBlock Text="{DynamicResource ChooseGamePage_Introduce}"
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource ChooseGamePage_Introduce}"
                            TextWrapping="WrapWithOverflow" />
                 <TextBlock Name="NoAdminPrivilegesTextBlock"
                            Text="{DynamicResource ChooseGamePage_NoAdminWarn}"
@@ -37,7 +37,7 @@
                          VerticalAlignment="Center"
                          SelectionChanged="GameProcessComboBox_SelectionChanged" />
 
-            <TextBlock Grid.Row="2"
+            <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="2"
                        Name="AutoHookTag"
                        Text="[AutoHook]"
                        HorizontalAlignment="Center"

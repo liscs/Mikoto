@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
 using Windows.Win32;
 
 namespace MisakaTranslator
@@ -45,7 +44,6 @@ namespace MisakaTranslator
                 new WindowInteropHelper(this).Handle,
                 Windows.Win32.Graphics.Dwm.DWMWINDOWATTRIBUTE.DWMWA_SYSTEMBACKDROP_TYPE,
                 2);
-            Background = Brushes.Transparent;
         }
 
         private class ActionCommand(Action action) : ICommand

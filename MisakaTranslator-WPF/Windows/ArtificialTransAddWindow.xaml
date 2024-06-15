@@ -6,7 +6,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MisakaTranslator"
         mc:Ignorable="d"
-        Title="{DynamicResource ArtificialTransWin_Title}" Height="400" Width="600">
+        Title="{DynamicResource ArtificialTransWin_Title}"
+        Height="400"
+        Width="600"
+        Background="{DynamicResource PrimaryBackground}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
@@ -16,11 +19,15 @@
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="{DynamicResource ArtificialTransWin_Hint}" TextWrapping="WrapWithOverflow" Margin="10"/>
+        <TextBlock Grid.Row="0"
+                   Foreground="{DynamicResource PrimaryForeground}"
+                   Text="{DynamicResource ArtificialTransWin_Hint}" TextWrapping="WrapWithOverflow" Margin="10"/>
 
         <TextBox Name="srcText" Grid.Row="1" Margin="10" TextWrapping="Wrap" IsReadOnly="True"/>
 
-        <TextBlock Grid.Row="2" Text="{DynamicResource ArtificialTransWin_transBox}" Margin="10"/>
+        <TextBlock Grid.Row="2"
+                   Foreground="{DynamicResource PrimaryForeground}"
+                   Text="{DynamicResource ArtificialTransWin_transBox}" Margin="10"/>
 
         <TextBox Name="transText" Grid.Row="3" Margin="10" TextWrapping="Wrap"/>
 

@@ -13,7 +13,7 @@
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel >
-                <TextBlock Text="{DynamicResource YoudaoZhiyunTransSettingsPage_Introduce}"
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource YoudaoZhiyunTransSettingsPage_Introduce}"
                            FontSize="16"
                            Margin="10"
                            TextWrapping="WrapWithOverflow" />

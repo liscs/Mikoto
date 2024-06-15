@@ -22,7 +22,7 @@
 
                 <StackPanel Grid.Row="0"
                             Margin="10">
-                    <TextBlock Text="{DynamicResource ChooseHookFuncPage_Introduce}"
+                    <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource ChooseHookFuncPage_Introduce}"
                                TextWrapping="Wrap" />
                     <TextBlock Name="NoAdminPrivilegesTextBlock"
                                Text="{DynamicResource ChooseHookFuncPage_NoAdminWarn}"
@@ -48,7 +48,7 @@
                                             Header="{DynamicResource ChooseHookFuncPage_Header_Content}">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Path=Data}"
+                                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{Binding Path=Data}"
                                                    TextWrapping="WrapWithOverflow" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -64,11 +64,11 @@
                             Content="{DynamicResource ChooseHookFuncPage_BtnAddHook}"
                             Click="AddHookBtn_Click" />
 
-                    <TextBlock Margin="10"
+                    <TextBlock Foreground="{DynamicResource PrimaryForeground}" Margin="10"
                                VerticalAlignment="Center"
                                TextWrapping="Wrap">
                         <Hyperlink Click="CannotfindHookBtn_Click"> 
-                            <TextBlock Text="{DynamicResource ChooseHookFuncPage_BtnCannotfindHook}" />
+                            <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource ChooseHookFuncPage_BtnCannotfindHook}" />
                         </Hyperlink>
                     </TextBlock>
                 </StackPanel>
@@ -92,7 +92,7 @@
                        MaskCanClose="False">
                 <Border Width="300"
                         BorderThickness="0,1,0,0"
-                        BorderBrush="{DynamicResource BorderBrush}">
+                        BorderBrush="{DynamicResource BorderBrush}" Background="{DynamicResource PrimaryBackground}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition></RowDefinition>
@@ -101,7 +101,7 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0"
+                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="0"
                                    Text="{DynamicResource ChooseHookFuncPage_Drawer_Header}"
                                    FontSize="20"
                                    HorizontalAlignment="Center"

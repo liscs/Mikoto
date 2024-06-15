@@ -20,7 +20,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0"
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="0"
                            Text="{DynamicResource ChooseTextRepairFuncPage_Introduce}"
                            Margin="10" />
 
@@ -64,7 +64,7 @@
 
             <hc:Drawer Name="Single_InputDrawer"
                        MaskCanClose="False">
-                <Border 
+                <Border Background="{DynamicResource PrimaryBackground}"
                         Width="300"
                         BorderThickness="0,1,0,0"
                         BorderBrush="{DynamicResource BorderBrush}">
@@ -75,7 +75,7 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0"
+                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="0"
                                    Text="{DynamicResource ChooseTextRepairFuncPage_Drawer_Single}"
                                    FontSize="20"
                                    HorizontalAlignment="Center"
@@ -115,7 +115,7 @@
 
             <hc:Drawer Name="Sentence_InputDrawer"
                        MaskCanClose="False">
-                <Border 
+                <Border Background="{DynamicResource PrimaryBackground}"
                         Width="300"
                         BorderThickness="0,1,0,0"
                         BorderBrush="{DynamicResource BorderBrush}">
@@ -126,7 +126,7 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0"
+                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="0"
                                    Text="{DynamicResource ChooseTextRepairFuncPage_Drawer_Sentence}"
                                    FontSize="20"
                                    HorizontalAlignment="Center"
@@ -166,7 +166,7 @@
 
             <hc:Drawer Name="Regex_InputDrawer"
                        MaskCanClose="False">
-                <Border 
+                <Border Background="{DynamicResource PrimaryBackground}"
                         Width="300"
                         BorderThickness="0,1,0,0"
                         BorderBrush="{DynamicResource BorderBrush}">
@@ -178,7 +178,7 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0"
+                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="0"
                                    Text="{DynamicResource ChooseTextRepairFuncPage_Drawer_RegexIntrduce}"
                                    FontSize="20"
                                    HorizontalAlignment="Center"

@@ -12,7 +12,7 @@
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel >
-                <TextBlock Text="{DynamicResource AwsTransSettingsPage_Introduce}"
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource AwsTransSettingsPage_Introduce}"
                            FontSize="16"
                            Margin="10"
                            TextWrapping="WrapWithOverflow" />

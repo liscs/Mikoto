@@ -11,7 +11,8 @@
         MinHeight="476"
         Width="800"
         MinWidth="800"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource PrimaryBackground}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -98,7 +99,8 @@
         <Frame Grid.Column="1"
                Name="SettingFrame"
                Source="/SettingsPages/SoftwareSettingsPage.xaml"
-               NavigationUIVisibility="Hidden" />
+               NavigationUIVisibility="Hidden"
+               hc:BorderElement.CornerRadius="0"/>
     </Grid>
 </Window>
     

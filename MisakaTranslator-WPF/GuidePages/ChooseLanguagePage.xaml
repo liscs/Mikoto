@@ -19,7 +19,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0"
+            <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="0"
                        Text="{DynamicResource ChooseLanguagePage_Introduce}"
                        VerticalAlignment="Center"
                        Margin="10"

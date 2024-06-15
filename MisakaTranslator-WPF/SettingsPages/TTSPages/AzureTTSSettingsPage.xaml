@@ -11,7 +11,7 @@
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel >
-                <TextBlock Text="Azure TTS" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="Azure TTS" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
                 <StackPanel Margin="20,20,20,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -37,7 +37,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{DynamicResource TTSSettingsPage_TargetVoice}" VerticalAlignment="Center"/>
+                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Column="0" Text="{DynamicResource TTSSettingsPage_TargetVoice}" VerticalAlignment="Center"/>
                         <hc:ComboBox Grid.Column="1" Margin="10,0,0,0" Name="VoiceLocalComboBox" IsEditable="True" SelectionChanged="VoiceLocalComboBox_SelectionChanged"/>
                         <hc:ComboBox Grid.Column="2" Margin="10,0,0,0" Name="VoiceNameComboBox" IsEditable="True" SelectionChanged="VoiceNameComboBox_SelectionChanged"/>
                         <Button Grid.Column="3" Content="{DynamicResource TTSSettingsPage_TestBtn}" Margin="10,0,0,0" Width="122" Click="TransTestBtn_Click"/>

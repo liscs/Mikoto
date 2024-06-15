@@ -15,7 +15,7 @@
             <RowDefinition Height="40*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="{DynamicResource ChooseHookFuncPage_Introduce}" Margin="10"/>
+        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="0" Text="{DynamicResource ChooseHookFuncPage_Introduce}" Margin="10"/>
 
         <ListView Name="HookFunListView" Grid.Row="1"  SelectionMode="Single">
             <ListView.View>

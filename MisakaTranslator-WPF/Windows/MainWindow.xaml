@@ -186,6 +186,7 @@
                         <Image Name="DrawGameImage"
                                Margin="50,0,50,20" />
                         <TextBlock Name="GameNameTag"
+                                   Foreground="{DynamicResource PrimaryForeground}"
                                    MouseEnter="GameNameTag_MouseEnter"
                                    MouseLeave="GameNameTag_MouseLeave"
                                    TextAlignment="Center"
@@ -194,6 +195,7 @@
                                    TextWrapping="Wrap"
                                    PreviewMouseLeftButtonUp="GameNameTag_PreviewMouseLeftButtonUp" />
                         <TextBlock  Text="{Binding LastStartTime}"
+                                    Foreground="{DynamicResource PrimaryForeground}"
                                     TextAlignment="Center"
                                     Margin="10,0,10,10"
                                     FontSize="{DynamicResource TextFontSize}"

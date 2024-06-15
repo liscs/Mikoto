@@ -10,7 +10,7 @@
       Title="MecabDictPage">
 
     <StackPanel>
-        <TextBlock Text="{DynamicResource MecabDictPage_Introduce}" FontSize="16" TextWrapping="WrapWithOverflow" Margin="10" />
+        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource MecabDictPage_Introduce}" FontSize="16" TextWrapping="WrapWithOverflow" Margin="10" />
         <TextBox hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource MecabDictPage_DBPath}" Name="PathBox" IsReadOnly="True" Margin="20,10" />
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,10">
             <Button Content="{DynamicResource MecabDictPage_ClearPath}" Width="122" Click="ClearPathBtn_Click" Margin="0,0,10,0" />

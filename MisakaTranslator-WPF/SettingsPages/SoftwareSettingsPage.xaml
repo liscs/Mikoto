@@ -18,9 +18,9 @@
                 <TextBlock Text="Mikoto Version"
                            FontSize="{DynamicResource SubHeadFontSize}"
                            FontWeight="{DynamicResource SettinrTitleTextWeight}"
-                           Foreground="{DynamicResource SettinrTitleColor}"
+                           Foreground="{DynamicResource PrimaryForeground}"
                            Margin="0,0,0,5" />
-                <TextBlock Text="{Binding CurrentVersion}"
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{Binding CurrentVersion}"
                            FontWeight="{DynamicResource SettinrTitleTextWeight}"
                            Margin="0,0,0,5" />
                 <StackPanel Margin="0,0,0,5"
@@ -39,10 +39,9 @@
                           HorizontalAlignment="Left"
                           Margin="0,0,0,10" />
 
-                <TextBlock Text="{DynamicResource SoftwareSettingsPage_ClickCloseButton}"
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource SoftwareSettingsPage_ClickCloseButton}"
                            FontSize="{DynamicResource SubHeadFontSize}"
                            FontWeight="{DynamicResource SettinrTitleTextWeight}"
-                           Foreground="{DynamicResource SettinrTitleColor}"
                            Margin="0,0,0,10" />
                 <RadioButton Name="MinimizationRadioButton"
                              Content="{DynamicResource SoftwareSettingsPage_Minimize}"
@@ -58,7 +57,7 @@
                 <TextBlock Text="{DynamicResource SoftwareSettingsPage_EnableGlobalNotification}"
                            FontSize="{DynamicResource SubHeadFontSize}"
                            FontWeight="{DynamicResource SettinrTitleTextWeight}"
-                           Foreground="{DynamicResource SettinrTitleColor}"
+                           Foreground="{DynamicResource PrimaryForeground}"
                            Margin="0,0,0,10" />
                 <CheckBox Name="GrowlEnabledCheckBox"
                           Content="{DynamicResource SoftwareSettingsPage_Enable}"

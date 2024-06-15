@@ -13,7 +13,7 @@
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel >
-                <TextBlock Text="{DynamicResource YandexTransSettingsPage_Introduce}"
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource YandexTransSettingsPage_Introduce}"
                            FontSize="16"
                            Margin="10"
                            TextWrapping="WrapWithOverflow" />

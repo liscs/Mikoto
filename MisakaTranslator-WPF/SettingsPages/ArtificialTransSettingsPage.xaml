@@ -13,9 +13,9 @@
         <Grid>
             <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
                 <StackPanel >
-                    <TextBlock Text="{DynamicResource ArtificialTransSettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
+                    <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource ArtificialTransSettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
                     <StackPanel Margin="20,10,10,10" Height="348">
-                        <TextBlock Text="{DynamicResource ArtificialTransSettingsPage_ATon_Hint}" Margin="0,20,0,0" TextWrapping="WrapWithOverflow"/>
+                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource ArtificialTransSettingsPage_ATon_Hint}" Margin="0,20,0,0" TextWrapping="WrapWithOverflow"/>
                         <CheckBox Name="ATonCheckBox" Content="{DynamicResource ArtificialTransSettingsPage_ATon}" Margin="0,20,0,0" hc:InfoElement.Title="{DynamicResource HookSettingsPage_AutoHook}" Click="ATonCheckBox_Click" HorizontalAlignment="Left"/>
 
                         <hc:TextBox hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource ArtificialTransSettingsPage_ChoosePath_Hint}" Name="PathBox" hc:InfoElement.ShowClearButton="True" Margin="0,20,0,0"/>

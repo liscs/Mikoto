@@ -12,7 +12,7 @@
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel >
-                <TextBlock Text="{DynamicResource DreyeTransSettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource DreyeTransSettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
                 <StackPanel Margin="20,20,20,0">
                     <hc:TextBox hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource DreyeTransSettingsPage_Path}" Name="PathBox" hc:InfoElement.ShowClearButton="True"/>
                     <Button Margin="0,10,0,0" Content="{DynamicResource JbeijingTransSettingsPage_ChoosePath}" Width="122" Click="ChoosePathBtn_Click" HorizontalAlignment="Right" ></Button>

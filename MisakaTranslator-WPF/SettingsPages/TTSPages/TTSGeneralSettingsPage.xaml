@@ -11,8 +11,8 @@
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel >
-                <TextBlock Text="{DynamicResource TTSGeneralSettingsPage_Selection}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
-                <TextBlock Text="{DynamicResource TTSGeneralSettingsPage_Hint}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource TTSGeneralSettingsPage_Selection}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource TTSGeneralSettingsPage_Hint}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
                 <StackPanel>
                     <RadioButton Name="AzureTTSRadio" Content="{DynamicResource TTSGeneralSettingsPage_Azure}" Checked="AzureTTSRadio_Checked" Style="{DynamicResource RadioButtonIcon}"/>
                     <RadioButton Name="LocalTTSRadio" Margin="0,16,0,0" Content="{DynamicResource TTSGeneralSettingsPage_Local}" Checked="LocalTTSRadio_Checked" Style="{DynamicResource RadioButtonIcon}"/>

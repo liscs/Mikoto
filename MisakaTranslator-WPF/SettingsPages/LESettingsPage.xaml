@@ -11,7 +11,7 @@
 
     <Grid >
         <StackPanel >
-            <TextBlock Text="{DynamicResource LESettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
+            <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource LESettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
 
             <hc:TextBox Margin="10" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="{DynamicResource LESettingsPage_LEbox}" Name="PathBox" hc:InfoElement.ShowClearButton="True" LostFocus="PathBox_LostFocus"/>
             <Button Margin="10" Content="{DynamicResource JbeijingTransSettingsPage_ChoosePath}" Width="122" Click="ChoosePathBtn_Click" HorizontalAlignment="Right" ></Button>

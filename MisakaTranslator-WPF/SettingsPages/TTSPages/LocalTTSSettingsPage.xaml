@@ -11,17 +11,17 @@
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel >
-                <TextBlock Text="{DynamicResource TTSSettingsPage_Hint}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource TTSSettingsPage_Hint}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
                 <StackPanel Margin="20,20,20,0">
                     <hc:ComboBox Name="TTSSourceComboBox" Margin="10,10,10,10"  Width="500" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="100" hc:InfoElement.Title="{DynamicResource TTSSettingsPage_TTSSourceLabel}" SelectionChanged="TTSSourceComboBox_SelectionChanged" HorizontalAlignment="Left" />
 
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{DynamicResource TTSSettingsPage_TTSVolumeLabel}" VerticalAlignment="Center" Margin="10"/>
+                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource TTSSettingsPage_TTSVolumeLabel}" VerticalAlignment="Center" Margin="10"/>
                         <Slider Name="VolumeBar" Width="300" Margin="35,10,10,10" Maximum="100" Minimum="0" Value="80" hc:TipElement.Visibility="Visible" hc:TipElement.Placement="Top" ValueChanged="VolumeBar_ValueChanged"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{DynamicResource TTSSettingsPage_TTSRateLabel}" VerticalAlignment="Center" Margin="10"/>
+                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource TTSSettingsPage_TTSRateLabel}" VerticalAlignment="Center" Margin="10"/>
                         <Slider Name="RateBar" Width="300" Margin="35,10,10,10" Maximum="10" Minimum="-10" Value="0" hc:TipElement.Visibility="Visible" hc:TipElement.Placement="Top" IsSnapToTickEnabled="True" TickFrequency="1" TickPlacement="BottomRight" ValueChanged="RateBar_ValueChanged"/>
                     </StackPanel>
 

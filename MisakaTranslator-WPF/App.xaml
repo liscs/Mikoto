@@ -1,6 +1,7 @@
 ﻿<Application x:Class="MisakaTranslator.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
              StartupUri="Windows/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -9,15 +10,16 @@
                 <ResourceDictionary Source="lang/zh-CN.xaml" />
                 <!--显示用本地化资源-->
                 <ResourceDictionary Source="lang/zh-CN.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml" />
+
                 <!--主题-->
                 <ResourceDictionary Source="Themes/LightTheme.xaml" />
                 <ResourceDictionary Source="Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+
     </Application.Resources>
 
+    
 
 
 </Application>

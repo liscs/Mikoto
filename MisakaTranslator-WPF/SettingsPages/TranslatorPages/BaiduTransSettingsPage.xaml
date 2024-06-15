@@ -12,7 +12,7 @@
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel >
-            <TextBlock Text="{DynamicResource BaiduTransSettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
+            <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource BaiduTransSettingsPage_Introduce}" FontSize="16" Margin="10" TextWrapping="WrapWithOverflow"/>
             <StackPanel Margin="20,20,20,0">
                 <Grid>
                     <Grid.ColumnDefinitions>

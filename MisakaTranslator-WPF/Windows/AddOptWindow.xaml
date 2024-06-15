@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MisakaTranslator"
         mc:Ignorable="d"
-        Title="AddOptWindow" Height="300" Width="500">
+        Title="AddOptWindow" Height="300" Width="500" Background="{DynamicResource PrimaryBackground}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -15,7 +15,7 @@
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="{DynamicResource AddOptWin_Introduce}" Margin="5"/>
+        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="0" Text="{DynamicResource AddOptWin_Introduce}" Margin="5"/>
 
         <TextBox Name="srcText" Grid.Row="1" Margin="5" TextWrapping="Wrap"/>
 

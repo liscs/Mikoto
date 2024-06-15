@@ -131,7 +131,7 @@ namespace MisakaTranslator.Helpers
             var majorColors = sortedDict.ElementAt(0).Key;
 
 
-            switch (Application.Current.Resources.MergedDictionaries[4].Source.OriginalString)
+            switch (Application.Current.Resources.MergedDictionaries[2].Source.OriginalString)
             {
                 case "Themes/LightTheme.xaml":
                     {
