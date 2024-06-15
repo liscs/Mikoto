@@ -1,24 +1,28 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:hc="https://handyorg.github.io/handycontrol">
+                    xmlns:hc="https://handyorg.github.io/handycontrol"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <ResourceDictionary.MergedDictionaries>
         <hc:Theme Skin="Default" />
     </ResourceDictionary.MergedDictionaries>
 
+    <sys:String x:Key="CurrentTheme">Light</sys:String>
+    
+    
     <SolidColorBrush x:Key="PrimaryBackground"
-                     Color="White"></SolidColorBrush>
+                     Color="White" />
     <SolidColorBrush x:Key="PrimaryForeground"
-                     Color="Black"></SolidColorBrush>
+                     Color="Black" />
 
 
     <SolidColorBrush x:Key="MainBtnColor"
-                     Color="#ffff556d"></SolidColorBrush>
+                     Color="#ffff556d" />
     <SolidColorBrush x:Key="BoxBtnColor"
-                     Color="#ffff8e9F"></SolidColorBrush>
+                     Color="#ffff8e9F" />
 
     <SolidColorBrush x:Key="ButtonTextColor"
                      Color="#fffcf4f2"
-                     Opacity="0.85"></SolidColorBrush>
+                     Opacity="0.85" />
     <FontWeight x:Key="ButtonTextWeight">DemiBold</FontWeight>
 
     <!--设置界面资源-->

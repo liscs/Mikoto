@@ -1,4 +1,6 @@
 ﻿using HandyControl.Controls;
+using HandyControl.Themes;
+using HandyControl.Tools;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -54,7 +56,7 @@ namespace MisakaTranslator
 
         public static TransMode TransMode { get; set; } //全局使用中的翻译模式 1=_hook 
 
-        public static Guid GameID { get; set; } //全局使用中的游戏ID(数据库)
+        public static Guid GameID { get; set; } //全局使用中的游戏ID
 
         public static TextHookHandle? TextHooker { get; set; } //全局使用中的Hook对象
         public static string? UsingRepairFunc { get; set; } //全局使用中的去重方法
@@ -168,7 +170,7 @@ namespace MisakaTranslator
                 Process.Start(new ProcessStartInfo("https://github.com/liscs/MisakaTranslator/releases/latest") { UseShellExecute = true });
                 //点击确认，自动下载最新版并替换重启
                 //需要多进程
-
+                //TODO 更新工具
             }
         }
 
@@ -202,6 +204,22 @@ namespace MisakaTranslator
             get
             {
                 return Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
+            }
+        }
+
+        public static Theme CurrentTheme
+        {
+            get
+            {
+                if (Enum.TryParse(typeof(Theme), (string)Application.Current.Resources["CurrentTheme"], out object? value))
+                {
+                    return (Theme)value;
+                }
+                else
+                {
+                    return Theme.Light;
+                }
+
             }
         }
 

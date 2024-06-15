@@ -95,7 +95,7 @@ namespace MisakaTranslator.Helpers
             return ico;
         }
 
-        public static Brush GetMajorBrush(BitmapSource? bitmapSource, Theme theme = Theme.Light)
+        public static Brush GetMajorBrush(BitmapSource? bitmapSource)
         {
             if (bitmapSource == null)
             {
@@ -123,17 +123,25 @@ namespace MisakaTranslator.Helpers
                 }
             }
             IOrderedEnumerable<KeyValuePair<int, int>> sortedDict = from entry in dict orderby entry.Value descending select entry;
+
             if (!sortedDict.Any())
             {
                 //纯黑白图标
-                return new SolidColorBrush(Color.FromRgb(51, 51, 51));
+                LinearGradientBrush result = new()
+                {
+                    StartPoint = new Point(0, 1),
+                    EndPoint = new Point(1, 0),
+                };
+                result.GradientStops.Add(new GradientStop(Color.FromRgb(255, 255, 255), 0.0));
+                result.GradientStops.Add(new GradientStop(Color.FromRgb(200, 200, 200), 1.0));
+                return result;
             }
-            var majorColors = sortedDict.ElementAt(0).Key;
+            var majorColors = sortedDict.First().Key;
 
 
-            switch (Application.Current.Resources.MergedDictionaries[2].Source.OriginalString)
+            switch (Common.CurrentTheme)
             {
-                case "Themes/LightTheme.xaml":
+                case Theme.Light:
                     {
                         LinearGradientBrush result = new()
                         {

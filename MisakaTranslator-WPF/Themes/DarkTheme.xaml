@@ -1,9 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:hc="https://handyorg.github.io/handycontrol">
+                    xmlns:hc="https://handyorg.github.io/handycontrol"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <ResourceDictionary.MergedDictionaries>
         <hc:Theme Skin="Dark" />
     </ResourceDictionary.MergedDictionaries>
+    <sys:String x:Key="CurrentTheme">Dark</sys:String>
 
     <SolidColorBrush x:Key="PrimaryBackground" Color="#FF1E1E1E"></SolidColorBrush>
     <SolidColorBrush x:Key="PrimaryForeground" Color="White"></SolidColorBrush>
