@@ -1,6 +1,4 @@
 ﻿using HandyControl.Controls;
-using HandyControl.Themes;
-using HandyControl.Tools;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -195,6 +193,7 @@ namespace Mikoto
             catch (HttpRequestException ex)
             {
                 Growl.WarningGlobal(ex.Message);
+                Logger.Info(ex);
             }
             return (CheckUpdateResult.RequestError, null);
         }

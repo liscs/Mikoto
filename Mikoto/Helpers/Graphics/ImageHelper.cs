@@ -65,12 +65,12 @@ namespace Mikoto.Helpers
                 return ico;
             }
 
-            BitmapImage? bitmapImage = ImageHelper.ImageToBitmapImage(GetAppIcon(path)!);
+            BitmapImage? bitmapImage = ImageToBitmapImage(GetAppIcon(path)!);
             ico.Source = bitmapImage;
-            string[] icoPaths = Directory.GetFiles(Path.GetDirectoryName(path)!, "*icon.ico");
-            if (icoPaths.Length > 0)
+            string[] icoPaths = Directory.GetFiles(Path.GetDirectoryName(path)!, "*.ico").Where(p => !p.Contains("uninst")).ToArray();
+            if (icoPaths.Length != 0)
             {
-                bitmapImage = new BitmapImage(new Uri(icoPaths[0]));
+                bitmapImage = new BitmapImage(new Uri(icoPaths.First()));
                 ico.Source = bitmapImage;
             }
             return ico;
