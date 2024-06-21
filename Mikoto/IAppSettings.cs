@@ -261,8 +261,15 @@ namespace Mikoto
             set;
         }
 
-        [Option(Alias = "TTS.AzureTTSVoice", DefaultValue = "ja-JP-NanamiNeural")]
+        [Option(Alias = "TTS.AzureTTSVoice", DefaultValue = "Microsoft Server Speech Text to Speech Voice (ja-JP, NanamiNeural)")]
         string AzureTTSVoice
+        {
+            get;
+            set;
+        }
+
+        [Option(Alias = "TTS.AzureTTSVoiceStyle", DefaultValue = "")]
+        string AzureTTSVoiceStyle
         {
             get;
             set;

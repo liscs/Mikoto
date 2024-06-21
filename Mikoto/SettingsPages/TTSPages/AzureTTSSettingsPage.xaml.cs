@@ -13,19 +13,23 @@ namespace Mikoto.SettingsPages.TTSPages
     /// </summary>
     public partial class AzureTTSSettingsPage : Page
     {
+        private AzureTTSSettingsViewModel _viewModel = new();
+
         private AzureTTS azureTTS;
-        private const string DEFAULT_VOICE = "ja-JP-NanamiNeural";
 
         public AzureTTSSettingsPage()
         {
             InitializeComponent();
+            DataContext = _viewModel;
             AzureTTSSecretKeyBox.Text = Common.AppSettings.AzureTTSSecretKey;
             AzureTTSLocationBox.Text = Common.AppSettings.AzureTTSLocation;
             HttpProxyBox.Text = Common.AppSettings.AzureTTSProxy;
-            azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSProxy);
-            SetSavedVoice();
+
+
+            azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceStyle, Common.AppSettings.AzureTTSProxy);
             GetVoices(this, null);
         }
+
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -41,7 +45,10 @@ namespace Mikoto.SettingsPages.TTSPages
         {
             Common.AppSettings.AzureTTSSecretKey = AzureTTSSecretKeyBox.Text;
             Common.AppSettings.AzureTTSLocation = AzureTTSLocationBox.Text;
-            azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSProxy);
+            Common.AppSettings.AzureTTSVoice = _viewModel.SelectedVoice?.Name ?? Common.AppSettings.AzureTTSVoice;
+            Common.AppSettings.AzureTTSVoiceStyle = _viewModel.SelectedVoiceStyle ?? Common.AppSettings.AzureTTSVoiceStyle;
+
+            azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceStyle, Common.AppSettings.AzureTTSProxy);
             await azureTTS.SpeakAsync(TestSrcText.Text);
             if (!string.IsNullOrEmpty(azureTTS.ErrorMessage))
             {
@@ -57,8 +64,7 @@ namespace Mikoto.SettingsPages.TTSPages
 
         private void VoiceNameComboBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            if (Voices.Count == 0) { return; }
-            Common.AppSettings.AzureTTSVoice = $"{VoiceLocalComboBox.SelectedItem}-{VoiceNameComboBox.SelectedItem}";
+            if (_viewModel.Voices.Count == 0) { return; }
         }
 
         private void VoiceNameQuery_Click(object sender, RoutedEventArgs e)
@@ -66,7 +72,6 @@ namespace Mikoto.SettingsPages.TTSPages
             Process.Start(new ProcessStartInfo(AzureTTS.GetUrl_VoiceList()) { UseShellExecute = true });
         }
 
-        public List<VoiceInfo> Voices { get; set; } = new();
 
         private async void GetVoices(object sender, RoutedEventArgs? e)
         {
@@ -76,61 +81,39 @@ namespace Mikoto.SettingsPages.TTSPages
                 Growl.Info(Application.Current.Resources["TTSSettingsPage_AzureSettingErrorInfo"].ToString());
                 return;
             }
+            _viewModel.Voices = synthesisVoicesResult.Voices.ToList();
+            SetSavedVoice(Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceStyle);
+        }
 
-            Voices = synthesisVoicesResult.Voices.ToList();
-            if (Voices.Count != 0)
+        private void SetSavedVoice(string savedVoice, string savedStyle)
+        {
+            _viewModel.SelectedVoice = _viewModel.Voices.First(p => p.Name == savedVoice);
+            _viewModel.SelectedVoiceStyle = savedStyle;
+        }
+
+        private void VoiceLocaleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count != 0)
             {
-                VoiceLocalComboBox.ItemsSource = Voices.Select(p => p.Locale).Distinct();
-                UpdateVoiceNameComboBox(VoiceLocalComboBox.SelectedItem.ToString());
-                PickSavedVoice();
+                _viewModel.VoiceNames = _viewModel.Voices.Where(p => p.Locale == e.AddedItems[0] as string).Select(p => p.LocalName);
             }
         }
 
-        private void PickSavedVoice()
+        private void VoiceNameComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (string.IsNullOrEmpty(Common.AppSettings.AzureTTSVoice))
+            if (e.AddedItems.Count != 0)
             {
-                VoiceLocalComboBox.SelectedItem = GetVoiceLocale(DEFAULT_VOICE);
-                VoiceNameComboBox.SelectedItem = GetVoiceName(DEFAULT_VOICE);
-            }
-            else
-            {
-                VoiceLocalComboBox.SelectedItem = GetVoiceLocale(Common.AppSettings.AzureTTSVoice);
-                VoiceNameComboBox.SelectedItem = GetVoiceName(Common.AppSettings.AzureTTSVoice);
+                _viewModel.SelectedVoice = _viewModel.Voices.First(p => p.LocalName == e.AddedItems[0] as string);
+                _viewModel.VoiceStyles = _viewModel.SelectedVoice.StyleList;
             }
         }
 
-        private void SetSavedVoice()
+        private void VoiceStyleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (string.IsNullOrEmpty(Common.AppSettings.AzureTTSVoice))
+            if (e.AddedItems.Count != 0)
             {
-                VoiceLocalComboBox.ItemsSource = new List<string> { GetVoiceLocale(DEFAULT_VOICE) };
-                VoiceNameComboBox.ItemsSource = new List<string> { GetVoiceName(DEFAULT_VOICE) };
+                _viewModel.SelectedVoiceStyle = e.AddedItems[0] as string ?? string.Empty;
             }
-            else
-            {
-                VoiceLocalComboBox.ItemsSource = new List<string> { GetVoiceLocale(Common.AppSettings.AzureTTSVoice) };
-                VoiceNameComboBox.ItemsSource = new List<string> { GetVoiceName(Common.AppSettings.AzureTTSVoice) };
-            }
-            VoiceLocalComboBox.SelectedIndex = 0;
-            VoiceNameComboBox.SelectedIndex = 0;
-        }
-
-        /// <summary>
-        /// 筛选指定地区的语音
-        /// </summary>
-        private void UpdateVoiceNameComboBox(string? locale)
-        {
-            if (string.IsNullOrEmpty(locale) || VoiceNameComboBox == null || Voices.Count == 0) { return; }
-            VoiceNameComboBox.ItemsSource = Voices.Where(p => p.Locale == locale).Select(p => GetVoiceName(p.ShortName));
-        }
-
-        private static string GetVoiceLocale(string voiceString) => voiceString.Substring(0, voiceString.LastIndexOf('-'));
-        private static string GetVoiceName(string voiceString) => voiceString.Substring(voiceString.LastIndexOf('-') + 1);
-
-        private void VoiceLocalComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            UpdateVoiceNameComboBox(e.AddedItems[0]?.ToString());
         }
     }
 }

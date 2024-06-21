@@ -1,5 +1,6 @@
 ﻿using Microsoft.CognitiveServices.Speech;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace TTSHelperLibrary
 {
@@ -8,13 +9,15 @@ namespace TTSHelperLibrary
         /// <summary>
         /// 形如127.0.0.1:7890的代理字符串
         /// </summary>
-        public string ProxyString { get; set; } = string.Empty;
+        private string _proxy = string.Empty;
         private SpeechSynthesizer? _synthesizer;
         private string subscriptionKey = string.Empty;
         private string subscriptionRegion = string.Empty;
 
-        private string Voice { get; set; } = string.Empty;
-        public AzureTTS(string key, string location, string voice, string proxy)
+        private string _voice = string.Empty;
+        private string _style = string.Empty;
+
+        public AzureTTS(string key, string location, string voice, string style, string proxy)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(location) || string.IsNullOrEmpty(voice))
             {
@@ -22,14 +25,15 @@ namespace TTSHelperLibrary
             }
             subscriptionKey = key;
             subscriptionRegion = location;
-            Voice = voice;
-            ProxyString = proxy;
+            _voice = voice;
+            _style = style;
+            _proxy = proxy;
 
             var config = SpeechConfig.FromSubscription(subscriptionKey, subscriptionRegion);
-            if (!string.IsNullOrWhiteSpace(ProxyString))
+            if (!string.IsNullOrWhiteSpace(_proxy))
             {
                 Regex regex = ProxyStringRegex();
-                Match match = regex.Match(ProxyString);
+                Match match = regex.Match(_proxy);
                 if (match.Success)
                 {
                     config.SetProxy(match.Result("${host}"), int.Parse(match.Result("${port}")));
@@ -39,9 +43,7 @@ namespace TTSHelperLibrary
                     ErrorMessage += "Failed to set proxy! ";
                 }
             }
-            config.SpeechSynthesisVoiceName = Voice;
             config.SetSpeechSynthesisOutputFormat(SpeechSynthesisOutputFormat.Riff44100Hz16BitMonoPcm);
-
             try
             {
                 _synthesizer?.Dispose();
@@ -55,12 +57,14 @@ namespace TTSHelperLibrary
 
         public async Task SpeakAsync(string text)
         {
+            XElement ssml = BuildSsml(text);
+
             ErrorMessage = string.Empty;
-            if (subscriptionKey == string.Empty || subscriptionRegion == string.Empty || string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(Voice))
+            if (subscriptionKey == string.Empty || subscriptionRegion == string.Empty || string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(_voice))
                 return;
             var synthesizer = _synthesizer;
             if (synthesizer == null) { ErrorMessage += "Synthesizer should not be null!"; return; }
-            using (var result = await synthesizer.SpeakTextAsync(text))
+            using (var result = await synthesizer.SpeakSsmlAsync(ssml.ToString()))
             {
                 if (result.Reason == ResultReason.Canceled)
                 {
@@ -72,6 +76,29 @@ namespace TTSHelperLibrary
                     }
                 }
             }
+        }
+
+        private XElement BuildSsml(string text)
+        {
+            const string ssmlString = """
+                <speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="ja-JP">
+                <voice name="ja-JP-NanamiNeural"><prosody volume="100">
+                        <mstts:express-as style="sad">
+                This is the text that is spoken.
+                </mstts:express-as>
+            </prosody>
+                </voice>
+            </speak>
+            """;
+            XElement ssml = XElement.Parse(ssmlString);
+            XNamespace xNamespace = ssml.Name.Namespace;
+            XElement expressNode = ssml.Descendants(ssml.GetNamespaceOfPrefix("mstts")! + "express-as").First();
+            expressNode.Value = text;
+            expressNode.Attribute("style")!.Value = _style;
+
+            ssml.Descendants(xNamespace + "voice").First().Attribute("name")!.Value = _voice;
+            ssml.Descendants(xNamespace + "prosody").First().Attribute("volume")!.Value = "+50.00%";
+            return ssml;
         }
 
         public Task<SynthesisVoicesResult?> GetVoices()
