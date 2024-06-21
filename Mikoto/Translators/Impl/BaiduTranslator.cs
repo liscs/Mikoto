@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Mikoto.Helpers.Exceptions;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -54,12 +55,12 @@ namespace Mikoto.Translators
             }
             catch (System.Net.Http.HttpRequestException ex)
             {
-                errorInfo = ex.Message;
+                errorInfo = ex.GetOriginalException().Message;
                 return null;
             }
             catch (TaskCanceledException ex)
             {
-                errorInfo = ex.Message;
+                errorInfo = ex.GetOriginalException().Message;
                 return null;
             }
 

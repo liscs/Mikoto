@@ -23,12 +23,15 @@
 
             <StackPanel Grid.Row="0"
                         Margin="10">
-                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource ChooseGamePage_Introduce}"
-                           TextWrapping="WrapWithOverflow" />
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}"
+                           Text="{DynamicResource ChooseGamePage_Introduce}"
+                           FontSize="{DynamicResource SubHeadFontSize}"
+                           TextWrapping="Wrap" />
                 <TextBlock Name="NoAdminPrivilegesTextBlock"
                            Text="{DynamicResource ChooseGamePage_NoAdminWarn}"
-                           TextWrapping="WrapWithOverflow"
-                           Foreground="{DynamicResource WarningBrush}"/>
+                           TextWrapping="Wrap"
+                           FontSize="{DynamicResource SubHeadFontSize}"
+                           Foreground="{DynamicResource WarningBrush}" />
             </StackPanel>
 
             <hc:ComboBox Name="GameProcessComboBox"
@@ -37,7 +40,8 @@
                          VerticalAlignment="Center"
                          SelectionChanged="GameProcessComboBox_SelectionChanged" />
 
-            <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="2"
+            <TextBlock Foreground="{DynamicResource PrimaryForeground}"
+                       Grid.Row="2"
                        Name="AutoHookTag"
                        Text="[AutoHook]"
                        HorizontalAlignment="Center"

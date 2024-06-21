@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Mikoto.Helpers.Exceptions;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
@@ -85,7 +86,7 @@ namespace Mikoto.Translators
                     catch (Exception ex)
                     {
                         Environment.CurrentDirectory = currentpath;
-                        errorInfo = ex.Message;
+                        errorInfo = ex.GetOriginalException().Message;
                         return Task.FromResult<string?>(null);
                     }
                 }
@@ -104,7 +105,7 @@ namespace Mikoto.Translators
                     catch (Exception ex)
                     {
                         Environment.CurrentDirectory = currentpath;
-                        errorInfo = ex.Message;
+                        errorInfo = ex.GetOriginalException().Message;
                         return Task.FromResult<string?>(null);
                     }
                 }

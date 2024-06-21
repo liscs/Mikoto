@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Mikoto.Helpers.Exceptions;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -70,7 +71,7 @@ namespace Mikoto.Translators
                 }
                 catch (Exception ex)
                 {
-                    errorInfo = ex.Message;
+                    errorInfo = ex.GetOriginalException().Message;
                     return null;
                 }
             }

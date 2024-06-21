@@ -45,7 +45,9 @@ namespace Mikoto.GuidePages.Hook
                 }
                 if (e.Index < sum)
                 {
+                    var index = HookFunListView.SelectedIndex;
                     lstData[e.Index] = e.Data;
+                    HookFunListView.SelectedIndex = index;
                 }
                 else
                 {
