@@ -11,7 +11,6 @@ using System.Text.Json.Nodes;
 using System.Windows;
 using System.Windows.Interop;
 using TextHookLibrary;
-using TextRepairLibrary;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace Mikoto

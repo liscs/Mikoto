@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 
-namespace TextRepairLibrary
+namespace Mikoto
 {
     public static partial class TextRepair
     {

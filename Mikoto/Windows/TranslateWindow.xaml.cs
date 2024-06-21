@@ -16,7 +16,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using TextHookLibrary;
-using TextRepairLibrary;
 using TransOptimizationLibrary;
 using TTSHelperLibrary;
 using Windows.Win32;

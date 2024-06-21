@@ -1,10 +1,13 @@
 ﻿using Microsoft.CognitiveServices.Speech;
+using System.Text.RegularExpressions;
 
 namespace TTSHelperLibrary
 {
-    public class AzureTTS : ITTS
+    public partial class AzureTTS : ITTS
     {
-        //形如127.0.0.1:7890的代理字符串
+        /// <summary>
+        /// 形如127.0.0.1:7890的代理字符串
+        /// </summary>
         public string ProxyString { get; set; } = string.Empty;
         private SpeechSynthesizer? _synthesizer;
         private string subscriptionKey = string.Empty;
@@ -25,17 +28,11 @@ namespace TTSHelperLibrary
             var config = SpeechConfig.FromSubscription(subscriptionKey, subscriptionRegion);
             if (!string.IsNullOrWhiteSpace(ProxyString))
             {
-                if (ProxyString.Contains(':'))
+                Regex regex = ProxyStringRegex();
+                Match match = regex.Match(ProxyString);
+                if (match.Success)
                 {
-                    try
-                    {
-                        config.SetProxy(ProxyString.Split(':').ElementAt(0), Convert.ToInt32(ProxyString.Split(':').ElementAt(1)));
-                    }
-                    catch (Exception)
-                    {
-                        //设置代理失败
-                        ErrorMessage += "Failed to set proxy! ";
-                    }
+                    config.SetProxy(match.Result("${host}"), int.Parse(match.Result("${port}")));
                 }
                 else
                 {
@@ -44,26 +41,17 @@ namespace TTSHelperLibrary
             }
             config.SpeechSynthesisVoiceName = Voice;
             config.SetSpeechSynthesisOutputFormat(SpeechSynthesisOutputFormat.Riff44100Hz16BitMonoPcm);
-            if (_synthesizer != null)
-            {
-                disposeList.Add(_synthesizer);
-            }
 
-            foreach (var item in disposeList)
+            try
             {
-                try
-                {
-                    item.Dispose();
-                    disposeList.Remove(item);
-                }
-                catch (InvalidOperationException)
-                {
-                }
+                _synthesizer?.Dispose();
+            }
+            catch (ObjectDisposedException)
+            {
             }
             _synthesizer = new SpeechSynthesizer(config);
         }
 
-        private HashSet<SpeechSynthesizer> disposeList = new();
 
         public async Task SpeakAsync(string text)
         {
@@ -124,5 +112,8 @@ namespace TTSHelperLibrary
         {
             return "https://speech.microsoft.com/portal/voicegallery";
         }
+
+        [GeneratedRegex(@"(?<host>[^/]+)?:(?<port>\d+)?")]
+        private static partial Regex ProxyStringRegex();
     }
 }

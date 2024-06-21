@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using TextHookLibrary;
-using TextRepairLibrary;
 
 namespace Mikoto.GuidePages.Hook
 {
