@@ -1,6 +1,5 @@
 ﻿//参考 https://github.com/Dark-20001/volcengine-sdk-c-
 
-using Mikoto.Helpers.Exceptions;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -129,12 +128,12 @@ namespace Mikoto.Translators
             }
             catch (HttpRequestException ex)
             {
-                errorInfo = ex.GetOriginalException().Message;
+                errorInfo = ex.Message;
                 return null;
             }
             catch (TaskCanceledException ex)
             {
-                errorInfo = ex.GetOriginalException().Message;
+                errorInfo = ex.Message;
                 return null;
             }
 
@@ -157,7 +156,7 @@ namespace Mikoto.Translators
             }
             catch (JsonException ex)
             {
-                errorInfo = ex.GetOriginalException().Message;
+                errorInfo = ex.Message;
                 return null;
             }
         }

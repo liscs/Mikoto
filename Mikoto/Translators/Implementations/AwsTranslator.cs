@@ -1,6 +1,5 @@
 ﻿//参考 https://stackoverflow.com/questions/50507461/aws-translatetext-rest-api-call-adding-signature-v4
 
-using Mikoto.Helpers.Exceptions;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -59,11 +58,11 @@ namespace Mikoto.Translators
 
             var headers = new SortedDictionary<string, string>
             {
-                {"content-length", bytes.Length.ToString()},
-                {"content-type", contentType},
+                     {"content-length", bytes.Length.ToString()},
+                     {"content-type", contentType},
                 {"host", host},
-                {"x-amz-date", requestDate},
-                {"x-amz-target", x_amz_target_header}
+                     {"x-amz-date", requestDate},
+                     {"x-amz-target", x_amz_target_header}
             };
 
             string canonicalHeaders =
@@ -124,12 +123,12 @@ namespace Mikoto.Translators
             }
             catch (HttpRequestException ex)
             {
-                errorInfo = ex.GetOriginalException().Message;
+                errorInfo = ex.Message;
                 return null;
             }
             catch (TaskCanceledException ex)
             {
-                errorInfo = ex.GetOriginalException().Message;
+                errorInfo = ex.Message;
                 return null;
             }
 

@@ -1,5 +1,4 @@
-﻿using Mikoto.Helpers.Exceptions;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Windows;
 
 namespace Mikoto.Translators
@@ -77,7 +76,7 @@ namespace Mikoto.Translators
             }
             catch (Exception ex)
             {
-                errorInfo = ex.GetOriginalException().Message;
+                errorInfo = ex.Message;
                 return Task.FromResult<string?>(null);
             }
 

@@ -16,8 +16,7 @@
 	<ItemGroup>
 		<AppxManifest Include="Properties\Package.appxmanifest" />
 		<Resource Include="logo.ico" />
-		<None Update="textRepairPlugins\*"
-			  CopyToOutputDirectory="PreserveNewest" />
+		<None Update="textRepairPlugins\*" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -31,23 +30,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Config.Net"
-						  Version="5.2.0" />
-		<PackageReference Include="HandyControl"
-						  Version="3.5.1" />
-		<PackageReference Include="IronPython"
-						  Version="3.4.1" />
-		<PackageReference Include="Microsoft.Windows.CsWin32"
-						  Version="0.3.106">
+		<PackageReference Include="Config.Net" Version="5.2.0" />
+		<PackageReference Include="HandyControl" Version="3.5.1" />
+		<PackageReference Include="IronPython" Version="3.4.1" />
+		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.106">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools"
-						  Version="10.0.26100.1" />
-		<PackageReference Include="Microsoft.WindowsAppSDK"
-						  Version="1.5.240607001"
-						  IncludeAssets="none"
-						  ExcludeAssets="all"
-						  PrivateAssets="all"
-						  GeneratePathProperty="true" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240607001" IncludeAssets="none" ExcludeAssets="all" PrivateAssets="all" GeneratePathProperty="true" />
 	</ItemGroup>
 </Project>
