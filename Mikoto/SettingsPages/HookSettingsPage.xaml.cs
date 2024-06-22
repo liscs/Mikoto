@@ -121,7 +121,9 @@ namespace Mikoto.SettingsPages
             }
             else
             {
-                MessageBox.Show(messageBoxText: Application.Current.Resources["HookSettingsPage_TextractorCLINotExistError"].ToString(), caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
+                MessageBox.Show(messageBoxText: Application.Current.Resources["HookSettingsPage_TextractorCLINotExistError"].ToString(),
+                                caption: Application.Current.Resources["MessageBox_Error"].ToString(),
+                                icon: MessageBoxImage.Error);
             }
         }
     }

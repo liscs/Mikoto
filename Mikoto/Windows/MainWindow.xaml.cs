@@ -3,6 +3,7 @@ using DataAccessLibrary;
 using HandyControl.Controls;
 using HandyControl.Tools.Extension;
 using Mikoto.Helpers;
+using Mikoto.Helpers.Files;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -408,25 +409,37 @@ namespace Mikoto
         private async void StartBtn_Click(object sender, RoutedEventArgs e)
         {
             GameHelper.UpdateGameInfoByID(GameInfoList[_gid].GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
-            if (!File.Exists(GameInfoList[_gid].FilePath))
+
+            string path = GetEntranceFilePath(GameInfoList[_gid].FilePath);
+            if (!File.Exists(path))
             {
-                MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{GameInfoList[_gid].FilePath}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
+                MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{path}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
                 return;
             }
-            Process.Start(GameInfoList[_gid].FilePath);
+            Process.Start(path);
             GameInfoDrawer.IsOpen = false;
             await StartTranslateByGid(_gid);
             Refresh();
         }
+
+        private static string GetEntranceFilePath(string filePath)
+        {
+            //hook文件可能与需要打开的文件不是同一个，需要进行转换
+            filePath = HookFileHelper.ToCircusEntranceExe(filePath);
+            return filePath;
+        }
+
         private async void LEStartBtn_Click(object sender, RoutedEventArgs e)
         {
             GameHelper.UpdateGameInfoByID(GameInfoList[_gid].GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
-            if (!File.Exists(GameInfoList[_gid].FilePath))
+
+            string path = GetEntranceFilePath(GameInfoList[_gid].FilePath);
+            if (!File.Exists(path))
             {
-                MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{GameInfoList[_gid].FilePath}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
+                MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{path}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
                 return;
             }
-            var filepath = GameInfoList[_gid].FilePath;
+
             var p = new ProcessStartInfo();
             var lePath = Common.AppSettings.LEPath;
             p.FileName = lePath + "\\LEProc.exe";
@@ -436,7 +449,7 @@ namespace Mikoto
                 return;
             }
             // 记住加上引号，否则可能会因为路径带空格而无法启动
-            p.Arguments = $"-run \"{filepath}\"";
+            p.Arguments = $"-run \"{path}\"";
             p.UseShellExecute = false;
             p.WorkingDirectory = lePath;
             Process.Start(p);

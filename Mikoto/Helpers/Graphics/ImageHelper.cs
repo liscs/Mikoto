@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Mikoto.Helpers.Files;
 using Windows.Win32;
 using Windows.Win32.UI.WindowsAndMessaging;
 
@@ -53,6 +54,7 @@ namespace Mikoto.Helpers
         }
         public static Image GetGameIcon(string path)
         {
+            path = HookFileHelper.ToCircusEntranceExe(path);
             Image ico = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Center,
@@ -65,9 +67,9 @@ namespace Mikoto.Helpers
                 return ico;
             }
 
-            BitmapImage? bitmapImage = ImageToBitmapImage(GetAppIcon(path)!);
+            BitmapImage? bitmapImage = ImageToBitmapImage(GetFileIcon(path));
             ico.Source = bitmapImage;
-            string[] icoPaths = Directory.GetFiles(Path.GetDirectoryName(path)!, "*.ico").Where(p => !p.Contains("uninst")).ToArray();
+            string[] icoPaths = GetFilteredIcoPath(path);
             if (icoPaths.Length != 0)
             {
                 bitmapImage = new BitmapImage(new Uri(icoPaths.First()));
@@ -78,6 +80,7 @@ namespace Mikoto.Helpers
 
         public static System.Drawing.Bitmap GetGameDrawingBitmapIcon(string path)
         {
+            path = HookFileHelper.ToCircusEntranceExe(path);
             System.Drawing.Bitmap ico = new(64, 64);
 
             if (!File.Exists(path))
@@ -85,14 +88,19 @@ namespace Mikoto.Helpers
                 return ico;
             }
 
-            ico = GetAppIcon(path) ?? ico;
+            ico = GetFileIcon(path) ?? ico;
 
-            string[] icoPaths = Directory.GetFiles(Path.GetDirectoryName(path)!, "*icon.ico");
-            if (icoPaths.Length > 0)
+            string[] icoPaths = GetFilteredIcoPath(path);
+            if (icoPaths.Length != 0)
             {
-                ico = new System.Drawing.Bitmap(icoPaths[0]);
+                ico = new System.Drawing.Bitmap(icoPaths.First());
             }
             return ico;
+        }
+
+        private static string[] GetFilteredIcoPath(string path)
+        {
+            return Directory.GetFiles(Path.GetDirectoryName(path)!, "*.ico").Where(p => !p.Contains("uninst")).ToArray();
         }
 
         public static Brush GetMajorBrush(BitmapSource? bitmapSource)
@@ -304,7 +312,7 @@ namespace Mikoto.Helpers
         /// </summary>
         /// <param name="filepath"></param>
         /// <returns></returns>
-        private static unsafe System.Drawing.Bitmap? GetAppIcon(string filepath)
+        private static unsafe System.Drawing.Bitmap? GetFileIcon(string filepath)
         {
             //选中文件中的图标总数
             var iconTotalCount = PInvoke.PrivateExtractIcons(filepath, 0, 0, 0, null, null, 0, 0);
@@ -342,7 +350,7 @@ namespace Mikoto.Helpers
         /// </summary>
         /// <param name="bitmap"></param>
         /// <returns></returns>
-        private static BitmapImage? ImageToBitmapImage(System.Drawing.Image bitmap)
+        private static BitmapImage? ImageToBitmapImage(System.Drawing.Image? bitmap)
         {
             if (bitmap == null)
             {
