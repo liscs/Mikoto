@@ -24,9 +24,9 @@ namespace Mikoto.SettingsPages.TTSPages
             AzureTTSSecretKeyBox.Text = Common.AppSettings.AzureTTSSecretKey;
             AzureTTSLocationBox.Text = Common.AppSettings.AzureTTSLocation;
             HttpProxyBox.Text = Common.AppSettings.AzureTTSProxy;
+            _viewModel.Volume = Common.AppSettings.AzureTTSVoiceVolume;
 
-
-            azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceStyle, Common.AppSettings.AzureTTSProxy);
+            azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceVolume, Common.AppSettings.AzureTTSVoiceStyle, Common.AppSettings.AzureTTSProxy);
             GetVoices(this, null);
         }
 
@@ -47,8 +47,9 @@ namespace Mikoto.SettingsPages.TTSPages
             Common.AppSettings.AzureTTSLocation = AzureTTSLocationBox.Text;
             Common.AppSettings.AzureTTSVoice = _viewModel.SelectedVoice?.Name ?? Common.AppSettings.AzureTTSVoice;
             Common.AppSettings.AzureTTSVoiceStyle = _viewModel.SelectedVoiceStyle ?? Common.AppSettings.AzureTTSVoiceStyle;
+            Common.AppSettings.AzureTTSVoiceVolume = _viewModel.Volume;
 
-            azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceStyle, Common.AppSettings.AzureTTSProxy);
+            azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceVolume, Common.AppSettings.AzureTTSVoiceStyle, Common.AppSettings.AzureTTSProxy);
             await azureTTS.SpeakAsync(TestSrcText.Text);
             if (!string.IsNullOrEmpty(azureTTS.ErrorMessage))
             {

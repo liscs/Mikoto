@@ -93,6 +93,11 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
+                        <Slider VerticalAlignment="Center"
+                                Value="{Binding Volume}"
+                                Maximum="200"
+                                hc:TipElement.Visibility="Visible"
+                                hc:TipElement.Placement="Top" />
 
                         <Button Grid.Column="1"
                                 Content="{DynamicResource TTSSettingsPage_TestBtn}"

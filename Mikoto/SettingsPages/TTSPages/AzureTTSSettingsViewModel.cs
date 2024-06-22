@@ -64,5 +64,16 @@ namespace Mikoto
                 SelectedVoiceStyle = VoiceStyles.First();
             }
         }
+
+        private double volume = 100;
+
+        public double Volume
+        {
+            get => volume;
+            set
+            {
+                SetProperty(ref volume, value);
+            }
+        }
     }
 }

@@ -226,7 +226,7 @@ namespace Mikoto
                         && !string.IsNullOrWhiteSpace(Common.AppSettings.AzureTTSLocation)
                         )
                     {
-                        AzureTTS azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceStyle, Common.AppSettings.AzureTTSProxy);
+                        AzureTTS azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceVolume, Common.AppSettings.AzureTTSVoiceStyle, Common.AppSettings.AzureTTSProxy);
                         _tts = azureTTS;
                     }
                     else

@@ -268,6 +268,13 @@ namespace Mikoto
             set;
         }
 
+        [Option(Alias = "TTS.AzureTTSVoiceVolume", DefaultValue = 100.0)]
+        double AzureTTSVoiceVolume
+        {
+            get;
+            set;
+        }
+
         [Option(Alias = "TTS.AzureTTSVoiceStyle", DefaultValue = "")]
         string AzureTTSVoiceStyle
         {

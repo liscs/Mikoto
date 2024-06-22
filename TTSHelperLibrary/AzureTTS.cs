@@ -15,9 +15,10 @@ namespace TTSHelperLibrary
         private string subscriptionRegion = string.Empty;
 
         private string _voice = string.Empty;
+        private double _volume;
         private string _style = string.Empty;
 
-        public AzureTTS(string key, string location, string voice, string style, string proxy)
+        public AzureTTS(string key, string location, string voice, double volume, string style, string proxy)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(location) || string.IsNullOrEmpty(voice))
             {
@@ -26,6 +27,7 @@ namespace TTSHelperLibrary
             subscriptionKey = key;
             subscriptionRegion = location;
             _voice = voice;
+            _volume = volume;
             _style = style;
             _proxy = proxy;
 
@@ -97,7 +99,7 @@ namespace TTSHelperLibrary
             expressNode.Attribute("style")!.Value = _style;
 
             ssml.Descendants(xNamespace + "voice").First().Attribute("name")!.Value = _voice;
-            ssml.Descendants(xNamespace + "prosody").First().Attribute("volume")!.Value = "+50.00%";
+            ssml.Descendants(xNamespace + "prosody").First().Attribute("volume")!.Value = (_volume - 100).ToString("0.00")+"%";
             return ssml;
         }
 
