@@ -99,7 +99,7 @@ namespace TTSHelperLibrary
             expressNode.Attribute("style")!.Value = _style;
 
             ssml.Descendants(xNamespace + "voice").First().Attribute("name")!.Value = _voice;
-            ssml.Descendants(xNamespace + "prosody").First().Attribute("volume")!.Value = (_volume - 100).ToString("0.00")+"%";
+            ssml.Descendants(xNamespace + "prosody").First().Attribute("volume")!.Value = (_volume - 100).ToString("0.00") + "%";
             return ssml;
         }
 

@@ -1,10 +1,10 @@
-﻿using System.IO;
+﻿using Mikoto.Helpers.Files;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Mikoto.Helpers.Files;
 using Windows.Win32;
 using Windows.Win32.UI.WindowsAndMessaging;
 
@@ -54,7 +54,7 @@ namespace Mikoto.Helpers
         }
         public static Image GetGameIcon(string path)
         {
-            path = HookFileHelper.ToCircusEntranceExe(path);
+            path = HookFileHelper.ToEntranceFilePath(path);
             Image ico = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Center,
@@ -80,7 +80,7 @@ namespace Mikoto.Helpers
 
         public static System.Drawing.Bitmap GetGameDrawingBitmapIcon(string path)
         {
-            path = HookFileHelper.ToCircusEntranceExe(path);
+            path = HookFileHelper.ToEntranceFilePath(path);
             System.Drawing.Bitmap ico = new(64, 64);
 
             if (!File.Exists(path))

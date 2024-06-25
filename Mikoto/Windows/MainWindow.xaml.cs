@@ -425,7 +425,7 @@ namespace Mikoto
         private static string GetEntranceFilePath(string filePath)
         {
             //hook文件可能与需要打开的文件不是同一个，需要进行转换
-            filePath = HookFileHelper.ToCircusEntranceExe(filePath);
+            filePath = HookFileHelper.ToEntranceFilePath(filePath);
             return filePath;
         }
 
