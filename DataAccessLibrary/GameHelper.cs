@@ -1,80 +1,11 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
 
 namespace DataAccessLibrary
 {
-    public class GameInfo
-    {
-        /// <summary>
-        /// 游戏名（非进程名，但在游戏名未知的情况下先使用进程所在的文件夹名替代）
-        /// </summary>
-        public string GameName { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 游戏hook文件路径，通常为启动路径
-        /// </summary>
-        public string FilePath { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 游戏ID
-        /// </summary>
-        public Guid GameID { get; set; }
-
-        /// <summary>
-        /// 翻译模式,1=hook
-        /// </summary>
-        public int TransMode { get; set; }
-
-        /// <summary>
-        /// 源语言代码，同翻译API中语言代码
-        /// </summary>
-        public string SrcLang { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 目标语言代码，同翻译API中语言代码
-        /// </summary>
-        public string DstLang { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 去重方法，仅在hook模式有效
-        /// </summary>
-        public string? RepairFunc { get; set; }
-
-        /// <summary>
-        /// 去重方法所需参数1，仅在hook模式有效
-        /// </summary>
-        public string? RepairParamA { get; set; }
-
-        /// <summary>
-        /// 去重方法所需参数2，仅在hook模式有效
-        /// </summary>
-        public string? RepairParamB { get; set; }
-
-        /// <summary>
-        /// 特殊码值，仅在hook模式有效
-        /// </summary>
-        public string HookCode { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 用户自定的特殊码值，如果用户这一项不是自定义的，那么应该为'NULL'，仅在hook模式有效，注意下次开启游戏时这里就需要注入一下
-        /// </summary>
-        public string? HookCodeCustom { get; set; }
-
-        /// <summary>
-        /// 检查是否是64位应用程序
-        /// </summary>
-        public bool Isx64 { get; set; }
-
-        /// <summary>
-        /// 包含hook地址信息的本软件特有的MisakaHookCode
-        /// </summary>
-        public string MisakaHookCode { get; set; } = string.Empty;
-
-        public DateTime LastPlayAt { get; set; }
-    }
-
     public static class GameHelper
     {
         //游戏信息文件夹
@@ -117,17 +48,18 @@ namespace DataAccessLibrary
             AllCompletedGamesPathDict.Clear();
             foreach (FileInfo fileInfo in _gameInfoDirectory.GetFiles())
             {
-                GameInfo gameInfo = LoadGameInfo(fileInfo.FullName);
-                if (string.IsNullOrEmpty(gameInfo.RepairFunc)
-                    || string.IsNullOrEmpty(gameInfo.HookCode)
-                    )
+                if (TryLoadGameInfo(fileInfo.FullName, out GameInfo? gameInfo))
                 {
-                    File.Delete(fileInfo.FullName);
-                    continue;
+                    if (string.IsNullOrEmpty(gameInfo.RepairFunc)
+                        || string.IsNullOrEmpty(gameInfo.HookCode))
+                    {
+                        File.Delete(fileInfo.FullName);
+                        continue;
+                    }
+                    list.Add(gameInfo);
+                    AllCompletedGamesIdDict.Add(gameInfo.GameID, gameInfo);
+                    AllCompletedGamesPathDict.Add(gameInfo.FilePath, gameInfo);
                 }
-                list.Add(gameInfo);
-                AllCompletedGamesIdDict.Add(gameInfo.GameID, gameInfo);
-                AllCompletedGamesPathDict.Add(gameInfo.FilePath, gameInfo);
             }
             return list.OrderByDescending(p => p.LastPlayAt).ThenByDescending(p => p.GameName).ToList();
         }
@@ -194,11 +126,26 @@ namespace DataAccessLibrary
             File.WriteAllText(fileName, jsonString);
         }
 
-        private static GameInfo LoadGameInfo(string path)
+        private static bool TryLoadGameInfo(string path, [NotNullWhen(true)] out GameInfo? gameInfo)
         {
-            string jsonString = File.ReadAllText(path);
-            GameInfo gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString, options)!;
-            return gameInfo;
+            gameInfo = null;
+            try
+            {
+                string jsonString = File.ReadAllText(path);
+                gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString, options);
+                if (gameInfo != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex) when (ex is IOException or JsonException)
+            {
+                return false;
+            }
         }
     }
 }

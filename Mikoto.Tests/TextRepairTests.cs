@@ -1,29 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Windows;
 
 namespace Mikoto.Tests
 {
     [TestClass()]
     public class TextRepairTests
     {
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext context)
-        {
-            if (Application.Current == null)
-            {
-                new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
-            }
-
-            Application.Current?.Resources.Add("NoDeal", "NoDeal");
-            Application.Current?.Resources.Add("RemoveSingleWordRepeat", "RemoveSingleWordRepeat");
-            Application.Current?.Resources.Add("RemoveSentenceRepeat", "RemoveSentenceRepeat");
-            Application.Current?.Resources.Add("RemoveLetterNumber", "RemoveLetterNumber");
-            Application.Current?.Resources.Add("RemoveHTML", "RemoveHTML");
-            Application.Current?.Resources.Add("RegexReplace", "RegexReplace");
-            Application.Current?.Resources.Add("Custom", "Custom");
-        }
-
-
         [TestMethod()]
         public void RepairFun_RemoveSingleWordRepeatTest_One()
         {

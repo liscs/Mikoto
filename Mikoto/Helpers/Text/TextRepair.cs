@@ -13,15 +13,15 @@ namespace Mikoto
         public static string? RegexPattern { get; set; }
         public static int SentenceRepeatFindCharNum { get; set; }
         public static int SingleWordRepeatTimes { get; set; }
-        public static Dictionary<string, string> LstRepairFun { get; set; } = new Dictionary<string, string>() {
+        public static Lazy<Dictionary<string, string>> LstRepairFun { get; set; } = new(() => new Dictionary<string, string>() {
             { Application.Current.Resources["NoDeal"].ToString()!, nameof(RepairFun_NoDeal) },
             { Application.Current.Resources["RemoveSingleWordRepeat"].ToString()!, nameof(RepairFun_RemoveSingleWordRepeat) },
             { Application.Current.Resources["RemoveSentenceRepeat"].ToString()!, nameof(RepairFun_RemoveSentenceRepeat) },
             { Application.Current.Resources["RemoveLetterNumber"].ToString()!, nameof(RepairFun_RemoveLetterNumber) },
             { Application.Current.Resources["RemoveHTML"].ToString()!, nameof(RepairFun_RemoveHTML) },
             { Application.Current.Resources["RegexReplace"].ToString()!, nameof(RepairFun_RegexReplace) },
-            { Application.Current.Resources["Custom"].ToString()!, nameof(RepairFun_Custom) }
-            };
+            { Application.Current.Resources["Custom"].ToString()!, nameof(RepairFun_Custom) },
+            });
 
         static TextRepair()
         {
@@ -36,7 +36,7 @@ namespace Mikoto
                     {
                         continue;
                     }
-                    LstRepairFun.Add(Application.Current.Resources["CustomPythonScript"] + stem, "#" + stem);
+                    LstRepairFun.Value.Add(Application.Current.Resources["CustomPythonScript"] + stem, "#" + stem);
                 }
             }
             catch { }

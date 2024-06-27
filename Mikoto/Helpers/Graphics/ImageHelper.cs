@@ -54,7 +54,7 @@ namespace Mikoto.Helpers
         }
         public static Image GetGameIcon(string path)
         {
-            path = HookFileHelper.ToCircusEntranceExe(path);
+            path = HookFileHelper.ToEntranceFilePath(path);
             Image ico = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Center,

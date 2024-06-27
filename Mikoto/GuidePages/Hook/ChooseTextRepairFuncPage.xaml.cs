@@ -9,7 +9,7 @@ namespace Mikoto.GuidePages.Hook
     /// </summary>
     public partial class ChooseTextRepairFuncPage : Page
     {
-        private List<string> lstRepairFun = TextRepair.LstRepairFun.Keys.ToList();
+        private List<string> lstRepairFun = TextRepair.LstRepairFun.Value.Keys.ToList();
 
         public ChooseTextRepairFuncPage()
         {
@@ -26,13 +26,13 @@ namespace Mikoto.GuidePages.Hook
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 sourceTextBox.Text = e.Data.Data;
-                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.LstRepairFun[lstRepairFun[RepairFuncComboBox.SelectedIndex]], sourceTextBox.Text ?? string.Empty);
+                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.LstRepairFun.Value[lstRepairFun[RepairFuncComboBox.SelectedIndex]], sourceTextBox.Text ?? string.Empty);
             });
         }
 
         private void RepairFuncComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (TextRepair.LstRepairFun[lstRepairFun[RepairFuncComboBox.SelectedIndex]])
+            switch (TextRepair.LstRepairFun.Value[lstRepairFun[RepairFuncComboBox.SelectedIndex]])
             {
                 case "RepairFun_RemoveSingleWordRepeat":
                     Single_InputDrawer.IsOpen = true;
@@ -45,7 +45,7 @@ namespace Mikoto.GuidePages.Hook
                     break;
             }
 
-            repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.LstRepairFun[lstRepairFun[RepairFuncComboBox.SelectedIndex]], sourceTextBox.Text);
+            repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.LstRepairFun.Value[lstRepairFun[RepairFuncComboBox.SelectedIndex]], sourceTextBox.Text);
         }
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
@@ -54,11 +54,11 @@ namespace Mikoto.GuidePages.Hook
             {
                 Common.TextHooker.MeetHookAddressMessageReceived -= FilterAndDisplayData;
             }
-            Common.UsingRepairFunc = TextRepair.LstRepairFun[lstRepairFun[RepairFuncComboBox.SelectedIndex]];
+            Common.UsingRepairFunc = TextRepair.LstRepairFun.Value[lstRepairFun[RepairFuncComboBox.SelectedIndex]];
 
             //写入去重方法
 
-            switch (TextRepair.LstRepairFun[lstRepairFun[RepairFuncComboBox.SelectedIndex]])
+            switch (TextRepair.LstRepairFun.Value[lstRepairFun[RepairFuncComboBox.SelectedIndex]])
             {
                 case "RepairFun_RemoveSingleWordRepeat":
                     GameInfoBuilder.GameInfo.RepairFunc = Common.UsingRepairFunc;
