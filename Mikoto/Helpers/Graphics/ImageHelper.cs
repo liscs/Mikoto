@@ -1,10 +1,10 @@
-﻿using System.IO;
+﻿using Mikoto.Helpers.Files;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Mikoto.Helpers.Files;
 using Windows.Win32;
 using Windows.Win32.UI.WindowsAndMessaging;
 
@@ -78,17 +78,17 @@ namespace Mikoto.Helpers
             return ico;
         }
 
-        public static System.Drawing.Bitmap GetGameDrawingBitmapIcon(string path)
+        public static System.Drawing.Bitmap? GetGameDrawingBitmapIcon(string path)
         {
             path = HookFileHelper.ToCircusEntranceExe(path);
-            System.Drawing.Bitmap ico = new(64, 64);
+            System.Drawing.Bitmap? ico = null;
 
             if (!File.Exists(path))
             {
                 return ico;
             }
 
-            ico = GetFileIcon(path) ?? ico;
+            ico = GetFileIcon(path);
 
             string[] icoPaths = GetFilteredIcoPath(path);
             if (icoPaths.Length != 0)
@@ -198,7 +198,7 @@ namespace Mikoto.Helpers
             pixels = CropRorate(pixels);
             var colors = pixels.Cast<PixelColor>().ToArray();
             GaussianBlur gaussianBlur = new(colors);
-            return ImageHelper.ImageToBitmapImage(gaussianBlur.Process(3));
+            return ImageToBitmapImage(gaussianBlur.Process(3));
 
         }
 

@@ -73,7 +73,10 @@ namespace Mikoto
                 Task.Run(() =>
                   {
                       BitmapImage? image = GetRandomBlurredImage();
-                      Dispatcher.BeginInvoke(() => Background = new ImageBrush(image));
+                      if (image != null)
+                      {
+                          Dispatcher.BeginInvoke(() => Background = new ImageBrush(image));
+                      }
                   });
             }
         }
@@ -81,9 +84,15 @@ namespace Mikoto
         private BitmapImage? GetRandomBlurredImage()
         {
             int randomId = new Random().Next(GameInfoList.Count);
-            System.Drawing.Bitmap ico = ImageHelper.GetGameDrawingBitmapIcon(GameInfoList[randomId].FilePath);
-
-            return ImageHelper.GetBlurImage(ico);
+            System.Drawing.Bitmap? ico = ImageHelper.GetGameDrawingBitmapIcon(GameInfoList[randomId].FilePath);
+            if (ico is null)
+            {
+                return null;
+            }
+            else
+            {
+                return ImageHelper.GetBlurImage(ico);
+            }
         }
 
         /// <summary>
@@ -272,7 +281,7 @@ namespace Mikoto
             string? gameFileDirectory = Path.GetDirectoryName(GameInfoList[(int)((TextBlock)sender).Tag].FilePath);
             if (Directory.Exists(gameFileDirectory))
             {
-                _ = Process.Start("explorer.exe", gameFileDirectory);
+                Process.Start("explorer.exe", gameFileDirectory);
             }
         }
 
@@ -283,8 +292,17 @@ namespace Mikoto
             s.Start();
             while (s.Elapsed < TimeSpan.FromSeconds(5))
             {
+                string name;
                 //不以exe结尾的ProcessName不会自动把后缀去掉，因此对exe后缀特殊处理
-                gameProcessList = Process.GetProcessesByName(Regex.Split(Path.GetFileName(GameInfoList[gid].FilePath), @"\.exe", RegexOptions.IgnoreCase)[0]).ToList();
+                if (Path.GetExtension(GameInfoList[gid].FilePath).Equals(".exe", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    name = Path.GetFileNameWithoutExtension(GameInfoList[gid].FilePath);
+                }
+                else
+                {
+                    name = Path.GetFileName(GameInfoList[gid].FilePath);
+                }
+                gameProcessList = Process.GetProcessesByName(name).ToList();
                 if (gameProcessList.Count > 0)
                 {
                     break;
@@ -577,11 +595,11 @@ namespace Mikoto
         }
 
 
-        private void BlurWindow_ContentRendered(object sender, EventArgs e)
+        private async void BlurWindow_ContentRendered(object sender, EventArgs e)
         {
             if (Common.AppSettings.UpdateCheckEnabled)
             {
-                Common.AutoCheckUpdate();
+                await Common.CheckUpdateAsync();
             }
         }
 

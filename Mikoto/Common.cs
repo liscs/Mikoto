@@ -136,26 +136,6 @@ namespace Mikoto
             return scale;
         }
 
-        /// <summary>
-        /// 检查软件更新
-        /// </summary>
-        public static async void AutoCheckUpdate()
-        {
-            Version currentVersion = Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
-            try
-            {
-                Version latestVersion = await GetLatestVersionAsync();
-                if (latestVersion > currentVersion)
-                {
-                    ShowUpdateMessageBox(latestVersion);
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-                Growl.WarningGlobal(ex.Message);
-            }
-        }
-
         public static void ShowUpdateMessageBox(Version latestVersion)
         {
             MessageBoxResult dr = MessageBox.Show($"{CurrentVersion.ToString(3)}->{latestVersion}{Environment.NewLine}{Application.Current.Resources["MainWindow_AutoUpdateCheck"]}",
@@ -174,7 +154,7 @@ namespace Mikoto
         /// <summary>
         /// 检查软件更新
         /// </summary>
-        public static async Task<(CheckUpdateResult, Version?)> CheckUpdateAsync()
+        public static async Task CheckUpdateAsync(bool activelyCheck = false)
         {
             Version currentVersion = CurrentVersion;
             try
@@ -182,19 +162,31 @@ namespace Mikoto
                 Version latestVersion = await GetLatestVersionAsync();
                 if (latestVersion > currentVersion)
                 {
-                    return (CheckUpdateResult.CanUpdate, latestVersion);
+                    ShowUpdateMessageBox(latestVersion);
                 }
-                else
+                else if (activelyCheck)
                 {
-                    return (CheckUpdateResult.AlreadyLatest, null);
+                    Growl.InfoGlobal(Application.Current.Resources["SoftwareSettingsPage_AlreadyLatest"].ToString());
                 }
             }
             catch (HttpRequestException ex)
             {
-                Growl.WarningGlobal(ex.Message);
+                if (activelyCheck)
+                    Growl.WarningGlobal(ex.Message + Environment.NewLine + Application.Current.Resources["SoftwareSettingsPage_RequestUpdateError"].ToString());
                 Logger.Info(ex);
             }
-            return (CheckUpdateResult.RequestError, null);
+            catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
+            {
+                if (activelyCheck)
+                    Growl.WarningGlobal(ex.InnerException.Message + Environment.NewLine + Application.Current.Resources["SoftwareSettingsPage_RequestUpdateError"].ToString());
+                Logger.Info(ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                if (activelyCheck)
+                    Growl.WarningGlobal(ex.Message + Environment.NewLine + Application.Current.Resources["SoftwareSettingsPage_RequestUpdateError"].ToString());
+                Logger.Info(ex);
+            }
         }
 
         public static Version CurrentVersion

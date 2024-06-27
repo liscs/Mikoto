@@ -13,7 +13,7 @@ namespace DataAccessLibrary
         public string GameName { get; set; } = string.Empty;
 
         /// <summary>
-        /// 游戏文件路径
+        /// 游戏hook文件路径，通常为启动路径
         /// </summary>
         public string FilePath { get; set; } = string.Empty;
 

@@ -54,21 +54,8 @@ namespace Mikoto.SettingsPages
             {
                 button.IsEnabled = false;
                 LoadingCircle.Visibility = Visibility.Visible;
-                var result = await Common.CheckUpdateAsync();
-                switch (result.Item1)
-                {
-                    case CheckUpdateResult.CanUpdate:
-                        Common.ShowUpdateMessageBox(result.Item2!);
-                        break;
-                    case CheckUpdateResult.AlreadyLatest:
-                        Growl.InfoGlobal(Application.Current.Resources["SoftwareSettingsPage_AlreadyLatest"].ToString());
-                        break;
-                    case CheckUpdateResult.RequestError:
-                        Growl.InfoGlobal(Application.Current.Resources["SoftwareSettingsPage_RequestUpdateError"].ToString());
-                        break;
-                    default:
-                        break;
-                }
+                await Common.CheckUpdateAsync(true);
+
                 LoadingCircle.Visibility = Visibility.Hidden;
                 button.IsEnabled = true;
             }
