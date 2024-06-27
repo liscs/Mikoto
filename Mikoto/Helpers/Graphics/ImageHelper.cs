@@ -80,7 +80,7 @@ namespace Mikoto.Helpers
 
         public static System.Drawing.Bitmap? GetGameDrawingBitmapIcon(string path)
         {
-            path = HookFileHelper.ToCircusEntranceExe(path);
+            path = HookFileHelper.ToEntranceFilePath(path);
             System.Drawing.Bitmap? ico = null;
 
             if (!File.Exists(path))
