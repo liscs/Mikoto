@@ -23,9 +23,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
+
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Mikoto.Helpers
 {
@@ -60,7 +61,7 @@ namespace Mikoto.Helpers
             });
         }
 
-        public Bitmap Process(int radial)
+        public BitmapSource Process(int radial)
         {
             var newAlpha = new int[_width * _height];
             var newRed = new int[_width * _height];
@@ -89,12 +90,15 @@ namespace Mikoto.Helpers
                 dest[i] = (int)((uint)(newAlpha[i] << 24) | (uint)(newRed[i] << 16) | (uint)(newGreen[i] << 8) | (uint)newBlue[i]);
             });
 
-            var image = new Bitmap(_width, _height);
-            var rct = new Rectangle(0, 0, image.Width, image.Height);
-            var bits2 = image.LockBits(rct, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-            Marshal.Copy(dest, 0, bits2.Scan0, dest.Length);
-            image.UnlockBits(bits2);
-            return image;
+
+            byte[] result = new byte[dest.Length * sizeof(int)];
+            Buffer.BlockCopy(dest, 0, result, 0, result.Length);
+            return Application.Current.Dispatcher.Invoke(() =>
+              {
+                  var image = BitmapSource.Create(_width, _height, 96, 96, PixelFormats.Bgra32, null, result, sizeof(int) * _width);
+                  return image;
+              });
+
         }
 
         private void GaussBlur_4(int[] source, int[] dest, int r)

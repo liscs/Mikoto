@@ -1,6 +1,5 @@
 ﻿using HandyControl.Controls;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -121,19 +120,6 @@ namespace Mikoto
             TextRepair.SentenceRepeatFindCharNum = RepairSettings.SentenceRepeatFindCharNum;
             TextRepair.RegexPattern = RepairSettings.Regex;
             TextRepair.RegexReplacement = RepairSettings.Regex_Replace;
-        }
-
-        private static double scale;
-
-        /// <summary>
-        /// 获取DPI缩放倍数
-        /// </summary>
-        /// <returns>DPI缩放倍数</returns>
-        public static double GetScale()
-        {
-            if (scale == 0)
-                scale = Graphics.FromHwnd(new WindowInteropHelper(Application.Current.MainWindow).Handle).DpiX / 96;
-            return scale;
         }
 
         public static void ShowUpdateMessageBox(Version latestVersion)

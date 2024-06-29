@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Windows.Win32;
@@ -26,35 +27,9 @@ namespace Mikoto.Helpers
             source.CopyPixelColors(result, width * 4, 0);
             return result;
         }
-        private static PixelColor[,] GetPixels(System.Drawing.Bitmap bmp)
-        {
-            int width = bmp.Width;
-            int height = bmp.Height;
-            PixelColor[,] result = new PixelColor[width, height];
-            System.Drawing.Imaging.BitmapData bmpData =
-            bmp.LockBits(new System.Drawing.Rectangle(0, 0, width, height), System.Drawing.Imaging.ImageLockMode.ReadWrite,
-            bmp.PixelFormat);
 
-            var length = bmpData.Stride * bmpData.Height;
-            byte[] bytes = new byte[length];
-            Marshal.Copy(bmpData.Scan0, bytes, 0, length);
-            bmp.UnlockBits(bmpData);
-
-
-            int k = 0;
-            for (int i = 0; i < width; i++)
-            {
-                for (int j = 0; j < height; j++)
-                {
-                    result[i, j].ColorBGRA = BitConverter.ToUInt32(bytes, k);
-                    k += 4;
-                }
-            }
-            return result;
-        }
         public static Image GetGameIcon(string path)
         {
-            path = HookFileHelper.ToEntranceFilePath(path);
             Image ico = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Center,
@@ -62,40 +37,22 @@ namespace Mikoto.Helpers
                 Margin = new Thickness(43, 0, 43, 0),
             };
 
-            if (!File.Exists(path))
-            {
-                return ico;
-            }
+            ico.Source = GetGameIconSource(path);
 
-            BitmapImage? bitmapImage = ImageToBitmapImage(GetFileIcon(path));
-            ico.Source = bitmapImage;
+            return ico;
+        }
+
+        public static BitmapSource? GetGameIconSource(string path)
+        {
+            path = HookFileHelper.ToEntranceFilePath(path);
+
+            BitmapSource? bitmapImage = GetFileIcon(path);
             string[] icoPaths = GetFilteredIcoPath(path);
             if (icoPaths.Length != 0)
             {
                 bitmapImage = new BitmapImage(new Uri(icoPaths.First()));
-                ico.Source = bitmapImage;
             }
-            return ico;
-        }
-
-        public static System.Drawing.Bitmap? GetGameDrawingBitmapIcon(string path)
-        {
-            path = HookFileHelper.ToEntranceFilePath(path);
-            System.Drawing.Bitmap? ico = null;
-
-            if (!File.Exists(path))
-            {
-                return ico;
-            }
-
-            ico = GetFileIcon(path);
-
-            string[] icoPaths = GetFilteredIcoPath(path);
-            if (icoPaths.Length != 0)
-            {
-                ico = new System.Drawing.Bitmap(icoPaths.First());
-            }
-            return ico;
+            return bitmapImage;
         }
 
         private static string[] GetFilteredIcoPath(string path)
@@ -114,7 +71,7 @@ namespace Mikoto.Helpers
             Dictionary<int, int> dict = new();
             foreach (PixelColor pixelColor in pixels)
             {
-                int hue = (int)System.Drawing.Color.FromArgb(pixelColor.Alpha, pixelColor.Red, pixelColor.Green, pixelColor.Blue).GetHue();
+                int hue = (int)pixelColor.Hue;
                 //跳过透明
                 if (hue == 0)
                 {
@@ -191,15 +148,14 @@ namespace Mikoto.Helpers
             };
         }
 
-        public static BitmapImage? GetBlurImage(System.Drawing.Bitmap bitmap)
+        public static BitmapSource? GetBlurImage(BitmapSource bitmap)
         {
             PixelColor[,] pixels = GetPixels(bitmap);
             pixels = Normalize(pixels);
             pixels = CropRorate(pixels);
             var colors = pixels.Cast<PixelColor>().ToArray();
             GaussianBlur gaussianBlur = new(colors);
-            return ImageToBitmapImage(gaussianBlur.Process(3));
-
+            return gaussianBlur.Process(3);
         }
 
         private static PixelColor[,] Normalize(PixelColor[,] origin)
@@ -312,7 +268,7 @@ namespace Mikoto.Helpers
         /// </summary>
         /// <param name="filepath"></param>
         /// <returns></returns>
-        private static unsafe System.Drawing.Bitmap? GetFileIcon(string filepath)
+        private static unsafe BitmapSource? GetFileIcon(string filepath)
         {
             //选中文件中的图标总数
             var iconTotalCount = PInvoke.PrivateExtractIcons(filepath, 0, 0, 0, null, null, 0, 0);
@@ -327,11 +283,13 @@ namespace Mikoto.Helpers
                 result = PInvoke.PrivateExtractIcons(filepath, 0, 256, 256, p, null, iconTotalCount, (uint)(IMAGE_FLAGS.LR_DEFAULTCOLOR));
             }
 
-            System.Drawing.Bitmap? myIcon = null;
+
+            BitmapSource? myIcon = null;
             if (result > 0 && result != 0xFFFFFFFF)
             {
-                using System.Drawing.Icon ico = System.Drawing.Icon.FromHandle(hIcons[0]);
-                myIcon = ico.ToBitmap();
+                myIcon = Imaging.CreateBitmapSourceFromHIcon(hIcons[0],
+                                                             Int32Rect.Empty,
+                                                             BitmapSizeOptions.FromEmptyOptions());
             }
 
             //遍历并保存图标
@@ -345,35 +303,7 @@ namespace Mikoto.Helpers
 
             return myIcon;
         }
-        /// <summary>
-        /// 将System.Drawing.Image转换成System.Windows.Media.Imaging.BitmapImage
-        /// </summary>
-        /// <param name="bitmap"></param>
-        /// <returns></returns>
-        private static BitmapImage? ImageToBitmapImage(System.Drawing.Image? bitmap)
-        {
-            if (bitmap == null)
-            {
-                return null;
-            }
 
-            using (MemoryStream stream = new MemoryStream())
-            {
-                bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png); //格式选Bmp时，不带透明度
-
-                stream.Position = 0;
-                BitmapImage result = new BitmapImage();
-                result.BeginInit();
-                // According to MSDN, "The default OnDemand cache option retains access to the stream until the image is needed."
-                // Force the bitmap to load right now so we can dispose the stream.
-                result.CacheOption = BitmapCacheOption.OnLoad;
-                result.StreamSource = stream;
-                result.EndInit();
-                result.Freeze();
-                return result;
-            }
-
-        }
     }
 
 

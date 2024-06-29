@@ -3,7 +3,6 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<UseWPF>true</UseWPF>
-		<UseWindowsForms>true</UseWindowsForms>
 		<ApplicationManifest>Properties\App.manifest</ApplicationManifest>
 		<ApplicationIcon>logo.ico</ApplicationIcon>
 		<RootNamespace>Mikoto</RootNamespace>

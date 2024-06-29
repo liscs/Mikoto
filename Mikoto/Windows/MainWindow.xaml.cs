@@ -72,7 +72,7 @@ namespace Mikoto
             {
                 Task.Run(() =>
                   {
-                      BitmapImage? image = GetRandomBlurredImage();
+                      BitmapSource? image = GetRandomBlurredImage();
                       if (image != null)
                       {
                           Dispatcher.BeginInvoke(() => Background = new ImageBrush(image));
@@ -81,10 +81,10 @@ namespace Mikoto
             }
         }
 
-        private BitmapImage? GetRandomBlurredImage()
+        private BitmapSource? GetRandomBlurredImage()
         {
             int randomId = new Random().Next(GameInfoList.Count);
-            System.Drawing.Bitmap? ico = ImageHelper.GetGameDrawingBitmapIcon(GameInfoList[randomId].FilePath);
+            BitmapSource? ico = ImageHelper.GetGameIconSource(GameInfoList[randomId].FilePath);
             if (ico is null)
             {
                 return null;
