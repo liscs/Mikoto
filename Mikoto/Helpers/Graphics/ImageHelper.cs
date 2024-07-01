@@ -1,6 +1,5 @@
 ﻿using Mikoto.Helpers.Files;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -148,13 +147,13 @@ namespace Mikoto.Helpers
             };
         }
 
-        public static BitmapSource? GetBlurImage(BitmapSource bitmap)
+        public static BitmapSource GetBlurImage(BitmapSource bitmap)
         {
             PixelColor[,] pixels = GetPixels(bitmap);
             pixels = Normalize(pixels);
             pixels = CropRorate(pixels);
             var colors = pixels.Cast<PixelColor>().ToArray();
-            GaussianBlur gaussianBlur = new(colors);
+            GaussianBlur gaussianBlur = new(colors, pixels.GetLength(0), pixels.Length / pixels.GetLength(0));
             return gaussianBlur.Process(3);
         }
 

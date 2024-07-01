@@ -8,7 +8,6 @@ using System.Security.Principal;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Windows;
-using System.Windows.Interop;
 using TextHookLibrary;
 using MessageBox = HandyControl.Controls.MessageBox;
 

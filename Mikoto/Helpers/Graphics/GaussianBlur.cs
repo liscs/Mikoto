@@ -24,7 +24,6 @@ SOFTWARE.
  */
 
 
-using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -42,11 +41,11 @@ namespace Mikoto.Helpers
 
         private readonly ParallelOptions _pOptions = new ParallelOptions { MaxDegreeOfParallelism = 16 };
 
-        public GaussianBlur(PixelColor[] colors)
+        public GaussianBlur(PixelColor[] colors, int width, int height)
         {
 
-            _width = (int)Math.Sqrt(colors.Length);
-            _height = _width;
+            _width = width;
+            _height = height;
 
             _alpha = new int[_width * _height];
             _red = new int[_width * _height];
@@ -93,12 +92,10 @@ namespace Mikoto.Helpers
 
             byte[] result = new byte[dest.Length * sizeof(int)];
             Buffer.BlockCopy(dest, 0, result, 0, result.Length);
-            return Application.Current.Dispatcher.Invoke(() =>
-              {
-                  var image = BitmapSource.Create(_width, _height, 96, 96, PixelFormats.Bgra32, null, result, sizeof(int) * _width);
-                  return image;
-              });
 
+            BitmapSource image = BitmapSource.Create(_width, _height, 96, 96, PixelFormats.Bgra32, null, result, sizeof(int) * _width);
+            image.Freeze();
+            return image;
         }
 
         private void GaussBlur_4(int[] source, int[] dest, int r)

@@ -1,5 +1,7 @@
 ﻿using Mikoto.Helpers;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace Mikoto
@@ -105,7 +107,7 @@ namespace Mikoto
             }
         }
 
-        private string _sourceTextFontFamilyString = Common.AppSettings.TF_SrcTextFont;
+        private string _sourceTextFontFamilyString = new FontFamily(Common.AppSettings.TF_SrcTextFont).GetLocalizedName();
         public string SourceTextFontFamilyString
         {
             get
@@ -114,9 +116,10 @@ namespace Mikoto
             }
             set
             {
-                Common.AppSettings.TF_SrcTextFont = value;
-                SourceTextFontFamily = new FontFamily(value);
-                SetProperty(ref _sourceTextFontFamilyString, value);
+                FontFamily font = new FontFamily(value);
+                Common.AppSettings.TF_SrcTextFont = font.Source;
+                SourceTextFontFamily = font;
+                SetProperty(ref _sourceTextFontFamilyString, font.GetLocalizedName());
             }
         }
 
@@ -148,7 +151,7 @@ namespace Mikoto
             }
         }
 
-        private string _firstTextFontFamilyString = Common.AppSettings.TF_FirstTransTextFont;
+        private string _firstTextFontFamilyString = new FontFamily(Common.AppSettings.TF_FirstTransTextFont).GetLocalizedName();
         public string FirstTextFontFamilyString
         {
             get
@@ -157,9 +160,10 @@ namespace Mikoto
             }
             set
             {
-                Common.AppSettings.TF_FirstTransTextFont = value;
-                FirstTextFontFamily = new FontFamily(value);
-                SetProperty(ref _firstTextFontFamilyString, value);
+                FontFamily font = new FontFamily(value);
+                Common.AppSettings.TF_FirstTransTextFont = font.Source;
+                FirstTextFontFamily = font;
+                SetProperty(ref _firstTextFontFamilyString, font.GetLocalizedName());
             }
         }
 
@@ -191,7 +195,7 @@ namespace Mikoto
             }
         }
 
-        private string _secondTextFontFamilyString = Common.AppSettings.TF_SecondTransTextFont;
+        private string _secondTextFontFamilyString = new FontFamily(Common.AppSettings.TF_SecondTransTextFont).GetLocalizedName();
         public string SecondTextFontFamilyString
         {
             get
@@ -200,9 +204,10 @@ namespace Mikoto
             }
             set
             {
-                Common.AppSettings.TF_SecondTransTextFont = value;
-                SecondTextFontFamily = new FontFamily(value);
-                SetProperty(ref _secondTextFontFamilyString, value);
+                FontFamily font = new FontFamily(value);
+                Common.AppSettings.TF_SecondTransTextFont = font.Source;
+                SecondTextFontFamily = font;
+                SetProperty(ref _secondTextFontFamilyString, font.GetLocalizedName());
             }
         }
 
@@ -343,5 +348,21 @@ namespace Mikoto
                 SetProperty(ref secondTextFontWeight, SecondTextFontWeight);
             }
         }
+    }
+
+    public static class FontExtension
+    {
+        public static string GetLocalizedName(this FontFamily font)
+        {
+            if (font.FamilyNames.TryGetValue(XmlLanguage.GetLanguage(CultureInfo.CurrentUICulture.Name), out string value))
+            {
+                return value;
+            }
+            else
+            {
+                return font.FamilyNames.First().Value;
+            }
+        }
+
     }
 }

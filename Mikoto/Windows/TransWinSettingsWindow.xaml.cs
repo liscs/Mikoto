@@ -1,9 +1,7 @@
 ﻿using Microsoft.Scripting.Utils;
 using System.ComponentModel;
-using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace Mikoto
@@ -35,23 +33,12 @@ namespace Mikoto
             Application.Current.Dispatcher.BeginInvoke(() =>
                {
                    List<string> list = [];
-                   list.AddRange(Fonts.SystemFontFamilies.Select(p => GetLocalizedFontFamilyName(p)));
+                   list.AddRange(Fonts.SystemFontFamilies.Select(p => p.GetLocalizedName()));
                    list = list.Order().ToList();
                    _viewModel.FontList.SuppressNotification = true;
                    _viewModel.FontList.AddRange(list);
                    _viewModel.FontList.SuppressNotification = false;
                });
-        }
-        private static string GetLocalizedFontFamilyName(FontFamily font)
-        {
-            if (font.FamilyNames.TryGetValue(XmlLanguage.GetLanguage(CultureInfo.CurrentUICulture.Name), out string value))
-            {
-                return value;
-            }
-            else
-            {
-                return font.FamilyNames.First().Value;
-            }
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using DataAccessLibrary;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,7 +42,14 @@ namespace Mikoto.GuidePages.Hook
         {
             if (_gamePid != -1 && GameProcessComboBox.SelectedValue is string selectValueString)
             {
-                GenerateHookerAndGotoNextStep(_processList[selectValueString]);
+                try
+                {
+                    GenerateHookerAndGotoNextStep(_processList[selectValueString]);
+                }
+                catch (Win32Exception ex)
+                {
+                    HandyControl.Controls.Growl.Warning(ex.Message.ToString());
+                }
             }
             else
             {
