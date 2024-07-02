@@ -9,6 +9,14 @@ jobs:
   release:
     runs-on: windows-latest
     steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+     
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x.x'
+          
       - name: publish-arm64
         uses: ./.github/workflows/publish.yml
         with:
