@@ -16,21 +16,21 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x.x'
-          
+      
       - name: publish-arm64
-        uses: ./.github/workflows/publish.yml
+        uses: ./.github/workflows/github_publish
         with:
             runtime: 'win-arm64'
             zipname: 'mikoto-arm64'
 
       - name: publish-x86
-        uses: ./.github/workflows/publish.yml
+        uses: ./.github/workflows/github_publish
         with:
             runtime: 'win-x86'
             zipname: 'mikoto-32bit'
       
       - name: publish-x64
-        uses: ./.github/workflows/publish.yml
+        uses: ./.github/workflows/github_publish
         with:
             runtime: 'win-x64'
             zipname: 'mikoto-64bit'
