@@ -9,28 +9,47 @@ jobs:
   release:
     runs-on: windows-latest
     steps:
-     - name: Checkout source
-       uses: actions/checkout@v4
+      - name: Checkout source
+        uses: actions/checkout@v4
+     
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x.x'
       
-     - name: Setup .NET
-       uses: actions/setup-dotnet@v4
-       with:
-         dotnet-version: '8.x.x'
+      - name: Publish-arm64
+        run: dotnet publish /p:RuntimeIdentifier=win-arm64
+      - name: Rename-arm64
+        run: Rename-Item -Path ./Mikoto/bin/Release/net8.0-windows/win-arm64/publish -NewName mikoto-arm64
+      - name: Zip-arm64
+        run: Compress-Archive -Path ./Mikoto/bin/Release/net8.0-windows/win-arm64/mikoto-arm64 -Destination mikoto-arm64.zip 
+        
 
-     - name: Build
-       run: dotnet build --configuration Release
+      - name: Publish-x64
+        run: dotnet publish /p:RuntimeIdentifier=win-x64
+      - name: Rename-x64
+        run: Rename-Item -Path ./Mikoto/bin/Release/net8.0-windows/win-x64/publish -NewName mikoto-64bit
+      - name: Zip-x64
+        run: Compress-Archive -Path ./Mikoto/bin/Release/net8.0-windows/win-x64/mikoto-64bit -Destination mikoto-64bit.zip 
         
-     - name: Rename
-       run: Rename-Item -Path ./Mikoto/bin/Release/net8.0-windows/win-x64 -NewName mikoto-x64
-     - name: Zip the Build
-       run: Compress-Archive -Path ./Mikoto/bin/Release/net8.0-windows/mikoto-x64 -Destination mikoto-x64.zip 
+      
+      - name: Publish-x86
+        run: dotnet publish /p:RuntimeIdentifier=win-x86
+      - name: Rename-x86
+        run: Rename-Item -Path ./Mikoto/bin/Release/net8.0-windows/win-x86/publish -NewName mikoto-32bit
+      - name: Zip-x86
+        run: Compress-Archive -Path ./Mikoto/bin/Release/net8.0-windows/win-x86/mikoto-32bit -Destination mikoto-32bit.zip 
         
-     - name: Create Release and Upload Release Asset
-       uses: softprops/action-gh-release@v2
-       with:
-          tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}
-          body: TODO New Release.
-          draft: false
-          prerelease: false
-          files: mikoto-x64.zip
+
+      - name: Create Release and Upload Release Asset
+        uses: softprops/action-gh-release@v2
+        with:
+            tag_name: ${{ github.ref }}
+            name: Release ${{ github.ref }}
+            body: TODO New Release.
+            draft: true
+            prerelease: false
+            files: |
+              mikoto-arm64.zip
+              mikoto-32bit.zip 
+              mikoto-64bit.zip 
