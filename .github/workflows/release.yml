@@ -21,7 +21,7 @@ jobs:
        run: dotnet build --configuration Release
         
      - name: Zip the Build
-       run: zip -r Mikoto-x64 ./Mikoto/bin/Release/net8.0-windows/win-x64
+       run: Compress-Archive -Path ./Mikoto/bin/Release/net8.0-windows/win-x64 -Destination Mikoto-x64.zip 
         
      - name: Create Release and Upload Release Asset
        uses: softprops/action-gh-release@v2
