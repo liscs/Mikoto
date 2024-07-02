@@ -6,25 +6,27 @@ on:
       - "v*.*.*"
 
 jobs:
-  release:
+  publish-arm64:
+   uses: ./.github/workflows/publish.yml
+   with:
+      runtime: 'win-arm64'
+      zipname: 'mikoto-arm64'
+
+  publish-x86:
+   uses: ./.github/workflows/publish.yml
+   with:
+       runtime: 'win-x86'
+       zipname: 'mikoto-32bit'
+  
+  publish-x64:
+   uses: ./.github/workflows/publish.yml
+   with:
+      runtime: 'win-x64'
+      zipname: 'mikoto-64bit'
+
+  release:  
     runs-on: windows-latest
     steps:
-     - name: Checkout source
-       uses: actions/checkout@v4
-      
-     - name: Setup .NET
-       uses: actions/setup-dotnet@v4
-       with:
-         dotnet-version: '8.x.x'
-
-     - name: Build
-       run: dotnet build --configuration Release
-        
-     - name: Rename
-       run: Rename-Item -Path ./Mikoto/bin/Release/net8.0-windows/win-x64 -NewName mikoto-x64
-     - name: Zip the Build
-       run: Compress-Archive -Path ./Mikoto/bin/Release/net8.0-windows/mikoto-x64 -Destination mikoto-x64.zip 
-        
      - name: Create Release and Upload Release Asset
        uses: softprops/action-gh-release@v2
        with:
@@ -33,4 +35,7 @@ jobs:
           body: TODO New Release.
           draft: false
           prerelease: false
-          files: mikoto-x64.zip
+          files: |
+           mikoto-arm64.zip
+           mikoto-32bit.zip 
+           mikoto-64bit.zip 

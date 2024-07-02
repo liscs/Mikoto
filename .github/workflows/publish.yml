@@ -1,0 +1,33 @@
+name: Publish
+
+on:
+  workflow_call:
+    inputs:
+      runtime:
+        required: true
+        type: string
+      zipname:
+        required: true
+        type: string
+
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+     - name: Checkout source
+       uses: actions/checkout@v4
+      
+     - name: Setup .NET
+       uses: actions/setup-dotnet@v4
+       with:
+         dotnet-version: '8.x.x'
+
+     - name: Build
+       run: dotnet publish /p:RuntimeIdentifier=${{ inputs.runtime }}
+
+     - name: Rename
+       run: Rename-Item -Path ./Mikoto/bin/Release/net8.0-windows/${{ inputs.runtime }}/publish -NewName ${{ inputs.zipname }}
+     - name: Zip the Build
+       run: Compress-Archive -Path ./Mikoto/bin/Release/net8.0-windows/${{ inputs.runtime }}/${{ inputs.zipname }} -Destination ${{ inputs.zipname }}.zip 
+     
