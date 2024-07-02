@@ -33,7 +33,7 @@ jobs:
           tag_name: ${{ github.ref }}
           name: Release ${{ github.ref }}
           body: TODO New Release.
-          draft: false
+          draft: true
           prerelease: false
           files: |
            mikoto-arm64.zip
