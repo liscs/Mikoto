@@ -23,7 +23,7 @@ jobs:
        with:
          dotnet-version: '8.x.x'
 
-     - name: Build
+     - name: Publish
        run: dotnet publish /p:RuntimeIdentifier=${{ inputs.runtime }}
 
      - name: Rename

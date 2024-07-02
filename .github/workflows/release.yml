@@ -6,36 +6,36 @@ on:
       - "v*.*.*"
 
 jobs:
-  publish-arm64:
-   uses: ./.github/workflows/publish.yml
-   with:
-      runtime: 'win-arm64'
-      zipname: 'mikoto-arm64'
-
-  publish-x86:
-   uses: ./.github/workflows/publish.yml
-   with:
-       runtime: 'win-x86'
-       zipname: 'mikoto-32bit'
-  
-  publish-x64:
-   uses: ./.github/workflows/publish.yml
-   with:
-      runtime: 'win-x64'
-      zipname: 'mikoto-64bit'
-
-  release:  
+  release:
     runs-on: windows-latest
     steps:
-     - name: Create Release and Upload Release Asset
-       uses: softprops/action-gh-release@v2
-       with:
-          tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}
-          body: TODO New Release.
-          draft: true
-          prerelease: false
-          files: |
-           mikoto-arm64.zip
-           mikoto-32bit.zip 
-           mikoto-64bit.zip 
+      - name: publish-arm64
+        uses: ./.github/workflows/publish.yml
+        with:
+            runtime: 'win-arm64'
+            zipname: 'mikoto-arm64'
+
+      - name: publish-x86
+        uses: ./.github/workflows/publish.yml
+        with:
+            runtime: 'win-x86'
+            zipname: 'mikoto-32bit'
+      
+      - name: publish-x64
+        uses: ./.github/workflows/publish.yml
+        with:
+            runtime: 'win-x64'
+            zipname: 'mikoto-64bit'
+
+      - name: Create Release and Upload Release Asset
+        uses: softprops/action-gh-release@v2
+        with:
+            tag_name: ${{ github.ref }}
+            name: Release ${{ github.ref }}
+            body: TODO New Release.
+            draft: true
+            prerelease: false
+            files: |
+              mikoto-arm64.zip
+              mikoto-32bit.zip 
+              mikoto-64bit.zip 
