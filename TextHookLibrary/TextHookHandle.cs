@@ -294,7 +294,7 @@ namespace TextHookLibrary
             }
         }
 
-        private List<string> matchList = new();
+        private string _bestMatchCode = string.Empty;
 
         private Stopwatch LastMessageStopwatch { get; set; } = Stopwatch.StartNew();
 
@@ -368,73 +368,50 @@ namespace TextHookLibrary
                     Regex regex = MisakaCodeRegex();
                     //保存的misakacode
                     string savedMisakaCode = MisakaCodeList.First();
-
-                    Match savedMatch = regex.Match(savedMisakaCode);
-                    Debug.Assert(savedMatch.Success);//传入值应该合法
-
-                    //misakacode第一段
-                    string savedMisakaCode1 = savedMatch.Groups[1].Value;
-                    //misakacode第二段
-                    string savedMisakaCode2 = savedMatch.Groups[2].Value;
-                    //misakacode第三段
-                    string savedMisakaCode3 = savedMatch.Groups[3].Value;
-
                     //取得的misakacode
                     string obtainedMisakaCode = data.MisakaHookCode;
 
                     Match obtainedMatch = regex.Match(obtainedMisakaCode);
                     Debug.Assert(obtainedMatch.Success);//传入值应该合法
-                    if (!InvalidMisakaCodeRegex().IsMatch(obtainedMisakaCode))
+                    if (InvalidMisakaCodeRegex().IsMatch(obtainedMisakaCode))
                     {
                         //无效返回
                         return;
                     }
 
                     string obtainedMisakaCode1 = obtainedMatch.Groups[1].Value;
-                    string obtainedMisakaCode2 = obtainedMatch.Groups[2].Value;
-                    string obtainedMisakaCode3 = obtainedMatch.Groups[3].Value;
 
                     //文本去重窗口处理&游戏翻译窗口处理
                     // TODO 寻找更好的Hook Address确定方法
-                    if (HookCodeList.Count != 0 && obtainedMisakaCode1.Length >= 4)
+                    if (obtainedMisakaCode1.Length >= 4
+                        && IsMoreMatch(savedMisakaCode, obtainedMisakaCode, _bestMatchCode))
                     {
-                        string combinedObtainedCode = obtainedMisakaCode2 + obtainedMisakaCode3;
-                        if (!matchList.Contains(combinedObtainedCode))
-                        {
-                            matchList.Add(combinedObtainedCode);
-                        }
-                        if (matchList.Count > 1)
-                        {
-                            string notThatMatch = GetWorstMatchString(savedMisakaCode2 + savedMisakaCode3, matchList[0], matchList[1]);
-                            matchList.Remove(notThatMatch);
-                        }
+                        _bestMatchCode = obtainedMisakaCode;
 
-                        if (matchList.Contains(combinedObtainedCode))
+                        SolvedDataReceivedEventArgs e = new()
                         {
-                            SolvedDataReceivedEventArgs e = new()
-                            {
-                                Data = data
-                            };
-                            MeetHookAddressMessageReceived?.Invoke(this, e);
-
-                        }
+                            Data = data
+                        };
+                        MeetHookAddressMessageReceived?.Invoke(this, e);
                     }
 
                 }
             }
         }
+
+        /// <summary>
+        /// check相较于compare更接近target，返回true；compare更接近target，或者相似度相同，则返回false
+        /// </summary>
+        private static bool IsMoreMatch(string target, string check, string compare)
+        {
+            int dist1 = EditDistance.GetLevenshteinDistance(target, check);
+            int dist2 = EditDistance.GetLevenshteinDistance(target, compare);
+            return dist1 < dist2;
+        }
+
         [GeneratedRegex("【0:FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF】|【FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF】")]
         private static partial Regex InvalidMisakaCodeRegex();
-        /// <summary>
-        /// 获得最不匹配target的字符串
-        /// </summary>
-        private static string GetWorstMatchString(string target, string s1, string s2)
-        {
-            int dist1 = EditDistance.GetLevenshteinDistance(target, s1);
-            int dist2 = EditDistance.GetLevenshteinDistance(target, s2);
-            if (dist1 < dist2) { return s2; }
-            else { return s1; }
-        }
+
 
         /// <summary>
         /// 卸载无关联Hook：缓解某些游戏同时进行很多Hook时造成的卡顿现象
