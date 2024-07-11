@@ -17,11 +17,11 @@
             <StackPanel Margin="10">
                 <TextBlock Text="Mikoto Version"
                            FontSize="{DynamicResource SubHeadFontSize}"
-                           FontWeight="{DynamicResource SettinrTitleTextWeight}"
+                           FontWeight="{DynamicResource SettingTitleTextWeight}"
                            Foreground="{DynamicResource PrimaryForeground}"
                            Margin="0,0,0,5" />
-                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{Binding CurrentVersion}"
-                           FontWeight="{DynamicResource SettinrTitleTextWeight}"
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}"
+                           Text="{Binding CurrentVersion}"
                            Margin="0,0,0,5" />
                 <StackPanel Margin="0,0,0,5"
                             Orientation="Horizontal">
@@ -39,9 +39,10 @@
                           HorizontalAlignment="Left"
                           Margin="0,0,0,10" />
 
-                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Text="{DynamicResource SoftwareSettingsPage_ClickCloseButton}"
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}"
+                           Text="{DynamicResource SoftwareSettingsPage_ClickCloseButton}"
                            FontSize="{DynamicResource SubHeadFontSize}"
-                           FontWeight="{DynamicResource SettinrTitleTextWeight}"
+                           FontWeight="{DynamicResource SettingTitleTextWeight}"
                            Margin="0,0,0,10" />
                 <RadioButton Name="MinimizationRadioButton"
                              Content="{DynamicResource SoftwareSettingsPage_Minimize}"
@@ -56,7 +57,7 @@
 
                 <TextBlock Text="{DynamicResource SoftwareSettingsPage_EnableGlobalNotification}"
                            FontSize="{DynamicResource SubHeadFontSize}"
-                           FontWeight="{DynamicResource SettinrTitleTextWeight}"
+                           FontWeight="{DynamicResource SettingTitleTextWeight}"
                            Foreground="{DynamicResource PrimaryForeground}"
                            Margin="0,0,0,10" />
                 <CheckBox Name="GrowlEnabledCheckBox"

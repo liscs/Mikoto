@@ -12,7 +12,7 @@ namespace TextHookLibrary
         /// <returns></returns>
         public static Dictionary<string, int> GetProcessList_Name_PID()
         {
-            Dictionary<string, int> ret = new();
+            Dictionary<string, int> result = new();
 
             //获取系统进程列表
             foreach (Process p in Process.GetProcesses())
@@ -25,12 +25,13 @@ namespace TextHookLibrary
                         info += "【" + p.MainWindowTitle + "】: ";
                     }
                     info += p.Id;
-                    ret.Add(info, p.Id);
+                    result.Add(info, p.Id);
                 }
                 p.Dispose();
             }
-            return ret;
+            return result;
         }
+
 
         /// <summary>
         /// 查找同名进程并返回一个进程PID列表
@@ -40,11 +41,7 @@ namespace TextHookLibrary
         public static List<Process> FindSameNameProcess(int pid)
         {
             string DesProcessName = Process.GetProcessById(pid).ProcessName;
-
-            List<Process> res = new List<Process>();
-            foreach (Process p in Process.GetProcessesByName(DesProcessName))
-                res.Add(p);
-            return res;
+            return Process.GetProcessesByName(DesProcessName).ToList();
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
-﻿namespace Mikoto.SettingsPages
+﻿using System.Runtime.InteropServices;
+
+namespace Mikoto.SettingsPages
 {
     internal class SoftwareSettingsViewModel : ViewModelBase
     {
@@ -18,7 +20,12 @@
         }
 
 
-        public string CurrentVersion => Common.CurrentVersion.ToString(3);
-
+        public string CurrentVersion
+        {
+            get
+            {
+                return string.Join(' ', "v" + Common.CurrentVersion.ToString(3), RuntimeInformation.ProcessArchitecture);
+            }
+        }
     }
 }

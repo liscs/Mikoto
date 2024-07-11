@@ -294,10 +294,7 @@ namespace TextHookLibrary
             }
         }
 
-        private List<string> matchList = new List<string>();
-
-        [GeneratedRegex("(?<=【).*?(?=:)")]
-        private static partial Regex FirstCodeRegex();
+        private List<string> matchList = new();
 
         private Stopwatch LastMessageStopwatch { get; set; } = Stopwatch.StartNew();
 
@@ -368,32 +365,43 @@ namespace TextHookLibrary
                         return;
                     }
 
-                    Regex firstMisakaCodeRegex = FirstCodeRegex();
-
+                    Regex regex = MisakaCodeRegex();
                     //保存的misakacode
-                    string savedMisakaCode = MisakaCodeList[0] ?? string.Empty;
+                    string savedMisakaCode = MisakaCodeList.First();
+
+                    Match savedMatch = regex.Match(savedMisakaCode);
+                    Debug.Assert(savedMatch.Success);//传入值应该合法
+
                     //misakacode第一段
-                    string savedMisakaCode1 = savedMisakaCode.Split(':').ElementAt(0).Substring(1);
+                    string savedMisakaCode1 = savedMatch.Groups[1].Value;
                     //misakacode第二段
-                    string savedMisakaCode2 = savedMisakaCode.Split(':').ElementAt(1);
+                    string savedMisakaCode2 = savedMatch.Groups[2].Value;
                     //misakacode第三段
-                    string savedMisakaCode3 = savedMisakaCode.Split(':').ElementAt(2).Substring(0, savedMisakaCode.Split(':').ElementAt(2).Length - 1);
+                    string savedMisakaCode3 = savedMatch.Groups[3].Value;
 
                     //取得的misakacode
                     string obtainedMisakaCode = data.MisakaHookCode;
-                    string obtainedMisakaCode1 = obtainedMisakaCode.Split(':').ElementAt(0).Substring(1);
-                    string obtainedMisakaCode2 = obtainedMisakaCode.Split(':').ElementAt(1);
-                    string obtainedMisakaCode3 = obtainedMisakaCode.Split(':').ElementAt(2).Substring(0, obtainedMisakaCode.Split(':').ElementAt(2).Length - 1);
+
+                    Match obtainedMatch = regex.Match(obtainedMisakaCode);
+                    Debug.Assert(obtainedMatch.Success);//传入值应该合法
+                    if (!InvalidMisakaCodeRegex().IsMatch(obtainedMisakaCode))
+                    {
+                        //无效返回
+                        return;
+                    }
+
+                    string obtainedMisakaCode1 = obtainedMatch.Groups[1].Value;
+                    string obtainedMisakaCode2 = obtainedMatch.Groups[2].Value;
+                    string obtainedMisakaCode3 = obtainedMatch.Groups[3].Value;
 
                     //文本去重窗口处理&游戏翻译窗口处理
                     // TODO 寻找更好的Hook Address确定方法
-                    if (HookCodeList.Count != 0
-                       && obtainedMisakaCode1.Length - 4 >= 0
-                       && !InvalidMisakaCodeRegex().IsMatch(obtainedMisakaCode))
+                    if (HookCodeList.Count != 0 && obtainedMisakaCode1.Length >= 4)
                     {
-                        if (!matchList.Contains(obtainedMisakaCode2 + obtainedMisakaCode3))
+                        string combinedObtainedCode = obtainedMisakaCode2 + obtainedMisakaCode3;
+                        if (!matchList.Contains(combinedObtainedCode))
                         {
-                            matchList.Add(obtainedMisakaCode2 + obtainedMisakaCode3);
+                            matchList.Add(combinedObtainedCode);
                         }
                         if (matchList.Count > 1)
                         {
@@ -401,18 +409,15 @@ namespace TextHookLibrary
                             matchList.Remove(notThatMatch);
                         }
 
-                        if (matchList.Contains(obtainedMisakaCode2 + obtainedMisakaCode3))
+                        if (matchList.Contains(combinedObtainedCode))
                         {
-                            SolvedDataReceivedEventArgs e = new SolvedDataReceivedEventArgs
+                            SolvedDataReceivedEventArgs e = new()
                             {
                                 Data = data
                             };
                             MeetHookAddressMessageReceived?.Invoke(this, e);
 
                         }
-
-
-
                     }
 
                 }
@@ -423,7 +428,7 @@ namespace TextHookLibrary
         /// <summary>
         /// 获得最不匹配target的字符串
         /// </summary>
-        private string GetWorstMatchString(string target, string s1, string s2)
+        private static string GetWorstMatchString(string target, string s1, string s2)
         {
             int dist1 = EditDistance.GetLevenshteinDistance(target, s1);
             int dist2 = EditDistance.GetLevenshteinDistance(target, s2);
@@ -648,5 +653,7 @@ namespace TextHookLibrary
             }
         }
 
+        [GeneratedRegex("【(.+):(.+):(.+)】")]
+        private static partial Regex MisakaCodeRegex();
     }
 }

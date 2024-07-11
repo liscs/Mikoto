@@ -7,12 +7,24 @@
     </ResourceDictionary.MergedDictionaries>
     <sys:String x:Key="CurrentTheme">Dark</sys:String>
 
-    <SolidColorBrush x:Key="PrimaryBackground" Color="#FF1E1E1E"></SolidColorBrush>
-    <SolidColorBrush x:Key="PrimaryForeground" Color="White"></SolidColorBrush>
+    <SolidColorBrush x:Key="PrimaryBackground"
+                     Color="#FF1E1E1E"></SolidColorBrush>
+    <SolidColorBrush x:Key="PrimaryForeground"
+                     Color="White"></SolidColorBrush>
 
-    <SolidColorBrush x:Key="MainBtnColor" Color="#FF7160E8"></SolidColorBrush>
-    <SolidColorBrush x:Key="BoxBtnColor" Color="#FF7160E8"></SolidColorBrush>
-    
-    <SolidColorBrush x:Key="ButtonTextColor" Color="White" Opacity="0.9"></SolidColorBrush>
-    <FontWeight x:Key="ButtonTextWeight">SemiBold</FontWeight>
+    <SolidColorBrush x:Key="MainBtnColor"
+                     Color="#FF7160E8"></SolidColorBrush>
+    <SolidColorBrush x:Key="BoxBtnColor"
+                     Color="#FF7160E8"></SolidColorBrush>
+
+    <SolidColorBrush x:Key="ButtonTextColor"
+                     Color="White"
+                     Opacity="0.9"></SolidColorBrush>
+
+    <FontWeight x:Key="ButtonTextWeight">DemiBold</FontWeight>
+
+    <!--设置界面资源-->
+    <SolidColorBrush x:Key="SettingTitleColor"
+                     Color="#666666" />
+    <FontWeight x:Key="SettingTitleTextWeight">Black</FontWeight>
 </ResourceDictionary>

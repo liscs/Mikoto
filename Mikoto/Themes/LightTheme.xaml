@@ -26,8 +26,8 @@
     <FontWeight x:Key="ButtonTextWeight">DemiBold</FontWeight>
 
     <!--设置界面资源-->
-    <SolidColorBrush x:Key="SettinrTitleColor"
+    <SolidColorBrush x:Key="SettingTitleColor"
                      Color="#666666" />
-    <FontWeight x:Key="SettinrTitleTextWeight">Black</FontWeight>
+    <FontWeight x:Key="SettingTitleTextWeight">Black</FontWeight>
 
 </ResourceDictionary>

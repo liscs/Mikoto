@@ -8,8 +8,6 @@
 		<RootNamespace>Mikoto</RootNamespace>
 		<StartupObject>Mikoto.Program</StartupObject>
 		<UseWin32>true</UseWin32>
-		<AllowNeutralPackageWithAppHost>true</AllowNeutralPackageWithAppHost>
-		<WindowsAppSDKFrameworkPackageReference>false</WindowsAppSDKFrameworkPackageReference>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -35,7 +33,5 @@
 		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.106">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240607001" IncludeAssets="none" ExcludeAssets="all" PrivateAssets="all" GeneratePathProperty="true" />
 	</ItemGroup>
 </Project>
