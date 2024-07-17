@@ -384,7 +384,7 @@ namespace TextHookLibrary
                     //文本去重窗口处理&游戏翻译窗口处理
                     // TODO 寻找更好的Hook Address确定方法
                     if (obtainedMisakaCode1.Length >= 4
-                        && IsMoreMatch(savedMisakaCode, obtainedMisakaCode, _bestMatchCode))
+                        && (obtainedMisakaCode == _bestMatchCode || IsMoreMatch(savedMisakaCode, obtainedMisakaCode, _bestMatchCode)))
                     {
                         _bestMatchCode = obtainedMisakaCode;
 
