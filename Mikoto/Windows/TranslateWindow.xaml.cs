@@ -138,21 +138,23 @@ namespace Mikoto
         /// <summary>
         /// 重写复制有两行内容的富文本框
         /// </summary>
-        private async void OnCopy(object sender, DataObjectCopyingEventArgs e)
+        private void OnCopy(object sender, DataObjectCopyingEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(e.DataObject.GetData("UnicodeText").ToString())) { return; }
+            if (!string.IsNullOrWhiteSpace(e.DataObject.GetData("UnicodeText").ToString()))
+            {
+                //如果是正常的复制就直接返回不重写覆盖
+                return;
+            }
 
-
-            (_, string result) = await GetRubyAndText(_richTextBoxes[_updatingSouceNumber]);
-
+            e.CancelCommand();
+            string result = GetRubyAndText(_richTextBoxes[_updatingSouceNumber]).Item2;
             if (!string.IsNullOrEmpty(result))
             {
                 Clipboard.SetText(result);
-                e.Handled = true;
             }
         }
 
-        private static async Task<(string, string)> GetRubyAndText(RichTextBox richTextBox)
+        private static (string, string) GetRubyAndText(RichTextBox richTextBox)
         {
             FlowDocument flowDocument = richTextBox.Document;
             if (flowDocument.Blocks.FirstBlock is Paragraph paragraph)
@@ -182,7 +184,6 @@ namespace Mikoto
                     }
                 }
                 (string ruby, string text) = (copyRubyStringBuilder.ToString(), copyStringBuilder.ToString());
-                await Task.Delay(1); //莫名需要的延迟
                 return (ruby, text);
             }
             return (string.Empty, string.Empty);
@@ -293,9 +294,9 @@ namespace Mikoto
         private DictResWindow? _dictResWindow;
 
 
-        private static async Task<string> GetSelectedText(RichTextBox textBox)
+        private static string GetSelectedText(RichTextBox textBox)
         {
-            (_, string result) = await GetRubyAndText(textBox);
+            string result = GetRubyAndText(textBox).Item2;
             if (string.IsNullOrWhiteSpace(result))
             {
                 result = textBox.Selection.Text;
@@ -1150,9 +1151,9 @@ namespace Mikoto
             }
         }
 
-        private async void SourceRichTextBoxRightClickMenu_Opening(object sender, ContextMenuEventArgs e)
+        private void SourceRichTextBoxRightClickMenu_Opening(object sender, ContextMenuEventArgs e)
         {
-            if (await CanCopyRuby(_richTextBoxes[_updatingSouceNumber]))
+            if (CanCopyRuby(_richTextBoxes[_updatingSouceNumber]))
             {
                 ViewModel.CopyRubyVisibility = true;
             }
@@ -1162,14 +1163,14 @@ namespace Mikoto
             }
         }
 
-        private static async Task<bool> CanCopyRuby(RichTextBox richTextBox)
+        private static bool CanCopyRuby(RichTextBox richTextBox)
         {
-            return !string.IsNullOrWhiteSpace((await GetRubyAndText(richTextBox)).Item2);
+            return !string.IsNullOrWhiteSpace(GetRubyAndText(richTextBox).Item2);
         }
 
-        private async void CopyRubyMenuItem_Click(object sender, RoutedEventArgs e)
+        private void CopyRubyMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string ruby = (await GetRubyAndText(_richTextBoxes[_updatingSouceNumber])).Item1;
+            string ruby = GetRubyAndText(_richTextBoxes[_updatingSouceNumber]).Item1;
             if (!string.IsNullOrEmpty(ruby))
             {
                 Clipboard.SetText(ruby);
@@ -1177,9 +1178,9 @@ namespace Mikoto
             }
         }
 
-        private async void ConsultMenuItem_Click(object sender, RoutedEventArgs e)
+        private void ConsultMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string text = await GetSelectedText(_richTextBoxes[_updatingSouceNumber]);
+            string text = GetSelectedText(_richTextBoxes[_updatingSouceNumber]);
             if (!string.IsNullOrWhiteSpace(text))
             {
                 _dictResWindow ??= new DictResWindow(_tts);
