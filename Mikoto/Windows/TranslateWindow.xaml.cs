@@ -50,6 +50,7 @@ namespace Mikoto
         private readonly object _saveTransResultLock = new(); // 读写数据库和_gameTextHistory的线程锁
 
         private ITTS? _tts;
+        private IVoiceDetector? _voiceDetector;
 
         private HWND _winHandle;//窗口句柄，用于设置活动窗口，以达到全屏状态下总在最前的目的
         private TransWinSettingsWindow? _transWinSettingsWindow;
@@ -227,12 +228,14 @@ namespace Mikoto
                         && !string.IsNullOrWhiteSpace(Common.AppSettings.AzureTTSLocation)
                         )
                     {
-                        AzureTTS azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceVolume, Common.AppSettings.AzureTTSVoiceStyle, Common.AppSettings.AzureTTSProxy);
-                        _tts = azureTTS;
+                        _tts = new AzureTTS(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceVolume, Common.AppSettings.AzureTTSVoiceStyle, Common.AppSettings.AzureTTSProxy);
+                        _voiceDetector = new AzureVoiceDetector(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.UsingSrcLang);
                     }
                     else
                     {
                         _tts = null;
+                        _voiceDetector?.Dispose();
+                        _voiceDetector = null;
                     }
                     break;
             }
@@ -344,7 +347,45 @@ namespace Mikoto
             }
 
             Dispatcher.Invoke(SetWindowTopMost);
+
+            if (Common.AppSettings.AzureEnableAutoSpeak)
+            {
+                _ = SpeakIfNoGameVoiceAsync(repairedText);
+            }
             TranslateText(repairedText);
+        }
+
+        private async Task SpeakIfNoGameVoiceAsync(string text)
+        {
+            if (_voiceDetector == null || _tts == null)
+            {
+                return;
+            }
+
+            try
+            {
+                (bool playing, string info) = await _voiceDetector.IsVoicePlaying();
+                Application.Current.Dispatcher.Invoke(() => Logger.Info(info));
+                if (!playing)
+                {
+                    await _tts.SpeakAsync(text);
+                }
+                else
+                {
+                    //如果有人说话就停止
+                    await _tts.StopSpeakAsync();
+                }
+
+            }
+            catch (TaskCanceledException ex)
+            {
+                Application.Current.Dispatcher.Invoke(() => Logger.Warn(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                Application.Current.Dispatcher.Invoke(() => Logger.Error(ex));
+            }
+
         }
 
         /// <summary>

@@ -11,11 +11,6 @@ namespace TTSHelperLibrary
             synth = new SpeechSynthesizer();
         }
 
-        ~LocalTTS()
-        {
-            synth.Dispose();
-        }
-
         /// <summary>
         /// 获得当前所有可用的TTS引擎
         /// </summary>
@@ -91,9 +86,9 @@ namespace TTSHelperLibrary
         /// <summary>
         /// 取消所有排队、 异步语音合成操作。
         /// </summary>
-        public void CancelAllSpeakAsync()
+        public async Task StopSpeakAsync()
         {
-            synth.SpeakAsyncCancelAll();
+            await Task.Run(synth.SpeakAsyncCancelAll);
         }
     }
 }

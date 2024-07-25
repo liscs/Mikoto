@@ -75,5 +75,16 @@ namespace Mikoto
                 SetProperty(ref volume, value);
             }
         }
+
+        private bool? enableAutoSpeak;
+
+        public bool? EnableAutoSpeak
+        {
+            get => enableAutoSpeak; set
+            {
+                Common.AppSettings.AzureEnableAutoSpeak = value ?? false;
+                SetProperty(ref enableAutoSpeak, value);
+            }
+        }
     }
 }

@@ -282,6 +282,13 @@ namespace Mikoto
             set;
         }
 
+        [Option(Alias = "TTS.AzureEnableAutoSpeak", DefaultValue = false)]
+        bool AzureEnableAutoSpeak
+        {
+            get;
+            set;
+        }
+
         [Option(Alias = "TTS.LocalTTSVoice", DefaultValue = "")]
         string LocalTTSVoice
         {

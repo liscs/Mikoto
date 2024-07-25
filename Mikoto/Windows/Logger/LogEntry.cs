@@ -1,4 +1,5 @@
-﻿using DateTimeA = System.DateTime;
+﻿using System.Windows.Media;
+using DateTimeA = System.DateTime;
 namespace Mikoto
 {
     public class LogEntry : ViewModelBase
@@ -16,5 +17,7 @@ namespace Mikoto
         }
 
         public string Message { get; set; } = string.Empty;
+
+        public SolidColorBrush Color { get; set; } = Brushes.AliceBlue;
     }
 }

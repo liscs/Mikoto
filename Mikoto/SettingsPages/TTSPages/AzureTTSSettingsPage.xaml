@@ -123,6 +123,12 @@
                                 Click="BillBtn_Click" />
                     </Grid>
 
+                    <ToggleButton Margin="5"
+                                  HorizontalAlignment="Left"
+                                  Style="{StaticResource ToggleButtonSwitchBaseStyle}"
+                                  Content="{DynamicResource AzureTransSettingsPage_EnableAutoSpeak}"
+                                  IsChecked="{Binding EnableAutoSpeak,Mode=TwoWay}" />
+
                 </StackPanel>
             </StackPanel>
         </hc:ScrollViewer>

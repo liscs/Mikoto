@@ -18,14 +18,14 @@ namespace TTSHelperLibrary
         private double _volume;
         private string _style = string.Empty;
 
-        public AzureTTS(string key, string location, string voice, double volume, string style, string proxy)
+        public AzureTTS(string key, string region, string voice, double volume, string style, string proxy)
         {
-            if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(location) || string.IsNullOrEmpty(voice))
+            if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(region) || string.IsNullOrEmpty(voice))
             {
                 return;
             }
             subscriptionKey = key;
-            subscriptionRegion = location;
+            subscriptionRegion = region;
             _voice = voice;
             _volume = volume;
             _style = style;
@@ -62,22 +62,32 @@ namespace TTSHelperLibrary
             XElement ssml = BuildSsml(text);
 
             ErrorMessage = string.Empty;
-            if (subscriptionKey == string.Empty || subscriptionRegion == string.Empty || string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(_voice))
+            if (subscriptionKey == string.Empty
+                || subscriptionRegion == string.Empty
+                || string.IsNullOrWhiteSpace(text)
+                || string.IsNullOrWhiteSpace(_voice)
+                || _synthesizer == null)
                 return;
-            var synthesizer = _synthesizer;
-            if (synthesizer == null) { ErrorMessage += "Synthesizer should not be null!"; return; }
-            using (var result = await synthesizer.SpeakSsmlAsync(ssml.ToString()))
+
+            using var result = await _synthesizer.SpeakSsmlAsync(ssml.ToString());
+            if (result.Reason == ResultReason.Canceled)
             {
-                if (result.Reason == ResultReason.Canceled)
+                var cancellation = SpeechSynthesisCancellationDetails.FromResult(result);
+                ErrorMessage += $"CANCELED: Reason={cancellation.Reason}";
+                if (cancellation.Reason == CancellationReason.Error)
                 {
-                    var cancellation = SpeechSynthesisCancellationDetails.FromResult(result);
-                    ErrorMessage += $"CANCELED: Reason={cancellation.Reason}";
-                    if (cancellation.Reason == CancellationReason.Error)
-                    {
-                        ErrorMessage += $", ErrorCode={cancellation.ErrorCode}, ErrorDetails=[{cancellation.ErrorDetails}]";
-                    }
+                    ErrorMessage += $", ErrorCode={cancellation.ErrorCode}, ErrorDetails=[{cancellation.ErrorDetails}]";
                 }
             }
+
+        }
+
+        public async Task StopSpeakAsync()
+        {
+            if (_synthesizer == null)
+                return;
+
+            await _synthesizer.StopSpeakingAsync();
         }
 
         private XElement BuildSsml(string text)

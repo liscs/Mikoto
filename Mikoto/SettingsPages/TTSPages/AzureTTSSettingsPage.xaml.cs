@@ -25,6 +25,7 @@ namespace Mikoto.SettingsPages.TTSPages
             AzureTTSLocationBox.Text = Common.AppSettings.AzureTTSLocation;
             HttpProxyBox.Text = Common.AppSettings.AzureTTSProxy;
             _viewModel.Volume = Common.AppSettings.AzureTTSVoiceVolume;
+            _viewModel.EnableAutoSpeak = Common.AppSettings.AzureEnableAutoSpeak;
 
             azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceVolume, Common.AppSettings.AzureTTSVoiceStyle, Common.AppSettings.AzureTTSProxy);
             GetVoices(this, null);
