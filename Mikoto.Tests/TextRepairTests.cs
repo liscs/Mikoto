@@ -5,84 +5,79 @@ namespace Mikoto.Tests
     [TestClass()]
     public class TextRepairTests
     {
-        [TestMethod()]
-        public void RepairFun_RemoveSingleWordRepeatTest_One()
+        private void TestSingleWordRepeat(int repeat, string src, string expected)
         {
-            int repeat = 1;
-            string src = "Four score and seven years ago";
-            string expected = "Four score and seven years ago";
-
             TextRepair.SingleWordRepeatTimes = repeat;
             string actual = TextRepair.RepairFun_RemoveSingleWordRepeat(src);
-
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod()]
-        public void RepairFun_RemoveSingleWordRepeatTest_Ten()
+        private void TestSentenceRepeat(int repeat, string src, string expected)
         {
-            int repeat = 10;
+            TextRepair.SentenceRepeatFindCharNum = repeat;
+            string actual = TextRepair.RepairFun_RemoveSentenceRepeat(src);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void RepairFun_RemoveSingleWordRepeatTest_NoRepetition()
+        {
+            string src = "Four score and seven years ago";
+            TestSingleWordRepeat(1, src, src);
+        }
+
+        [TestMethod]
+        public void RepairFun_RemoveSingleWordRepeatTest_ExactThreshold()
+        {
             string src = "FFFFFFFFFFoooooooooouuuuuuuuuurrrrrrrrrr          ssssssssssccccccccccoooooooooorrrrrrrrrreeeeeeeeee          aaaaaaaaaannnnnnnnnndddddddddd          sssssssssseeeeeeeeeevvvvvvvvvveeeeeeeeeennnnnnnnnn          yyyyyyyyyyeeeeeeeeeeaaaaaaaaaarrrrrrrrrrssssssssss          aaaaaaaaaaggggggggggoooooooooo";
             string expected = "Four score and seven years ago";
-
-            TextRepair.SingleWordRepeatTimes = repeat;
-            string actual = TextRepair.RepairFun_RemoveSingleWordRepeat(src);
-
-            Assert.AreEqual(expected, actual);
+            TestSingleWordRepeat(10, src, expected);
         }
 
-        [TestMethod()]
-        public void RepairFun_RemoveSingleWordRepeatTest_Nine()
+        [TestMethod]
+        public void RepairFun_RemoveSingleWordRepeatTest_AboveThreshold()
         {
-            int repeat = 9;
-            //10次重复但只设置9次，健壮性测试
             string src = "aaaaaaaaaannnnnnnnnndddddddddd          tttttttttthhhhhhhhhhaaaaaaaaaatttttttttt          ggggggggggoooooooooovvvvvvvvvveeeeeeeeeerrrrrrrrrrnnnnnnnnnnmmmmmmmmmmeeeeeeeeeennnnnnnnnntttttttttt          ooooooooooffffffffff          tttttttttthhhhhhhhhheeeeeeeeee          ppppppppppeeeeeeeeeeoooooooooopppppppppplllllllllleeeeeeeeee,,,,,,,,,,          bbbbbbbbbbyyyyyyyyyy          tttttttttthhhhhhhhhheeeeeeeeee          ppppppppppeeeeeeeeeeoooooooooopppppppppplllllllllleeeeeeeeee,,,,,,,,,,          ffffffffffoooooooooorrrrrrrrrr          tttttttttthhhhhhhhhheeeeeeeeee          ppppppppppeeeeeeeeeeoooooooooopppppppppplllllllllleeeeeeeeee,,,,,,,,,,          sssssssssshhhhhhhhhhaaaaaaaaaallllllllllllllllllll          nnnnnnnnnnooooooooootttttttttt          ppppppppppeeeeeeeeeerrrrrrrrrriiiiiiiiiisssssssssshhhhhhhhhh          ffffffffffrrrrrrrrrroooooooooommmmmmmmmm          tttttttttthhhhhhhhhheeeeeeeeee          eeeeeeeeeeaaaaaaaaaarrrrrrrrrrtttttttttthhhhhhhhhh";
             string expected = "and that government of the people, by the people, for the people, shall not perish from the earth";
-
-            TextRepair.SingleWordRepeatTimes = repeat;
-            string actual = TextRepair.RepairFun_RemoveSingleWordRepeat(src);
-
-            Assert.AreEqual(expected, actual);
+            TestSingleWordRepeat(9, src, expected);
         }
 
-        [TestMethod()]
-        public void RepairFun_RemoveSingleWordRepeatTest_Eleven()
+        [TestMethod]
+        public void RepairFun_RemoveSingleWordRepeatTest_ExceedsThreshold()
         {
-            int repeat = 11;
-            //10次重复但设置11次，健壮性测试
             string src = "sssssssssshhhhhhhhhhaaaaaaaaaallllllllllllllllllll          nnnnnnnnnnooooooooootttttttttt          ppppppppppeeeeeeeeeerrrrrrrrrriiiiiiiiiisssssssssshhhhhhhhhh          ffffffffffrrrrrrrrrroooooooooommmmmmmmmm          tttttttttthhhhhhhhhheeeeeeeeee          eeeeeeeeeeaaaaaaaaaarrrrrrrrrrtttttttttthhhhhhhhhh";
             string expected = "shall not perish from the earth";
-
-            TextRepair.SingleWordRepeatTimes = repeat;
-            string actual = TextRepair.RepairFun_RemoveSingleWordRepeat(src);
-
-            Assert.AreEqual(expected, actual);
+            TestSingleWordRepeat(11, src, expected);
         }
 
-        [TestMethod()]
-        public void RepairFun_RemoveSentenceRepeatTest_One()
+        [TestMethod]
+        public void RepairFun_RemoveSentenceRepeatTest_NoRepetition()
         {
-            int repeat = 1;
             string src = "shall not perish from the earth";
-            string expected = "shall not perish from the earth";
-
-            TextRepair.SentenceRepeatFindCharNum = repeat;
-            string actual = TextRepair.RepairFun_RemoveSentenceRepeat(src);
-
-            Assert.AreEqual(expected, actual);
+            TestSentenceRepeat(1, src, src);
         }
 
-        [TestMethod()]
-        public void RepairFun_RemoveSentenceRepeatTest_Two()
+        [TestMethod]
+        public void RepairFun_RemoveSentenceRepeatTest_MultipleRepetitions()
         {
-            int repeat = 10;
             string src = "shall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earth";
             string expected = "shall not perish from the earth";
+            TestSentenceRepeat(10, src, expected);
+        }
 
-            TextRepair.SentenceRepeatFindCharNum = repeat;
-            string actual = TextRepair.RepairFun_RemoveSentenceRepeat(src);
+        // Add edge cases, such as empty strings or strings with only repeated spaces
+        [TestMethod]
+        public void RepairFun_RemoveSingleWordRepeatTest_EmptyString()
+        {
+            string src = "";
+            TestSingleWordRepeat(1, src, src);
+        }
 
-            Assert.AreEqual(expected, actual);
+        [TestMethod]
+        public void RepairFun_RemoveSentenceRepeatTest_EmptyString()
+        {
+            string src = "";
+            TestSentenceRepeat(1, src, src);
         }
     }
 }

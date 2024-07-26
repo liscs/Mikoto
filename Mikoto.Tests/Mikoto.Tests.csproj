@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MecabHelperLibrary\MecabHelperLibrary.csproj" />
     <ProjectReference Include="..\Mikoto\Mikoto.csproj" />
   </ItemGroup>
 
