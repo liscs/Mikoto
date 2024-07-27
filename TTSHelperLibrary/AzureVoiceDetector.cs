@@ -42,6 +42,7 @@ namespace TTSHelperLibrary
             _recognizer = new SpeechRecognizer(speechConfig, audioConfig);
         }
 
+        private long _recordTimeLimit = 2000;
         public async Task<(bool, string)> IsVoicePlaying()
         {
             bool speechDetected = false;
@@ -67,10 +68,12 @@ namespace TTSHelperLibrary
 
             // 捕获音频 1 秒钟
             Stopwatch sw = Stopwatch.StartNew();
-            while (!speechDetected && sw.ElapsedMilliseconds <= 1000)
+            while (!speechDetected && sw.ElapsedMilliseconds < _recordTimeLimit)
             {
-                await Task.Delay(100);
+                await Task.Delay(250);
             }
+            //动态调整录音时间
+            _recordTimeLimit = sw.ElapsedMilliseconds;
 
             // 停止录音
             _capture.StopRecording();

@@ -373,7 +373,8 @@ namespace Mikoto
                 else
                 {
                     //如果有人说话就停止
-                    await _tts.StopSpeakAsync();
+                    //TODO 感觉仍然是不停止更好，可以考虑加一个停止按钮
+                    //await _tts.StopSpeakAsync();
                 }
 
             }
