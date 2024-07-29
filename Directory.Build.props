@@ -1,7 +1,6 @@
 <Project>
 
 	<PropertyGroup>
-		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 		<Platforms>AnyCPU</Platforms>

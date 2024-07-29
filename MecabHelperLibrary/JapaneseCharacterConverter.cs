@@ -4,6 +4,9 @@ namespace MecabHelperLibrary
 {
     public class JapaneseCharacterConverter
     {
+        /// <summary>
+        /// 把字符串里的片假名转成平假名
+        /// </summary>
         public static string KatakanaToHiraganaString(string katakana)
         {
             StringBuilder sb = new();
@@ -189,38 +192,42 @@ namespace MecabHelperLibrary
                 "てゅ" => "thu",
                 "てぇ" => "the",
                 "てょ" => "tho",
-                _ => "",
+                _ => hiragana,
             };
         }
 
-        //平假名转罗马音
+        /// <summary>
+        /// 把字符串里的平假名转成罗马音
+        /// </summary>
         public static string HiraganaToRomajiString(string hiragana)
         {
-            string romaji = "";
+            StringBuilder romaji = new();
             for (int i = 0; i < hiragana.Length; i++)
             {
 
                 if (i + 1 < hiragana.Length)
                 {
                     // 有「っ」的情况下
-                    if (hiragana.Substring(i, 1).CompareTo("っ") == 0)
+                    if (hiragana[i] == 'っ')
                     {
-                        romaji += HiraganaRomajiMap(hiragana.Substring(i + 1, 1)).Substring(0, 1);
+                        romaji.Append(HiraganaRomajiMap(hiragana[i + 1].ToString()).First());
                         continue;
                     }
 
                     // 出现其他小假名的情况
-                    string combineConvertResult = HiraganaRomajiMap(hiragana.Substring(i, 2));
-                    if (combineConvertResult != "")
+                    string multiKana = hiragana.Substring(i, 2);
+                    string combineConvertResult = HiraganaRomajiMap(multiKana);
+                    //有转换
+                    if (multiKana != combineConvertResult)
                     {
-                        romaji += combineConvertResult;
+                        romaji.Append(combineConvertResult);
                         i++;
                         continue;
                     }
                 }
-                romaji += HiraganaRomajiMap(hiragana.Substring(i, 1));
+                romaji.Append(HiraganaRomajiMap(hiragana[i].ToString()));
             }
-            return romaji;
+            return romaji.ToString();
         }
     }
 }
