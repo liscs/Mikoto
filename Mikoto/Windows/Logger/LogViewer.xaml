@@ -1,4 +1,4 @@
-﻿<local:MajorWindow x:Class="Mikoto.LogViewer"
+﻿<Window x:Class="Mikoto.LogViewer"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:local="clr-namespace:Mikoto"
@@ -137,4 +137,4 @@
             </ItemsControl.ItemsPanel>
         </ItemsControl>
     </DockPanel>
-</local:MajorWindow>
+</Window>

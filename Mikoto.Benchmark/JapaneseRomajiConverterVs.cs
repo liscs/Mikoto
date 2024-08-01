@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using BenchmarkDotNet.Attributes;
+﻿using BenchmarkDotNet.Attributes;
 using MecabHelperLibrary;
 
 namespace Mikoto.Benchmark;

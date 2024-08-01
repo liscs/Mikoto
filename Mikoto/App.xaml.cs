@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Mikoto.Helpers.Input;
+using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Media.Animation;
@@ -15,6 +16,14 @@ namespace Mikoto
             //注册开始和退出事件
             this.Startup += App_Startup;
             this.Exit += App_Exit;
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            // 初始化全局快捷键管理
+            GlobalKeyboardHook.Initialize();
         }
 
         private void App_Startup(object sender, StartupEventArgs e)
