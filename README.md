@@ -9,6 +9,7 @@ Mikoto 是一款基于 MisakaTranslator 的互动文字小说阅读工具。
 * 加入了Azure翻译以及TTS（文本转语音）支持。
 * 加入了火山翻译、Amazon Translate支持。
 * 添加了更多的设置选项。
+* 删除了OCR功能，以专注于Hook相关功能。
 
 ## 游戏信息配置文件示例
 配置文件名：.\data\games\a3ff500d-5b56-4320-88e9-3452caa2d602.json
