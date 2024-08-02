@@ -11,11 +11,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="data\custom scripts\csharp\example regex.cs" />
 	  <Compile Remove="data\custom scripts\csharp\example.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<AppxManifest Include="Properties\Package.appxmanifest" />
+		<None Include="data\custom scripts\csharp\example regex.cs">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Include="data\custom scripts\csharp\example.cs">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -45,10 +49,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="data\custom scripts\python\example1.py">
+	  <None Update="data\custom scripts\python\example.py">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
-	  <None Update="data\custom scripts\python\example2.py">
+	  <None Update="data\custom scripts\python\example regex.py">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>

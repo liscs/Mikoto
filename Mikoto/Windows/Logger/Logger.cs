@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Windows;
+using System.Windows.Media;
 
 namespace Mikoto
 {
@@ -6,38 +7,47 @@ namespace Mikoto
     {
         public static void Info(object? str)
         {
-            if (str?.ToString() != null)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                LogViewer.LogWindow.LogEntries.Add(new LogEntry()
+                if (str?.ToString() != null)
                 {
-                    Message = str.ToString()!,
-                    Color = Brushes.Green,
-                });
-            }
+                    LogViewer.LogWindow.LogEntries.Add(new LogEntry()
+                    {
+                        Message = str.ToString()!,
+                        Color = Brushes.Green,
+                    });
+                }
+            });
         }
 
         public static void Warn(object? str)
         {
-            if (str?.ToString() != null)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                LogViewer.LogWindow.LogEntries.Add(new LogEntry()
+                if (str?.ToString() != null)
                 {
-                    Message = str.ToString()!,
-                    Color = Brushes.Yellow,
-                });
-            }
+                    LogViewer.LogWindow.LogEntries.Add(new LogEntry()
+                    {
+                        Message = str.ToString()!,
+                        Color = Brushes.Yellow,
+                    });
+                }
+            });
         }
 
         public static void Error(object? str)
         {
-            if (str?.ToString() != null)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                LogViewer.LogWindow.LogEntries.Add(new LogEntry()
+                if (str?.ToString() != null)
                 {
-                    Message = str.ToString()!,
-                    Color = Brushes.Red,
-                });
-            }
+                    LogViewer.LogWindow.LogEntries.Add(new LogEntry()
+                    {
+                        Message = str.ToString()!,
+                        Color = Brushes.Red,
+                    });
+                }
+            });
         }
     }
 }

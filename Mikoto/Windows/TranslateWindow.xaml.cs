@@ -369,7 +369,7 @@ namespace Mikoto
             try
             {
                 (bool playing, string info) = await _voiceDetector.IsVoicePlaying();
-                Application.Current.Dispatcher.Invoke(() => Logger.Info(info));
+                Logger.Info(info);
                 if (!playing)
                 {
                     await _tts.SpeakAsync(text);
@@ -384,11 +384,11 @@ namespace Mikoto
             }
             catch (TaskCanceledException ex)
             {
-                Application.Current.Dispatcher.Invoke(() => Logger.Warn(ex.Message));
+                Logger.Warn(ex.Message);
             }
             catch (Exception ex)
             {
-                Application.Current.Dispatcher.Invoke(() => Logger.Error(ex));
+                Logger.Error(ex);
             }
 
         }

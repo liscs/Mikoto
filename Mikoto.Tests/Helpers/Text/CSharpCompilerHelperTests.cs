@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Reflection;
 
 namespace Mikoto.Tests
 {
@@ -17,7 +16,7 @@ namespace Mikoto.Tests
             return ""Hello, "" + input;
         }
         ";
-            TextPreProcessMethod? method = CSharpCompilerHelper.GetProcessMethod(code);
+            TextPreProcesFunction? method = CSharpCompilerHelper.GetProcessFunction(code);
             if (method != null)
             {
                 Console.WriteLine(method("complier"));

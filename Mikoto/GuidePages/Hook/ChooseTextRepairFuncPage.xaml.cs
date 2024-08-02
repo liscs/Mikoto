@@ -13,6 +13,7 @@ namespace Mikoto.GuidePages.Hook
 
         public ChooseTextRepairFuncPage()
         {
+            TextRepair.CustomScriptInitTask.Wait();
             InitializeComponent();
 
             RepairFuncComboBox.ItemsSource = lstRepairFun;

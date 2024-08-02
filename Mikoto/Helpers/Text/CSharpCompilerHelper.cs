@@ -6,28 +6,35 @@ using System.Reflection;
 
 namespace Mikoto
 {
-    public delegate string TextPreProcessMethod(string str);
 
     public static class CSharpCompilerHelper
     {
+        public static List<PortableExecutableReference> References =
+            AppDomain.CurrentDomain.GetAssemblies()
+                .Where(_ => !_.IsDynamic && !string.IsNullOrWhiteSpace(_.Location))
+                .Select(_ => MetadataReference.CreateFromFile(_.Location))
+                .Concat(new[]
+                {
+            // add your app/lib specifics, e.g.:                      
+            MetadataReference.CreateFromFile(typeof(Program).Assembly.Location),
+                })
+                .ToList();
+
 
         /// <summary>
         /// 编译顶级语句代码，从中取得第一个函数
         /// </summary>
-        public static TextPreProcessMethod? GetProcessMethod(string code)
+        public static TextPreProcesFunction? GetProcessFunction(string scriptFile)
         {
+            string code = File.ReadAllText(scriptFile);
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code);
             string assemblyName = Path.GetRandomFileName();
-            MetadataReference[] references =
-            [
-            MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-            MetadataReference.CreateFromFile(typeof(Console).Assembly.Location)
-            ];
+
 
             CSharpCompilation compilation = CSharpCompilation.Create(
                 assemblyName,
                 [syntaxTree],
-                references,
+                References,
                 new CSharpCompilationOptions(OutputKind.ConsoleApplication));
 
             using var ms = new MemoryStream();
@@ -35,10 +42,7 @@ namespace Mikoto
 
             if (!result.Success)
             {
-                foreach (Diagnostic diagnostic in result.Diagnostics)
-                {
-                    Console.WriteLine(diagnostic.ToString());
-                }
+                Logger.Warn($"Build {scriptFile} FAILED{Environment.NewLine}" + string.Join(Environment.NewLine, result.Diagnostics.Select(p => p.ToString())));
                 return null;
             }
             else
@@ -51,7 +55,7 @@ namespace Mikoto
 
                 MethodInfo? method = type?.GetMethods(BindingFlags.NonPublic | BindingFlags.Static)
                                           .First(p => p != assembly.EntryPoint);
-                return method?.CreateDelegate<TextPreProcessMethod>();
+                return method?.CreateDelegate<TextPreProcesFunction>();
             }
         }
     }

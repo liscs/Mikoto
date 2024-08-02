@@ -31,6 +31,7 @@ namespace Mikoto
         private MainViewModel _viewModel = new();
         public MainWindow()
         {
+            TextRepair.InitCustomScripts();
             DataContext = _viewModel;
             Instance = this;
             Common.AppSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\data\\settings\\settings.ini").Build();

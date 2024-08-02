@@ -13,13 +13,15 @@ public static class GlobalKeyboardHook
 
     private static void Current_PreProcessInput(object sender, PreProcessInputEventArgs args)
     {
-        if (args.StagingItem.Input is KeyEventArgs k
-            && k.RoutedEvent == Keyboard.PreviewKeyDownEvent
-            && (k.Key == Key.OemTilde || k.ImeProcessedKey == Key.OemTilde))
+        if (args.StagingItem.Input is KeyEventArgs k)
         {
-            // 标记事件为已处理
-            k.Handled = true;
-            LogViewer.LogWindow.Show();
+            if ((k.RoutedEvent == Keyboard.PreviewKeyDownEvent || k.RoutedEvent == Keyboard.PreviewKeyUpEvent)
+                    && (k.Key == Key.OemTilde || k.ImeProcessedKey == Key.OemTilde))
+            {
+                // 标记事件为已处理
+                k.Handled = true;
+                LogViewer.LogWindow.Show();
+            }
         }
     }
 }

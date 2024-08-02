@@ -1,16 +1,19 @@
 ﻿using IronPython.Hosting;
 using IronPython.Runtime;
 using Microsoft.Scripting.Hosting;
+using System.Data;
 using System.IO;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 
 
 namespace Mikoto
 {
+    public delegate string TextPreProcesFunction(string str);
     public static partial class TextRepair
     {
+        public static Task CustomScriptInitTask { get; private set; } = default!;
+
         private const string SCRIPTS_PATH = "data\\custom scripts\\";
         public static string? RegexReplacement { get; set; }
         public static string? RegexPattern { get; set; }
@@ -25,15 +28,18 @@ namespace Mikoto
             { Application.Current.Resources["RegexReplace"].ToString()!, nameof(RepairFun_RegexReplace) },
             });
 
-        static TextRepair()
+        public static void InitCustomScripts()
         {
-            InitCustomPythonScripts();
-
-            InitCustomCSharpScripts();
+            CustomScriptInitTask = Task.Run(() =>
+              {
+                  InitCustomPythonScripts();
+                  InitCustomCSharpScripts();
+              });
+            return;
         }
 
-        public static Dictionary<string, dynamic> CustomPyMethodsDict { get; } = new();
-        public static Dictionary<string, TextPreProcessMethod> CustomCsMethodsDict { get; } = new();
+
+        public static Dictionary<string, TextPreProcesFunction> CustomMethodsDict { get; } = new();
 
         private static void InitCustomCSharpScripts()
         {
@@ -42,15 +48,15 @@ namespace Mikoto
             string[] cSharpScriptFiles = Directory.GetFiles(csPath, "*.cs");
             foreach (var scriptFile in cSharpScriptFiles)
             {
-                string script = File.ReadAllText(scriptFile);
-                var method = CSharpCompilerHelper.GetProcessMethod(script);
+                var method = CSharpCompilerHelper.GetProcessFunction(scriptFile);
                 if (method != null)
                 {
                     string filename = Path.GetFileName(scriptFile);
-                    CustomCsMethodsDict["C# " + filename] = method;
+                    CustomMethodsDict["C# " + filename] = method;
                     LstRepairFun.Value["C# " + filename] = "C# " + filename;
                 }
             }
+            CSharpCompilerHelper.References.Clear();
         }
 
         private static void InitCustomPythonScripts()
@@ -64,11 +70,20 @@ namespace Mikoto
             foreach (var scriptFile in pythonScriptFiles)
             {
                 string script = File.ReadAllText(scriptFile);
-                engine.Execute(script, scope);
-                dynamic pythonFunction = scope.GetItems().Select(p => p.Value).First(p => p is PythonFunction);
-                string filename = Path.GetFileName(scriptFile);
-                CustomPyMethodsDict["Python " + filename] = pythonFunction;
-                LstRepairFun.Value.Add("Python " + filename, "Python " + filename);
+                try
+                {
+                    engine.Execute(script, scope);
+                    dynamic pythonFunction = scope.GetItems().Select(p => p.Value).First(p => p is PythonFunction);
+                    TextPreProcesFunction method = p => pythonFunction(p);
+
+                    string filename = Path.GetFileName(scriptFile);
+                    CustomMethodsDict["Python " + filename] = method;
+                    LstRepairFun.Value.Add("Python " + filename, "Python " + filename);
+                }
+                catch (Microsoft.Scripting.SyntaxErrorException ex)
+                {
+                    Logger.Warn(ex);
+                }
             }
         }
 
@@ -81,13 +96,10 @@ namespace Mikoto
         /// <returns></returns>
         public static string RepairFun_Auto(string functionName, string sourceText)
         {
-            if (CustomPyMethodsDict.TryGetValue(functionName, out dynamic? function))
+            CustomScriptInitTask.Wait();
+            if (CustomMethodsDict.TryGetValue(functionName, out TextPreProcesFunction? function))
             {
                 return function(sourceText);
-            }
-            if (CustomCsMethodsDict.TryGetValue(functionName, out TextPreProcessMethod? methodInfo))
-            {
-                return methodInfo(sourceText);
             }
             return functionName switch
             {
@@ -248,4 +260,5 @@ namespace Mikoto
 
 
     }
+
 }
