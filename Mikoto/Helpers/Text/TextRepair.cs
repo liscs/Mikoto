@@ -1,45 +1,75 @@
 ﻿using IronPython.Hosting;
+using IronPython.Runtime;
 using Microsoft.Scripting.Hosting;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 
+
 namespace Mikoto
 {
     public static partial class TextRepair
     {
+        private const string SCRIPTS_PATH = "data\\custom scripts\\";
         public static string? RegexReplacement { get; set; }
         public static string? RegexPattern { get; set; }
         public static int SentenceRepeatFindCharNum { get; set; }
         public static int SingleWordRepeatTimes { get; set; }
-        public static Lazy<Dictionary<string, string>> LstRepairFun { get; set; } = new(() => new Dictionary<string, string>() {
+        public static Lazy<Dictionary<string, string>> LstRepairFun { get; set; } = new(() => new() {
             { Application.Current.Resources["NoDeal"].ToString()!, nameof(RepairFun_NoDeal) },
             { Application.Current.Resources["RemoveSingleWordRepeat"].ToString()!, nameof(RepairFun_RemoveSingleWordRepeat) },
             { Application.Current.Resources["RemoveSentenceRepeat"].ToString()!, nameof(RepairFun_RemoveSentenceRepeat) },
             { Application.Current.Resources["RemoveLetterNumber"].ToString()!, nameof(RepairFun_RemoveLetterNumber) },
             { Application.Current.Resources["RemoveHTML"].ToString()!, nameof(RepairFun_RemoveHTML) },
             { Application.Current.Resources["RegexReplace"].ToString()!, nameof(RepairFun_RegexReplace) },
-            { Application.Current.Resources["Custom"].ToString()!, nameof(RepairFun_Custom) },
             });
 
         static TextRepair()
         {
-            try
+            InitCustomPythonScripts();
+
+            InitCustomCSharpScripts();
+        }
+
+        public static Dictionary<string, dynamic> CustomPyMethodsDict { get; } = new();
+        public static Dictionary<string, TextPreProcessMethod> CustomCsMethodsDict { get; } = new();
+
+        private static void InitCustomCSharpScripts()
+        {
+            string csPath = Path.Combine(SCRIPTS_PATH, "csharp");
+            Directory.CreateDirectory(csPath);
+            string[] cSharpScriptFiles = Directory.GetFiles(csPath, "*.cs");
+            foreach (var scriptFile in cSharpScriptFiles)
             {
-                string[] handlers = Directory.GetFiles("textRepairPlugins");
-                foreach (var handler in handlers)
+                string script = File.ReadAllText(scriptFile);
+                var method = CSharpCompilerHelper.GetProcessMethod(script);
+                if (method != null)
                 {
-                    string stem = Path.GetFileNameWithoutExtension(handler);
-                    string ext = Path.GetExtension(handler);
-                    if (ext != ".py" || stem == "__init__")
-                    {
-                        continue;
-                    }
-                    LstRepairFun.Value.Add(Application.Current.Resources["CustomPythonScript"] + stem, "#" + stem);
+                    string filename = Path.GetFileName(scriptFile);
+                    CustomCsMethodsDict["C# " + filename] = method;
+                    LstRepairFun.Value["C# " + filename] = "C# " + filename;
                 }
             }
-            catch { }
+        }
+
+        private static void InitCustomPythonScripts()
+        {
+            string pythonFilePath = Path.Combine(SCRIPTS_PATH, "python");
+            Directory.CreateDirectory(pythonFilePath);
+            string[] pythonScriptFiles = Directory.GetFiles(pythonFilePath, "*.py");
+            ScriptEngine engine = Python.CreateEngine();
+            ScriptScope scope = engine.CreateScope();
+
+            foreach (var scriptFile in pythonScriptFiles)
+            {
+                string script = File.ReadAllText(scriptFile);
+                engine.Execute(script, scope);
+                dynamic pythonFunction = scope.GetItems().Select(p => p.Value).First(p => p is PythonFunction);
+                string filename = Path.GetFileName(scriptFile);
+                CustomPyMethodsDict["Python " + filename] = pythonFunction;
+                LstRepairFun.Value.Add("Python " + filename, "Python " + filename);
+            }
         }
 
 
@@ -49,11 +79,15 @@ namespace Mikoto
         /// <param name="functionName">提供方法函数名</param>
         /// <param name="sourceText">源文本</param>
         /// <returns></returns>
-        public static string RepairFun_Auto(string? functionName, string sourceText)
+        public static string RepairFun_Auto(string functionName, string sourceText)
         {
-            if (functionName?.StartsWith('#') ?? false)
+            if (CustomPyMethodsDict.TryGetValue(functionName, out dynamic? function))
             {
-                return RepairFun_PythonScript(functionName.Substring(1), sourceText);
+                return function(sourceText);
+            }
+            if (CustomCsMethodsDict.TryGetValue(functionName, out TextPreProcessMethod? methodInfo))
+            {
+                return methodInfo(sourceText);
             }
             return functionName switch
             {
@@ -63,7 +97,6 @@ namespace Mikoto
                 nameof(RepairFun_RemoveLetterNumber) => RepairFun_RemoveLetterNumber(sourceText),
                 nameof(RepairFun_RemoveHTML) => RepairFun_RemoveHTML(sourceText),
                 nameof(RepairFun_RegexReplace) => RepairFun_RegexReplace(sourceText),
-                nameof(RepairFun_Custom) => RepairFun_Custom(sourceText),
                 _ => Application.Current.Resources["MethodError"].ToString()!,
             };
         }
@@ -213,82 +246,6 @@ namespace Mikoto
             return Regex.Replace(source, RegexPattern, RegexReplacement);
         }
 
-
-        /// <summary>
-        /// 用户自定义方法
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static string RepairFun_Custom(string source)
-        {
-            if (source == string.Empty)
-            {
-                return string.Empty;
-            }
-            try
-            {
-                Assembly asb = Assembly.LoadFrom(Environment.CurrentDirectory + "\\UserCustomRepairRepeat.dll");
-                Type? t = asb.GetType("UserCustomRepairRepeat.RepairRepeat");//获取类名 命名空间+类名
-                if (t == null) throw new NullReferenceException("namespace or type not found!");
-                object? o = Activator.CreateInstance(t);
-                MethodInfo? method = t.GetMethod("UserCustomRepairRepeatFun");//functionname:方法名字
-                object[] obj =
-                {
-                    source
-                };
-                string? ret = method?.Invoke(o, obj) as string;
-                if (ret == null)
-                {
-                    return string.Empty;
-                }
-                else
-                {
-                    return ret;
-                }
-            }
-            catch (Exception e)
-            {
-                return e.Message;
-            }
-        }
-
-        private static ScriptEngine pythonEngine = Python.CreateEngine();
-        private static ScriptScope scope = pythonEngine.CreateScope();
-        private static string nowHandler = "example";
-        private static ScriptSource pythonScript = pythonEngine.CreateScriptSourceFromString(
-                $"import textRepairPlugins.example as customHandler\n" +
-                "ResultStr = customHandler.process(SourceStr)\n"
-                );
-        /// <summary>
-        /// 用户自定义Python脚本
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static string RepairFun_PythonScript(string handler, string source)
-        {
-            if (source == string.Empty)
-            {
-                return string.Empty;
-            }
-            if (nowHandler != handler)
-            {
-                nowHandler = handler;
-                pythonScript = pythonEngine.CreateScriptSourceFromString(
-                $"import textRepairPlugins.{handler} as customHandler\n" +
-                "ResultStr = customHandler.process(SourceStr)\n"
-                );
-            }
-            scope.SetVariable("SourceStr", source);
-            try
-            {
-                pythonScript.Execute(scope);
-            }
-            catch (Exception e)
-            {
-                return e.Message;
-            }
-            return (string)scope.GetVariable("ResultStr");
-        }
 
     }
 }

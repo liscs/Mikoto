@@ -11,9 +11,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="data\custom scripts\csharp\example.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<AppxManifest Include="Properties\Package.appxmanifest" />
+		<None Include="data\custom scripts\csharp\example.cs">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<Resource Include="logo.ico" />
-		<None Update="textRepairPlugins\*" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="data\custom scripts\python\*" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -30,8 +37,19 @@
 		<PackageReference Include="Config.Net" Version="5.2.0" />
 		<PackageReference Include="HandyControl" Version="3.5.1" />
 		<PackageReference Include="IronPython" Version="3.4.1" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="4.10.0" />
 		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.106">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="data\custom scripts\python\example1.py">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="data\custom scripts\python\example2.py">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 </Project>

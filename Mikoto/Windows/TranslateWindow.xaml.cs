@@ -328,7 +328,11 @@ namespace Mikoto
             _lastSolvedDataReceivedEventArgs = e;
 
             //2.进行去重
-            string repairedText = TextRepair.RepairFun_Auto(Common.UsingRepairFunc, _tempData);
+            string repairedText = _tempData;
+            if (!string.IsNullOrWhiteSpace(Common.UsingRepairFunc))
+            {
+                repairedText = TextRepair.RepairFun_Auto(Common.UsingRepairFunc, _tempData);
+            }
 
             if (!Common.AppSettings.EachRowTrans) // 不启用分行翻译
             {

@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto.Tests", "Mikoto.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalizationTool", "LocalizationTool\LocalizationTool.csproj", "{FF130DB9-22AF-4504-892D-73EAF0E305AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mikoto.Benchmark", "Mikoto.Benchmark\Mikoto.Benchmark.csproj", "{D281C6E7-CBEB-4322-9D24-B277161513D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto.Benchmark", "Mikoto.Benchmark\Mikoto.Benchmark.csproj", "{D281C6E7-CBEB-4322-9D24-B277161513D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

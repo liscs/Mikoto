@@ -34,13 +34,13 @@ namespace Mikoto.GuidePages.Hook
         {
             switch (TextRepair.LstRepairFun.Value[lstRepairFun[RepairFuncComboBox.SelectedIndex]])
             {
-                case "RepairFun_RemoveSingleWordRepeat":
+                case nameof(TextRepair.RepairFun_RemoveSingleWordRepeat):
                     Single_InputDrawer.IsOpen = true;
                     break;
-                case "RepairFun_RemoveSentenceRepeat":
+                case nameof(TextRepair.RepairFun_RemoveSentenceRepeat):
                     Sentence_InputDrawer.IsOpen = true;
                     break;
-                case "RepairFun_RegexReplace":
+                case nameof(TextRepair.RepairFun_RegexReplace):
                     Regex_InputDrawer.IsOpen = true;
                     break;
             }
