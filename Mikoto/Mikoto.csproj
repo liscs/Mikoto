@@ -11,13 +11,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="data\custom scripts\csharp\example regex.cs" />
 	  <Compile Remove="data\custom scripts\csharp\example.cs" />
+	  <Compile Remove="data\custom scripts\csharp\regex example.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<AppxManifest Include="Properties\Package.appxmanifest" />
-		<None Include="data\custom scripts\csharp\example regex.cs">
+		<None Include="data\custom scripts\csharp\regex example.cs">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Include="data\custom scripts\csharp\example.cs">
@@ -41,18 +41,24 @@
 		<PackageReference Include="Config.Net" Version="5.2.0" />
 		<PackageReference Include="HandyControl" Version="3.5.1" />
 		<PackageReference Include="IronPython" Version="3.4.1" />
+		<PackageReference Include="Microsoft.ClearScript" Version="7.4.5" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0" />
-		<PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="4.10.0" />
 		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.106">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="data\custom scripts\js\regex example.js">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="data\custom scripts\js\example.js">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="data\custom scripts\python\example.py">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
-	  <None Update="data\custom scripts\python\example regex.py">
+	  <None Update="data\custom scripts\python\regex example.py">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>

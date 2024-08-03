@@ -1,8 +1,4 @@
-﻿using IronPython.Hosting;
-using IronPython.Runtime;
-using Microsoft.Scripting.Hosting;
-using System.Data;
-using System.IO;
+﻿using Mikoto.Helpers.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 
@@ -32,8 +28,9 @@ namespace Mikoto
         {
             CustomScriptInitTask = Task.Run(() =>
               {
-                  InitCustomPythonScripts();
-                  InitCustomCSharpScripts();
+                  new CSharpScriptInfo().Init();
+                  new PythonScriptInfo().Init();
+                  new JsScriptInfo().Init();
               });
             return;
         }
@@ -41,51 +38,6 @@ namespace Mikoto
 
         public static Dictionary<string, TextPreProcesFunction> CustomMethodsDict { get; } = new();
 
-        private static void InitCustomCSharpScripts()
-        {
-            string csPath = Path.Combine(SCRIPTS_PATH, "csharp");
-            Directory.CreateDirectory(csPath);
-            string[] cSharpScriptFiles = Directory.GetFiles(csPath, "*.cs");
-            foreach (var scriptFile in cSharpScriptFiles)
-            {
-                var method = CSharpCompilerHelper.GetProcessFunction(scriptFile);
-                if (method != null)
-                {
-                    string filename = Path.GetFileName(scriptFile);
-                    CustomMethodsDict["C# " + filename] = method;
-                    LstRepairFun.Value["C# " + filename] = "C# " + filename;
-                }
-            }
-            CSharpCompilerHelper.References.Clear();
-        }
-
-        private static void InitCustomPythonScripts()
-        {
-            string pythonFilePath = Path.Combine(SCRIPTS_PATH, "python");
-            Directory.CreateDirectory(pythonFilePath);
-            string[] pythonScriptFiles = Directory.GetFiles(pythonFilePath, "*.py");
-            ScriptEngine engine = Python.CreateEngine();
-            ScriptScope scope = engine.CreateScope();
-
-            foreach (var scriptFile in pythonScriptFiles)
-            {
-                string script = File.ReadAllText(scriptFile);
-                try
-                {
-                    engine.Execute(script, scope);
-                    dynamic pythonFunction = scope.GetItems().Select(p => p.Value).First(p => p is PythonFunction);
-                    TextPreProcesFunction method = p => pythonFunction(p);
-
-                    string filename = Path.GetFileName(scriptFile);
-                    CustomMethodsDict["Python " + filename] = method;
-                    LstRepairFun.Value.Add("Python " + filename, "Python " + filename);
-                }
-                catch (Microsoft.Scripting.SyntaxErrorException ex)
-                {
-                    Logger.Warn(ex);
-                }
-            }
-        }
 
 
         /// <summary>

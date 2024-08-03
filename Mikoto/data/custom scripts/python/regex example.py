@@ -3,7 +3,7 @@
 # Iron Python自带了re，如果要使用其他标准库，可以把Python lib目录下的文件复制到翻译器的lib目录下。
 import re
 
-# 函数名必须是process，接受一个string，返回一个string，其他随意
+# 函数接受一个string，返回一个string，其他随意
 def process(source):
     #去除HTML标签
     source = re.sub("<[^>]+>", "", source)
