@@ -1,6 +1,12 @@
-﻿using Mikoto.Helpers.Text;
+﻿using HandyControl.Controls;
+using Microsoft.Scripting.Utils;
+using Mikoto.Helpers;
+using Mikoto.Helpers.Text;
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Windows;
+using static Community.CsharpSqlite.Sqlite3;
+using static IronPython.Modules._ast;
 
 
 namespace Mikoto
@@ -15,7 +21,7 @@ namespace Mikoto
         public static string? RegexPattern { get; set; }
         public static int SentenceRepeatFindCharNum { get; set; }
         public static int SingleWordRepeatTimes { get; set; }
-        public static Lazy<Dictionary<string, string>> LstRepairFun { get; set; } = new(() => new() {
+        public static Lazy<Dictionary<string, string>> RepairFunctionNameDict { get; } = new(() => new() {
             { Application.Current.Resources["NoDeal"].ToString()!, nameof(RepairFun_NoDeal) },
             { Application.Current.Resources["RemoveSingleWordRepeat"].ToString()!, nameof(RepairFun_RemoveSingleWordRepeat) },
             { Application.Current.Resources["RemoveSentenceRepeat"].ToString()!, nameof(RepairFun_RemoveSentenceRepeat) },
@@ -24,14 +30,27 @@ namespace Mikoto
             { Application.Current.Resources["RegexReplace"].ToString()!, nameof(RepairFun_RegexReplace) },
             });
 
+        public static SuppressibleObservableCollection<string> RepairFunctionNameList { get; set; } = new(RepairFunctionNameDict.Value.Keys);
+
+
         public static void InitCustomScripts()
         {
             CustomScriptInitTask = Task.Run(() =>
-              {
-                  new CSharpScriptInfo().Init();
-                  new PythonScriptInfo().Init();
-                  new JsScriptInfo().Init();
-              });
+            {
+                Parallel.Invoke(
+                [
+                    new CSharpScriptInfo().Init,
+                    new PythonScriptInfo().Init,
+                    new JsScriptInfo().Init,
+                    new LuaScriptInfo().Init,
+                ]);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    RepairFunctionNameList.SuppressNotification = true;
+                    RepairFunctionNameList.AddRange(CustomMethodsDict.Keys.ToList().Order());
+                    RepairFunctionNameList.SuppressNotification = false;
+                });
+            });
             return;
         }
 
@@ -48,10 +67,18 @@ namespace Mikoto
         /// <returns></returns>
         public static string RepairFun_Auto(string functionName, string sourceText)
         {
-            CustomScriptInitTask.Wait();
             if (CustomMethodsDict.TryGetValue(functionName, out TextPreProcesFunction? function))
             {
-                return function(sourceText);
+                try
+                {
+                    return function(sourceText);
+                }
+                catch (Exception ex)
+                {
+                    //脚本运行时错误
+                    Growl.ErrorGlobal($"{functionName}{Environment.NewLine}{ex.Message}");
+                    Logger.Warn($"{functionName}{Environment.NewLine}{ex}");
+                }
             }
             return functionName switch
             {

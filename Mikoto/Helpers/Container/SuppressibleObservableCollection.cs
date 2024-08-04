@@ -1,10 +1,16 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
 namespace Mikoto.Helpers
 {
     public class SuppressibleObservableCollection<T> : ObservableCollection<T>
     {
+        public SuppressibleObservableCollection() : base() { }
+        public SuppressibleObservableCollection(IEnumerable<T> collection) : base(collection)
+        {
+        }
+
         private bool _suppressNotification = false;
         private bool _notificationSuppressed = false;
         public bool SuppressNotification

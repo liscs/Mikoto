@@ -3,5 +3,5 @@ using System.Text.RegularExpressions;
 
 string Process(string input)
 {
-    return Regex.Replace(input, @"\s", "");
+    return Regex.Replace(input, @"\s+", "");
 }

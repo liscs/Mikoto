@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using TextHookLibrary;
 
 namespace Mikoto.GuidePages.Hook
@@ -9,14 +10,12 @@ namespace Mikoto.GuidePages.Hook
     /// </summary>
     public partial class ChooseTextRepairFuncPage : Page
     {
-        private List<string> lstRepairFun = TextRepair.LstRepairFun.Value.Keys.ToList();
 
         public ChooseTextRepairFuncPage()
         {
-            TextRepair.CustomScriptInitTask.Wait();
             InitializeComponent();
 
-            RepairFuncComboBox.ItemsSource = lstRepairFun;
+            RepairFuncComboBox.ItemsSource = TextRepair.RepairFunctionNameList;
             RepairFuncComboBox.SelectedIndex = 0;
 
             Common.TextHooker!.MeetHookAddressMessageReceived += FilterAndDisplayData;
@@ -27,13 +26,15 @@ namespace Mikoto.GuidePages.Hook
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 sourceTextBox.Text = e.Data.Data;
-                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.LstRepairFun.Value[lstRepairFun[RepairFuncComboBox.SelectedIndex]], sourceTextBox.Text ?? string.Empty);
+                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.RepairFunctionNameDict.Value[TextRepair.RepairFunctionNameDict.Value.Keys.ElementAt(RepairFuncComboBox.SelectedIndex)], sourceTextBox.Text ?? string.Empty);
             });
         }
 
         private void RepairFuncComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (TextRepair.LstRepairFun.Value[lstRepairFun[RepairFuncComboBox.SelectedIndex]])
+            string selectedItem = RepairFuncComboBox.SelectedItem.ToString() ?? throw new NullReferenceException();
+
+            switch (TextRepair.RepairFunctionNameDict.Value[selectedItem])
             {
                 case nameof(TextRepair.RepairFun_RemoveSingleWordRepeat):
                     Single_InputDrawer.IsOpen = true;
@@ -46,7 +47,7 @@ namespace Mikoto.GuidePages.Hook
                     break;
             }
 
-            repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.LstRepairFun.Value[lstRepairFun[RepairFuncComboBox.SelectedIndex]], sourceTextBox.Text);
+            repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.RepairFunctionNameDict.Value[selectedItem], sourceTextBox.Text);
         }
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
@@ -55,11 +56,14 @@ namespace Mikoto.GuidePages.Hook
             {
                 Common.TextHooker.MeetHookAddressMessageReceived -= FilterAndDisplayData;
             }
-            Common.UsingRepairFunc = TextRepair.LstRepairFun.Value[lstRepairFun[RepairFuncComboBox.SelectedIndex]];
+            string selectedItem = RepairFuncComboBox.SelectedItem.ToString() ?? throw new NullReferenceException();
+
+
+            Common.UsingRepairFunc = TextRepair.RepairFunctionNameDict.Value[selectedItem];
 
             //写入去重方法
 
-            switch (TextRepair.LstRepairFun.Value[lstRepairFun[RepairFuncComboBox.SelectedIndex]])
+            switch (TextRepair.RepairFunctionNameDict.Value[selectedItem])
             {
                 case "RepairFun_RemoveSingleWordRepeat":
                     GameInfoBuilder.GameInfo.RepairFunc = Common.UsingRepairFunc;

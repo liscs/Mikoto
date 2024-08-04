@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Windows;
 
 namespace Mikoto.Helpers.Text
 {
@@ -29,8 +30,8 @@ namespace Mikoto.Helpers.Text
                 else
                 {
                     string filename = Path.GetFileName(scriptFile);
-                    TextRepair.CustomMethodsDict[$"{Name} " + filename] = method;
-                    TextRepair.LstRepairFun.Value[$"{Name} " + filename] = $"{Name} " + filename;
+                    TextRepair.CustomMethodsDict[$"{Name} {filename}"] = method;
+                    TextRepair.RepairFunctionNameDict.Value[$"{Name} {filename}"] = $"{Name} {filename}";
                 }
 
 
