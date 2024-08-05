@@ -1,7 +1,4 @@
-﻿using IronPython.Hosting;
-using IronPython.Runtime;
-using Microsoft.ClearScript.V8;
-using Microsoft.Scripting.Hosting;
+﻿using Microsoft.ClearScript.V8;
 using System.IO;
 
 namespace Mikoto.Helpers.Text
@@ -13,7 +10,7 @@ namespace Mikoto.Helpers.Text
         protected override string FolderName { get => "js"; }
 
 
-        protected override TextPreProcesFunction? GetMethod(string scriptFile)
+        protected override TextPreProcessFunction? GetMethod(string scriptFile)
         {
             V8ScriptEngine engine = new();
             string script = File.ReadAllText(scriptFile);
@@ -23,7 +20,7 @@ namespace Mikoto.Helpers.Text
                 string? functionName = (engine.Script.PropertyNames as string[])?.First(p => p != "gc");
                 if (functionName != null)
                 {
-                    TextPreProcesFunction method = p => engine.Script[functionName](p);
+                    TextPreProcessFunction method = p => engine.Script[functionName](p);
                     return method;
                 }
                 else

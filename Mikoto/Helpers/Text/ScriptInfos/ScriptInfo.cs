@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Windows;
 
 namespace Mikoto.Helpers.Text
 {
@@ -43,6 +42,6 @@ namespace Mikoto.Helpers.Text
 
         protected abstract void ReleaseResourse();
 
-        protected abstract TextPreProcesFunction? GetMethod(string scriptFile);
+        protected abstract TextPreProcessFunction? GetMethod(string scriptFile);
     }
 }

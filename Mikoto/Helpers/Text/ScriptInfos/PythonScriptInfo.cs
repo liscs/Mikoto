@@ -20,14 +20,14 @@ namespace Mikoto.Helpers.Text
             _scope = _engine.CreateScope();
         }
 
-        protected override TextPreProcesFunction? GetMethod(string scriptFile)
+        protected override TextPreProcessFunction? GetMethod(string scriptFile)
         {
             string script = File.ReadAllText(scriptFile);
             try
             {
                 _engine.Execute(script, _scope);
                 dynamic pythonFunction = _scope.GetItems().Select(p => p.Value).First(p => p is PythonFunction);
-                TextPreProcesFunction method = p => pythonFunction(p);
+                TextPreProcessFunction method = p => pythonFunction(p);
                 return method;
             }
             catch (Exception ex)

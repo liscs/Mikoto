@@ -91,10 +91,9 @@ namespace Mikoto
         /// <summary>
         /// 编译顶级语句代码，从中取得第一个函数
         /// </summary>
-        public static TextPreProcesFunction? GetProcessFunction(string scriptFile)
+        public static TextPreProcessFunction? GetProcessFunction(string script)
         {
-            string code = File.ReadAllText(scriptFile);
-            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code);
+            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(script);
             string assemblyName = Path.GetRandomFileName();
 
 
@@ -122,7 +121,7 @@ namespace Mikoto
 
                 MethodInfo? method = type?.GetMethods(BindingFlags.NonPublic | BindingFlags.Static)
                                           .First(p => p != assembly.EntryPoint);
-                return method?.CreateDelegate<TextPreProcesFunction>();
+                return method?.CreateDelegate<TextPreProcessFunction>();
             }
         }
     }

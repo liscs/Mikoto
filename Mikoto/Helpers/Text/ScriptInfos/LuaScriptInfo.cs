@@ -1,5 +1,4 @@
-﻿using Microsoft.Scripting.Utils;
-using NLua;
+﻿using NLua;
 using System.IO;
 using System.Text;
 
@@ -12,7 +11,7 @@ namespace Mikoto.Helpers.Text
         protected override string FolderName { get => "lua"; }
 
 
-        protected override TextPreProcesFunction? GetMethod(string scriptFile)
+        protected override TextPreProcessFunction? GetMethod(string scriptFile)
         {
             Lua lua = new();
             lua.State.Encoding = Encoding.UTF8;
@@ -44,7 +43,7 @@ namespace Mikoto.Helpers.Text
 
 
         // 获取所有自定义 Lua 函数的名称
-        static List<LuaFunction> GetAllCustomLuaFunctionNames(Lua lua)
+        private static List<LuaFunction> GetAllCustomLuaFunctionNames(Lua lua)
         {
             List<LuaFunction> customFunctionNames = new();
 
@@ -68,7 +67,7 @@ namespace Mikoto.Helpers.Text
         }
 
         // 判断是否为标准库函数
-        static bool IsStandardLibraryFunction(string functionName)
+        private static bool IsStandardLibraryFunction(string functionName)
         {
             // 标准库函数和表的名称
             HashSet<string> standardLibraryFunctions =

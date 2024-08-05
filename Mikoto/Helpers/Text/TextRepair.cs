@@ -2,16 +2,13 @@
 using Microsoft.Scripting.Utils;
 using Mikoto.Helpers;
 using Mikoto.Helpers.Text;
-using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Windows;
-using static Community.CsharpSqlite.Sqlite3;
-using static IronPython.Modules._ast;
 
 
 namespace Mikoto
 {
-    public delegate string TextPreProcesFunction(string str);
+    public delegate string TextPreProcessFunction(string str);
     public static partial class TextRepair
     {
         public static Task CustomScriptInitTask { get; private set; } = default!;
@@ -30,7 +27,7 @@ namespace Mikoto
             { Application.Current.Resources["RegexReplace"].ToString()!, nameof(RepairFun_RegexReplace) },
             });
 
-        public static SuppressibleObservableCollection<string> RepairFunctionNameList { get; set; } = new(RepairFunctionNameDict.Value.Keys);
+        public static Lazy<SuppressibleObservableCollection<string>> RepairFunctionNameList { get; set; } = new(() => new(RepairFunctionNameDict.Value.Keys));
 
 
         public static void InitCustomScripts()
@@ -46,16 +43,16 @@ namespace Mikoto
                 ]);
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    RepairFunctionNameList.SuppressNotification = true;
-                    RepairFunctionNameList.AddRange(CustomMethodsDict.Keys.ToList().Order());
-                    RepairFunctionNameList.SuppressNotification = false;
+                    RepairFunctionNameList.Value.SuppressNotification = true;
+                    RepairFunctionNameList.Value.AddRange(CustomMethodsDict.Keys.ToList().Order());
+                    RepairFunctionNameList.Value.SuppressNotification = false;
                 });
             });
             return;
         }
 
 
-        public static Dictionary<string, TextPreProcesFunction> CustomMethodsDict { get; } = new();
+        public static Dictionary<string, TextPreProcessFunction> CustomMethodsDict { get; } = new();
 
 
 
@@ -67,7 +64,7 @@ namespace Mikoto
         /// <returns></returns>
         public static string RepairFun_Auto(string functionName, string sourceText)
         {
-            if (CustomMethodsDict.TryGetValue(functionName, out TextPreProcesFunction? function))
+            if (CustomMethodsDict.TryGetValue(functionName, out TextPreProcessFunction? function))
             {
                 try
                 {

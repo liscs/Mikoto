@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 using TextHookLibrary;
 
 namespace Mikoto.GuidePages.Hook
@@ -15,7 +14,7 @@ namespace Mikoto.GuidePages.Hook
         {
             InitializeComponent();
 
-            RepairFuncComboBox.ItemsSource = TextRepair.RepairFunctionNameList;
+            RepairFuncComboBox.ItemsSource = TextRepair.RepairFunctionNameList.Value;
             RepairFuncComboBox.SelectedIndex = 0;
 
             Common.TextHooker!.MeetHookAddressMessageReceived += FilterAndDisplayData;

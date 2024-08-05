@@ -16,7 +16,7 @@ namespace Mikoto.Tests
             return ""Hello, "" + input;
         }
         ";
-            TextPreProcesFunction? method = CSharpCompilerHelper.GetProcessFunction(code);
+            TextPreProcessFunction? method = CSharpCompilerHelper.GetProcessFunction(code);
             if (method != null)
             {
                 Console.WriteLine(method("complier"));

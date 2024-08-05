@@ -1,4 +1,6 @@
-﻿namespace Mikoto.Helpers.Text
+﻿using System.IO;
+
+namespace Mikoto.Helpers.Text
 {
     internal class CSharpScriptInfo : ScriptInfo
     {
@@ -6,11 +8,12 @@
         protected override string FileExtension { get => "cs"; }
         protected override string FolderName { get => "csharp"; }
 
-        protected override TextPreProcesFunction? GetMethod(string scriptFile)
+        protected override TextPreProcessFunction? GetMethod(string scriptFile)
         {
             try
             {
-                return CSharpCompilerHelper.GetProcessFunction(scriptFile);
+                string script = File.ReadAllText(scriptFile);
+                return CSharpCompilerHelper.GetProcessFunction(script);
 
             }
             catch (Exception ex)
