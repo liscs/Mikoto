@@ -35,12 +35,12 @@ namespace Mikoto.Helpers.Text
 
 
             }
-            ReleaseResourse();
+            ReleaseResources();
         }
 
         protected abstract void InitEngine();
 
-        protected abstract void ReleaseResourse();
+        protected abstract void ReleaseResources();
 
         protected abstract TextPreProcessFunction? GetMethod(string scriptFile);
     }

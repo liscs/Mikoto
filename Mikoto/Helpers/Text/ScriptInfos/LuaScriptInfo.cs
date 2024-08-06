@@ -84,7 +84,7 @@ namespace Mikoto.Helpers.Text
 
 
 
-        protected override void ReleaseResourse()
+        protected override void ReleaseResources()
         {
         }
 
