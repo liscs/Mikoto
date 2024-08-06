@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto", "Mikoto\Mikoto.csproj", "{5F985830-49EF-4EF4-8A37-9AEE99E17AD4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7FC86372-7856-4A67-8FA1-CA9E02C5C5E8} = {7FC86372-7856-4A67-8FA1-CA9E02C5C5E8}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextHookLibrary", "TextHookLibrary\TextHookLibrary.csproj", "{A976D07E-0B39-41B6-B6F7-7022BBFBD3FF}"
 EndProject
@@ -40,6 +43,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalizationTool", "LocalizationTool\LocalizationTool.csproj", "{FF130DB9-22AF-4504-892D-73EAF0E305AE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto.Benchmark", "Mikoto.Benchmark\Mikoto.Benchmark.csproj", "{D281C6E7-CBEB-4322-9D24-B277161513D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Updater", "Updater\Updater.csproj", "{7FC86372-7856-4A67-8FA1-CA9E02C5C5E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +98,10 @@ Global
 		{D281C6E7-CBEB-4322-9D24-B277161513D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D281C6E7-CBEB-4322-9D24-B277161513D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D281C6E7-CBEB-4322-9D24-B277161513D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FC86372-7856-4A67-8FA1-CA9E02C5C5E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FC86372-7856-4A67-8FA1-CA9E02C5C5E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FC86372-7856-4A67-8FA1-CA9E02C5C5E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FC86372-7856-4A67-8FA1-CA9E02C5C5E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

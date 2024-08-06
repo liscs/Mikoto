@@ -27,7 +27,7 @@ namespace Mikoto.Helpers.Text
             {
                 _engine.Execute(script, _scope);
                 dynamic? pythonFunction = _scope.GetItems().Select(p => p.Value).FirstOrDefault(p => p is PythonFunction);
-                if (pythonFunction!=null)
+                if (pythonFunction != null)
                 {
                     TextPreProcessFunction method = p => pythonFunction(p);
                     return method;

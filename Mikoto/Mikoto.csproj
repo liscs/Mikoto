@@ -35,6 +35,7 @@
 		<ProjectReference Include="..\TextHookLibrary\TextHookLibrary.csproj" />
 		<ProjectReference Include="..\TransOptimizationLibrary\TransOptimizationLibrary.csproj" />
 		<ProjectReference Include="..\TTSHelperLibrary\TTSHelperLibrary.csproj" />
+		<ProjectReference Include="..\Updater\Updater.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

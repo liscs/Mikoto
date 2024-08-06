@@ -1,9 +1,11 @@
 ﻿using HandyControl.Controls;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -123,16 +125,75 @@ namespace Mikoto
 
         public static void ShowUpdateMessageBox(Version latestVersion)
         {
+            //TODO 提示本地化
             MessageBoxResult dr = MessageBox.Show($"{CurrentVersion.ToString(3)}->{latestVersion}{Environment.NewLine}{Application.Current.Resources["MainWindow_AutoUpdateCheck"]}",
                                                   Application.Current.Resources["MessageBox_Ask"].ToString(),
                                                   MessageBoxButton.OKCancel);
 
             if (dr == MessageBoxResult.OK)
             {
-                Process.Start(new ProcessStartInfo("https://github.com/liscs/Mikoto/releases/latest") { UseShellExecute = true });
+                // Process.Start(new ProcessStartInfo("https://github.com/liscs/Mikoto/releases/latest") { UseShellExecute = true });
                 //点击确认，自动下载最新版并替换重启
-                //需要多进程
-                //TODO 更新工具
+                _ = DownloadBackgroundAsync(latestVersion);
+            }
+        }
+
+        private static async Task DownloadBackgroundAsync(Version latestVersion)
+        {
+            string filename = GetDownloadZipFilename();
+            string url = $"https://github.com/liscs/Mikoto/releases/download/v{latestVersion.ToString(3)}/{filename}";
+            var temp = Directory.CreateTempSubdirectory();
+            string filePath = Path.Combine(temp.FullName, filename); // 替换为你希望保存文件的路径
+
+            using HttpClient client = new HttpClient();
+            try
+            {
+                byte[] fileBytes = await client.GetByteArrayAsync(url);
+                await File.WriteAllBytesAsync(filePath, fileBytes);
+                ZipFile.ExtractToDirectory(filePath, temp.FullName);
+
+                string extractedFolder = Path.Combine(temp.FullName, Path.GetFileNameWithoutExtension(filename));
+                AskUpdateNow(extractedFolder);
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex);
+            }
+        }
+
+        private static string GetDownloadZipFilename()
+        {
+            return RuntimeInformation.ProcessArchitecture switch
+            {
+                Architecture.X86 => "mikoto-32bit.zip",
+                Architecture.X64 => "mikoto-64bit.zip",
+                Architecture.Arm64 => "mikoto-arm64.zip",
+                _ => throw new UnreachableException(),
+            };
+        }
+
+        private static void AskUpdateNow(string extractedFolder)
+        {
+            //TODO 提示本地化
+            MessageBoxResult dr = MessageBox.Show("下载完成，是否立刻更新？", "", MessageBoxButton.OKCancel);
+            if (dr == MessageBoxResult.OK)
+            {
+                ProcessStartInfo processStartInfo = new("Updater.exe");
+                processStartInfo.ArgumentList.Add(extractedFolder);
+                processStartInfo.ArgumentList.Add(true.ToString());
+                Process.Start(processStartInfo);
+                Environment.Exit(0);
+            }
+            else
+            {
+                Application.Current.MainWindow.Closing += (s, e) =>
+                {
+                    ProcessStartInfo processStartInfo = new("Updater.exe");
+                    processStartInfo.ArgumentList.Add(extractedFolder);
+                    processStartInfo.ArgumentList.Add(false.ToString());
+                    Process.Start(processStartInfo);
+                    Environment.Exit(0);
+                };
             }
         }
 
@@ -158,19 +219,19 @@ namespace Mikoto
             {
                 if (activelyCheck)
                     Growl.WarningGlobal(ex.Message + Environment.NewLine + Application.Current.Resources["SoftwareSettingsPage_RequestUpdateError"].ToString());
-                Logger.Info(ex);
+                Logger.Warn(ex);
             }
             catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
             {
                 if (activelyCheck)
                     Growl.WarningGlobal(ex.InnerException.Message + Environment.NewLine + Application.Current.Resources["SoftwareSettingsPage_RequestUpdateError"].ToString());
-                Logger.Info(ex);
+                Logger.Warn(ex);
             }
             catch (TaskCanceledException ex)
             {
                 if (activelyCheck)
                     Growl.WarningGlobal(ex.Message + Environment.NewLine + Application.Current.Resources["SoftwareSettingsPage_RequestUpdateError"].ToString());
-                Logger.Info(ex);
+                Logger.Warn(ex);
             }
         }
 
