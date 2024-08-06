@@ -80,17 +80,6 @@ namespace Mikoto.Helpers.Text
 
             return standardLibraryFunctions.Contains(functionName);
         }
-
-
-
-
-        protected override void ReleaseResources()
-        {
-        }
-
-        protected override void InitEngine()
-        {
-        }
     }
 
 

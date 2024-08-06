@@ -25,7 +25,7 @@ namespace Mikoto.Helpers.Text
                 }
                 else
                 {
-                    Error = scriptFile + " contains no function";
+                    Error = $"{scriptFile} contains no function";
                     return null;
                 }
             }
@@ -36,14 +36,6 @@ namespace Mikoto.Helpers.Text
             }
 
 
-        }
-
-        protected override void ReleaseResources()
-        {
-        }
-
-        protected override void InitEngine()
-        {
         }
     }
 

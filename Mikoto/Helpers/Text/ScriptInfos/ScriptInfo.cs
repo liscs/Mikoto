@@ -32,15 +32,19 @@ namespace Mikoto.Helpers.Text
                     TextRepair.CustomMethodsDict[$"{Name} {filename}"] = method;
                     TextRepair.RepairFunctionNameDict.Value[$"{Name} {filename}"] = $"{Name} {filename}";
                 }
-
-
             }
-            ReleaseResources();
+            ReleaseInitResources();
         }
 
-        protected abstract void InitEngine();
+        /// <summary>
+        /// 初始化可重用资源
+        /// </summary>
+        protected virtual void InitEngine() { }
 
-        protected abstract void ReleaseResources();
+        /// <summary>
+        /// 结束初始化，释放初始化使用的临时资源
+        /// </summary>
+        protected virtual void ReleaseInitResources() { }
 
         protected abstract TextPreProcessFunction? GetMethod(string scriptFile);
     }

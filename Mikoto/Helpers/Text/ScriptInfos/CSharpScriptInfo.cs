@@ -23,11 +23,7 @@ namespace Mikoto.Helpers.Text
             }
         }
 
-        protected override void InitEngine()
-        {
-        }
-
-        protected override void ReleaseResources()
+        protected override void ReleaseInitResources()
         {
             CSharpCompilerHelper.References.Clear();
         }
