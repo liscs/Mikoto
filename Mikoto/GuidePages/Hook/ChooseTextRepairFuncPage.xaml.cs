@@ -25,7 +25,7 @@ namespace Mikoto.GuidePages.Hook
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 sourceTextBox.Text = e.Data.Data;
-                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.RepairFunctionNameDict.Value[TextRepair.RepairFunctionNameDict.Value.Keys.ElementAt(RepairFuncComboBox.SelectedIndex)], sourceTextBox.Text ?? string.Empty);
+                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.DisplayNameToNameDict.Value[TextRepair.DisplayNameToNameDict.Value.Keys.ElementAt(RepairFuncComboBox.SelectedIndex)], sourceTextBox.Text ?? string.Empty);
             });
         }
 
@@ -33,7 +33,7 @@ namespace Mikoto.GuidePages.Hook
         {
             string selectedItem = RepairFuncComboBox.SelectedItem.ToString() ?? throw new NullReferenceException();
 
-            switch (TextRepair.RepairFunctionNameDict.Value[selectedItem])
+            switch (TextRepair.DisplayNameToNameDict.Value[selectedItem])
             {
                 case nameof(TextRepair.RepairFun_RemoveSingleWordRepeat):
                     Single_InputDrawer.IsOpen = true;
@@ -46,7 +46,7 @@ namespace Mikoto.GuidePages.Hook
                     break;
             }
 
-            repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.RepairFunctionNameDict.Value[selectedItem], sourceTextBox.Text);
+            repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.DisplayNameToNameDict.Value[selectedItem], sourceTextBox.Text);
         }
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
@@ -58,21 +58,21 @@ namespace Mikoto.GuidePages.Hook
             string selectedItem = RepairFuncComboBox.SelectedItem.ToString() ?? throw new NullReferenceException();
 
 
-            Common.UsingRepairFunc = TextRepair.RepairFunctionNameDict.Value[selectedItem];
+            Common.UsingRepairFunc = TextRepair.DisplayNameToNameDict.Value[selectedItem];
 
             //写入去重方法
 
-            switch (TextRepair.RepairFunctionNameDict.Value[selectedItem])
+            switch (TextRepair.DisplayNameToNameDict.Value[selectedItem])
             {
-                case "RepairFun_RemoveSingleWordRepeat":
+                case nameof(TextRepair.RepairFun_RemoveSingleWordRepeat):
                     GameInfoBuilder.GameInfo.RepairFunc = Common.UsingRepairFunc;
                     GameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.SingleWordRepeatTimes.ToString();
                     break;
-                case "RepairFun_RemoveSentenceRepeat":
+                case nameof(TextRepair.RepairFun_RemoveSentenceRepeat):
                     GameInfoBuilder.GameInfo.RepairFunc = Common.UsingRepairFunc;
                     GameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.SentenceRepeatFindCharNum.ToString();
                     break;
-                case "RepairFun_RegexReplace":
+                case nameof(TextRepair.RepairFun_RegexReplace):
                     GameInfoBuilder.GameInfo.RepairFunc = Common.UsingRepairFunc;
                     GameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.Regex.ToString();
                     GameInfoBuilder.GameInfo.RepairParamB = Common.RepairSettings.Regex_Replace.ToString();

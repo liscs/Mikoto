@@ -18,7 +18,7 @@ namespace Mikoto
         public static string? RegexPattern { get; set; }
         public static int SentenceRepeatFindCharNum { get; set; }
         public static int SingleWordRepeatTimes { get; set; }
-        public static Lazy<Dictionary<string, string>> RepairFunctionNameDict { get; } = new(() => new() {
+        public static Lazy<Dictionary<string, string>> DisplayNameToNameDict { get; } = new(() => new() {
             { Application.Current.Resources["NoDeal"].ToString()!, nameof(RepairFun_NoDeal) },
             { Application.Current.Resources["RemoveSingleWordRepeat"].ToString()!, nameof(RepairFun_RemoveSingleWordRepeat) },
             { Application.Current.Resources["RemoveSentenceRepeat"].ToString()!, nameof(RepairFun_RemoveSentenceRepeat) },
@@ -27,7 +27,7 @@ namespace Mikoto
             { Application.Current.Resources["RegexReplace"].ToString()!, nameof(RepairFun_RegexReplace) },
             });
 
-        public static Lazy<SuppressibleObservableCollection<string>> RepairFunctionNameList { get; set; } = new(() => new(RepairFunctionNameDict.Value.Keys));
+        public static Lazy<SuppressibleObservableCollection<string>> RepairFunctionNameList { get; set; } = new(() => new(DisplayNameToNameDict.Value.Keys));
 
 
         public static void InitCustomScripts()
@@ -47,6 +47,11 @@ namespace Mikoto
                     RepairFunctionNameList.Value.AddRange(CustomMethodsDict.Keys.ToList().Order());
                     RepairFunctionNameList.Value.SuppressNotification = false;
                 });
+                foreach (var item in CustomMethodsDict.Keys)
+                {
+                    DisplayNameToNameDict.Value[item] = item;
+                }
+
             });
             return;
         }

@@ -30,7 +30,6 @@ namespace Mikoto.Helpers.Text
                 {
                     string filename = Path.GetFileName(scriptFile);
                     TextRepair.CustomMethodsDict[$"{Name} {filename}"] = method;
-                    TextRepair.RepairFunctionNameDict.Value[$"{Name} {filename}"] = $"{Name} {filename}";
                 }
             }
             ReleaseInitResources();
