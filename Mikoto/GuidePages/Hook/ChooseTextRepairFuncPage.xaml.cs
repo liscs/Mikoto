@@ -17,7 +17,7 @@ namespace Mikoto.GuidePages.Hook
             RepairFuncComboBox.ItemsSource = TextRepair.RepairFunctionNameList.Value;
             RepairFuncComboBox.SelectedIndex = 0;
 
-            Common.TextHooker!.MeetHookAddressMessageReceived += FilterAndDisplayData;
+            Common.TextHooker.MeetHookAddressMessageReceived += FilterAndDisplayData;
         }
 
         public void FilterAndDisplayData(object sender, SolvedDataReceivedEventArgs e)
@@ -51,10 +51,7 @@ namespace Mikoto.GuidePages.Hook
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (Common.TextHooker != null)
-            {
-                Common.TextHooker.MeetHookAddressMessageReceived -= FilterAndDisplayData;
-            }
+            Common.TextHooker.MeetHookAddressMessageReceived -= FilterAndDisplayData;
             string selectedItem = RepairFuncComboBox.SelectedItem.ToString() ?? throw new NullReferenceException();
 
 

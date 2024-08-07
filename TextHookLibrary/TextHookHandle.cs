@@ -7,7 +7,7 @@ namespace TextHookLibrary
     /// <summary>
     /// 该类使用TextractorCLI版本进行读写
     /// </summary>
-    public partial class TextHookHandle
+    public partial class TextHookHandle : IDisposable
     {
         /// <summary>
         /// Textractor进程
@@ -128,11 +128,6 @@ namespace TextHookLibrary
             TextractorFun_Re_Index_List = new Dictionary<string, int>();
         }
 
-        ~TextHookHandle()
-        {
-            StopHook();
-        }
-
         /// <summary>
         /// 初始化Textractor,建立CLI与本软件间的通信
         /// </summary>
@@ -193,9 +188,12 @@ namespace TextHookLibrary
         /// <param name="pid"></param>
         public async Task DetachProcessAsync(int pid)
         {
-            if (!ProcessHelper.IsProcessRunning(pid))
+            if (!ProcessHelper.IsProcessRunning(pid)
+                || ProcessTextractor == null)
+            {
                 return;
-            if (ProcessTextractor == null) { return; }
+            }
+
             try
             {
                 await ProcessTextractor.StandardInput.WriteLineAsync("detach -P" + pid);
@@ -226,9 +224,12 @@ namespace TextHookLibrary
         {
             //这个方法的原理是注入一个用户给定的钩子，给定一个Hook地址，由于hook地址存在，Textractor会自动卸载掉之前的
             //但是后续给定的模块并不存在，于是Textractor再卸载掉这个用户自定义钩子，达到卸载一个指定Hook办法
-            if (!ProcessHelper.IsProcessRunning(pid))
+            if (!ProcessHelper.IsProcessRunning(pid)
+                || ProcessTextractor == null)
+            {
                 return;
-            if (ProcessTextractor == null) { return; }
+            }
+
             await ProcessTextractor.StandardInput.WriteLineAsync("HW0@" + HookAddress + ":module_which_never_exists" + " -P" + pid);
             await ProcessTextractor.StandardInput.FlushAsync();
         }
@@ -299,6 +300,7 @@ namespace TextHookLibrary
         private Stopwatch LastMessageStopwatch { get; set; } = Stopwatch.StartNew();
 
         private TextHookData? _thData;
+        private bool disposedValue;
 
         /// <summary>
         /// 控制台输出事件，在这做内部消化处理
@@ -615,22 +617,47 @@ namespace TextHookLibrary
         }
 
 
-        /// <summary>
-        /// 这个方法用于翻译窗口关闭或者导航窗口关闭时调用，进行TextractorCLI的全方法卸载和关闭，否则会出现无法hook其他游戏的情况
-        /// </summary>
-        public void StopHook()
-        {
-            CloseTextractor();
 
-            if (_clipboardMonitor != null)
-            {
-                //取消注册剪贴板监听
-                _clipboardMonitor.ClipboardNotification.UnregisterClipboardViewer();
-                _clipboardMonitor = null;
-            }
-        }
+
 
         [GeneratedRegex("【(.+):(.+):(.+)】")]
         private static partial Regex MisakaCodeRegex();
+
+
+        /// <summary>
+        /// 这个方法用于翻译窗口关闭或者导航窗口关闭时调用，进行TextractorCLI的全方法卸载和关闭，否则会出现无法hook其他游戏的情况
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: 释放托管状态(托管对象)
+                }
+
+                // TODO: 释放未托管的资源(未托管的对象)并重写终结器
+                CloseTextractor();
+
+                // TODO: 将大型字段设置为 null
+                _clipboardMonitor?.ClipboardNotification.UnregisterClipboardViewer();
+                _clipboardMonitor = null;
+
+                disposedValue = true;
+            }
+        }
+
+        ~TextHookHandle()
+        {
+            // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

@@ -133,11 +133,7 @@ namespace Mikoto
         /// </summary>
         private void EndHook()
         {
-            if (Common.TextHooker != null)
-            {
-                Common.TextHooker = null;
-                GC.Collect();
-            }
+            Common.TextHooker.Dispose();
         }
     }
 }

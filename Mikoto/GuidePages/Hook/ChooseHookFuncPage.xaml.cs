@@ -30,7 +30,7 @@ namespace Mikoto.GuidePages.Hook
 
             HookFunListView.ItemsSource = lstData;
             sum = 0;
-            Common.TextHooker!.HookMessageReceived += FilterAndDisplayData;
+            Common.TextHooker.HookMessageReceived += FilterAndDisplayData;
             _ = Common.TextHooker.StartHook(Convert.ToBoolean(Common.AppSettings.AutoHook));
         }
 
@@ -72,7 +72,7 @@ namespace Mikoto.GuidePages.Hook
                 int pid = lstData[HookFunListView.SelectedIndex].GamePID;
 
                 //先关闭对本窗口的输出
-                Common.TextHooker!.HookMessageReceived -= FilterAndDisplayData;
+                Common.TextHooker.HookMessageReceived -= FilterAndDisplayData;
 
                 //先要将需要用到的方法注明，再进行后续卸载操作
                 Common.TextHooker.HookCodeList.Add(lstData[HookFunListView.SelectedIndex].HookCode);
@@ -141,7 +141,7 @@ namespace Mikoto.GuidePages.Hook
         {
             if (HookCodeTextBox.Text != "")
             {
-                _ = Common.TextHooker!.AttachProcessByHookCodeAsync(GameInfoBuilder.GameProcessId, HookCodeTextBox.Text);
+                _ = Common.TextHooker.AttachProcessByHookCodeAsync(GameInfoBuilder.GameProcessId, HookCodeTextBox.Text);
                 LastCustomHookCode = HookCodeTextBox.Text;
                 InputDrawer.IsOpen = false;
                 HandyControl.Controls.Growl.Info(Application.Current.Resources["ChooseHookFuncPage_HookApplyHint"].ToString());
@@ -161,7 +161,7 @@ namespace Mikoto.GuidePages.Hook
         {
             if (e.Key == Key.Escape)
             {
-                Common.TextHooker!.HookMessageReceived -= FilterAndDisplayData;
+                Common.TextHooker.HookMessageReceived -= FilterAndDisplayData;
                 HandyControl.Controls.Growl.Warning(Application.Current.Resources["ChooseHookFuncPage_PauseHint"].ToString());
             }
 

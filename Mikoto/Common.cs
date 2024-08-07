@@ -24,7 +24,7 @@ namespace Mikoto
 
         public static Guid GameID { get; set; } //全局使用中的游戏ID
 
-        public static TextHookHandle? TextHooker { get; set; } //全局使用中的Hook对象
+        public static TextHookHandle TextHooker { get; set; } = new(); //全局使用中的Hook对象
         public static string? UsingRepairFunc { get; set; } //全局使用中的去重方法
 
         public static string UsingSrcLang { get; set; } = "ja";//全局使用中的源语言
@@ -38,30 +38,21 @@ namespace Mikoto
         {
             try
             {
-                if (TextHooker != null)
+                using FileStream fs = new("TextractorOutPutHistory.txt", FileMode.Create);
+                using StreamWriter sw = new(fs);
+
+                sw.WriteLine(Application.Current.Resources["Common_TextractorHistory"]);
+                string[] history = TextHooker.TextractorOutPutHistory.ToArray();
+                for (int i = 0; i < history.Length; i++)
                 {
-                    FileStream fs = new FileStream("TextractorOutPutHistory.txt", FileMode.Create);
-                    StreamWriter sw = new StreamWriter(fs);
-
-                    sw.WriteLine(Application.Current.Resources["Common_TextractorHistory"]);
-                    string[] history = TextHooker.TextractorOutPutHistory.ToArray();
-                    for (int i = 0; i < history.Length; i++)
-                    {
-                        sw.WriteLine(history[i]);
-                    }
-
-                    sw.Flush();
-                    sw.Close();
-                    fs.Close();
-
-                    return true;
+                    sw.WriteLine(history[i]);
                 }
-                else
-                {
-                    return false;
-                }
+
+                sw.Flush();
+
+                return true;
             }
-            catch (NullReferenceException)
+            catch
             {
                 return false;
             }

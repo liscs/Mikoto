@@ -95,7 +95,7 @@ namespace Mikoto
             switch (Common.TransMode)
             {
                 case TransMode.Hook:
-                    Common.TextHooker!.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
+                    Common.TextHooker.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
 
                     _gameProcess = Process.GetProcessById(Common.TextHooker.GamePID);
                     try
@@ -116,7 +116,7 @@ namespace Mikoto
 
                     break;
                 case TransMode.Clipboard:
-                    Common.TextHooker!.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
+                    Common.TextHooker.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
                     break;
             }
             Application.Current.MainWindow.Hide();
@@ -944,7 +944,7 @@ namespace Mikoto
         {
             if (Common.TransMode == TransMode.Hook)
             {
-                if (Common.TextHooker!.Pause)
+                if (Common.TextHooker.Pause)
                 {
                     ViewModel.PauseButtonIconText = "\uF8AE";
                 }
@@ -976,12 +976,10 @@ namespace Mikoto
             Common.AppSettings.TF_SizeH = Convert.ToString((int)this.Height);
 
 
-            if (Common.TextHooker != null)
-            {
-                Common.TextHooker.MeetHookAddressMessageReceived -= ProcessAndDisplayTranslation;
-                Common.TextHooker.StopHook();
-                Common.TextHooker = null;
-            }
+
+            Common.TextHooker.MeetHookAddressMessageReceived -= ProcessAndDisplayTranslation;
+            Common.TextHooker.Dispose();
+
 
 
             _mecabHelper.Dispose();

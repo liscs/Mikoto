@@ -37,19 +37,6 @@ namespace Mikoto
                 FuncHint.Text = Application.Current.Resources["GameGuideWin_FuncHint_Hook"].ToString();
                 GuidePageFrame.Navigate(new ChooseGamePage());
             }
-            else if (Mode == GuideMode.Rehook)
-            {
-                //重新选择Hook方法
-                List<string> lstStep = new List<string>()
-                {
-                Application.Current.Resources["GameGuideWin_ReHook_Step_1"].ToString()!,
-                Application.Current.Resources["GameGuideWin_Step_5"].ToString()!
-                };
-
-                GuideStepBar.ItemsSource = lstStep;
-                FuncHint.Text = Application.Current.Resources["GameGuideWin_FuncHint_ReHook"].ToString();
-                GuidePageFrame.Navigate(new ReChooseHookFuncPage());
-            }
             else if (Mode == GuideMode.Clipboard)
             {
                 //剪贴板监控
@@ -89,10 +76,6 @@ namespace Mikoto
                         GameInfoBuilder.GameInfo.LastPlayAt = DateTime.Now;
                         GameHelper.SaveGameInfo(GameInfoBuilder.GameInfo);
                         break;
-                    case GuideMode.Rehook:
-                        //Hook方式设置 完成
-                        Common.TransMode = TransMode.Hook;
-                        break;
                     case GuideMode.Clipboard:
                         //剪贴板监控方式设置 完成
                         Common.TransMode = TransMode.Clipboard;
@@ -116,13 +99,10 @@ namespace Mikoto
             if (isComplete == false)
             {
                 //确保是在未完成的情况下退出再检查
-                if (GuideMode == GuideMode.Hook || GuideMode == GuideMode.Rehook || GuideMode == GuideMode.Clipboard)
+                if (GuideMode == GuideMode.Hook
+                    || GuideMode == GuideMode.Clipboard)
                 {
-                    if (Common.TextHooker != null)
-                    {
-                        Common.TextHooker.StopHook();
-                        Common.TextHooker = null;
-                    }
+                    Common.TextHooker.Dispose();
                 }
             }
 
