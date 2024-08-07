@@ -6,7 +6,7 @@ namespace Mikoto.Helpers.Text
     {
         protected ScriptInfo() { }
 
-        private const string SCRIPTS_PATH = "data\\custom scripts\\";
+        private string scriptsPath = Path.Combine(Common.DataFolder, "custom scripts");
 
         protected abstract string Name { get; }
         protected abstract string FileExtension { get; }
@@ -16,10 +16,10 @@ namespace Mikoto.Helpers.Text
         public void Init()
         {
             InitEngine();
-            string csPath = Path.Combine(SCRIPTS_PATH, FolderName);
-            Directory.CreateDirectory(csPath);
-            string[] cSharpScriptFiles = Directory.GetFiles(csPath, $"*.{FileExtension}");
-            foreach (var scriptFile in cSharpScriptFiles)
+            string path = Path.Combine(scriptsPath, FolderName);
+            Directory.CreateDirectory(path);
+            string[] scriptFiles = Directory.GetFiles(path, $"*.{FileExtension}");
+            foreach (var scriptFile in scriptFiles)
             {
                 var method = GetMethod(scriptFile);
                 if (method == null)

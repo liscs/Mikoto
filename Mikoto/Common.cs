@@ -15,37 +15,6 @@ using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace Mikoto
 {
-    public enum Theme
-    {
-        Light, Dark,
-    }
-
-    public enum GuideMode
-    {
-        Hook = 1,
-        Rehook = 3,
-        Clipboard = 4,
-    }
-
-    public enum TransMode
-    {
-        Hook = 1,
-        Clipboard = 4,
-    }
-
-    public enum TTSMode
-    {
-        Azure = 1,
-        Local = 2,
-    }
-
-    public enum PhoneticNotationType
-    {
-        Hiragana = 1,
-        Katakana = 2,
-        Romaji = 3,
-    }
-
     public static class Common
     {
         public static IAppSettings AppSettings { get; set; } = default!;//应用设置
@@ -60,20 +29,6 @@ namespace Mikoto
 
         public static string UsingSrcLang { get; set; } = "ja";//全局使用中的源语言
         public static string UsingDstLang { get; set; } = "zh"; //全局使用中的目标翻译语言
-
-        public static bool IsAdmin
-        {
-            get
-            {
-                bool isElevated;
-                using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
-                {
-                    WindowsPrincipal principal = new WindowsPrincipal(identity);
-                    isElevated = principal.IsInRole(WindowsBuiltInRole.Administrator);
-                }
-                return isElevated;
-            }
-        }
 
         /// <summary>
         /// 导出Textractor历史记录，返回是否成功的结果
@@ -112,18 +67,7 @@ namespace Mikoto
             }
         }
 
-        /// <summary>
-        /// 文本去重方法初始化
-        /// </summary>
-        public static void RepairFuncInit()
-        {
-            TextRepair.SingleWordRepeatTimes = RepairSettings.SingleWordRepeatTimes;
-            TextRepair.SentenceRepeatFindCharNum = RepairSettings.SentenceRepeatFindCharNum;
-            TextRepair.RegexPattern = RepairSettings.Regex;
-            TextRepair.RegexReplacement = RepairSettings.Regex_Replace;
-        }
-
-        public static void ShowUpdateMessageBox(Version latestVersion)
+        private static void ShowUpdateMessageBox(Version latestVersion)
         {
             //TODO 提示本地化
             MessageBoxResult dr = MessageBox.Show($"{CurrentVersion.ToString(3)}->{latestVersion}{Environment.NewLine}{Application.Current.Resources["MainWindow_AutoUpdateCheck"]}",
@@ -295,32 +239,15 @@ namespace Mikoto
             }
         }
 
-        /// <summary>
-        /// 取字符串中间
-        /// </summary>
-        /// <param name="oldStr"></param>
-        /// <param name="preStr"></param>
-        /// <param name="nextStr"></param>
-        /// <returns></returns>
-        public static string? GetMiddleStr(string oldStr, string preStr, string nextStr)
+
+        public static string DataFolder
         {
-            try
+            get
             {
-                string tempStr = oldStr.Substring(oldStr.IndexOf(preStr) + preStr.Length);
-                tempStr = tempStr.Substring(0, tempStr.IndexOf(nextStr));
-                return tempStr;
-            }
-            catch (Exception)
-            {
-                return null;
+                string folder = Path.GetFullPath("data");
+                Directory.CreateDirectory(folder);
+                return folder;
             }
         }
-    }
-
-    public enum CheckUpdateResult
-    {
-        CanUpdate,
-        AlreadyLatest,
-        RequestError,
     }
 }

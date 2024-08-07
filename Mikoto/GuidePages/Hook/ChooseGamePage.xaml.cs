@@ -23,7 +23,7 @@ namespace Mikoto.GuidePages.Hook
         {
             InitializeComponent();
             DataContext = _viewModel;
-            if (Common.IsAdmin)
+            if (Environment.IsPrivilegedProcess)
             {
                 NoAdminPrivilegesTextBlock.Visibility = Visibility.Collapsed;
             }

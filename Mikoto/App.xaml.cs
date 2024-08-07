@@ -108,34 +108,23 @@ namespace Mikoto
         /// <param name="e">异常</param>
         private static void PrintErrorMessageToFile(string fileName, object e)
         {
-            if (!Directory.Exists($"{Environment.CurrentDirectory}\\data\\logs"))
-            {
-                Directory.CreateDirectory($"{Environment.CurrentDirectory}\\data\\logs");
-            }
-            using FileStream fs = new($"{Environment.CurrentDirectory}\\data\\logs\\{fileName}.txt", FileMode.Create);
+            string logsFolder = Path.Combine(Common.DataFolder, "logs");
+            Directory.CreateDirectory(logsFolder);
+            string logFile = Path.Combine(logsFolder, $"{fileName}.txt");
+            using FileStream fs = new(logFile, FileMode.Create);
 
             using StreamWriter sw = new(fs);
 
             sw.WriteLine("==============System Info================");
-            sw.WriteLine("System:" + Environment.OSVersion);
-            sw.WriteLine("CurrentTime:" + DateTime.Now.ToString("g"));
-            sw.WriteLine("dotNetVersion:" + Environment.Version);
-            Version version = Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
-            sw.WriteLine("MikotoVersion:" + version.ToString());
+            sw.WriteLine("Operating System:" + Environment.OSVersion);
+            sw.WriteLine("Time:" + DateTime.Now.ToString("O"));
+            sw.WriteLine(".NET Version:" + Environment.Version);
+            sw.WriteLine("Mikoto Version:" + Common.CurrentVersion.ToString());
+
 
             sw.WriteLine("==============Exception Info================");
             sw.WriteLine(e);
-
-            Exception? exceptionPointer = e as Exception;
-            while (exceptionPointer != null && exceptionPointer.InnerException != null)
-            {
-                sw.WriteLine("InnerException:" + exceptionPointer.InnerException);
-                exceptionPointer = exceptionPointer.InnerException;
-            }
-
             sw.Flush();
-            sw.Close();
-            fs.Close();
         }
 
 

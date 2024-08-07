@@ -94,7 +94,7 @@ namespace Mikoto.GuidePages.Hook
             if (!int.TryParse(Single_TextBox.Text, out int times))
                 return;
             Common.RepairSettings.SingleWordRepeatTimes = times;
-            Common.RepairFuncInit();
+            TextRepair.RepairFuncInit();
             repairedTextBox.Text = TextRepair.RepairFun_RemoveSingleWordRepeat(sourceTextBox.Text);
             Single_InputDrawer.IsOpen = false;
         }
@@ -104,7 +104,7 @@ namespace Mikoto.GuidePages.Hook
             if (!int.TryParse(Sentence_TextBox.Text, out int num))
                 return;
             Common.RepairSettings.SentenceRepeatFindCharNum = num;
-            Common.RepairFuncInit();
+            TextRepair.RepairFuncInit();
             repairedTextBox.Text = TextRepair.RepairFun_RemoveSentenceRepeat(sourceTextBox.Text);
             Sentence_InputDrawer.IsOpen = false;
         }
@@ -113,7 +113,7 @@ namespace Mikoto.GuidePages.Hook
         {
             Common.RepairSettings.Regex = Regex_TextBox.Text;
             Common.RepairSettings.Regex_Replace = Replace_TextBox.Text;
-            Common.RepairFuncInit();
+            TextRepair.RepairFuncInit();
             repairedTextBox.Text = TextRepair.RepairFun_RegexReplace(sourceTextBox.Text);
             Regex_InputDrawer.IsOpen = false;
         }

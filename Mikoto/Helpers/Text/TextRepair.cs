@@ -13,7 +13,6 @@ namespace Mikoto
     {
         public static Task CustomScriptInitTask { get; private set; } = default!;
 
-        private const string SCRIPTS_PATH = "data\\custom scripts\\";
         public static string? RegexReplacement { get; set; }
         public static string? RegexPattern { get; set; }
         public static int SentenceRepeatFindCharNum { get; set; }
@@ -237,6 +236,17 @@ namespace Mikoto
                 return string.Empty;
             }
             return Regex.Replace(source, RegexPattern, RegexReplacement);
+        }
+
+        /// <summary>
+        /// 文本去重方法初始化
+        /// </summary>
+        public static void RepairFuncInit()
+        {
+            TextRepair.SingleWordRepeatTimes = Common.RepairSettings.SingleWordRepeatTimes;
+            TextRepair.SentenceRepeatFindCharNum = Common.RepairSettings.SentenceRepeatFindCharNum;
+            TextRepair.RegexPattern = Common.RepairSettings.Regex;
+            TextRepair.RegexReplacement = Common.RepairSettings.Regex_Replace;
         }
 
 

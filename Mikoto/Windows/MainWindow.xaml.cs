@@ -34,8 +34,8 @@ namespace Mikoto
             TextRepair.InitCustomScripts();
             DataContext = _viewModel;
             Instance = this;
-            Common.AppSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile($"{Environment.CurrentDirectory}\\data\\settings\\settings.ini").Build();
-            Common.RepairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Environment.CurrentDirectory + "\\data\\settings\\RepairSettings.ini").Build();
+            Common.AppSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile(Path.Combine(Common.DataFolder, "settings", "settings.ini")).Build();
+            Common.RepairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Path.Combine(Common.DataFolder, "settings", "RepairSettings.ini")).Build();
 
             InitializeLanguage();
             TranslatorCommon.Refresh();
@@ -44,7 +44,7 @@ namespace Mikoto
             Refresh();
             GrowlDisableSwitch();
 
-            if (Common.IsAdmin)
+            if (Environment.IsPrivilegedProcess)
             {
                 RestartAsAdminBtn.Visibility = Visibility.Collapsed;
             }
@@ -337,8 +337,7 @@ namespace Mikoto
                 default:
                     break;
             }
-
-            Common.RepairFuncInit();
+            TextRepair.RepairFuncInit();
 
             Common.TextHooker = gameProcessList.Count == 1 ? new TextHookHandle(gameProcessList[0].Id) : new TextHookHandle(gameProcessList);
 
