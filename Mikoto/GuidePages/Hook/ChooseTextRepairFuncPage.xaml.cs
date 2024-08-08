@@ -51,7 +51,6 @@ namespace Mikoto.GuidePages.Hook
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.TextHooker.MeetHookAddressMessageReceived -= FilterAndDisplayData;
             string selectedItem = RepairFuncComboBox.SelectedItem.ToString() ?? throw new NullReferenceException();
 
 

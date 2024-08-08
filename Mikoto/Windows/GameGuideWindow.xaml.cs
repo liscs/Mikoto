@@ -96,16 +96,7 @@ namespace Mikoto
 
         private void GuideWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (isComplete == false)
-            {
-                //确保是在未完成的情况下退出再检查
-                if (GuideMode == GuideMode.Hook
-                    || GuideMode == GuideMode.Clipboard)
-                {
-                    Common.TextHooker.Dispose();
-                }
-            }
-
+            Common.TextHooker.Dispose();
         }
     }
 }

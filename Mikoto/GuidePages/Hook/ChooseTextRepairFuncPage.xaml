@@ -13,16 +13,18 @@
 
     <Grid>
         <Grid>
-            <Grid >
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="0"
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}"
+                           Grid.Row="0"
                            Text="{DynamicResource ChooseTextRepairFuncPage_Introduce}"
-                           Margin="10" />
+                           Margin="10"
+                           TextWrapping="Wrap" />
 
                 <StackPanel Grid.Row="1">
                     <hc:ComboBox Name="RepairFuncComboBox"
@@ -75,7 +77,8 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="0"
+                        <TextBlock Foreground="{DynamicResource PrimaryForeground}"
+                                   Grid.Row="0"
                                    Text="{DynamicResource ChooseTextRepairFuncPage_Drawer_Single}"
                                    FontSize="20"
                                    HorizontalAlignment="Center"
@@ -126,7 +129,8 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="0"
+                        <TextBlock Foreground="{DynamicResource PrimaryForeground}"
+                                   Grid.Row="0"
                                    Text="{DynamicResource ChooseTextRepairFuncPage_Drawer_Sentence}"
                                    FontSize="20"
                                    HorizontalAlignment="Center"
@@ -178,7 +182,8 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Foreground="{DynamicResource PrimaryForeground}" Grid.Row="0"
+                        <TextBlock Foreground="{DynamicResource PrimaryForeground}"
+                                   Grid.Row="0"
                                    Text="{DynamicResource ChooseTextRepairFuncPage_Drawer_RegexIntrduce}"
                                    FontSize="20"
                                    HorizontalAlignment="Center"
