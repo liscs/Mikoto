@@ -16,8 +16,7 @@ namespace Mikoto.GuidePages.Hook
 
             RepairFuncComboBox.ItemsSource = TextRepair.RepairFunctionNameList.Value;
             RepairFuncComboBox.SelectedIndex = 0;
-
-            Common.TextHooker.MeetHookAddressMessageReceived += FilterAndDisplayData;
+            GlobalWorkingData.Instance.TextHooker.MeetHookAddressMessageReceived += FilterAndDisplayData;
         }
 
         public void FilterAndDisplayData(object sender, SolvedDataReceivedEventArgs e)
@@ -52,29 +51,27 @@ namespace Mikoto.GuidePages.Hook
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
             string selectedItem = RepairFuncComboBox.SelectedItem.ToString() ?? throw new NullReferenceException();
-
-
-            Common.UsingRepairFunc = TextRepair.DisplayNameToNameDict.Value[selectedItem];
+            GlobalWorkingData.Instance.UsingRepairFunc = TextRepair.DisplayNameToNameDict.Value[selectedItem];
 
             //写入去重方法
 
             switch (TextRepair.DisplayNameToNameDict.Value[selectedItem])
             {
                 case nameof(TextRepair.RepairFun_RemoveSingleWordRepeat):
-                    GameInfoBuilder.GameInfo.RepairFunc = Common.UsingRepairFunc;
+                    GameInfoBuilder.GameInfo.RepairFunc = GlobalWorkingData.Instance.UsingRepairFunc;
                     GameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.SingleWordRepeatTimes.ToString();
                     break;
                 case nameof(TextRepair.RepairFun_RemoveSentenceRepeat):
-                    GameInfoBuilder.GameInfo.RepairFunc = Common.UsingRepairFunc;
+                    GameInfoBuilder.GameInfo.RepairFunc = GlobalWorkingData.Instance.UsingRepairFunc;
                     GameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.SentenceRepeatFindCharNum.ToString();
                     break;
                 case nameof(TextRepair.RepairFun_RegexReplace):
-                    GameInfoBuilder.GameInfo.RepairFunc = Common.UsingRepairFunc;
+                    GameInfoBuilder.GameInfo.RepairFunc = GlobalWorkingData.Instance.UsingRepairFunc;
                     GameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.Regex.ToString();
                     GameInfoBuilder.GameInfo.RepairParamB = Common.RepairSettings.Regex_Replace.ToString();
                     break;
                 default:
-                    GameInfoBuilder.GameInfo.RepairFunc = Common.UsingRepairFunc;
+                    GameInfoBuilder.GameInfo.RepairFunc = GlobalWorkingData.Instance.UsingRepairFunc;
                     break;
             }
             //使用路由事件机制通知窗口来完成下一步操作

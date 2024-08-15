@@ -27,7 +27,7 @@ namespace Mikoto
         {
             if (srcWord.Text != "" && dstWord.Text != "" && wordTypeComboBox.SelectedIndex != -1)
             {
-                NounTransOptimization opt = new NounTransOptimization("" + Common.GameID, Common.UsingSrcLang, Common.UsingDstLang);
+                NounTransOptimization opt = new NounTransOptimization("" + GlobalWorkingData.Instance.GameID, GlobalWorkingData.Instance.UsingSrcLang, GlobalWorkingData.Instance.UsingDstLang);
                 bool res = opt.AddNounTrans(srcWord.Text, wordTypeComboBox.SelectedIndex + 1, dstWord.Text);
                 if (res)
                 {

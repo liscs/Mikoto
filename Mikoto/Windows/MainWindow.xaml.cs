@@ -219,7 +219,7 @@ namespace Mikoto
 
         private void HookGuideBtn_Click(object sender, RoutedEventArgs e)
         {
-            var ggw = new GameGuideWindow(GuideMode.Hook);
+            var ggw = new GameGuideWindow(TransMode.Hook);
             ggw.Show();
         }
 
@@ -315,14 +315,13 @@ namespace Mikoto
                 MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
                 return;
             }
+            GlobalWorkingData.Instance.GameID = GameInfoList[gid].GameID;
+            GlobalWorkingData.Instance.TransMode = TransMode.Hook;
+            GlobalWorkingData.Instance.UsingDstLang = GameInfoList[gid].DstLang;
+            GlobalWorkingData.Instance.UsingSrcLang = GameInfoList[gid].SrcLang;
+            GlobalWorkingData.Instance.UsingRepairFunc = GameInfoList[gid].RepairFunc;
 
-            Common.GameID = GameInfoList[gid].GameID;
-            Common.TransMode = TransMode.Hook;
-            Common.UsingDstLang = GameInfoList[gid].DstLang;
-            Common.UsingSrcLang = GameInfoList[gid].SrcLang;
-            Common.UsingRepairFunc = GameInfoList[gid].RepairFunc;
-
-            switch (Common.UsingRepairFunc)
+            switch (GlobalWorkingData.Instance.UsingRepairFunc)
             {
                 case "RepairFun_RemoveSingleWordRepeat":
                     Common.RepairSettings.SingleWordRepeatTimes = int.Parse(GameInfoList[gid].RepairParamA ?? "0");
@@ -338,21 +337,19 @@ namespace Mikoto
                     break;
             }
             TextRepair.RepairFuncInit();
+            GlobalWorkingData.Instance.TextHooker = gameProcessList.Count == 1 ? new TextHookHandle(gameProcessList[0].Id) : new TextHookHandle(gameProcessList);
 
-            Common.TextHooker = gameProcessList.Count == 1 ? new TextHookHandle(gameProcessList[0].Id) : new TextHookHandle(gameProcessList);
-
-            if (!Common.TextHooker.Init(GameInfoList[gid].Isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
+            if (!GlobalWorkingData.Instance.TextHooker.Init(GameInfoList[gid].Isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
             {
                 MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
                 return;
             }
-            Common.TextHooker.HookCodeList.Add(GameInfoList[gid].HookCode);
-            Common.TextHooker.HookCode_Custom = GameInfoList[gid].HookCodeCustom;
+            GlobalWorkingData.Instance.TextHooker.HookCodeList.Add(GameInfoList[gid].HookCode);
+            GlobalWorkingData.Instance.TextHooker.HookCode_Custom = GameInfoList[gid].HookCodeCustom;
+            GlobalWorkingData.Instance.TextHooker.MisakaCodeList.Add(GameInfoList[gid].MisakaHookCode);
+            await GlobalWorkingData.Instance.TextHooker.StartHook(Convert.ToBoolean(Common.AppSettings.AutoHook));
 
-            Common.TextHooker.MisakaCodeList.Add(GameInfoList[gid].MisakaHookCode);
-            await Common.TextHooker.StartHook(Convert.ToBoolean(Common.AppSettings.AutoHook));
-
-            if (!await Common.TextHooker.AutoAddCustomHookToGameAsync())
+            if (!await GlobalWorkingData.Instance.TextHooker.AutoAddCustomHookToGameAsync())
             {
                 MessageBox.Show(Application.Current.Resources["MainWindow_AutoCustomHookError"].ToString(), Application.Current.Resources["MessageBox_Error"].ToString());
             }
@@ -580,16 +577,14 @@ namespace Mikoto
 
         private void ClipboardGuideBtn_Click(object sender, RoutedEventArgs e)
         {
-            Common.TextHooker = new TextHookHandle();
-            Common.GameID = Guid.Empty;
-            Common.TransMode = TransMode.Hook;
-            Common.TextHooker.AddClipBoardThread();
+            GlobalWorkingData.Instance.TextHooker = new TextHookHandle();
+            GlobalWorkingData.Instance.GameID = Guid.Empty;
+            GlobalWorkingData.Instance.TransMode = TransMode.Hook;
+            GlobalWorkingData.Instance.TextHooker.AddClipBoardThread();
+            GlobalWorkingData.Instance.TextHooker.HookCodeList.Add("HB0@0");
+            GlobalWorkingData.Instance.TextHooker.MisakaCodeList.Add("【0:-1:-1】");
 
-            //剪贴板方式读取的特殊码和misakacode
-            Common.TextHooker.HookCodeList.Add("HB0@0");
-            Common.TextHooker.MisakaCodeList.Add("【0:-1:-1】");
-
-            var ggw = new GameGuideWindow(GuideMode.Clipboard);
+            var ggw = new GameGuideWindow(TransMode.Clipboard);
             ggw.Show();
         }
 

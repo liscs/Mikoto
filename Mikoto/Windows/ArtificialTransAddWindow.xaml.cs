@@ -24,7 +24,7 @@ namespace Mikoto
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            ArtificialTransHelper ath = new ArtificialTransHelper(Common.GameID.ToString());
+            ArtificialTransHelper ath = new ArtificialTransHelper(GlobalWorkingData.Instance.GameID.ToString());
 
             bool res = ath.UpdateTrans(srcText.Text, transText.Text);
             if (res)

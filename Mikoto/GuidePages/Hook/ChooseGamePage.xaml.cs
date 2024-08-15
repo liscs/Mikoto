@@ -61,24 +61,24 @@ namespace Mikoto.GuidePages.Hook
         {
             if (_sameNameGameProcessList.Count == 1)
             {
-                Common.TextHooker = new TextHookHandle(pid);
+                GlobalWorkingData.Instance.TextHooker = new TextHookHandle(pid);
             }
             else
             {
-                Common.TextHooker = new TextHookHandle(_sameNameGameProcessList);
+                GlobalWorkingData.Instance.TextHooker = new TextHookHandle(_sameNameGameProcessList);
             }
 
             bool isx64 = Is64BitProcess(_gamePid);
-            if (Common.TextHooker.Init(isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
+            if (GlobalWorkingData.Instance.TextHooker.Init(isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
             {
-                Common.GameID = Guid.Empty;
+                GlobalWorkingData.Instance.GameID = Guid.Empty;
                 string filepath = ProcessHelper.FindProcessPath(_gamePid, isx64);
                 if (!string.IsNullOrEmpty(filepath))
                 {
                     GameInfoBuilder.Reset();
                     GameInfoBuilder.GameProcessId = _gamePid;
                     GameInfoBuilder.GameInfo = GameHelper.GetGameByPath(filepath);
-                    Common.GameID = GameInfoBuilder.GameInfo.GameID;
+                    GlobalWorkingData.Instance.GameID = GameInfoBuilder.GameInfo.GameID;
                     GameInfoBuilder.GameInfo.Isx64 = isx64;
 
                     //使用路由事件机制通知窗口来完成下一步操作

@@ -10,18 +10,18 @@ namespace Mikoto
     /// </summary>
     public partial class GameGuideWindow
     {
-        private GuideMode GuideMode;
+        private TransMode _transMode;
         private bool isComplete;//是否是在完成状态下退出的，作为检验，默认为假
 
-        public GameGuideWindow(GuideMode Mode)
+        public GameGuideWindow(TransMode Mode)
         {
             InitializeComponent();
 
             this.AddHandler(PageChange.PageChangeRoutedEvent, new RoutedEventHandler(SwitchPage));
 
             isComplete = false;
-            GuideMode = Mode;
-            if (Mode == GuideMode.Hook)
+            _transMode = Mode;
+            if (Mode == TransMode.Hook)
             {
                 //Hook模式
                 List<string> lstStep = new List<string>()
@@ -37,7 +37,7 @@ namespace Mikoto
                 FuncHint.Text = Application.Current.Resources["GameGuideWin_FuncHint_Hook"].ToString();
                 GuidePageFrame.Navigate(new ChooseGamePage());
             }
-            else if (Mode == GuideMode.Clipboard)
+            else if (Mode == TransMode.Clipboard)
             {
                 //剪贴板监控
                 List<string> lstStep = new List<string>()
@@ -68,17 +68,15 @@ namespace Mikoto
             }
             else if (args.Page == null)
             {
-                switch (GuideMode)
+                switch (_transMode)
                 {
-                    case GuideMode.Hook:
-                        //Hook方式设置 完成
-                        Common.TransMode = TransMode.Hook;
+                    case TransMode.Hook:
+                        GlobalWorkingData.Instance.TransMode = TransMode.Hook;
                         GameInfoBuilder.GameInfo.LastPlayAt = DateTime.Now;
                         GameHelper.SaveGameInfo(GameInfoBuilder.GameInfo);
                         break;
-                    case GuideMode.Clipboard:
-                        //剪贴板监控方式设置 完成
-                        Common.TransMode = TransMode.Clipboard;
+                    case TransMode.Clipboard:
+                        GlobalWorkingData.Instance.TransMode = TransMode.Clipboard;
                         break;
                 }
                 new TranslateWindow().Show();
@@ -96,7 +94,10 @@ namespace Mikoto
 
         private void GuideWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Common.TextHooker.Dispose();
+            if (!isComplete)
+            {
+                GlobalWorkingData.Instance.TextHooker.Dispose();
+            }
         }
     }
 }

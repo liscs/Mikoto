@@ -133,7 +133,7 @@ namespace Mikoto
         /// </summary>
         private void EndHook()
         {
-            Common.TextHooker.Dispose();
+            GlobalWorkingData.Instance.TextHooker.Dispose();
         }
     }
 }
