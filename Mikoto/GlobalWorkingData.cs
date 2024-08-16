@@ -7,19 +7,20 @@ namespace Mikoto
     internal class GlobalWorkingData
     {
         private GlobalWorkingData() { }
+        private static readonly Lazy<GlobalWorkingData> _instance = new(() => new GlobalWorkingData());
 
         public static GlobalWorkingData Instance
         {
             get
             {
-                return new Lazy<GlobalWorkingData>(() => new GlobalWorkingData()).Value;
+                return _instance.Value;
             }
         }
 
         public TransMode TransMode { get; set; } //全局使用中的翻译模式 1=_hook 
 
 
-        public TextHookHandle TextHooker { get; set; } = new(); //全局使用中的Hook对象
+        public TextHookHandle TextHooker { get; set; } = new();//全局使用中的Hook对象
 
         public Guid GameID { get; set; } //全局使用中的游戏ID
         public string? UsingRepairFunc { get; set; } //全局使用中的去重方法
