@@ -8,7 +8,7 @@ namespace Mikoto
         public event PropertyChangedEventHandler? PropertyChanged;
         protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
         {
-            if (!(object.Equals(field, newValue)))
+            if (!Equals(field, newValue))
             {
                 field = (newValue);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

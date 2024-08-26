@@ -145,7 +145,7 @@
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1"
-                    Orientation="Vertical">
+                    Orientation="Vertical" Margin="{Binding TextTopMargin}">
             <hc:SimplePanel Visibility="{Binding SourcePanelVisibility}"
                             Margin="10,0,10,0">
                 <RichTextBox x:Name="SourceRichTextBox1"

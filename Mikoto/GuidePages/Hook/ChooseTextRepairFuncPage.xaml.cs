@@ -24,7 +24,7 @@ namespace Mikoto.GuidePages.Hook
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 sourceTextBox.Text = e.Data.Data;
-                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.DisplayNameToNameDict.Value[TextRepair.DisplayNameToNameDict.Value.Keys.ElementAt(RepairFuncComboBox.SelectedIndex)], sourceTextBox.Text ?? string.Empty);
+                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.DisplayNameToNameDict.Value[RepairFuncComboBox.SelectedValue.ToString()!], sourceTextBox.Text ?? string.Empty);
             });
         }
 

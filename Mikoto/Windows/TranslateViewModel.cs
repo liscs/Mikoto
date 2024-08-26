@@ -19,7 +19,21 @@ namespace Mikoto
         {
             get => _sourcePanelVisibility;
 
-            set => SetProperty(ref _sourcePanelVisibility, value);
+            set
+            {
+                switch (value)
+                {
+                    case Visibility.Visible:
+                        TextTopMargin = new(0, 0, 0, 0);
+                        break;
+                    case Visibility.Hidden:
+                    case Visibility.Collapsed:
+                        TextTopMargin = new(0, 10, 0, 0);
+                        break;
+                }
+
+                SetProperty(ref _sourcePanelVisibility, value);
+            }
         }
 
 
@@ -347,6 +361,14 @@ namespace Mikoto
                 SecondTextFontWeight = FontWeight.FromOpenTypeWeight(value);
                 SetProperty(ref secondTextFontWeight, SecondTextFontWeight);
             }
+        }
+
+        private Thickness textTopMargin = new(0, 0, 0, 0);
+
+        public Thickness TextTopMargin
+        {
+            get => textTopMargin;
+            set => SetProperty(ref textTopMargin, value);
         }
     }
 
