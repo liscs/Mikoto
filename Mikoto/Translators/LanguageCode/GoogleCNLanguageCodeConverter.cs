@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Mikoto
+namespace Mikoto.Translators.LanguageCode
 {
     public class GoogleCNLanguageCodeConverter : ILanguageCodeConverter
     {

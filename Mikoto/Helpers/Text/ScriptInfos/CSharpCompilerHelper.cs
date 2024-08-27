@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace Mikoto
+namespace Mikoto.Helpers.Text.ScriptInfos
 {
     public static class CSharpCompilerHelper
     {
@@ -15,30 +15,30 @@ namespace Mikoto
         {
             Assembly[] assemblies =
             [
-    typeof(System.String).Assembly,            // System.String
+    typeof(string).Assembly,            // System.String
     typeof(System.Text.StringBuilder).Assembly, // System.Text.StringBuilder
     typeof(System.Text.Encoding).Assembly,     // System.Text.Encoding
     typeof(System.Text.RegularExpressions.Regex).Assembly, // System.Text.RegularExpressions.Regex
     typeof(System.Globalization.CultureInfo).Assembly,     // System.Globalization.CultureInfo
-    typeof(System.Convert).Assembly,           // System.Convert
-    typeof(System.Char).Assembly,              // System.Char
-    typeof(System.StringComparer).Assembly,    // System.StringComparer
-    typeof(System.StringComparison).Assembly,  // System.StringComparison
+    typeof(Convert).Assembly,           // System.Convert
+    typeof(char).Assembly,              // System.Char
+    typeof(StringComparer).Assembly,    // System.StringComparer
+    typeof(StringComparison).Assembly,  // System.StringComparison
     typeof(System.Text.ASCIIEncoding).Assembly, // System.Text.ASCIIEncoding
     typeof(System.Text.UTF8Encoding).Assembly, // System.Text.UTF8Encoding
     typeof(System.Text.UnicodeEncoding).Assembly, // System.Text.UnicodeEncoding
-    typeof(System.IO.StringReader).Assembly,   // System.IO.StringReader
-    typeof(System.IO.StringWriter).Assembly,   // System.IO.StringWriter
+    typeof(StringReader).Assembly,   // System.IO.StringReader
+    typeof(StringWriter).Assembly,   // System.IO.StringWriter
     typeof(System.Globalization.TextInfo).Assembly, // System.Globalization.TextInfo
     typeof(System.Globalization.CompareInfo).Assembly, // System.Globalization.CompareInfo
     typeof(System.Globalization.DateTimeFormatInfo).Assembly, // System.Globalization.DateTimeFormatInfo
     typeof(System.Globalization.NumberFormatInfo).Assembly, // System.Globalization.NumberFormatInfo
     typeof(System.Net.WebUtility).Assembly,    // System.Net.WebUtility
-    typeof(System.Uri).Assembly,               // System.Uri
-    typeof(System.Linq.Enumerable).Assembly,   // System.Linq.Enumerable
+    typeof(Uri).Assembly,               // System.Uri
+    typeof(Enumerable).Assembly,   // System.Linq.Enumerable
     typeof(System.IO.File).Assembly,           // System.IO.File
-    typeof(System.IO.Path).Assembly,           // System.IO.Path
-    typeof(System.Threading.Tasks.Task).Assembly, // System.Threading.Tasks.Task
+    typeof(Path).Assembly,           // System.IO.Path
+    typeof(Task).Assembly, // System.Threading.Tasks.Task
     typeof(System.Diagnostics.Debug).Assembly, // System.Diagnostics.Debug
     typeof(System.Diagnostics.Trace).Assembly, // System.Diagnostics.Trace
     typeof(System.Diagnostics.Stopwatch).Assembly, // System.Diagnostics.Stopwatch
@@ -47,21 +47,21 @@ namespace Mikoto
     typeof(System.Security.Cryptography.SHA1).Assembly, // System.Security.Cryptography.SHA1
     typeof(System.Security.Cryptography.SHA256).Assembly, // System.Security.Cryptography.SHA256
     typeof(System.Security.Cryptography.SHA512).Assembly, // System.Security.Cryptography.SHA512
-    typeof(System.Reflection.MethodInfo).Assembly, // System.Reflection.MethodInfo
-    typeof(System.Reflection.PropertyInfo).Assembly, // System.Reflection.PropertyInfo
-    typeof(System.Reflection.FieldInfo).Assembly, // System.Reflection.FieldInfo
-    typeof(System.Collections.Generic.List<>).Assembly, // System.Collections.Generic.List<T>
-    typeof(System.Collections.Generic.Dictionary<,>).Assembly, // System.Collections.Generic.Dictionary<TKey, TValue>
-    typeof(System.Collections.Generic.IEnumerable<>).Assembly, // System.Collections.Generic.IEnumerable<T>
+    typeof(MethodInfo).Assembly, // System.Reflection.MethodInfo
+    typeof(PropertyInfo).Assembly, // System.Reflection.PropertyInfo
+    typeof(FieldInfo).Assembly, // System.Reflection.FieldInfo
+    typeof(List<>).Assembly, // System.Collections.Generic.List<T>
+    typeof(Dictionary<,>).Assembly, // System.Collections.Generic.Dictionary<TKey, TValue>
+    typeof(IEnumerable<>).Assembly, // System.Collections.Generic.IEnumerable<T>
     typeof(System.Collections.IEnumerable).Assembly, // System.Collections.IEnumerable
     typeof(System.Collections.ArrayList).Assembly, // System.Collections.ArrayList
     typeof(System.Collections.Hashtable).Assembly, // System.Collections.Hashtable
     typeof(System.Collections.Queue).Assembly, // System.Collections.Queue
     typeof(System.Collections.Stack).Assembly, // System.Collections.Stack
-    typeof(System.Linq.IQueryable<>).Assembly, // System.Linq.IQueryable<T>
+    typeof(IQueryable<>).Assembly, // System.Linq.IQueryable<T>
     typeof(System.Linq.Expressions.Expression).Assembly, // System.Linq.Expressions.Expression
-    typeof(System.Threading.CancellationToken).Assembly, // System.Threading.CancellationToken
-    typeof(System.Threading.Thread).Assembly, // System.Threading.Thread
+    typeof(CancellationToken).Assembly, // System.Threading.CancellationToken
+    typeof(Thread).Assembly, // System.Threading.Thread
             ];
 
 

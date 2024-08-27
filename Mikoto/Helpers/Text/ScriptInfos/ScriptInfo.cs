@@ -1,6 +1,7 @@
-﻿using System.IO;
+﻿using Mikoto.Windows.Logger;
+using System.IO;
 
-namespace Mikoto.Helpers.Text
+namespace Mikoto.Helpers.Text.ScriptInfos
 {
     internal abstract class ScriptInfo
     {

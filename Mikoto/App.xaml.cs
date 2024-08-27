@@ -1,6 +1,5 @@
 ﻿using Mikoto.Helpers.Input;
 using System.IO;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;

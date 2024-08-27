@@ -1,6 +1,7 @@
-﻿using System.Windows.Media;
+﻿using Mikoto.Helpers.ViewModel;
+using System.Windows.Media;
 using DateTimeA = System.DateTime;
-namespace Mikoto
+namespace Mikoto.Windows.Logger
 {
     public class LogEntry : ViewModelBase
     {

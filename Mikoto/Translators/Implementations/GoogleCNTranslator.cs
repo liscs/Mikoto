@@ -1,8 +1,11 @@
-﻿using System.Globalization;
+﻿using Mikoto.Helpers.Network;
+using Mikoto.Translators.Interfaces;
+using Mikoto.Translators.LanguageCode;
+using System.Globalization;
 using System.Web;
 using System.Windows;
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     public class GoogleCNTranslator : ITranslator
     {
@@ -23,7 +26,7 @@ namespace Mikoto.Translators
 
             string googleTransUrl = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&sl=" + srcLang + "&tl=" + desLang + "&q=" + HttpUtility.UrlEncode(sourceText);
 
-            var hc = TranslatorCommon.HttpClientInstance;
+            var hc = CommonHttpClient.Instance;
 
             try
             {

@@ -1,9 +1,11 @@
+using Mikoto.Helpers.Network;
+using Mikoto.Translators.Interfaces;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     public class IBMTranslator : ITranslator
     {
@@ -34,7 +36,7 @@ namespace Mikoto.Translators
             }
 
             HttpResponseMessage resp;
-            var hc = TranslatorCommon.HttpClientInstance;
+            var hc = CommonHttpClient.Instance;
             var req = new HttpRequestMessage(HttpMethod.Post, URL);
             string jsonParam = JsonSerializer.Serialize(new Dictionary<string, object>
             {

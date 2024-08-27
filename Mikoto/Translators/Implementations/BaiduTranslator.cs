@@ -1,11 +1,14 @@
-﻿using System.Globalization;
+﻿using Mikoto.Helpers.Network;
+using Mikoto.Translators.Interfaces;
+using Mikoto.Translators.LanguageCode;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Web;
 using System.Windows;
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     public class BaiduTranslator : ITranslator
     {
@@ -47,7 +50,7 @@ namespace Mikoto.Translators
                 .Append("&sign=").Append(sign);
             string url = sb.ToString();
 
-            var hc = TranslatorCommon.HttpClientInstance;
+            var hc = CommonHttpClient.Instance;
             try
             {
                 retString = await hc.GetStringAsync(url);

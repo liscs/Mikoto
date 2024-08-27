@@ -1,7 +1,6 @@
 ﻿using Microsoft.ClearScript.V8;
-using System.IO;
 
-namespace Mikoto.Helpers.Text
+namespace Mikoto.Helpers.Text.ScriptInfos
 {
     internal class JsScriptInfo : ScriptInfo
     {
@@ -13,7 +12,7 @@ namespace Mikoto.Helpers.Text
         protected override TextPreProcessFunction? GetMethod(string scriptFile)
         {
             V8ScriptEngine engine = new();
-            string script = File.ReadAllText(scriptFile);
+            string script = System.IO.File.ReadAllText(scriptFile);
             try
             {
                 engine.Execute(scriptFile, script);

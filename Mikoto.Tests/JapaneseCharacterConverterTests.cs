@@ -1,6 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using MecabHelperLibrary;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace MecabHelperLibrary.Tests
+namespace Mikoto.Tests
 {
     [TestClass()]
     public class JapaneseCharacterConverterTests

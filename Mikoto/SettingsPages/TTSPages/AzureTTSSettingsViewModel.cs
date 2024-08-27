@@ -1,6 +1,7 @@
 ﻿using Microsoft.CognitiveServices.Speech;
+using Mikoto.Helpers.ViewModel;
 
-namespace Mikoto
+namespace Mikoto.SettingsPages.TTSPages
 {
     public class AzureTTSSettingsViewModel : ViewModelBase
     {

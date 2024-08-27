@@ -1,4 +1,5 @@
 ﻿using DataAccessLibrary;
+using Mikoto.Enums;
 using Mikoto.GuidePages;
 using Mikoto.GuidePages.Hook;
 using System.Windows;

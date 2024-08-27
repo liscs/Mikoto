@@ -1,4 +1,5 @@
-﻿using Mikoto.Translators;
+﻿using Mikoto.Translators.Implementations;
+using Mikoto.Translators.Interfaces;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;

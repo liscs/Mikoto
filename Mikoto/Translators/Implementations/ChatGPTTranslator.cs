@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using Mikoto.Helpers.Network;
+using Mikoto.Translators.Interfaces;
+using System.Net.Http;
 using System.Text.Json;
 using System.Windows;
 
@@ -7,7 +9,7 @@ using System.Windows;
  * Author: bychv
  * API version: v1
  */
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     public class ChatGPTTranslator : ITranslator
     {
@@ -39,7 +41,7 @@ namespace Mikoto.Translators
             }
             string retString;
             string jsonParam = $"{{\"model\": \"{openai_model}\",\"messages\": [{{\"role\": \"system\", \"content\": \"Translate {srcLang} To {desLang}\"}},{{\"role\": \"user\", \"content\": \"{q}\"}}]}}";
-            var hc = TranslatorCommon.HttpClientInstance;
+            var hc = CommonHttpClient.Instance;
             var req = new StringContent(jsonParam, null, "application/json");
             hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
             try

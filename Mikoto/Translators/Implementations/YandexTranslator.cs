@@ -1,10 +1,12 @@
+using Mikoto.Helpers.Network;
+using Mikoto.Translators.Interfaces;
 using System.Net.Http;
 using System.Text.Json;
 using System.Web;
 using System.Windows;
 
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     public class YandexTranslator : ITranslator
     {
@@ -22,7 +24,7 @@ namespace Mikoto.Translators
 
         public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
-            var hc = TranslatorCommon.HttpClientInstance;
+            var hc = CommonHttpClient.Instance;
             string apiurl = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + ApiKey + "&lang=" + srcLang + "-" + desLang + "&text=";
 
             try

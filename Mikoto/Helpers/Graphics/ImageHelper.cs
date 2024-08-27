@@ -1,4 +1,5 @@
-﻿using Mikoto.Helpers.Files;
+﻿using Mikoto.Enums;
+using Mikoto.Helpers.File;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,7 +9,7 @@ using System.Windows.Media.Imaging;
 using Windows.Win32;
 using Windows.Win32.UI.WindowsAndMessaging;
 
-namespace Mikoto.Helpers
+namespace Mikoto.Helpers.Graphics
 {
     public static class ImageHelper
     {
@@ -256,7 +257,7 @@ namespace Mikoto.Helpers
             {
                 source.CopyPixels(
                   new Int32Rect(0, 0, source.PixelWidth, source.PixelHeight),
-                  (IntPtr)(buffer + offset),
+                  (nint)(buffer + offset),
                   pixels.GetLength(0) * pixels.GetLength(1) * sizeof(PixelColor),
                   stride);
             }
@@ -279,7 +280,7 @@ namespace Mikoto.Helpers
             fixed (HICON* p = hIcons)
             {
                 //成功获取到的图标个数
-                result = PInvoke.PrivateExtractIcons(filepath, 0, 256, 256, p, null, iconTotalCount, (uint)(IMAGE_FLAGS.LR_DEFAULTCOLOR));
+                result = PInvoke.PrivateExtractIcons(filepath, 0, 256, 256, p, null, iconTotalCount, (uint)IMAGE_FLAGS.LR_DEFAULTCOLOR);
             }
 
 

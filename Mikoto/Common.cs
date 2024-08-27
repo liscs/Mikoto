@@ -1,4 +1,7 @@
 ﻿using HandyControl.Controls;
+using Mikoto.Enums;
+using Mikoto.Helpers.Network;
+using Mikoto.Windows.Logger;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -6,11 +9,9 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Principal;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Windows;
-using TextHookLibrary;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace Mikoto
@@ -42,7 +43,7 @@ namespace Mikoto
             var temp = Directory.CreateTempSubdirectory();
             string filePath = Path.Combine(temp.FullName, filename); // 替换为你希望保存文件的路径
 
-            using HttpClient client = new HttpClient();
+            HttpClient client = CommonHttpClient.Instance;
             try
             {
                 byte[] fileBytes = await client.GetByteArrayAsync(url);
@@ -162,10 +163,7 @@ namespace Mikoto
         private static async Task<Version> GetLatestVersionAsync()
         {
             string url = "https://api.github.com/repos/liscs/Mikoto/releases/latest";
-            using HttpClient httpClient = new()
-            {
-                Timeout = TimeSpan.FromSeconds(30),
-            };
+            HttpClient httpClient = CommonHttpClient.Instance;
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mikoto");
             using (var request = new HttpRequestMessage())
             {

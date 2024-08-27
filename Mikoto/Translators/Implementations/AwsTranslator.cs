@@ -1,12 +1,14 @@
 ﻿//参考 https://stackoverflow.com/questions/50507461/aws-translatetext-rest-api-call-adding-signature-v4
 
+using Mikoto.Helpers.Network;
+using Mikoto.Translators.Interfaces;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     public class AwsTranslator : ITranslator
     {
@@ -107,7 +109,7 @@ namespace Mikoto.Translators
         }
         private async Task<string?> SendRequestAsync(byte[] bytes, string endpoint, string contentType, string requestDate, string authorization, string x_amz_target_header)
         {
-            HttpClient httpClient = new();
+            HttpClient httpClient = CommonHttpClient.Instance;
             using HttpRequestMessage httpRequestMessage = new();
             httpRequestMessage.RequestUri = new Uri(endpoint);
             httpRequestMessage.Method = HttpMethod.Post;
@@ -149,7 +151,7 @@ namespace Mikoto.Translators
 
 
 
-        private static byte[] GetSignatureKey(String key, String dateStamp, String regionName, String serviceName)
+        private static byte[] GetSignatureKey(string key, string dateStamp, string regionName, string serviceName)
         {
             byte[] kDate = HmacSha256(dateStamp, ToBytes("AWS4" + key));
             byte[] kRegion = HmacSha256(regionName, kDate);

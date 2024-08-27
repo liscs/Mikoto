@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Mikoto.Enums;
+using System.IO;
 using System.Windows;
 using TextHookLibrary;
 

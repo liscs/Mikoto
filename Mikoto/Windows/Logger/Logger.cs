@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace Mikoto
+namespace Mikoto.Windows.Logger
 {
     public class Logger
     {

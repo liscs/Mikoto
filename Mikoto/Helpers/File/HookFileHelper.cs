@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Mikoto.Helpers.Files
+namespace Mikoto.Helpers.File
 {
     public static class HookFileHelper
     {

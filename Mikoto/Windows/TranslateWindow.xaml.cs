@@ -1,8 +1,14 @@
 ﻿using ArtificialTransHelperLibrary;
 using HandyControl.Controls;
 using MecabHelperLibrary;
-using Mikoto.Helpers;
+using Mikoto.Enums;
+using Mikoto.Helpers.Graphics;
+using Mikoto.Helpers.Network;
 using Mikoto.Translators;
+using Mikoto.Translators.Interfaces;
+using Mikoto.Windows;
+using Mikoto.Windows.Entities;
+using Mikoto.Windows.Logger;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
@@ -82,7 +88,7 @@ namespace Mikoto
 
             if (Common.AppSettings.HttpProxy != "")
             {
-                TranslatorCommon.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
+                CommonHttpClient.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
             }
             _translator1 = TranslatorCommon.GetTranslator(Common.AppSettings.FirstTranslator);
             _translator2 = TranslatorCommon.GetTranslator(Common.AppSettings.SecondTranslator);

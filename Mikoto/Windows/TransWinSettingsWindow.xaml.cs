@@ -1,4 +1,6 @@
 ﻿using Microsoft.Scripting.Utils;
+using Mikoto.Enums;
+using Mikoto.Windows;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;

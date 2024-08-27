@@ -1,4 +1,6 @@
-﻿namespace Mikoto.GuidePages.Hook
+﻿using Mikoto.Helpers.ViewModel;
+
+namespace Mikoto.SettingsPages
 {
     public class ChooseGameViewModel : ViewModelBase
     {

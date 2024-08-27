@@ -1,7 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using Mikoto.Helpers.ViewModel;
+using System.Collections.ObjectModel;
 using System.Windows.Controls;
 
-namespace Mikoto
+namespace Mikoto.Windows
 {
     public class MainViewModel : ViewModelBase
     {

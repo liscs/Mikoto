@@ -1,10 +1,12 @@
-﻿using System.Net;
+﻿using Mikoto.Helpers.Network;
+using Mikoto.Translators.Interfaces;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     public class AzureTranslator : ITranslator
     {
@@ -32,7 +34,7 @@ namespace Mikoto.Translators
             object[] body = new object[] { new { Text = textToTranslate } };
             var requestBody = JsonSerializer.Serialize(body);
             AzureTransOutInfo oinfo;
-            var client = TranslatorCommon.HttpClientInstance;
+            var client = CommonHttpClient.Instance;
             using (var request = new HttpRequestMessage())
             {
                 // Build the request.

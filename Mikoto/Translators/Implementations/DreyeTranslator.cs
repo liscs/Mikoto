@@ -1,9 +1,10 @@
-﻿using System.IO;
+﻿using Mikoto.Translators.Interfaces;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     //参考方法：https://www.lgztx.com/?p=209
 

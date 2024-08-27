@@ -1,5 +1,7 @@
 ﻿//参考 https://github.com/Dark-20001/volcengine-sdk-c-
 
+using Mikoto.Helpers.Network;
+using Mikoto.Translators.Interfaces;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -8,7 +10,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Windows;
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     public class VolcanoTranslator : ITranslator
     {
@@ -111,7 +113,7 @@ namespace Mikoto.Translators
             string nowTime = dateTimeSign.ToString("HHmmss");
             string dateTimeSignStr = nowDate + "T" + nowTime + "Z";
 
-            HttpClient httpClient = TranslatorCommon.HttpClientInstance;
+            HttpClient httpClient = CommonHttpClient.Instance;
             using HttpRequestMessage httpRequestMessage = new();
             httpRequestMessage.RequestUri = new Uri(URL);
             httpRequestMessage.Method = HttpMethod.Post;

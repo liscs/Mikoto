@@ -1,10 +1,13 @@
 ﻿using DataAccessLibrary;
+using Mikoto.SettingsPages;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using TextHookLibrary;
 using Windows.Win32;
+
+
 
 namespace Mikoto.GuidePages.Hook
 {
@@ -97,7 +100,7 @@ namespace Mikoto.GuidePages.Hook
 
         private static bool Is64BitProcess(int pid)
         {
-            PInvoke.IsWow64Process((Windows.Win32.Foundation.HANDLE)Process.GetProcessById(pid).Handle, out Windows.Win32.Foundation.BOOL result);
+            PInvoke.IsWow64Process((global::Windows.Win32.Foundation.HANDLE)Process.GetProcessById(pid).Handle, out global::Windows.Win32.Foundation.BOOL result);
             return !result;
         }
 

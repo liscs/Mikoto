@@ -1,6 +1,7 @@
-﻿using System.Windows;
+﻿using Mikoto.Translators.Interfaces;
+using System.Windows;
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     public class NoTranslator : ITranslator
     {

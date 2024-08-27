@@ -1,7 +1,8 @@
-﻿using System.Runtime.InteropServices;
+﻿using Mikoto.Translators.Interfaces;
+using System.Runtime.InteropServices;
 using System.Windows;
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     public class JBeijingTranslator : ITranslator
     {
@@ -28,10 +29,10 @@ namespace Mikoto.Translators
             uint toCodePage,
             int unknown,
             int unknown1,
-            IntPtr from,
-            IntPtr to,
+            nint from,
+            nint to,
             ref int toCapacity,
-            IntPtr buffer,
+            nint buffer,
             ref int bufferCapacity);
 
         public string JBJCTDllPath = string.Empty;//DLL路径
@@ -62,10 +63,10 @@ namespace Mikoto.Translators
             string path = Environment.CurrentDirectory;
             Environment.CurrentDirectory = JBeijingTranslatorPath;
 
-            IntPtr jp = Marshal.StringToHGlobalUni(sourceText);
+            nint jp = Marshal.StringToHGlobalUni(sourceText);
 
-            IntPtr jp2 = Marshal.AllocHGlobal(3000);
-            IntPtr jp3 = Marshal.AllocHGlobal(3000);
+            nint jp2 = Marshal.AllocHGlobal(3000);
+            nint jp3 = Marshal.AllocHGlobal(3000);
 
             int p1 = 1500;
             int p2 = 1500;

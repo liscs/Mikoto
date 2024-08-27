@@ -5,7 +5,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using RichTextBox = System.Windows.Controls.RichTextBox;
 
-namespace Mikoto.Helpers
+namespace Mikoto.Helpers.Graphics
 {
     internal static class TextMeasureHelper
     {

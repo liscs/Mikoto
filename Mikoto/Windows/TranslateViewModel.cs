@@ -1,10 +1,12 @@
-﻿using Mikoto.Helpers;
+﻿using Mikoto.Helpers.Container;
+using Mikoto.Helpers.Graphics;
+using Mikoto.Helpers.ViewModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 
-namespace Mikoto
+namespace Mikoto.Windows
 {
     public class TranslateViewModel : ViewModelBase
     {
@@ -19,21 +21,7 @@ namespace Mikoto
         {
             get => _sourcePanelVisibility;
 
-            set
-            {
-                switch (value)
-                {
-                    case Visibility.Visible:
-                        TextTopMargin = new(0, 0, 0, 0);
-                        break;
-                    case Visibility.Hidden:
-                    case Visibility.Collapsed:
-                        TextTopMargin = new(0, 10, 0, 0);
-                        break;
-                }
-
-                SetProperty(ref _sourcePanelVisibility, value);
-            }
+            set => SetProperty(ref _sourcePanelVisibility, value);
         }
 
 
@@ -361,14 +349,6 @@ namespace Mikoto
                 SecondTextFontWeight = FontWeight.FromOpenTypeWeight(value);
                 SetProperty(ref secondTextFontWeight, SecondTextFontWeight);
             }
-        }
-
-        private Thickness textTopMargin = new(0, 0, 0, 0);
-
-        public Thickness TextTopMargin
-        {
-            get => textTopMargin;
-            set => SetProperty(ref textTopMargin, value);
         }
     }
 

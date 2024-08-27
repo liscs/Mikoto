@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Mikoto.Helpers.Text
+﻿namespace Mikoto.Helpers.Text.ScriptInfos
 {
     internal class CSharpScriptInfo : ScriptInfo
     {
@@ -12,7 +10,7 @@ namespace Mikoto.Helpers.Text
         {
             try
             {
-                string script = File.ReadAllText(scriptFile);
+                string script = System.IO.File.ReadAllText(scriptFile);
                 return CSharpCompilerHelper.GetProcessFunction(script);
 
             }

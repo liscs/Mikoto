@@ -1,9 +1,11 @@
-﻿using System.Net.Http;
+﻿using Mikoto.Helpers.Network;
+using Mikoto.Translators.Interfaces;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Windows;
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     public class CaiyunTranslator : ITranslator
     {
@@ -42,7 +44,7 @@ namespace Mikoto.Translators
                 {"detect", true}
             });
 
-            var hc = TranslatorCommon.HttpClientInstance;
+            var hc = CommonHttpClient.Instance;
             var req = new StringContent(jsonParam, null, "application/json");
             req.Headers.Add("X-Authorization", "token " + caiyunToken);
             try

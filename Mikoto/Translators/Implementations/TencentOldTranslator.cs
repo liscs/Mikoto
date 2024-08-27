@@ -1,4 +1,7 @@
-﻿using System.Globalization;
+﻿using Mikoto.Helpers.Network;
+using Mikoto.Translators.Interfaces;
+using Mikoto.Translators.LanguageCode;
+using System.Globalization;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -6,7 +9,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Windows;
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     public class TencentOldTranslator : ITranslator
     {
@@ -117,7 +120,7 @@ namespace Mikoto.Translators
             Dictionary<string, string> headers = BuildHeaders(SecretId!, SecretKey!, SERVICE, ENDPOINT, REGION, ACTION,
                                                               VERSION, date, requestPayload);
 
-            HttpClient httpClient = new();
+            HttpClient httpClient = CommonHttpClient.Instance;
             HttpRequestMessage httpRequestMessage = new();
             httpRequestMessage.RequestUri = new Uri($"https://{ENDPOINT}");
             httpRequestMessage.Method = HttpMethod.Post;

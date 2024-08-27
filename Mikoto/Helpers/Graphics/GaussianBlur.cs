@@ -27,7 +27,7 @@ SOFTWARE.
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Mikoto.Helpers
+namespace Mikoto.Helpers.Graphics
 {
     public class GaussianBlur
     {
@@ -108,7 +108,7 @@ namespace Mikoto.Helpers
 
         private static int[] BoxesForGauss(int sigma, int n)
         {
-            var wIdeal = Math.Sqrt((12 * sigma * sigma / n) + 1);
+            var wIdeal = Math.Sqrt(12 * sigma * sigma / n + 1);
             var wl = (int)Math.Floor(wIdeal);
             if (wl % 2 == 0) wl--;
             var wu = wl + 2;

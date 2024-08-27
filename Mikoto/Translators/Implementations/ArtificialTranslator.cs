@@ -1,8 +1,9 @@
-﻿using System.IO;
+﻿using Mikoto.Translators.Interfaces;
+using System.IO;
 using System.Text;
 using System.Windows;
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     /*
      * 来源：https://github.com/jsc723/MisakaPatcher/blob/master/Mikoto/LocalTranslator.cs

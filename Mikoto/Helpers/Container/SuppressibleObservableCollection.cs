@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
-namespace Mikoto.Helpers
+namespace Mikoto.Helpers.Container
 {
     public class SuppressibleObservableCollection<T> : ObservableCollection<T>
     {
@@ -23,7 +23,7 @@ namespace Mikoto.Helpers
                 _suppressNotification = value;
                 if (_suppressNotification == false && _notificationSuppressed)
                 {
-                    this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                    OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                     _notificationSuppressed = false;
                 }
             }

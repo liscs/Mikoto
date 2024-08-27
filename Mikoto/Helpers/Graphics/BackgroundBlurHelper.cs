@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Interop;
 
-namespace Mikoto.Helpers
+namespace Mikoto.Helpers.Graphics
 {
     public static class BackgroundBlurHelper
     {
@@ -28,7 +28,7 @@ namespace Mikoto.Helpers
         internal struct WindowCompositionAttributeData
         {
             public WindowCompositionAttribute Attribute;
-            public IntPtr Data;
+            public nint Data;
             public int SizeOfData;
         }
 
@@ -40,7 +40,7 @@ namespace Mikoto.Helpers
         }
 
         [DllImport("user32.dll")]
-        internal static extern int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
+        internal static extern int SetWindowCompositionAttribute(nint hwnd, ref WindowCompositionAttributeData data);
 
 
         public static void EnableBlur(Window window)

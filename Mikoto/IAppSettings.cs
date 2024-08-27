@@ -1,4 +1,5 @@
 ﻿using Config.Net;
+using Mikoto.Enums;
 
 namespace Mikoto
 {

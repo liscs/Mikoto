@@ -1,4 +1,4 @@
-﻿namespace Mikoto
+﻿namespace Mikoto.Windows.Logger
 {
     public class CollapsibleLogEntry : LogEntry
     {

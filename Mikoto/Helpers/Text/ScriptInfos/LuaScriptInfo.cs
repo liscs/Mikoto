@@ -1,8 +1,7 @@
 ﻿using NLua;
-using System.IO;
 using System.Text;
 
-namespace Mikoto.Helpers.Text
+namespace Mikoto.Helpers.Text.ScriptInfos
 {
     internal class LuaScriptInfo : ScriptInfo
     {
@@ -15,7 +14,7 @@ namespace Mikoto.Helpers.Text
         {
             Lua lua = new();
             lua.State.Encoding = Encoding.UTF8;
-            string script = File.ReadAllText(scriptFile);
+            string script = System.IO.File.ReadAllText(scriptFile);
             try
             {
                 // 执行 Lua 脚本

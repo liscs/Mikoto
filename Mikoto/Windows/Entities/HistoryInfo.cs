@@ -1,4 +1,4 @@
-﻿namespace Mikoto
+﻿namespace Mikoto.Windows.Entities
 {
     internal class HistoryInfo
     {

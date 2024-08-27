@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Mikoto.Helpers
+namespace Mikoto.Helpers.Graphics
 {
     [StructLayout(LayoutKind.Explicit)]
     public struct PixelColor

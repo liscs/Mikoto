@@ -1,4 +1,7 @@
-﻿using System.Globalization;
+﻿using Mikoto.Helpers.Network;
+using Mikoto.Translators.Interfaces;
+using Mikoto.Translators.LanguageCode;
+using System.Globalization;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -6,7 +9,7 @@ using System.Text.Json;
 using System.Web;
 using System.Windows;
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     public class YoudaoZhiyun : ITranslator
     {
@@ -51,7 +54,7 @@ namespace Mikoto.Translators
 
             try
             {
-                HttpResponseMessage response = await TranslatorCommon.HttpClientInstance.PostAsync(TRANSLATE_API_URL, request);
+                HttpResponseMessage response = await CommonHttpClient.Instance.PostAsync(TRANSLATE_API_URL, request);
                 if (response.IsSuccessStatusCode)
                 {
                     string resultStr = await response.Content.ReadAsStringAsync();

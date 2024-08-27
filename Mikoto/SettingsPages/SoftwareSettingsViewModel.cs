@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using Mikoto.Helpers.ViewModel;
+using System.Runtime.InteropServices;
 
 namespace Mikoto.SettingsPages
 {

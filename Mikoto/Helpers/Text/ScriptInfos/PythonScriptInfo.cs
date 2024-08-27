@@ -1,9 +1,8 @@
 ﻿using IronPython.Hosting;
 using IronPython.Runtime;
 using Microsoft.Scripting.Hosting;
-using System.IO;
 
-namespace Mikoto.Helpers.Text
+namespace Mikoto.Helpers.Text.ScriptInfos
 {
     internal class PythonScriptInfo : ScriptInfo
     {
@@ -22,7 +21,7 @@ namespace Mikoto.Helpers.Text
 
         protected override TextPreProcessFunction? GetMethod(string scriptFile)
         {
-            string script = File.ReadAllText(scriptFile);
+            string script = System.IO.File.ReadAllText(scriptFile);
             try
             {
                 _engine.Execute(script, _scope);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Mikoto.Helpers.Text.ScriptInfos;
 
 namespace Mikoto.Tests
 {

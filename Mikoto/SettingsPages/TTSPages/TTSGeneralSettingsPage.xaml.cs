@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Mikoto.Enums;
+using System.Windows;
 using System.Windows.Controls;
 using static Mikoto.Common;
 

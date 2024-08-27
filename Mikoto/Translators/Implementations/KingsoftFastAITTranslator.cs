@@ -1,8 +1,9 @@
-﻿using System.Runtime.InteropServices;
+﻿using Mikoto.Translators.Interfaces;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 
-namespace Mikoto.Translators
+namespace Mikoto.Translators.Implementations
 {
     //参考方法来源：https://www.lgztx.com/?p=220
 
@@ -18,8 +19,8 @@ namespace Mikoto.Translators
         [DllImport("JPNSCHSDK.dll", EntryPoint = "StartSession")]
         internal static extern int StartSession_JPNSCH(
             [MarshalAs(UnmanagedType.LPWStr)] string dicpath,
-            IntPtr bufferStart,
-            IntPtr bufferStop,
+            nint bufferStart,
+            nint bufferStop,
             [MarshalAs(UnmanagedType.LPWStr)] string app
         );
 
@@ -60,8 +61,8 @@ namespace Mikoto.Translators
         [DllImport("EngSChSDK.dll", EntryPoint = "StartSession")]
         internal static extern int StartSession_EngSCh(
             [MarshalAs(UnmanagedType.LPWStr)] string dicpath,
-            IntPtr bufferStart,
-            IntPtr bufferStop,
+            nint bufferStart,
+            nint bufferStop,
             [MarshalAs(UnmanagedType.LPWStr)] string app
         );
 
@@ -114,7 +115,7 @@ namespace Mikoto.Translators
             }
 
 
-            IntPtr buffer = Marshal.AllocHGlobal(buffersize);
+            nint buffer = Marshal.AllocHGlobal(buffersize);
             StringBuilder to = new StringBuilder(0x400);
             string path = Environment.CurrentDirectory;
 

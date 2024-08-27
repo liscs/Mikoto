@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Mikoto
+namespace Mikoto.Helpers.ViewModel
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
@@ -10,7 +10,7 @@ namespace Mikoto
         {
             if (!Equals(field, newValue))
             {
-                field = (newValue);
+                field = newValue;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
                 return true;
             }

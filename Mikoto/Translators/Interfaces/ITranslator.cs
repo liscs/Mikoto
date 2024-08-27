@@ -1,4 +1,4 @@
-﻿namespace Mikoto.Translators
+﻿namespace Mikoto.Translators.Interfaces
 {
     public interface ITranslator
     {
