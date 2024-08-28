@@ -12,7 +12,6 @@
             {
                 string script = System.IO.File.ReadAllText(scriptFile);
                 return CSharpCompilerHelper.GetProcessFunction(script);
-
             }
             catch (Exception ex)
             {
@@ -23,7 +22,7 @@
 
         protected override void ReleaseInitResources()
         {
-            CSharpCompilerHelper.References.Clear();
+            //CSharpCompilerHelper.References.Clear();
         }
     }
 }

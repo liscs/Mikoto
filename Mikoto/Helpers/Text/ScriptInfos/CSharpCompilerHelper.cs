@@ -16,58 +16,19 @@ namespace Mikoto.Helpers.Text.ScriptInfos
             Assembly[] assemblies =
             [
     typeof(string).Assembly,            // System.String
-    typeof(System.Text.StringBuilder).Assembly, // System.Text.StringBuilder
-    typeof(System.Text.Encoding).Assembly,     // System.Text.Encoding
     typeof(System.Text.RegularExpressions.Regex).Assembly, // System.Text.RegularExpressions.Regex
-    typeof(System.Globalization.CultureInfo).Assembly,     // System.Globalization.CultureInfo
-    typeof(Convert).Assembly,           // System.Convert
-    typeof(char).Assembly,              // System.Char
-    typeof(StringComparer).Assembly,    // System.StringComparer
-    typeof(StringComparison).Assembly,  // System.StringComparison
-    typeof(System.Text.ASCIIEncoding).Assembly, // System.Text.ASCIIEncoding
-    typeof(System.Text.UTF8Encoding).Assembly, // System.Text.UTF8Encoding
-    typeof(System.Text.UnicodeEncoding).Assembly, // System.Text.UnicodeEncoding
-    typeof(StringReader).Assembly,   // System.IO.StringReader
-    typeof(StringWriter).Assembly,   // System.IO.StringWriter
-    typeof(System.Globalization.TextInfo).Assembly, // System.Globalization.TextInfo
-    typeof(System.Globalization.CompareInfo).Assembly, // System.Globalization.CompareInfo
-    typeof(System.Globalization.DateTimeFormatInfo).Assembly, // System.Globalization.DateTimeFormatInfo
-    typeof(System.Globalization.NumberFormatInfo).Assembly, // System.Globalization.NumberFormatInfo
-    typeof(System.Net.WebUtility).Assembly,    // System.Net.WebUtility
     typeof(Uri).Assembly,               // System.Uri
     typeof(Enumerable).Assembly,   // System.Linq.Enumerable
-    typeof(System.IO.File).Assembly,           // System.IO.File
-    typeof(Path).Assembly,           // System.IO.Path
-    typeof(Task).Assembly, // System.Threading.Tasks.Task
-    typeof(System.Diagnostics.Debug).Assembly, // System.Diagnostics.Debug
     typeof(System.Diagnostics.Trace).Assembly, // System.Diagnostics.Trace
-    typeof(System.Diagnostics.Stopwatch).Assembly, // System.Diagnostics.Stopwatch
     typeof(System.Security.Cryptography.HashAlgorithm).Assembly, // System.Security.Cryptography.HashAlgorithm
-    typeof(System.Security.Cryptography.MD5).Assembly, // System.Security.Cryptography.MD5
-    typeof(System.Security.Cryptography.SHA1).Assembly, // System.Security.Cryptography.SHA1
-    typeof(System.Security.Cryptography.SHA256).Assembly, // System.Security.Cryptography.SHA256
-    typeof(System.Security.Cryptography.SHA512).Assembly, // System.Security.Cryptography.SHA512
-    typeof(MethodInfo).Assembly, // System.Reflection.MethodInfo
-    typeof(PropertyInfo).Assembly, // System.Reflection.PropertyInfo
-    typeof(FieldInfo).Assembly, // System.Reflection.FieldInfo
-    typeof(List<>).Assembly, // System.Collections.Generic.List<T>
-    typeof(Dictionary<,>).Assembly, // System.Collections.Generic.Dictionary<TKey, TValue>
-    typeof(IEnumerable<>).Assembly, // System.Collections.Generic.IEnumerable<T>
-    typeof(System.Collections.IEnumerable).Assembly, // System.Collections.IEnumerable
-    typeof(System.Collections.ArrayList).Assembly, // System.Collections.ArrayList
-    typeof(System.Collections.Hashtable).Assembly, // System.Collections.Hashtable
     typeof(System.Collections.Queue).Assembly, // System.Collections.Queue
-    typeof(System.Collections.Stack).Assembly, // System.Collections.Stack
     typeof(IQueryable<>).Assembly, // System.Linq.IQueryable<T>
-    typeof(System.Linq.Expressions.Expression).Assembly, // System.Linq.Expressions.Expression
-    typeof(CancellationToken).Assembly, // System.Threading.CancellationToken
-    typeof(Thread).Assembly, // System.Threading.Thread
             ];
 
 
             var returnList = assemblies
-                 .Select(p => (MetadataReference)MetadataReference.CreateFromFile(p.Location))
-                 .ToList();
+                .Select(p => (MetadataReference)MetadataReference.CreateFromFile(p.Location))
+                .ToList();
 
             //The location of the .NET assemblies
             string assemblyPath = RuntimeEnvironment.GetRuntimeDirectory();

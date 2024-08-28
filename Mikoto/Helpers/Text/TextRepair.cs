@@ -3,6 +3,7 @@ using Microsoft.Scripting.Utils;
 using Mikoto.Helpers.Container;
 using Mikoto.Helpers.Text.ScriptInfos;
 using Mikoto.Windows.Logger;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 
@@ -18,7 +19,8 @@ namespace Mikoto
         public static string? RegexPattern { get; set; }
         public static int SentenceRepeatFindCharNum { get; set; }
         public static int SingleWordRepeatTimes { get; set; }
-        public static Lazy<Dictionary<string, string>> DisplayNameToNameDict { get; } = new(() => new() {
+
+        private static readonly Lazy<Dictionary<string, string>> defaultDisplayNameDict = new(() => new() {
             { Application.Current.Resources["NoDeal"].ToString()!, nameof(RepairFun_NoDeal) },
             { Application.Current.Resources["RemoveSingleWordRepeat"].ToString()!, nameof(RepairFun_RemoveSingleWordRepeat) },
             { Application.Current.Resources["RemoveSentenceRepeat"].ToString()!, nameof(RepairFun_RemoveSentenceRepeat) },
@@ -26,6 +28,7 @@ namespace Mikoto
             { Application.Current.Resources["RemoveHTML"].ToString()!, nameof(RepairFun_RemoveHTML) },
             { Application.Current.Resources["RegexReplace"].ToString()!, nameof(RepairFun_RegexReplace) },
             });
+        public static Lazy<Dictionary<string, string>> DisplayNameToNameDict { get; } = new(() => new(defaultDisplayNameDict.Value));
 
         public static Lazy<SuppressibleObservableCollection<string>> RepairFunctionNameList { get; set; } = new(() => new(DisplayNameToNameDict.Value.Keys));
 
@@ -41,21 +44,36 @@ namespace Mikoto
                     new JsScriptInfo().Init,
                     new LuaScriptInfo().Init,
                 ]);
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    RepairFunctionNameList.Value.SuppressNotification = true;
-                    RepairFunctionNameList.Value.AddRange(CustomMethodsDict.Keys.ToList().Order());
-                    RepairFunctionNameList.Value.SuppressNotification = false;
-                });
-                foreach (var item in CustomMethodsDict.Keys)
-                {
-                    DisplayNameToNameDict.Value[item] = item;
-                }
+                RefreshListOrder();
 
             });
             return;
         }
 
+        public static void RefreshListOrder()
+        {
+            DisplayNameToNameDict.Value.Clear();
+            foreach (var item in defaultDisplayNameDict.Value)
+            {
+                DisplayNameToNameDict.Value[item.Key] = item.Value;
+            }
+            foreach (var item in CustomMethodsDict.Keys)
+            {
+                DisplayNameToNameDict.Value[item] = item;
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                RepairFunctionNameList.Value.SuppressNotification = true;
+                for (int i = defaultDisplayNameDict.Value.Keys.Count; i < RepairFunctionNameList.Value.Count;)
+                {
+                    RepairFunctionNameList.Value.RemoveAt(i);
+                }
+                RepairFunctionNameList.Value.AddRange(CustomMethodsDict.Keys.ToList().Order());
+                RepairFunctionNameList.Value.SuppressNotification = false;
+            });
+
+        }
 
         public static Dictionary<string, TextPreProcessFunction> CustomMethodsDict { get; } = new();
 

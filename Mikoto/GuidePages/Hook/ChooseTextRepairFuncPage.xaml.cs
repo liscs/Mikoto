@@ -15,6 +15,13 @@ namespace Mikoto.GuidePages.Hook
             InitializeComponent();
 
             RepairFuncComboBox.ItemsSource = TextRepair.RepairFunctionNameList.Value;
+            TextRepair.RepairFunctionNameList.Value.CollectionChanged += delegate
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.DisplayNameToNameDict.Value[RepairFuncComboBox.SelectedValue.ToString()!], sourceTextBox.Text ?? string.Empty);
+                });
+            };
             RepairFuncComboBox.SelectedIndex = 0;
             GlobalWorkingData.Instance.TextHooker.MeetHookAddressMessageReceived += FilterAndDisplayData;
         }
