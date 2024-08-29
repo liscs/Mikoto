@@ -19,10 +19,5 @@
                 return null;
             }
         }
-
-        protected override void ReleaseInitResources()
-        {
-            //CSharpCompilerHelper.References.Clear();
-        }
     }
 }

@@ -21,9 +21,9 @@ namespace Mikoto.Helpers.Text.ScriptInfos
 
         protected override TextPreProcessFunction? GetMethod(string scriptFile)
         {
-            string script = System.IO.File.ReadAllText(scriptFile);
             try
             {
+                string script = System.IO.File.ReadAllText(scriptFile);
                 _engine.Execute(script, _scope);
                 dynamic? pythonFunction = _scope.GetItems().Select(p => p.Value).FirstOrDefault(p => p is PythonFunction);
                 if (pythonFunction != null)

@@ -85,7 +85,7 @@ namespace Mikoto
         /// <param name="functionName">提供方法函数名</param>
         /// <param name="sourceText">源文本</param>
         /// <returns></returns>
-        public static string RepairFun_Auto(string functionName, string sourceText)
+        public static string PreProcessSrc(string functionName, string sourceText)
         {
             if (CustomMethodsDict.TryGetValue(functionName, out TextPreProcessFunction? function))
             {

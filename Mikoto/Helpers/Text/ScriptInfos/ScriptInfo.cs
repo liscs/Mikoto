@@ -1,4 +1,5 @@
-﻿using Mikoto.Windows.Logger;
+﻿using Mikoto.Helpers.File;
+using Mikoto.Windows.Logger;
 using System.IO;
 
 namespace Mikoto.Helpers.Text.ScriptInfos
@@ -25,16 +26,36 @@ namespace Mikoto.Helpers.Text.ScriptInfos
             {
                 AddMethod(scriptFile);
             }
-            ReleaseInitResources();
         }
 
-        private static List<FileSystemWatcher> fileSystemWatchers = new List<FileSystemWatcher>();
+
+        //事件可能会在短时间内引发多次，需要添加防抖机制
+        private DateTime lastRead = DateTime.MinValue;
+        private string lastFile = string.Empty;
+        //避免被回收的引用
+        private static readonly List<FileSystemWatcher> fileSystemWatchers = new List<FileSystemWatcher>();
         private void AddFileSystemListener(string path)
         {
             // 创建一个FileSystemWatcher对象并设置要监控的目录
-            FileSystemWatcher watcher = new FileSystemWatcher(path);
+            FileSystemWatcher watcher = new(path, $"*.{FileExtension}");
             fileSystemWatchers.Add(watcher);
-            void OnChanged(object source, FileSystemEventArgs e)
+
+            // 监听文件创建、删除、修改和重命名事件
+            watcher.Created += OnChanged;
+            watcher.Deleted += OnChanged;
+            watcher.Changed += OnChanged;
+            watcher.Renamed += OnChanged;
+
+            // 开始监控
+            watcher.EnableRaisingEvents = true;
+        }
+
+        private void OnChanged(object source, FileSystemEventArgs e)
+        {
+            DateTime currentRead = DateTime.Now;
+            const int DEBOUNCING_TIME = 500;
+            if ((currentRead - lastRead).TotalMilliseconds > DEBOUNCING_TIME ||
+                lastFile != e.FullPath)
             {
                 Console.WriteLine($"File: {e.FullPath} {e.ChangeType}");
 
@@ -51,7 +72,7 @@ namespace Mikoto.Helpers.Text.ScriptInfos
                         AddMethod(e.FullPath);
                         break;
                     case WatcherChangeTypes.Renamed:
-                        string scriptFile = (e as RenamedEventArgs)!.OldFullPath;
+                        string scriptFile = ((RenamedEventArgs)e).OldFullPath;
                         //卸载旧文件
                         RemoveMethod(scriptFile);
                         AddMethod(e.FullPath);
@@ -59,20 +80,14 @@ namespace Mikoto.Helpers.Text.ScriptInfos
                 }
 
                 TextRepair.RefreshListOrder();
+                lastRead = currentRead;
+                lastFile = e.FullPath;
             }
-
-            // 监听文件创建、删除、修改和重命名事件
-            watcher.Created += OnChanged;
-            watcher.Deleted += OnChanged;
-            watcher.Changed += OnChanged;
-            watcher.Renamed += OnChanged;
-
-            // 开始监控
-            watcher.EnableRaisingEvents = true;
         }
         private void AddMethod(string scriptFile)
         {
             //需要先加载依赖
+            WaitFileHelper.WaitUntilReadable(scriptFile);
             var method = GetMethod(scriptFile);
             if (method == null)
             {
@@ -95,11 +110,6 @@ namespace Mikoto.Helpers.Text.ScriptInfos
         /// 初始化可重用资源
         /// </summary>
         protected virtual void InitEngine() { }
-
-        /// <summary>
-        /// 结束初始化，释放初始化使用的临时资源
-        /// </summary>
-        protected virtual void ReleaseInitResources() { }
 
         protected abstract TextPreProcessFunction? GetMethod(string scriptFile);
     }

@@ -337,7 +337,7 @@ namespace Mikoto
             string repairedText = _tempData;
             if (!string.IsNullOrWhiteSpace(GlobalWorkingData.Instance.UsingRepairFunc))
             {
-                repairedText = TextRepair.RepairFun_Auto(GlobalWorkingData.Instance.UsingRepairFunc, _tempData);
+                repairedText = TextRepair.PreProcessSrc(GlobalWorkingData.Instance.UsingRepairFunc, _tempData);
             }
 
             if (!Common.AppSettings.EachRowTrans) // 不启用分行翻译

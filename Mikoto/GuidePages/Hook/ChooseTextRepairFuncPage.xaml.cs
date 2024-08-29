@@ -19,7 +19,7 @@ namespace Mikoto.GuidePages.Hook
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.DisplayNameToNameDict.Value[RepairFuncComboBox.SelectedValue.ToString()!], sourceTextBox.Text ?? string.Empty);
+                    repairedTextBox.Text = TextRepair.PreProcessSrc(TextRepair.DisplayNameToNameDict.Value[RepairFuncComboBox.SelectedValue.ToString()!], sourceTextBox.Text ?? string.Empty);
                 });
             };
             RepairFuncComboBox.SelectedIndex = 0;
@@ -31,13 +31,17 @@ namespace Mikoto.GuidePages.Hook
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 sourceTextBox.Text = e.Data.Data;
-                repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.DisplayNameToNameDict.Value[RepairFuncComboBox.SelectedValue.ToString()!], sourceTextBox.Text ?? string.Empty);
+                repairedTextBox.Text = TextRepair.PreProcessSrc(TextRepair.DisplayNameToNameDict.Value[RepairFuncComboBox.SelectedValue.ToString()!], sourceTextBox.Text ?? string.Empty);
             });
         }
 
         private void RepairFuncComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string selectedItem = RepairFuncComboBox.SelectedItem.ToString() ?? throw new NullReferenceException();
+            if (RepairFuncComboBox.SelectedValue == null)
+            {
+                RepairFuncComboBox.SelectedIndex = 0;
+            }
+            string selectedItem = RepairFuncComboBox.SelectedValue!.ToString()!;
 
             switch (TextRepair.DisplayNameToNameDict.Value[selectedItem])
             {
@@ -52,12 +56,12 @@ namespace Mikoto.GuidePages.Hook
                     break;
             }
 
-            repairedTextBox.Text = TextRepair.RepairFun_Auto(TextRepair.DisplayNameToNameDict.Value[selectedItem], sourceTextBox.Text);
+            repairedTextBox.Text = TextRepair.PreProcessSrc(TextRepair.DisplayNameToNameDict.Value[selectedItem], sourceTextBox.Text);
         }
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            string selectedItem = RepairFuncComboBox.SelectedItem.ToString() ?? throw new NullReferenceException();
+            string selectedItem = RepairFuncComboBox.SelectedValue!.ToString()!;
             GlobalWorkingData.Instance.UsingRepairFunc = TextRepair.DisplayNameToNameDict.Value[selectedItem];
 
             //写入去重方法
