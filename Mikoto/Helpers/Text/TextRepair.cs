@@ -3,7 +3,6 @@ using Microsoft.Scripting.Utils;
 using Mikoto.Helpers.Container;
 using Mikoto.Helpers.Text.ScriptInfos;
 using Mikoto.Windows.Logger;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 

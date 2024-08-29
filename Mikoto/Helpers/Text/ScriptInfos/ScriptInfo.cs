@@ -57,8 +57,6 @@ namespace Mikoto.Helpers.Text.ScriptInfos
             if ((currentRead - lastRead).TotalMilliseconds > DEBOUNCING_TIME ||
                 lastFile != e.FullPath)
             {
-                Console.WriteLine($"File: {e.FullPath} {e.ChangeType}");
-
                 switch (e.ChangeType)
                 {
                     case WatcherChangeTypes.Created:
