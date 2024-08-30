@@ -13,9 +13,20 @@ jobs:
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.x.x'
+<<<<<<< HEAD
 
     - name: Build the solution
       run: dotnet build
 
 
+=======
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build the solution
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
+>>>>>>> dd6c37d020037a5c337335c6fd2ad4043de50a97
 
