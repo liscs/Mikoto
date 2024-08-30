@@ -1,8 +1,9 @@
 name: CI
 on:
   push:
-    branches: [master]
+    branches: master
   pull_request:
+    branches: master
 
 jobs:
   build:
@@ -12,5 +13,12 @@ jobs:
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.x.x'
-    - run: dotnet build
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build the solution
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
 
