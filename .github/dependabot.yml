@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: nuget
     directory: "/"  # `*.csproj` 或 `packages.config` 文件所在的目录。
     schedule:
-      interval: daily  # 可以设置为 daily（每天）、weekly（每周）或 monthly（每月）。
+      interval: weekly  # 可以设置为 daily（每天）、weekly（每周）或 monthly（每月）。
     open-pull-requests-limit: 5  # 同时打开的 PR 的最大数量。
     commit-message:
       prefix: "nuget"
