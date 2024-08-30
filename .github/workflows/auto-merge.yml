@@ -22,8 +22,7 @@ jobs:
 
       - name: Merge Dependabot PRs
         run: |
-          git fetch origin
-          git merge --no-ff ${{ github.event.pull_request.head.ref }}
+          git merge --no-ff origin/${{ github.event.pull_request.head.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
