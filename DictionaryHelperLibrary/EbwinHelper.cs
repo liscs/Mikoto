@@ -8,7 +8,7 @@ namespace DictionaryHelperLibrary
     public class EbwinHelper
     {
         //Ebwin命令行用的词典路径信息的设置文件
-        private static string EBPOCKET = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EBWin4\\EBPOCKET.GRP";
+        private static readonly string EBPOCKET = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EBWin4\\EBPOCKET.GRP";
 
         //行列表
         private static List<string> EBPOCKETlist = new()

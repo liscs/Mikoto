@@ -10,16 +10,16 @@ namespace MecabHelperLibrary
         public static string KatakanaToHiraganaString(string katakana)
         {
             StringBuilder sb = new();
-            char[] target = katakana.ToCharArray();
-            char c;
-            for (int i = 0; i < target.Length; i++)
+            foreach (char c in katakana)
             {
-                c = target[i];
                 if (c >= 'ァ' && c <= 'ヴ')
                 { // 筛选片假名范围内的字符
-                    c = (char)(c - 0x0060);  // 片假名转换为平假名
+                    sb.Append((char)(c - 0x0060));  // 片假名转换为平假名
                 }
-                sb.Append(c);
+                else
+                {
+                    sb.Append(c);
+                }
             }
             return sb.ToString();
         }
