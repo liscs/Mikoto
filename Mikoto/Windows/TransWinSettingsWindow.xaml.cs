@@ -35,7 +35,7 @@ namespace Mikoto
             Application.Current.Dispatcher.BeginInvoke(() =>
                {
                    List<string> list = [];
-                   list.AddRange(Fonts.SystemFontFamilies.Select(p => p.GetLocalizedName()));
+                   list.AddRange(new System.Drawing.Text.InstalledFontCollection().Families.Select(p => p.Name));
                    list = list.Order().ToList();
                    _viewModel.FontList.SuppressNotification = true;
                    _viewModel.FontList.AddRange(list);
