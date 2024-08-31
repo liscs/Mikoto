@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:Mikoto"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
         Title="{DynamicResource TranslateWin_Dict_Title}"
         Height="300"
@@ -52,10 +53,7 @@
                     Click="Search_Btn_Click"></Button>
         </StackPanel>
 
-        <TextBox Grid.Row="1"
-                 Margin="10"
-                 Name="DicResText"
-                 TextWrapping="Wrap"
-                 VerticalScrollBarVisibility="Auto"></TextBox>
+        <wv2:WebView2 Grid.Row="1"
+                      Name="WebView"/>
     </Grid>
 </Window>

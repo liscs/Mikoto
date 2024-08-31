@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Mikoto"
+        xmlns:local="clr-namespace:Mikoto.Windows"
         d:DataContext="{d:DesignInstance Type=local:TranslateViewModel}"
         mc:Ignorable="d"
         WindowStyle="None"
@@ -145,7 +145,7 @@
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1"
-                    Orientation="Vertical" Margin="{Binding TextTopMargin}">
+                    Orientation="Vertical">
             <hc:SimplePanel Visibility="{Binding SourcePanelVisibility}"
                             Margin="10,0,10,0">
                 <RichTextBox x:Name="SourceRichTextBox1"
@@ -159,7 +159,8 @@
                              FontSize="{Binding SourceTextFontSize}"
                              ContextMenuOpening="SourceRichTextBoxRightClickMenu_Opening"
                              PreviewMouseWheel="SourceRichTextBox_PreviewMouseWheel"
-                             ScrollViewer.ScrollChanged="SourceRichTextBox_ScrollChanged">
+                             ScrollViewer.ScrollChanged="SourceRichTextBox_ScrollChanged"
+                             Padding="0">
                     <RichTextBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Command="ApplicationCommands.Copy" />
@@ -186,7 +187,8 @@
                              Visibility="Collapsed"
                              ContextMenuOpening="SourceRichTextBoxRightClickMenu_Opening"
                              PreviewMouseWheel="SourceRichTextBox_PreviewMouseWheel"
-                             ScrollViewer.ScrollChanged="SourceRichTextBox_ScrollChanged">
+                             ScrollViewer.ScrollChanged="SourceRichTextBox_ScrollChanged"
+                             Padding="0">
                     <RichTextBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Command="ApplicationCommands.Copy" />
@@ -210,13 +212,10 @@
                             StrokeThickness="{Binding FirstTextStrokeThickness}"
                             FontWeight="{Binding FirstTextFontWeight}"
                             Name="FirstTransText"
-                            Margin="10,0,10,0"
+                            Margin="10,10,10,0"
                             TextWrapping="Wrap"
                             StrokePosition="Outside">
-                <hc:OutlineText.RenderTransform>
-                    <TranslateTransform Y="-4" />
-                </hc:OutlineText.RenderTransform>
-                
+
             </hc:OutlineText>
             <hc:OutlineText Text=""
                             FontFamily="{Binding SecondTextFontFamily}"
@@ -226,7 +225,7 @@
                             StrokeThickness="{Binding SecondTextStrokeThickness}"
                             FontWeight="{Binding SecondTextFontWeight}"
                             Name="SecondTransText"
-                            Margin="10,0,10,0"
+                            Margin="10,10,10,0"
                             TextWrapping="Wrap"
                             StrokePosition="Outside">
             </hc:OutlineText>

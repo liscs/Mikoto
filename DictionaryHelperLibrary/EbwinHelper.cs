@@ -88,7 +88,7 @@ namespace DictionaryHelperLibrary
             };
             if (dictionaryName == "")
             {
-                process.StartInfo.Arguments = $"-C=1 -N=20 -M=a {entry}";
+                process.StartInfo.Arguments = $"-O=h -C=1 -N=20 -M=a {entry}";
             }
             else
             {
@@ -114,7 +114,7 @@ namespace DictionaryHelperLibrary
                 {
                     if (v.Contains(dictionaryName))
                     {
-                        process.StartInfo.Arguments = $"-C=1 -N=20 -M=a -#={dictionaries[v]} {entry}";
+                        process.StartInfo.Arguments = $"-O=h -C=1 -N=20 -M=a -#={dictionaries[v]} {entry}";
                     }
                 }
             }

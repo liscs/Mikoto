@@ -43,15 +43,19 @@ namespace Mikoto
         {
             if (string.IsNullOrWhiteSpace(s))
                 return;
-            Dispatcher.BeginInvoke(() =>
+            Dispatcher.BeginInvoke(async () =>
             {
                 string ret = EbwinHelper.Search(s);
                 this.SourceWord.Text = s;
                 this.Topmost = true;
-                this.DicResText.Text = HttpUtility.HtmlDecode(ret);
-                if (string.IsNullOrWhiteSpace(DicResText.Text))
+                await WebView.EnsureCoreWebView2Async();
+                if (string.IsNullOrWhiteSpace(ret))
                 {
-                    DicResText.Text = (string)FindResource("TranslateWin_DictError_Hint");
+                    WebView.NavigateToString((string)FindResource("TranslateWin_DictError_Hint"));
+                }
+                else
+                {
+                    WebView.NavigateToString(ret);
                 }
             });
         }
