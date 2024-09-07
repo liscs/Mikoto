@@ -31,7 +31,7 @@ namespace Mikoto.GuidePages.Hook
             HookFunListView.ItemsSource = lstData;
             sum = 0;
             GlobalWorkingData.Instance.TextHooker.HookMessageReceived += FilterAndDisplayData;
-            _ = GlobalWorkingData.Instance.TextHooker.StartHook(Convert.ToBoolean(Common.AppSettings.AutoHook));
+            _ = GlobalWorkingData.Instance.TextHooker.StartHook(GameInfoBuilder.GameInfo,Convert.ToBoolean(Common.AppSettings.AutoHook));
         }
 
         public void FilterAndDisplayData(object sender, HookReceivedEventArgs e)
@@ -71,8 +71,6 @@ namespace Mikoto.GuidePages.Hook
                 string hookAdd = lstData[HookFunListView.SelectedIndex].HookAddress;
                 int pid = lstData[HookFunListView.SelectedIndex].GamePID;
                 GlobalWorkingData.Instance.TextHooker.HookMessageReceived -= FilterAndDisplayData;
-                GlobalWorkingData.Instance.TextHooker.HookCodeList.Add(lstData[HookFunListView.SelectedIndex].HookCode);
-                GlobalWorkingData.Instance.TextHooker.MisakaCodeList.Add(lstData[HookFunListView.SelectedIndex].MisakaHookCode);
 
                 List<string> usedHook = new List<string>
                 {

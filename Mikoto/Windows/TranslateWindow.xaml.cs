@@ -28,6 +28,8 @@ using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
 using RichTextBox = System.Windows.Controls.RichTextBox;
+using TextBox = System.Windows.Controls.TextBox;
+using Window = System.Windows.Window;
 
 namespace Mikoto
 {
@@ -62,7 +64,7 @@ namespace Mikoto
         private TransWinSettingsWindow? _transWinSettingsWindow;
 
         private readonly DropShadowEffect _dropShadowEffect = new();
-        private PopupWindow? _historyWindow;
+        private Window? _historyWindow;
         public TranslateWindow()
         {
             InitializeComponent();
@@ -916,9 +918,10 @@ namespace Mikoto
             {
                 if (_historyWindow != null && _historyWindow.IsLoaded)
                 {
-                    if (_historyWindow.PopupElement is HandyControl.Controls.TextBox textBox)
+                    if (_historyWindow.Content is TextBox textBox)
                     {
                         textBox.Text = GetHistoryText();
+                        textBox.ScrollToEnd();
                     }
                 }
             }
@@ -1019,7 +1022,7 @@ namespace Mikoto
         {
             if (_historyWindow == null || !_historyWindow.IsLoaded)
             {
-                var textbox = new HandyControl.Controls.TextBox
+                var textbox = new TextBox
                 {
                     Text = GetHistoryText(),
                     FontSize = 15,
@@ -1029,9 +1032,9 @@ namespace Mikoto
                     VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
                     BorderThickness = new Thickness(0),
                 };
-                _historyWindow = new PopupWindow
+                _historyWindow = new Window
                 {
-                    PopupElement = textbox,
+                    Content = textbox,
                     WindowStartupLocation = WindowStartupLocation.CenterScreen,
                     BorderThickness = new Thickness(0, 0, 0, 0),
                     MaxWidth = 600,
@@ -1044,6 +1047,7 @@ namespace Mikoto
             }
             _historyWindow.Topmost = true;
             _historyWindow.Show();
+            ((TextBox)_historyWindow.Content).ScrollToEnd();
         }
 
         private enum HistoryOrderOption
@@ -1088,13 +1092,13 @@ namespace Mikoto
             StringBuilder historyStringBuilder = new();
             switch (historyOrderOption)
             {
-                case HistoryOrderOption.Default:
                 case HistoryOrderOption.LatestFirst:
                     for (int i = historyList.Length - 1; i > 0; i--)
                     {
                         historyStringBuilder.AppendLine(historyList[i].ToString());
                     }
                     break;
+                case HistoryOrderOption.Default:
                 case HistoryOrderOption.OldestFirst:
                     for (int i = 0; i < historyList.Length; i++)
                     {
