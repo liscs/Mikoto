@@ -221,8 +221,12 @@ namespace Mikoto.SettingsPages.DictionaryPages
                 {
                     fullPath = Path.GetDirectoryName(fullPath) ?? fullPath;
                 }
-
-                _ = Process.Start("explorer.exe", fullPath);
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = fullPath,
+                    UseShellExecute = true,
+                    Verb = "open"
+                });
             }
         }
 

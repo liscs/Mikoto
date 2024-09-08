@@ -284,7 +284,12 @@ namespace Mikoto
             string? gameFileDirectory = Path.GetDirectoryName(GameInfoList[(int)((TextBlock)sender).Tag].FilePath);
             if (Directory.Exists(gameFileDirectory))
             {
-                Process.Start("explorer.exe", gameFileDirectory);
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = gameFileDirectory,
+                    UseShellExecute = true,
+                    Verb = "open"
+                });
             }
         }
 
