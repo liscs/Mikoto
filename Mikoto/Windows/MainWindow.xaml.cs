@@ -552,11 +552,11 @@ namespace Mikoto
         {
             GameInfoList = GameHelper.GetAllCompletedGames();
 
-            foreach ((_, string path) in ProcessHelper.GetProcessesData())
+            foreach (string path in ProcessHelper.GetAppPaths())
             {
                 for (int j = 0; j < GameInfoList.Count; j++)
                 {
-                    if (path == GameInfoList[j].FilePath)
+                    if (path.Equals(GameInfoList[j].FilePath, StringComparison.InvariantCultureIgnoreCase))
                         return j;
                 }
             }

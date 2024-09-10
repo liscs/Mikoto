@@ -16,7 +16,7 @@ namespace Mikoto.GuidePages.Hook
     /// </summary>
     public partial class ChooseGamePage : Page
     {
-        private readonly Dictionary<string, int> _processList = ProcessHelper.GetProcessList_Name_PID();
+        private readonly Dictionary<string, int> _appNamePidDict = ProcessHelper.GetAppNamePidDict();
         private int _gamePid = -1;
         private List<Process> _sameNameGameProcessList = new();
         private static ChooseGameViewModel _viewModel = new();
@@ -31,12 +31,12 @@ namespace Mikoto.GuidePages.Hook
                 NoAdminPrivilegesTextBlock.Visibility = Visibility.Collapsed;
             }
 
-            GameProcessComboBox.ItemsSource = _processList.Keys.OrderBy(p => p);
+            GameProcessComboBox.ItemsSource = _appNamePidDict.Keys.OrderBy(p => p);
         }
 
         private void GameProcessComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _gamePid = _processList[(string)GameProcessComboBox.SelectedValue];
+            _gamePid = _appNamePidDict[(string)GameProcessComboBox.SelectedValue];
             _sameNameGameProcessList = ProcessHelper.FindSameNameProcess(_gamePid);
             AutoHookTag.Text = Application.Current.Resources["ChooseGamePage_AutoHookTag_Begin"].ToString() + _sameNameGameProcessList.Count + Application.Current.Resources["ChooseGamePage_AutoHookTag_End"].ToString();
         }
@@ -47,7 +47,7 @@ namespace Mikoto.GuidePages.Hook
             {
                 try
                 {
-                    GenerateHookerAndGotoNextStep(_processList[selectValueString]);
+                    GenerateHookerAndGotoNextStep(_appNamePidDict[selectValueString]);
                 }
                 catch (Win32Exception ex)
                 {
@@ -75,7 +75,7 @@ namespace Mikoto.GuidePages.Hook
             if (GlobalWorkingData.Instance.TextHooker.Init(isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
             {
                 GlobalWorkingData.Instance.GameID = Guid.Empty;
-                string filepath = ProcessHelper.FindProcessPath(_gamePid, isx64);
+                string filepath = ProcessHelper.FindProcessPath(_gamePid);
                 if (!string.IsNullOrEmpty(filepath))
                 {
                     GameInfoBuilder.Reset();
@@ -104,19 +104,5 @@ namespace Mikoto.GuidePages.Hook
             return !result;
         }
 
-        private static unsafe int GetProcessIdFromFocus()
-        {
-            uint thisPid;
-            PInvoke.GetWindowThreadProcessId(PInvoke.GetForegroundWindow(), &thisPid);
-            while (true)
-            {
-                uint pid;
-                if (PInvoke.GetWindowThreadProcessId(PInvoke.GetForegroundWindow(), &pid) != 0 && pid != thisPid)
-                {
-                    _viewModel.EnableSelectFocusButton = true;
-                    return (int)pid;
-                }
-            }
-        }
     }
 }

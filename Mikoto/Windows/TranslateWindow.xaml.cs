@@ -953,7 +953,7 @@ namespace Mikoto
         {
             if (GlobalWorkingData.Instance.TransMode == TransMode.Hook)
             {
-                if (GlobalWorkingData.Instance.TextHooker.Pause)
+                if (GlobalWorkingData.Instance.TextHooker.Paused)
                 {
                     ViewModel.PauseButtonIconText = "\uF8AE";
                 }
@@ -961,7 +961,7 @@ namespace Mikoto
                 {
                     ViewModel.PauseButtonIconText = "\uF5B0";
                 }
-                GlobalWorkingData.Instance.TextHooker.Pause = !GlobalWorkingData.Instance.TextHooker.Pause;
+                GlobalWorkingData.Instance.TextHooker.Paused = !GlobalWorkingData.Instance.TextHooker.Paused;
             }
         }
 

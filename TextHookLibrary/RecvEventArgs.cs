@@ -46,12 +46,6 @@
     /// <param name="e"></param>
     public delegate void HookMessageReceivedEventHandler(object sender, HookReceivedEventArgs e);
 
-    /// <summary>
-    /// Hook功能重新选择界面提供的数据收到事件，满足条件：特殊码满足，但附加特殊码不重复的输出都将触发此事件
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    public delegate void MeetHookCodeMessageReceivedEventHandler(object sender, HookReceivedEventArgs e);
 
     /// <summary>
     /// 翻译界面或文本去重界面提供的数据收到事件，满足条件：特殊码满足，且附加特殊码满足或为NoMulti将触发此事件

@@ -30,7 +30,7 @@ namespace TextHookLibrary
         /// <summary>
         /// 暂停Hook标志,为真时暂停获取文本
         /// </summary>
-        public bool Pause { get; set; }
+        public bool Paused { get; set; }
 
 
         public Queue<string> TextractorOutPutHistory { get; private set; }//Textractor的输出记录队列，用于查错
@@ -275,7 +275,7 @@ namespace TextHookLibrary
             _lastMessageStopwatch.Restart();
             if (outLine.Data == null) { return; }
             AddTextractorHistory(outLine.Data);
-            if (Pause) { return; }
+            if (Paused) { return; }
             _thData = DealTextratorOutput(outLine.Data);
             if (_thData != null)
             {
@@ -545,7 +545,7 @@ namespace TextHookLibrary
         /// <param name="ClipboardText"></param>
         private void ClipboardUpdated(string ClipboardText)
         {
-            if (Pause) // 暂停时什么也不做
+            if (Paused) // 暂停时什么也不做
                 return;
             SolvedDataReceivedEventArgs e = new SolvedDataReceivedEventArgs
             {
