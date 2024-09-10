@@ -109,15 +109,17 @@ namespace Mikoto
                         _gameProcess.EnableRaisingEvents = true;
                         _gameProcess.Exited += (_, _) =>
                         {
-                            _gameProcess.Dispose();
                             Application.Current.Dispatcher.Invoke(Close);
                         };
                     }
                     catch (Win32Exception)
                     {
-                        _gameProcess.Dispose();
                         Application.Current.Dispatcher.Invoke(Close);
                         throw;
+                    }
+                    finally
+                    {
+                        _gameProcess.Dispose();
                     }
 
                     break;

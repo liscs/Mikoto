@@ -5,6 +5,7 @@ using HandyControl.Tools.Extension;
 using Mikoto.Enums;
 using Mikoto.Helpers.File;
 using Mikoto.Helpers.Graphics;
+using Mikoto.RegionOverride;
 using Mikoto.Translators;
 using Mikoto.Windows;
 using System.ComponentModel;
@@ -290,28 +291,17 @@ namespace Mikoto
 
         private async Task StartTranslateByGid(int gid)
         {
-            List<Process> gameProcessList = new();
-            Stopwatch s = new();
-            s.Start();
-            while (s.Elapsed < TimeSpan.FromSeconds(5))
+            string name;
+            //不以exe结尾的ProcessName不会自动把后缀去掉，因此对exe后缀特殊处理
+            if (Path.GetExtension(GameInfoList[gid].FilePath).Equals(".exe", StringComparison.CurrentCultureIgnoreCase))
             {
-                string name;
-                //不以exe结尾的ProcessName不会自动把后缀去掉，因此对exe后缀特殊处理
-                if (Path.GetExtension(GameInfoList[gid].FilePath).Equals(".exe", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    name = Path.GetFileNameWithoutExtension(GameInfoList[gid].FilePath);
-                }
-                else
-                {
-                    name = Path.GetFileName(GameInfoList[gid].FilePath);
-                }
-                gameProcessList = Process.GetProcessesByName(name).ToList();
-                if (gameProcessList.Count > 0)
-                {
-                    break;
-                }
+                name = Path.GetFileNameWithoutExtension(GameInfoList[gid].FilePath);
             }
-            s.Stop();
+            else
+            {
+                name = Path.GetFileName(GameInfoList[gid].FilePath);
+            }
+            List<Process> gameProcessList = Process.GetProcessesByName(name).ToList();
 
             if (gameProcessList.Count == 0)
             {
@@ -456,20 +446,9 @@ namespace Mikoto
                 MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{path}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
                 return;
             }
+            ProcessStartInfo processStartInfo = new ProcessStartInfo(path);
 
-            var p = new ProcessStartInfo();
-            var lePath = Common.AppSettings.LEPath;
-            p.FileName = lePath + "\\LEProc.exe";
-            if (!File.Exists(p.FileName))
-            {
-                MessageBox.Show(messageBoxText: $"{p.FileName}{Application.Current.Resources["MainWindow_LEProcNotExistError"]}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
-                return;
-            }
-            // 记住加上引号，否则可能会因为路径带空格而无法启动
-            p.Arguments = $"-run \"{path}\"";
-            p.UseShellExecute = false;
-            p.WorkingDirectory = lePath;
-            Process.Start(p);
+            RegionOverrideLauncher.Start(processStartInfo);
             GameInfoDrawer.IsOpen = false;
             await StartTranslateByGid(_gid);
             Refresh();
@@ -565,7 +544,7 @@ namespace Mikoto
         private int GetRunningGameGid()
         {
             GameInfoList = GameHelper.GetAllCompletedGames();
-
+            
             foreach ((_, string path) in ProcessHelper.GetProcessesData())
             {
                 for (int j = 0; j < GameInfoList.Count; j++)

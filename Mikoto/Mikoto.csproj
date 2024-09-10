@@ -32,6 +32,7 @@
 		<ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
 		<ProjectReference Include="..\DictionaryHelperLibrary\DictionaryHelperLibrary.csproj" />
 		<ProjectReference Include="..\MecabHelperLibrary\MecabHelperLibrary.csproj" />
+		<ProjectReference Include="..\Mikoto.RegionOverride\Mikoto.RegionOverride.csproj" />
 		<ProjectReference Include="..\TextHookLibrary\TextHookLibrary.csproj" />
 		<ProjectReference Include="..\TransOptimizationLibrary\TransOptimizationLibrary.csproj" />
 		<ProjectReference Include="..\TTSHelperLibrary\TTSHelperLibrary.csproj" />
