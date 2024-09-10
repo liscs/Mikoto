@@ -1,9 +1,0 @@
-WaitForSingleObject
-CloseHandle
-AttachConsole
-LoadLibrary
-FreeLibrary
-GetModuleHandle
-CreateProcess
-
-_SYSTEMTIME
