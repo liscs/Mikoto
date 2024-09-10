@@ -285,7 +285,12 @@ namespace Mikoto
             string? gameFileDirectory = Path.GetDirectoryName(GameInfoList[(int)((TextBlock)sender).Tag].FilePath);
             if (Directory.Exists(gameFileDirectory))
             {
-                Process.Start("explorer.exe", gameFileDirectory);
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = gameFileDirectory,
+                    UseShellExecute = true,
+                    Verb = "open"
+                });
             }
         }
 
@@ -337,10 +342,8 @@ namespace Mikoto
                 MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
                 return;
             }
-            GlobalWorkingData.Instance.TextHooker.HookCodeList.Add(GameInfoList[gid].HookCode);
-            GlobalWorkingData.Instance.TextHooker.HookCode_Custom = GameInfoList[gid].HookCodeCustom;
-            GlobalWorkingData.Instance.TextHooker.MisakaCodeList.Add(GameInfoList[gid].MisakaHookCode);
-            await GlobalWorkingData.Instance.TextHooker.StartHook(Convert.ToBoolean(Common.AppSettings.AutoHook));
+
+            await GlobalWorkingData.Instance.TextHooker.StartHook(GameInfoList[gid], Convert.ToBoolean(Common.AppSettings.AutoHook));
 
             if (!await GlobalWorkingData.Instance.TextHooker.AutoAddCustomHookToGameAsync())
             {
@@ -563,8 +566,6 @@ namespace Mikoto
             GlobalWorkingData.Instance.GameID = Guid.Empty;
             GlobalWorkingData.Instance.TransMode = TransMode.Hook;
             GlobalWorkingData.Instance.TextHooker.AddClipBoardThread();
-            GlobalWorkingData.Instance.TextHooker.HookCodeList.Add("HB0@0");
-            GlobalWorkingData.Instance.TextHooker.MisakaCodeList.Add("【0:-1:-1】");
 
             var ggw = new GameGuideWindow(TransMode.Clipboard);
             ggw.Show();
