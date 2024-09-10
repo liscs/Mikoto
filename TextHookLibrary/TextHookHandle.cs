@@ -21,11 +21,6 @@ namespace TextHookLibrary
         public event HookMessageReceivedEventHandler? HookMessageReceived;
 
         /// <summary>
-        /// Hook功能重新选择界面提供的数据收到事件
-        /// </summary>
-        public event MeetHookCodeMessageReceivedEventHandler? MeetHookCodeMessageReceived;
-
-        /// <summary>
         /// 翻译界面或文本去重界面提供的数据收到事件
         /// </summary>
         public event MeetHookAddressMessageReceivedEventHandler? MeetHookAddressMessageReceived;
