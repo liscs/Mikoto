@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <UseWindowsForms>true</UseWindowsForms>
     <UseWin32>true</UseWin32>
   </PropertyGroup>
 

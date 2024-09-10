@@ -1,7 +1,6 @@
 ﻿using DictionaryHelperLibrary;
 using HandyControl.Controls;
 using System.ComponentModel;
-using System.Web;
 using System.Windows;
 using TTSHelperLibrary;
 

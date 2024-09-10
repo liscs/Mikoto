@@ -14,7 +14,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
@@ -27,7 +26,6 @@ namespace Mikoto
     {
         public List<GameInfo> GameInfoList { get; set; } = new();
         private int _gid; //当前选中的顺序，并非游戏ID
-        private IntPtr _hwnd;
 
         public static MainWindow Instance { get; set; } = default!;
 
@@ -185,21 +183,6 @@ namespace Mikoto
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             AddNewGameDrawer.IsOpen = true;
-        }
-
-        private void MainWindow_SourceInitialized(object? sender, EventArgs e)
-        {
-            _hwnd = new WindowInteropHelper(this).Handle;
-            HwndSource.FromHwnd(_hwnd)?.AddHook(WndProc);
-            //解决UAC选择No后窗口会被Explorer覆盖 并通过TopMost调整窗口Z Order
-            base.Activate();
-            base.Topmost = true;
-            base.Topmost = false;
-        }
-
-        private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            return IntPtr.Zero;
         }
 
         private WeakReference<SettingsWindow>? _settingsWindow;
@@ -586,19 +569,20 @@ namespace Mikoto
             GlobalWorkingData.Instance.TextHooker = new TextHookHandle();
             GlobalWorkingData.Instance.GameID = Guid.Empty;
             GlobalWorkingData.Instance.TransMode = TransMode.Hook;
-            GlobalWorkingData.Instance.TextHooker.AddClipBoardThread();
+            GlobalWorkingData.Instance.TextHooker.AddClipBoardWatcher();
 
             var ggw = new GameGuideWindow(TransMode.Clipboard);
             ggw.Show();
         }
 
 
-        private async void BlurWindow_ContentRendered(object sender, EventArgs e)
+        private void BlurWindow_ContentRendered(object sender, EventArgs e)
         {
             if (Common.AppSettings.UpdateCheckEnabled)
             {
-                await Common.CheckUpdateAsync();
+                _ = Common.CheckUpdateAsync();
             }
+
         }
 
         /// <summary>

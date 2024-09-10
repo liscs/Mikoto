@@ -2,6 +2,8 @@ using DataAccessLibrary;
 using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
+using Windows.ApplicationModel.DataTransfer;
+using Clipboard = Windows.ApplicationModel.DataTransfer.Clipboard;
 
 namespace TextHookLibrary
 {
@@ -40,8 +42,6 @@ namespace TextHookLibrary
 
         private int listIndex;//用于Hook功能选择界面的方法序号
         private Dictionary<string, int> _textractorFunIndexList;//Misaka特殊码与列表索引一一对应
-
-        private ClipboardMonitor? _clipboardMonitor;//剪贴板监视 对象
 
         private GameInfo? _gameInfo;
 
@@ -523,9 +523,20 @@ namespace TextHookLibrary
         /// 添加剪切板监视
         /// </summary>
         /// <param name="winHandle"></param>
-        public void AddClipBoardThread()
+        public void AddClipBoardWatcher()
         {
-            _clipboardMonitor = new ClipboardMonitor(ClipboardUpdated);
+            Clipboard.ContentChanged += Clipboard_ContentChanged;
+        }
+
+        private async void Clipboard_ContentChanged(object? sender, object e)
+        {
+            DataPackageView dataPackageView = Clipboard.GetContent();
+            if (dataPackageView.Contains(StandardDataFormats.Text))
+            {
+                string text = await dataPackageView.GetTextAsync();
+
+                ClipboardUpdated(text);
+            }
         }
 
         /// <summary>
@@ -575,8 +586,6 @@ namespace TextHookLibrary
                 CloseTextractor();
 
                 // TODO: 将大型字段设置为 null
-                _clipboardMonitor?.ClipboardNotification.UnregisterClipboardViewer();
-                _clipboardMonitor = null;
 
                 _disposedValue = true;
             }
