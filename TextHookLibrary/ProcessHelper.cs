@@ -23,7 +23,7 @@ namespace TextHookLibrary
                         info += "【" + p.MainWindowTitle + "】: ";
                     }
                     info += p.Id;
-                    result.Add(info, p.Id);
+                    result[info] = p.Id;
                 }
                 p.Dispose();
             }

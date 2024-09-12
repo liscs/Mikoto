@@ -2,6 +2,7 @@
 using Mikoto.Enums;
 using Mikoto.Windows;
 using System.ComponentModel;
+using System.Drawing.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -34,9 +35,10 @@ namespace Mikoto
         {
             Application.Current.Dispatcher.BeginInvoke(() =>
                {
-                   List<string> list = [];
-                   list.AddRange(new System.Drawing.Text.InstalledFontCollection().Families.Select(p => p.Name));
-                   list = list.Order().ToList();
+                   List<string> list = new InstalledFontCollection().Families
+                   .Select(p => p.Name)
+                   .Order()
+                   .ToList();
                    _viewModel.FontList.SuppressNotification = true;
                    _viewModel.FontList.AddRange(list);
                    _viewModel.FontList.SuppressNotification = false;
@@ -261,7 +263,7 @@ namespace Mikoto
 
         private bool _fontInited = false;
 
-        private void Font_ContextMenuOpening(object sender, System.EventArgs e)
+        private void Font_ContextMenuOpening(object sender, EventArgs e)
         {
             if (_fontInited == false)
             {
