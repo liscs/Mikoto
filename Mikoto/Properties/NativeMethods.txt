@@ -1,38 +1,16 @@
-// enum
-Windows.Win32.Security.TOKEN_ELEVATION_TYPE
-Windows.Win32.UI.WindowsAndMessaging.HWND_TOPMOST
-Windows.Win32.Graphics.Gdi.ENUM_DISPLAY_SETTINGS_MODE
+HWND_TOPMOST
+ENUM_DISPLAY_SETTINGS_MODE
 
 
-// structure
-Windows.Win32.Security.TOKEN_ELEVATION
-Windows.Win32.Graphics.Gdi.DEVMODEW
+DEVMODEW
 
 
-// function
-Windows.Win32.Security.GetTokenInformation
-Windows.Win32.System.Threading.OpenProcessToken
-Windows.Win32.UI.Shell.StrCmpLogicalW
-Windows.Win32.UI.WindowsAndMessaging.GetCursorPos
-Windows.Win32.UI.WindowsAndMessaging.SetWindowPos
+SetWindowPos
 EnumDisplaySettings
 
-//获得窗口pid用
-GetForegroundWindow
-GetWindowThreadProcessId
-
-//获取顶部窗口
-GetTopWindow
 
 //检查进程是否64位
 IsWow64Process
 
 
-//图片
-Windows.Win32.UI.WindowsAndMessaging.IMAGE_FLAGS
-Windows.Win32.UI.WindowsAndMessaging.DestroyIcon
-Windows.Win32.UI.WindowsAndMessaging.PrivateExtractIcons
-
-
 DwmSetWindowAttribute
-Windows.Win32.Graphics.Dwm.DWMWINDOWATTRIBUTE

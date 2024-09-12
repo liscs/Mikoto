@@ -24,6 +24,7 @@ SOFTWARE.
  */
 
 
+using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -60,7 +61,7 @@ namespace Mikoto.Helpers.Graphics
             });
         }
 
-        public BitmapSource Process(int radial)
+        public BitmapImage Process(int radial)
         {
             var newAlpha = new int[_width * _height];
             var newRed = new int[_width * _height];
@@ -93,9 +94,15 @@ namespace Mikoto.Helpers.Graphics
             byte[] result = new byte[dest.Length * sizeof(int)];
             Buffer.BlockCopy(dest, 0, result, 0, result.Length);
 
-            BitmapSource image = BitmapSource.Create(_width, _height, 96, 96, PixelFormats.Bgra32, null, result, sizeof(int) * _width);
-            image.Freeze();
-            return image;
+            using (var ms = new MemoryStream(result))
+            {
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad; // here
+                image.StreamSource = ms;
+                image.EndInit();
+                return image;
+            }
         }
 
         private void GaussBlur_4(int[] source, int[] dest, int r)

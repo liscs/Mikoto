@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using Windows.Graphics.Display;
 using Windows.Win32;
 using Windows.Win32.Graphics.Gdi;
 
