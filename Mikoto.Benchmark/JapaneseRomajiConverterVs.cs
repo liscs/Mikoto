@@ -1,5 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
-using MecabHelperLibrary;
+using Mikoto.Mecab;
 
 namespace Mikoto.Benchmark;
 

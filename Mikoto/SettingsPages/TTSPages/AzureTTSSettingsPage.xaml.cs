@@ -1,10 +1,10 @@
 ﻿using HandyControl.Controls;
 using Microsoft.CognitiveServices.Speech;
 using Microsoft.Scripting.Utils;
+using Mikoto.TTS;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using TTSHelperLibrary;
 
 namespace Mikoto.SettingsPages.TTSPages
 {
@@ -13,7 +13,7 @@ namespace Mikoto.SettingsPages.TTSPages
     /// </summary>
     public partial class AzureTTSSettingsPage : Page
     {
-        private AzureTTSSettingsViewModel _viewModel = new();
+        private AzureTTSSettingsPageViewModel _viewModel = new();
 
         private AzureTTS azureTTS;
 

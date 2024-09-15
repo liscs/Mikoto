@@ -1,7 +1,7 @@
 ﻿using Mikoto.Enums;
+using Mikoto.TextHook;
 using System.IO;
 using System.Windows;
-using TextHookLibrary;
 
 namespace Mikoto
 {

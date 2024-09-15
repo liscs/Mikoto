@@ -3,14 +3,10 @@ using Mikoto.Helpers.File;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Windows.Storage.FileProperties;
-using Windows.Storage.Search;
 using Windows.Storage;
-using Windows.Win32;
-using Windows.Win32.UI.WindowsAndMessaging;
+using Windows.Storage.FileProperties;
 
 namespace Mikoto.Helpers.Graphics
 {

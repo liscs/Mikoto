@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Mikoto.ArtificialTrans;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -73,7 +74,7 @@ namespace Mikoto.SettingsPages
             if (dialog.ShowDialog().GetValueOrDefault())
             {
                 string savePath = dialog.FileName;
-                bool res = ArtificialTransHelperLibrary.ArtificialTransHelper.ExportDBtoFile(savePath, strNames[PatchFileComboBox.SelectedIndex]);
+                bool res = ArtificialTransHelper.ExportDBtoFile(savePath, strNames[PatchFileComboBox.SelectedIndex]);
 
                 if (res)
                 {

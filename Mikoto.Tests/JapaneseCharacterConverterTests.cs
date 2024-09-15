@@ -1,5 +1,5 @@
-﻿using MecabHelperLibrary;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Mikoto.Mecab;
 
 namespace Mikoto.Tests
 {

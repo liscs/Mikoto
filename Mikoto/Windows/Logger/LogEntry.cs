@@ -3,7 +3,7 @@ using System.Windows.Media;
 using DateTimeA = System.DateTime;
 namespace Mikoto.Windows.Logger
 {
-    public class LogEntry : ViewModelBase
+    internal class LogEntry : ViewModelBase
     {
         private static int index = 0;
         public string DateTime { get; set; } = DateTimeA.Now.ToString();

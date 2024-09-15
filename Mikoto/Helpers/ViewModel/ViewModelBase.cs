@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Mikoto.Helpers.ViewModel
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    internal class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)

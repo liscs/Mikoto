@@ -9,7 +9,7 @@ namespace Mikoto.SettingsPages
     /// </summary>
     public partial class SoftwareSettingsPage : Page
     {
-        private SoftwareSettingsViewModel _viewModel = new();
+        private SoftwareSettingsPageViewModel _viewModel = new();
         public SoftwareSettingsPage()
         {
             InitializeComponent();

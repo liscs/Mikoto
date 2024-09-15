@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using TransOptimizationLibrary;
+﻿using Mikoto.TransOptimization;
+using System.Windows;
 
 namespace Mikoto
 {

@@ -28,14 +28,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\ArtificialTransHelperLibrary\ArtificialTransHelperLibrary.csproj" />
-		<ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
-		<ProjectReference Include="..\DictionaryHelperLibrary\DictionaryHelperLibrary.csproj" />
-		<ProjectReference Include="..\MecabHelperLibrary\MecabHelperLibrary.csproj" />
-		<ProjectReference Include="..\TextHookLibrary\TextHookLibrary.csproj" />
-		<ProjectReference Include="..\TransOptimizationLibrary\TransOptimizationLibrary.csproj" />
-		<ProjectReference Include="..\TTSHelperLibrary\TTSHelperLibrary.csproj" />
-		<ProjectReference Include="..\Updater\Updater.csproj" />
+		<ProjectReference Include="..\Mikoto.ArtificialTrans\Mikoto.ArtificialTrans.csproj" />
+		<ProjectReference Include="..\Mikoto.DataAccess\Mikoto.DataAccess.csproj" />
+		<ProjectReference Include="..\Mikoto.Dictionary\Mikoto.Dictionary.csproj" />
+		<ProjectReference Include="..\Mikoto.Mecab\Mikoto.Mecab.csproj" />
+		<ProjectReference Include="..\Mikoto.TextHook\Mikoto.TextHook.csproj" />
+		<ProjectReference Include="..\Mikoto.TransOptimization\Mikoto.TransOptimization.csproj" />
+		<ProjectReference Include="..\Mikoto.TTS\Mikoto.TTS.csproj" />
+		<ProjectReference Include="..\Mikoto.Updater\Mikoto.Updater.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

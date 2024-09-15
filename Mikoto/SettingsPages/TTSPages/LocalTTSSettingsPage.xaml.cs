@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using Mikoto.TTS;
+using System.Windows;
 using System.Windows.Controls;
-using TTSHelperLibrary;
 
 
 namespace Mikoto.SettingsPages.TTSPages

@@ -1,7 +1,7 @@
 ﻿namespace Mikoto.Windows.Logger
 {
-    public class CollapsibleLogEntry : LogEntry
+    internal class CollapsibleLogEntry : LogEntry
     {
-        public List<LogEntry> Contents { get; set; } = new();
+        internal List<LogEntry> Contents { get; set; } = new();
     }
 }

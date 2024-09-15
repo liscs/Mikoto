@@ -1,14 +1,13 @@
 using Config.Net;
-using DataAccessLibrary;
 using HandyControl.Controls;
 using HandyControl.Tools.Extension;
-
+using Mikoto.DataAccess;
 using Mikoto.Enums;
 using Mikoto.Helpers.File;
 using Mikoto.Helpers.Graphics;
+using Mikoto.TextHook;
 using Mikoto.Translators;
 using Mikoto.Windows;
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -19,11 +18,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using TextHookLibrary;
-using Windows.Devices.Display;
-using Windows.Devices.Enumeration;
-using Windows.Graphics.Display;
-using Windows.UI.Core;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace Mikoto
@@ -35,7 +29,7 @@ namespace Mikoto
 
         public static MainWindow Instance { get; set; } = default!;
 
-        private MainViewModel _viewModel = new();
+        private MainWindowViewModel _viewModel = new();
         public MainWindow()
         {
             TextRepair.InitCustomScripts();

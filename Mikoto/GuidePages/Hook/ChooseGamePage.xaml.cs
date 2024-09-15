@@ -1,10 +1,10 @@
-﻿using DataAccessLibrary;
-using Mikoto.SettingsPages;
+﻿using HandyControl.Controls;
+using Mikoto.DataAccess;
+using Mikoto.TextHook;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using TextHookLibrary;
 using Windows.Win32;
 
 
@@ -19,7 +19,7 @@ namespace Mikoto.GuidePages.Hook
         private readonly Dictionary<string, int> _appNamePidDict = ProcessHelper.GetAppNamePidDict();
         private int _gamePid = -1;
         private List<Process> _sameNameGameProcessList = new();
-        private static ChooseGameViewModel _viewModel = new();
+        private static ChooseGamePageViewModel _viewModel = new();
 
 
         public ChooseGamePage()
@@ -51,12 +51,12 @@ namespace Mikoto.GuidePages.Hook
                 }
                 catch (Win32Exception ex)
                 {
-                    HandyControl.Controls.Growl.Warning(ex.Message.ToString());
+                    Growl.Warning(ex.Message.ToString());
                 }
             }
             else
             {
-                HandyControl.Controls.Growl.Info(Application.Current.Resources["ChooseGamePage_NextErrorHint"].ToString());
+                Growl.Info(Application.Current.Resources["ChooseGamePage_NextErrorHint"].ToString());
             }
         }
 

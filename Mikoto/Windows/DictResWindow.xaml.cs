@@ -1,8 +1,8 @@
-﻿using DictionaryHelperLibrary;
-using HandyControl.Controls;
+﻿using HandyControl.Controls;
+using Mikoto.Dictionary;
+using Mikoto.TTS;
 using System.ComponentModel;
 using System.Windows;
-using TTSHelperLibrary;
 
 namespace Mikoto
 {

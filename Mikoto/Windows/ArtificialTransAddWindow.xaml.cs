@@ -1,4 +1,4 @@
-﻿using ArtificialTransHelperLibrary;
+﻿using Mikoto.ArtificialTrans;
 using System.Windows;
 
 namespace Mikoto

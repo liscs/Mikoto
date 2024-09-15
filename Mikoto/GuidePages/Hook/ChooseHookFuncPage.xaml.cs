@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
+﻿using Mikoto.TextHook;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using TextHookLibrary;
 
 namespace Mikoto.GuidePages.Hook
 {

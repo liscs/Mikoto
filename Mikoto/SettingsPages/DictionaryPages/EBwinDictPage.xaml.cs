@@ -1,5 +1,5 @@
-﻿using DictionaryHelperLibrary;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using Mikoto.Dictionary;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;

@@ -14,7 +14,7 @@ namespace Mikoto
     /// </summary>
     public partial class TransWinSettingsWindow : Window
     {
-        private TranslateViewModel _viewModel;
+        private TranslateWindowViewModel _viewModel;
         private TranslateWindow _translateWin;
 
         public TransWinSettingsWindow(TranslateWindow Win)

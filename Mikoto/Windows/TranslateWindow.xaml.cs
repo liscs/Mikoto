@@ -1,11 +1,14 @@
-﻿using ArtificialTransHelperLibrary;
-using HandyControl.Controls;
-using MecabHelperLibrary;
+﻿using HandyControl.Controls;
+using Mikoto.ArtificialTrans;
 using Mikoto.Enums;
 using Mikoto.Helpers.Graphics;
 using Mikoto.Helpers.Network;
+using Mikoto.Mecab;
+using Mikoto.TextHook;
 using Mikoto.Translators;
 using Mikoto.Translators.Interfaces;
+using Mikoto.TransOptimization;
+using Mikoto.TTS;
 using Mikoto.Windows;
 using Mikoto.Windows.Entities;
 using Mikoto.Windows.Logger;
@@ -21,9 +24,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Threading;
-using TextHookLibrary;
-using TransOptimizationLibrary;
-using TTSHelperLibrary;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
@@ -38,7 +38,7 @@ namespace Mikoto
     /// </summary>
     public partial class TranslateWindow
     {
-        public TranslateViewModel ViewModel { get; set; }
+        internal TranslateWindowViewModel ViewModel { get; set; }
 
         public DispatcherTimer DispatcherTimer { get; set; } = new();//定时器
 

@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using Mikoto.TextHook;
+using System.Windows;
 using System.Windows.Controls;
-using TextHookLibrary;
 
 namespace Mikoto.GuidePages.Hook
 {

@@ -9,7 +9,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\MecabHelperLibrary\MecabHelperLibrary.csproj" />
+	  <ProjectReference Include="..\Mikoto.Mecab\Mikoto.Mecab.csproj" />
 	</ItemGroup>
 
 </Project>

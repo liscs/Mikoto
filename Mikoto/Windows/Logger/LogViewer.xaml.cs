@@ -22,7 +22,7 @@ namespace Mikoto
             }
         }
 
-        public ObservableCollection<LogEntry> LogEntries { get; set; }
+        internal ObservableCollection<LogEntry> LogEntries { get; set; }
 
         private LogViewer()
         {
