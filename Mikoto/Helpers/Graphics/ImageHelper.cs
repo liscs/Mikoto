@@ -57,7 +57,15 @@ namespace Mikoto.Helpers.Graphics
 
         private static string[] GetFilteredIcoPath(string path)
         {
-            return Directory.GetFiles(Path.GetDirectoryName(path)!, "*.ico").Where(p => !p.Contains("uninst")).ToArray();
+            try
+            {
+                return Directory.GetFiles(Path.GetDirectoryName(path)!, "*.ico").Where(p => !p.Contains("uninst")).ToArray();
+
+            }
+            catch (DirectoryNotFoundException)
+            {
+                return Array.Empty<string>();
+            }
         }
 
         public static Brush GetMajorBrush(BitmapSource? bitmapSource)
