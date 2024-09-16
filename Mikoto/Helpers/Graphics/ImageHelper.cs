@@ -3,10 +3,11 @@ using Mikoto.Helpers.File;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Windows.Storage;
-using Windows.Storage.FileProperties;
+using Windows.Win32;
+using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace Mikoto.Helpers.Graphics
 {
@@ -27,7 +28,7 @@ namespace Mikoto.Helpers.Graphics
             return result;
         }
 
-        public static async Task<Image> GetGameIconAsync(string path)
+        public static Image GetGameIcon(string path)
         {
             Image ico = new()
             {
@@ -36,16 +37,16 @@ namespace Mikoto.Helpers.Graphics
                 Margin = new Thickness(43, 0, 43, 0),
             };
 
-            ico.Source = await GetGameIconSourceAsync(path);
+            ico.Source = GetGameIconSource(path);
 
             return ico;
         }
 
-        public static async Task<BitmapImage?> GetGameIconSourceAsync(string path)
+        public static BitmapSource? GetGameIconSource(string path)
         {
             path = HookFileHelper.ToEntranceFilePath(path);
 
-            BitmapImage? bitmapImage = await GetFileIconAsync(path);
+            BitmapSource? bitmapImage = GetFileIcon(path);
             string[] icoPaths = GetFilteredIcoPath(path);
             if (icoPaths.Length != 0)
             {
@@ -147,7 +148,7 @@ namespace Mikoto.Helpers.Graphics
             };
         }
 
-        public static BitmapImage GetBlurImage(BitmapSource bitmap)
+        public static BitmapSource GetBlurImage(BitmapSource bitmap)
         {
             PixelColor[,] pixels = GetPixels(bitmap);
             pixels = Normalize(pixels);
@@ -267,21 +268,40 @@ namespace Mikoto.Helpers.Graphics
         /// </summary>
         /// <param name="filepath"></param>
         /// <returns></returns>
-        private static async Task<BitmapImage?> GetFileIconAsync(string filepath)
+        private static unsafe BitmapSource? GetFileIcon(string filepath)
         {
-            StorageFile file = await StorageFile.GetFileFromPathAsync(filepath);
-            StorageItemThumbnail? thumbnail =
-                await file.GetThumbnailAsync(ThumbnailMode.SingleItem);
-            if (thumbnail != null)
+            //选中文件中的图标总数
+            var iconTotalCount = PInvoke.PrivateExtractIcons(filepath, 0, 0, 0, null, null, 0, 0);
+
+            //用于接收获取到的图标指针
+            Span<HICON> hIcons = stackalloc HICON[(int)iconTotalCount];
+
+            uint result = 0xFFFFFFFF;
+            fixed (HICON* p = hIcons)
             {
-                BitmapImage bitmapImage = new();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = thumbnail.AsStreamForRead();
-                bitmapImage.EndInit();
-                bitmapImage.Freeze();
-                return bitmapImage;
+                //成功获取到的图标个数
+                result = PInvoke.PrivateExtractIcons(filepath, 0, 256, 256, p, null, iconTotalCount, (uint)IMAGE_FLAGS.LR_DEFAULTCOLOR);
             }
-            return null;
+
+
+            BitmapSource? myIcon = null;
+            if (result > 0 && result != 0xFFFFFFFF)
+            {
+                myIcon = Imaging.CreateBitmapSourceFromHIcon(hIcons[0],
+                                                             Int32Rect.Empty,
+                                                             BitmapSizeOptions.FromEmptyOptions());
+            }
+
+            //遍历并保存图标
+            for (var i = 0; i < result; i++)
+            {
+                //指针为空，跳过
+                if (hIcons[i] == HICON.Null) continue;
+                //内存回收
+                PInvoke.DestroyIcon(hIcons[i]);
+            }
+
+            return myIcon;
         }
 
     }

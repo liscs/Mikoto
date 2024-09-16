@@ -18,18 +18,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using Windows.Devices.Display;
-using Windows.Devices.Enumeration;
-using Windows.Graphics.Display;
-using Windows.UI.Core;
-using Windows.Devices.Display;
-using Windows.Devices.Enumeration;
-using Windows.Graphics.Display;
-using Windows.UI.Core;
-using Windows.Devices.Display;
-using Windows.Devices.Enumeration;
-using Windows.Graphics.Display;
-using Windows.UI.Core;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace Mikoto
