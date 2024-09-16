@@ -18,6 +18,18 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using Windows.Devices.Display;
+using Windows.Devices.Enumeration;
+using Windows.Graphics.Display;
+using Windows.UI.Core;
+using Windows.Devices.Display;
+using Windows.Devices.Enumeration;
+using Windows.Graphics.Display;
+using Windows.UI.Core;
+using Windows.Devices.Display;
+using Windows.Devices.Enumeration;
+using Windows.Graphics.Display;
+using Windows.UI.Core;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace Mikoto
@@ -71,21 +83,21 @@ namespace Mikoto
         {
             if (GameInfoList.Count > 5)
             {
-                Task.Run(async () =>
+                Task.Run(() =>
                   {
-                      BitmapSource? image = await GetRandomBlurredImageAsync();
+                      BitmapSource? image = GetRandomBlurredImage();
                       if (image != null)
                       {
-                          await Dispatcher.BeginInvoke(() => Background = new ImageBrush(image));
+                          Dispatcher.BeginInvoke(() => Background = new ImageBrush(image));
                       }
                   });
             }
         }
 
-        private async Task<BitmapImage?> GetRandomBlurredImageAsync()
+        private BitmapSource? GetRandomBlurredImage()
         {
             int randomId = new Random().Next(GameInfoList.Count);
-            BitmapImage? ico = await ImageHelper.GetGameIconSourceAsync(GameInfoList[randomId].FilePath);
+            BitmapSource? ico = ImageHelper.GetGameIconSource(GameInfoList[randomId].FilePath);
             if (ico is null)
             {
                 return null;
@@ -109,7 +121,7 @@ namespace Mikoto
             }
         }
 
-        private async void AddGame(int gid)
+        private void AddGame(int gid)
         {
             TextBlock tb = new()
             {
@@ -122,12 +134,12 @@ namespace Mikoto
                 FontWeight = FontWeights.SemiBold,
             };
             tb.Foreground = (SolidColorBrush)Application.Current.Resources["PrimaryForeground"];
-            Image ico = await ImageHelper.GetGameIconAsync(GameInfoList[gid].FilePath);
+            Image ico = ImageHelper.GetGameIcon(GameInfoList[gid].FilePath);
             RenderOptions.SetBitmapScalingMode(ico, BitmapScalingMode.HighQuality);
             var gd = new Grid();
             gd.Children.Add(new Border()
             {
-                Background = ImageHelper.GetMajorBrush(ico.Source as BitmapImage),
+                Background = ImageHelper.GetMajorBrush(ico.Source as BitmapSource),
                 CornerRadius = new CornerRadius(4),
             }
 );
