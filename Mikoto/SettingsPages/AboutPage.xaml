@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Mikoto.SettingsPages"
       xmlns:hc="https://handyorg.github.io/handycontrol"
+      d:DataContext="{d:DesignInstance Type=local:AboutPageViewModel}"
       mc:Ignorable="d"
       d:DesignHeight="450"
       d:DesignWidth="594"
@@ -12,16 +13,32 @@
 
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
-            <StackPanel 
-                        Margin="10">
+            <StackPanel Margin="10">
+                <TextBlock Text="Mikoto"
+                           FontSize="{DynamicResource SubHeadFontSize}"
+                           FontWeight="{DynamicResource SettingTitleTextWeight}"
+                           Foreground="{DynamicResource PrimaryForeground}"
+                           Margin="0,0,0,10" />
+                <TextBlock Foreground="{DynamicResource PrimaryForeground}"
+                           Text="{Binding CurrentVersion}"
+                           Margin="0,0,0,10" />
+                <Button Content="{DynamicResource SoftwareSettingsPage_CheckUpdate}"
+                        Click="CheckUpdateButton_Click"
+                        HorizontalAlignment="Left"
+                        Margin="0,0,0,10" />
+                <CheckBox Name="UpdateCheckEnabledCheckBox"
+                          IsChecked="{Binding EnableAutoUpdateCheck,Mode=TwoWay}"
+                          Content="{DynamicResource SoftwareSettingsPage_EnableAutoCheckUpdate}"
+                          HorizontalAlignment="Left"
+                          Margin="0,0,0,10" />
                 <Button Content="{DynamicResource AboutPage_BtnHelp}"
-                        Click="BtnHelp_Click"
+                        Click="IssueButton_Click"
                         HorizontalAlignment="Left"
-                        Margin="0,10,0,0" />
+                        Margin="0,0,0,10" />
                 <Button Content="{DynamicResource AboutPage_BtnGithub}"
-                        Click="BtnGithub_Click"
+                        Click="GithubButton_Click"
                         HorizontalAlignment="Left"
-                        Margin="0,10,0,0" />
+                        Margin="0,0,0,10" />
             </StackPanel>
         </hc:ScrollViewer>
     </Grid>

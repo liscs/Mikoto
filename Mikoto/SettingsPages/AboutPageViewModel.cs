@@ -1,9 +1,10 @@
 ﻿using Mikoto.Helpers.ViewModel;
 using System.Runtime.InteropServices;
+using System.Windows;
 
 namespace Mikoto.SettingsPages
 {
-    internal class SoftwareSettingsPageViewModel : ViewModelBase
+    internal class AboutPageViewModel : ViewModelBase
     {
         private bool? _enableAutoUpdateCheck;
         public bool? EnableAutoUpdateCheck
@@ -25,7 +26,7 @@ namespace Mikoto.SettingsPages
         {
             get
             {
-                return string.Join(' ', "v" + Common.CurrentVersion.ToString(3), RuntimeInformation.ProcessArchitecture);
+                return $"{Application.Current.Resources["Version"]} {Common.CurrentVersion} {RuntimeInformation.ProcessArchitecture}";
             }
         }
     }

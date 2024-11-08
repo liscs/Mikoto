@@ -30,7 +30,7 @@
     <sys:String x:Key="MainWindow_StartError_Hint">게임 프로세스를 찾을 수 없습니다!</sys:String>
     <sys:String x:Key="MainWindow_TextractorError_Hint">Textractor가 존재하지 않거나 시작하지 못했습니다.</sys:String>
     <sys:String x:Key="SettingsMenu_WinName">설정</sys:String>
-    <sys:String x:Key="SettingsMenu_Feedback">피드백</sys:String>
+    <sys:String x:Key="SettingsMenu_About">에 대한</sys:String>
     <sys:String x:Key="SettingsMenu_SoftwareSettings">전통적인</sys:String>
     <sys:String x:Key="SettingsMenu_LESettings">로케일 에뮬레이터</sys:String>
     <sys:String x:Key="SettingsMenu_HookSettings">텍스트랙터</sys:String>
