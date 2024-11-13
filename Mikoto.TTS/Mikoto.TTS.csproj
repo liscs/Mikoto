@@ -5,6 +5,6 @@
 			<Version>1.41.1</Version>
 		</PackageReference>
 		<PackageReference Include="NAudio" Version="2.2.1" />
-		<PackageReference Include="System.Speech" Version="8.0.0" />
+		<PackageReference Include="System.Speech" Version="9.0.0" />
 	</ItemGroup>
 </Project>
