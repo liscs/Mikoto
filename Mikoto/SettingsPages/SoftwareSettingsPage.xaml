@@ -6,7 +6,6 @@
       xmlns:local="clr-namespace:Mikoto.SettingsPages"
       xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:Mikoto="clr-namespace:Mikoto"
-      d:DataContext="{d:DesignInstance Type=local:SoftwareSettingsViewModel}"
       mc:Ignorable="d"
       d:DesignHeight="450"
       d:DesignWidth="800"
@@ -15,30 +14,6 @@
     <Grid>
         <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel Margin="10">
-                <TextBlock Text="Mikoto Version"
-                           FontSize="{DynamicResource SubHeadFontSize}"
-                           FontWeight="{DynamicResource SettingTitleTextWeight}"
-                           Foreground="{DynamicResource PrimaryForeground}"
-                           Margin="0,0,0,5" />
-                <TextBlock Foreground="{DynamicResource PrimaryForeground}"
-                           Text="{Binding CurrentVersion}"
-                           Margin="0,0,0,5" />
-                <StackPanel Margin="0,0,0,5"
-                            Orientation="Horizontal">
-                    <Button Content="{DynamicResource SoftwareSettingsPage_CheckUpdate}"
-                            HorizontalAlignment="Left"
-                            Click="Button_Click" />
-                    <hc:LoadingCircle Name="LoadingCircle"
-                                      Margin="10,0,0,0"
-                                      Visibility="Hidden" />
-                </StackPanel>
-
-                <CheckBox Name="UpdateCheckEnabledCheckBox"
-                          IsChecked="{Binding EnableAutoUpdateCheck,Mode=TwoWay}"
-                          Content="{DynamicResource SoftwareSettingsPage_EnableAutoCheckUpdate}"
-                          HorizontalAlignment="Left"
-                          Margin="0,0,0,10" />
-
                 <TextBlock Foreground="{DynamicResource PrimaryForeground}"
                            Text="{DynamicResource SoftwareSettingsPage_ClickCloseButton}"
                            FontSize="{DynamicResource SubHeadFontSize}"

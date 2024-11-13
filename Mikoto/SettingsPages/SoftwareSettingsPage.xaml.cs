@@ -1,5 +1,4 @@
-﻿using HandyControl.Controls;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Mikoto.SettingsPages
@@ -9,11 +8,9 @@ namespace Mikoto.SettingsPages
     /// </summary>
     public partial class SoftwareSettingsPage : Page
     {
-        private SoftwareSettingsPageViewModel _viewModel = new();
         public SoftwareSettingsPage()
         {
             InitializeComponent();
-            DataContext = _viewModel;
 
             var appSettingsOnClickCloseButton = Common.AppSettings.OnClickCloseButton;
             switch (appSettingsOnClickCloseButton)
@@ -46,20 +43,6 @@ namespace Mikoto.SettingsPages
         private void GrowlEnabledCheckBox_Click(object sender, RoutedEventArgs e)
         {
             Common.AppSettings.GrowlEnabled = GrowlEnabledCheckBox.IsChecked ?? true;
-        }
-
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button)
-            {
-                button.IsEnabled = false;
-                LoadingCircle.Visibility = Visibility.Visible;
-                await Common.CheckUpdateAsync(true);
-
-                LoadingCircle.Visibility = Visibility.Hidden;
-                button.IsEnabled = true;
-            }
-
         }
     }
 }

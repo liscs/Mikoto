@@ -32,9 +32,6 @@
                              Header="{DynamicResource SettingsMenu_SoftwareSettings}"
                              FontSize="15"
                              Selected="Item_SoftwareSettings_Selected" />
-            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_Feedback}"
-                             FontSize="15"
-                             Selected="Item_About_Selected" />
             <hc:SideMenuItem Header="{DynamicResource SettingsMenu_LESettings}"
                              FontSize="15"
                              Selected="Item_LESettings_Selected" />
@@ -95,12 +92,15 @@
             <hc:SideMenuItem Header="{DynamicResource SettingsMenu_ATSettings}"
                              FontSize="15"
                              Selected="Item_ATSettings_Selected" />
+            <hc:SideMenuItem Header="{DynamicResource SettingsMenu_About}"
+                             FontSize="15"
+                             Selected="Item_About_Selected" />
         </hc:SideMenu>
         <Frame Grid.Column="1"
                Name="SettingFrame"
                Source="/SettingsPages/SoftwareSettingsPage.xaml"
                NavigationUIVisibility="Hidden"
-               hc:BorderElement.CornerRadius="0"/>
+               hc:BorderElement.CornerRadius="0" />
     </Grid>
 </Window>
     

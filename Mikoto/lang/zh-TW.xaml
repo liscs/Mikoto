@@ -30,7 +30,7 @@
     <sys:String x:Key="MainWindow_StartError_Hint">未找到遊戲進程！</sys:String>
     <sys:String x:Key="MainWindow_TextractorError_Hint">Textractor不存在或啟動失敗</sys:String>
     <sys:String x:Key="SettingsMenu_WinName">設定</sys:String>
-    <sys:String x:Key="SettingsMenu_Feedback">回饋</sys:String>
+    <sys:String x:Key="SettingsMenu_About">關於</sys:String>
     <sys:String x:Key="SettingsMenu_SoftwareSettings">常規</sys:String>
     <sys:String x:Key="SettingsMenu_LESettings">Locale Emulator</sys:String>
     <sys:String x:Key="SettingsMenu_HookSettings">Textractor</sys:String>

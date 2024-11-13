@@ -2,8 +2,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SQLite.Core" Version="8.0.8" />
-    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.9" IncludeAssets="none" ExcludeAssets="all" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.9" />
-    <PackageReference Include="SQLitePCLRaw.provider.winsqlite3" Version="2.1.9" />
+    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.10" IncludeAssets="none" ExcludeAssets="all" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.10" />
+    <PackageReference Include="SQLitePCLRaw.provider.winsqlite3" Version="2.1.10" />
   </ItemGroup>
 </Project>
