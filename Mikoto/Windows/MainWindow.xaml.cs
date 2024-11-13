@@ -15,6 +15,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
@@ -627,5 +628,24 @@ namespace Mikoto
         private void GameNameTag_MouseEnter(object sender, MouseEventArgs e) => GameNameTag.TextDecorations = TextDecorations.Underline;
 
         private void GameNameTag_MouseLeave(object sender, MouseEventArgs e) => GameNameTag.TextDecorations = null;
+
+        private void DrawGameImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                if (((Image)sender).Source is BitmapSource bitmap)
+                {
+                    var file = Path.ChangeExtension(Path.GetTempFileName(), ".png");
+                    using (var fileStream = new FileStream(file, FileMode.Create))
+                    {
+                        var encoder = new PngBitmapEncoder();
+                        encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                        encoder.Save(fileStream);
+                    }
+                    Process.Start(new ProcessStartInfo(file) { UseShellExecute = true });
+                }
+            }
+        }
     }
 }
+

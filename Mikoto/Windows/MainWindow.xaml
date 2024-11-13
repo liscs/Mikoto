@@ -1,24 +1,24 @@
 ﻿<Window x:Class="Mikoto.MainWindow"
-                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                   xmlns:hc="https://handyorg.github.io/handycontrol"
-                   xmlns:Mikoto="clr-namespace:Mikoto"
-                   xmlns:local="clr-namespace:Mikoto"
-                   d:DataContext="{d:DesignInstance Type=Mikoto:MainViewModel}"
-                   mc:Ignorable="d"
-                   d:Height="540"
-                   d:Width="960"
-                   MinHeight="540"
-                   MinWidth="960"
-                   Title="Mikoto"
-                   Icon="/logo.ico"
-                   Background="{DynamicResource PrimaryBackground}"
-                   WindowStartupLocation="CenterScreen"
-                   Closing="BlurWindow_Closing"
-                   ContentRendered="BlurWindow_ContentRendered"
-                   IsVisibleChanged="Window_IsVisibleChanged">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:Mikoto="clr-namespace:Mikoto"
+        xmlns:local="clr-namespace:Mikoto.Windows"
+        d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
+        mc:Ignorable="d"
+        d:Height="540"
+        d:Width="960"
+        MinHeight="540"
+        MinWidth="960"
+        Title="Mikoto"
+        Icon="/logo.ico"
+        Background="{DynamicResource PrimaryBackground}"
+        WindowStartupLocation="CenterScreen"
+        Closing="BlurWindow_Closing"
+        ContentRendered="BlurWindow_ContentRendered"
+        IsVisibleChanged="Window_IsVisibleChanged">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="8*" />
@@ -184,7 +184,8 @@
                                 hc:IconElement.Geometry="{DynamicResource DeleteFillCircleGeometry}"
                                 Click="CloseDrawerBtn_Click" />
                         <Image Name="DrawGameImage"
-                               Margin="50,0,50,20" />
+                               Margin="50,0,50,20"
+                               MouseLeftButtonDown="DrawGameImage_MouseLeftButtonDown" />
                         <TextBlock Name="GameNameTag"
                                    Foreground="{DynamicResource PrimaryForeground}"
                                    MouseEnter="GameNameTag_MouseEnter"
@@ -199,7 +200,7 @@
                                     TextAlignment="Center"
                                     Margin="10,0,10,10"
                                     FontSize="{DynamicResource TextFontSize}"
-                                   TextWrapping="Wrap"/>
+                                    TextWrapping="Wrap" />
                         <Border Padding="20">
                             <hc:ButtonGroup Orientation="Vertical">
                                 <Button Content="{DynamicResource MainWindow_Drawer_Start}"
