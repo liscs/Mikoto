@@ -178,11 +178,22 @@
                     BorderBrush="{DynamicResource BorderBrush}">
                 <ScrollViewer>
                     <StackPanel>
-                        <Button HorizontalAlignment="Right"
-                                Foreground="{DynamicResource PrimaryForeground}"
-                                Style="{DynamicResource ButtonIcon}"
-                                hc:IconElement.Geometry="{DynamicResource DeleteFillCircleGeometry}"
-                                Click="CloseDrawerBtn_Click" />
+                        <DockPanel >
+                            <Button HorizontalAlignment="Left"
+                                    BorderThickness="0"
+                                    Foreground="{DynamicResource PrimaryForeground}"
+                                    Content="&#xE713;"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    Click="OpenGameInfoFileBtn_Click" 
+                                    Visibility="{Binding GameInfoFileButtonVisibility}"/>
+                            <Button HorizontalAlignment="Right"
+                                    BorderThickness="0"
+                                    Foreground="{DynamicResource PrimaryForeground}"
+                                    Content="&#xE738;"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    Click="CloseDrawerBtn_Click" />
+                        </DockPanel>
+
                         <Image Name="DrawGameImage"
                                Margin="50,0,50,20"
                                MouseLeftButtonDown="DrawGameImage_MouseLeftButtonDown" />

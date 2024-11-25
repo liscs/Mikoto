@@ -15,7 +15,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
@@ -64,6 +63,9 @@ namespace Mikoto
 
         public void Refresh()
         {
+#if DEBUG
+            _viewModel.GameInfoFileButtonVisibility = Visibility.Visible;
+#endif
             GameInfoList = GameHelper.GetAllCompletedGames();
             InitGameLibraryPanel();
         }
@@ -645,6 +647,12 @@ namespace Mikoto
                     Process.Start(new ProcessStartInfo(file) { UseShellExecute = true });
                 }
             }
+        }
+
+        private void OpenGameInfoFileBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string gameInfoFilePath = Path.Combine(Common.DataFolder, "games", $"{GameInfoList[_gid].GameID}.json");
+            Process.Start(new ProcessStartInfo(gameInfoFilePath) { UseShellExecute = true });
         }
     }
 }

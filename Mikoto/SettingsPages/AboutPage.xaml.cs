@@ -1,5 +1,4 @@
-﻿using HandyControl.Controls;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,7 +9,7 @@ namespace Mikoto.SettingsPages
     /// </summary>
     public partial class AboutPage : Page
     {
-        AboutPageViewModel _viewModel = new();
+        private AboutPageViewModel _viewModel = new();
         public AboutPage()
         {
             InitializeComponent();

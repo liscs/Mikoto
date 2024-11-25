@@ -498,5 +498,6 @@
     <sys:String x:Key="SentenceRepeatError">Sentence repetition error</sys:String>
 
     <sys:String x:Key="TranslatorGeneralSettingsPage_ProxyError">Proxy url unsupported</sys:String>
+    <sys:String x:Key="Version">Version</sys:String>
 
 </ResourceDictionary>
