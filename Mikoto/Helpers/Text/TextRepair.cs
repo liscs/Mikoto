@@ -173,42 +173,40 @@ namespace Mikoto
         /// <summary>
         /// 句子重复处理
         /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
+        /// <param name="source">源字符串</param>
+        /// <returns>处理后的字符串</returns>
         public static string RepairFun_RemoveSentenceRepeat(string source)
         {
-            if (SentenceRepeatFindCharNum <= 1) { return source; }
-            int findNum = SentenceRepeatFindCharNum;
+            // 确保变量 SentenceRepeatFindCharNum 已定义
 
-            if (source == string.Empty || source.Length < findNum)
+            if (SentenceRepeatFindCharNum <= 1) return source;
+
+            if (string.IsNullOrEmpty(source) || source.Length < SentenceRepeatFindCharNum)
             {
                 return source;
             }
 
+            // 逆序字符串
             char[] arr = source.ToCharArray();
             Array.Reverse(arr);
-            string text = new(arr);
+            string reversedText = new(arr);
 
-            string cmp = string.Empty;
-            for (int i = 1; i <= findNum; i++)
-            {
-                cmp += text[i];
-            }
+            // 提取检查子串
+            string cmp = reversedText.Substring(0, SentenceRepeatFindCharNum);
 
-            int pos = text.IndexOf(cmp, findNum);
+            // 检查是否存在重复
+            int pos = reversedText.IndexOf(cmp, SentenceRepeatFindCharNum);
             if (pos == -1)
             {
                 return Application.Current.Resources["SentenceRepeatError"].ToString()!;
             }
 
-            string t1 = text.Remove(pos, text.Length - pos);
-
-            char[] arr1 = t1.ToCharArray();
-            Array.Reverse(arr1);
-            string ret = new(arr1, 1, arr1.Length - 1);
-
-            return ret;
+            string trimmedText = reversedText.Substring(0, pos);
+            char[] trimmedArr = trimmedText.ToCharArray();
+            Array.Reverse(trimmedArr);
+            return new string(trimmedArr);
         }
+
 
         /// <summary>
         /// 去字母和数字（包括大写和小写字母）
