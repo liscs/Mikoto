@@ -16,6 +16,10 @@ namespace Mikoto
 
         public static string? RegexReplacement { get; set; }
         public static string? RegexPattern { get; set; }
+        /// <summary>
+        /// 检测重复句子时使用的最小字符数。
+        /// 若字符串末尾存在长度不少于该值的重复部分，则视为重复句子。
+        /// </summary>
         public static int SentenceRepeatFindCharNum { get; set; }
         public static int SingleWordRepeatTimes { get; set; }
 

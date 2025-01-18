@@ -146,9 +146,19 @@ namespace Mikoto.Translators.Implementations
                 string? result = jsonNode?["TranslationList"]?[0]?["Translation"]?.GetValue<string>();
                 if (result == null)
                 {
-                    errorInfo = "ErrorCodeN: " + jsonNode!["ResponseMetadata"]!["Error"]!["CodeN"]!.GetValue<int>() + Environment.NewLine
-                    + "ErrorCode: " + jsonNode["ResponseMetadata"]!["Error"]!["Code"]!.GetValue<string>() + Environment.NewLine
-                    + "ErrorMessage: " + jsonNode["ResponseMetadata"]!["Error"]!["Message"]!.GetValue<string>();
+                    // 提取错误信息
+                    var errorNode = jsonNode?["ResponseMetadata"]?["Error"];
+                    if (errorNode != null)
+                    {
+                        int? errorCodeN = errorNode["CodeN"]?.GetValue<int>();
+                        string? errorCode = errorNode["Code"]?.GetValue<string>();
+                        string? errorMessage = errorNode["Message"]?.GetValue<string>();
+
+                        errorInfo = $"ErrorCodeN: {errorCodeN}{Environment.NewLine}" +
+                                    $"ErrorCode: {errorCode}{Environment.NewLine}" +
+                                    $"ErrorMessage: {errorMessage}";
+                    }
+
                     return null;
                 }
                 else
