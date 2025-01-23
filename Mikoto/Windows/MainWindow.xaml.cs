@@ -17,6 +17,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using MessageBox = HandyControl.Controls.MessageBox;
 
@@ -105,7 +106,6 @@ namespace Mikoto
         private void InitGameLibraryPanel()
         {
             _viewModel.GamePanelCollection.Clear();
-            InitAddGamePanel();
             for (var i = 0; i < GameInfoList.Count; i++)
             {
                 AddGame(i);
@@ -141,6 +141,7 @@ namespace Mikoto
                 CornerRadius = new CornerRadius(4),
                 Name = "game" + gid,
                 Width = 150,
+                Height = 120,
                 Child = gd,
                 Margin = new Thickness(3),
             };
@@ -149,43 +150,6 @@ namespace Mikoto
             back.MouseLeave += Border_MouseLeave;
             back.MouseLeftButtonDown += Back_MouseLeftButtonDown;
             _viewModel.GamePanelCollection.Add(back);
-        }
-
-        private void InitAddGamePanel()
-        {
-            var textBlock = new TextBlock()
-            {
-                Foreground = Brushes.White,
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                TextWrapping = TextWrapping.Wrap,
-                FontSize = (double)Application.Current.Resources["SubHeadFontSize"]
-            };
-            textBlock.SetResourceReference(TextBlock.TextProperty, "MainWindow_ScrollViewer_AddNewGame");
-            var grid = new Grid();
-            grid.Children.Add(new Border()
-            {
-                Background = (SolidColorBrush)Application.Current.Resources["BoxBtnColor"],
-                CornerRadius = new CornerRadius(4),
-            });
-            grid.Children.Add(textBlock);
-            var border = new Border()
-            {
-                Name = "AddNewName",
-                Width = 150,
-                Child = grid,
-                Margin = new Thickness(3),
-                CornerRadius = new CornerRadius(4),
-            };
-            border.MouseEnter += Border_MouseEnter;
-            border.MouseLeave += Border_MouseLeave;
-            border.MouseLeftButtonDown += Border_MouseLeftButtonDown;
-            _viewModel.GamePanelCollection.Add(border);
-        }
-
-        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            AddNewGameDrawer.IsOpen = true;
         }
 
         private WeakReference<SettingsWindow>? _settingsWindow;
@@ -258,10 +222,9 @@ namespace Mikoto
             GameNameTag.Tag = _gid;
             GameNameTag.Text = GameInfoList[_gid].GameName;
 
-
             _viewModel.LastStartTime = GameInfoList[_gid].LastPlayAt.ToString();
 
-            GameInfoDrawer.IsOpen = true;
+            _viewModel.GameInfoDrawerIsOpen = true;
             e.Handled = true;
         }
 
@@ -409,7 +372,7 @@ namespace Mikoto
         }
         private void CloseDrawerBtn_Click(object sender, RoutedEventArgs e)
         {
-            GameInfoDrawer.IsOpen = false;
+            _viewModel.GameInfoDrawerIsOpen = false;
         }
 
         private async void StartBtn_Click(object sender, RoutedEventArgs e)
@@ -423,7 +386,7 @@ namespace Mikoto
                 return;
             }
             Process.Start(path);
-            GameInfoDrawer.IsOpen = false;
+            _viewModel.GameInfoDrawerIsOpen = false;
             await StartTranslateByGid(_gid);
             Refresh();
         }
@@ -459,7 +422,7 @@ namespace Mikoto
             p.UseShellExecute = false;
             p.WorkingDirectory = lePath;
             Process.Start(p);
-            GameInfoDrawer.IsOpen = false;
+            _viewModel.GameInfoDrawerIsOpen = false;
             await StartTranslateByGid(_gid);
             Refresh();
         }
@@ -473,7 +436,7 @@ namespace Mikoto
             {
                 GameHelper.DeleteGameByID(GameInfoList[_gid].GameID);
                 _viewModel.GamePanelCollection.Remove(_viewModel.GamePanelCollection.Where(p => p.Name == $"game{_gid}").First());
-                GameInfoDrawer.IsOpen = false;
+                _viewModel.GameInfoDrawerIsOpen = false;
             }
 
         }
@@ -653,6 +616,11 @@ namespace Mikoto
         {
             string gameInfoFilePath = Path.Combine(Common.DataFolder, "games", $"{GameInfoList[_gid].GameID}.json");
             Process.Start(new ProcessStartInfo(gameInfoFilePath) { UseShellExecute = true });
+        }
+
+        private void AddGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddNewGameDrawer.IsOpen = true;
         }
     }
 }
