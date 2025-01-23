@@ -46,7 +46,7 @@
                     Effect="{StaticResource EffectShadow5}"
                     Click="AddGameButton_Click"
                     BorderBrush="Transparent"
-                    ToolTip="{DynamicResource MainWindow_Tip_AutoStart}" />
+                    ToolTip="{DynamicResource MainWindow_ScrollViewer_AddNewGame}" />
         </StackPanel>
         <!--游戏列表-->
         <hc:ScrollViewer Grid.Row="1"
