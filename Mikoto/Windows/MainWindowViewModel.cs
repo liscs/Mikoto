@@ -1,7 +1,9 @@
-﻿using Mikoto.Helpers.ViewModel;
+﻿using Mikoto.Helpers.Graphics;
+using Mikoto.Helpers.ViewModel;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Effects;
 
 namespace Mikoto.Windows
 {
@@ -9,8 +11,8 @@ namespace Mikoto.Windows
     {
         public ObservableCollection<Border> GamePanelCollection { get; set; } = new();
 
-        private System.Windows.Visibility _LEEnabled;
-        public System.Windows.Visibility LEEnabled
+        private Visibility _LEEnabled;
+        public Visibility LEEnabled
         {
             get
             {
@@ -30,6 +32,28 @@ namespace Mikoto.Windows
         private Visibility gameInfoFileButtonVisibility = Visibility.Collapsed;
 
         public Visibility GameInfoFileButtonVisibility { get => gameInfoFileButtonVisibility; set => SetProperty(ref gameInfoFileButtonVisibility, value); }
+
+        private Effect? _gameCollectionEffect = null;
+        public Effect? GameCollectionEffect { get => _gameCollectionEffect; set => SetProperty(ref _gameCollectionEffect, value); }
+
+        BlurEffect _blur = new BlurEffect();
+
+        private bool gameInfoDrawerIsOpen;
+        public bool GameInfoDrawerIsOpen
+        {
+            get => gameInfoDrawerIsOpen; set
+            {
+                if (value)
+                {
+                    GameCollectionEffect = _blur;
+                }
+                else
+                {
+                    GameCollectionEffect = null;
+                }
+                SetProperty(ref gameInfoDrawerIsOpen, value);
+            }
+        }
     }
 
 }
