@@ -21,9 +21,9 @@
         IsVisibleChanged="Window_IsVisibleChanged">
     <Grid Margin="5">
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="8*" />
-            <RowDefinition />
+            <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
