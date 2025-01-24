@@ -36,7 +36,7 @@
                         </Grid>
                     </Grid>
                     <hc:Divider/>
-                    <hc:TextBox hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource API_testSrcText}" Name="TestSrcText" hc:InfoElement.ShowClearButton="True" Text="本ソフトウェアのご利用を歓迎します。"/>
+                    <hc:TextBox hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="{DynamicResource API_testSrcText}" Name="TestSrcText" hc:InfoElement.ShowClearButton="True" Text="{DynamicResource API_testCase}"/>
                     <Grid Margin="0,10,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>

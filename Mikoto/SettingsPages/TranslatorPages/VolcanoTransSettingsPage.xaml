@@ -54,7 +54,7 @@
                                 hc:InfoElement.Title="{DynamicResource API_testSrcText}"
                                 Name="TestSrcText"
                                 hc:InfoElement.ShowClearButton="True"
-                                Text="本ソフトウェアのご利用を歓迎します。" />
+                                Text="{DynamicResource API_testCase}" />
                     <Grid Margin="0,10,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />

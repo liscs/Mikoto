@@ -61,6 +61,7 @@
     <sys:String x:Key="API_applyBtn">申请API</sys:String>
     <sys:String x:Key="API_authTestBtn">测试API认证</sys:String>
     <sys:String x:Key="API_testSrcText">测试翻译 源文本</sys:String>
+    <sys:String x:Key="API_testCase">このソフトを使ってくれてありがとう！</sys:String>
     <sys:String x:Key="API_testSrcLang">源文本语言</sys:String>
     <sys:String x:Key="API_testDstLang">目标文本语言</sys:String>
     <sys:String x:Key="API_testTransBtn">测试翻译</sys:String>
