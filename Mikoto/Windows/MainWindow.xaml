@@ -19,11 +19,62 @@
         Closing="BlurWindow_Closing"
         ContentRendered="BlurWindow_ContentRendered"
         IsVisibleChanged="Window_IsVisibleChanged">
+    <Window.Resources>
+        <!-- 为按钮提取的样式 -->
+        <Style x:Key="ButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource ButtonBaseStyle}">
+            <Setter Property="MinHeight"
+                    Value="100" />
+            <Setter Property="MinWidth"
+                    Value="64" />
+            <Setter Property="Effect"
+                    Value="{StaticResource EffectShadow5}" />
+            <Setter Property="BorderBrush"
+                    Value="Transparent" />
+            <Setter Property="Background"
+                    Value="Transparent" />
+        </Style>
+
+        <Style x:Key="ButtonIconStyle"
+               TargetType="TextBlock"
+               BasedOn="{StaticResource TextBlockBaseStyle}">
+            <Setter Property="FontFamily"
+                    Value="Segoe MDL2 Assets" />
+            <Setter Property="HorizontalAlignment"
+                    Value="Center" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource MainBtnColor}" />
+            <Setter Property="FontSize"
+                    Value="40" />
+            <Setter Property="Background"
+                    Value="#01FFFFFF" />
+            <Setter Property="Effect"
+                    Value="{StaticResource EffectShadow5}" />
+            <Setter Property="Margin"
+                    Value="0,0,0,5" />
+        </Style>
+        <!-- 为文本块提取的样式 -->
+        <Style x:Key="ButtonTextStyle"
+               TargetType="TextBlock"
+               BasedOn="{StaticResource TextBlockBaseStyle}">
+            <Setter Property="HorizontalAlignment"
+                    Value="Center" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource MainBtnColor}" />
+            <Setter Property="FontSize"
+                    Value="20" />
+        </Style>
+    </Window.Resources>
+
+
     <Grid Margin="5">
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="8*" />
-            <RowDefinition />
+            <RowDefinition Height="20*" />
+            <RowDefinition Height="80*" />
+            <RowDefinition Height="20*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -34,19 +85,16 @@
                     Grid.Column="0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
-            <Button Content="&#xE710;"
-                    FontFamily="Segoe MDL2 Assets"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Foreground="{StaticResource MainBtnColor}"
-                    FontSize="40"
-                    Background="#01FFFFFF"
-                    Height="64"
-                    Width="64"
-                    Effect="{StaticResource EffectShadow5}"
-                    Click="AddGameButton_Click"
-                    BorderBrush="Transparent"
-                    ToolTip="{DynamicResource MainWindow_ScrollViewer_AddNewGame}" />
+            <Button Click="AddGameButton_Click"
+                    Style="{StaticResource ButtonStyle}"
+                    ToolTip="{DynamicResource MainWindow_ScrollViewer_AddNewGame}">
+                <StackPanel>
+                    <TextBlock Text="&#xE710;"
+                               Style="{StaticResource ButtonIconStyle}" />
+                    <TextBlock Text="{DynamicResource MainWindow_Button_Add}"
+                               Style="{StaticResource ButtonTextStyle}" />
+                </StackPanel>
+            </Button>
         </StackPanel>
         <!--游戏列表-->
         <hc:ScrollViewer Grid.Row="1"
@@ -79,21 +127,17 @@
                     VerticalAlignment="Bottom"
                     Grid.Row="2"
                     Grid.Column="0">
-            <Button Content="&#xE945;"
-                    FontFamily="Segoe MDL2 Assets"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Foreground="{StaticResource MainBtnColor}"
-                    FontSize="40"
-                    Background="#01FFFFFF"
-                    Height="64"
-                    Width="64"
-                    Effect="{StaticResource EffectShadow5}"
+            <!-- 应用提取后的样式 -->
+            <Button Style="{StaticResource ButtonStyle}"
                     Click="AutoStartBtn_Click"
-                    Margin="0,0,0,0.5"
-                    BorderBrush="Transparent"
-                    ToolTip="{DynamicResource MainWindow_Tip_AutoStart}" />
-
+                    ToolTip="{DynamicResource MainWindow_Tip_AutoStart}">
+                <StackPanel>
+                    <TextBlock Text="&#xE945;"
+                               Style="{StaticResource ButtonIconStyle}" />
+                    <TextBlock Text="{DynamicResource MainWindow_Button_QuickStart}"
+                               Style="{StaticResource ButtonTextStyle}" />
+                </StackPanel>
+            </Button>
         </StackPanel>
 
         <!--右下角-->
@@ -103,28 +147,17 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom">
             <Button Name="RestartAsAdminBtn"
-                    Content="&#xE7EF;"
-                    FontFamily="Segoe MDL2 Assets"
-                    Foreground="{StaticResource MainBtnColor}"
-                    FontSize="40"
-                    Background="#01FFFFFF"
-                    Height="64"
-                    Width="64"
-                    Effect="{StaticResource EffectShadow5}"
-                    Margin="0,0,20,0.5"
+                    Style="{StaticResource ButtonStyle}"
                     Click="RestartAsAdminBtn_Clicked"
-                    BorderBrush="Transparent"
                     ToolTip="{DynamicResource MainWindow_Tip_AdminStart}">
+                <StackPanel>
+                    <TextBlock Text="&#xE7EF;"
+                               Style="{StaticResource ButtonIconStyle}" />
+                    <TextBlock Text="{DynamicResource MainWindow_Button_Admin}"
+                               Style="{StaticResource ButtonTextStyle}" />
+                </StackPanel>
             </Button>
-            <Button Content="&#xE8C1;"
-                    FontFamily="Segoe MDL2 Assets"
-                    Foreground="{StaticResource MainBtnColor}"
-                    FontSize="40"
-                    Background="#01FFFFFF"
-                    Height="64"
-                    Width="64"
-                    Effect="{StaticResource EffectShadow5}"
-                    Margin="0,0,20,0.5"
+            <Button Style="{StaticResource ButtonStyle}"
                     Click="LanguageBtn_Click"
                     BorderBrush="Transparent">
                 <Button.ContextMenu>
@@ -146,20 +179,23 @@
                                   Tag="ja-JP" />
                     </ContextMenu>
                 </Button.ContextMenu>
+                <StackPanel>
+                    <TextBlock Text="&#xE8C1;"
+                               Style="{StaticResource ButtonIconStyle}" />
+                    <TextBlock Text="{DynamicResource MainWindow_Button_Language}"
+                               Style="{StaticResource ButtonTextStyle}" />
+                </StackPanel>
             </Button>
-            <Button Content="&#xE713;"
-                    FontFamily="Segoe MDL2 Assets"
-                    Foreground="{DynamicResource MainBtnColor}"
-                    FontSize="40"
-                    Background="#01FFFFFF"
-                    Height="64"
-                    Width="64"
-                    Effect="{StaticResource EffectShadow5}"
+            <Button Style="{StaticResource ButtonStyle}"
                     Click="SettingsBtn_Click"
-                    Margin="0,0,0,0.5"
-                    BorderBrush="Transparent"
-                    ToolTip="{DynamicResource MainWindow_Tip_Settings}" />
-
+                    ToolTip="{DynamicResource MainWindow_Tip_Settings}">
+                <StackPanel>
+                    <TextBlock Text="&#xE713;"
+                               Style="{StaticResource ButtonIconStyle}" />
+                    <TextBlock Text="{DynamicResource MainWindow_Button_Settings}"
+                               Style="{StaticResource ButtonTextStyle}" />
+                </StackPanel>
+            </Button>
         </StackPanel>
 
         <!--顶部跳出栏位-->

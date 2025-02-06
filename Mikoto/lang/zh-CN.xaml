@@ -414,5 +414,10 @@
 
     <sys:String x:Key="TranslatorGeneralSettingsPage_ProxyError">代理格式不合法</sys:String>
 
+    <sys:String x:Key="MainWindow_Button_Add">添加</sys:String>
+    <sys:String x:Key="MainWindow_Button_QuickStart">快速开始</sys:String>
+    <sys:String x:Key="MainWindow_Button_Admin">管理员</sys:String>
+    <sys:String x:Key="MainWindow_Button_Language">语言</sys:String>
+    <sys:String x:Key="MainWindow_Button_Settings">设置</sys:String>
 
 </ResourceDictionary>
