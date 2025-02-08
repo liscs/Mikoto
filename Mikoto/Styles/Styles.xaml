@@ -65,7 +65,6 @@
 
 
                             <TextBlock Margin="16,0,0,8"
-                                       FontFamily="Segoe UI Variable"
                                        FontSize="12"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Left"

@@ -65,7 +65,7 @@
             <Setter Property="Foreground"
                     Value="{DynamicResource MainBtnColor}" />
             <Setter Property="FontSize"
-                    Value="20" />
+                    Value="15" />
         </Style>
     </Window.Resources>
 
