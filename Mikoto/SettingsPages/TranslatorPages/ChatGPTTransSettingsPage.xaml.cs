@@ -16,14 +16,16 @@ namespace Mikoto.SettingsPages.TranslatorPages
             InitializeComponent();
             ChatGPTTransSecretKeyBox.Text = Common.AppSettings.ChatGPTapiKey;
             ChatGPTTransUrlBox.Text = Common.AppSettings.ChatGPTapiUrl;
+            ChatGPTModelBox.Text = Common.AppSettings.ChatGPTapiModel;
         }
 
         private async void AuthTestBtn_Click(object sender, RoutedEventArgs e)
         {
             Common.AppSettings.ChatGPTapiKey = ChatGPTTransSecretKeyBox.Text;
             Common.AppSettings.ChatGPTapiUrl = ChatGPTTransUrlBox.Text;
+            Common.AppSettings.ChatGPTapiModel = ChatGPTModelBox.Text;
 
-            ITranslator chatGPTTrans = ChatGPTTranslator.TranslatorInit(ChatGPTTransSecretKeyBox.Text, ChatGPTTransUrlBox.Text);
+            ITranslator chatGPTTrans = ChatGPTTranslator.TranslatorInit(ChatGPTTransSecretKeyBox.Text, ChatGPTTransUrlBox.Text, ChatGPTModelBox.Text);
 
             if (await chatGPTTrans.TranslateAsync("apple", "zh", "en") != null)
             {
@@ -31,7 +33,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
             }
             else
             {
-                HandyControl.Controls.Growl.Error($"ChatGPT {Application.Current.Resources["APITest_Error_Hint"]}\n{chatGPTTrans.GetLastError()}");
+                HandyControl.Controls.Growl.Error($"ChatGPT {Application.Current.Resources["APITest_Error_Hint"]}{Environment.NewLine}{chatGPTTrans.GetLastError()}");
             }
         }
 
@@ -52,7 +54,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator chatGPTTrans = ChatGPTTranslator.TranslatorInit(ChatGPTTransSecretKeyBox.Text, ChatGPTTransUrlBox.Text);
+            ITranslator chatGPTTrans = ChatGPTTranslator.TranslatorInit(ChatGPTTransSecretKeyBox.Text, ChatGPTTransUrlBox.Text, ChatGPTModelBox.Text);
             string? res = await chatGPTTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)

@@ -26,7 +26,7 @@ namespace Mikoto.Translators
                 nameof(KingsoftFastAITTranslator) => KingsoftFastAITTranslator.TranslatorInit(Common.AppSettings.KingsoftFastAITPath),
                 nameof(DreyeTranslator) => DreyeTranslator.TranslatorInit(Common.AppSettings.DreyePath),
                 nameof(DeepLTranslator) => DeepLTranslator.TranslatorInit(Common.AppSettings.DeepLsecretKey, Common.AppSettings.DeepLsecretKey),
-                nameof(ChatGPTTranslator) => ChatGPTTranslator.TranslatorInit(Common.AppSettings.ChatGPTapiKey, Common.AppSettings.ChatGPTapiUrl),
+                nameof(ChatGPTTranslator) => ChatGPTTranslator.TranslatorInit(Common.AppSettings.ChatGPTapiKey, Common.AppSettings.ChatGPTapiUrl, Common.AppSettings.ChatGPTapiModel),
                 nameof(AzureTranslator) => AzureTranslator.TranslatorInit(Common.AppSettings.AzureSecretKey, Common.AppSettings.AzureLocation),
                 nameof(ArtificialTranslator) => ArtificialTranslator.TranslatorInit(Common.AppSettings.ArtificialPatchPath),
                 nameof(VolcanoTranslator) => VolcanoTranslator.TranslatorInit(Common.AppSettings.VolcanoId, Common.AppSettings.VolcanoKey),

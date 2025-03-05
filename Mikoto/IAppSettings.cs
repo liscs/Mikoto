@@ -150,6 +150,13 @@ namespace Mikoto
             set;
         }
 
+        [Option(Alias = "ChatGPTTranslator.ApiModel", DefaultValue = "gpt-3.5-turbo")]
+        string ChatGPTapiModel
+        {
+            get;
+            set;
+        }
+
         [Option(Alias = "XiaoniuTranslator.XiaoniuApiKey", DefaultValue = "")]
         string XiaoniuApiKey
         {

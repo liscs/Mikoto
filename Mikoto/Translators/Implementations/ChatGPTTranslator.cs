@@ -17,8 +17,8 @@ namespace Mikoto.Translators.Implementations
         public static readonly string SIGN_UP_URL = "https://platform.openai.com";
         public static readonly string BILL_URL = "https://platform.openai.com/account/usage";
         public static readonly string DOCUMENT_URL = "https://platform.openai.com/docs/introduction/overview";
-        private string openai_model = "gpt-3.5-turbo";
-
+        
+        private string? openai_model = "gpt-3.5-turbo";
         private string? apiKey; //ChatGPT翻译API的密钥
         private string? apiUrl; //ChatGPT翻译API的URL
         private string errorInfo = string.Empty; //错误信息
@@ -46,7 +46,8 @@ namespace Mikoto.Translators.Implementations
             hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
             try
             {
-                retString = await (await hc.PostAsync(apiUrl, req)).Content.ReadAsStringAsync();
+                HttpResponseMessage? httpResponseMessage = await hc.PostAsync(apiUrl, req);
+                retString = await httpResponseMessage.Content.ReadAsStringAsync();
             }
             catch (HttpRequestException ex)
             {
@@ -97,10 +98,15 @@ namespace Mikoto.Translators.Implementations
 
         public static ITranslator TranslatorInit(params string[] param)
         {
+            if (param.Length < 3)
+                throw new ArgumentException("Expected 3 parameters: API Key, API URL, Model");
+
+
             ChatGPTTranslator chatGPTTranslator = new()
             {
-                apiKey = param.First(),
-                apiUrl = param.Last(),
+                apiKey = param[0],
+                apiUrl = param[1],
+                openai_model = param[2],
             };
             return chatGPTTranslator;
         }
