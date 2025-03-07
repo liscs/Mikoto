@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SQLite.Core" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Data.SQLite.Core" Version="9.0.2" />
     <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.10" IncludeAssets="none" ExcludeAssets="all" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.10" />
     <PackageReference Include="SQLitePCLRaw.provider.winsqlite3" Version="2.1.10" />
