@@ -22,7 +22,7 @@ namespace Mikoto.Translators.Implementations
         private string? openai_model = "gpt-3.5-turbo";
         private string? apiKey; // ChatGPT 翻译 API 的密钥
         private string? apiUrl; // ChatGPT 翻译 API 的 URL
-        private string lastErrorMessage = string.Empty; 
+        private string lastErrorMessage = string.Empty;
 
         public string TranslatorDisplayName => Application.Current.Resources["ChatGPTTranslator"]?.ToString() ?? "ChatGPT Translator";
 
@@ -122,7 +122,7 @@ namespace Mikoto.Translators.Implementations
         {
             try
             {
-                if (JsonSerializer.Deserialize<ChatResErr>(errorContent, TranslatorCommon.JsonSerializerOptions) is ChatResErr err && err.error.code != null)
+                if (JsonSerializer.Deserialize<ChatResErr>(errorContent, TranslatorCommon.JsonSerializerOptions) is ChatResErr err && (err.error.code != null||err.error.message != null))
                 {
                     SetError(err.error.message);
                 }

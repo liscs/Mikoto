@@ -1,5 +1,4 @@
-﻿using Mikoto.Helpers.Graphics;
-using Mikoto.Helpers.ViewModel;
+﻿using Mikoto.Helpers.ViewModel;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,7 +35,7 @@ namespace Mikoto.Windows
         private Effect? _gameCollectionEffect = null;
         public Effect? GameCollectionEffect { get => _gameCollectionEffect; set => SetProperty(ref _gameCollectionEffect, value); }
 
-        BlurEffect _blur = new BlurEffect();
+        private BlurEffect _blur = new BlurEffect();
 
         private bool gameInfoDrawerIsOpen;
         public bool GameInfoDrawerIsOpen

@@ -53,7 +53,7 @@
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Caiyun">彩云小译</sys:String>
     <sys:String x:Key="SettingsMenu_DictSettings">词典</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_DeepL">DeepL</sys:String>
-    <sys:String x:Key="SettingsMenu_TranslatorSettings_ChatGPT">ChatGPT</sys:String>
+    <sys:String x:Key="SettingsMenu_TranslatorSettings_ChatGPT">ChatGPT/DeepSeek</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Azure">Azure</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_IBM">IBM</sys:String>
     <sys:String x:Key="SettingsMenu_TranslatorSettings_Yandex">Yandex</sys:String>

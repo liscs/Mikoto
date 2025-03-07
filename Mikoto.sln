@@ -31,13 +31,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto.ArtificialTrans", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto.DataAccess", "Mikoto.DataAccess\Mikoto.DataAccess.csproj", "{1D3DCEDC-BA8A-4B83-9A33-E8481CE5CE6C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{3B072242-9E22-4466-B6E6-0AF182FE64BB}"
-	ProjectSection(SolutionItems) = preProject
-		Directory.Build.props = Directory.Build.props
-		Directory.Build.targets = Directory.Build.targets
-		README.md = README.md
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto.Tests", "Mikoto.Tests\Mikoto.Tests.csproj", "{C35CDF1A-D6FA-4063-A9F5-0CEFF98841B9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto.LocalizationTool", "Mikoto.LocalizationTool\Mikoto.LocalizationTool.csproj", "{FF130DB9-22AF-4504-892D-73EAF0E305AE}"
@@ -45,6 +38,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto.Benchmark", "Mikoto.Benchmark\Mikoto.Benchmark.csproj", "{D281C6E7-CBEB-4322-9D24-B277161513D1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto.Updater", "Mikoto.Updater\Mikoto.Updater.csproj", "{7FC86372-7856-4A67-8FA1-CA9E02C5C5E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
