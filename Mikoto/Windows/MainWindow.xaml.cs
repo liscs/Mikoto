@@ -70,18 +70,24 @@ namespace Mikoto
             InitGameLibraryPanel();
         }
 
-        private void SetRandomBlurredBackground()
+        private async void SetRandomBlurredBackground()
         {
             if (GameInfoList.Count > 5)
             {
-                Task.Run(() =>
-                  {
-                      BitmapSource? image = GetRandomBlurredImage();
-                      if (image != null)
-                      {
-                          Dispatcher.BeginInvoke(() => Background = new ImageBrush(image));
-                      }
-                  });
+                await Task.Run(() =>
+                     {
+                         BitmapSource? image = GetRandomBlurredImage();
+                         if (image != null)
+                         {
+                             Dispatcher.BeginInvoke(() =>
+                             {
+                                 Background = new ImageBrush(image);
+                                 PlayFadeInAnimation(this);
+
+
+                             });
+                         }
+                     });
             }
         }
 
@@ -100,55 +106,88 @@ namespace Mikoto
         }
 
         /// <summary>
-        /// 游戏库瀑布流初始化
+        /// 游戏库瀑布流初始化（逐个添加）
         /// </summary>
-        private void InitGameLibraryPanel()
+        private async void InitGameLibraryPanel()
         {
             _viewModel.GamePanelCollection.Clear();
             for (var i = 0; i < GameInfoList.Count; i++)
             {
-                AddGame(i);
+                await Task.Yield();
+                var gameBorder = CreateGameElement(i);
+                _viewModel.GamePanelCollection.Add(gameBorder);
+                PlayFadeInAnimation(gameBorder);
             }
         }
 
-        private void AddGame(int gid)
+        /// <summary>
+        /// 播放淡入动画
+        /// </summary>
+        private static void PlayFadeInAnimation(UIElement element)
         {
-            TextBlock tb = new()
+            var fadeIn = new DoubleAnimation
             {
-                Text = GameInfoList[gid].GameName,
+                From = 0,
+                To = 1,
+                Duration = TimeSpan.FromMilliseconds(1000),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+            };
+
+            element.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+        }
+
+        /// <summary>
+        /// 创建单个游戏 UI 元素
+        /// </summary>
+        private Border CreateGameElement(int gid)
+        {
+            var gameInfo = GameInfoList[gid];
+            string gameName = gameInfo.GameName;
+            string filePath = gameInfo.FilePath;
+
+            // 获取游戏图标
+            Image ico = ImageHelper.GetGameIcon(filePath);
+            RenderOptions.SetBitmapScalingMode(ico, BitmapScalingMode.HighQuality);
+
+            // 计算背景色（可考虑缓存）
+            var bgBrush = ImageHelper.GetMajorBrush(ico.Source as BitmapSource);
+
+            var textBlock = new TextBlock
+            {
+                Text = gameName,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 Margin = new Thickness(3),
                 TextWrapping = TextWrapping.Wrap,
                 Opacity = 0.6,
                 FontWeight = FontWeights.SemiBold,
+                Foreground = (SolidColorBrush)Application.Current.Resources["PrimaryForeground"]
             };
-            tb.Foreground = (SolidColorBrush)Application.Current.Resources["PrimaryForeground"];
-            Image ico = ImageHelper.GetGameIcon(GameInfoList[gid].FilePath);
-            RenderOptions.SetBitmapScalingMode(ico, BitmapScalingMode.HighQuality);
-            var gd = new Grid();
-            gd.Children.Add(new Border()
+
+            var grid = new Grid();
+            grid.Children.Add(new Border
             {
-                Background = ImageHelper.GetMajorBrush(ico.Source as BitmapSource),
+                Background = bgBrush,
                 CornerRadius = new CornerRadius(4),
-            }
-);
-            gd.Children.Add(ico);
-            gd.Children.Add(tb);
-            var back = new Border()
+            });
+            grid.Children.Add(ico);
+            grid.Children.Add(textBlock);
+
+            var border = new Border
             {
                 CornerRadius = new CornerRadius(4),
                 Name = "game" + gid,
                 Width = 150,
                 Height = 120,
-                Child = gd,
+                Child = grid,
                 Margin = new Thickness(3),
             };
 
-            back.MouseEnter += Border_MouseEnter;
-            back.MouseLeave += Border_MouseLeave;
-            back.MouseLeftButtonDown += Back_MouseLeftButtonDown;
-            _viewModel.GamePanelCollection.Add(back);
+            border.MouseEnter += Border_MouseEnter;
+            border.MouseLeave += Border_MouseLeave;
+            border.MouseLeftButtonDown += Back_MouseLeftButtonDown;
+
+            return border;
         }
 
         private WeakReference<SettingsWindow>? _settingsWindow;

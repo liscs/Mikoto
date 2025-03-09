@@ -328,7 +328,7 @@ namespace Mikoto
 
             //延迟极短的一段时间，针对Escu:de hook多段返回的特殊处理
             //延迟会导致收到两个内容相同的e
-            await Task.Delay(10);
+            await Task.Yield();
             if (_tempData == null || e.Data == _lastSolvedDataReceivedEventArgs.Data || _tempData != e.Data.Data)
             {
                 return;
@@ -734,7 +734,7 @@ namespace Mikoto
             {
                 From = 0,
                 To = 1,
-                Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION))
+                Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION)),
             };
             return fadeinAnimation;
         }
@@ -744,7 +744,7 @@ namespace Mikoto
             {
                 From = 1,
                 To = 0,
-                Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION))
+                Duration = new Duration(TimeSpan.FromSeconds(FADE_DURATION)),
             };
             fadeoutAnimation.Completed += (_, _) =>
             {
