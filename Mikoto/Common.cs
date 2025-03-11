@@ -30,24 +30,29 @@ namespace Mikoto
 
             if (dr == MessageBoxResult.OK)
             {
-                // Process.Start(new ProcessStartInfo("https://github.com/liscs/Mikoto/releases/latest") { UseShellExecute = true });
+                Process.Start(new ProcessStartInfo("https://github.com/liscs/Mikoto/releases/latest") { UseShellExecute = true });
                 //点击确认，自动下载最新版并替换重启
-                _ = DownloadBackgroundAsync(latestVersion);
+                //DownloadBackground(latestVersion);
             }
         }
 
-        private static async Task DownloadBackgroundAsync(Version latestVersion)
+        private static async void DownloadBackground(Version latestVersion)
         {
             string filename = GetDownloadZipFilename();
             string url = $"https://github.com/liscs/Mikoto/releases/download/v{latestVersion.ToString(3)}/{filename}";
             var temp = Directory.CreateTempSubdirectory();
             string filePath = Path.Combine(temp.FullName, filename); // 替换为你希望保存文件的路径
 
-            HttpClient client = CommonHttpClient.Instance;
+            HttpClient client = new() { Timeout = Timeout.InfiniteTimeSpan };
             try
             {
-                byte[] fileBytes = await client.GetByteArrayAsync(url);
-                await File.WriteAllBytesAsync(filePath, fileBytes);
+                using (HttpResponseMessage response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
+                using (Stream stream = await response.Content.ReadAsStreamAsync())
+                using (FileStream fileStream = new(filePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
+                {
+                    await stream.CopyToAsync(fileStream);
+                }
+
                 ZipFile.ExtractToDirectory(filePath, temp.FullName);
 
                 string extractedFolder = Path.Combine(temp.FullName, Path.GetFileNameWithoutExtension(filename));
@@ -56,6 +61,10 @@ namespace Mikoto
             catch (Exception ex)
             {
                 Logger.Warn(ex);
+            }
+            finally
+            {
+                client.Dispose();
             }
         }
 
@@ -76,7 +85,7 @@ namespace Mikoto
             MessageBoxResult dr = MessageBox.Show("下载完成，是否立刻更新？", "", MessageBoxButton.OKCancel);
             if (dr == MessageBoxResult.OK)
             {
-                ProcessStartInfo processStartInfo = new("Updater.exe");
+                ProcessStartInfo processStartInfo = new("Mikoto.Updater.exe");
                 processStartInfo.ArgumentList.Add(extractedFolder);
                 processStartInfo.ArgumentList.Add(true.ToString());
                 Process.Start(processStartInfo);
@@ -86,7 +95,7 @@ namespace Mikoto
             {
                 Application.Current.MainWindow.Closing += (s, e) =>
                 {
-                    ProcessStartInfo processStartInfo = new("Updater.exe");
+                    ProcessStartInfo processStartInfo = new("Mikoto.Updater.exe");
                     processStartInfo.ArgumentList.Add(extractedFolder);
                     processStartInfo.ArgumentList.Add(false.ToString());
                     Process.Start(processStartInfo);
