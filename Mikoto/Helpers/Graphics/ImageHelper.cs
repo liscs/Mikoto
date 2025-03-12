@@ -57,14 +57,14 @@ namespace Mikoto.Helpers.Graphics
 
         private static string[] GetFilteredIcoPath(string path)
         {
-            try
+            var dir = Path.GetDirectoryName(path);
+            if (Directory.Exists(dir))
             {
-                return Directory.GetFiles(Path.GetDirectoryName(path)!, "*.ico").Where(p => !p.Contains("uninst")).ToArray();
-
+                return Directory.GetFiles(dir, "*.ico").Where(p => !p.Contains("uninst")).ToArray();
             }
-            catch (DirectoryNotFoundException)
+            else
             {
-                return Array.Empty<string>();
+                return [];
             }
         }
 
