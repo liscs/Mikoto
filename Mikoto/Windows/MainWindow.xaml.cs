@@ -72,20 +72,16 @@ namespace Mikoto
 
         private async void SetRandomBlurredBackground()
         {
-            if (GameInfoList.Count > 5)
+            if (GameInfoList.Count <= 5) return;
+
+            BitmapSource? image = await Task.Run(GetRandomBlurredImage);
+            if (image != null)
             {
-                await Task.Run(() =>
-                     {
-                         BitmapSource? image = GetRandomBlurredImage();
-                         if (image != null)
-                         {
-                             Dispatcher.BeginInvoke(() =>
-                             {
-                                 Background = new ImageBrush(image);
-                                 PlayFadeInAnimation(this);
-                             });
-                         }
-                     });
+                await Dispatcher.BeginInvoke(() =>
+                {
+                    Background = new ImageBrush(image);
+                    PlayFadeInAnimation(this);
+                });
             }
         }
 
@@ -126,7 +122,7 @@ namespace Mikoto
             {
                 From = 0,
                 To = 1,
-                Duration = TimeSpan.FromMilliseconds(1000),
+                Duration = TimeSpan.FromSeconds(1),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
             };
 
