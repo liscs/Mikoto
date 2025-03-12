@@ -83,8 +83,6 @@ namespace Mikoto
                              {
                                  Background = new ImageBrush(image);
                                  PlayFadeInAnimation(this);
-
-
                              });
                          }
                      });
@@ -116,7 +114,6 @@ namespace Mikoto
                 await Task.Yield();
                 var gameBorder = CreateGameElement(i);
                 _viewModel.GamePanelCollection.Add(gameBorder);
-                PlayFadeInAnimation(gameBorder);
             }
         }
 
