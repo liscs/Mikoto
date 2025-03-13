@@ -276,8 +276,7 @@ namespace Mikoto
         private async Task StartTranslateByGid(int gid)
         {
             List<Process> gameProcessList = new();
-            Stopwatch s = new();
-            s.Start();
+            Stopwatch s = Stopwatch.StartNew();
             while (s.Elapsed < TimeSpan.FromSeconds(5))
             {
                 string name;
@@ -295,8 +294,8 @@ namespace Mikoto
                 {
                     break;
                 }
+                await Task.Delay(100);
             }
-            s.Stop();
 
             if (gameProcessList.Count == 0)
             {
