@@ -2,6 +2,10 @@
 using Mikoto.Translators.Interfaces;
 using Mikoto.Translators.LanguageCode;
 using System.Globalization;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Web;
 using System.Windows;
 
@@ -21,39 +25,47 @@ namespace Mikoto.Translators.Implementations
 
         public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
-            srcLang = GetLanguageCode(new CultureInfo(srcLang));
-            desLang = GetLanguageCode(new CultureInfo(desLang));
-
-            string googleTransUrl = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&sl=" + srcLang + "&tl=" + desLang + "&q=" + HttpUtility.UrlEncode(sourceText);
-
-            var hc = CommonHttpClient.Instance;
-
             try
             {
-                var ResultHtml = await hc.GetStringAsync(googleTransUrl);
+                srcLang = GetLanguageCode(new CultureInfo(srcLang));
+                desLang = GetLanguageCode(new CultureInfo(desLang));
 
-                dynamic TempResult = System.Text.Json.JsonSerializer.Deserialize<dynamic>(ResultHtml, TranslatorCommon.JsonSerializerOptions)!;
+                string url = $"https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&sl={srcLang}&tl={desLang}&q={HttpUtility.UrlEncode(sourceText)}";
 
-                string ResultText = "";
+                var hc = CommonHttpClient.Instance;
+                var json = await hc.GetStringAsync(url);
 
-                for (int i = 0; i < TempResult[0].GetArrayLength(); i++)
+                JsonNode? root = JsonSerializer.Deserialize<JsonNode?>(json, TranslatorCommon.JsonSerializerOptions);
+
+                if (root == null || root[0] == null)
                 {
-                    ResultText += TempResult[0][i][0];
+                    errorInfo = "Http request result is null";
+                    return null;
                 }
 
-                return ResultText;
+                var resultBuilder = new StringBuilder();
+
+                foreach (var item in root[0]?.AsArray() ?? [])
+                {
+                    var segment = item?[0]?.ToString();
+                    if (!string.IsNullOrEmpty(segment))
+                        resultBuilder.Append(segment);
+                }
+
+                return resultBuilder.ToString();
             }
-            catch (System.Net.Http.HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 errorInfo = ex.Message;
-                return null;
             }
             catch (TaskCanceledException ex)
             {
                 errorInfo = ex.Message;
-                return null;
             }
+
+            return null;
         }
+
         public static string GetLanguageCode(CultureInfo cultureInfo)
         {
             return GoogleCNLanguageCodeConverter.GetLanguageCode(cultureInfo);

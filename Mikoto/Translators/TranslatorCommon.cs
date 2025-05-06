@@ -1,5 +1,7 @@
 ﻿using Mikoto.Translators.Implementations;
 using Mikoto.Translators.Interfaces;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace Mikoto.Translators
 {
@@ -108,7 +110,9 @@ namespace Mikoto.Translators
 
         public static System.Text.Json.JsonSerializerOptions JsonSerializerOptions { get; set; } = new()
         {
-            IncludeFields = true
+            IncludeFields = true,
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+
         };
     }
 }
