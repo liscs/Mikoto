@@ -45,7 +45,7 @@ namespace Mikoto.Translators.Implementations
                 model = openai_model,
                 messages = new[]
                 {
-                    new { role = "system", content = $"Translate {srcLang} To {desLang}" },
+                    new { role = "system", content = $"You are a professional translator. Translate the following text from {srcLang} to {desLang}. Preserve the original meaning, tone, and formatting as much as possible." },
                     new { role = "user", content = sourceText }
                 }
             };
