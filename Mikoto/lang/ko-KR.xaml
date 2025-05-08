@@ -25,7 +25,7 @@
   <sys:String x:Key="ChatGPTTranslator">채팅GPT</sys:String>
   <sys:String x:Key="ChatGPTTransSettingsPage_apiUrl">ChatGPT API URL</sys:String>
   <sys:String x:Key="ChatGPTTransSettingsPage_secretKey">ChatGPT API 키</sys:String>
-  <sys:String x:Key="SettingsMenu_TranslatorSettings_ChatGPT">ChatGPT/DeepSeek</sys:String>
+  <sys:String x:Key="SettingsMenu_TranslatorSettings_ChatGPT">ChatGPT</sys:String>
   <sys:String x:Key="ChatGPTTransSettingsPage_Introduce">ChatGPT 인공 지능 번역은 일부 내용의 번역을 거부할 수 있으며 원문의 완전한 번역이 아닐 수 있지만 약간 증가하거나 감소할 수 있습니다. 먼저 OpenAI의 Api 키를 신청하고 키를 얻은 후 아래에서 해당 위치를 입력해야 합니다. 테스트 인증을 수행합니다. 인증에 오류가 있는 경우 오류 코드에 따라 OpenAI 공식 웹사이트로 이동하여 해결 방법을 찾으세요. 일부 버전의 ChatGPT API에는 특정 요금이 부과될 수 있습니다. 콘솔에 들어가서 확인하세요.</sys:String>
   <sys:String x:Key="SettingsMenu_TranslatorSettings_DeepL">DeepL</sys:String>
   <sys:String x:Key="DeepLTranslator">DeepL</sys:String>

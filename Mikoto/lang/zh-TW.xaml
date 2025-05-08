@@ -25,7 +25,7 @@
   <sys:String x:Key="ChatGPTTranslator">ChatGPT</sys:String>
   <sys:String x:Key="ChatGPTTransSettingsPage_apiUrl">ChatGPT API URL</sys:String>
   <sys:String x:Key="ChatGPTTransSettingsPage_secretKey">ChatGPT API 金鑰</sys:String>
-  <sys:String x:Key="SettingsMenu_TranslatorSettings_ChatGPT">ChatGPT/DeepSeek</sys:String>
+  <sys:String x:Key="SettingsMenu_TranslatorSettings_ChatGPT">ChatGPT</sys:String>
   <sys:String x:Key="ChatGPTTransSettingsPage_Introduce">ChatGPT人工智慧翻譯，可能拒絕翻譯某些內容，可能並非完整翻譯原文而略有增減；你需要先申請OpenAI的Api Key，獲取密鑰後填入下方相應位置並進行測試認證；如果認證出現錯誤，請根據錯誤碼至OpenAI官方取得解決方案；ChatGPT API 的部分版本可能會產生某些費用，你可以使用額度查詢按鈕進入控制台確認。</sys:String>
   <sys:String x:Key="SettingsMenu_TranslatorSettings_DeepL">DeepL</sys:String>
   <sys:String x:Key="DeepLTranslator">DeepL</sys:String>

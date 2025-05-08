@@ -25,7 +25,7 @@
   <sys:String x:Key="ChatGPTTranslator">チャットGPT</sys:String>
   <sys:String x:Key="ChatGPTTransSettingsPage_apiUrl">ChatGPT API URL</sys:String>
   <sys:String x:Key="ChatGPTTransSettingsPage_secretKey">ChatGPT APIキー</sys:String>
-  <sys:String x:Key="SettingsMenu_TranslatorSettings_ChatGPT">ChatGPT/DeepSeek</sys:String>
+  <sys:String x:Key="SettingsMenu_TranslatorSettings_ChatGPT">ChatGPT</sys:String>
   <sys:String x:Key="ChatGPTTransSettingsPage_Introduce">ChatGPT 人工知能翻訳は一部のコンテンツの翻訳を拒否する場合があり、元のテキストの完全な翻訳ではない可能性がありますが、わずかに増加または減少する可能性があります。まず OpenAI の API キーを申請し、キーを取得し、以下の対応する位置に記入する必要があります。テスト認証を実施します。認証にエラーがある場合は、エラー コードに従って OpenAI 公式 Web サイトにアクセスして解決策を入手してください。ChatGPT API の一部のバージョンでは、制限クエリ ボタンを使用して解決策を得ることができます。コンソールに入って確認します。</sys:String>
   <sys:String x:Key="SettingsMenu_TranslatorSettings_DeepL">ディープL</sys:String>
   <sys:String x:Key="DeepLTranslator">ディープL</sys:String>
