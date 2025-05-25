@@ -757,134 +757,100 @@ namespace Mikoto
         /// 提交原文到翻译器，获取翻译结果并显示
         /// </summary>
         /// <param name="repairedText">原文</param>
-        /// <param name="tranResultIndex">翻译框序号</param>
+        /// <param name="tranResultIndex">翻译框序号 (1 or 2)</param>
         /// <param name="isRenew">是否是重新获取翻译</param>
         private async void TranslateApiSubmit(string repairedText, int tranResultIndex, bool isRenew = false)
         {
-            //4.翻译前预处理 
+            // 4. 翻译前预处理
             string beforeString = _beforeTransHandle.AutoHandle(repairedText);
 
-            //5.提交翻译 
-            string? transRes = string.Empty;
+            ITranslator? selectedTranslator = null;
+            OutlineText targetTextBlock; // Assuming TextBlock, adjust if it's RichTextBox or other
+
             switch (tranResultIndex)
             {
                 case 1:
-                    if (_translator1 != null)
-                    {
-                        transRes = await _translator1.TranslateAsync(beforeString, GlobalWorkingData.Instance.UsingDstLang, GlobalWorkingData.Instance.UsingSrcLang);
-                        if (transRes == null)
-                        {
-                            Application.Current.Dispatcher.Invoke(() =>
-                            {
-                                Growl.WarningGlobal(_translator1.GetType().Name + ": " + _translator1.GetLastError());
-                            });
-                            return;
-                        }
-                    }
+                    selectedTranslator = _translator1;
+                    targetTextBlock = FirstTransText; // Assuming FirstTransText is a TextBlock
                     break;
                 case 2:
-                    if (_translator2 != null)
-                    {
-                        transRes = await _translator2.TranslateAsync(beforeString, GlobalWorkingData.Instance.UsingDstLang, GlobalWorkingData.Instance.UsingSrcLang);
-                        if (transRes == null)
-                        {
-                            Application.Current.Dispatcher.Invoke(() =>
-                            {
-                                Growl.WarningGlobal(_translator2.GetType().Name + ": " + _translator2.GetLastError());
-                            });
-                            return;
-                        }
-                    }
+                    selectedTranslator = _translator2;
+                    targetTextBlock = SecondTransText; // Assuming SecondTransText is a TextBlock
                     break;
+                default:
+                    throw new UnreachableException();
             }
 
-            //6.翻译后处理 
+            // 5. 提交翻译
+            string? transRes = string.Empty;
+            if (selectedTranslator!=null)
+            {
+                transRes = await selectedTranslator.TranslateAsync(beforeString, GlobalWorkingData.Instance.UsingDstLang, GlobalWorkingData.Instance.UsingSrcLang);
+                if (transRes == null)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Growl.WarningGlobal($"{selectedTranslator.TranslatorDisplayName} translation failed: {selectedTranslator.GetLastError()}");
+                    });
+                    return;
+                }
+            }
+
+
+            // 6. 翻译后处理
             string afterString = _afterTransHandle.AutoHandle(transRes);
 
-            //7.翻译结果显示到窗口上 
-            switch (tranResultIndex)
+            // 7. 翻译结果显示到窗口上
+            // Using BeginInvoke for UI updates is generally good as it doesn't block the current thread
+            // if the UI thread is busy. Send priority ensures it's processed promptly.
+            _ = Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                case 1:
-                    _ = Application.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        FirstTransText.Text = afterString;
-                        if (Common.AppSettings.TF_EnableDropShadow)
-                        {
-                            FirstTransText.Effect = _dropShadowEffect;
-                        }
-                        else
-                        {
-                            FirstTransText.Effect = null;
-                        }
-                        if (Common.AppSettings.TF_TransAnimationCheckEnabled)
-                        {
-                            StartFadeInAnimation(FirstTransText);
-                        }
+                targetTextBlock.Text = afterString;
+                targetTextBlock.Effect = Common.AppSettings.TF_EnableDropShadow ? _dropShadowEffect : null;
 
-                    }, DispatcherPriority.Send);
-                    break;
-                case 2:
-                    _ = Application.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        SecondTransText.Text = afterString;
-                        if (Common.AppSettings.TF_EnableDropShadow)
-                        {
-                            SecondTransText.Effect = _dropShadowEffect; ;
-                        }
-                        else
-                        {
-                            SecondTransText.Effect = null;
-                        }
-                        if (Common.AppSettings.TF_TransAnimationCheckEnabled)
-                        {
-                            StartFadeInAnimation(SecondTransText);
-                        }
-                    }, DispatcherPriority.Send);
-                    break;
-            }
+                if (Common.AppSettings.TF_TransAnimationCheckEnabled)
+                {
+                    StartFadeInAnimation(targetTextBlock); // Assuming StartFadeInAnimation can take a TextBlock
+                }
+            }), DispatcherPriority.Send);
 
-            if (!isRenew)
+
+            if (!isRenew && selectedTranslator != null)
             {
                 lock (_saveTransResultLock)
                 {
-                    //8.翻译结果记录到队列
+                    // 8. 翻译结果记录到队列
                     // todo: 这是比较粗暴地添加历史记录，可以优化（时间排序等）
                     if (_gameTextHistory.Count > 1000)
                     {
                         _gameTextHistory.Dequeue();
                     }
-                    HistoryInfo historyInfo = new();
-                    historyInfo.DateTime = DateTime.Now;
-                    historyInfo.Message = repairedText + Environment.NewLine + afterString;
 
-                    string? name = tranResultIndex switch
+                    HistoryInfo historyInfo = new()
                     {
-                        1 => _translator1?.TranslatorDisplayName,
-                        2 => _translator2?.TranslatorDisplayName,
-                        _ => throw new UnreachableException(),
+                        DateTime = DateTime.Now,
+                        Message = repairedText + Environment.NewLine + afterString,
+                        TranslatorName = selectedTranslator.TranslatorDisplayName
                     };
 
-                    if (name != null)
+                    _gameTextHistory.Enqueue(historyInfo);
+                    UpdateHistoryWindow();
+
+                    // 9. 翻译原句和结果记录到数据库
+                    if (Common.AppSettings.ATon)
                     {
-                        historyInfo.TranslatorName = name;
-                        _gameTextHistory.Enqueue(historyInfo);
-                        UpdateHistoryWindow();
-                        //9.翻译原句和结果记录到数据库 
-                        if (Common.AppSettings.ATon)
+                        bool addRes = _artificialTransHelper.AddTrans(repairedText, afterString);
+                        if (!addRes)
                         {
-                            bool addRes = _artificialTransHelper.AddTrans(repairedText, afterString);
-                            if (addRes == false)
+                            Application.Current.Dispatcher.Invoke(() =>
                             {
-                                Application.Current.Dispatcher.Invoke(() =>
+                                HandyControl.Data.GrowlInfo growlInfo = new()
                                 {
-                                    HandyControl.Data.GrowlInfo growlInfo = new()
-                                    {
-                                        Message = Application.Current.Resources["ArtificialTransAdd_Error_Hint"].ToString(),
-                                        WaitTime = 2
-                                    };
-                                    Growl.InfoGlobal(growlInfo);
-                                });
-                            }
+                                    Message = Application.Current.Resources["ArtificialTransAdd_Error_Hint"].ToString(),
+                                    WaitTime = 2
+                                };
+                                Growl.InfoGlobal(growlInfo);
+                            });
                         }
                     }
 

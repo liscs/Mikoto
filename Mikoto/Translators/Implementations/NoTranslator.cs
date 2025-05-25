@@ -10,12 +10,12 @@ namespace Mikoto.Translators.Implementations
 
         public string GetLastError()
         {
-            return "";
+            return string.Empty;
         }
 
         public Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
-            return Task.FromResult<string?>(null);
+            return Task.FromResult<string?>(string.Empty);
         }
 
         public static ITranslator TranslatorInit(params string[] param)
