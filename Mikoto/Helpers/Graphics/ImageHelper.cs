@@ -280,39 +280,39 @@ namespace Mikoto.Helpers.Graphics
         [SupportedOSPlatform("windows5.0")]
         private static unsafe BitmapSource? GetFileIcon(string filepath)
         {
-            //选中文件中的图标总数
-            var iconTotalCount = PInvoke.PrivateExtractIcons(filepath, 0, 0, 0, null,out _, 0, 0);
+            HICON hIcon = HICON.Null;
 
-            //用于接收获取到的图标指针
-            Span<HICON> hIcons = stackalloc HICON[(int)iconTotalCount];
+            uint count = PInvoke.PrivateExtractIcons(
+                filepath,
+                0,      // 第一个图标
+                256,
+                256,
+                &hIcon,
+                out _,
+                1,      // 只取一个
+                (uint)IMAGE_FLAGS.LR_DEFAULTCOLOR
+            );
 
-            uint result = 0xFFFFFFFF;
-            fixed (HICON* p = hIcons)
+            if (count == 0 || count == 0xFFFFFFFF || hIcon == HICON.Null)
+                return null;
+
+            try
             {
-                //成功获取到的图标个数
-                result = PInvoke.PrivateExtractIcons(filepath, 0, 256, 256, p,out _, iconTotalCount, (uint)IMAGE_FLAGS.LR_DEFAULTCOLOR);
+                var src = Imaging.CreateBitmapSourceFromHIcon(
+                    hIcon,
+                    Int32Rect.Empty,
+                    BitmapSizeOptions.FromEmptyOptions()
+                );
+                src.Freeze();
+                return src;
             }
-
-
-            BitmapSource? myIcon = null;
-            if (result > 0 && result != 0xFFFFFFFF)
+            finally
             {
-                myIcon = Imaging.CreateBitmapSourceFromHIcon(hIcons[0],
-                                                             Int32Rect.Empty,
-                                                             BitmapSizeOptions.FromEmptyOptions());
+                PInvoke.DestroyIcon(hIcon);
             }
-
-            //遍历并保存图标
-            for (var i = 0; i < result; i++)
-            {
-                //指针为空，跳过
-                if (hIcons[i] == HICON.Null) continue;
-                //内存回收
-                PInvoke.DestroyIcon(hIcons[i]);
-            }
-
-            return myIcon;
         }
+
+
 
     }
 
