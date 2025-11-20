@@ -9,8 +9,8 @@ jobs:
   release:
     runs-on: windows-latest
     env:
-      dotnet_version: '9.x.x'          # Extracted variable for .NET version
-      dotnet_target: 'net9.0-windows10.0.26100'  # Extracted variable for target framework version
+      dotnet_version: '10.x.x'          # Extracted variable for .NET version
+      dotnet_target: 'net10.0-windows10.0.26100'  # Extracted variable for target framework version
 
     steps:
       - name: Checkout source
