@@ -1,6 +1,7 @@
 ﻿using Mikoto.Enums;
 using Mikoto.Helpers.File;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -275,11 +276,12 @@ namespace Mikoto.Helpers.Graphics
         /// 获取文件图标
         /// </summary>
         /// <param name="filepath"></param>
-        /// <returns></returns>
+
+        [SupportedOSPlatform("windows5.0")]
         private static unsafe BitmapSource? GetFileIcon(string filepath)
         {
             //选中文件中的图标总数
-            var iconTotalCount = PInvoke.PrivateExtractIcons(filepath, 0, 0, 0, null, null, 0, 0);
+            var iconTotalCount = PInvoke.PrivateExtractIcons(filepath, 0, 0, 0, null,out _, 0, 0);
 
             //用于接收获取到的图标指针
             Span<HICON> hIcons = stackalloc HICON[(int)iconTotalCount];
@@ -288,7 +290,7 @@ namespace Mikoto.Helpers.Graphics
             fixed (HICON* p = hIcons)
             {
                 //成功获取到的图标个数
-                result = PInvoke.PrivateExtractIcons(filepath, 0, 256, 256, p, null, iconTotalCount, (uint)IMAGE_FLAGS.LR_DEFAULTCOLOR);
+                result = PInvoke.PrivateExtractIcons(filepath, 0, 256, 256, p,out _, iconTotalCount, (uint)IMAGE_FLAGS.LR_DEFAULTCOLOR);
             }
 
 

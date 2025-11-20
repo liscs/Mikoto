@@ -3,7 +3,7 @@ using OfficeOpenXml.Style;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+new EPPlusLicense().SetNonCommercialPersonal("Mikoto");
 Console.OutputEncoding = Encoding.UTF8;
 static Dictionary<string, List<string>> GetDict(string path)
 {

@@ -5,7 +5,6 @@
       xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:Mikoto="clr-namespace:Mikoto"
-      d:DataContext="{d:DesignInstance Type=Mikoto:AzureTTSSettingsViewModel}"
       mc:Ignorable="d"
       d:DesignHeight="450"
       d:DesignWidth="594"
