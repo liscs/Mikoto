@@ -43,6 +43,8 @@ jobs:
       - name: Build installer arm64
         run: iscc.exe "/DRuntime=arm64" installer.iss
 
+      - name: List generated setup files
+        run: dir Publish
       # ---------------- Upload Release ----------------
       - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v2
@@ -51,4 +53,4 @@ jobs:
           name: Release ${{ github.ref }}
           draft: true
           files: |
-            Mikoto/Publish/Mikoto-*-setup.exe
+            Publish/Mikoto-*-setup.exe
