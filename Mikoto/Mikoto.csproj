@@ -8,8 +8,10 @@
 		<RootNamespace>Mikoto</RootNamespace>
 		<StartupObject>Mikoto.Program</StartupObject>
 		<UseWin32>true</UseWin32>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 	</PropertyGroup>
 
+	
 	<ItemGroup>
 	  <Compile Remove="data\custom scripts\csharp\example.cs" />
 	  <Compile Remove="data\custom scripts\csharp\regex example.cs" />
@@ -35,7 +37,6 @@
 		<ProjectReference Include="..\Mikoto.TextHook\Mikoto.TextHook.csproj" />
 		<ProjectReference Include="..\Mikoto.TransOptimization\Mikoto.TransOptimization.csproj" />
 		<ProjectReference Include="..\Mikoto.TTS\Mikoto.TTS.csproj" />
-		<ProjectReference Include="..\Mikoto.Updater\Mikoto.Updater.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

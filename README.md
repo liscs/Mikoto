@@ -1,5 +1,4 @@
 # Mikoto
-![image](https://github.com/liscs/Mikoto/workflows/CI/badge.svg)
 ![image](https://github.com/liscs/Mikoto/assets/70057922/0bf60266-63e6-4247-9cbb-ebe2b2008749)
 
 Mikoto 是一款基于 MisakaTranslator 的互动文字小说阅读工具。
@@ -31,4 +30,4 @@ Mikoto 是一款基于 MisakaTranslator 的互动文字小说阅读工具。
 }
 ```
 ## 相关链接
-[原始项目页](https://github.com/hanmin0822/Mikoto)、[Textractor](https://github.com/Artikash/Textractor)、[Locale-Emulator](https://github.com/xupefei/Locale-Emulator)、[Macab分词词典](https://clrd.ninjal.ac.jp/unidic)、[本地翻译词典](https://freemdict.com)
+[原始项目页](https://github.com/hanmin0822/MisakaTranslator)、[Textractor](https://github.com/Artikash/Textractor)、[Locale-Emulator](https://github.com/xupefei/Locale-Emulator)、[Macab分词词典](https://clrd.ninjal.ac.jp/unidic)、[本地翻译词典](https://freemdict.com)

@@ -9,8 +9,7 @@ jobs:
   release:
     runs-on: windows-latest
     env:
-      dotnet_version: '10.x.x'          # Extracted variable for .NET version
-      dotnet_target: 'net10.0-windows10.0.26100'  # Extracted variable for target framework version
+      dotnet_version: '10.x.x'
 
     steps:
       - name: Checkout source
@@ -19,38 +18,37 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.dotnet_version }}  # Using the extracted .NET version
+          dotnet-version: ${{ env.dotnet_version }}
 
-      - name: Publish-arm64
-        run: dotnet publish /p:RuntimeIdentifier=win-arm64
-      - name: Rename-arm64
-        run: Rename-Item -Path ./Mikoto/bin/Release/${{ env.dotnet_target }}/win-arm64/publish -NewName mikoto-arm64
-      - name: Zip-arm64
-        run: Compress-Archive -Path ./Mikoto/bin/Release/${{ env.dotnet_target }}/win-arm64/mikoto-arm64 -Destination mikoto-arm64.zip
+      # ---------------- Build Phase ----------------
+      - name: Publish x64
+        run: dotnet publish -c Release -r win-x64
 
-      - name: Publish-x64
-        run: dotnet publish /p:RuntimeIdentifier=win-x64
-      - name: Rename-x64
-        run: Rename-Item -Path ./Mikoto/bin/Release/${{ env.dotnet_target }}/win-x64/publish -NewName mikoto-64bit
-      - name: Zip-x64
-        run: Compress-Archive -Path ./Mikoto/bin/Release/${{ env.dotnet_target }}/win-x64/mikoto-64bit -Destination mikoto-64bit.zip
+      - name: Publish x86
+        run: dotnet publish -c Release -r win-x86
 
-      - name: Publish-x86
-        run: dotnet publish /p:RuntimeIdentifier=win-x86
-      - name: Rename-x86
-        run: Rename-Item -Path ./Mikoto/bin/Release/${{ env.dotnet_target }}/win-x86/publish -NewName mikoto-32bit
-      - name: Zip-x86
-        run: Compress-Archive -Path ./Mikoto/bin/Release/${{ env.dotnet_target }}/win-x86/mikoto-32bit -Destination mikoto-32bit.zip
+      - name: Publish arm64
+        run: dotnet publish -c Release -r win-arm64
 
-      - name: Create Release and Upload Release Asset
+      # ---------------- Inno Setup ----------------
+      - name: Install Inno Setup
+        run: choco install innosetup -y
+
+      - name: Build installer x64
+        run: iscc.exe "/DRuntime=x64" installer.iss
+
+      - name: Build installer x86
+        run: iscc.exe "/DRuntime=x86" installer.iss
+
+      - name: Build installer arm64
+        run: iscc.exe "/DRuntime=arm64" installer.iss
+
+      # ---------------- Upload Release ----------------
+      - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref }}
           name: Release ${{ github.ref }}
-          body: TODO New Release.
           draft: true
-          prerelease: false
           files: |
-            mikoto-arm64.zip
-            mikoto-64bit.zip
-            mikoto-32bit.zip
+            Publish\Mikoto-*-setup.exe

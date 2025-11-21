@@ -5,7 +5,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mikoto.Windows"
-        d:DataContext="{d:DesignInstance Type=local:TranslateViewModel}"
+        d:DataContext="{d:DesignInstance Type=local:TranslateWindowViewModel}"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"

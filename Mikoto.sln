@@ -1,12 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11205.157 d18.0
+VisualStudioVersion = 18.0.11205.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto", "Mikoto\Mikoto.csproj", "{5F985830-49EF-4EF4-8A37-9AEE99E17AD4}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7FC86372-7856-4A67-8FA1-CA9E02C5C5E8} = {7FC86372-7856-4A67-8FA1-CA9E02C5C5E8}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto.TextHook", "Mikoto.TextHook\Mikoto.TextHook.csproj", "{A976D07E-0B39-41B6-B6F7-7022BBFBD3FF}"
 EndProject
@@ -37,16 +34,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto.LocalizationTool", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto.Benchmark", "Mikoto.Benchmark\Mikoto.Benchmark.csproj", "{D281C6E7-CBEB-4322-9D24-B277161513D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mikoto.Updater", "Mikoto.Updater\Mikoto.Updater.csproj", "{7FC86372-7856-4A67-8FA1-CA9E02C5C5E8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{253E2034-1ACA-4E9E-9D96-BB242B7BF0C3}"
+	ProjectSection(SolutionItems) = preProject
 		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{34764128-9577-4B88-B233-053D94C56E1E}"
+	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
-		README.md = README.md
-		.github\workflows\release.yml = .github\workflows\release.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{726CCEC9-5E66-4620-82FC-4365F408A8A1}"
+	ProjectSection(SolutionItems) = preProject
+		installer.iss = installer.iss
 	EndProjectSection
 EndProject
 Global
@@ -101,13 +109,14 @@ Global
 		{D281C6E7-CBEB-4322-9D24-B277161513D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D281C6E7-CBEB-4322-9D24-B277161513D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D281C6E7-CBEB-4322-9D24-B277161513D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7FC86372-7856-4A67-8FA1-CA9E02C5C5E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7FC86372-7856-4A67-8FA1-CA9E02C5C5E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7FC86372-7856-4A67-8FA1-CA9E02C5C5E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7FC86372-7856-4A67-8FA1-CA9E02C5C5E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{253E2034-1ACA-4E9E-9D96-BB242B7BF0C3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{34764128-9577-4B88-B233-053D94C56E1E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{726CCEC9-5E66-4620-82FC-4365F408A8A1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C671EE52-326B-4046-A096-7B3BD07A53D9}
