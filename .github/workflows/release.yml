@@ -51,4 +51,4 @@ jobs:
           name: Release ${{ github.ref }}
           draft: true
           files: |
-            Publish\Mikoto-*-setup.exe
+            Mikoto/Publish/Mikoto-*-setup.exe
