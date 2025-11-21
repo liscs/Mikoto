@@ -16,7 +16,7 @@
 #define OutputBaseFilename "Mikoto-" + MyAppVersion + "-" + Runtime + "-setup"
 
 [Setup]
-AppId={34D9A21D-0436-40BE-81B3-DFA48D35D9A9}
+AppId={{34D9A21D-0436-40BE-81B3-DFA48D35D9A9}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppName} {#MyAppVersion}
