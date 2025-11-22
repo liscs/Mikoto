@@ -1,7 +1,6 @@
 ﻿using Mikoto.DataAccess;
 using Mikoto.UserControls;
 using System.Windows.Controls;
-using Windows.Devices.Lights;
 
 namespace Mikoto
 {

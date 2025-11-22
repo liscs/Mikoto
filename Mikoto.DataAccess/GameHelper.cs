@@ -9,7 +9,7 @@ namespace Mikoto.DataAccess
     public static class GameHelper
     {
         //游戏信息文件夹
-        private static readonly DirectoryInfo _gameInfoDirectory = Directory.CreateDirectory($"{Environment.CurrentDirectory}\\data\\games\\");
+        private static readonly DirectoryInfo _gameInfoDirectory = Directory.CreateDirectory($"{DataFolder.Path}\\games\\");
         public static Dictionary<Guid, GameInfo> AllCompletedGamesIdDict { get; set; } = new();
         public static Dictionary<string, GameInfo> AllCompletedGamesPathDict { get; set; } = new();
 

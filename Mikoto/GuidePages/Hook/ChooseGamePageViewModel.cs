@@ -1,6 +1,5 @@
 ﻿using Mikoto.Helpers.ViewModel;
 using System.Collections.ObjectModel;
-using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace Mikoto.GuidePages.Hook

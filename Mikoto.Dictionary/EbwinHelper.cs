@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Mikoto.DataAccess;
+using System.Diagnostics;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -18,7 +19,7 @@ namespace Mikoto.Dictionary
         };
 
         //字典信息文件夹
-        public static readonly DirectoryInfo directory = Directory.CreateDirectory($"{Environment.CurrentDirectory}\\data\\dictionaries");
+        public static readonly DirectoryInfo directory = Directory.CreateDirectory($"{DataFolder.Path}\\dictionaries");
 
 
         public EbwinHelper()

@@ -1,4 +1,5 @@
-﻿using Mikoto.Helpers.File;
+﻿using Mikoto.DataAccess;
+using Mikoto.Helpers.File;
 using Mikoto.Windows.Logger;
 using System.IO;
 
@@ -8,7 +9,7 @@ namespace Mikoto.Helpers.Text.ScriptInfos
     {
         protected ScriptInfo() { }
 
-        private string scriptsPath = Path.Combine(Common.DataFolder, "custom scripts");
+        private string scriptsPath = Path.Combine(DataFolder.Path, "custom scripts");
 
         protected abstract string Name { get; }
         protected abstract string FileExtension { get; }

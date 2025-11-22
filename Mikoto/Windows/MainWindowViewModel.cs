@@ -3,6 +3,7 @@ using Mikoto.Helpers.ViewModel;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Effects;
 
 namespace Mikoto.Windows
@@ -51,6 +52,31 @@ namespace Mikoto.Windows
                     GameCollectionEffect = null;
                 }
                 SetProperty(ref gameInfoDrawerIsOpen, value);
+            }
+        }
+
+        public ICommand CloseDrawer => new RelayCommand(() =>
+        {
+            GameInfoDrawerIsOpen = false;
+        });
+
+        private RelayCommand? searchCmd;
+        public ICommand SearchCmd => searchCmd ??= new RelayCommand(PerformSearchCmd);
+        private void PerformSearchCmd(object? commandParameter)
+        {
+            if (commandParameter is string searchText)
+            {
+                foreach (var border in GamePanelCollection)
+                {
+                    if (((GameInfo)(border.Tag)).GameName.Contains(searchText))
+                    {
+                        border.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        border.Visibility = Visibility.Collapsed;
+                    }
+                }
             }
         }
     }

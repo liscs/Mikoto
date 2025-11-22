@@ -1,4 +1,5 @@
-﻿using Mikoto.Helpers.Input;
+﻿using Mikoto.DataAccess;
+using Mikoto.Helpers.Input;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -115,7 +116,7 @@ namespace Mikoto
         private static void PrintErrorMessageToFile(Exception ex)
         {
             string time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss_fff"); // 毫秒防冲突
-            string logsFolder = Path.Combine(Common.DataFolder, "logs");
+            string logsFolder = Path.Combine(DataFolder.Path, "logs");
             try
             {
                 Directory.CreateDirectory(logsFolder);

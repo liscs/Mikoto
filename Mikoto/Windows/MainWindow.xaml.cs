@@ -35,8 +35,8 @@ namespace Mikoto
             TextRepair.InitCustomScripts();
             DataContext = _viewModel;
             Instance = this;
-            Common.AppSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile(Path.Combine(Common.DataFolder, "settings", "settings.ini")).Build();
-            Common.RepairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Path.Combine(Common.DataFolder, "settings", "RepairSettings.ini")).Build();
+            Common.AppSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile(Path.Combine(DataFolder.Path, "settings", "settings.ini")).Build();
+            Common.RepairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Path.Combine(DataFolder.Path, "settings", "RepairSettings.ini")).Build();
 
             InitializeLanguage();
             TranslatorCommon.Refresh();
@@ -68,7 +68,10 @@ namespace Mikoto
 #endif
             _gameInfoList = GameHelper.GetAllCompletedGames();
             InitGameLibraryPanel();
-            _viewModel.GameInfo = _gameInfoList[_gid];
+            if (_gameInfoList.Count!=0)
+            {
+                _viewModel.GameInfo = _gameInfoList[_gid];
+            }
         }
 
         private async void SetRandomBlurredBackground()
@@ -175,13 +178,24 @@ namespace Mikoto
                 Height = 120,
                 Child = grid,
                 Margin = new Thickness(3),
+                Tag = gameInfo,
+                Focusable = true,
             };
 
             border.MouseEnter += Border_MouseEnter;
             border.MouseLeave += Border_MouseLeave;
             border.MouseLeftButtonDown += Back_MouseLeftButtonDown;
+            border.KeyDown += Border_KeyDown;
 
             return border;
+        }
+
+        private void Border_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Back_MouseLeftButtonDown(sender, null);
+            }
         }
 
         private WeakReference<SettingsWindow>? _settingsWindow;
@@ -242,9 +256,10 @@ namespace Mikoto
             ellipseStoryboard.Begin(this);
         }
 
-        private void Back_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Back_MouseLeftButtonDown(object sender, MouseButtonEventArgs? e)
         {
             var b = (Border)sender;
+            b.Focus();
             var str = b.Name;
             var temp = str.Remove(0, 4);
             _gid = int.Parse(temp);
@@ -255,7 +270,7 @@ namespace Mikoto
             _viewModel.GameInfo = _gameInfoList[_gid];
 
             _viewModel.GameInfoDrawerIsOpen = true;
-            e.Handled = true;
+            e?.Handled = true;
         }
 
         private void GameNameTag_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -641,7 +656,7 @@ namespace Mikoto
 
         private void OpenGameInfoFileBtn_Click(object sender, RoutedEventArgs e)
         {
-            string gameInfoFilePath = Path.Combine(Common.DataFolder, "games", $"{_gameInfoList[_gid].GameID}.json");
+            string gameInfoFilePath = Path.Combine(DataFolder.Path, "games", $"{_gameInfoList[_gid].GameID}.json");
             Process.Start(new ProcessStartInfo(gameInfoFilePath) { UseShellExecute = true });
         }
 

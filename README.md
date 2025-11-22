@@ -11,7 +11,7 @@ Mikoto 是一款基于 MisakaTranslator 的互动文字小说阅读工具。
 * 删除了OCR功能，以专注于Hook相关功能。
 
 ## 游戏信息配置文件示例
-配置文件名：.\data\games\a3ff500d-5b56-4320-88e9-3452caa2d602.json
+配置文件名：%localappdata%\Mikoto\data\games\a3ff500d-5b56-4320-88e9-3452caa2d602.json
 ```json5
 {
   "GameName": "アイコトバ-Silver Snow Sister-",//游戏名，默认使用游戏所在文件夹名

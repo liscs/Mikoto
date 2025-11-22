@@ -71,7 +71,11 @@
         </Style>
     </Window.Resources>
 
-
+    <Window.InputBindings>
+        <KeyBinding Key="Escape"
+                Command="{Binding CloseDrawer}"/>
+    </Window.InputBindings>
+    
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
@@ -99,6 +103,45 @@
                 </StackPanel>
             </Button>
         </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Effect="{Binding GameCollectionEffect}">
+            <hc:SearchBar
+    Command="{Binding SearchCmd}"
+    CommandParameter="{Binding Text, RelativeSource={RelativeSource Self}}"
+    MinWidth="300"
+    Margin="30"
+    IsRealTime="True"
+    hc:InfoElement.Placeholder="搜索游戏..." >
+                <hc:SearchBar.Style>
+                    <Style TargetType="hc:SearchBar" BasedOn="{StaticResource {x:Type hc:SearchBar}}">
+                        <Setter Property="Height" Value="42"/>
+                        <Setter Property="Padding" Value="12,0"/>
+                        <Setter Property="Background" Value="#1AFFFFFF"/>
+                        <Setter Property="BorderBrush" Value="#44FFFFFF"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#30FFFFFF"/>
+                                <Setter Property="BorderBrush" Value="#77FFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter Property="Background" Value="#50FFFFFF"/>
+                                <Setter Property="BorderBrush" Value="#AFFFFFFF"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </hc:SearchBar.Style>
+            </hc:SearchBar>
+
+
+        </StackPanel>
+
         <!--游戏列表-->
         <hc:ScrollViewer Grid.Row="1"
                          Grid.Column="0"
