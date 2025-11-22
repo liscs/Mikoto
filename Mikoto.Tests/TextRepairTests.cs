@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Mikoto.Tests
+﻿namespace Mikoto.Tests
 {
     [TestClass()]
     public class TextRepairTests

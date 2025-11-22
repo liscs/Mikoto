@@ -1,6 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Mikoto.Helpers.Text.ScriptInfos;
-
+﻿using Mikoto.Helpers.Text.ScriptInfos;
+[assembly: Parallelize]
 namespace Mikoto.Tests
 {
     [TestClass()]

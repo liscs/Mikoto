@@ -1,5 +1,6 @@
 ﻿using Mikoto.Helpers.Input;
 using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
@@ -65,13 +66,13 @@ namespace Mikoto
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-            string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-            PrintErrorMessageToFile(nowTime, e.Exception);
-            ShowExceptionMessageBox(e.Exception, nowTime);
+            PrintErrorMessageToFile(e.Exception);
+            ShowExceptionMessageBox(e.Exception);
         }
 
-        private static void ShowExceptionMessageBox(object e, string nowTime)
+        private static void ShowExceptionMessageBox(object e)
         {
+            string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
             MessageBox.Show($"{Current.Resources["App_Global_ErrorHint_left"]}{nowTime}{Current.Resources["App_Global_ErrorHint_right"]}{Environment.NewLine}{e}",
                             Current.Resources["MessageBox_Error"].ToString());
         }
@@ -82,10 +83,14 @@ namespace Mikoto
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Mikoto.MainWindow.Instance.CloseNotifyIcon();
-            string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-            PrintErrorMessageToFile(nowTime, e.ExceptionObject);
+
+            PrintErrorMessageToFile(e.ExceptionObject as Exception ??
+                new Exception("Unknown exception: " + e.ExceptionObject));
+
+            ShowExceptionMessageBox(e.ExceptionObject as Exception ??
+                new Exception("Unknown exception: " + e.ExceptionObject));
+
             EndHook();
-            ShowExceptionMessageBox(e.ExceptionObject, nowTime);
         }
 
         /// <summary>
@@ -95,37 +100,70 @@ namespace Mikoto
         {
             e.SetObserved();
             Mikoto.MainWindow.Instance.CloseNotifyIcon();
-            string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-            PrintErrorMessageToFile(nowTime, e.Exception);
-            ShowExceptionMessageBox(e.Exception, nowTime);
+            PrintErrorMessageToFile(e.Exception);
+            ShowExceptionMessageBox(e.Exception);
         }
+
+
+        private static readonly int LogReserveDays = 30; // 保留天数（按需调整）
 
         /// <summary>
         /// 打印错误信息到文本文件
         /// </summary>
         /// <param name="fileName">文件名</param>
         /// <param name="e">异常</param>
-        private static void PrintErrorMessageToFile(string fileName, object e)
+        private static void PrintErrorMessageToFile(Exception ex)
         {
+            string time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss_fff"); // 毫秒防冲突
             string logsFolder = Path.Combine(Common.DataFolder, "logs");
-            Directory.CreateDirectory(logsFolder);
-            string logFile = Path.Combine(logsFolder, $"{fileName}.txt");
-            using FileStream fs = new(logFile, FileMode.Create);
+            try
+            {
+                Directory.CreateDirectory(logsFolder);
+                string logFile = Path.Combine(logsFolder, $"{time}.txt");
 
-            using StreamWriter sw = new(fs);
+                using var sw = new StreamWriter(logFile, false, Encoding.UTF8);
 
-            sw.WriteLine("==============System Info================");
-            sw.WriteLine("Operating System:" + Environment.OSVersion);
-            sw.WriteLine("Time:" + DateTime.Now.ToString("O"));
-            sw.WriteLine(".NET Version:" + Environment.Version);
-            sw.WriteLine("Mikoto Version:" + Common.CurrentVersion.ToString());
+                sw.WriteLine("==============System Info================");
+                sw.WriteLine($"Time: {DateTime.Now:O}");
+                sw.WriteLine($"Operating System: {Environment.OSVersion}");
+                sw.WriteLine($".NET Version: {Environment.Version}");
+                sw.WriteLine($"Mikoto Version: {Common.CurrentVersion}");
+
+                sw.WriteLine();
+                sw.WriteLine("==============Exception Info================");
+                sw.WriteLine(ex.ToString());
+                sw.Flush();
 
 
-            sw.WriteLine("==============Exception Info================");
-            sw.WriteLine(e);
-            sw.Flush();
+                //自动清理旧日志
+                CleanupOldLogs(logsFolder, LogReserveDays);
+            }
+            catch (Exception logEx)
+            {
+                Console.Error.WriteLine("Logging failed: " + logEx);
+            }
         }
 
+        private static void CleanupOldLogs(string folder, int reserveDays)
+        {
+            try
+            {
+                var deadline = DateTime.Now.AddDays(-reserveDays);
+
+                foreach (var file in Directory.EnumerateFiles(folder, "*.txt"))
+                {
+                    var lastWrite = File.GetLastWriteTime(file);
+                    if (lastWrite < deadline)
+                    {
+                        File.Delete(file);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine("Clean log failed: " + ex);
+            }
+        }
 
         /// <summary>
         /// 执行Hook是否完全卸载的检查
