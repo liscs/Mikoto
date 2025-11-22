@@ -43,6 +43,14 @@ namespace Mikoto.Helpers.Graphics
             return ico;
         }
 
+        public static BitmapSource? GetGameIconSource(int pid)
+        {
+            using var process = System.Diagnostics.Process.GetProcessById(pid);
+            string exePath = process.MainModule?.FileName??string.Empty;
+
+            return GetGameIconSource(exePath);
+        }
+
         public static BitmapSource? GetGameIconSource(string path)
         {
             path = HookFileHelper.ToEntranceFilePath(path);

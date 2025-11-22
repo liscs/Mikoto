@@ -1,5 +1,6 @@
 ﻿using HandyControl.Controls;
 using Mikoto.DataAccess;
+using Mikoto.Helpers.Graphics;
 using Mikoto.TextHook;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -17,9 +18,8 @@ namespace Mikoto.GuidePages.Hook
     public partial class ChooseGamePage : Page
     {
         private readonly Dictionary<string, int> _appNamePidDict = ProcessHelper.GetAppNamePidDict();
-        private int _gamePid = -1;
         private List<Process> _sameNameGameProcessList = new();
-        private static ChooseGamePageViewModel _viewModel = new();
+        private readonly ChooseGamePageViewModel _viewModel = new();
 
 
         public ChooseGamePage()
@@ -30,24 +30,31 @@ namespace Mikoto.GuidePages.Hook
             {
                 NoAdminPrivilegesTextBlock.Visibility = Visibility.Collapsed;
             }
-
-            GameProcessComboBox.ItemsSource = _appNamePidDict.Keys.OrderBy(p => p);
+            var list = _appNamePidDict.Keys.OrderBy(p => p)
+                                       .Select(p =>
+                                               new ProcessItem
+                                               {
+                                                   DisplayName = p,
+                                                   Icon=ImageHelper.GetGameIconSource(_appNamePidDict[p]),
+                                                   PID = _appNamePidDict[p],
+                                               })
+                                       .ToList();
+            _viewModel.ProcessList = new(list);
         }
 
         private void GameProcessComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _gamePid = _appNamePidDict[(string)GameProcessComboBox.SelectedValue];
-            _sameNameGameProcessList = ProcessHelper.FindSameNameProcess(_gamePid);
+            _sameNameGameProcessList = ProcessHelper.FindSameNameProcess(_viewModel.SelectedProcess.PID);
             AutoHookTag.Text = Application.Current.Resources["ChooseGamePage_AutoHookTag_Begin"].ToString() + _sameNameGameProcessList.Count + Application.Current.Resources["ChooseGamePage_AutoHookTag_End"].ToString();
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_gamePid != -1 && GameProcessComboBox.SelectedValue is string selectValueString)
+            if (_viewModel.SelectedProcess.PID != -1)
             {
                 try
                 {
-                    GenerateHookerAndGotoNextStep(_appNamePidDict[selectValueString]);
+                    GenerateHookerAndGotoNextStep(_viewModel.SelectedProcess.PID);
                 }
                 catch (Win32Exception ex)
                 {
@@ -71,15 +78,15 @@ namespace Mikoto.GuidePages.Hook
                 GlobalWorkingData.Instance.TextHooker = new TextHookHandle(_sameNameGameProcessList);
             }
 
-            bool isx64 = Is64BitProcess(_gamePid);
+            bool isx64 = Is64BitProcess(pid);
             if (GlobalWorkingData.Instance.TextHooker.Init(isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
             {
                 GlobalWorkingData.Instance.GameID = Guid.Empty;
-                string filepath = ProcessHelper.FindProcessPath(_gamePid);
+                string filepath = ProcessHelper.FindProcessPath(pid);
                 if (!string.IsNullOrEmpty(filepath))
                 {
                     GameInfoBuilder.Reset();
-                    GameInfoBuilder.GameProcessId = _gamePid;
+                    GameInfoBuilder.GameProcessId = pid;
                     GameInfoBuilder.GameInfo = GameHelper.GetGameByPath(filepath);
                     GlobalWorkingData.Instance.GameID = GameInfoBuilder.GameInfo.GameID;
                     GameInfoBuilder.GameInfo.Isx64 = isx64;

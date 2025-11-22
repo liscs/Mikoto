@@ -37,6 +37,7 @@
                           Grid.Row="1"
                           SelectionMode="Single"
                           Background="Transparent">
+
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Width="Auto"
@@ -53,7 +54,9 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Path=Data}"
-                                                   TextWrapping="WrapWithOverflow" />
+                                                   ToolTip="{Binding Data}" 
+                                                   TextWrapping="NoWrap"
+                                                   TextTrimming="CharacterEllipsis" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

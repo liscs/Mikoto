@@ -6,7 +6,7 @@
       xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:local="clr-namespace:Mikoto.GuidePages"
       xmlns:hook="clr-namespace:Mikoto.GuidePages.Hook"
-      d:DataContext="{d:DesignInstance Type=hook:ChooseGameViewModel}"
+      d:DataContext="{d:DesignInstance Type=hook:ChooseGamePageViewModel}"
       mc:Ignorable="d"
       d:DesignHeight="400"
       d:DesignWidth="800"
@@ -35,10 +35,38 @@
             </StackPanel>
 
             <hc:ComboBox Name="GameProcessComboBox"
-                         Grid.Row="1"
-                         Margin="10"
-                         VerticalAlignment="Center"
-                         SelectionChanged="GameProcessComboBox_SelectionChanged" />
+             Grid.Row="1"
+             Margin="10"
+             VerticalAlignment="Center"
+             SelectionChanged="GameProcessComboBox_SelectionChanged"
+             DisplayMemberPath=""
+             SelectedValuePath="PID" 
+             ItemsSource="{Binding ProcessList}"
+             SelectedItem="{Binding SelectedProcess}">
+                <hc:ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="2">
+                            <!-- 显示图标 -->
+                            <Image Source="{Binding Icon}" Width="16" Height="16" Margin="0,0,4,0">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Icon}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                            <!-- 显示进程名 + 窗口标题 + PID -->
+                            <TextBlock Text="{Binding DisplayName}" 
+                           TextTrimming="CharacterEllipsis"
+                           ToolTip="{Binding DisplayName}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </hc:ComboBox.ItemTemplate>
+            </hc:ComboBox>
 
             <TextBlock Foreground="{DynamicResource PrimaryForeground}"
                        Grid.Row="2"

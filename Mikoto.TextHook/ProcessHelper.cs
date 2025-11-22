@@ -17,12 +17,9 @@ namespace Mikoto.TextHook
             {
                 if (p.MainWindowHandle != nint.Zero)
                 {
-                    string info = p.ProcessName + ": ";
-                    if (!string.IsNullOrEmpty(p.MainWindowTitle))
-                    {
-                        info += "【" + p.MainWindowTitle + "】: ";
-                    }
-                    info += p.Id;
+                    string info = string.IsNullOrEmpty(p.MainWindowTitle)
+                                    ? $"{p.ProcessName} (PID:{p.Id})"
+                                    : $"{p.ProcessName} - {p.MainWindowTitle} (PID:{p.Id})";
                     result[info] = p.Id;
                 }
                 p.Dispose();
