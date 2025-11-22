@@ -1,6 +1,5 @@
 ﻿using Mikoto.DataAccess;
-using System.IO;
-using System.Windows;
+using Mikoto.UserControls;
 using System.Windows.Controls;
 
 namespace Mikoto
@@ -13,37 +12,21 @@ namespace Mikoto
         private readonly List<GameInfo> gameInfolst;
         private readonly int gid; //当前选中的顺序，并非游戏ID
         private readonly MainWindow _mainWindow;
+        private readonly GameNameDialogViewModel _viewModel;
 
         public GameNameDialog(MainWindow mainWindow, List<GameInfo> gameInfo, int id)
         {
             InitializeComponent();
+            _viewModel = new GameNameDialogViewModel(gameInfo[id]);
+            DataContext = _viewModel;
             _mainWindow = mainWindow;
-            gameInfolst = gameInfo;
             gid = id;
-            NameBox.Text = gameInfolst[gid].GameName;
-            PathBox.Text = gameInfolst[gid].FilePath;
-
+            gameInfolst = gameInfo;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            bool needRefresh = false;
-            string newName = NameBox.Text;
-            if (!string.IsNullOrWhiteSpace(newName) && newName != gameInfolst[gid].GameName)
-            {
-                GameHelper.UpdateGameInfoByID(gameInfolst[gid].GameID, nameof(GameInfo.GameName), newName);
-                needRefresh = true;
-            }
-            string newPath = PathBox.Text;
-            if (File.Exists(newPath) && newPath != gameInfolst[gid].FilePath)
-            {
-                GameHelper.UpdateGameInfoByID(gameInfolst[gid].GameID, nameof(GameInfo.FilePath), newPath);
-                needRefresh = true;
-            }
-            if (needRefresh)
-            {
-                _mainWindow.Refresh();
-            }
+            _viewModel.SaveCommand.Execute(null);
         }
     }
 }
