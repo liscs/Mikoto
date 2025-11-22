@@ -24,7 +24,7 @@ namespace Mikoto
 {
     public partial class MainWindow
     {
-        public List<GameInfo> GameInfoList { get; set; } = new();
+        private List<GameInfo> _gameInfoList = new();
         private int _gid; //当前选中的顺序，并非游戏ID
 
         public static MainWindow Instance { get; set; } = default!;
@@ -66,13 +66,14 @@ namespace Mikoto
 #if DEBUG
             _viewModel.GameInfoFileButtonVisibility = Visibility.Visible;
 #endif
-            GameInfoList = GameHelper.GetAllCompletedGames();
+            _gameInfoList = GameHelper.GetAllCompletedGames();
             InitGameLibraryPanel();
+            _viewModel.GameInfo = _gameInfoList[_gid];
         }
 
         private async void SetRandomBlurredBackground()
         {
-            if (GameInfoList.Count <= 5) return;
+            if (_gameInfoList.Count <= 5) return;
 
             BitmapSource? image = await Task.Run(GetRandomBlurredImage);
             if (image != null)
@@ -87,8 +88,8 @@ namespace Mikoto
 
         private BitmapSource? GetRandomBlurredImage()
         {
-            int randomId = new Random().Next(GameInfoList.Count);
-            BitmapSource? ico = ImageHelper.GetGameIconSource(GameInfoList[randomId].FilePath);
+            int randomId = new Random().Next(_gameInfoList.Count);
+            BitmapSource? ico = ImageHelper.GetGameIconSource(_gameInfoList[randomId].FilePath);
             if (ico is null)
             {
                 return null;
@@ -105,7 +106,7 @@ namespace Mikoto
         private async void InitGameLibraryPanel()
         {
             _viewModel.GamePanelCollection.Clear();
-            for (var i = 0; i < GameInfoList.Count; i++)
+            for (var i = 0; i < _gameInfoList.Count; i++)
             {
                 await Task.Yield();
                 var gameBorder = CreateGameElement(i);
@@ -134,7 +135,7 @@ namespace Mikoto
         /// </summary>
         private Border CreateGameElement(int gid)
         {
-            var gameInfo = GameInfoList[gid];
+            var gameInfo = _gameInfoList[gid];
             string gameName = gameInfo.GameName;
             string filePath = gameInfo.FilePath;
 
@@ -251,9 +252,7 @@ namespace Mikoto
             RenderOptions.SetBitmapScalingMode(DrawGameImage, BitmapScalingMode.HighQuality);
 
             GameNameTag.Tag = _gid;
-            GameNameTag.Text = GameInfoList[_gid].GameName;
-
-            _viewModel.LastStartTime = GameInfoList[_gid].LastPlayAt.ToString();
+            _viewModel.GameInfo = _gameInfoList[_gid];
 
             _viewModel.GameInfoDrawerIsOpen = true;
             e.Handled = true;
@@ -261,7 +260,7 @@ namespace Mikoto
 
         private void GameNameTag_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            string? gameFileDirectory = Path.GetDirectoryName(GameInfoList[(int)((TextBlock)sender).Tag].FilePath);
+            string? gameFileDirectory = Path.GetDirectoryName(_gameInfoList[(int)((TextBlock)sender).Tag].FilePath);
             if (Directory.Exists(gameFileDirectory))
             {
                 Process.Start(new ProcessStartInfo
@@ -281,13 +280,13 @@ namespace Mikoto
             {
                 string name;
                 //不以exe结尾的ProcessName不会自动把后缀去掉，因此对exe后缀特殊处理
-                if (Path.GetExtension(GameInfoList[gid].FilePath).Equals(".exe", StringComparison.CurrentCultureIgnoreCase))
+                if (Path.GetExtension(_gameInfoList[gid].FilePath).Equals(".exe", StringComparison.OrdinalIgnoreCase))
                 {
-                    name = Path.GetFileNameWithoutExtension(GameInfoList[gid].FilePath);
+                    name = Path.GetFileNameWithoutExtension(_gameInfoList[gid].FilePath);
                 }
                 else
                 {
-                    name = Path.GetFileName(GameInfoList[gid].FilePath);
+                    name = Path.GetFileName(_gameInfoList[gid].FilePath);
                 }
                 gameProcessList = Process.GetProcessesByName(name).ToList();
                 if (gameProcessList.Count > 0)
@@ -302,23 +301,23 @@ namespace Mikoto
                 MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
                 return;
             }
-            GlobalWorkingData.Instance.GameID = GameInfoList[gid].GameID;
+            GlobalWorkingData.Instance.GameID = _gameInfoList[gid].GameID;
             GlobalWorkingData.Instance.TransMode = TransMode.Hook;
-            GlobalWorkingData.Instance.UsingDstLang = GameInfoList[gid].DstLang;
-            GlobalWorkingData.Instance.UsingSrcLang = GameInfoList[gid].SrcLang;
-            GlobalWorkingData.Instance.UsingRepairFunc = GameInfoList[gid].RepairFunc;
+            GlobalWorkingData.Instance.UsingDstLang = _gameInfoList[gid].DstLang;
+            GlobalWorkingData.Instance.UsingSrcLang = _gameInfoList[gid].SrcLang;
+            GlobalWorkingData.Instance.UsingRepairFunc = _gameInfoList[gid].RepairFunc;
 
             switch (GlobalWorkingData.Instance.UsingRepairFunc)
             {
                 case "RepairFun_RemoveSingleWordRepeat":
-                    Common.RepairSettings.SingleWordRepeatTimes = int.Parse(GameInfoList[gid].RepairParamA ?? "0");
+                    Common.RepairSettings.SingleWordRepeatTimes = int.Parse(_gameInfoList[gid].RepairParamA ?? "0");
                     break;
                 case "RepairFun_RemoveSentenceRepeat":
-                    Common.RepairSettings.SentenceRepeatFindCharNum = int.Parse(GameInfoList[gid].RepairParamA ?? "0");
+                    Common.RepairSettings.SentenceRepeatFindCharNum = int.Parse(_gameInfoList[gid].RepairParamA ?? "0");
                     break;
                 case "RepairFun_RegexReplace":
-                    Common.RepairSettings.Regex = GameInfoList[gid].RepairParamA ?? string.Empty;
-                    Common.RepairSettings.Regex_Replace = GameInfoList[gid].RepairParamB ?? string.Empty;
+                    Common.RepairSettings.Regex = _gameInfoList[gid].RepairParamA ?? string.Empty;
+                    Common.RepairSettings.Regex_Replace = _gameInfoList[gid].RepairParamB ?? string.Empty;
                     break;
                 default:
                     break;
@@ -326,13 +325,13 @@ namespace Mikoto
             TextRepair.RepairFuncInit();
             GlobalWorkingData.Instance.TextHooker = gameProcessList.Count == 1 ? new TextHookHandle(gameProcessList[0].Id) : new TextHookHandle(gameProcessList);
 
-            if (!GlobalWorkingData.Instance.TextHooker.Init(GameInfoList[gid].Isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
+            if (!GlobalWorkingData.Instance.TextHooker.Init(_gameInfoList[gid].Isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
             {
                 MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
                 return;
             }
 
-            await GlobalWorkingData.Instance.TextHooker.StartHook(GameInfoList[gid], Convert.ToBoolean(Common.AppSettings.AutoHook));
+            await GlobalWorkingData.Instance.TextHooker.StartHook(_gameInfoList[gid], Convert.ToBoolean(Common.AppSettings.AutoHook));
 
             if (!await GlobalWorkingData.Instance.TextHooker.AutoAddCustomHookToGameAsync())
             {
@@ -407,9 +406,9 @@ namespace Mikoto
 
         private async void StartBtn_Click(object sender, RoutedEventArgs e)
         {
-            GameHelper.UpdateGameInfoByID(GameInfoList[_gid].GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
+            GameHelper.UpdateGameInfoByID(_gameInfoList[_gid].GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
 
-            string path = GetEntranceFilePath(GameInfoList[_gid].FilePath);
+            string path = GetEntranceFilePath(_gameInfoList[_gid].FilePath);
             if (!File.Exists(path))
             {
                 MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{path}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
@@ -430,9 +429,9 @@ namespace Mikoto
 
         private async void LEStartBtn_Click(object sender, RoutedEventArgs e)
         {
-            GameHelper.UpdateGameInfoByID(GameInfoList[_gid].GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
+            GameHelper.UpdateGameInfoByID(_gameInfoList[_gid].GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
 
-            string path = GetEntranceFilePath(GameInfoList[_gid].FilePath);
+            string path = GetEntranceFilePath(_gameInfoList[_gid].FilePath);
             if (!File.Exists(path))
             {
                 MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{path}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
@@ -464,7 +463,7 @@ namespace Mikoto
         {
             if (MessageBox.Show(Application.Current.Resources["MainWindow_Drawer_DeleteGameConfirmBox"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                GameHelper.DeleteGameByID(GameInfoList[_gid].GameID);
+                GameHelper.DeleteGameByID(_gameInfoList[_gid].GameID);
                 _viewModel.GamePanelCollection.Remove(_viewModel.GamePanelCollection.Where(p => p.Name == $"game{_gid}").First());
                 _viewModel.GameInfoDrawerIsOpen = false;
             }
@@ -473,7 +472,7 @@ namespace Mikoto
 
         private void UpdateNameBtn_Click(object sender, RoutedEventArgs e)
         {
-            Dialog.Show(new GameNameDialog(this, GameInfoList, _gid));
+            Dialog.Show(new GameNameDialog(_gameInfoList[_gid]));
         }
 
         private void BlurWindow_Closing(object sender, CancelEventArgs e)
@@ -546,13 +545,11 @@ namespace Mikoto
         /// <returns>数组索引（非GameID），-1代表未找到</returns>
         private int GetRunningGameGid()
         {
-            GameInfoList = GameHelper.GetAllCompletedGames();
-
             foreach (string path in ProcessHelper.GetAppPaths())
             {
-                for (int j = 0; j < GameInfoList.Count; j++)
+                for (int j = 0; j < _gameInfoList.Count; j++)
                 {
-                    if (path.Equals(GameInfoList[j].FilePath, StringComparison.InvariantCultureIgnoreCase))
+                    if (path.Equals(_gameInfoList[j].FilePath, StringComparison.InvariantCultureIgnoreCase))
                         return j;
                 }
             }
@@ -644,7 +641,7 @@ namespace Mikoto
 
         private void OpenGameInfoFileBtn_Click(object sender, RoutedEventArgs e)
         {
-            string gameInfoFilePath = Path.Combine(Common.DataFolder, "games", $"{GameInfoList[_gid].GameID}.json");
+            string gameInfoFilePath = Path.Combine(Common.DataFolder, "games", $"{_gameInfoList[_gid].GameID}.json");
             Process.Start(new ProcessStartInfo(gameInfoFilePath) { UseShellExecute = true });
         }
 

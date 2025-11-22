@@ -19,7 +19,6 @@ namespace Mikoto.GuidePages
             //刷新主界面
             Dispatcher.BeginInvoke(() =>
             {
-                MainWindow.Instance.GameInfoList = GameHelper.GetAllCompletedGames();
                 MainWindow.Instance.Refresh();
             });
 

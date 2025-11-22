@@ -1,4 +1,5 @@
-﻿using Mikoto.Helpers.ViewModel;
+﻿using Mikoto.DataAccess;
+using Mikoto.Helpers.ViewModel;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,9 +25,8 @@ namespace Mikoto.Windows
             }
         }
 
-        private string lastStartTime = string.Empty;
-
-        public string LastStartTime { get => lastStartTime; set => SetProperty(ref lastStartTime, value); }
+        private GameInfo gameInfo = new();
+        public GameInfo GameInfo { get => gameInfo; set => SetProperty(ref gameInfo, value); }
 
         private Visibility gameInfoFileButtonVisibility = Visibility.Collapsed;
 

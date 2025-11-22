@@ -6,6 +6,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:Mikoto="clr-namespace:Mikoto"
         xmlns:local="clr-namespace:Mikoto.Windows"
+        xmlns:vw="clr-namespace:Mikoto.Helpers.ViewModel"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
         mc:Ignorable="d"
         d:Height="540"
@@ -20,6 +21,7 @@
         ContentRendered="BlurWindow_ContentRendered"
         IsVisibleChanged="Window_IsVisibleChanged">
     <Window.Resources>
+        <vw:LocalDateTimeConverter x:Key="LocalDateTimeConverter"/>
         <!-- 为按钮提取的样式 -->
         <Style x:Key="ButtonStyle"
                TargetType="Button"
@@ -259,6 +261,7 @@
                                Margin="50,0,50,20"
                                MouseLeftButtonDown="DrawGameImage_MouseLeftButtonDown" />
                         <TextBlock Name="GameNameTag"
+                                   Text="{Binding GameInfo.GameName}"
                                    Foreground="{DynamicResource PrimaryForeground}"
                                    MouseEnter="GameNameTag_MouseEnter"
                                    MouseLeave="GameNameTag_MouseLeave"
@@ -267,7 +270,7 @@
                                    FontSize="{DynamicResource SubHeadFontSize}"
                                    TextWrapping="Wrap"
                                    PreviewMouseLeftButtonUp="GameNameTag_PreviewMouseLeftButtonUp" />
-                        <TextBlock  Text="{Binding LastStartTime}"
+                        <TextBlock  Text="{Binding GameInfo.LastPlayAt, Converter={StaticResource LocalDateTimeConverter}}"
                                     Foreground="{DynamicResource PrimaryForeground}"
                                     TextAlignment="Center"
                                     Margin="10,0,10,10"

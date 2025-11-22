@@ -1,6 +1,7 @@
 ﻿using Mikoto.DataAccess;
 using Mikoto.UserControls;
 using System.Windows.Controls;
+using Windows.Devices.Lights;
 
 namespace Mikoto
 {
@@ -9,24 +10,19 @@ namespace Mikoto
     /// </summary>
     public partial class GameNameDialog : UserControl
     {
-        private readonly List<GameInfo> gameInfolst;
-        private readonly int gid; //当前选中的顺序，并非游戏ID
-        private readonly MainWindow _mainWindow;
         private readonly GameNameDialogViewModel _viewModel;
 
-        public GameNameDialog(MainWindow mainWindow, List<GameInfo> gameInfo, int id)
+        public GameNameDialog(GameInfo gameInfo)
         {
             InitializeComponent();
-            _viewModel = new GameNameDialogViewModel(gameInfo[id]);
+            _viewModel = new GameNameDialogViewModel(gameInfo);
             DataContext = _viewModel;
-            _mainWindow = mainWindow;
-            gid = id;
-            gameInfolst = gameInfo;
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             _viewModel.SaveCommand.Execute(null);
+            MainWindow.Instance.Refresh();
         }
     }
 }
