@@ -39,7 +39,7 @@ jobs:
         run: |
           $languages = @(
             "https://raw.githubusercontent.com/jrsoftware/issrc/refs/heads/main/Files/Languages/Unofficial/ChineseSimplified.isl",
-            "https://raw.githubusercontent.com/jrsoftware/issrc/refs/heads/main/Files/Languages/Unofficial/ChineseTraditional.isl",
+            "https://raw.githubusercontent.com/jrsoftware/issrc/refs/heads/main/Files/Languages/Unofficial/ChineseTraditional.isl"
           )
           $targetDir = "C:\Program Files (x86)\Inno Setup 6\Languages"
           foreach ($url in $languages) {
