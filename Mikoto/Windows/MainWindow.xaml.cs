@@ -79,6 +79,8 @@ namespace Mikoto
             if (_gameInfoList.Count <= 5) return;
 
             BitmapSource? image = await Task.Run(GetRandomBlurredImage);
+            bool isDark = ImageHelper.IsDarkImage(image);
+            ApplySearchBarBrushes(isDark);
             if (image != null)
             {
                 await Dispatcher.BeginInvoke(() =>
@@ -88,6 +90,7 @@ namespace Mikoto
                 });
             }
         }
+
 
         private BitmapSource? GetRandomBlurredImage()
         {
@@ -663,6 +666,30 @@ namespace Mikoto
         private void AddGameButton_Click(object sender, RoutedEventArgs e)
         {
             AddNewGameDrawer.IsOpen = true;
+        }
+
+        private static void ApplySearchBarBrushes(bool backgroundIsDark)
+        {
+            var dict = Application.Current.Resources;
+
+            if (backgroundIsDark)
+            {
+                dict["SearchBarBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1AFFFFFF"));
+                dict["SearchBarBorder"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#44FFFFFF"));
+                dict["SearchBarBackgroundHover"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#30FFFFFF"));
+                dict["SearchBarBorderHover"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#77FFFFFF"));
+                dict["SearchBarBackgroundFocus"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50FFFFFF"));
+                dict["SearchBarBorderFocus"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#AFFFFFFF"));
+            }
+            else
+            {
+                dict["SearchBarBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1A000000"));
+                dict["SearchBarBorder"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#33000000"));
+                dict["SearchBarBackgroundHover"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#30000000"));
+                dict["SearchBarBorderHover"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#55000000"));
+                dict["SearchBarBackgroundFocus"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#50000000"));
+                dict["SearchBarBorderFocus"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#88000000"));
+            }
         }
     }
 }

@@ -104,42 +104,40 @@
             </Button>
         </StackPanel>
 
+        <!--搜索框-->
         <StackPanel Orientation="Horizontal"
                     Grid.Row="0"
                     Grid.Column="1"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Effect="{Binding GameCollectionEffect}">
-            <hc:SearchBar
-    Command="{Binding SearchCmd}"
-    CommandParameter="{Binding Text, RelativeSource={RelativeSource Self}}"
-    MinWidth="300"
-    Margin="30"
-    IsRealTime="True"
-    hc:InfoElement.Placeholder="搜索游戏..." >
+            <hc:SearchBar   Command="{Binding SearchCmd}"
+                            CommandParameter="{Binding Text, RelativeSource={RelativeSource Self}}"
+                            MinWidth="300"
+                            Margin="30"
+                            IsRealTime="True"
+                            hc:InfoElement.Placeholder="搜索游戏..." >
                 <hc:SearchBar.Style>
                     <Style TargetType="hc:SearchBar" BasedOn="{StaticResource {x:Type hc:SearchBar}}">
                         <Setter Property="Height" Value="42"/>
                         <Setter Property="Padding" Value="12,0"/>
-                        <Setter Property="Background" Value="#1AFFFFFF"/>
-                        <Setter Property="BorderBrush" Value="#44FFFFFF"/>
+                        <Setter Property="Background" Value="{DynamicResource SearchBarBackground}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource SearchBarBorder}"/>
                         <Setter Property="BorderThickness" Value="1"/>
 
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#30FFFFFF"/>
-                                <Setter Property="BorderBrush" Value="#77FFFFFF"/>
+                                <Setter Property="Background" Value="{DynamicResource SearchBarBackgroundHover}"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource SearchBarBorderHover}"/>
                             </Trigger>
                             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                                <Setter Property="Background" Value="#50FFFFFF"/>
-                                <Setter Property="BorderBrush" Value="#AFFFFFFF"/>
+                                <Setter Property="Background" Value="{DynamicResource SearchBarBackgroundFocus}"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource SearchBarBorderFocus}"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
                 </hc:SearchBar.Style>
             </hc:SearchBar>
-
-
         </StackPanel>
 
         <!--游戏列表-->

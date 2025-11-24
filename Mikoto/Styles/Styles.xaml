@@ -175,4 +175,10 @@
                 Value="1" />
     </Style>
 
+    <SolidColorBrush x:Key="SearchBarBackground" Color="#1AFFFFFF"/>
+    <SolidColorBrush x:Key="SearchBarBorder" Color="#44FFFFFF"/>
+    <SolidColorBrush x:Key="SearchBarBackgroundHover" Color="#30FFFFFF"/>
+    <SolidColorBrush x:Key="SearchBarBorderHover" Color="#77FFFFFF"/>
+    <SolidColorBrush x:Key="SearchBarBackgroundFocus" Color="#50FFFFFF"/>
+    <SolidColorBrush x:Key="SearchBarBorderFocus" Color="#AFFFFFFF"/>
 </ResourceDictionary>

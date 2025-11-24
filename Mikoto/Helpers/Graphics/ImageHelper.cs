@@ -64,6 +64,38 @@ namespace Mikoto.Helpers.Graphics
             return bitmapImage;
         }
 
+        public static bool IsDarkImage(BitmapSource? bmp)
+        {
+            if (bmp==null)
+            {
+                return false;
+            }
+            // 采样区域（中间区域更代表背景）
+            const int sampleSize = 30;
+            int x = (bmp.PixelWidth - sampleSize) / 2;
+            int y = (bmp.PixelHeight - sampleSize) / 2;
+
+            var cb = new CroppedBitmap(bmp, new Int32Rect(x, y, sampleSize, sampleSize));
+            int stride = cb.PixelWidth * 4;
+            byte[] buffer = new byte[stride * cb.PixelHeight];
+            cb.CopyPixels(buffer, stride, 0);
+
+            long totalBrightness = 0;
+            for (int i = 0; i < buffer.Length; i += 4)
+            {
+                // BGRA
+                byte b = buffer[i];
+                byte g = buffer[i + 1];
+                byte r = buffer[i + 2];
+
+                // HSP 感知亮度算法（比平均法更接近人眼视觉）
+                totalBrightness += (long)(0.299 * r * r + 0.587 * g * g + 0.114 * b * b);
+            }
+
+            double brightness = Math.Sqrt(totalBrightness / (cb.PixelWidth * cb.PixelHeight));
+            return brightness < 130; // brightness 越小图片越暗
+        }
+
         private static string[] GetFilteredIcoPath(string path)
         {
             var dir = Path.GetDirectoryName(path);
