@@ -72,9 +72,9 @@
 
     <Grid Margin="5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*" />
             <RowDefinition Height="8*" />
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -162,23 +162,77 @@
             <Button Style="{StaticResource ButtonStyle}"
                     Click="LanguageBtn_Click"
                     BorderBrush="Transparent">
+                <Button.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.MergedDictionaries>
+                            <!--旗帜-->
+                            <ResourceDictionary Source="Resources/flags.xaml" />
+                        </ResourceDictionary.MergedDictionaries>
+                    </ResourceDictionary>
+                </Button.Resources>
                 <Button.ContextMenu>
                     <ContextMenu Name="LanguageContextMenu">
-                        <MenuItem Header="简体中文"
-                                  Click="Language_MenuItem_Click"
-                                  Tag="zh-CN" />
-                        <MenuItem Header="繁體中文"
-                                  Click="Language_MenuItem_Click"
-                                  Tag="zh-TW" />
-                        <MenuItem Header="English"
-                                  Click="Language_MenuItem_Click"
-                                  Tag="en-US" />
-                        <MenuItem Header="한국어"
-                                  Click="Language_MenuItem_Click"
-                                  Tag="ko-KR" />
-                        <MenuItem Header="日本語"
-                                  Click="Language_MenuItem_Click"
-                                  Tag="ja-JP" />
+                        <MenuItem Click="Language_MenuItem_Click"
+                                  Tag="zh-CN">
+                            <MenuItem.Header>
+                                <DockPanel>
+                                    <Image HorizontalAlignment="Left"
+                                           MaxWidth="30"
+                                           Source="{StaticResource cnDrawingImage}" />
+                                    <TextBlock HorizontalAlignment="Center"
+                                               VerticalAlignment="Center">简体中文</TextBlock>
+                                </DockPanel>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem Click="Language_MenuItem_Click"
+                                  Tag="zh-TW">
+                            <MenuItem.Header>
+                                <DockPanel>
+                                    <Image HorizontalAlignment="Left"
+                                           MaxWidth="30"
+                                           Source="{StaticResource twDrawingImage}" />
+                                    <TextBlock HorizontalAlignment="Center"
+                                               VerticalAlignment="Center">繁體中文</TextBlock>
+                                </DockPanel>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem Click="Language_MenuItem_Click"
+                                  Tag="en-US">
+                            <MenuItem.Header>
+                                <DockPanel>
+                                    <Image HorizontalAlignment="Left"
+                                           MaxWidth="30"
+                                           Source="{StaticResource usDrawingImage}" />
+                                    <TextBlock HorizontalAlignment="Center"
+                                               VerticalAlignment="Center">English</TextBlock>
+                                </DockPanel>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem Click="Language_MenuItem_Click"
+                                  Tag="ko-KR">
+                            <MenuItem.Header>
+                                <DockPanel>
+                                    <Image HorizontalAlignment="Left"
+                                           MaxWidth="30"
+                                           Source="{StaticResource krDrawingImage}" />
+                                    <TextBlock HorizontalAlignment="Center"
+                                               VerticalAlignment="Center">한국어</TextBlock>
+                                </DockPanel>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem Click="Language_MenuItem_Click"
+                                  Tag="ja-JP">
+                            <MenuItem.Header>
+                                <DockPanel>
+                                    <Image HorizontalAlignment="Left"
+                                           MaxWidth="30"
+                                           Source="{StaticResource jpDrawingImage}" />
+                                    <TextBlock HorizontalAlignment="Center"
+                                               VerticalAlignment="Center">日本語</TextBlock>
+                                </DockPanel>
+                            </MenuItem.Header>
+
+                        </MenuItem>
                     </ContextMenu>
                 </Button.ContextMenu>
                 <StackPanel>

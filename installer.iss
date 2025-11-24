@@ -3,7 +3,7 @@
 #define MyAppURL "https://github.com/liscs/Mikoto"
 #define MyAppExeName "Mikoto.exe"
 
-; 架构由 GitHub Actions 传入：/DRuntime=x64|x86|arm64
+; 架构由 GitHub Actions 传入：/DRuntime=x64|arm64
 #ifndef Runtime
   #define Runtime "x64"
 #endif
@@ -40,7 +40,9 @@ VersionInfoVersion={#MyAppVersion}
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
-;Name: "chinese"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
+Name: "chinese"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
+Name: "chinesetraditional"; MessagesFile: "compiler:Languages\ChineseTraditional.isl"
+Name: "korean"; MessagesFile: "compiler:Languages\Korean.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked

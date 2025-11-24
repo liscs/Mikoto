@@ -34,11 +34,21 @@ jobs:
       - name: Install Inno Setup
         run: choco install innosetup -y
 
+      # 下载非官方语言 ISL 文件
+      - name: Download unofficial ISL files
+        run: |
+          $languages = @(
+            "https://raw.githubusercontent.com/jrsoftware/issrc/refs/heads/main/Files/Languages/Unofficial/ChineseSimplified.isl",
+            "https://raw.githubusercontent.com/jrsoftware/issrc/refs/heads/main/Files/Languages/Unofficial/ChineseTraditional.isl",
+          )
+          $targetDir = "C:\Program Files (x86)\Inno Setup 6\Languages"
+          foreach ($url in $languages) {
+            $fileName = Split-Path $url -Leaf
+            Invoke-WebRequest -Uri $url -OutFile (Join-Path $targetDir $fileName)
+          }
+
       - name: Build installer x64
         run: iscc.exe "/DRuntime=x64" installer.iss
-
-      - name: Build installer x86
-        run: iscc.exe "/DRuntime=x86" installer.iss
 
       - name: Build installer arm64
         run: iscc.exe "/DRuntime=arm64" installer.iss
