@@ -23,10 +23,7 @@ jobs:
       # ---------------- Build Phase ----------------
       - name: Publish x64
         run: dotnet publish -c Release -r win-x64
-
-      - name: Publish x86
-        run: dotnet publish -c Release -r win-x86
-
+         
       - name: Publish arm64
         run: dotnet publish -c Release -r win-arm64
 
