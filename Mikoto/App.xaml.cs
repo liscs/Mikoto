@@ -19,12 +19,16 @@ namespace Mikoto
             this.Exit += App_Exit;
         }
 
+        public static AppEnvironment Env { get; private set; } = new AppEnvironment();
+
         protected override void OnStartup(StartupEventArgs e)
         {
+            Env = new AppEnvironment();
             base.OnStartup(e);
 
             // 初始化全局快捷键管理
             GlobalKeyboardHook.Initialize();
+
         }
 
         private void App_Startup(object sender, StartupEventArgs e)
@@ -171,7 +175,7 @@ namespace Mikoto
         /// </summary>
         private void EndHook()
         {
-            GlobalWorkingData.Instance.TextHooker.Dispose();
+            Env.TextHookService.Dispose();
         }
     }
 }

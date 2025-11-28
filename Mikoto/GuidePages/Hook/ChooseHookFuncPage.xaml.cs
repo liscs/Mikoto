@@ -30,8 +30,8 @@ namespace Mikoto.GuidePages.Hook
 
             HookFunListView.ItemsSource = lstData;
             sum = 0;
-            GlobalWorkingData.Instance.TextHooker.HookMessageReceived += FilterAndDisplayData;
-            _ = GlobalWorkingData.Instance.TextHooker.StartHook(GameInfoBuilder.GameInfo, Convert.ToBoolean(Common.AppSettings.AutoHook));
+            App.Env.TextHookService.HookMessageReceived += FilterAndDisplayData;
+            _ = App.Env.TextHookService.StartHook(GameInfoBuilder.GameInfo, Convert.ToBoolean(Common.AppSettings.AutoHook));
         }
 
         public void FilterAndDisplayData(object sender, HookReceivedEventArgs e)
@@ -70,7 +70,7 @@ namespace Mikoto.GuidePages.Hook
             {
                 string hookAdd = lstData[HookFunListView.SelectedIndex].HookAddress;
                 int pid = lstData[HookFunListView.SelectedIndex].GamePID;
-                GlobalWorkingData.Instance.TextHooker.HookMessageReceived -= FilterAndDisplayData;
+                App.Env.TextHookService.HookMessageReceived -= FilterAndDisplayData;
 
                 List<string> usedHook = new List<string>
                 {
@@ -80,7 +80,7 @@ namespace Mikoto.GuidePages.Hook
                 //用户开启了自动卸载
                 if (Common.AppSettings.AutoDetach)
                 {
-                    GlobalWorkingData.Instance.TextHooker.DetachUnrelatedHooks(pid, usedHook);
+                    App.Env.TextHookService.DetachUnrelatedHooks(pid, usedHook);
                 }
 
                 GameInfoBuilder.GameInfo.TransMode = 1;
@@ -135,7 +135,7 @@ namespace Mikoto.GuidePages.Hook
         {
             if (HookCodeTextBox.Text != "")
             {
-                _ = GlobalWorkingData.Instance.TextHooker.AttachProcessByHookCodeAsync(GameInfoBuilder.GameProcessId, HookCodeTextBox.Text);
+                _ = App.Env.TextHookService.AttachProcessByHookCodeAsync(GameInfoBuilder.GameProcessId, HookCodeTextBox.Text);
                 LastCustomHookCode = HookCodeTextBox.Text;
                 InputDrawer.IsOpen = false;
                 HandyControl.Controls.Growl.Info(Application.Current.Resources["ChooseHookFuncPage_HookApplyHint"].ToString());
@@ -155,7 +155,7 @@ namespace Mikoto.GuidePages.Hook
         {
             if (e.Key == Key.Escape)
             {
-                GlobalWorkingData.Instance.TextHooker.HookMessageReceived -= FilterAndDisplayData;
+                App.Env.TextHookService.HookMessageReceived -= FilterAndDisplayData;
                 HandyControl.Controls.Growl.Warning(Application.Current.Resources["ChooseHookFuncPage_PauseHint"].ToString());
             }
 

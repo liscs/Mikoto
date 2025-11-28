@@ -10,7 +10,7 @@ namespace Mikoto.TextHook
     /// <summary>
     /// 该类使用TextractorCLI版本进行读写
     /// </summary>
-    public partial class TextHookHandle : IDisposable
+    public partial class TextHookService : ITextHookService
     {
         /// <summary>
         /// Textractor进程
@@ -32,20 +32,22 @@ namespace Mikoto.TextHook
         /// </summary>
         public bool Paused { get; set; }
 
-
-        public Queue<string> TextractorOutPutHistory { get; private set; }//Textractor的输出记录队列，用于查错
+        /// <summary>
+        /// Textractor的输出记录队列，用于查错
+        /// </summary>
+        public Queue<string> TextractorOutPutHistory { get; private set; } = new Queue<string>();
 
         public int GamePID { get; set; }//能够获取到文本的游戏进程ID
-        private Dictionary<Process, bool> _possibleGameProcessList;//与gamePID进程同名的进程列表
+        private Dictionary<Process, bool> _possibleGameProcessList = new Dictionary<Process, bool>();//与gamePID进程同名的进程列表
         private int _handleMode;//处理的方式 1=已确定的单个进程 2=多个进程寻找能搜到文本的进程
         private Process? _maxMemoryProcess;//最大内存进程，用于智能处理时单独注入这个进程而不是PossibleGameProcessList中的每个进程都注入
 
         private int listIndex;//用于Hook功能选择界面的方法序号
-        private Dictionary<string, int> _textractorFunIndexList;//Misaka特殊码与列表索引一一对应
+        private Dictionary<string, int> _textractorFunIndexList = new Dictionary<string, int>();//Misaka特殊码与列表索引一一对应
 
         private GameInfo? _gameInfo;
 
-        public TextHookHandle(int gamePID)
+        public TextHookService(int gamePID)
         {
             ProcessTextractor = null;
             _maxMemoryProcess = null;
@@ -57,28 +59,23 @@ namespace Mikoto.TextHook
             _textractorFunIndexList = new Dictionary<string, int>();
         }
 
-        public TextHookHandle(List<Process> GameProcessList)
+        public TextHookService(List<Process> gameProcesses, IProcessSelector selector)
         {
             ProcessTextractor = null;
             GamePID = -1;
+
             TextractorOutPutHistory = new Queue<string>(1000);
-            _possibleGameProcessList = new Dictionary<Process, bool>();
-            _maxMemoryProcess = GameProcessList[0];
-            for (int i = 0; i < GameProcessList.Count; i++)
-            {
-                if (GameProcessList[i].WorkingSet64 > _maxMemoryProcess.WorkingSet64)
-                {
-                    _maxMemoryProcess = GameProcessList[i];
-                }
-                _possibleGameProcessList.Add(GameProcessList[i], false);
-            }
+
+            _possibleGameProcessList = gameProcesses.ToDictionary(p => p, p => false);
+
+            _maxMemoryProcess = selector.SelectMainProcess(gameProcesses);
 
             _handleMode = 2;
             listIndex = 0;
             _textractorFunIndexList = new Dictionary<string, int>();
         }
 
-        public TextHookHandle()
+        public TextHookService()
         {
             //剪贴板方式读取专用
             _maxMemoryProcess = null;
@@ -562,10 +559,6 @@ namespace Mikoto.TextHook
             MeetHookAddressMessageReceived?.Invoke(this, e);
         }
 
-
-
-
-
         [GeneratedRegex("【(.+):(.+):(.+)】")]
         private static partial Regex MisakaCodeRegex();
 
@@ -591,7 +584,7 @@ namespace Mikoto.TextHook
             }
         }
 
-        ~TextHookHandle()
+        ~TextHookService()
         {
             // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
             Dispose(disposing: false);
@@ -603,5 +596,17 @@ namespace Mikoto.TextHook
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
+
+        public IReadOnlyList<string> GetHistory()
+            => TextractorOutPutHistory.ToArray();
+
+        public void ClearHistory()
+            => TextractorOutPutHistory.Clear();
+    }
+
+    public interface IProcessSelector
+    {
+        Process? SelectMainProcess(List<Process> gameProcesses);
     }
 }

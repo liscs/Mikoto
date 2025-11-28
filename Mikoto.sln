@@ -57,6 +57,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{726CCEC9
 		installer.iss = installer.iss
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mikoto.Core", "Mikoto.Core\Mikoto.Core.csproj", "{8F9FCF50-EE21-42FB-8274-59F95793174E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mikoto.TextHook.Tests", "Mikoto.TextHook.Tests\Mikoto.TextHook.Tests.csproj", "{4586C5C0-BEF4-4FE1-B06B-9664237D3914}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +113,14 @@ Global
 		{D281C6E7-CBEB-4322-9D24-B277161513D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D281C6E7-CBEB-4322-9D24-B277161513D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D281C6E7-CBEB-4322-9D24-B277161513D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F9FCF50-EE21-42FB-8274-59F95793174E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F9FCF50-EE21-42FB-8274-59F95793174E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F9FCF50-EE21-42FB-8274-59F95793174E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F9FCF50-EE21-42FB-8274-59F95793174E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4586C5C0-BEF4-4FE1-B06B-9664237D3914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4586C5C0-BEF4-4FE1-B06B-9664237D3914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4586C5C0-BEF4-4FE1-B06B-9664237D3914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4586C5C0-BEF4-4FE1-B06B-9664237D3914}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Mikoto.Core\Mikoto.Core.csproj" />
     <ProjectReference Include="..\Mikoto.DataAccess\Mikoto.DataAccess.csproj" />
   </ItemGroup>
 

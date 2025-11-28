@@ -95,17 +95,17 @@ namespace Mikoto
             _translator1 = TranslatorCommon.GetTranslator(Common.AppSettings.FirstTranslator);
             _translator2 = TranslatorCommon.GetTranslator(Common.AppSettings.SecondTranslator);
 
-            _beforeTransHandle = new BeforeTransHandle(GlobalWorkingData.Instance.GameID.ToString(), GlobalWorkingData.Instance.UsingSrcLang, GlobalWorkingData.Instance.UsingDstLang);
+            _beforeTransHandle = new BeforeTransHandle(App.Env.Context.GameID.ToString(), App.Env.Context.UsingSrcLang, App.Env.Context.UsingDstLang);
             _afterTransHandle = new AfterTransHandle(_beforeTransHandle);
 
-            _artificialTransHelper = new ArtificialTransHelper(GlobalWorkingData.Instance.GameID.ToString());
+            _artificialTransHelper = new ArtificialTransHelper(App.Env.Context.GameID.ToString());
 
-            switch (GlobalWorkingData.Instance.TransMode)
+            switch (App.Env.Context.TransMode)
             {
                 case TransMode.Hook:
-                    GlobalWorkingData.Instance.TextHooker.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
+                    App.Env.TextHookService.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
 
-                    _gameProcess = Process.GetProcessById(GlobalWorkingData.Instance.TextHooker.GamePID);
+                    _gameProcess = Process.GetProcessById(App.Env.TextHookService.GamePID);
                     try
                     {
                         _gameProcess.EnableRaisingEvents = true;
@@ -124,7 +124,7 @@ namespace Mikoto
 
                     break;
                 case TransMode.Clipboard:
-                    GlobalWorkingData.Instance.TextHooker.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
+                    App.Env.TextHookService.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
                     break;
             }
             Application.Current.MainWindow.Hide();
@@ -237,7 +237,7 @@ namespace Mikoto
                         )
                     {
                         _tts = new AzureTTS(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceVolume, Common.AppSettings.AzureTTSVoiceStyle, Common.AppSettings.AzureTTSProxy);
-                        _voiceDetector = new AzureVoiceDetector(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, GlobalWorkingData.Instance.UsingSrcLang);
+                        _voiceDetector = new AzureVoiceDetector(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, App.Env.Context.UsingSrcLang);
                     }
                     else
                     {
@@ -337,14 +337,14 @@ namespace Mikoto
 
             //2.进行去重
             string repairedText = _tempData;
-            if (!string.IsNullOrWhiteSpace(GlobalWorkingData.Instance.UsingRepairFunc))
+            if (!string.IsNullOrWhiteSpace(App.Env.Context.UsingRepairFunc))
             {
-                repairedText = TextRepair.PreProcessSrc(GlobalWorkingData.Instance.UsingRepairFunc, _tempData);
+                repairedText = TextRepair.PreProcessSrc(App.Env.Context.UsingRepairFunc, _tempData);
             }
 
             if (!Common.AppSettings.EachRowTrans) // 不启用分行翻译
             {
-                if (IsJaOrZh(GlobalWorkingData.Instance.UsingSrcLang))
+                if (IsJaOrZh(App.Env.Context.UsingSrcLang))
                 {
                     repairedText = new string(repairedText.Where(p => !char.IsWhiteSpace(p)).ToArray()).Replace("<br>", "").Replace("</br>", "").Trim();
                 }
@@ -411,8 +411,8 @@ namespace Mikoto
             //补充:如果去重之后的文本长度超过指定值（默认100），直接不翻译、不显示
             //补充2：如果去重后文本长度为0，则不翻译不显示
             if (repairedText.Length != 0
-                && ((repairedText.Length <= Common.AppSettings.TransLimitNums && IsJaOrZh(GlobalWorkingData.Instance.UsingSrcLang))
-                || (repairedText.Split(' ').Length <= Common.AppSettings.TransLimitNums && !IsJaOrZh(GlobalWorkingData.Instance.UsingSrcLang)))
+                && ((repairedText.Length <= Common.AppSettings.TransLimitNums && IsJaOrZh(App.Env.Context.UsingSrcLang))
+                || (repairedText.Split(' ').Length <= Common.AppSettings.TransLimitNums && !IsJaOrZh(App.Env.Context.UsingSrcLang)))
                 )
             {
 
@@ -448,7 +448,7 @@ namespace Mikoto
             await Task.Run(() =>
             {
                 //3.分词
-                if (GlobalWorkingData.Instance.UsingSrcLang == "ja"
+                if (App.Env.Context.UsingSrcLang == "ja"
                     && _mecabHelper.EnableMecab
                     && (Common.AppSettings.TF_EnablePhoneticNotation || Common.AppSettings.TF_EnableColorful))
                 {
@@ -785,7 +785,7 @@ namespace Mikoto
             string? transRes = string.Empty;
             if (selectedTranslator!=null)
             {
-                transRes = await selectedTranslator.TranslateAsync(beforeString, GlobalWorkingData.Instance.UsingDstLang, GlobalWorkingData.Instance.UsingSrcLang);
+                transRes = await selectedTranslator.TranslateAsync(beforeString, App.Env.Context.UsingDstLang, App.Env.Context.UsingSrcLang);
                 if (transRes == null)
                 {
                     Application.Current.Dispatcher.Invoke(() =>
@@ -917,9 +917,9 @@ namespace Mikoto
 
         private void Pause_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (GlobalWorkingData.Instance.TransMode == TransMode.Hook)
+            if (App.Env.Context.TransMode == TransMode.Hook)
             {
-                if (GlobalWorkingData.Instance.TextHooker.Paused)
+                if (App.Env.TextHookService.Paused)
                 {
                     ViewModel.PauseButtonIconText = "\uF8AE";
                 }
@@ -927,7 +927,7 @@ namespace Mikoto
                 {
                     ViewModel.PauseButtonIconText = "\uF5B0";
                 }
-                GlobalWorkingData.Instance.TextHooker.Paused = !GlobalWorkingData.Instance.TextHooker.Paused;
+                App.Env.TextHookService.Paused = !App.Env.TextHookService.Paused;
             }
         }
 
@@ -949,8 +949,8 @@ namespace Mikoto
             Common.AppSettings.TF_LocY = Convert.ToString((int)this.Top);
             Common.AppSettings.TF_SizeW = Convert.ToString((int)this.Width);
             Common.AppSettings.TF_SizeH = Convert.ToString((int)this.Height);
-            GlobalWorkingData.Instance.TextHooker.MeetHookAddressMessageReceived -= ProcessAndDisplayTranslation;
-            GlobalWorkingData.Instance.TextHooker.Dispose();
+            App.Env.TextHookService.MeetHookAddressMessageReceived -= ProcessAndDisplayTranslation;
+            App.Env.TextHookService.Dispose();
             _mecabHelper.Dispose();
 
             try

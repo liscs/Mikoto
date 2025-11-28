@@ -72,12 +72,12 @@ namespace Mikoto
                 switch (_transMode)
                 {
                     case TransMode.Hook:
-                        GlobalWorkingData.Instance.TransMode = TransMode.Hook;
+                        App.Env.Context.TransMode = TransMode.Hook;
                         GameInfoBuilder.GameInfo.LastPlayAt = DateTime.Now;
                         GameHelper.SaveGameInfo(GameInfoBuilder.GameInfo);
                         break;
                     case TransMode.Clipboard:
-                        GlobalWorkingData.Instance.TransMode = TransMode.Clipboard;
+                        App.Env.Context.TransMode = TransMode.Clipboard;
                         break;
                 }
                 new TranslateWindow().Show();
@@ -97,7 +97,7 @@ namespace Mikoto
         {
             if (!isComplete)
             {
-                GlobalWorkingData.Instance.TextHooker.Dispose();
+                App.Env.TextHookService.Dispose();
             }
         }
     }

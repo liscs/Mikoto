@@ -319,13 +319,13 @@ namespace Mikoto
                 MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
                 return;
             }
-            GlobalWorkingData.Instance.GameID = _gameInfoList[gid].GameID;
-            GlobalWorkingData.Instance.TransMode = TransMode.Hook;
-            GlobalWorkingData.Instance.UsingDstLang = _gameInfoList[gid].DstLang;
-            GlobalWorkingData.Instance.UsingSrcLang = _gameInfoList[gid].SrcLang;
-            GlobalWorkingData.Instance.UsingRepairFunc = _gameInfoList[gid].RepairFunc;
+            App.Env.Context.GameID = _gameInfoList[gid].GameID;
+            App.Env.Context.TransMode = TransMode.Hook;
+            App.Env.Context.UsingDstLang = _gameInfoList[gid].DstLang;
+            App.Env.Context.UsingSrcLang = _gameInfoList[gid].SrcLang;
+            App.Env.Context.UsingRepairFunc = _gameInfoList[gid].RepairFunc;
 
-            switch (GlobalWorkingData.Instance.UsingRepairFunc)
+            switch (App.Env.Context.UsingRepairFunc)
             {
                 case "RepairFun_RemoveSingleWordRepeat":
                     Common.RepairSettings.SingleWordRepeatTimes = int.Parse(_gameInfoList[gid].RepairParamA ?? "0");
@@ -341,17 +341,17 @@ namespace Mikoto
                     break;
             }
             TextRepair.RepairFuncInit();
-            GlobalWorkingData.Instance.TextHooker = gameProcessList.Count == 1 ? new TextHookHandle(gameProcessList[0].Id) : new TextHookHandle(gameProcessList);
+            App.Env.TextHookService = gameProcessList.Count == 1 ? new TextHook.TextHookService(gameProcessList[0].Id) : new TextHook.TextHookService(gameProcessList, new MaxMemoryProcessSelector());
 
-            if (!GlobalWorkingData.Instance.TextHooker.Init(_gameInfoList[gid].Isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
+            if (!App.Env.TextHookService.Init(_gameInfoList[gid].Isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
             {
                 MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
                 return;
             }
 
-            await GlobalWorkingData.Instance.TextHooker.StartHook(_gameInfoList[gid], Convert.ToBoolean(Common.AppSettings.AutoHook));
+            await App.Env.TextHookService.StartHook(_gameInfoList[gid], Convert.ToBoolean(Common.AppSettings.AutoHook));
 
-            if (!await GlobalWorkingData.Instance.TextHooker.AutoAddCustomHookToGameAsync())
+            if (!await App.Env.TextHookService.AutoAddCustomHookToGameAsync())
             {
                 MessageBox.Show(Application.Current.Resources["MainWindow_AutoCustomHookError"].ToString(), Application.Current.Resources["MessageBox_Error"].ToString());
             }
@@ -577,10 +577,10 @@ namespace Mikoto
 
         private void ClipboardGuideBtn_Click(object sender, RoutedEventArgs e)
         {
-            GlobalWorkingData.Instance.TextHooker = new TextHookHandle();
-            GlobalWorkingData.Instance.GameID = Guid.Empty;
-            GlobalWorkingData.Instance.TransMode = TransMode.Hook;
-            GlobalWorkingData.Instance.TextHooker.AddClipBoardWatcher();
+            App.Env.TextHookService = new TextHook.TextHookService();
+            App.Env.Context.GameID = Guid.Empty;
+            App.Env.Context.TransMode = TransMode.Hook;
+            App.Env.TextHookService.AddClipBoardWatcher();
 
             var ggw = new GameGuideWindow(TransMode.Clipboard);
             ggw.Show();

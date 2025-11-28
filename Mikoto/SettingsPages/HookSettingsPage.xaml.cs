@@ -33,7 +33,7 @@ namespace Mikoto.SettingsPages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (GlobalWorkingData.Instance.ExportTextractorHistory())
+            if (App.Env.HistoryExporter.Export())
             {
                 HandyControl.Controls.Growl.Success(Application.Current.Resources["HookSettingsPage_SuccessHint"].ToString());
             }
