@@ -1,6 +1,5 @@
 ﻿using Mikoto.Core;
 using Mikoto.DataAccess;
-using Mikoto.TextHook;
 using Moq;
 
 namespace Mikoto.TextHook.Tests

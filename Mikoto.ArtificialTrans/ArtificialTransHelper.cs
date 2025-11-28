@@ -4,7 +4,7 @@ namespace Mikoto.ArtificialTrans
 {
     public class ArtificialTransHelper
     {
-        public SQLHelper sqlite;
+        public SqliteExecuteService sqlite;
 
         public ArtificialTransHelper(string gameName)
         {
@@ -14,12 +14,12 @@ namespace Mikoto.ArtificialTrans
 
             if (!File.Exists(Environment.CurrentDirectory + "\\ArtificialTranslation\\MisakaAT_" + gameName + ".sqlite"))
             {
-                sqlite = new SQLHelper(Environment.CurrentDirectory + "\\ArtificialTranslation\\MisakaAT_" + gameName + ".sqlite");
+                sqlite = new SqliteExecuteService(Environment.CurrentDirectory + "\\ArtificialTranslation\\MisakaAT_" + gameName + ".sqlite");
                 sqlite.ExecuteSql("CREATE TABLE artificialtrans(id INTEGER PRIMARY KEY AUTOINCREMENT,source TEXT,machineTrans TEXT,userTrans TEXT);");
             }
             else
             {
-                sqlite = new SQLHelper(Environment.CurrentDirectory + "\\ArtificialTranslation\\MisakaAT_" + gameName + ".sqlite");
+                sqlite = new SqliteExecuteService(Environment.CurrentDirectory + "\\ArtificialTranslation\\MisakaAT_" + gameName + ".sqlite");
             }
         }
 
@@ -89,7 +89,7 @@ namespace Mikoto.ArtificialTrans
         /// <param name="gameName"></param>
         private void CreateNewNounTransDB(string gameName)
         {
-            sqlite = new SQLHelper(Environment.CurrentDirectory + "\\ArtificialTranslation\\MisakaAT_" + gameName + ".sqlite");
+            sqlite = new SqliteExecuteService(Environment.CurrentDirectory + "\\ArtificialTranslation\\MisakaAT_" + gameName + ".sqlite");
             sqlite.ExecuteSql("CREATE TABLE artificialtrans(id INTEGER PRIMARY KEY AUTOINCREMENT,source TEXT,machineTrans TEXT,userTrans TEXT);");
         }
 
@@ -100,7 +100,7 @@ namespace Mikoto.ArtificialTrans
         {
             try
             {
-                SQLHelper sqliteDB = new SQLHelper(DBPath);
+                SqliteExecuteService sqliteDB = new SqliteExecuteService(DBPath);
 
                 //让没有直接被定义的用户翻译等于机器翻译
                 sqliteDB.ExecuteSql("UPDATE artificialtrans SET userTrans = machineTrans WHERE userTrans is NULL;");

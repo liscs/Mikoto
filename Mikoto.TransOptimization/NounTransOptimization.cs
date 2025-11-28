@@ -5,7 +5,7 @@ namespace Mikoto.TransOptimization
 {
     public class NounTransOptimization
     {
-        public SQLHelper sqlite = default!;
+        public SqliteExecuteService sqlite = default!;
         private string srcLangCode;
         private string dstLangCode;
         public string PeopleChatName = string.Empty;//显示在结果中的对话人名 以 人名：对话 的形式展示
@@ -18,7 +18,7 @@ namespace Mikoto.TransOptimization
             }
             else
             {
-                sqlite = new SQLHelper(Environment.CurrentDirectory + "\\TransOptimization\\Misaka_" + gameName + ".sqlite");
+                sqlite = new SqliteExecuteService(Environment.CurrentDirectory + "\\TransOptimization\\Misaka_" + gameName + ".sqlite");
             }
             srcLangCode = srcL;
             dstLangCode = dstL;
@@ -114,7 +114,7 @@ namespace Mikoto.TransOptimization
         /// <param name="gameName"></param>
         private void CreateNewNounTransDB(string gameName)
         {
-            sqlite = new SQLHelper(Environment.CurrentDirectory + "\\TransOptimization\\Misaka_" + gameName + ".sqlite");
+            sqlite = new SqliteExecuteService(Environment.CurrentDirectory + "\\TransOptimization\\Misaka_" + gameName + ".sqlite");
             sqlite.ExecuteSql("CREATE TABLE NounTransOpt(source TEXT PRIMARY KEY,src_lang TEXT,type INT,userTrans TEXT,dst_lang TEXT,machineTrans TEXT);");
         }
     }
