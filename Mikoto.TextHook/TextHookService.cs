@@ -259,7 +259,7 @@ namespace Mikoto.TextHook
 
         private Stopwatch _lastMessageStopwatch = Stopwatch.StartNew();
 
-        private TextHookData? _thData;
+        private TextHookData? _textHookData;
         private bool _disposedValue;
 
         /// <summary>
@@ -273,10 +273,10 @@ namespace Mikoto.TextHook
             if (outLine.Data == null) { return; }
             AddTextractorHistory(outLine.Data);
             if (Paused) { return; }
-            _thData = DealTextratorOutput(outLine.Data);
-            if (_thData != null)
+            _textHookData = TextractorOutputParser.DealTextratorOutput(outLine.Data, _textHookData);
+            if (_textHookData != null)
             {
-                TextHookData data = _thData;
+                TextHookData data = _textHookData;
 
                 if (data.HookFunc != "Console" && data.HookFunc != "Clipboard" && data.HookFunc != "")
                 {
@@ -373,7 +373,7 @@ namespace Mikoto.TextHook
         /// <returns></returns>
         public string? GetHookAddressByMisakaCode(string MisakaCode)
         {
-            return GetMiddleString(MisakaCode, "【", ":", 0);
+            return TextractorOutputParser.GetMiddleString(MisakaCode, "【", ":", 0);
         }
 
         /// <summary>
@@ -387,102 +387,6 @@ namespace Mikoto.TextHook
                 TextractorOutPutHistory.Dequeue();
             }
             TextractorOutPutHistory.Enqueue(output);
-        }
-
-        /// <summary>
-        /// 取出文本中间一部分
-        /// </summary>
-        /// <param name="Text">整个文本</param>
-        /// <param name="front">前面的文本</param>
-        /// <param name="back">后面的文本</param>
-        /// <param name="location">起始搜寻位置</param>
-        /// <returns></returns>
-        private string? GetMiddleString(string Text, string front, string back, int location)
-        {
-
-            if (front == "" || back == "")
-            {
-                return null;
-            }
-
-            int locA = Text.IndexOf(front, location);
-            int locB = Text.IndexOf(back, locA + 1);
-            if (locA < 0 || locB < 0)
-            {
-                return null;
-            }
-            else
-            {
-                locA += front.Length;
-                locB -= locA;
-                if (locA < 0 || locB < 0)
-                {
-                    return null;
-                }
-                return Text.Substring(locA, locB);
-            }
-        }
-
-        /// <summary>
-        /// 智能处理来自Textrator的输出并返回一个TextHookData用于下一步处理(TextHookData可为空)
-        /// 具体的含义参见TextHookData定义
-        /// </summary>
-        /// <param name="OutputText">来自Textrator的输出</param>
-        /// <returns></returns>
-        private TextHookData? DealTextratorOutput(string OutputText)
-        {
-            if (OutputText == "" || OutputText == null)
-            {
-                return null;
-            }
-
-            string? Info = GetMiddleString(OutputText, "[", "]", 0);
-            if (Info == null)
-            {
-                if (_thData == null)
-                {
-                    return null;
-                }
-                //得到的是第二段被截开的输出，需要连到上一段内
-                _thData.Data += OutputText;
-                return _thData;
-            }
-
-            string[] Infores = Info.Split(':');
-
-            if (Infores.Length >= 7)
-            {
-                TextHookData thd = new TextHookData();
-
-                string content = OutputText.Replace("[" + Info + "] ", "");//删除信息头部分
-                try
-                {
-                    thd.GamePID = int.Parse(Infores[1], System.Globalization.NumberStyles.HexNumber); //游戏/本体进程ID（为0一般代表Textrator本体进程ID）
-
-                }
-                catch (FormatException)
-                {
-                    return null;
-                }
-
-                thd.HookFunc = Infores[5]; //方法名：Textrator注入游戏进程获得文本时的方法名（为 Console 时代表Textrator本体控制台输出；为 Clipboard 时代表从剪贴板获取的文本）
-
-                thd.HookCode = Infores[6]; //特殊码：Textrator注入游戏进程获得文本时的方法的特殊码，是一个唯一值，可用于判断
-
-                thd.Data = content; //实际获取到的内容
-
-                thd.HookAddress = Infores[2]; //Hook入口地址：可用于以后卸载Hook
-
-                thd.MisakaHookCode = "【" + Infores[2] + ":" + Infores[3] + ":" + Infores[4] + "】"; //【值1:值2:值3】见上方格式说明
-
-
-                return thd;
-            }
-            else
-            {
-                return null;
-            }
-
         }
 
         /// <summary>
@@ -603,10 +507,5 @@ namespace Mikoto.TextHook
 
         public void ClearHistory()
             => TextractorOutPutHistory.Clear();
-    }
-
-    public interface IProcessSelector
-    {
-        Process? SelectMainProcess(List<Process> gameProcesses);
     }
 }

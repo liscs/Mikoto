@@ -1,0 +1,40 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/">
+    <File Path=".github/workflows/build.yml" />
+    <File Path=".github/workflows/release.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/Build/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+  </Folder>
+  <Folder Name="/Solution Items/Setup/">
+    <File Path="installer.iss" />
+  </Folder>
+  <Project Path="Mikoto.ArtificialTrans/Mikoto.ArtificialTrans.csproj">
+    <BuildDependency Project="Mikoto.DataAccess/Mikoto.DataAccess.csproj" />
+  </Project>
+  <Project Path="Mikoto.Benchmark/Mikoto.Benchmark.csproj" />
+  <Project Path="Mikoto.Core/Mikoto.Core.csproj" />
+  <Project Path="Mikoto.DataAccess.Tests/Mikoto.DataAccess.Tests.csproj" />
+  <Project Path="Mikoto.DataAccess/Mikoto.DataAccess.csproj" />
+  <Project Path="Mikoto.Dictionary/Mikoto.Dictionary.csproj">
+    <BuildDependency Project="Mikoto.DataAccess/Mikoto.DataAccess.csproj" />
+  </Project>
+  <Project Path="Mikoto.LocalizationTool/Mikoto.LocalizationTool.csproj" />
+  <Project Path="Mikoto.Mecab.Tests/Mikoto.Mecab.Tests.csproj" />
+  <Project Path="Mikoto.Mecab/Mikoto.Mecab.csproj" />
+  <Project Path="Mikoto.Tests/Mikoto.Tests.csproj" />
+  <Project Path="Mikoto.TextHook.Tests/Mikoto.TextHook.Tests.csproj" />
+  <Project Path="Mikoto.TextHook/Mikoto.TextHook.csproj" />
+  <Project Path="Mikoto.TransOptimization/Mikoto.TransOptimization.csproj">
+    <BuildDependency Project="Mikoto.DataAccess/Mikoto.DataAccess.csproj" />
+  </Project>
+  <Project Path="Mikoto.TTS/Mikoto.TTS.csproj" />
+  <Project Path="Mikoto/Mikoto.csproj">
+    <Deploy />
+  </Project>
+</Solution>
