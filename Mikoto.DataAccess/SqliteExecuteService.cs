@@ -1,5 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
-using SQLitePCL;
+﻿
+using Microsoft.Data.Sqlite;
 
 namespace Mikoto.DataAccess
 {
@@ -9,18 +9,6 @@ namespace Mikoto.DataAccess
         private readonly string _mDbConnectionString;
         private string? _errorInfo;//最后一次错误信息
         private bool disposedValue;
-
-        static SqliteExecuteService()
-        {
-            if (Environment.OSVersion.Version.Build >= 10586)
-            {
-                raw.SetProvider(new SQLite3Provider_winsqlite3());
-            }
-            else
-            {
-                raw.SetProvider(new SQLite3Provider_e_sqlite3());
-            }
-        }
 
 
         /// <summary>

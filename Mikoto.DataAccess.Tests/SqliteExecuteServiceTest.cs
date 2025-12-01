@@ -4,8 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 [TestClass]
-[DoNotParallelize]
-public class SQLHelperTest
+public class SqliteExecuteServiceTest
 {
     private SqliteExecuteService sqlService = default!;
 
