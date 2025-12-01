@@ -1,14 +1,13 @@
 ﻿using Mikoto.Helpers.Text.ScriptInfos;
-[assembly: Parallelize]
-namespace Mikoto.Tests
+namespace Mikoto.Tests;
+
+[TestClass()]
+public class CSharpCompilerHelperTests
 {
-    [TestClass()]
-    public class CSharpCompilerHelperTests
+    [TestMethod()]
+    public void CompileCSharpScriptTest()
     {
-        [TestMethod()]
-        public void CompileCSharpScriptTest()
-        {
-            string code = @"
+        string code = @"
         using System;
 
         string Process(string input)
@@ -16,11 +15,10 @@ namespace Mikoto.Tests
             return ""Hello, "" + input;
         }
         ";
-            TextPreProcessFunction? method = CSharpCompilerHelper.GetProcessFunction(code);
-            if (method != null)
-            {
-                Console.WriteLine(method("complier"));
-            }
+        TextPreProcessFunction? method = CSharpCompilerHelper.GetProcessFunction(code);
+        if (method != null)
+        {
+            Console.WriteLine(method("complier"));
         }
     }
 }

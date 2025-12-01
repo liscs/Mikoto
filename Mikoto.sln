@@ -63,6 +63,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mikoto.TextHook.Tests", "Mi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mikoto.DataAccess.Tests", "Mikoto.DataAccess.Tests\Mikoto.DataAccess.Tests.csproj", "{B2CD49EA-E675-4EE8-B4EE-64F49C599BA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mikoto.Mecab.Tests", "Mikoto.Mecab.Tests\Mikoto.Mecab.Tests.csproj", "{AB495261-7879-4289-B0E7-455DC8C56262}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,10 @@ Global
 		{B2CD49EA-E675-4EE8-B4EE-64F49C599BA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2CD49EA-E675-4EE8-B4EE-64F49C599BA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2CD49EA-E675-4EE8-B4EE-64F49C599BA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB495261-7879-4289-B0E7-455DC8C56262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB495261-7879-4289-B0E7-455DC8C56262}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB495261-7879-4289-B0E7-455DC8C56262}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB495261-7879-4289-B0E7-455DC8C56262}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
