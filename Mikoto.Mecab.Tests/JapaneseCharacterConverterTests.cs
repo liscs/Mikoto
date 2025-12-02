@@ -1,38 +1,39 @@
-﻿namespace Mikoto.Mecab.Tests;
+﻿using System.Collections.Generic;
+using Xunit; 
 
-[TestClass()]
+namespace Mikoto.Mecab.Tests;
+
 public class JapaneseCharacterConverterTests
 {
-    [TestMethod()]
-    [DataRow("かっこ", "kakko")]
-    [DataRow("きゃ", "kya")]
-    [DataRow("さっき", "sakki")]
-    [DataRow("ふぁ", "fa")]
-    [DataRow("まって", "matte")]
-    [DataRow("ぜったい", "zettai")]
-    [DataRow("あ", "a")]
-    [DataRow("お", "o")]
-    [DataRow("さようなら", "sayounara")]
-    [DataRow("ありがとう", "arigatou")]
-    [DataRow("はい", "hai")]
-    [DataRow("ありがとう123", "arigatou123")]
+    [Theory]
+    [InlineData("かっこ", "kakko")]
+    [InlineData("きゃ", "kya")]
+    [InlineData("さっき", "sakki")]
+    [InlineData("ふぁ", "fa")]
+    [InlineData("まって", "matte")]
+    [InlineData("ぜったい", "zettai")]
+    [InlineData("あ", "a")]
+    [InlineData("お", "o")]
+    [InlineData("さようなら", "sayounara")]
+    [InlineData("ありがとう", "arigatou")]
+    [InlineData("はい", "hai")]
+    [InlineData("ありがとう123", "arigatou123")]
     public void HiraganaToRomajiStringTest(string hiragana, string expectedRomaji)
     {
         string result = JapaneseCharacterConverter.HiraganaToRomajiString(hiragana);
-        Assert.AreEqual(expectedRomaji, result);
+        Assert.Equal(expectedRomaji, result);
     }
 
 
-
-    [TestMethod()]
-    [DataRow("アカ", "あか")]
-    [DataRow("サシスセソ", "さしすせそ")]
-    [DataRow("マメモ", "まめも")]
-    [DataRow("ヤユヨ", "やゆよ")]
-    [DataRow("ガギグゲゴ", "がぎぐげご")]
+    [Theory]
+    [InlineData("アカ", "あか")]
+    [InlineData("サシスセソ", "さしすせそ")]
+    [InlineData("マメモ", "まめも")]
+    [InlineData("ヤユヨ", "やゆよ")]
+    [InlineData("ガギグゲゴ", "がぎぐげご")]
     public void KatakanaToHiraganaStringTest(string katakana, string expectedHiragana)
     {
         string result = JapaneseCharacterConverter.KatakanaToHiraganaString(katakana);
-        Assert.AreEqual(expectedHiragana, result);
+        Assert.Equal(expectedHiragana, result);
     }
 }

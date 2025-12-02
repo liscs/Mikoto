@@ -1,30 +1,32 @@
-﻿namespace Mikoto.Tests;
+﻿using System;
+using Xunit;
 
-[TestClass()]
+namespace Mikoto.Tests;
+
 public class TextRepairTests
 {
     private void TestSingleWordRepeat(int repeat, string src, string expected)
     {
         TextRepair.SingleWordRepeatTimes = repeat;
         string actual = TextRepair.RepairFun_RemoveSingleWordRepeat(src);
-        Assert.AreEqual(expected, actual);
+        Assert.Equal(expected, actual);
     }
 
     private void TestSentenceRepeat(int repeat, string src, string expected)
     {
         TextRepair.SentenceRepeatFindCharNum = repeat;
         string actual = TextRepair.RepairFun_RemoveSentenceRepeat(src);
-        Assert.AreEqual(expected, actual);
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void RepairFun_RemoveSingleWordRepeatTest_NoRepetition()
     {
         string src = "Four score and seven years ago";
         TestSingleWordRepeat(1, src, src);
     }
 
-    [TestMethod]
+    [Fact]
     public void RepairFun_RemoveSingleWordRepeatTest_ExactThreshold()
     {
         string src = "FFFFFFFFFFoooooooooouuuuuuuuuurrrrrrrrrr          ssssssssssccccccccccoooooooooorrrrrrrrrreeeeeeeeee          aaaaaaaaaannnnnnnnnndddddddddd          sssssssssseeeeeeeeeevvvvvvvvvveeeeeeeeeennnnnnnnnn          yyyyyyyyyyeeeeeeeeeeaaaaaaaaaarrrrrrrrrrssssssssss          aaaaaaaaaaggggggggggoooooooooo";
@@ -32,7 +34,7 @@ public class TextRepairTests
         TestSingleWordRepeat(10, src, expected);
     }
 
-    [TestMethod]
+    [Fact]
     public void RepairFun_RemoveSingleWordRepeatTest_AboveThreshold()
     {
         string src = "aaaaaaaaaannnnnnnnnndddddddddd          tttttttttthhhhhhhhhhaaaaaaaaaatttttttttt          ggggggggggoooooooooovvvvvvvvvveeeeeeeeeerrrrrrrrrrnnnnnnnnnnmmmmmmmmmmeeeeeeeeeennnnnnnnnntttttttttt          ooooooooooffffffffff          tttttttttthhhhhhhhhheeeeeeeeee          ppppppppppeeeeeeeeeeoooooooooopppppppppplllllllllleeeeeeeeee,,,,,,,,,,          bbbbbbbbbbyyyyyyyyyy          tttttttttthhhhhhhhhheeeeeeeeee          ppppppppppeeeeeeeeeeoooooooooopppppppppplllllllllleeeeeeeeee,,,,,,,,,,          ffffffffffoooooooooorrrrrrrrrr          tttttttttthhhhhhhhhheeeeeeeeee          ppppppppppeeeeeeeeeeoooooooooopppppppppplllllllllleeeeeeeeee,,,,,,,,,,          sssssssssshhhhhhhhhhaaaaaaaaaallllllllllllllllllll          nnnnnnnnnnooooooooootttttttttt          ppppppppppeeeeeeeeeerrrrrrrrrriiiiiiiiiisssssssssshhhhhhhhhh          ffffffffffrrrrrrrrrroooooooooommmmmmmmmm          tttttttttthhhhhhhhhheeeeeeeeee          eeeeeeeeeeaaaaaaaaaarrrrrrrrrrtttttttttthhhhhhhhhh";
@@ -40,7 +42,7 @@ public class TextRepairTests
         TestSingleWordRepeat(9, src, expected);
     }
 
-    [TestMethod]
+    [Fact]
     public void RepairFun_RemoveSingleWordRepeatTest_ExceedsThreshold()
     {
         string src = "sssssssssshhhhhhhhhhaaaaaaaaaallllllllllllllllllll          nnnnnnnnnnooooooooootttttttttt          ppppppppppeeeeeeeeeerrrrrrrrrriiiiiiiiiisssssssssshhhhhhhhhh          ffffffffffrrrrrrrrrroooooooooommmmmmmmmm          tttttttttthhhhhhhhhheeeeeeeeee          eeeeeeeeeeaaaaaaaaaarrrrrrrrrrtttttttttthhhhhhhhhh";
@@ -48,14 +50,14 @@ public class TextRepairTests
         TestSingleWordRepeat(11, src, expected);
     }
 
-    [TestMethod]
+    [Fact]
     public void RepairFun_RemoveSentenceRepeatTest_NoRepetition()
     {
         string src = "shall not perish from the earth";
         TestSentenceRepeat(1, src, src);
     }
 
-    [TestMethod]
+    [Fact]
     public void RepairFun_RemoveSentenceRepeatTest_MultipleRepetitions()
     {
         string src = "shall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earth";
@@ -63,15 +65,14 @@ public class TextRepairTests
         TestSentenceRepeat(10, src, expected);
     }
 
-    // Add edge cases, such as empty strings or strings with only repeated spaces
-    [TestMethod]
+    [Fact]
     public void RepairFun_RemoveSingleWordRepeatTest_EmptyString()
     {
         string src = "";
         TestSingleWordRepeat(1, src, src);
     }
 
-    [TestMethod]
+    [Fact]
     public void RepairFun_RemoveSentenceRepeatTest_EmptyString()
     {
         string src = "";

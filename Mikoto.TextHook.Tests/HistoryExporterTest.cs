@@ -1,44 +1,43 @@
 ﻿using Mikoto.Core;
 using Mikoto.DataAccess;
 using Moq;
+using Xunit;
 
-namespace Mikoto.TextHook.Tests
+namespace Mikoto.TextHook.Tests;
+
+public class HistoryExporterTest
 {
-    [TestClass()]
-    public class HistoryExporterTest
+    [Fact]
+    public void HistoryExporter_ShouldExportAllLines()
     {
-        [TestMethod]
-        public void HistoryExporter_ShouldExportAllLines()
-        {
-            // mock hook
-            var hookMock = new Mock<ITextHookService>();
-            hookMock.Setup(h => h.TextractorOutPutHistory)
-                .Returns(new Queue<string>(new[] { "A", "B" }));
+        // mock hook
+        var hookMock = new Mock<ITextHookService>();
+        hookMock.Setup(h => h.TextractorOutPutHistory)
+            .Returns(new Queue<string>(new[] { "A", "B" }));
 
-            // mock resource
-            var resMock = new Mock<IResourceService>();
-            resMock.Setup(r => r.Get("Common_TextractorHistory"))
-                .Returns("HEADER");
+        // mock resource
+        var resMock = new Mock<IResourceService>();
+        resMock.Setup(r => r.Get("Common_TextractorHistory"))
+            .Returns("HEADER");
 
-            // mock file
-            var fileMock = new Mock<IFileService>();
-            var captured = new List<string>();
+        // mock file
+        var fileMock = new Mock<IFileService>();
+        var captured = new List<string>();
 
-            fileMock
-                .Setup(f => f.WriteAllLines(It.IsAny<string>(), It.IsAny<IEnumerable<string>>()))
-                .Callback<string, IEnumerable<string>>((p, lines) => captured = lines.ToList());
+        fileMock
+            .Setup(f => f.WriteAllLines(It.IsAny<string>(), It.IsAny<IEnumerable<string>>()))
+            .Callback<string, IEnumerable<string>>((p, lines) => captured = lines.ToList());
 
-            var exporter = new HistoryExporter(
-                hookMock.Object,
-                fileMock.Object,
-                resMock.Object);
+        var exporter = new HistoryExporter(
+            hookMock.Object,
+            fileMock.Object,
+            resMock.Object);
 
-            bool ok = exporter.Export("test.txt");
+        bool ok = exporter.Export("test.txt");
 
-            Assert.IsTrue(ok);
-            CollectionAssert.AreEqual(
-                new[] { "HEADER", "A", "B" },
-                captured);
-        }
+        Assert.True(ok);
+        Assert.Equal(
+            ["HEADER", "A", "B" ],
+            captured);
     }
 }

@@ -1,81 +1,69 @@
-﻿namespace Mikoto.TextHook.Tests;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Mikoto.TextHook;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using Xunit;
 
-[TestClass]
+namespace Mikoto.TextHook.Tests;
 public class ProcessHelperTests
 {
-    [TestMethod]
+    [Fact]
     public void GetAppNamePidDict_ShouldReturnDictionary_WhenHasWindowedProcesses()
     {
         var dict = ProcessHelper.GetAppNamePidDict();
 
-        Assert.IsNotNull(dict);
-        // 不能保证当前一定有带窗口的进程，但至少字典结构不能是 null
-        Assert.IsInstanceOfType<Dictionary<string, int>>(dict);
+        Assert.NotNull(dict);
+        Assert.IsType<Dictionary<string, int>>(dict);
     }
 
-    [TestMethod]
+    [Fact]
     public void FindSameNameProcess_ShouldReturnList()
     {
         var current = Process.GetCurrentProcess();
         var list = ProcessHelper.FindSameNameProcess(current.Id);
 
-        Assert.IsNotNull(list);
-        Assert.IsNotEmpty(list);
-        Assert.IsTrue(list.Any(p => p.ProcessName == current.ProcessName));
+        Assert.NotNull(list);
+        Assert.NotEmpty(list);
+        Assert.Contains(list, p => p.ProcessName == current.ProcessName);
     }
 
-    [TestMethod]
+    [Fact]
     public void FindProcessPath_ShouldReturnValidPath_ForCurrentProcess()
     {
         var current = Process.GetCurrentProcess();
         var path = ProcessHelper.FindProcessPath(current.Id);
 
-        Assert.IsFalse(string.IsNullOrEmpty(path));
-        Assert.IsTrue(System.IO.File.Exists(path));
+        Assert.False(string.IsNullOrEmpty(path));
+        Assert.True(File.Exists(path));
     }
 
-    [TestMethod]
+    [Fact]
     public void FindProcessPath_ShouldThrow_Exception()
     {
-        try
-        {
-            ProcessHelper.FindProcessPath(-1);
-            Assert.Fail("应该抛出异常，但没有抛。");
-        }
-        catch (ArgumentException)
-        {
-            // success
-        }
+        Assert.Throws<ArgumentException>(() => ProcessHelper.FindProcessPath(-1));
     }
 
-    [TestMethod]
+    [Fact]
     public void GetAppPaths_ShouldReturnList()
     {
         var result = ProcessHelper.GetAppPaths();
 
-        Assert.IsNotNull(result);
-        Assert.IsInstanceOfType<List<string>>(result);
+        Assert.NotNull(result);
+        Assert.IsType<List<string>>(result);
     }
 
-    [TestMethod]
+    [Fact]
     public void IsProcessRunning_ShouldReturnTrue_ForCurrentProcess()
     {
         var current = Process.GetCurrentProcess();
-        Assert.IsTrue(ProcessHelper.IsProcessRunning(current.Id));
+        Assert.True(ProcessHelper.IsProcessRunning(current.Id));
     }
 
-    [TestMethod]
+    [Fact]
     public void IsProcessRunning_ShouldReturnFalse_ForInvalidPid()
     {
-        Assert.IsFalse(ProcessHelper.IsProcessRunning(-12345));
+        Assert.False(ProcessHelper.IsProcessRunning(-12345));
     }
 }
-
-
-
