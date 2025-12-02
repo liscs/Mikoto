@@ -25,6 +25,7 @@ namespace Mikoto.Translators
         public static void Refresh(IResourceService resourceService)
         {
             DisplayNameTranslatorNameDict.Clear();
+            TranslatorNameDisplayNameDict.Clear();
 
             // 遍历由 Source Generator 在编译时生成的列表
             foreach (string className in AllTranslatorClassNames)

@@ -1,78 +1,57 @@
-﻿using Mikoto.Config;
+﻿using Mikoto.Core;
 using Mikoto.Translators.Implementations;
-using Mikoto.Translators.Interfaces;
 using Moq;
 using Xunit;
 
-namespace Mikoto.Translators.Tests;
-
-
-public class TranslatorCommonTests
+namespace Mikoto.Translators.Tests
 {
-    // 定义一个桩 ITranslator 实例
-    private readonly ITranslator _mockTranslator = Mock.Of<ITranslator>();
-
-    // 模拟 IAppSettings
-    private Mock<IAppSettings> SetupAppSettings()
+    public class TranslatorCommonTests
     {
-        var mockSettings = new Mock<IAppSettings>();
-        mockSettings.SetupGet(s => s.BDappID).Returns("TestBaiduID");
-        mockSettings.SetupGet(s => s.BDsecretKey).Returns("TestBaiduKey");
-        mockSettings.SetupGet(s => s.DeepLsecretKey).Returns("TestDeepLKey");
-        return mockSettings;
-    }
+        [Fact]
+        public void Refresh_ShouldClearAndRepopulateDictionariesCorrectly()
+        {
+            // Arrange
+            var mockResourceService = new Mock<IResourceService>();
 
-    [Fact]
-    public void GetTranslator_ShouldReturnBaiduTranslator_WithCorrectSettings()
-    {
-        // Arrange
-        var mockSettings = SetupAppSettings();
-        string name = nameof(BaiduTranslator);
-        string displayName = "百度翻译";
+            // 模拟 IResourceService 的行为 (Act 1)
+            mockResourceService.Setup(r => r.Get(nameof(BaiduTranslator))).Returns("百度翻译");
+            mockResourceService.Setup(r => r.Get(nameof(CaiyunTranslator))).Returns("彩云小译");
+            // 假设其他（如 DeepL）返回 null 或空字符串
 
-        // 由于 BaiduTranslator 是静态的，我们无法直接使用 Moq 来验证其调用参数。
-        // **最佳实践：** 重构 BaiduTranslator，让其通过非静态构造函数接受配置，再使用 DI 或 Moq 验证。
-        // **当前方案：** 只能验证返回的实例是否非空（如果 BaiduTranslator 实际返回一个非空对象）
+            // Act 1: 第一次刷新
+            TranslatorCommon.Refresh(mockResourceService.Object);
 
-        // Act
-        // 假设我们能控制 BaiduTranslator 始终返回一个实例
-        var result = TranslatorCommon.GetTranslator(name, mockSettings.Object, displayName);
+            // Assert 1: 验证初始填充
+            Assert.Equal(nameof(BaiduTranslator), TranslatorCommon.DisplayNameTranslatorNameDict["百度翻译"]);
+            Assert.Contains("彩云小译", TranslatorCommon.GetTranslatorDisplayNameList());
 
-        // Assert
-        Assert.NotNull(result);
-        // 如果 BaiduTranslator 是您控制的接口，您可以在 BaiduTranslator 内部记录传入的参数，并在测试中验证这些参数。
 
-        // 验证 AppSettings 中的属性是否被访问（但无法验证 GetTranslator 传递了正确的属性）
-        // mockSettings.VerifyGet(s => s.BDappID, Times.Once); // 如果您能确定属性一定会被访问
-    }
+            // 验证清理和重新填充
 
-    [Fact]
-    public void GetTranslator_ShouldReturnDeepLTranslator_WithCorrectSettings()
-    {
-        // Arrange
-        var mockSettings = SetupAppSettings();
-        string name = nameof(DeepLTranslator);
-        string displayName = "DeepL翻译";
+            // 1. 清理模拟对象状态，保证状态隔离
+            mockResourceService.Reset();
 
-        // Act
-        var result = TranslatorCommon.GetTranslator(name, mockSettings.Object, displayName);
+            // 2. 设置新的模拟行为 (Act 2)
+            //    核心：让旧的名称返回空值，以验证它们被正确移除。
+            mockResourceService.Setup(r => r.Get(nameof(BaiduTranslator))).Returns((string)null!); // 模拟不再有资源
+            mockResourceService.Setup(r => r.Get(nameof(CaiyunTranslator))).Returns(string.Empty);   // 模拟资源为空
 
-        // Assert
-        Assert.NotNull(result);
-        // 同样，需要对 DeepLTranslator 的实现进行重构或桩/反射才能验证具体的参数。
-    }
+            //    让新的名称返回有效值
+            mockResourceService.Setup(r => r.Get(nameof(DeepLTranslator))).Returns("DeepL");
 
-    [Fact]
-    public void GetTranslator_ShouldReturnNull_ForUnknownTranslator()
-    {
-        // Arrange
-        var mockSettings = SetupAppSettings();
-        string name = "UnknownTranslator";
+            // Re-Act: 第二次刷新
+            // TranslatorCommon.Refresh() 会执行 Clear()
+            TranslatorCommon.Refresh(mockResourceService.Object);
 
-        // Act
-        var result = TranslatorCommon.GetTranslator(name, mockSettings.Object, "未知翻译器");
+            // Assert 2: 验证清理和新数据
 
-        // Assert
-        Assert.Null(result);
+            // 验证清理: 之前添加的名称应该被移除，因为它们现在返回 null/空字符串，不会被重新添加。
+            Assert.DoesNotContain("百度翻译", TranslatorCommon.GetTranslatorDisplayNameList());
+            Assert.DoesNotContain("彩云小译", TranslatorCommon.GetTranslatorDisplayNameList());
+
+            // 验证重新填充: 新数据应该存在。
+            Assert.Contains("DeepL", TranslatorCommon.GetTranslatorDisplayNameList());
+            Assert.Single(TranslatorCommon.GetTranslatorDisplayNameList()); 
+        }
     }
 }
