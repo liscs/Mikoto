@@ -69,6 +69,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mikoto.Translators", "Mikot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mikoto.Config", "Mikoto.Config\Mikoto.Config.csproj", "{A2ADAB2C-8D67-41EB-A69D-4ADDB21BEA6C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mikoto.TranslatorGenerator", "Mikoto.TranslatorGenerator\Mikoto.TranslatorGenerator.csproj", "{0CAC5C9C-481B-4CD1-8657-3E8852EC7CF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,6 +147,10 @@ Global
 		{A2ADAB2C-8D67-41EB-A69D-4ADDB21BEA6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2ADAB2C-8D67-41EB-A69D-4ADDB21BEA6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2ADAB2C-8D67-41EB-A69D-4ADDB21BEA6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CAC5C9C-481B-4CD1-8657-3E8852EC7CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CAC5C9C-481B-4CD1-8657-3E8852EC7CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CAC5C9C-481B-4CD1-8657-3E8852EC7CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CAC5C9C-481B-4CD1-8657-3E8852EC7CF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

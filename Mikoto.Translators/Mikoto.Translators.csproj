@@ -1,6 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
+
   <ItemGroup>
     <ProjectReference Include="..\Mikoto.Config\Mikoto.Config.csproj" />
     <ProjectReference Include="..\Mikoto.Core\Mikoto.Core.csproj" />
+	  <ProjectReference Include="..\Mikoto.TranslatorGenerator\Mikoto.TranslatorGenerator.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
   </ItemGroup>
 </Project>

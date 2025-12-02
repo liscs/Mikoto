@@ -14,12 +14,12 @@ namespace Mikoto.SettingsPages
         public TranslatorGeneralSettingsPage()
         {
             InitializeComponent();
-            TranslatorList = TranslatorCommon.GetTranslatorList();
+            TranslatorList = TranslatorCommon.GetTranslatorDisplayNameList();
             FirstTransComboBox.ItemsSource = TranslatorList;
             SecondTransComboBox.ItemsSource = TranslatorList;
 
-            FirstTransComboBox.SelectedIndex = TranslatorCommon.GetTranslatorIndex(Common.AppSettings.FirstTranslator);
-            SecondTransComboBox.SelectedIndex = TranslatorCommon.GetTranslatorIndex(Common.AppSettings.SecondTranslator);
+            FirstTransComboBox.SelectedItem = TranslatorCommon.TranslatorNameDisplayNameDict[Common.AppSettings.FirstTranslator];
+            SecondTransComboBox.SelectedItem = TranslatorCommon.TranslatorNameDisplayNameDict[Common.AppSettings.SecondTranslator];
 
             EachRowTransCheckBox.IsChecked = Common.AppSettings.EachRowTrans;
             HttpProxyBox.Text = Common.AppSettings.HttpProxy;
@@ -31,12 +31,12 @@ namespace Mikoto.SettingsPages
 
         private void FirstTransComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Common.AppSettings.FirstTranslator = TranslatorCommon.TranslatorDict[(string)FirstTransComboBox.SelectedValue];
+            Common.AppSettings.FirstTranslator = TranslatorCommon.DisplayNameTranslatorNameDict[(string)FirstTransComboBox.SelectedValue];
         }
 
         private void SecondTransComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Common.AppSettings.SecondTranslator = TranslatorCommon.TranslatorDict[(string)SecondTransComboBox.SelectedValue];
+            Common.AppSettings.SecondTranslator = TranslatorCommon.DisplayNameTranslatorNameDict[(string)SecondTransComboBox.SelectedValue];
         }
 
         private void EachRowTransCheckBox_Click(object sender, RoutedEventArgs e)

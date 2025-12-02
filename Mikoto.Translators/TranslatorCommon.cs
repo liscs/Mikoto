@@ -3,11 +3,10 @@ using Mikoto.Core;
 using Mikoto.Translators.Implementations;
 using Mikoto.Translators.Interfaces;
 using System.Text.Encodings.Web;
-using System.Text.Unicode;
 
 namespace Mikoto.Translators
 {
-    public static class TranslatorCommon
+    public static partial class TranslatorCommon
     {
         /// <summary>
         /// 根据翻译器名称自动返回翻译器类实例(包括初始化)
@@ -45,24 +44,24 @@ namespace Mikoto.Translators
         /// </summary>
         public static void Refresh(IResourceService resourceService)
         {
-            //反射获取所有的翻译器（即所有实现了ITranslator的类），放入字典
-            TranslatorDict.Clear();
-            Type type = typeof(ITranslator);
-            var types = AppDomain.CurrentDomain.GetAssemblies()
-                                               .SelectMany(s => s.GetTypes())
-                                               .Where(p => type.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract);
-            foreach (Type item in types)
+            DisplayNameTranslatorNameDict.Clear();
+
+            // 遍历由 Source Generator 在编译时生成的列表
+            foreach (string className in AllTranslatorClassNames)
             {
-                string displayName = resourceService.Get(item.Name);
+                // className 就是 "BaiduTranslator", "TencentOldTranslator" 等
+                string displayName = resourceService.Get(className);
+
                 if (!string.IsNullOrEmpty(displayName))
                 {
-                    TranslatorDict.Add(displayName, item.Name);
+                    DisplayNameTranslatorNameDict[displayName]= className;
+                    TranslatorNameDisplayNameDict[className] = displayName;
                 }
             }
         }
 
         // 默认使用cultureinfo的语言代码
-        public static Dictionary<string, string> LanguageDict = new Dictionary<string, string>()
+        public static Dictionary<string, string> LanguageDict { get; } = new Dictionary<string, string>()
         {
             { "简体中文" , "zh" },
             { "繁體中文" , "zh-Hant" },
@@ -77,41 +76,22 @@ namespace Mikoto.Translators
             { "Italiano", "it" }
         };
 
-        public static Dictionary<string, string> TranslatorDict { get; set; } = new Dictionary<string, string>();
+        public static Dictionary<string, string> DisplayNameTranslatorNameDict { get; } = new();
 
         /// <summary>
         /// 获取所有可用的翻译API列表
         /// </summary>
-        /// <returns></returns>
-        public static List<string> GetTranslatorList()
+        public static List<string> GetTranslatorDisplayNameList()
         {
-            return TranslatorDict.Keys.ToList();
-        }
-
-        /// <summary>
-        /// 返回翻译API的值（用于存储的值）的索引
-        /// </summary>
-        /// <param name="TranslatorValue"></param>
-        /// <returns></returns>
-        public static int GetTranslatorIndex(string TranslatorValue)
-        {
-            for (int i = 0; i < TranslatorDict.Count; i++)
-            {
-                var kvp = TranslatorDict.ElementAt(i);
-                if (kvp.Value == TranslatorValue)
-                {
-                    return i;
-                }
-            }
-            return -1;
+            return DisplayNameTranslatorNameDict.Keys.ToList();
         }
 
 
-        public static System.Text.Json.JsonSerializerOptions JsonSerializerOptions { get; set; } = new()
+        public static System.Text.Json.JsonSerializerOptions JsonSerializerOptions { get; } = new()
         {
             IncludeFields = true,
-            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         };
+        public static Dictionary<string, string> TranslatorNameDisplayNameDict { get; } = new();
     }
 }

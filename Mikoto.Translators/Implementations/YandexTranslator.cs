@@ -12,7 +12,7 @@ namespace Mikoto.Translators.Implementations
 
         private string errorInfo = string.Empty;
 
-        public string TranslatorDisplayName { get; private set; }
+        public string TranslatorDisplayName { get; private set; } = nameof(YandexTranslator);
 
         public string GetLastError()
         {
