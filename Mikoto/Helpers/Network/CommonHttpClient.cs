@@ -22,7 +22,7 @@ namespace Mikoto.Helpers.Network
                         {
                             _httpClient = new HttpClient()
                             {
-                                Timeout = TimeSpan.FromSeconds(8)
+                                Timeout = TimeSpan.FromMinutes(8)
                             };
                             _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mikoto");
                         }
