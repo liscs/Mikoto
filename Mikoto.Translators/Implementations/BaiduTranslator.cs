@@ -10,8 +10,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class BaiduTranslator : ITranslator
     {
-        private BaiduTranslator() { }
-
         //语言简写列表 https://api.fanyi.baidu.com/product/113
 
         public string? _appId;//百度翻译API 的APP ID
@@ -89,15 +87,11 @@ namespace Mikoto.Translators.Implementations
 
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public BaiduTranslator(string displayName, string appId, string secretKey)
         {
-            BaiduTranslator baiduTranslator = new()
-            {
-                TranslatorDisplayName = param[0],
-                _appId = param[1],
-                _secretKey = param[2],
-            };
-            return baiduTranslator;
+            TranslatorDisplayName = displayName;
+            _appId = appId;
+            _secretKey = secretKey;
         }
 
         /// <summary>

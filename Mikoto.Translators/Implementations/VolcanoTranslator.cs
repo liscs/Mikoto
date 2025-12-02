@@ -11,7 +11,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class VolcanoTranslator : ITranslator
     {
-        private VolcanoTranslator() { }
         private string? _apiKey;
         private string? _apiSecret;
 
@@ -245,15 +244,11 @@ namespace Mikoto.Translators.Implementations
             return Convert.ToHexString(bytes).ToLower();
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public VolcanoTranslator(string displayName, string apiKey, string apiSecret)
         {
-            VolcanoTranslator volcanoTranslator = new()
-            {
-                TranslatorDisplayName = param[0],
-                _apiKey = param[1],
-                _apiSecret = param[2]
-            };
-            return volcanoTranslator;
+            TranslatorDisplayName = displayName;
+            _apiKey = apiKey;
+            _apiSecret = apiSecret;
         }
 
         public static string GetUrl_lang()

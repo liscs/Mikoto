@@ -5,7 +5,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class JBeijingTranslator : ITranslator
     {
-        private JBeijingTranslator() { }
         /*
          * 根据猜测得到的DLL函数 来源 https://github.com/Artikash/VNR-Core/blob/6ed038bda9dcd35696040bd45d31afa6a30e8978/py/libs/jbeijing/jbjct.py
         int __cdecl JC_Transfer_Unicode(
@@ -91,14 +90,10 @@ namespace Mikoto.Translators.Implementations
             return Task.FromResult(ret);
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public JBeijingTranslator(string displayName, string JBJCTDllPath)
         {
-            JBeijingTranslator jBeijingTranslator = new()
-            {
-                TranslatorDisplayName = param[0],
-                JBJCTDllPath = param[1]
-            };
-            return jBeijingTranslator;
+            TranslatorDisplayName = displayName;
+            this.JBJCTDllPath = JBJCTDllPath;
         }
     }
 }

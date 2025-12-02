@@ -12,7 +12,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class DeepLTranslator : ITranslator
     {
-        private DeepLTranslator() { }
         public static readonly string SIGN_UP_URL = "https://www.deepl.com/pro?cta=menu-login-signup";
         public static readonly string BILL_URL = "https://www.deepl.com/pro-account/usage";
         public static readonly string DOCUMENT_URL = "https://www.deepl.com/docs-api/accessing-the-api/error-handling/";
@@ -81,14 +80,10 @@ namespace Mikoto.Translators.Implementations
             }
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public DeepLTranslator(string displayName, string secretKey)
         {
-            DeepLTranslator deepLTranslator = new()
-            {
-                TranslatorDisplayName = param[0],
-                secretKey = param[1]
-            };
-            return deepLTranslator;
+            TranslatorDisplayName = displayName;
+            this.secretKey = secretKey;
         }
 
         private string GetLanguageCode(CultureInfo cultureInfo)

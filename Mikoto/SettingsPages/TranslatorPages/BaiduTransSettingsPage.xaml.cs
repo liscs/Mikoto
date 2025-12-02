@@ -29,7 +29,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
                 return;
             }
 
-            ITranslator BDTrans = BaiduTranslator.TranslatorInit(BDTransAppIDBox.Text, BDTransSecretKeyBox.Text);
+            ITranslator BDTrans = new BaiduTranslator((string)Application.Current.Resources[nameof(BaiduTranslator)], BDTransAppIDBox.Text, BDTransSecretKeyBox.Text);
 
             if (await BDTrans.TranslateAsync("apple", "zh", "en") != null)
             {
@@ -58,7 +58,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator BDTrans = BaiduTranslator.TranslatorInit(Common.AppSettings.BDappID, Common.AppSettings.BDsecretKey);
+            ITranslator BDTrans = new BaiduTranslator((string)Application.Current.Resources[nameof(BaiduTranslator)], Common.AppSettings.BDappID, Common.AppSettings.BDsecretKey);
             string? res = await BDTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)

@@ -38,7 +38,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator Trans = KingsoftFastAITTranslator.TranslatorInit(Common.AppSettings.KingsoftFastAITPath, "");
+            ITranslator Trans = new KingsoftFastAITTranslator((string)Application.Current.Resources[nameof(KingsoftFastAITTranslator)], Common.AppSettings.KingsoftFastAITPath);
             string? res = await Trans.TranslateAsync(TestSrcText.Text, "zh", TestSrcLang.Text);
             if (res != null)
             {

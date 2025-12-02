@@ -20,7 +20,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
         private async void AuthTestBtn_Click(object sender, RoutedEventArgs e)
         {
             Common.AppSettings.DeepLsecretKey = DeepLTransSecretKeyBox.Text;
-            ITranslator deepLTrans = DeepLTranslator.TranslatorInit(DeepLTransSecretKeyBox.Text, DeepLTransSecretKeyBox.Text);
+            ITranslator deepLTrans = new DeepLTranslator(DeepLTransSecretKeyBox.Text, DeepLTransSecretKeyBox.Text);
 
             if (await deepLTrans.TranslateAsync("apple", "zh", "en") != null)
             {
@@ -49,7 +49,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator deepLTrans = DeepLTranslator.TranslatorInit(DeepLTransSecretKeyBox.Text, DeepLTransSecretKeyBox.Text);
+            ITranslator deepLTrans = new DeepLTranslator((string)Application.Current.Resources[nameof(DeepLTranslator)], DeepLTransSecretKeyBox.Text);
             string? res = await deepLTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)

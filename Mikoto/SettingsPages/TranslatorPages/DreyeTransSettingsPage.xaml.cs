@@ -36,7 +36,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator Trans = DreyeTranslator.TranslatorInit(Common.AppSettings.DreyePath);
+            ITranslator Trans = new DreyeTranslator((string)Application.Current.Resources[nameof(DreyeTranslator)], Common.AppSettings.DreyePath);
             string? res = await Trans.TranslateAsync(TestSrcText.Text, "zh", TestSrcLang.Text);
             if (res != null)
             {

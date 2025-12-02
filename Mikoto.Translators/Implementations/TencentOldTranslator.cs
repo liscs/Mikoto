@@ -10,7 +10,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class TencentOldTranslator : ITranslator
     {
-        private TencentOldTranslator() { }
 
         private string errorInfo = string.Empty;//错误信息
         public string? SecretId;//腾讯旧版API SecretId
@@ -174,15 +173,11 @@ namespace Mikoto.Translators.Implementations
             return TencentOldLanguageCodeConverter.GetLanguageCode(cultureInfo);
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public TencentOldTranslator(string displayName, string secretId, string secretKey)
         {
-            TencentOldTranslator tencentOldTranslator = new()
-            {
-                TranslatorDisplayName = param[0],
-                SecretId = param[1],
-                SecretKey =  param[2],
-            };
-            return tencentOldTranslator;
+            TranslatorDisplayName = displayName;
+            SecretId = secretId;
+            SecretKey =  secretKey;
         }
 
 

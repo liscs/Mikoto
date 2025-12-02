@@ -20,7 +20,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
         private async void AuthTestBtn_Click(object sender, RoutedEventArgs e)
         {
             Common.AppSettings.YandexApiKey = YandexTransApiKeyBox.Text;
-            ITranslator YandexTrans = YandexTranslator.TranslatorInit(YandexTransApiKeyBox.Text, "");
+            ITranslator YandexTrans = new YandexTranslator((string)Application.Current.Resources[nameof(YandexTranslator)], YandexTransApiKeyBox.Text);
 
             if (await YandexTrans.TranslateAsync("apple", "zh", "en") != null)
             {
@@ -49,7 +49,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator YandexTrans = YandexTranslator.TranslatorInit(YandexTransApiKeyBox.Text);
+            ITranslator YandexTrans = new YandexTranslator((string)Application.Current.Resources[nameof(YandexTranslator)], YandexTransApiKeyBox.Text);
             string? res = await YandexTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)

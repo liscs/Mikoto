@@ -6,7 +6,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class IBMTranslator : ITranslator
     {
-        private IBMTranslator() { }
         public string? ApiKey;
         public string? URL;
 
@@ -74,15 +73,11 @@ namespace Mikoto.Translators.Implementations
             return result.translations[0].translation;
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public IBMTranslator(string displayName, string key, string url)
         {
-            IBMTranslator iBMTranslator = new()
-            {
-                TranslatorDisplayName = param[0],
-                ApiKey = "apikey:" + param[1],
-                URL = param[2] + "/v3/translate?version=2018-05-01"
-            };
-            return iBMTranslator;
+            TranslatorDisplayName = displayName;
+            ApiKey = "apikey:" + key;
+            URL = url + "/v3/translate?version=2018-05-01";
         }
 
         /// <summary>

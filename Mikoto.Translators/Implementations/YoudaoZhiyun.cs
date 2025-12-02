@@ -84,15 +84,11 @@ namespace Mikoto.Translators.Implementations
             }
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public YoudaoZhiyun(string displayName, string appId, string appSecret)
         {
-            YoudaoZhiyun youdaoZhiyun = new()
-            {
-                TranslatorDisplayName = param[0],
-                appId = param[1],
-                appSecret = param[2]
-            };
-            return youdaoZhiyun;
+            TranslatorDisplayName = displayName;
+            this.appId = appId;
+            this.appSecret = appSecret;
         }
 
         /// <summary>

@@ -8,7 +8,6 @@ namespace Mikoto.Translators.Implementations
 
     public class KingsoftFastAITTranslator : ITranslator
     {
-        private KingsoftFastAITTranslator() { }
         private const string DEFAULT_DIC = "DCT";
         private int buffersize = 0x4f4;
         private int key = 0x4f4;
@@ -176,14 +175,10 @@ namespace Mikoto.Translators.Implementations
             return Task.FromResult<string?>(to.ToString());
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public KingsoftFastAITTranslator(string displayName, string appSettings)
         {
-            KingsoftFastAITTranslator kingsoftFastAITTranslator = new()
-            {
-                TranslatorDisplayName = param[0],
-                FilePath = param[1]
-            };
-            return kingsoftFastAITTranslator;
+            TranslatorDisplayName = displayName;
+            FilePath = appSettings;
         }
     }
 }

@@ -11,7 +11,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class ChatGPTTranslator : ITranslator
     {
-        private ChatGPTTranslator() { }
         public static readonly string SIGN_UP_URL = "https://platform.openai.com";
         public static readonly string BILL_URL = "https://platform.openai.com/account/usage";
         public static readonly string DOCUMENT_URL = "https://platform.openai.com/docs/introduction/overview";
@@ -91,18 +90,12 @@ namespace Mikoto.Translators.Implementations
             }
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public ChatGPTTranslator(string displayName, string apiKey, string url, string model)
         {
-            if (param.Length < 3)
-                throw new ArgumentException("Expected 3 parameters: API Key, API URL, Model");
-
-            return new ChatGPTTranslator
-            {
-                TranslatorDisplayName = param[0],
-                apiKey = param[1],
-                apiUrl = param[2],
-                openai_model = param[3],
-            };
+            TranslatorDisplayName = displayName;
+            this.apiKey = apiKey;
+            apiUrl = url;
+            openai_model = model;
         }
 
         private void SetError(string message)

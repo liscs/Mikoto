@@ -7,7 +7,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class AzureTranslator : ITranslator
     {
-        private AzureTranslator() { }
         //快速入门：Azure AI 翻译 REST API https://learn.microsoft.com/zh-cn/azure/ai-services/translator/quickstart-text-rest-api?tabs=csharp
         //语言简写列表 https://learn.microsoft.com/zh-CN/azure/ai-services/translator/language-support
 
@@ -80,15 +79,11 @@ namespace Mikoto.Translators.Implementations
             }
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public AzureTranslator(string displayName, string secretKey, string location)
         {
-            AzureTranslator azureTranslator = new()
-            {
-                TranslatorDisplayName = param[0],
-                secretKey = param[1],
-                location = param[2]
-            };
-            return azureTranslator;
+            TranslatorDisplayName = displayName;
+            this.secretKey = secretKey;
+            this.location = location;
         }
 
 

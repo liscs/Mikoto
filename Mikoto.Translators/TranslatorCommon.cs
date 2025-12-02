@@ -1,6 +1,5 @@
 ﻿using Mikoto.Config;
 using Mikoto.Core;
-using Mikoto.Translators.Implementations;
 using Mikoto.Translators.Interfaces;
 using System.Text.Encodings.Web;
 
@@ -8,6 +7,8 @@ namespace Mikoto.Translators
 {
     public static partial class TranslatorCommon
     {
+        public static ITranslatorFactory TranslatorFactory { get; } = new TranslatorFactory();
+
         /// <summary>
         /// 根据翻译器名称自动返回翻译器类实例(包括初始化)
         /// </summary>
@@ -15,28 +16,7 @@ namespace Mikoto.Translators
         /// <returns></returns>
         public static ITranslator? GetTranslator(string translatorName, IAppSettings appSettings, string translatorDisplayName)
         {
-            return translatorName switch
-            {
-                nameof(BaiduTranslator) => BaiduTranslator.TranslatorInit(translatorDisplayName, appSettings.BDappID, appSettings.BDsecretKey),
-                nameof(TencentOldTranslator) => TencentOldTranslator.TranslatorInit(translatorDisplayName, appSettings.TXOSecretId, appSettings.TXOSecretKey),
-                nameof(CaiyunTranslator) => CaiyunTranslator.TranslatorInit(translatorDisplayName, appSettings.CaiyunToken),
-                nameof(XiaoniuTranslator) => XiaoniuTranslator.TranslatorInit(translatorDisplayName, appSettings.XiaoniuApiKey),
-                nameof(IBMTranslator) => IBMTranslator.TranslatorInit(translatorDisplayName, appSettings.IBMApiKey, appSettings.IBMURL),
-                nameof(YandexTranslator) => YandexTranslator.TranslatorInit(translatorDisplayName, appSettings.YandexApiKey),
-                nameof(YoudaoZhiyun) => YoudaoZhiyun.TranslatorInit(translatorDisplayName, appSettings.YDZYAppId, appSettings.YDZYAppSecret),
-                nameof(GoogleCNTranslator) => GoogleCNTranslator.TranslatorInit(translatorDisplayName),
-                nameof(JBeijingTranslator) => JBeijingTranslator.TranslatorInit(translatorDisplayName, appSettings.JBJCTDllPath),
-                nameof(KingsoftFastAITTranslator) => KingsoftFastAITTranslator.TranslatorInit(translatorDisplayName, appSettings.KingsoftFastAITPath),
-                nameof(DreyeTranslator) => DreyeTranslator.TranslatorInit(translatorDisplayName, appSettings.DreyePath),
-                nameof(DeepLTranslator) => DeepLTranslator.TranslatorInit(translatorDisplayName, appSettings.DeepLsecretKey),
-                nameof(ChatGPTTranslator) => ChatGPTTranslator.TranslatorInit(translatorDisplayName, appSettings.ChatGPTapiKey, appSettings.ChatGPTapiUrl, appSettings.ChatGPTapiModel),
-                nameof(AzureTranslator) => AzureTranslator.TranslatorInit(translatorDisplayName, appSettings.AzureSecretKey, appSettings.AzureLocation),
-                nameof(ArtificialTranslator) => ArtificialTranslator.TranslatorInit(translatorDisplayName, appSettings.ArtificialPatchPath),
-                nameof(VolcanoTranslator) => VolcanoTranslator.TranslatorInit(translatorDisplayName, appSettings.VolcanoId, appSettings.VolcanoKey),
-                nameof(AwsTranslator) => AwsTranslator.TranslatorInit(translatorDisplayName, appSettings.AwsAccessKey, appSettings.AwsSecretKey),
-                nameof(NoTranslator) => NoTranslator.TranslatorInit(translatorDisplayName),
-                _ => null,
-            };
+            return TranslatorFactory.GetTranslator(translatorName, appSettings, translatorDisplayName);
         }
 
         /// <summary>

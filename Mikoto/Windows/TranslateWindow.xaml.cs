@@ -93,8 +93,8 @@ namespace Mikoto
             {
                 CommonHttpClient.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
             }
-            _translator1 = TranslatorCommon.GetTranslator(Common.AppSettings.FirstTranslator, Common.AppSettings, (string)Application.Current.Resources[Common.AppSettings.FirstTranslator]);
-            _translator2 = TranslatorCommon.GetTranslator(Common.AppSettings.SecondTranslator, Common.AppSettings, (string)Application.Current.Resources[Common.AppSettings.SecondTranslator]);
+            _translator1 = TranslatorCommon.TranslatorFactory.GetTranslator(Common.AppSettings.FirstTranslator, Common.AppSettings, (string)Application.Current.Resources[Common.AppSettings.FirstTranslator]);
+            _translator2 = TranslatorCommon.TranslatorFactory.GetTranslator(Common.AppSettings.SecondTranslator, Common.AppSettings, (string)Application.Current.Resources[Common.AppSettings.SecondTranslator]);
 
             _beforeTransHandle = new BeforeTransHandle(App.Env.Context.GameID.ToString(), App.Env.Context.UsingSrcLang, App.Env.Context.UsingDstLang);
             _afterTransHandle = new AfterTransHandle(_beforeTransHandle);

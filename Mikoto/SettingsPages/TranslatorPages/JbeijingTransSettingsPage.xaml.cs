@@ -18,7 +18,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator Trans = JBeijingTranslator.TranslatorInit(Common.AppSettings.JBJCTDllPath);
+            ITranslator Trans = new JBeijingTranslator((string)Application.Current.Resources[nameof(JBeijingTranslator)], Common.AppSettings.JBJCTDllPath);
             string? res = await Trans.TranslateAsync(TestSrcText.Text, "", "");
             if (res != null)
             {

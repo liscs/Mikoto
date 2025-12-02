@@ -10,7 +10,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class AwsTranslator : ITranslator
     {
-        private AwsTranslator() { }
         private string? _accessKey;
         private string? _secretKey;
 
@@ -177,15 +176,11 @@ namespace Mikoto.Translators.Implementations
             return HMACSHA256.HashData(key, ToBytes(data));
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public AwsTranslator(string displayName, string awsAccessKey, string awsSecretKey)
         {
-            AwsTranslator awsTranslator = new()
-            {
-                TranslatorDisplayName = param[0],
-                _accessKey = param[1],
-                _secretKey = param[2]
-            };
-            return awsTranslator;
+            TranslatorDisplayName = displayName;
+            _accessKey = awsAccessKey;
+            _secretKey = awsSecretKey;
         }
 
         public static string GetUrl_API()

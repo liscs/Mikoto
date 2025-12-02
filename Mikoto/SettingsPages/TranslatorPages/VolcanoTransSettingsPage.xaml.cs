@@ -23,7 +23,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
             Common.AppSettings.VolcanoId = VolcanoTransIdBox.Text;
             Common.AppSettings.VolcanoKey = VolcanoTransKeyBox.Text;
 
-            ITranslator VolcanoTrans = VolcanoTranslator.TranslatorInit(VolcanoTransIdBox.Text, VolcanoTransKeyBox.Text);
+            ITranslator VolcanoTrans = new VolcanoTranslator((string)Application.Current.Resources[nameof(VolcanoTranslator)], VolcanoTransIdBox.Text, VolcanoTransKeyBox.Text);
 
             if (await VolcanoTrans.TranslateAsync("apple", "zh", "en") != null)
             {
@@ -56,7 +56,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator VolcanoTrans = VolcanoTranslator.TranslatorInit(Common.AppSettings.VolcanoId, Common.AppSettings.VolcanoKey);
+            ITranslator VolcanoTrans = new VolcanoTranslator((string)Application.Current.Resources[nameof(VolcanoTranslator)], Common.AppSettings.VolcanoId, Common.AppSettings.VolcanoKey);
             string? res = await VolcanoTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)

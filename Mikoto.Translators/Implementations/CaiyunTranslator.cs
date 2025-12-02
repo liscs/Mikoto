@@ -6,7 +6,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class CaiyunTranslator : ITranslator
     {
-        private CaiyunTranslator() { }
         public string? caiyunToken;//彩云小译 令牌
         private string errorInfo = string.Empty;//错误信息
 
@@ -87,14 +86,10 @@ namespace Mikoto.Translators.Implementations
 
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public CaiyunTranslator(string displayName, string caiyunToken)
         {
-            CaiyunTranslator caiyunTranslator = new()
-            {
-                TranslatorDisplayName = param[0],
-                caiyunToken = param[1],
-            };
-            return caiyunTranslator;
+            TranslatorDisplayName = displayName;
+            this.caiyunToken = caiyunToken;
         }
 
 

@@ -4,7 +4,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class NoTranslator : ITranslator
     {
-        private NoTranslator() { }
         public string TranslatorDisplayName { get; private set; }
 
         public string GetLastError()
@@ -17,9 +16,9 @@ namespace Mikoto.Translators.Implementations
             return Task.FromResult<string?>(string.Empty);
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public NoTranslator(string displayName)
         {
-            return new NoTranslator() { TranslatorDisplayName = param[0], };
+            TranslatorDisplayName = displayName;
         }
     }
 }

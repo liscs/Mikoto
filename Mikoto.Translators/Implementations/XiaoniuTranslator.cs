@@ -8,7 +8,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class XiaoniuTranslator : ITranslator
     {
-        private XiaoniuTranslator() { }
         public string? apiKey;//小牛翻译API 的APIKEY
         private string errorInfo = string.Empty;//错误信息
 
@@ -88,14 +87,10 @@ namespace Mikoto.Translators.Implementations
             return XiaoniuLanguageCodeConverter.GetLanguageCode(cultureInfo);
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public XiaoniuTranslator(string displayName, string apiKey)
         {
-            XiaoniuTranslator xiaoniuTranslator = new()
-            {
-                TranslatorDisplayName = param[0],
-                apiKey = param[1]
-            };
-            return xiaoniuTranslator;
+            TranslatorDisplayName = displayName;
+            this.apiKey = apiKey;
         }
 
         /// <summary>

@@ -23,7 +23,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
             Common.AppSettings.AwsAccessKey = AwsTransIdBox.Text;
             Common.AppSettings.AwsSecretKey = AwsTransKeyBox.Text;
 
-            ITranslator AwsTrans = AwsTranslator.TranslatorInit(AwsTransIdBox.Text, AwsTransKeyBox.Text);
+            ITranslator AwsTrans = new AwsTranslator((string)Application.Current.Resources[nameof(AwsTranslator)], AwsTransIdBox.Text, AwsTransKeyBox.Text);
 
             if (await AwsTrans.TranslateAsync("apple", "zh", "en") != null)
             {
@@ -56,7 +56,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator AwsTrans = AwsTranslator.TranslatorInit(Common.AppSettings.AwsAccessKey, Common.AppSettings.AwsSecretKey);
+            ITranslator AwsTrans = new AwsTranslator((string)Application.Current.Resources[nameof(AwsTranslator)], Common.AppSettings.AwsAccessKey, Common.AppSettings.AwsSecretKey);
             string? res = await AwsTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)

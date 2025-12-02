@@ -8,7 +8,6 @@ namespace Mikoto.Translators.Implementations
      */
     public class ArtificialTranslator : ITranslator
     {
-        private ArtificialTranslator() { }
         private class CursorPriorityQueue
         {
             public class CPQComparator : IComparer<(int, double)>
@@ -64,11 +63,10 @@ namespace Mikoto.Translators.Implementations
         /// </summary>
         /// <param name="param1">参数一 汉化补丁路径</param>
         /// <param name="param2">参数二 不使用</param>
-        public static ITranslator TranslatorInit(params string[] param)
+        public ArtificialTranslator(string displayName, string path)
         {
-            ArtificialTranslator artificialTranslator = new();
-            artificialTranslator.TranslatorDisplayName = param[0];
-            string patchPath = param[1];
+            TranslatorDisplayName = displayName;
+            string patchPath = path;
             /*
              * 汉化补丁格式，只支持单个文本文件：
              * 
@@ -104,11 +102,11 @@ namespace Mikoto.Translators.Implementations
                 {
                     if (jp)
                     {
-                        artificialTranslator.jp_text.Add(temp);
+                        jp_text.Add(temp);
                     }
                     else
                     {
-                        artificialTranslator.cn_text.Add(temp);
+                        cn_text.Add(temp);
                     }
                 }
                 else
@@ -140,12 +138,11 @@ namespace Mikoto.Translators.Implementations
                 }
             }
             add();
-            if (artificialTranslator.jp_text.Count != artificialTranslator.cn_text.Count)
+            if (jp_text.Count != cn_text.Count)
             {
                 throw new Exception("Total sentence number not match, please check your patch.");
             }
 
-            return artificialTranslator;
         }
 
         /// <summary>

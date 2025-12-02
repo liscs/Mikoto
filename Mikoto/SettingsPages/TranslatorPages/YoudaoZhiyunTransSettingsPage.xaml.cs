@@ -22,7 +22,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
         {
             Common.AppSettings.YDZYAppId = YDZYTransAppIDBox.Text;
             Common.AppSettings.YDZYAppSecret = YDZYTransAppSecretBox.Text;
-            ITranslator Trans = YoudaoZhiyun.TranslatorInit(YDZYTransAppIDBox.Text, YDZYTransAppSecretBox.Text);
+            ITranslator Trans = new YoudaoZhiyun((string)Application.Current.Resources[nameof(YoudaoZhiyun)], Common.AppSettings.YDZYAppId, Common.AppSettings.YDZYAppSecret);
             if (await Trans.TranslateAsync("apple", "zh", "en") != null)
             {
                 HandyControl.Controls.Growl.Success($"有道智云{Application.Current.Resources["APITest_Success_Hint"]}");
@@ -50,7 +50,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator Trans = YoudaoZhiyun.TranslatorInit(Common.AppSettings.YDZYAppId, Common.AppSettings.YDZYAppSecret);
+            ITranslator Trans = new YoudaoZhiyun((string)Application.Current.Resources[nameof(YoudaoZhiyun)], Common.AppSettings.YDZYAppId, Common.AppSettings.YDZYAppSecret);
             string? res = await Trans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
             if (res != null)
             {

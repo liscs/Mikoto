@@ -25,7 +25,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
             Common.AppSettings.ChatGPTapiUrl = ChatGPTTransUrlBox.Text;
             Common.AppSettings.ChatGPTapiModel = ChatGPTModelBox.Text;
 
-            ITranslator chatGPTTrans = ChatGPTTranslator.TranslatorInit(ChatGPTTransSecretKeyBox.Text, ChatGPTTransUrlBox.Text, ChatGPTModelBox.Text);
+            ITranslator chatGPTTrans = new ChatGPTTranslator((string)Application.Current.Resources[nameof(ChatGPTTranslator)], ChatGPTTransSecretKeyBox.Text, ChatGPTTransUrlBox.Text, ChatGPTModelBox.Text);
 
             if (await chatGPTTrans.TranslateAsync("apple", "zh", "en") != null)
             {
@@ -54,7 +54,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            ITranslator chatGPTTrans = ChatGPTTranslator.TranslatorInit(ChatGPTTransSecretKeyBox.Text, ChatGPTTransUrlBox.Text, ChatGPTModelBox.Text);
+            ITranslator chatGPTTrans = new ChatGPTTranslator((string)Application.Current.Resources[nameof(ChatGPTTranslator)], ChatGPTTransSecretKeyBox.Text, ChatGPTTransUrlBox.Text, ChatGPTModelBox.Text);
             string? res = await chatGPTTrans.TranslateAsync(TestSrcText.Text, TestDstLang.Text, TestSrcLang.Text);
 
             if (res != null)

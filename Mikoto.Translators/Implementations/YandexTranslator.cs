@@ -7,7 +7,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class YandexTranslator : ITranslator
     {
-        private YandexTranslator() { }
         public string? ApiKey;
 
         private string errorInfo = string.Empty;
@@ -42,14 +41,10 @@ namespace Mikoto.Translators.Implementations
             }
         }
 
-        public static ITranslator TranslatorInit(params string[] param)
+        public YandexTranslator(string displayName, string apiKey)
         {
-            YandexTranslator yandexTranslator = new()
-            {
-                TranslatorDisplayName = param[0],
-                ApiKey = param[1]
-            };
-            return yandexTranslator;
+            TranslatorDisplayName = displayName;
+            ApiKey = apiKey;
         }
 
         /// <summary>

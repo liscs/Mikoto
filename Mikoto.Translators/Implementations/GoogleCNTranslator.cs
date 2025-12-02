@@ -10,7 +10,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class GoogleCNTranslator : ITranslator
     {
-        private GoogleCNTranslator() { }
         private string errorInfo = string.Empty;//错误信息
 
         public string TranslatorDisplayName { get; private set; }
@@ -67,10 +66,9 @@ namespace Mikoto.Translators.Implementations
         {
             return GoogleCNLanguageCodeConverter.GetLanguageCode(cultureInfo);
         }
-        public static ITranslator TranslatorInit(params string[] param)
+        public GoogleCNTranslator(string displayName)
         {
-
-            return new GoogleCNTranslator() { TranslatorDisplayName = param[0], };
+            TranslatorDisplayName = displayName;
         }
     }
 }
