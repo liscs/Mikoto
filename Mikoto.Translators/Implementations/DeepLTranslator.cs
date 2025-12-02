@@ -1,9 +1,7 @@
 ﻿using Mikoto.Translators.Interfaces;
 using Mikoto.Translators.LanguageCode;
 using System.Globalization;
-using System.Net.Http;
 using System.Text.Json;
-using System.Windows;
 
 /*
  * DeepL translator integration

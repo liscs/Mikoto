@@ -1,13 +1,11 @@
 ﻿//参考 https://github.com/Dark-20001/volcengine-sdk-c-
 
 using Mikoto.Translators.Interfaces;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Windows;
 
 namespace Mikoto.Translators.Implementations
 {

@@ -1,12 +1,10 @@
 ﻿using Mikoto.Translators.Interfaces;
 using Mikoto.Translators.LanguageCode;
 using System.Globalization;
-using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Windows;
 
 namespace Mikoto.Translators.Implementations
 {

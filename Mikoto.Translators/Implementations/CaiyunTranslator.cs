@@ -1,8 +1,6 @@
 ﻿using Mikoto.Translators.Interfaces;
-using System.Net.Http;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Windows;
 
 namespace Mikoto.Translators.Implementations
 {

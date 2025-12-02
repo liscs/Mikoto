@@ -1,7 +1,6 @@
 ﻿//参考 https://stackoverflow.com/questions/50507461/aws-translatetext-rest-api-call-adding-signature-v4
 
 using Mikoto.Translators.Interfaces;
-using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;

@@ -3,7 +3,6 @@ using Mikoto.Translators.LanguageCode;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
-using System.Windows;
 
 namespace Mikoto.Translators.Implementations
 {

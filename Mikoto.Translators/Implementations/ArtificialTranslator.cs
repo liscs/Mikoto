@@ -1,7 +1,5 @@
 ﻿using Mikoto.Translators.Interfaces;
-using System.IO;
 using System.Text;
-using System.Windows;
 
 namespace Mikoto.Translators.Implementations
 {
