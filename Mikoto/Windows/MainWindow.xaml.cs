@@ -1,6 +1,7 @@
 using Config.Net;
 using HandyControl.Controls;
 using HandyControl.Tools.Extension;
+using Mikoto.Config;
 using Mikoto.DataAccess;
 using Mikoto.Enums;
 using Mikoto.Helpers.File;
@@ -39,7 +40,7 @@ namespace Mikoto
             Common.RepairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Path.Combine(DataFolder.Path, "settings", "RepairSettings.ini")).Build();
 
             InitializeLanguage();
-            TranslatorCommon.Refresh();
+            TranslatorCommon.Refresh(App.Env.ResourceService);
             InitializeComponent();
 
             Refresh();

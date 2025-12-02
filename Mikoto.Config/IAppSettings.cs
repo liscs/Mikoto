@@ -1,7 +1,6 @@
 ﻿using Config.Net;
-using Mikoto.Enums;
 
-namespace Mikoto
+namespace Mikoto.Config
 {
     public interface IAppSettings
     {

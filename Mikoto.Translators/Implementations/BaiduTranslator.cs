@@ -1,5 +1,4 @@
-﻿using Mikoto.Helpers.Network;
-using Mikoto.Translators.Interfaces;
+﻿using Mikoto.Translators.Interfaces;
 using Mikoto.Translators.LanguageCode;
 using System.Globalization;
 using System.Security.Cryptography;
@@ -13,15 +12,15 @@ namespace Mikoto.Translators.Implementations
     public class BaiduTranslator : ITranslator
     {
         private BaiduTranslator() { }
+
         //语言简写列表 https://api.fanyi.baidu.com/product/113
 
-        public string? appId;//百度翻译API 的APP ID
-        public string? secretKey;//百度翻译API 的密钥
+        public string? _appId;//百度翻译API 的APP ID
+        public string? _secretKey;//百度翻译API 的密钥
         private string errorInfo = string.Empty;//错误信息
         private static Random _random = new Random();
 
-
-        public string TranslatorDisplayName { get { return Application.Current.Resources["BaiduTranslator"].ToString()!; } }
+        public string TranslatorDisplayName { get; private set; }
 
         public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
@@ -40,17 +39,17 @@ namespace Mikoto.Translators.Implementations
 
             string salt = _random.Next(100000).ToString();
 
-            string sign = EncryptString(appId + q + salt + secretKey);
+            string sign = EncryptString(_appId + q + salt + _secretKey);
             var sb = new StringBuilder("https://api.fanyi.baidu.com/api/trans/vip/translate?")
                 .Append("q=").Append(HttpUtility.UrlEncode(q))
                 .Append("&from=").Append(srcLang)
                 .Append("&to=").Append(desLang)
-                .Append("&appid=").Append(appId)
+                .Append("&appid=").Append(_appId)
                 .Append("&salt=").Append(salt)
                 .Append("&sign=").Append(sign);
             string url = sb.ToString();
 
-            var hc = CommonHttpClient.Instance;
+            var hc = TranslateHttpClient.Instance;
             try
             {
                 retString = await hc.GetStringAsync(url);
@@ -95,8 +94,9 @@ namespace Mikoto.Translators.Implementations
         {
             BaiduTranslator baiduTranslator = new()
             {
-                appId = param.First(),
-                secretKey = param.Last(),
+                TranslatorDisplayName = param[0],
+                _appId = param[1],
+                _secretKey = param[2],
             };
             return baiduTranslator;
         }

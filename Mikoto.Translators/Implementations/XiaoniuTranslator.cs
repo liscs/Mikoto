@@ -1,5 +1,4 @@
-﻿using Mikoto.Helpers.Network;
-using Mikoto.Translators.Interfaces;
+﻿using Mikoto.Translators.Interfaces;
 using Mikoto.Translators.LanguageCode;
 using System.Globalization;
 using System.Text;
@@ -14,7 +13,7 @@ namespace Mikoto.Translators.Implementations
         public string? apiKey;//小牛翻译API 的APIKEY
         private string errorInfo = string.Empty;//错误信息
 
-        public string TranslatorDisplayName { get { return Application.Current.Resources["XiaoniuTranslator"].ToString()!; } }
+        public string TranslatorDisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -38,7 +37,7 @@ namespace Mikoto.Translators.Implementations
 
             string url = sb.ToString();
 
-            var hc = CommonHttpClient.Instance;
+            var hc = TranslateHttpClient.Instance;
             try
             {
                 retString = await hc.GetStringAsync(url);
@@ -92,9 +91,11 @@ namespace Mikoto.Translators.Implementations
 
         public static ITranslator TranslatorInit(params string[] param)
         {
-            //第二参数无用
-            XiaoniuTranslator xiaoniuTranslator = new();
-            xiaoniuTranslator.apiKey = param.First();
+            XiaoniuTranslator xiaoniuTranslator = new()
+            {
+                TranslatorDisplayName = param[0],
+                apiKey = param[1]
+            };
             return xiaoniuTranslator;
         }
 

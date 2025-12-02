@@ -48,7 +48,7 @@ namespace Mikoto.Translators.Implementations
         public string FilePath = string.Empty;//文件路径
         private string errorInfo = string.Empty;//错误信息
 
-        public string TranslatorDisplayName { get { return Application.Current.Resources["DreyeTranslator"].ToString()!; } }
+        public string TranslatorDisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -128,7 +128,8 @@ namespace Mikoto.Translators.Implementations
         {
             DreyeTranslator dreyeTranslator = new()
             {
-                FilePath = param.First()
+                TranslatorDisplayName = param[0],
+                FilePath = param[1]
             };
             return dreyeTranslator;
         }

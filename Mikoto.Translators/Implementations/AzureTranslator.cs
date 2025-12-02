@@ -1,5 +1,4 @@
-﻿using Mikoto.Helpers.Network;
-using Mikoto.Translators.Interfaces;
+﻿using Mikoto.Translators.Interfaces;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -19,7 +18,7 @@ namespace Mikoto.Translators.Implementations
         private string errorInfo = string.Empty;//错误信息
         private readonly string endpoint = "https://api.cognitive.microsofttranslator.com";
 
-        public string TranslatorDisplayName { get { return Application.Current.Resources["AzureTranslator"].ToString()!; } }
+        public string TranslatorDisplayName { get; private set; }
 
         public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
@@ -34,7 +33,7 @@ namespace Mikoto.Translators.Implementations
             object[] body = new object[] { new { Text = textToTranslate } };
             var requestBody = JsonSerializer.Serialize(body);
             AzureTransOutInfo oinfo;
-            var client = CommonHttpClient.Instance;
+            var client = TranslateHttpClient.Instance;
             using (var request = new HttpRequestMessage())
             {
                 // Build the request.
@@ -85,9 +84,12 @@ namespace Mikoto.Translators.Implementations
 
         public static ITranslator TranslatorInit(params string[] param)
         {
-            AzureTranslator azureTranslator = new();
-            azureTranslator.secretKey = param.First();
-            azureTranslator.location = param.Last();
+            AzureTranslator azureTranslator = new()
+            {
+                TranslatorDisplayName = param[0],
+                secretKey = param[1],
+                location = param[2]
+            };
             return azureTranslator;
         }
 

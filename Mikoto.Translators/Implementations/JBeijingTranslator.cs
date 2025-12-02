@@ -38,7 +38,7 @@ namespace Mikoto.Translators.Implementations
         public string JBJCTDllPath = string.Empty;//DLL路径
         private string errorInfo = string.Empty;//错误信息
 
-        public string TranslatorDisplayName { get { return Application.Current.Resources["JBeijingTranslator"].ToString()!; } }
+        public string TranslatorDisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -94,8 +94,11 @@ namespace Mikoto.Translators.Implementations
 
         public static ITranslator TranslatorInit(params string[] param)
         {
-            JBeijingTranslator jBeijingTranslator = new();
-            jBeijingTranslator.JBJCTDllPath = param.First();
+            JBeijingTranslator jBeijingTranslator = new()
+            {
+                TranslatorDisplayName = param[0],
+                JBJCTDllPath = param[1]
+            };
             return jBeijingTranslator;
         }
     }

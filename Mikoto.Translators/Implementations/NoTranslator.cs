@@ -6,7 +6,7 @@ namespace Mikoto.Translators.Implementations
     public class NoTranslator : ITranslator
     {
         private NoTranslator() { }
-        public string TranslatorDisplayName { get { return Application.Current.Resources["NoTranslator"].ToString()!; } }
+        public string TranslatorDisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -20,7 +20,7 @@ namespace Mikoto.Translators.Implementations
 
         public static ITranslator TranslatorInit(params string[] param)
         {
-            return new NoTranslator();
+            return new NoTranslator() { TranslatorDisplayName = param[0], };
         }
     }
 }

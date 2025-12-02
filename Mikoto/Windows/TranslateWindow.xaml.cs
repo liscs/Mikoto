@@ -1,5 +1,6 @@
 ﻿using HandyControl.Controls;
 using Mikoto.ArtificialTrans;
+using Mikoto.Config;
 using Mikoto.Enums;
 using Mikoto.Helpers.Graphics;
 using Mikoto.Helpers.Network;
@@ -92,8 +93,8 @@ namespace Mikoto
             {
                 CommonHttpClient.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
             }
-            _translator1 = TranslatorCommon.GetTranslator(Common.AppSettings.FirstTranslator);
-            _translator2 = TranslatorCommon.GetTranslator(Common.AppSettings.SecondTranslator);
+            _translator1 = TranslatorCommon.GetTranslator((string)Application.Current.Resources[Common.AppSettings.FirstTranslator], Common.AppSettings, Common.AppSettings.FirstTranslator);
+            _translator2 = TranslatorCommon.GetTranslator((string)Application.Current.Resources[Common.AppSettings.SecondTranslator], Common.AppSettings, Common.AppSettings.SecondTranslator);
 
             _beforeTransHandle = new BeforeTransHandle(App.Env.Context.GameID.ToString(), App.Env.Context.UsingSrcLang, App.Env.Context.UsingDstLang);
             _afterTransHandle = new AfterTransHandle(_beforeTransHandle);

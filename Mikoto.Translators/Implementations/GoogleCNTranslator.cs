@@ -1,5 +1,4 @@
-﻿using Mikoto.Helpers.Network;
-using Mikoto.Translators.Interfaces;
+﻿using Mikoto.Translators.Interfaces;
 using Mikoto.Translators.LanguageCode;
 using System.Globalization;
 using System.Net.Http;
@@ -16,7 +15,7 @@ namespace Mikoto.Translators.Implementations
         private GoogleCNTranslator() { }
         private string errorInfo = string.Empty;//错误信息
 
-        public string TranslatorDisplayName { get { return Application.Current.Resources["GoogleCNTranslator"].ToString()!; } }
+        public string TranslatorDisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -32,7 +31,7 @@ namespace Mikoto.Translators.Implementations
 
                 string url = $"https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&sl={srcLang}&tl={desLang}&q={HttpUtility.UrlEncode(sourceText)}";
 
-                var hc = CommonHttpClient.Instance;
+                var hc = TranslateHttpClient.Instance;
                 var json = await hc.GetStringAsync(url);
 
                 JsonNode? root = JsonSerializer.Deserialize<JsonNode?>(json, TranslatorCommon.JsonSerializerOptions);
@@ -73,7 +72,7 @@ namespace Mikoto.Translators.Implementations
         public static ITranslator TranslatorInit(params string[] param)
         {
 
-            return new GoogleCNTranslator();
+            return new GoogleCNTranslator() { TranslatorDisplayName = param[0], };
         }
     }
 }

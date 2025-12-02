@@ -1,4 +1,3 @@
-using Mikoto.Helpers.Network;
 using Mikoto.Translators.Interfaces;
 using System.Net.Http;
 using System.Text;
@@ -15,7 +14,7 @@ namespace Mikoto.Translators.Implementations
 
         private string errorInfo = string.Empty;
 
-        public string TranslatorDisplayName { get { return Application.Current.Resources["IBMTranslator"].ToString()!; } }
+        public string TranslatorDisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -36,7 +35,7 @@ namespace Mikoto.Translators.Implementations
             }
 
             HttpResponseMessage resp;
-            var hc = CommonHttpClient.Instance;
+            var hc = TranslateHttpClient.Instance;
             var req = new HttpRequestMessage(HttpMethod.Post, URL);
             string jsonParam = JsonSerializer.Serialize(new Dictionary<string, object>
             {
@@ -79,9 +78,12 @@ namespace Mikoto.Translators.Implementations
 
         public static ITranslator TranslatorInit(params string[] param)
         {
-            IBMTranslator iBMTranslator = new();
-            iBMTranslator.ApiKey = "apikey:" + param.First();
-            iBMTranslator.URL = param.Last() + "/v3/translate?version=2018-05-01";
+            IBMTranslator iBMTranslator = new()
+            {
+                TranslatorDisplayName = param[0],
+                ApiKey = "apikey:" + param[1],
+                URL = param[2] + "/v3/translate?version=2018-05-01"
+            };
             return iBMTranslator;
         }
 

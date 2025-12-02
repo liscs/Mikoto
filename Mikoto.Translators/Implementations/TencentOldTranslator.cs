@@ -1,5 +1,4 @@
-﻿using Mikoto.Helpers.Network;
-using Mikoto.Translators.Interfaces;
+﻿using Mikoto.Translators.Interfaces;
 using Mikoto.Translators.LanguageCode;
 using System.Globalization;
 using System.Net.Http;
@@ -19,7 +18,7 @@ namespace Mikoto.Translators.Implementations
         public string? SecretId;//腾讯旧版API SecretId
         public string? SecretKey;//腾讯旧版API _secretKey
 
-        public string TranslatorDisplayName { get { return Application.Current.Resources["TencentOldTranslator"].ToString()!; } }
+        public string TranslatorDisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -120,7 +119,7 @@ namespace Mikoto.Translators.Implementations
             Dictionary<string, string> headers = BuildHeaders(SecretId!, SecretKey!, SERVICE, ENDPOINT, REGION, ACTION,
                                                               VERSION, date, requestPayload);
 
-            HttpClient httpClient = CommonHttpClient.Instance;
+            HttpClient httpClient = TranslateHttpClient.Instance;
             HttpRequestMessage httpRequestMessage = new();
             httpRequestMessage.RequestUri = new Uri($"https://{ENDPOINT}");
             httpRequestMessage.Method = HttpMethod.Post;
@@ -181,8 +180,9 @@ namespace Mikoto.Translators.Implementations
         {
             TencentOldTranslator tencentOldTranslator = new()
             {
-                SecretId = param.First(),
-                SecretKey = param.Last(),
+                TranslatorDisplayName = param[0],
+                SecretId = param[1],
+                SecretKey =  param[2],
             };
             return tencentOldTranslator;
         }

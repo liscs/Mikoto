@@ -69,7 +69,8 @@ namespace Mikoto.Translators.Implementations
         public static ITranslator TranslatorInit(params string[] param)
         {
             ArtificialTranslator artificialTranslator = new();
-            string patchPath = param.First();
+            artificialTranslator.TranslatorDisplayName = param[0];
+            string patchPath = param[1];
             /*
              * 汉化补丁格式，只支持单个文本文件：
              * 
@@ -410,6 +411,6 @@ namespace Mikoto.Translators.Implementations
         private const double possibleCursorsThresh = 0.001;
         private Dictionary<int, double> possibleCursors = new Dictionary<int, double>();
 
-        public string TranslatorDisplayName { get { return Application.Current.Resources["ArtificialTranslator"].ToString()!; } }
+        public string TranslatorDisplayName { get; private set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Mikoto.Enums
+﻿namespace Mikoto.Config
 {
     public enum PhoneticNotationType
     {

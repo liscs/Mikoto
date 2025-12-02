@@ -1,5 +1,4 @@
-﻿using Mikoto.Helpers.Network;
-using Mikoto.Translators.Interfaces;
+﻿using Mikoto.Translators.Interfaces;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -24,7 +23,7 @@ namespace Mikoto.Translators.Implementations
         private string? apiUrl; // ChatGPT 翻译 API 的 URL
         private string lastErrorMessage = string.Empty;
 
-        public string TranslatorDisplayName => Application.Current.Resources["ChatGPTTranslator"]?.ToString() ?? "ChatGPT Translator";
+        public string TranslatorDisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -51,7 +50,7 @@ namespace Mikoto.Translators.Implementations
             };
 
             string jsonParam = JsonSerializer.Serialize(requestPayload, TranslatorCommon.JsonSerializerOptions);
-            var hc = CommonHttpClient.Instance;
+            var hc = TranslateHttpClient.Instance;
             var req = new StringContent(jsonParam, Encoding.UTF8, "application/json");
             hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
 
@@ -101,9 +100,10 @@ namespace Mikoto.Translators.Implementations
 
             return new ChatGPTTranslator
             {
-                apiKey = param[0],
-                apiUrl = param[1],
-                openai_model = param[2],
+                TranslatorDisplayName = param[0],
+                apiKey = param[1],
+                apiUrl = param[2],
+                openai_model = param[3],
             };
         }
 

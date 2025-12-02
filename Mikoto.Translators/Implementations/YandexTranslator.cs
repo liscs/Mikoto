@@ -1,4 +1,3 @@
-using Mikoto.Helpers.Network;
 using Mikoto.Translators.Interfaces;
 using System.Net.Http;
 using System.Text.Json;
@@ -15,7 +14,7 @@ namespace Mikoto.Translators.Implementations
 
         private string errorInfo = string.Empty;
 
-        public string TranslatorDisplayName { get { return Application.Current.Resources["YandexTranslator"].ToString()!; } }
+        public string TranslatorDisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -24,7 +23,7 @@ namespace Mikoto.Translators.Implementations
 
         public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
-            var hc = CommonHttpClient.Instance;
+            var hc = TranslateHttpClient.Instance;
             string apiurl = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + ApiKey + "&lang=" + srcLang + "-" + desLang + "&text=";
 
             try
@@ -47,8 +46,11 @@ namespace Mikoto.Translators.Implementations
 
         public static ITranslator TranslatorInit(params string[] param)
         {
-            YandexTranslator yandexTranslator = new();
-            yandexTranslator.ApiKey = param.First();
+            YandexTranslator yandexTranslator = new()
+            {
+                TranslatorDisplayName = param[0],
+                ApiKey = param[1]
+            };
             return yandexTranslator;
         }
 

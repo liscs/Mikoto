@@ -1,5 +1,4 @@
-﻿using Mikoto.Helpers.Network;
-using Mikoto.Translators.Interfaces;
+﻿using Mikoto.Translators.Interfaces;
 using Mikoto.Translators.LanguageCode;
 using System.Globalization;
 using System.Net.Http;
@@ -25,7 +24,7 @@ namespace Mikoto.Translators.Implementations
         private string? secretKey; //DeepL翻译API的秘钥
         private string errorInfo = string.Empty; //错误信息
 
-        public string TranslatorDisplayName { get { return Application.Current.Resources["DeepLTranslator"].ToString()!; } }
+        public string TranslatorDisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -51,7 +50,7 @@ namespace Mikoto.Translators.Implementations
 
             try
             {
-                HttpResponseMessage response = await CommonHttpClient.Instance.PostAsync(TRANSLATE_API_URL, request);
+                HttpResponseMessage response = await TranslateHttpClient.Instance.PostAsync(TRANSLATE_API_URL, request);
                 if (response.IsSuccessStatusCode)
                 {
                     string resultStr = await response.Content.ReadAsStringAsync();
@@ -86,8 +85,11 @@ namespace Mikoto.Translators.Implementations
 
         public static ITranslator TranslatorInit(params string[] param)
         {
-            DeepLTranslator deepLTranslator = new();
-            deepLTranslator.secretKey = param.First();
+            DeepLTranslator deepLTranslator = new()
+            {
+                TranslatorDisplayName = param[0],
+                secretKey = param[1]
+            };
             return deepLTranslator;
         }
 

@@ -1,5 +1,4 @@
-﻿using Mikoto.Helpers.Network;
-using Mikoto.Translators.Interfaces;
+﻿using Mikoto.Translators.Interfaces;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -13,7 +12,7 @@ namespace Mikoto.Translators.Implementations
         public string? caiyunToken;//彩云小译 令牌
         private string errorInfo = string.Empty;//错误信息
 
-        public string TranslatorDisplayName { get { return Application.Current.Resources["CaiyunTranslator"].ToString()!; } }
+        public string TranslatorDisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -44,7 +43,7 @@ namespace Mikoto.Translators.Implementations
                 {"detect", true}
             });
 
-            var hc = CommonHttpClient.Instance;
+            var hc = TranslateHttpClient.Instance;
             var req = new StringContent(jsonParam, null, "application/json");
             req.Headers.Add("X-Authorization", "token " + caiyunToken);
             try
@@ -94,7 +93,8 @@ namespace Mikoto.Translators.Implementations
         {
             CaiyunTranslator caiyunTranslator = new()
             {
-                caiyunToken = param.First()
+                TranslatorDisplayName = param[0],
+                caiyunToken = param[1],
             };
             return caiyunTranslator;
         }

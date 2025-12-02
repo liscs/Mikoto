@@ -1,4 +1,6 @@
-﻿using Mikoto.Translators.Implementations;
+﻿using Mikoto.Config;
+using Mikoto.Core;
+using Mikoto.Translators.Implementations;
 using Mikoto.Translators.Interfaces;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
@@ -12,28 +14,28 @@ namespace Mikoto.Translators
         /// </summary>
         /// <param name="translatorName"></param>
         /// <returns></returns>
-        public static ITranslator? GetTranslator(string translatorName)
+        public static ITranslator? GetTranslator(string translatorName, IAppSettings appSettings, string translatorDisplayName)
         {
             return translatorName switch
             {
-                nameof(BaiduTranslator) => BaiduTranslator.TranslatorInit(Common.AppSettings.BDappID, Common.AppSettings.BDsecretKey),
-                nameof(TencentOldTranslator) => TencentOldTranslator.TranslatorInit(Common.AppSettings.TXOSecretId, Common.AppSettings.TXOSecretKey),
-                nameof(CaiyunTranslator) => CaiyunTranslator.TranslatorInit(Common.AppSettings.CaiyunToken),
-                nameof(XiaoniuTranslator) => XiaoniuTranslator.TranslatorInit(Common.AppSettings.XiaoniuApiKey),
-                nameof(IBMTranslator) => IBMTranslator.TranslatorInit(Common.AppSettings.IBMApiKey, Common.AppSettings.IBMURL),
-                nameof(YandexTranslator) => YandexTranslator.TranslatorInit(Common.AppSettings.YandexApiKey),
-                nameof(YoudaoZhiyun) => YoudaoZhiyun.TranslatorInit(Common.AppSettings.YDZYAppId, Common.AppSettings.YDZYAppSecret),
-                nameof(GoogleCNTranslator) => GoogleCNTranslator.TranslatorInit(),
-                nameof(JBeijingTranslator) => JBeijingTranslator.TranslatorInit(Common.AppSettings.JBJCTDllPath),
-                nameof(KingsoftFastAITTranslator) => KingsoftFastAITTranslator.TranslatorInit(Common.AppSettings.KingsoftFastAITPath),
-                nameof(DreyeTranslator) => DreyeTranslator.TranslatorInit(Common.AppSettings.DreyePath),
-                nameof(DeepLTranslator) => DeepLTranslator.TranslatorInit(Common.AppSettings.DeepLsecretKey, Common.AppSettings.DeepLsecretKey),
-                nameof(ChatGPTTranslator) => ChatGPTTranslator.TranslatorInit(Common.AppSettings.ChatGPTapiKey, Common.AppSettings.ChatGPTapiUrl, Common.AppSettings.ChatGPTapiModel),
-                nameof(AzureTranslator) => AzureTranslator.TranslatorInit(Common.AppSettings.AzureSecretKey, Common.AppSettings.AzureLocation),
-                nameof(ArtificialTranslator) => ArtificialTranslator.TranslatorInit(Common.AppSettings.ArtificialPatchPath),
-                nameof(VolcanoTranslator) => VolcanoTranslator.TranslatorInit(Common.AppSettings.VolcanoId, Common.AppSettings.VolcanoKey),
-                nameof(AwsTranslator) => AwsTranslator.TranslatorInit(Common.AppSettings.AwsAccessKey, Common.AppSettings.AwsSecretKey),
-                nameof(NoTranslator) => NoTranslator.TranslatorInit(),
+                nameof(BaiduTranslator) => BaiduTranslator.TranslatorInit(translatorDisplayName,appSettings.BDappID, appSettings.BDsecretKey),
+                nameof(TencentOldTranslator) => TencentOldTranslator.TranslatorInit(translatorDisplayName,appSettings.TXOSecretId, appSettings.TXOSecretKey),
+                nameof(CaiyunTranslator) => CaiyunTranslator.TranslatorInit(translatorDisplayName,appSettings.CaiyunToken),
+                nameof(XiaoniuTranslator) => XiaoniuTranslator.TranslatorInit(translatorDisplayName,appSettings.XiaoniuApiKey),
+                nameof(IBMTranslator) => IBMTranslator.TranslatorInit(translatorDisplayName,appSettings.IBMApiKey, appSettings.IBMURL),
+                nameof(YandexTranslator) => YandexTranslator.TranslatorInit(translatorDisplayName,appSettings.YandexApiKey),
+                nameof(YoudaoZhiyun) => YoudaoZhiyun.TranslatorInit(translatorDisplayName,appSettings.YDZYAppId, appSettings.YDZYAppSecret),
+                nameof(GoogleCNTranslator) => GoogleCNTranslator.TranslatorInit(translatorDisplayName),
+                nameof(JBeijingTranslator) => JBeijingTranslator.TranslatorInit(translatorDisplayName,appSettings.JBJCTDllPath),
+                nameof(KingsoftFastAITTranslator) => KingsoftFastAITTranslator.TranslatorInit(translatorDisplayName,appSettings.KingsoftFastAITPath),
+                nameof(DreyeTranslator) => DreyeTranslator.TranslatorInit(translatorDisplayName,appSettings.DreyePath),
+                nameof(DeepLTranslator) => DeepLTranslator.TranslatorInit(translatorDisplayName,appSettings.DeepLsecretKey),
+                nameof(ChatGPTTranslator) => ChatGPTTranslator.TranslatorInit(translatorDisplayName,appSettings.ChatGPTapiKey, appSettings.ChatGPTapiUrl, appSettings.ChatGPTapiModel),
+                nameof(AzureTranslator) => AzureTranslator.TranslatorInit(translatorDisplayName,appSettings.AzureSecretKey, appSettings.AzureLocation),
+                nameof(ArtificialTranslator) => ArtificialTranslator.TranslatorInit(translatorDisplayName,appSettings.ArtificialPatchPath),
+                nameof(VolcanoTranslator) => VolcanoTranslator.TranslatorInit(translatorDisplayName,appSettings.VolcanoId, appSettings.VolcanoKey),
+                nameof(AwsTranslator) => AwsTranslator.TranslatorInit(translatorDisplayName,appSettings.AwsAccessKey, appSettings.AwsSecretKey),
+                nameof(NoTranslator) => NoTranslator.TranslatorInit(translatorDisplayName),
                 _ => null,
             };
         }
@@ -41,7 +43,7 @@ namespace Mikoto.Translators
         /// <summary>
         /// 刷新/初始化翻译器
         /// </summary>
-        public static void Refresh()
+        public static void Refresh(IResourceService resourceService)
         {
             //反射获取所有的翻译器（即所有实现了ITranslator的类），放入字典
             Task.Run(() =>
@@ -54,7 +56,7 @@ namespace Mikoto.Translators
                 foreach (Type item in types)
                 {
                     object? obj = Activator.CreateInstance(item, true);
-                    string? displayName = item.GetProperty(nameof(ITranslator.TranslatorDisplayName))?.GetValue(obj)?.ToString();
+                    string displayName = resourceService.Get(item.Name);
                     if (!string.IsNullOrEmpty(displayName))
                     {
                         TranslatorDict.Add(displayName, item.Name);

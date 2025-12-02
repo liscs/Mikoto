@@ -1,6 +1,5 @@
 ﻿//参考 https://github.com/Dark-20001/volcengine-sdk-c-
 
-using Mikoto.Helpers.Network;
 using Mikoto.Translators.Interfaces;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -20,7 +19,7 @@ namespace Mikoto.Translators.Implementations
 
         private string errorInfo = string.Empty;
 
-        public string TranslatorDisplayName { get { return Application.Current.Resources["VolcanoTranslator"].ToString()!; } }
+        public string TranslatorDisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -113,7 +112,7 @@ namespace Mikoto.Translators.Implementations
             string nowTime = dateTimeSign.ToString("HHmmss");
             string dateTimeSignStr = nowDate + "T" + nowTime + "Z";
 
-            HttpClient httpClient = CommonHttpClient.Instance;
+            HttpClient httpClient = TranslateHttpClient.Instance;
             using HttpRequestMessage httpRequestMessage = new();
             httpRequestMessage.RequestUri = new Uri(URL);
             httpRequestMessage.Method = HttpMethod.Post;
@@ -250,9 +249,12 @@ namespace Mikoto.Translators.Implementations
 
         public static ITranslator TranslatorInit(params string[] param)
         {
-            VolcanoTranslator volcanoTranslator = new();
-            volcanoTranslator._apiKey = param.First();
-            volcanoTranslator._apiSecret = param.Last();
+            VolcanoTranslator volcanoTranslator = new()
+            {
+                TranslatorDisplayName = param[0],
+                _apiKey = param[1],
+                _apiSecret = param[2]
+            };
             return volcanoTranslator;
         }
 
