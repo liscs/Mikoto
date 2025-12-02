@@ -46,23 +46,19 @@ namespace Mikoto.Translators
         public static void Refresh(IResourceService resourceService)
         {
             //反射获取所有的翻译器（即所有实现了ITranslator的类），放入字典
-            Task.Run(() =>
+            TranslatorDict.Clear();
+            Type type = typeof(ITranslator);
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                                               .SelectMany(s => s.GetTypes())
+                                               .Where(p => type.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract);
+            foreach (Type item in types)
             {
-                TranslatorDict.Clear();
-                Type type = typeof(ITranslator);
-                var types = AppDomain.CurrentDomain.GetAssemblies()
-                                                   .SelectMany(s => s.GetTypes())
-                                                   .Where(p => type.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract);
-                foreach (Type item in types)
+                string displayName = resourceService.Get(item.Name);
+                if (!string.IsNullOrEmpty(displayName))
                 {
-                    object? obj = Activator.CreateInstance(item, true);
-                    string displayName = resourceService.Get(item.Name);
-                    if (!string.IsNullOrEmpty(displayName))
-                    {
-                        TranslatorDict.Add(displayName, item.Name);
-                    }
+                    TranslatorDict.Add(displayName, item.Name);
                 }
-            });
+            }
         }
 
         // 默认使用cultureinfo的语言代码
