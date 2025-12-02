@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using System.Reflection;
-using Mikoto.TextHook;
-// 假设 TextHookData 和其他依赖（如 EditDistance）是可访问的
+﻿// 假设 TextHookData 和其他依赖（如 EditDistance）是可访问的
 
 namespace Mikoto.TextHook.Tests;
 

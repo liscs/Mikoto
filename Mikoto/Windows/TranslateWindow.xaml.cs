@@ -45,7 +45,7 @@ namespace Mikoto
         private Process? _gameProcess;
         private ArtificialTransHelper _artificialTransHelper;
 
-        private MecabHelper _mecabHelper;
+        private MeCabTokenizer _mecabTokenizer;
         private BeforeTransHandle _beforeTransHandle;
         private AfterTransHandle _afterTransHandle;
         private ITranslator? _translator1; //第一翻译源
@@ -80,8 +80,8 @@ namespace Mikoto
 
             Topmost = true;
 
-            _mecabHelper = new MecabHelper(Common.AppSettings.Mecab_DicPath);
-            if (!_mecabHelper.EnableMecab && Common.AppSettings.Mecab_DicPath != string.Empty)
+            _mecabTokenizer = new MeCabTokenizer(Common.AppSettings.Mecab_DicPath);
+            if (!_mecabTokenizer.EnableMecab && Common.AppSettings.Mecab_DicPath != string.Empty)
             {
                 Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoMeCab_Hint"].ToString());
             }
@@ -449,12 +449,12 @@ namespace Mikoto
             {
                 //3.分词
                 if (App.Env.Context.UsingSrcLang == "ja"
-                    && _mecabHelper.EnableMecab
+                    && _mecabTokenizer.EnableMecab
                     && (Common.AppSettings.TF_EnablePhoneticNotation || Common.AppSettings.TF_EnableColorful))
                 {
                     try
                     {
-                        var mwi = _mecabHelper.SentenceHandle(repairedText);
+                        var mwi = _mecabTokenizer.Parse(repairedText);
                         Application.Current.Dispatcher.BeginInvoke(() =>
                     {
                         UpdateSourceRichBoxes(mwi);
@@ -951,7 +951,7 @@ namespace Mikoto
             Common.AppSettings.TF_SizeH = Convert.ToString((int)this.Height);
             App.Env.TextHookService.MeetHookAddressMessageReceived -= ProcessAndDisplayTranslation;
             App.Env.TextHookService.Dispose();
-            _mecabHelper.Dispose();
+            _mecabTokenizer.Dispose();
 
             try
             {

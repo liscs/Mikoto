@@ -37,7 +37,7 @@ public class HistoryExporterTest
 
         Assert.True(ok);
         Assert.Equal(
-            ["HEADER", "A", "B" ],
+            ["HEADER", "A", "B"],
             captured);
     }
 }

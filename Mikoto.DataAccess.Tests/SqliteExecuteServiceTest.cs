@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq; 
-using Xunit;
+﻿using Xunit;
 
 namespace Mikoto.DataAccess.Tests;
 
@@ -39,11 +36,11 @@ public class SqliteExecuteServiceTest : IDisposable
     public void ExecuteSql_ShouldInsertRow()
     {
         int res = sqlService.ExecuteSql("INSERT INTO test_table (name, age) VALUES ('Alice', 20);");
-        Assert.Equal(1, res); 
+        Assert.Equal(1, res);
 
         var rows = sqlService.ExecuteReader("SELECT name, age FROM test_table WHERE name='Alice';", 2);
 
-        Assert.NotNull(rows); 
+        Assert.NotNull(rows);
         Assert.Single(rows);
         Assert.Equal("Alice", rows[0][0]);
         Assert.Equal("20", rows[0][1]);

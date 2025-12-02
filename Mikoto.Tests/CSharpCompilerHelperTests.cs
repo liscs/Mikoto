@@ -1,12 +1,11 @@
-﻿using System;
-using Mikoto.Helpers.Text.ScriptInfos;
+﻿using Mikoto.Helpers.Text.ScriptInfos;
 using Xunit;
 
 namespace Mikoto.Tests;
 
 public class CSharpCompilerHelperTests
 {
-    [Fact] 
+    [Fact]
     public void CompileCSharpScriptTest()
     {
         string code = @"

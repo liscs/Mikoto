@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit; 
+﻿using Xunit;
 
 namespace Mikoto.TextHook.Tests;
 
 public class TextractorOutputParserTest
 {
-    [Fact] 
+    [Fact]
     public void GetMiddleString_ShouldExtractCorrectly()
     {
         // Arrange
@@ -58,8 +55,8 @@ public class TextractorOutputParserTest
         var result = TextractorOutputParser.DealTextratorOutput(output);
 
         // Assert
-        Assert.NotNull(result); 
-        Assert.Equal(0x3A98, result!.GamePID); 
+        Assert.NotNull(result);
+        Assert.Equal(0x3A98, result!.GamePID);
         Assert.Equal("TID_Eng", result.HookFunc);
         Assert.Equal("HB0@401000", result.HookCode);
         Assert.Equal("401000", result.HookAddress);
