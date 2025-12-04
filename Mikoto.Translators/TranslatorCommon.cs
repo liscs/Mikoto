@@ -32,12 +32,12 @@ namespace Mikoto.Translators
             {
                 // className 就是 "BaiduTranslator", "TencentOldTranslator" 等
                 string displayName = resourceService.Get(className);
+                if (string.IsNullOrEmpty(displayName)) displayName= className;
 
-                if (!string.IsNullOrEmpty(displayName))
-                {
-                    DisplayNameTranslatorNameDict[displayName]= className;
-                    TranslatorNameDisplayNameDict[className] = displayName;
-                }
+
+                DisplayNameTranslatorNameDict[displayName]= className;
+                TranslatorNameDisplayNameDict[className] = displayName;
+
             }
         }
 

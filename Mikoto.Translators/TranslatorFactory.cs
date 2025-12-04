@@ -22,6 +22,10 @@ namespace Mikoto.Translators
                 new BaiduTranslator(displayName, settings.BDappID, settings.BDsecretKey)
             );
 
+            _creatorMap.Add(nameof(GoogleCloudTranslator), (settings, displayName) =>
+                new GoogleCloudTranslator(displayName, settings.BDappID, TranslateHttpClient.Instance)
+            );
+
             _creatorMap.Add(nameof(TencentOldTranslator), (settings, displayName) =>
                 new TencentOldTranslator(displayName, settings.TXOSecretId, settings.TXOSecretKey)
             );

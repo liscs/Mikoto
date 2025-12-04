@@ -107,6 +107,9 @@ namespace Mikoto.Config
             set;
         }
 
+        [Option(Alias = "GoogleCloudTranslator.SecretKey", DefaultValue = "")]
+        string GoogleSecretKey { get; set; }
+
         [Option(Alias = "DeepLTranslator.SecretKey", DefaultValue = "")]
         string DeepLsecretKey
         {
@@ -526,7 +529,6 @@ namespace Mikoto.Config
 
         [Option(Alias = "Textractor.Path64", DefaultValue = "")]
         string Textractor_Path64 { get; set; }
-
     }
 
     public interface IRepeatRepairSettings

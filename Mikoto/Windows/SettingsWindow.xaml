@@ -44,6 +44,8 @@
                                  Selected="Item_TransGeneral_Selected" />
                 <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Baidu}"
                                  Selected="Item_BaiduTrans_Selected" />
+                <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_GoogleCloudV2}"
+                                 Selected="Item_GoogleTrans_Selected" />
                 <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_TencentOld}"
                                  Selected="Item_TXOTrans_Selected" />
                 <hc:SideMenuItem Header="{DynamicResource SettingsMenu_TranslatorSettings_Volcano}"

@@ -51,7 +51,7 @@ namespace Mikoto.Translators.Tests
 
             // 验证重新填充: 新数据应该存在。
             Assert.Contains("DeepL", TranslatorCommon.GetTranslatorDisplayNameList());
-            Assert.Single(TranslatorCommon.GetTranslatorDisplayNameList()); 
+            Assert.Single(TranslatorCommon.GetTranslatorDisplayNameList());
         }
     }
 }

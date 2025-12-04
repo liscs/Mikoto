@@ -2,7 +2,7 @@
 
 namespace Mikoto.Translators;
 
-internal class TranslateHttpClient
+public class TranslateHttpClient
 {
     private static HttpClient? _httpClient;
     private static readonly object _httpClientLock = new object();

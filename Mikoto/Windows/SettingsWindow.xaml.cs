@@ -1,7 +1,10 @@
 ﻿using Mikoto.SettingsPages;
 using Mikoto.SettingsPages.DictionaryPages;
 using Mikoto.SettingsPages.TranslatorPages;
+using Mikoto.SettingsPages.TranslatorPages.Models;
 using Mikoto.SettingsPages.TTSPages;
+using Mikoto.Translators;
+using Mikoto.Translators.Implementations;
 using System.Windows;
 
 namespace Mikoto
@@ -150,6 +153,28 @@ namespace Mikoto
         private void Item_Amazon_Selected(object sender, RoutedEventArgs e)
         {
             this.SettingFrame.Navigate(new AwsTransSettingsPage());
+
+        }
+
+        private void Item_GoogleTrans_Selected(object sender, RoutedEventArgs e)
+        {
+            var config = new ApiConfigDefinition
+            {
+                Introduce = App.Env.ResourceService.Get("GoogleCloudTranslator_Introduce"),
+                SecretKey = new ApiFieldDefinition
+                {
+                    Title = "Key",
+                    Value = Common.AppSettings.GoogleSecretKey,
+                },
+                ApplyUrl = GoogleCloudTranslator.GetUrl_API(),
+                DocUrl = GoogleCloudTranslator.GetUrl_Doc(),
+                BillingUrl = GoogleCloudTranslator.GetUrl_Bill(),
+                TranslatorFactory = (fields) =>
+                {
+                    return new GoogleCloudTranslator(App.Env.ResourceService.Get(nameof(GoogleCloudTranslator)), Common.AppSettings.GoogleSecretKey, TranslateHttpClient.Instance);
+                }
+            };
+            this.SettingFrame.Navigate(new CommonTranslatorSettingsPage(config));
 
         }
     }
