@@ -36,7 +36,7 @@ namespace Mikoto.Translators.Implementations
         public string JBJCTDllPath = string.Empty;//DLL路径
         private string errorInfo = string.Empty;//错误信息
 
-        public string TranslatorDisplayName { get; private set; }
+        public string DisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -92,7 +92,7 @@ namespace Mikoto.Translators.Implementations
 
         public JBeijingTranslator(string displayName, string JBJCTDllPath)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
             this.JBJCTDllPath = JBJCTDllPath;
         }
     }

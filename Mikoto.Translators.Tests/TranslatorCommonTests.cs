@@ -37,7 +37,7 @@ namespace Mikoto.Translators.Tests
 
             // Assert
             Assert.NotNull(translator);
-            Assert.Equal(displayName, translator.TranslatorDisplayName);
+            Assert.Equal(displayName, translator.DisplayName);
         }
     }
 }

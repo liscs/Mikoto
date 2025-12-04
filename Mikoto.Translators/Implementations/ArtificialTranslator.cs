@@ -65,7 +65,7 @@ namespace Mikoto.Translators.Implementations
         /// <param name="param2">参数二 不使用</param>
         public ArtificialTranslator(string displayName, string path)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
             string patchPath = path;
             /*
              * 汉化补丁格式，只支持单个文本文件：
@@ -406,6 +406,6 @@ namespace Mikoto.Translators.Implementations
         private const double possibleCursorsThresh = 0.001;
         private Dictionary<int, double> possibleCursors = new Dictionary<int, double>();
 
-        public string TranslatorDisplayName { get; private set; }
+        public string DisplayName { get; private set; }
     }
 }

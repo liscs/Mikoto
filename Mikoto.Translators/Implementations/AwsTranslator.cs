@@ -15,7 +15,7 @@ namespace Mikoto.Translators.Implementations
 
         private string errorInfo = string.Empty;
 
-        public string TranslatorDisplayName { get; private set; }
+        public string DisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -178,7 +178,7 @@ namespace Mikoto.Translators.Implementations
 
         public AwsTranslator(string displayName, string awsAccessKey, string awsSecretKey)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
             _accessKey = awsAccessKey;
             _secretKey = awsSecretKey;
         }

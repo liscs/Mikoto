@@ -15,7 +15,7 @@ namespace Mikoto.Translators.Implementations
         public string? SecretId;//腾讯旧版API SecretId
         public string? SecretKey;//腾讯旧版API _secretKey
 
-        public string TranslatorDisplayName { get; private set; }
+        public string DisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -175,7 +175,7 @@ namespace Mikoto.Translators.Implementations
 
         public TencentOldTranslator(string displayName, string secretId, string secretKey)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
             SecretId = secretId;
             SecretKey =  secretKey;
         }

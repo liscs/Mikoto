@@ -791,7 +791,7 @@ namespace Mikoto
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        Growl.WarningGlobal($"{selectedTranslator.TranslatorDisplayName} translation failed: {selectedTranslator.GetLastError()}");
+                        Growl.WarningGlobal($"{selectedTranslator.DisplayName} translation failed: {selectedTranslator.GetLastError()}");
                     });
                     return;
                 }
@@ -831,7 +831,7 @@ namespace Mikoto
                     {
                         DateTime = DateTime.Now,
                         Message = repairedText + Environment.NewLine + afterString,
-                        TranslatorName = selectedTranslator.TranslatorDisplayName
+                        TranslatorName = selectedTranslator.DisplayName
                     };
 
                     _gameTextHistory.Enqueue(historyInfo);
@@ -1044,13 +1044,13 @@ namespace Mikoto
                 case HistoryFilterOption.OnlyFirstTranslator:
                     if (_translator1 != null)
                     {
-                        historyList = historyList.Where(p => p.TranslatorName == _translator1?.GetType().GetProperty(nameof(ITranslator.TranslatorDisplayName))?.GetValue(null)?.ToString()).ToArray();
+                        historyList = historyList.Where(p => p.TranslatorName == _translator1?.GetType().GetProperty(nameof(ITranslator.DisplayName))?.GetValue(null)?.ToString()).ToArray();
                     }
                     break;
                 case HistoryFilterOption.OnlySecondTranslator:
                     if (_translator1 != null)
                     {
-                        historyList = historyList.Where(p => p.TranslatorName == _translator1?.GetType().GetProperty(nameof(ITranslator.TranslatorDisplayName))?.GetValue(null)?.ToString()).ToArray();
+                        historyList = historyList.Where(p => p.TranslatorName == _translator1?.GetType().GetProperty(nameof(ITranslator.DisplayName))?.GetValue(null)?.ToString()).ToArray();
                     }
                     break;
                 default:

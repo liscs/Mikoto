@@ -20,7 +20,7 @@ namespace Mikoto.Translators.Implementations
         private string? apiUrl; // ChatGPT 翻译 API 的 URL
         private string lastErrorMessage = string.Empty;
 
-        public string TranslatorDisplayName { get; private set; }
+        public string DisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -92,7 +92,7 @@ namespace Mikoto.Translators.Implementations
 
         public ChatGPTTranslator(string displayName, string apiKey, string url, string model)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
             this.apiKey = apiKey;
             apiUrl = url;
             openai_model = model;

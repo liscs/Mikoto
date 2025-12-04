@@ -21,7 +21,7 @@ namespace Mikoto.Translators.Implementations
         private string? secretKey; //DeepL翻译API的秘钥
         private string errorInfo = string.Empty; //错误信息
 
-        public string TranslatorDisplayName { get; private set; }
+        public string DisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -82,7 +82,7 @@ namespace Mikoto.Translators.Implementations
 
         public DeepLTranslator(string displayName, string secretKey)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
             this.secretKey = secretKey;
         }
 

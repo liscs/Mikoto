@@ -86,7 +86,7 @@ namespace Mikoto.Translators.Implementations
         // V2 RESTful API 地址
         private const string ApiBaseUrl = "https://translation.googleapis.com/language/translate/v2";
 
-        public string TranslatorDisplayName { get; } = displayName;
+        public string DisplayName { get; } = displayName;
 
         public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {

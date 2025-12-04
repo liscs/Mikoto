@@ -5,7 +5,7 @@
         /// <summary>
         /// 翻译器用于显示的本地化名称
         /// </summary>
-        string TranslatorDisplayName { get; }
+        string DisplayName { get; }
 
         /// <summary>
         /// 翻译一条语句

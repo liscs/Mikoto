@@ -98,7 +98,7 @@ namespace Mikoto.Translators.Implementations
         public string FilePath = string.Empty;//文件路径
         private string errorInfo = string.Empty;//错误信息
 
-        public string TranslatorDisplayName { get; private set; }
+        public string DisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -177,7 +177,7 @@ namespace Mikoto.Translators.Implementations
 
         public KingsoftFastAITTranslator(string displayName, string appSettings)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
             FilePath = appSettings;
         }
     }

@@ -15,7 +15,7 @@ namespace Mikoto.Translators.Implementations
         private string errorInfo = string.Empty;//错误信息
         private readonly string endpoint = "https://api.cognitive.microsofttranslator.com";
 
-        public string TranslatorDisplayName { get; private set; }
+        public string DisplayName { get; private set; }
 
         public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
@@ -81,7 +81,7 @@ namespace Mikoto.Translators.Implementations
 
         public AzureTranslator(string displayName, string secretKey, string location)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
             this.secretKey = secretKey;
             this.location = location;
         }

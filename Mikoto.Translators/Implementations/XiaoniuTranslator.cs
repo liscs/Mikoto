@@ -12,7 +12,7 @@ namespace Mikoto.Translators.Implementations
         private HttpClient _httpClient = httpClient;
         private string errorInfo = string.Empty;//错误信息
 
-        public string TranslatorDisplayName { get; private set; } = displayName;
+        public string DisplayName { get; private set; } = displayName;
 
         public string GetLastError()
         {

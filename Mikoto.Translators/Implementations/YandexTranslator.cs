@@ -11,7 +11,7 @@ namespace Mikoto.Translators.Implementations
 
         private string errorInfo = string.Empty;
 
-        public string TranslatorDisplayName { get; private set; } = nameof(YandexTranslator);
+        public string DisplayName { get; private set; } = nameof(YandexTranslator);
 
         public string GetLastError()
         {
@@ -43,7 +43,7 @@ namespace Mikoto.Translators.Implementations
 
         public YandexTranslator(string displayName, string apiKey)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
             ApiKey = apiKey;
         }
 

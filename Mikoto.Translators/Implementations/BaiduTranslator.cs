@@ -17,7 +17,7 @@ namespace Mikoto.Translators.Implementations
         private string errorInfo = string.Empty;//错误信息
         private static Random _random = new Random();
 
-        public string TranslatorDisplayName { get; private set; }
+        public string DisplayName { get; private set; }
 
         public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
@@ -89,7 +89,7 @@ namespace Mikoto.Translators.Implementations
 
         public BaiduTranslator(string displayName, string appId, string secretKey)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
             _appId = appId;
             _secretKey = secretKey;
         }

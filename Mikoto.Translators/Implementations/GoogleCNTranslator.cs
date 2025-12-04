@@ -12,7 +12,7 @@ namespace Mikoto.Translators.Implementations
     {
         private string errorInfo = string.Empty;//错误信息
 
-        public string TranslatorDisplayName { get; private set; }
+        public string DisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -68,7 +68,7 @@ namespace Mikoto.Translators.Implementations
         }
         public GoogleCNTranslator(string displayName)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
         }
     }
 }

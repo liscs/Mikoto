@@ -11,7 +11,7 @@ namespace Mikoto.Translators.Implementations
 
         private string errorInfo = string.Empty;
 
-        public string TranslatorDisplayName { get; private set; }
+        public string DisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -75,7 +75,7 @@ namespace Mikoto.Translators.Implementations
 
         public IBMTranslator(string displayName, string key, string url)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
             ApiKey = "apikey:" + key;
             URL = url + "/v3/translate?version=2018-05-01";
         }

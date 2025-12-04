@@ -16,7 +16,7 @@ namespace Mikoto.Translators.Implementations
 
         private string errorInfo = string.Empty;
 
-        public string TranslatorDisplayName { get; private set; }
+        public string DisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -246,7 +246,7 @@ namespace Mikoto.Translators.Implementations
 
         public VolcanoTranslator(string displayName, string apiKey, string apiSecret)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
             _apiKey = apiKey;
             _apiSecret = apiSecret;
         }

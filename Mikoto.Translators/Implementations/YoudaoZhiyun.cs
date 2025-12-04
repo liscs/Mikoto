@@ -15,7 +15,7 @@ namespace Mikoto.Translators.Implementations
         private string? appId, appSecret;
         private string errorInfo = string.Empty;
 
-        public string TranslatorDisplayName { get; private set; }
+        public string DisplayName { get; private set; }
 
         public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
@@ -86,7 +86,7 @@ namespace Mikoto.Translators.Implementations
 
         public YoudaoZhiyun(string displayName, string appId, string appSecret)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
             this.appId = appId;
             this.appSecret = appSecret;
         }

@@ -9,7 +9,7 @@ namespace Mikoto.Translators.Implementations
         public string? caiyunToken;//彩云小译 令牌
         private string errorInfo = string.Empty;//错误信息
 
-        public string TranslatorDisplayName { get; private set; }
+        public string DisplayName { get; private set; }
 
         public string GetLastError()
         {
@@ -88,7 +88,7 @@ namespace Mikoto.Translators.Implementations
 
         public CaiyunTranslator(string displayName, string caiyunToken)
         {
-            TranslatorDisplayName = displayName;
+            DisplayName = displayName;
             this.caiyunToken = caiyunToken;
         }
 
