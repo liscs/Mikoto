@@ -23,7 +23,7 @@ namespace Mikoto.Translators
             );
 
             _creatorMap.Add(nameof(GoogleCloudTranslator), (settings, displayName) =>
-                new GoogleCloudTranslator(displayName, settings.BDappID, TranslateHttpClient.Instance)
+                new GoogleCloudTranslator(displayName, settings.GoogleSecretKey, TranslateHttpClient.Instance)
             );
 
             _creatorMap.Add(nameof(TencentOldTranslator), (settings, displayName) =>
@@ -35,7 +35,7 @@ namespace Mikoto.Translators
             );
 
             _creatorMap.Add(nameof(XiaoniuTranslator), (settings, displayName) =>
-                new XiaoniuTranslator(displayName, settings.XiaoniuApiKey)
+                new XiaoniuTranslator(displayName, settings.XiaoniuApiKey, TranslateHttpClient.Instance)
             );
 
             _creatorMap.Add(nameof(IBMTranslator), (settings, displayName) =>

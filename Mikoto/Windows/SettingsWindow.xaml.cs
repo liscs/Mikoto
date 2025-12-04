@@ -132,7 +132,27 @@ namespace Mikoto
 
         private void Item_Xiaoniu_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new XiaoniuTransSettingsPage());
+            var config = new ApiConfigDefinition
+            {
+                Introduce = App.Env.ResourceService.Get("XiaoniuTransSettingsPage_Introduce"),
+                SecretKey = new ApiFieldDefinition
+                {
+                    Title = App.Env.ResourceService.Get("XiaoniuTransSettingsPage_apikey"),
+                    Value = Common.AppSettings.XiaoniuApiKey,
+                },
+                ApplyUrl = XiaoniuTranslator.GetUrl_API(),
+                DocUrl = XiaoniuTranslator.GetUrl_Doc(),
+                BillingUrl = XiaoniuTranslator.GetUrl_Bill(),
+                ConstructeTranslator = () =>
+                {
+                    return new XiaoniuTranslator(App.Env.ResourceService.Get(nameof(XiaoniuTranslator)), Common.AppSettings.XiaoniuApiKey, TranslateHttpClient.Instance);
+                },
+                SaveConfig = (fields) =>
+                {
+                    Common.AppSettings.XiaoniuApiKey = fields.SecretKey?.Value??string.Empty;
+                }
+            };
+            this.SettingFrame.Navigate(new CommonTranslatorSettingsPage(config));
         }
 
         private void Item_IBM_Selected(object sender, RoutedEventArgs e)
@@ -169,9 +189,13 @@ namespace Mikoto
                 ApplyUrl = GoogleCloudTranslator.GetUrl_API(),
                 DocUrl = GoogleCloudTranslator.GetUrl_Doc(),
                 BillingUrl = GoogleCloudTranslator.GetUrl_Bill(),
-                TranslatorFactory = (fields) =>
+                ConstructeTranslator = () =>
                 {
                     return new GoogleCloudTranslator(App.Env.ResourceService.Get(nameof(GoogleCloudTranslator)), Common.AppSettings.GoogleSecretKey, TranslateHttpClient.Instance);
+                },
+                SaveConfig = (fields) =>
+                {
+                    Common.AppSettings.GoogleSecretKey = fields.SecretKey?.Value??string.Empty;
                 }
             };
             this.SettingFrame.Navigate(new CommonTranslatorSettingsPage(config));

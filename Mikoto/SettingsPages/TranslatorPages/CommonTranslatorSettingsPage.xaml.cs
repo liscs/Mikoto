@@ -37,6 +37,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
         // 测试翻译
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
         {
+            _viewModel.Definition.SaveConfig(_viewModel.Definition);
             var translator = _viewModel?.CreateTranslatorInstance();
             if (translator == null) return;
 

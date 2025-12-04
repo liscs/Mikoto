@@ -18,7 +18,8 @@ namespace Mikoto.SettingsPages.TranslatorPages.Models
         public string? LangCodeUrl { get; set; }
 
         // 翻译器工厂方法
-        public Func<ApiConfigDefinition, ITranslator>? TranslatorFactory { get; set; }
+        public required Func<ITranslator> ConstructeTranslator { get; set; }
+        public required Action<ApiConfigDefinition> SaveConfig { get; set; }
     }
 
 }

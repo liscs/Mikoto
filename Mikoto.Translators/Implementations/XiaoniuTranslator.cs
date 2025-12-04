@@ -6,12 +6,13 @@ using System.Text.Json;
 
 namespace Mikoto.Translators.Implementations
 {
-    public class XiaoniuTranslator : ITranslator
+    public class XiaoniuTranslator(string displayName, string apiKey, HttpClient httpClient) : ITranslator
     {
-        public string? apiKey;//小牛翻译API 的APIKEY
+        public string? apiKey = apiKey;//小牛翻译API 的APIKEY
+        private HttpClient _httpClient = httpClient;
         private string errorInfo = string.Empty;//错误信息
 
-        public string TranslatorDisplayName { get; private set; }
+        public string TranslatorDisplayName { get; private set; } = displayName;
 
         public string GetLastError()
         {
@@ -35,7 +36,7 @@ namespace Mikoto.Translators.Implementations
 
             string url = sb.ToString();
 
-            var hc = TranslateHttpClient.Instance;
+            var hc = _httpClient;
             try
             {
                 retString = await hc.GetStringAsync(url);
@@ -70,7 +71,7 @@ namespace Mikoto.Translators.Implementations
             {
                 if (oinfo.error_msg != null)
                 {
-                    errorInfo = "ErrorID:" + oinfo.error_msg;
+                    errorInfo = "ErrorMessage:" + oinfo.error_msg;
                     return null;
                 }
                 else
@@ -85,12 +86,6 @@ namespace Mikoto.Translators.Implementations
         private string GetLanguageCode(CultureInfo cultureInfo)
         {
             return XiaoniuLanguageCodeConverter.GetLanguageCode(cultureInfo);
-        }
-
-        public XiaoniuTranslator(string displayName, string apiKey)
-        {
-            TranslatorDisplayName = displayName;
-            this.apiKey = apiKey;
         }
 
         /// <summary>
@@ -117,7 +112,7 @@ namespace Mikoto.Translators.Implementations
         /// <returns></returns>
         public static string GetUrl_Doc()
         {
-            return "https://niutrans.com/documents/develop/develop_text/free#error";
+            return "https://niutrans.com/documents/contents/trans_text#error";
         }
     }
 

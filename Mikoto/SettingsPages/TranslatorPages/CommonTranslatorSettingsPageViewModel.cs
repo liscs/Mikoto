@@ -17,7 +17,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
         // 创建翻译器实例
         public ITranslator? CreateTranslatorInstance()
         {
-            return Definition.TranslatorFactory?.Invoke(Definition);
+            return Definition.ConstructeTranslator();
         }
 
 

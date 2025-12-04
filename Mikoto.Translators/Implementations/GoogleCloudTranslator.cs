@@ -76,24 +76,17 @@ namespace Mikoto.Translators.Implementations
 
 
 
-    public class GoogleCloudTranslator : ITranslator
+    public class GoogleCloudTranslator(string displayName, string apiKey, HttpClient httpClient) : ITranslator
     {
-        public string? _apiKey;
+        public readonly string _apiKey = apiKey;
         private string errorInfo = string.Empty;
 
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _httpClient = httpClient;
 
         // V2 RESTful API 地址
         private const string ApiBaseUrl = "https://translation.googleapis.com/language/translate/v2";
 
-        public string TranslatorDisplayName { get; private set; }
-
-        public GoogleCloudTranslator(string displayName, string apiKey, HttpClient httpClient)
-        {
-            TranslatorDisplayName = displayName;
-            _apiKey = apiKey;
-            _httpClient = httpClient;
-        }
+        public string TranslatorDisplayName { get; } = displayName;
 
         public async Task<string?> TranslateAsync(string sourceText, string desLang, string srcLang)
         {
@@ -107,7 +100,7 @@ namespace Mikoto.Translators.Implementations
 
             var requestBody = new GoogleTranslateRequest
             {
-                Queries = new List<string> { sourceText },
+                Queries = [sourceText],
                 TargetLanguage = desLang,
                 SourceLanguage = srcLang
             };
@@ -199,10 +192,7 @@ namespace Mikoto.Translators.Implementations
             }
         }
 
-        public string GetLastError()
-        {
-            return errorInfo;
-        }
+        public string GetLastError() => errorInfo;
 
         public static string GetUrl_API() => "https://console.cloud.google.com/marketplace/product/google/translate.googleapis.com";
         public static string GetUrl_Bill() => "https://console.cloud.google.com/billing";
