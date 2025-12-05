@@ -83,7 +83,7 @@ namespace Mikoto.Translators
             );
 
             _creatorMap.Add(nameof(VolcanoTranslator), (settings, displayName) =>
-                new VolcanoTranslator(displayName, settings.VolcanoId, settings.VolcanoKey)
+                new VolcanoTranslator(displayName, settings.VolcanoId, settings.VolcanoKey, TranslateHttpClient.Instance)
             );
 
             _creatorMap.Add(nameof(AwsTranslator), (settings, displayName) =>

@@ -66,7 +66,7 @@
     <sys:String x:Key="API_testSrcLang">源文本语言</sys:String>
     <sys:String x:Key="API_testDstLang">目标文本语言</sys:String>
     <sys:String x:Key="API_testTransBtn">测试翻译</sys:String>
-    <sys:String x:Key="API_docBtn">错误码说明(API文档)</sys:String>
+    <sys:String x:Key="API_docBtn">API文档</sys:String>
     <sys:String x:Key="API_langCode">语言代码查询</sys:String>
     <sys:String x:Key="API_billBtn">额度查询</sys:String>
 

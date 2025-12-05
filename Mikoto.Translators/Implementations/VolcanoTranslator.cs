@@ -13,7 +13,7 @@ namespace Mikoto.Translators.Implementations
     {
         private string? _apiKey;
         private string? _apiSecret;
-
+        private HttpClient _httpClient;
         private string errorInfo = string.Empty;
 
         public string DisplayName { get; private set; }
@@ -109,7 +109,7 @@ namespace Mikoto.Translators.Implementations
             string nowTime = dateTimeSign.ToString("HHmmss");
             string dateTimeSignStr = nowDate + "T" + nowTime + "Z";
 
-            HttpClient httpClient = TranslateHttpClient.Instance;
+            HttpClient httpClient = _httpClient;
             using HttpRequestMessage httpRequestMessage = new();
             httpRequestMessage.RequestUri = new Uri(URL);
             httpRequestMessage.Method = HttpMethod.Post;
@@ -244,11 +244,12 @@ namespace Mikoto.Translators.Implementations
             return Convert.ToHexString(bytes).ToLower();
         }
 
-        public VolcanoTranslator(string displayName, string apiKey, string apiSecret)
+        public VolcanoTranslator(string displayName, string apiKey, string apiSecret, HttpClient httpClient)
         {
             DisplayName = displayName;
             _apiKey = apiKey;
             _apiSecret = apiSecret;
+            _httpClient = httpClient;
         }
 
         public static string GetUrl_lang()

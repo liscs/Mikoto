@@ -35,7 +35,7 @@ public class TranslatorFactoryTests
         string displayName = "百度翻译";
 
         // Act
-        ITranslator translator = factory.GetTranslator(name, mockSettings, displayName);
+        ITranslator? translator = factory.GetTranslator(name, mockSettings, displayName);
 
         // Assert
         Assert.NotNull(translator);
@@ -52,7 +52,7 @@ public class TranslatorFactoryTests
         string displayName = "DeepL翻译";
 
         // Act
-        ITranslator translator = factory.GetTranslator(name, mockSettings, displayName);
+        ITranslator? translator = factory.GetTranslator(name, mockSettings, displayName);
 
         // Assert
         Assert.NotNull(translator);
@@ -67,7 +67,7 @@ public class TranslatorFactoryTests
         var mockSettings = GetMockedAppSettings();
 
         // Act
-        ITranslator translator = factory.GetTranslator("NonExistentTranslator", mockSettings, "不存在");
+        ITranslator? translator = factory.GetTranslator("NonExistentTranslator", mockSettings, "不存在");
 
         // Assert
         Assert.Null(translator);

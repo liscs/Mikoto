@@ -10,7 +10,6 @@ namespace Mikoto.Translators.Implementations
 {
     public class YoudaoZhiyun : ITranslator
     {
-        private YoudaoZhiyun() { }
         private static readonly string TRANSLATE_API_URL = "https://openapi.youdao.com/api";
         private string? appId, appSecret;
         private string errorInfo = string.Empty;

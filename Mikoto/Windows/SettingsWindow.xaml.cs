@@ -167,7 +167,34 @@ namespace Mikoto
 
         private void Item_Volcano_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new VolcanoTransSettingsPage());
+            var config = new ApiConfigDefinition
+            {
+                Introduce = App.Env.ResourceService.Get("VolcanoTransSettingsPage_Introduce"),
+                AccessKey = new ApiFieldDefinition
+                {
+                    Title = "Access Key ID",
+                    Value = Common.AppSettings.VolcanoId,
+                },
+                SecretKey = new ApiFieldDefinition
+                {
+                    Title = "Secret Access Key",
+                    Value = Common.AppSettings.VolcanoKey,
+                },
+                LangCodeUrl = VolcanoTranslator.GetUrl_lang(),
+                ApplyUrl = VolcanoTranslator.GetUrl_API(),
+                DocUrl = VolcanoTranslator.GetUrl_Doc(),
+                BillingUrl = VolcanoTranslator.GetUrl_Bill(),
+                ConstructeTranslator = () =>
+                {
+                    return new VolcanoTranslator(App.Env.ResourceService.Get(nameof(VolcanoTranslator)), Common.AppSettings.VolcanoId, Common.AppSettings.VolcanoKey, TranslateHttpClient.Instance);
+                },
+                SaveConfig = (fields) =>
+                {
+                    Common.AppSettings.VolcanoId = fields.AccessKey?.Value??string.Empty;
+                    Common.AppSettings.VolcanoKey = fields.SecretKey?.Value??string.Empty;
+                }
+            };
+            this.SettingFrame.Navigate(new CommonTranslatorSettingsPage(config));
         }
 
         private void Item_Amazon_Selected(object sender, RoutedEventArgs e)

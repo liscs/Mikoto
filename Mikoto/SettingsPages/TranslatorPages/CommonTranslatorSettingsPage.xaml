@@ -111,7 +111,7 @@
                     <Button Content="{DynamicResource API_docBtn}"
                             Visibility="{Binding DocVisibility}"
                                 Margin="10,0,0,0"
-                                Width="150"
+                            Width="122"
                                 Click="DocBtn_Click"/>
 
                     <Button Content="{DynamicResource API_billBtn}"

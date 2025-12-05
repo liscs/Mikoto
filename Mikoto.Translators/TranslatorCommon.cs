@@ -1,5 +1,6 @@
 ﻿using Mikoto.Config;
 using Mikoto.Core;
+using Mikoto.Translators.Implementations;
 using Mikoto.Translators.Interfaces;
 using System.Text.Encodings.Web;
 
@@ -39,6 +40,8 @@ namespace Mikoto.Translators
                 TranslatorNameDisplayNameDict[className] = displayName;
 
             }
+            // 默认值兼容性处理
+            TranslatorNameDisplayNameDict["NoTranslate"] = resourceService.Get(nameof(NoTranslator));
         }
 
         // 默认使用cultureinfo的语言代码
