@@ -9,10 +9,12 @@ namespace Mikoto.SettingsPages.TranslatorPages
     {
         public ApiConfigDefinition Definition { get; } = def;
 
-        public Visibility AccessKeyVisibility => Definition.AccessKey!=null == true ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility SecretKeyVisibility => Definition.SecretKey!=null == true ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility RegionVisibility => Definition.Region !=null ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility EndpointVisibility => Definition.Endpoint!=null == true ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility AccessKeyVisibility => Definition.AccessKey != null ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility SecretKeyVisibility => Definition.SecretKey != null ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility RegionVisibility => Definition.Region != null ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility EndpointVisibility => Definition.Endpoint != null ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility ModelVisibility => Definition.Model != null ? Visibility.Visible : Visibility.Collapsed;
+
 
         // 创建翻译器实例
         public ITranslator? CreateTranslatorInstance()
@@ -32,5 +34,6 @@ namespace Mikoto.SettingsPages.TranslatorPages
         public Visibility DescriptionVisibility => string.IsNullOrWhiteSpace(Definition.Introduce) ? Visibility.Collapsed : Visibility.Visible;
 
         public Visibility ApplyVisibility => string.IsNullOrWhiteSpace(Definition.ApplyUrl) ? Visibility.Collapsed : Visibility.Visible;
+
     }
 }

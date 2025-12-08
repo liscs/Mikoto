@@ -71,7 +71,7 @@ namespace Mikoto.Translators
             );
 
             _creatorMap.Add(nameof(ChatGPTTranslator), (settings, displayName) =>
-                new ChatGPTTranslator(displayName, settings.ChatGPTapiKey, settings.ChatGPTapiUrl, settings.ChatGPTapiModel)
+                new ChatGPTTranslator(displayName, settings.ChatGPTapiKey, settings.ChatGPTapiUrl, settings.ChatGPTapiModel, TranslateHttpClient.Instance)
             );
 
             _creatorMap.Add(nameof(AzureTranslator), (settings, displayName) =>

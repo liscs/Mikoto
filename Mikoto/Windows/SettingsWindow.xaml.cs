@@ -47,7 +47,39 @@ namespace Mikoto
 
         private void Item_ChatGPTTrans_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new ChatGPTTransSettingsPage());
+            var config = new ApiConfigDefinition
+            {
+                Introduce = App.Env.ResourceService.Get("ChatGPTTransSettingsPage_Introduce"),
+                SecretKey = new ApiFieldDefinition
+                {
+                    Title = App.Env.ResourceService.Get("ChatGPTTransSettingsPage_secretKey"),
+                    Value = Common.AppSettings.ChatGPTapiKey,
+                },
+                Endpoint = new ApiFieldDefinition
+                {
+                    Title = App.Env.ResourceService.Get("ChatGPTTransSettingsPage_apiUrl"),
+                    Value = Common.AppSettings.ChatGPTapiUrl,
+                },
+                Model = new ApiFieldDefinition
+                {
+                    Title = App.Env.ResourceService.Get("ChatGPTTransSettingsPage_apiModel"),
+                    Value = Common.AppSettings.ChatGPTapiModel,
+                },
+                ApplyUrl = ChatGPTTranslator.GetUrl_API(),
+                DocUrl = ChatGPTTranslator.GetUrl_Doc(),
+                BillingUrl = ChatGPTTranslator.GetUrl_Bill(),
+                ConstructeTranslator = () =>
+                {
+                    return new ChatGPTTranslator(App.Env.ResourceService.Get(nameof(ChatGPTTranslator)), Common.AppSettings.ChatGPTapiKey, Common.AppSettings.ChatGPTapiUrl, Common.AppSettings.ChatGPTapiModel, TranslateHttpClient.Instance);
+                },
+                SaveConfig = (fields) =>
+                {
+                    Common.AppSettings.ChatGPTapiKey = fields.SecretKey?.Value??string.Empty;
+                    Common.AppSettings.ChatGPTapiUrl = fields.Endpoint?.Value??string.Empty;
+                    Common.AppSettings.ChatGPTapiModel = fields.Model?.Value??string.Empty;
+                }
+            };
+            this.SettingFrame.Navigate(new CommonTranslatorSettingsPage(config));
         }
 
         private void Item_AzureTrans_Selected(object sender, RoutedEventArgs e)

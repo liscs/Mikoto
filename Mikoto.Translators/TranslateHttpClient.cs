@@ -6,6 +6,7 @@ public class TranslateHttpClient
 {
     private static HttpClient? _httpClient;
     private static readonly object _httpClientLock = new object();
+    private static readonly TimeSpan _defaultTimeout = TimeSpan.FromSeconds(12);
     /// <summary>
     /// 获得HttpClient单例，第一次调用自动初始化
     /// </summary>
@@ -21,7 +22,7 @@ public class TranslateHttpClient
                     {
                         _httpClient = new HttpClient()
                         {
-                            Timeout = TimeSpan.FromSeconds(8)
+                            Timeout = _defaultTimeout
                         };
                         _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mikoto");
                     }
@@ -45,7 +46,7 @@ public class TranslateHttpClient
             };
             _httpClient = new HttpClient(handler)
             {
-                Timeout = TimeSpan.FromSeconds(8),
+                Timeout = _defaultTimeout
             };
             _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mikoto");
         }

@@ -1,5 +1,8 @@
 ﻿namespace Mikoto.Translators.Interfaces
 {
+    /// <summary>
+    /// 翻译器接口，继承此接口的类会被代码生成器自动加入到翻译器列表
+    /// </summary>
     public interface ITranslator
     {
         /// <summary>

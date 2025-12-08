@@ -10,6 +10,7 @@ namespace Mikoto.SettingsPages.TranslatorPages.Models
         public ApiFieldDefinition? SecretKey { get; set; }
         public ApiFieldDefinition? Region { get; set; }
         public ApiFieldDefinition? Endpoint { get; set; }
+        public ApiFieldDefinition? Model { get; set; }
 
         // 相关链接
         public string? ApplyUrl { get; set; }
