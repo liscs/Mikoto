@@ -18,6 +18,7 @@
     <BuildDependency Project="Mikoto.DataAccess/Mikoto.DataAccess.csproj" />
   </Project>
   <Project Path="Mikoto.Benchmark/Mikoto.Benchmark.csproj" />
+  <Project Path="Mikoto.Config/Mikoto.Config.csproj" />
   <Project Path="Mikoto.Core/Mikoto.Core.csproj" />
   <Project Path="Mikoto.DataAccess.Tests/Mikoto.DataAccess.Tests.csproj" />
   <Project Path="Mikoto.DataAccess/Mikoto.DataAccess.csproj" />
@@ -30,6 +31,9 @@
   <Project Path="Mikoto.Tests/Mikoto.Tests.csproj" />
   <Project Path="Mikoto.TextHook.Tests/Mikoto.TextHook.Tests.csproj" />
   <Project Path="Mikoto.TextHook/Mikoto.TextHook.csproj" />
+  <Project Path="Mikoto.TranslatorGenerator/Mikoto.TranslatorGenerator.csproj" />
+  <Project Path="Mikoto.Translators.Tests/Mikoto.Translators.Tests.csproj" />
+  <Project Path="Mikoto.Translators/Mikoto.Translators.csproj" />
   <Project Path="Mikoto.TransOptimization/Mikoto.TransOptimization.csproj">
     <BuildDependency Project="Mikoto.DataAccess/Mikoto.DataAccess.csproj" />
   </Project>
