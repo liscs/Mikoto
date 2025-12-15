@@ -2,7 +2,7 @@
 using Mikoto.Config;
 using Mikoto.Enums;
 using Mikoto.Helpers.Network;
-using Mikoto.Windows.Logger;
+using Serilog;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -24,7 +24,6 @@ namespace Mikoto
 
         private static void ShowUpdateMessageBox(Version latestVersion)
         {
-            //TODO 提示本地化
             MessageBoxResult dr = MessageBox.Show($"{CurrentVersion.ToString(3)}->{latestVersion}{Environment.NewLine}{Application.Current.Resources["MainWindow_AutoUpdateCheck"]}",
                                                   Application.Current.Resources["MessageBox_Ask"].ToString(),
                                                   MessageBoxButton.OKCancel);
@@ -61,7 +60,7 @@ namespace Mikoto
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex);
+                Log.Warning(ex.ToString());
             }
             finally
             {
@@ -127,19 +126,19 @@ namespace Mikoto
             {
                 if (activelyCheck)
                     Growl.WarningGlobal(ex.Message + Environment.NewLine + Application.Current.Resources["SoftwareSettingsPage_RequestUpdateError"].ToString());
-                Logger.Warn(ex);
+                Log.Warning(ex.ToString());
             }
             catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
             {
                 if (activelyCheck)
                     Growl.WarningGlobal(ex.InnerException.Message + Environment.NewLine + Application.Current.Resources["SoftwareSettingsPage_RequestUpdateError"].ToString());
-                Logger.Warn(ex);
+                Log.Warning(ex.ToString());
             }
             catch (TaskCanceledException ex)
             {
                 if (activelyCheck)
                     Growl.WarningGlobal(ex.Message + Environment.NewLine + Application.Current.Resources["SoftwareSettingsPage_RequestUpdateError"].ToString());
-                Logger.Warn(ex);
+                Log.Warning(ex.ToString());
             }
         }
 

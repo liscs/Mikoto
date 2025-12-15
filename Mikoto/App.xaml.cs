@@ -1,5 +1,8 @@
 ﻿using Mikoto.DataAccess;
 using Mikoto.Helpers.Input;
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -41,6 +44,12 @@ namespace Mikoto
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             SetDefaultFrameRate();
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.Sink(new CallbackSink(Mikoto.Windows.Logger.LogViewerController.Sink))
+                .CreateLogger();
+            Log.Information("程序启动");
         }
 
         /// <summary>
@@ -63,6 +72,7 @@ namespace Mikoto
         {
             //程序退出时检查是否断开Hook
             EndHook();
+            Log.Information("程序退出");
         }
 
         /// <summary>
@@ -176,6 +186,22 @@ namespace Mikoto
         private void EndHook()
         {
             Env.TextHookService.Dispose();
+        }
+    }
+
+
+    public class CallbackSink : ILogEventSink
+    {
+        private readonly Action<LogEvent> _onEvent;
+
+        public CallbackSink(Action<LogEvent> onEvent)
+        {
+            _onEvent = onEvent;
+        }
+
+        public void Emit(LogEvent logEvent)
+        {
+            _onEvent(logEvent);
         }
     }
 }

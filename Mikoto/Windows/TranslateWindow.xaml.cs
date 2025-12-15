@@ -3,7 +3,6 @@ using Mikoto.ArtificialTrans;
 using Mikoto.Config;
 using Mikoto.Enums;
 using Mikoto.Helpers.Graphics;
-using Mikoto.Helpers.Network;
 using Mikoto.Mecab;
 using Mikoto.TextHook;
 using Mikoto.Translators;
@@ -12,7 +11,7 @@ using Mikoto.TransOptimization;
 using Mikoto.TTS;
 using Mikoto.Windows;
 using Mikoto.Windows.Entities;
-using Mikoto.Windows.Logger;
+using Serilog;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
@@ -91,7 +90,7 @@ namespace Mikoto
 
             if (Common.AppSettings.HttpProxy != "")
             {
-                CommonHttpClient.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
+                TranslateHttpClient.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
             }
             _translator1 = TranslatorCommon.TranslatorFactory.GetTranslator(Common.AppSettings.FirstTranslator, Common.AppSettings, (string)Application.Current.Resources[Common.AppSettings.FirstTranslator]);
             _translator2 = TranslatorCommon.TranslatorFactory.GetTranslator(Common.AppSettings.SecondTranslator, Common.AppSettings, (string)Application.Current.Resources[Common.AppSettings.SecondTranslator]);
@@ -378,7 +377,7 @@ namespace Mikoto
             try
             {
                 (bool playing, string info) = await _voiceDetector.IsVoicePlaying();
-                Logger.Info(info);
+                Log.Information(info);
                 if (!playing)
                 {
                     await _tts.SpeakAsync(text);
@@ -393,11 +392,11 @@ namespace Mikoto
             }
             catch (TaskCanceledException ex)
             {
-                Logger.Warn(ex.Message);
+                Log.Warning(ex.Message);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Log.Error(ex.ToString());
             }
 
         }
@@ -464,7 +463,7 @@ namespace Mikoto
                     catch (ObjectDisposedException)
                     {
                         //说明翻译窗口已经关闭，mecab资源已Dispose
-                        Logger.Info("翻译窗口已经关闭，mecab资源已Dispose");
+                        Log.Information("翻译窗口已经关闭，mecab资源已Dispose");
                     }
 
                 }

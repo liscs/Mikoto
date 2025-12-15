@@ -2,7 +2,7 @@
 using Microsoft.Scripting.Utils;
 using Mikoto.Helpers.Container;
 using Mikoto.Helpers.Text.ScriptInfos;
-using Mikoto.Windows.Logger;
+using Serilog;
 using System.Text.RegularExpressions;
 using System.Windows;
 
@@ -100,7 +100,7 @@ namespace Mikoto
                 {
                     //脚本运行时错误
                     Growl.ErrorGlobal($"{functionName}{Environment.NewLine}{ex.Message}");
-                    Logger.Warn($"{functionName}{Environment.NewLine}{ex}");
+                    Log.Warning($"{functionName}{Environment.NewLine}{ex}");
                 }
             }
             return functionName switch

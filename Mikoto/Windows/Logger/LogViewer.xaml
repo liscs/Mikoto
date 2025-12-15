@@ -50,10 +50,13 @@
                            Margin="0,0,2,0"
                            Foreground="{Binding Color}" />
 
-                <TextBlock Text="{Binding Message}"
-                           Grid.Column="2"
-                           TextWrapping="Wrap"
-                           Foreground="{Binding Color}" />
+                <TextBox Text="{Binding Message}"
+                         Grid.Column="2"
+                         TextWrapping="Wrap"
+                         Foreground="{Binding Color}"
+                         Background="Transparent"
+                         IsReadOnly="True"
+                         BorderThickness="0" />
             </Grid>
         </DataTemplate>
 
@@ -116,7 +119,6 @@
             </DataTemplate.Triggers>
         </DataTemplate>
     </Window.Resources>
-
     <DockPanel>
         <TextBlock Text="{Binding Count, StringFormat='{}{0} Items'}"
                    DockPanel.Dock="Top" />

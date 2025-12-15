@@ -1,12 +1,11 @@
 ﻿using Mikoto.Helpers.ViewModel;
 using System.Windows.Media;
-using DateTimeA = System.DateTime;
 namespace Mikoto.Windows.Logger
 {
     internal class LogEntry : ViewModelBase
     {
         private static int index = 0;
-        public string DateTime { get; set; } = DateTimeA.Now.ToString();
+        public string DateTime { get; set; } = System.DateTime.Now.ToString();
 
         public int Index
         {

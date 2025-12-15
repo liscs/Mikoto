@@ -1,6 +1,6 @@
 ﻿using Mikoto.DataAccess;
 using Mikoto.Helpers.File;
-using Mikoto.Windows.Logger;
+using Serilog;
 using System.IO;
 
 namespace Mikoto.Helpers.Text.ScriptInfos
@@ -90,7 +90,7 @@ namespace Mikoto.Helpers.Text.ScriptInfos
             var method = GetMethod(scriptFile);
             if (method == null)
             {
-                Logger.Warn(Error);
+                Log.Warning(Error);
             }
             else
             {
