@@ -1,4 +1,5 @@
 ﻿using Mikoto.Helpers.ViewModel;
+using System.Diagnostics;
 using System.Windows.Media;
 namespace Mikoto.Windows.Logger
 {
@@ -13,6 +14,10 @@ namespace Mikoto.Windows.Logger
             {
                 index++;
                 return index;
+            }
+            set
+            {
+                throw new UnreachableException();
             }
         }
 

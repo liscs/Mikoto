@@ -1,4 +1,5 @@
 using Mikoto.DataAccess;
+using Serilog;
 using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -426,6 +427,7 @@ namespace Mikoto.TextHook
         /// <param name="winHandle"></param>
         public void AddClipBoardWatcher()
         {
+            Log.Information("添加剪贴板监视");
             Clipboard.ContentChanged += Clipboard_ContentChanged;
         }
 
@@ -476,13 +478,13 @@ namespace Mikoto.TextHook
             {
                 if (disposing)
                 {
-                    // TODO: 释放托管状态(托管对象)
+                    // 释放托管状态(托管对象)
                 }
 
-                // TODO: 释放未托管的资源(未托管的对象)并重写终结器
+                // 释放未托管的资源(未托管的对象)并重写终结器
                 CloseTextractor();
 
-                // TODO: 将大型字段设置为 null
+                // 将大型字段设置为 null
 
                 _disposedValue = true;
             }

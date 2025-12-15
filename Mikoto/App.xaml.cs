@@ -47,7 +47,7 @@ namespace Mikoto
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
-                .WriteTo.Sink(new CallbackSink(Mikoto.Windows.Logger.LogViewerController.Sink))
+                .WriteTo.Sink(new CallbackSink(LogViewer.Sink))
                 .CreateLogger();
             Log.Information("程序启动");
         }
