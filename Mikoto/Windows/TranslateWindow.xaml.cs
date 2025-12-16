@@ -129,7 +129,7 @@ namespace Mikoto
                     _gameProcess.EnableRaisingEvents = true;
                     _gameProcess.Exited += (_, _) =>
                     {
-                        Log.Warning("游戏进程已退出（PID: {PID}），翻译窗口即将自动关闭", App.Env.TextHookService.GamePID);
+                        Log.Information("游戏进程已退出（PID: {PID}），翻译窗口即将自动关闭", App.Env.TextHookService.GamePID);
                         _gameProcess.Dispose();
                         Application.Current.Dispatcher.Invoke(Close);
                     };
