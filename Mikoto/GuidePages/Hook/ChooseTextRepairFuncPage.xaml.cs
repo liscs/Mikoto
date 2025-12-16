@@ -9,11 +9,11 @@ namespace Mikoto.GuidePages.Hook
     /// </summary>
     public partial class ChooseTextRepairFuncPage : Page
     {
-
-        public ChooseTextRepairFuncPage()
+        GameInfoBuilder _gameInfoBuilder;
+        public ChooseTextRepairFuncPage(GameInfoBuilder gameInfoBuilder)
         {
             InitializeComponent();
-
+            _gameInfoBuilder = gameInfoBuilder;
             RepairFuncComboBox.ItemsSource = TextRepair.RepairFunctionNameList.Value;
             TextRepair.RepairFunctionNameList.Value.CollectionChanged += delegate
             {
@@ -69,26 +69,26 @@ namespace Mikoto.GuidePages.Hook
             switch (TextRepair.DisplayNameToNameDict.Value[selectedItem])
             {
                 case nameof(TextRepair.RepairFun_RemoveSingleWordRepeat):
-                    GameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.UsingRepairFunc;
-                    GameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.SingleWordRepeatTimes.ToString();
+                    _gameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.UsingRepairFunc;
+                    _gameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.SingleWordRepeatTimes.ToString();
                     break;
                 case nameof(TextRepair.RepairFun_RemoveSentenceRepeat):
-                    GameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.UsingRepairFunc;
-                    GameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.SentenceRepeatFindCharNum.ToString();
+                    _gameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.UsingRepairFunc;
+                    _gameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.SentenceRepeatFindCharNum.ToString();
                     break;
                 case nameof(TextRepair.RepairFun_RegexReplace):
-                    GameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.UsingRepairFunc;
-                    GameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.Regex.ToString();
-                    GameInfoBuilder.GameInfo.RepairParamB = Common.RepairSettings.Regex_Replace.ToString();
+                    _gameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.UsingRepairFunc;
+                    _gameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.Regex.ToString();
+                    _gameInfoBuilder.GameInfo.RepairParamB = Common.RepairSettings.Regex_Replace.ToString();
                     break;
                 default:
-                    GameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.UsingRepairFunc;
+                    _gameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.UsingRepairFunc;
                     break;
             }
             //使用路由事件机制通知窗口来完成下一步操作
             PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
             {
-                Page = new ChooseLanguagePage(),
+                Page = new ChooseLanguagePage(_gameInfoBuilder),
             };
             this.RaiseEvent(args);
         }

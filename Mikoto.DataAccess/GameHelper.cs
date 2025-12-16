@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Serilog;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -139,11 +140,13 @@ namespace Mikoto.DataAccess
                 }
                 else
                 {
+                    Log.Warning("从 '{Path}' 反序列化 GameInfo 得到 null，可能文件为空或所有字段都不匹配", path);
                     return false;
                 }
             }
             catch (Exception ex) when (ex is IOException or JsonException)
             {
+                Log.Warning(ex, "加载 GameInfo 失败，路径：{Path}", path);
                 return false;
             }
         }

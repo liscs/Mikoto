@@ -19,12 +19,14 @@ namespace Mikoto.GuidePages.Hook
     {
         private readonly Dictionary<string, int> _appNamePidDict = ProcessHelper.GetAppNamePidDict();
         private List<Process> _sameNameGameProcessList = new();
+        private readonly GameInfoBuilder _gameInfoBuilder;
         private readonly ChooseGamePageViewModel _viewModel = new();
 
 
-        public ChooseGamePage()
+        public ChooseGamePage(GameInfoBuilder gameInfoBuilder)
         {
             InitializeComponent();
+            _gameInfoBuilder = gameInfoBuilder;
             DataContext = _viewModel;
             if (Environment.IsPrivilegedProcess)
             {
@@ -85,16 +87,16 @@ namespace Mikoto.GuidePages.Hook
                 string filepath = ProcessHelper.FindProcessPath(pid);
                 if (!string.IsNullOrEmpty(filepath))
                 {
-                    GameInfoBuilder.Reset();
-                    GameInfoBuilder.GameProcessId = pid;
-                    GameInfoBuilder.GameInfo = GameHelper.GetGameByPath(filepath);
-                    App.Env.Context.GameID = GameInfoBuilder.GameInfo.GameID;
-                    GameInfoBuilder.GameInfo.Isx64 = isx64;
+                    _gameInfoBuilder.Reset();
+                    _gameInfoBuilder.GameProcessId = pid;
+                    _gameInfoBuilder.GameInfo = GameHelper.GetGameByPath(filepath);
+                    App.Env.Context.GameID = _gameInfoBuilder.GameInfo.GameID;
+                    _gameInfoBuilder.GameInfo.Isx64 = isx64;
 
                     //使用路由事件机制通知窗口来完成下一步操作
                     PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
                     {
-                        Page = new ChooseHookFuncPage(),
+                        Page = new ChooseHookFuncPage(_gameInfoBuilder),
                     };
                     this.RaiseEvent(args);
                 }

@@ -16,11 +16,12 @@ namespace Mikoto.GuidePages.Hook
         private BindingList<TextHookData> lstData = new BindingList<TextHookData>();
         private string? LastCustomHookCode;
         private int sum = 0;
+        private GameInfoBuilder _gameInfoBuilder;
 
-        public ChooseHookFuncPage()
+        public ChooseHookFuncPage(GameInfoBuilder gameInfoBuilder)
         {
             InitializeComponent();
-
+            _gameInfoBuilder = gameInfoBuilder;
             if (Environment.IsPrivilegedProcess)
             {
                 NoAdminPrivilegesTextBlock.Visibility = Visibility.Collapsed;
@@ -31,7 +32,7 @@ namespace Mikoto.GuidePages.Hook
             HookFunListView.ItemsSource = lstData;
             sum = 0;
             App.Env.TextHookService.HookMessageReceived += FilterAndDisplayData;
-            _ = App.Env.TextHookService.StartHook(GameInfoBuilder.GameInfo, Convert.ToBoolean(Common.AppSettings.AutoHook));
+            _ = App.Env.TextHookService.StartHook(_gameInfoBuilder.GameInfo, Convert.ToBoolean(Common.AppSettings.AutoHook));
         }
 
         public void FilterAndDisplayData(object sender, HookReceivedEventArgs e)
@@ -83,9 +84,9 @@ namespace Mikoto.GuidePages.Hook
                     App.Env.TextHookService.DetachUnrelatedHooks(pid, usedHook);
                 }
 
-                GameInfoBuilder.GameInfo.TransMode = 1;
-                GameInfoBuilder.GameInfo.HookCode = lstData[HookFunListView.SelectedIndex].HookCode;
-                GameInfoBuilder.GameInfo.MisakaHookCode = lstData[HookFunListView.SelectedIndex].MisakaHookCode;
+                _gameInfoBuilder.GameInfo.TransMode = 1;
+                _gameInfoBuilder.GameInfo.HookCode = lstData[HookFunListView.SelectedIndex].HookCode;
+                _gameInfoBuilder.GameInfo.MisakaHookCode = lstData[HookFunListView.SelectedIndex].MisakaHookCode;
 
                 if (LastCustomHookCode != null)
                 {
@@ -98,7 +99,7 @@ namespace Mikoto.GuidePages.Hook
                     if (result == MessageBoxResult.Yes)
                     {
                         //记录这个特殊码到数据库
-                        GameInfoBuilder.GameInfo.HookCodeCustom = LastCustomHookCode;
+                        _gameInfoBuilder.GameInfo.HookCodeCustom = LastCustomHookCode;
                     }
                     else if (result == MessageBoxResult.No)
                     {
@@ -108,18 +109,18 @@ namespace Mikoto.GuidePages.Hook
                     else
                     {
                         //不记录特殊码，但也要写NULL
-                        GameInfoBuilder.GameInfo.HookCodeCustom = null;
+                        _gameInfoBuilder.GameInfo.HookCodeCustom = null;
                     }
                 }
                 else
                 {
-                    GameInfoBuilder.GameInfo.HookCodeCustom = null;
+                    _gameInfoBuilder.GameInfo.HookCodeCustom = null;
                 }
 
                 //使用路由事件机制通知窗口来完成下一步操作
                 PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
                 {
-                    Page = new ChooseTextRepairFuncPage(),
+                    Page = new ChooseTextRepairFuncPage(_gameInfoBuilder),
                 };
                 this.RaiseEvent(args);
             }
@@ -135,7 +136,7 @@ namespace Mikoto.GuidePages.Hook
         {
             if (HookCodeTextBox.Text != "")
             {
-                _ = App.Env.TextHookService.AttachProcessByHookCodeAsync(GameInfoBuilder.GameProcessId, HookCodeTextBox.Text);
+                _ = App.Env.TextHookService.AttachProcessByHookCodeAsync(_gameInfoBuilder.GameProcessId, HookCodeTextBox.Text);
                 LastCustomHookCode = HookCodeTextBox.Text;
                 InputDrawer.IsOpen = false;
                 HandyControl.Controls.Growl.Info(Application.Current.Resources["ChooseHookFuncPage_HookApplyHint"].ToString());

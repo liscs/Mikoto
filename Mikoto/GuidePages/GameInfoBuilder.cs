@@ -2,14 +2,14 @@
 
 namespace Mikoto.GuidePages
 {
-    internal static class GameInfoBuilder
+    public class GameInfoBuilder
     {
-        public static void Reset()
+        public void Reset()
         {
             GameInfo = new GameInfo();
             GameProcessId = -1;
         }
-        public static GameInfo GameInfo { get; set; } = new GameInfo();
-        public static int GameProcessId { get; set; }
+        public GameInfo GameInfo { get; set; } = new GameInfo();
+        public int GameProcessId { get; set; }
     }
 }

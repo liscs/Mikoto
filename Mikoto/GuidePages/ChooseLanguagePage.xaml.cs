@@ -9,12 +9,13 @@ namespace Mikoto.GuidePages
     /// </summary>
     public partial class ChooseLanguagePage : Page
     {
+        private readonly GameInfoBuilder _gameInfoBuilder;
         private readonly List<string> _langList;
 
-        public ChooseLanguagePage()
+        public ChooseLanguagePage(GameInfoBuilder gameInfoBuilder)
         {
             InitializeComponent();
-
+            _gameInfoBuilder = gameInfoBuilder;
             _langList = TranslatorCommon.LanguageDict.Keys.ToList();
             SrcLangComboBox.ItemsSource = _langList;
             DstLangComboBox.ItemsSource = _langList;
@@ -35,8 +36,8 @@ namespace Mikoto.GuidePages
                 App.Env.Context.UsingDstLang = TranslatorCommon.LanguageDict[_langList[DstLangComboBox.SelectedIndex]];
 
                 //写游戏信息
-                GameInfoBuilder.GameInfo.SrcLang = App.Env.Context.UsingSrcLang;
-                GameInfoBuilder.GameInfo.DstLang = App.Env.Context.UsingDstLang;
+                _gameInfoBuilder.GameInfo.SrcLang = App.Env.Context.UsingSrcLang;
+                _gameInfoBuilder.GameInfo.DstLang = App.Env.Context.UsingDstLang;
 
                 //使用路由事件机制通知窗口来完成下一步操作
                 PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
