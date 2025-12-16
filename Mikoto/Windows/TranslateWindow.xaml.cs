@@ -123,7 +123,7 @@ namespace Mikoto
             if (App.Env.Context.TransMode == TransMode.Hook)
             {
                 _gameProcess = Process.GetProcessById(App.Env.TextHookService.GamePID);
-                Log.Information("已绑定游戏进程 → {ProcessName} (PID: {PID})", _gameProcess.ProcessName, _gameProcess.Id);
+                Log.Information("翻译窗口已绑定游戏进程 → {ProcessName} (PID: {PID})", _gameProcess.ProcessName, _gameProcess.Id);
                 try
                 {
                     _gameProcess.EnableRaisingEvents = true;
@@ -144,8 +144,8 @@ namespace Mikoto
             StoryBoardInit();
 
             sw.Stop();
-            Log.Information("翻译窗口初始化完成，耗时 {ElapsedMs}ms | 模式：{Mode} | 游戏：{GameID}",
-                sw.ElapsedMilliseconds, App.Env.Context.TransMode, App.Env.Context.GameID);
+            Log.Information("翻译窗口初始化完成，耗时 {ElapsedMs}ms | 模式：{Mode}",
+                sw.ElapsedMilliseconds, App.Env.Context.TransMode);
 
             Application.Current.MainWindow.Hide();
         }
@@ -1010,6 +1010,7 @@ namespace Mikoto
             { }
 
             CloseSubWindows();
+            Log.Information("翻译窗口已关闭");
         }
 
         private void CloseSubWindows()
@@ -1263,11 +1264,6 @@ namespace Mikoto
         private void SourceRichTextBox_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             _maxOffset = Math.Max(e.HorizontalOffset, _maxOffset);
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            Log.Information("翻译窗口已关闭");
         }
     }
 }

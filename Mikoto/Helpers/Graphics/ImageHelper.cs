@@ -1,5 +1,6 @@
 ﻿using Mikoto.Enums;
 using Mikoto.Helpers.File;
+using Serilog;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Windows;
@@ -46,9 +47,16 @@ namespace Mikoto.Helpers.Graphics
         public static BitmapSource? GetGameIconSource(int pid)
         {
             using var process = System.Diagnostics.Process.GetProcessById(pid);
-            string exePath = process.MainModule?.FileName??string.Empty;
-
-            return GetGameIconSource(exePath);
+            try
+            {
+                string exePath = process.MainModule?.FileName??string.Empty;
+                return GetGameIconSource(exePath);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "没有权限获取进程执行文件路径，无法提取图标，PID={Pid}", pid);
+                return null;
+            }
         }
 
         public static BitmapSource? GetGameIconSource(string path)

@@ -275,14 +275,15 @@ namespace Mikoto.TextHook
         /// <summary>
         /// 开始注入，会判断是否智能注入
         /// </summary>
-        public async Task StartHook(GameInfo gameInfo, bool AutoHook = false)
+        public async Task StartHook(GameInfo gameInfo, bool autoHook = false)
         {
             _gameInfo = gameInfo;
 
             Log.Information(
-                "开始进程注入，模式={HandleMode}，智能注入={AutoHook}",
-                _handleMode==1?"单进程":"多进程",
-                AutoHook
+                "开始进程注入，模式={HandleMode}，智能注入={AutoHook}，进程路径：{FilePath}",
+                _handleMode==1 ? "单进程" : "多进程",
+                autoHook,
+                gameInfo.FilePath
             );
 
             if (_handleMode == 1)
@@ -295,7 +296,7 @@ namespace Mikoto.TextHook
                 //不管是否进行智能注入，为了保证再次开启游戏时某些用户自定义特殊码能直接导入，这里强制让游戏ID为最大进程ID
                 GamePID = _maxMemoryProcess!.Id;
 
-                if (AutoHook == false)
+                if (autoHook == false)
                 {
                     int attachCount = 0;
 
@@ -394,7 +395,7 @@ namespace Mikoto.TextHook
                         {
                             if (!isBestMatchCode)
                             {
-                                Log.Warning(
+                                Log.Information(
                                     "更新最佳匹配 MisakaCode({SavedCode})，旧={OldCode}，新={NewCode}",
                                     savedMisakaCode,
                                     _bestMatchCode,

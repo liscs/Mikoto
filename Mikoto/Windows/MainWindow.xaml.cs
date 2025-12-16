@@ -368,6 +368,10 @@ namespace Mikoto
             await App.Env.TextHookService.StartHook(
                 _gameInfoList[gid],
                 Convert.ToBoolean(Common.AppSettings.AutoHook));
+            Log.Information(
+                "进程注入完成，游戏名={GameName}，进程数={ProcessCount}",
+                 _gameInfoList[gid].GameName,
+                gameProcessList.Count);
 
             if (!await App.Env.TextHookService.AutoAddCustomHookToGameAsync())
             {
@@ -376,12 +380,6 @@ namespace Mikoto
                     Application.Current.Resources["MainWindow_AutoCustomHookError"].ToString(),
                     Application.Current.Resources["MessageBox_Error"].ToString());
             }
-
-            Log.Information(
-                "翻译 Hook 启动完成，GameID={GameID}，进程数={ProcessCount}，耗时={ElapsedMs}ms",
-                App.Env.Context.GameID,
-                gameProcessList.Count,
-                s.ElapsedMilliseconds);
 
             NotifyIconContextContent.Collapse();
             OpenTranslateWindow();
@@ -466,6 +464,7 @@ namespace Mikoto
             }
             Process.Start(path);
             _viewModel.GameInfoDrawerIsOpen = false;
+            Log.Information("启动游戏，路径：{Path}", path);
             await StartTranslateByGid(_gid);
             Refresh();
         }
@@ -502,6 +501,7 @@ namespace Mikoto
             p.WorkingDirectory = lePath;
             Process.Start(p);
             _viewModel.GameInfoDrawerIsOpen = false;
+            Log.Information("通过 LE 启动游戏，路径：{Path}", path);
             await StartTranslateByGid(_gid);
             Refresh();
         }
@@ -585,6 +585,7 @@ namespace Mikoto
             }
             else
             {
+                Log.Information("检测到正在运行的游戏：{GameName}", _gameInfoList[gid].GameName);
                 await StartTranslateByGid(gid);
             }
         }

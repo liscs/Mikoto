@@ -1,7 +1,6 @@
 ﻿//来自 https://stackoverflow.com/questions/16743804/implementing-a-log-viewer-with-wpf
 
 using Mikoto.Windows.Logger;
-using Serilog;
 using Serilog.Events;
 using System.ComponentModel;
 using System.Windows;
