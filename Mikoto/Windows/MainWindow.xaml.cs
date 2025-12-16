@@ -9,6 +9,7 @@ using Mikoto.Helpers.Graphics;
 using Mikoto.TextHook;
 using Mikoto.Translators;
 using Mikoto.Windows;
+using Serilog;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -295,6 +296,7 @@ namespace Mikoto
         {
             List<Process> gameProcessList = new();
             Stopwatch s = Stopwatch.StartNew();
+
             while (s.Elapsed < TimeSpan.FromSeconds(5))
             {
                 string name;
@@ -307,19 +309,25 @@ namespace Mikoto
                 {
                     name = Path.GetFileName(_gameInfoList[gid].FilePath);
                 }
+
                 gameProcessList = Process.GetProcessesByName(name).ToList();
                 if (gameProcessList.Count > 0)
                 {
                     break;
                 }
+
                 await Task.Delay(100);
             }
 
             if (gameProcessList.Count == 0)
             {
-                MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
+                Log.Warning("未检测到游戏进程，GID={Gid}", gid);
+                MessageBox.Show(
+                    Application.Current.Resources["MainWindow_StartError_Hint"].ToString(),
+                    Application.Current.Resources["MessageBox_Hint"].ToString());
                 return;
             }
+
             App.Env.Context.GameID = _gameInfoList[gid].GameID;
             App.Env.Context.TransMode = TransMode.Hook;
             App.Env.Context.UsingDstLang = _gameInfoList[gid].DstLang;
@@ -338,24 +346,43 @@ namespace Mikoto
                     Common.RepairSettings.Regex = _gameInfoList[gid].RepairParamA ?? string.Empty;
                     Common.RepairSettings.Regex_Replace = _gameInfoList[gid].RepairParamB ?? string.Empty;
                     break;
-                default:
-                    break;
             }
-            TextRepair.RepairFuncInit();
-            App.Env.TextHookService = gameProcessList.Count == 1 ? new TextHook.TextHookService(gameProcessList[0].Id) : new TextHook.TextHookService(gameProcessList, new MaxMemoryProcessSelector());
 
-            if (!App.Env.TextHookService.Init(_gameInfoList[gid].Isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
+            TextRepair.RepairFuncInit();
+
+            App.Env.TextHookService =
+                gameProcessList.Count == 1
+                    ? new TextHook.TextHookService(gameProcessList[0].Id)
+                    : new TextHook.TextHookService(gameProcessList, new MaxMemoryProcessSelector());
+
+            if (!App.Env.TextHookService.Init(
+                    _gameInfoList[gid].Isx64
+                        ? Common.AppSettings.Textractor_Path64
+                        : Common.AppSettings.Textractor_Path32))
             {
+                Log.Error("TextHookService 初始化失败");
                 MessageBox.Show(Application.Current.Resources["MainWindow_TextractorError_Hint"].ToString());
                 return;
             }
 
-            await App.Env.TextHookService.StartHook(_gameInfoList[gid], Convert.ToBoolean(Common.AppSettings.AutoHook));
+            await App.Env.TextHookService.StartHook(
+                _gameInfoList[gid],
+                Convert.ToBoolean(Common.AppSettings.AutoHook));
 
             if (!await App.Env.TextHookService.AutoAddCustomHookToGameAsync())
             {
-                MessageBox.Show(Application.Current.Resources["MainWindow_AutoCustomHookError"].ToString(), Application.Current.Resources["MessageBox_Error"].ToString());
+                Log.Warning("自动添加自定义 Hook 失败");
+                MessageBox.Show(
+                    Application.Current.Resources["MainWindow_AutoCustomHookError"].ToString(),
+                    Application.Current.Resources["MessageBox_Error"].ToString());
             }
+
+            Log.Information(
+                "翻译 Hook 启动完成，GameID={GameID}，进程数={ProcessCount}，耗时={ElapsedMs}ms",
+                App.Env.Context.GameID,
+                gameProcessList.Count,
+                s.ElapsedMilliseconds);
+
             NotifyIconContextContent.Collapse();
             OpenTranslateWindow();
         }
@@ -368,10 +395,14 @@ namespace Mikoto
             }
             catch (Exception ex) when (ex is InvalidOperationException or ArgumentException)
             {
+                // 游戏没有启动成功，或者启动时间过长
+                Log.Warning(ex, "未找到游戏进程");
                 MessageBox.Show(Application.Current.Resources["MainWindow_StartError_Hint"].ToString(), Application.Current.Resources["MessageBox_Hint"].ToString());
             }
-            catch (Win32Exception)
+            catch (Win32Exception ex)
             {
+                // 权限不足
+                Log.Warning(ex, "权限不足，无法附加到游戏进程");
                 MessageBoxResult messageBoxResult = MessageBox.Show(Application.Current.Resources["MainWindow_NoAdmin_Hint"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {

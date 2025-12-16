@@ -65,8 +65,13 @@ namespace Mikoto
 
         private readonly DropShadowEffect _dropShadowEffect = new();
         private Window? _historyWindow;
+
+        private static readonly ILogger Log = Serilog.Log.ForContext<TranslateWindow>();
+
+
         public TranslateWindow()
         {
+            var sw = Stopwatch.StartNew();
             InitializeComponent();
             ViewModel = new(this);
             DataObject.AddCopyingHandler(SourceRichTextBox1, OnCopy);
@@ -75,61 +80,99 @@ namespace Mikoto
             DataContext = ViewModel;
             UI_Init();
             _richTextBoxes = [SourceRichTextBox1, SourceRichTextBox2];
-
             _gameTextHistory = new Queue<HistoryInfo>();
-
             Topmost = true;
 
             _mecabTokenizer = new MeCabTokenizer(Common.AppSettings.Mecab_DicPath);
-            if (!_mecabTokenizer.EnableMecab && Common.AppSettings.Mecab_DicPath != string.Empty)
+            if (!_mecabTokenizer.EnableMecab)
             {
+                if (Common.AppSettings.Mecab_DicPath == string.Empty)
+                {
+                    Log.Information("MeCab 未配置词典路径，已禁用日文分词功能");
+                }
+                else
+                {
+                    Log.Error("MeCab 词典加载失败，路径：{DicPath} → 分词功能将不可用！", Common.AppSettings.Mecab_DicPath);
+                }
+
                 Growl.InfoGlobal(Application.Current.Resources["TranslateWin_NoMeCab_Hint"].ToString());
+            }
+            else
+            {
+                Log.Information("MeCab 初始化成功，词典路径：{DicPath}", Common.AppSettings.Mecab_DicPath);
             }
 
             TTS_Init();
 
-            if (Common.AppSettings.HttpProxy != "")
+            if (!string.IsNullOrEmpty(Common.AppSettings.HttpProxy))
             {
                 TranslateHttpClient.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
+                Log.Information("已启用 HTTP 代理：{Proxy}", Common.AppSettings.HttpProxy);
             }
-            _translator1 = TranslatorCommon.TranslatorFactory.GetTranslator(Common.AppSettings.FirstTranslator, Common.AppSettings, (string)Application.Current.Resources[Common.AppSettings.FirstTranslator]);
-            _translator2 = TranslatorCommon.TranslatorFactory.GetTranslator(Common.AppSettings.SecondTranslator, Common.AppSettings, (string)Application.Current.Resources[Common.AppSettings.SecondTranslator]);
+
+            _translator1 = CreateTranslator(Common.AppSettings.FirstTranslator, "主翻译器");
+            _translator2 = CreateTranslator(Common.AppSettings.SecondTranslator, "副翻译器");
+
+
 
             _beforeTransHandle = new BeforeTransHandle(App.Env.Context.GameID.ToString(), App.Env.Context.UsingSrcLang, App.Env.Context.UsingDstLang);
             _afterTransHandle = new AfterTransHandle(_beforeTransHandle);
-
             _artificialTransHelper = new ArtificialTransHelper(App.Env.Context.GameID.ToString());
+            App.Env.TextHookService.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
 
-            switch (App.Env.Context.TransMode)
+            if (App.Env.Context.TransMode == TransMode.Hook)
             {
-                case TransMode.Hook:
-                    App.Env.TextHookService.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
-
-                    _gameProcess = Process.GetProcessById(App.Env.TextHookService.GamePID);
-                    try
+                _gameProcess = Process.GetProcessById(App.Env.TextHookService.GamePID);
+                Log.Information("已绑定游戏进程 → {ProcessName} (PID: {PID})", _gameProcess.ProcessName, _gameProcess.Id);
+                try
+                {
+                    _gameProcess.EnableRaisingEvents = true;
+                    _gameProcess.Exited += (_, _) =>
                     {
-                        _gameProcess.EnableRaisingEvents = true;
-                        _gameProcess.Exited += (_, _) =>
-                        {
-                            _gameProcess.Dispose();
-                            Application.Current.Dispatcher.Invoke(Close);
-                        };
-                    }
-                    catch (Win32Exception)
-                    {
+                        Log.Warning("游戏进程已退出（PID: {PID}），翻译窗口即将自动关闭", App.Env.TextHookService.GamePID);
                         _gameProcess.Dispose();
                         Application.Current.Dispatcher.Invoke(Close);
-                        throw;
-                    }
-
-                    break;
-                case TransMode.Clipboard:
-                    App.Env.TextHookService.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
-                    break;
+                    };
+                }
+                catch (Win32Exception)
+                {
+                    _gameProcess.Dispose();
+                    Application.Current.Dispatcher.Invoke(Close);
+                    throw;
+                }
             }
-            Application.Current.MainWindow.Hide();
-
             StoryBoardInit();
+
+            sw.Stop();
+            Log.Information("翻译窗口初始化完成，耗时 {ElapsedMs}ms | 模式：{Mode} | 游戏：{GameID}",
+                sw.ElapsedMilliseconds, App.Env.Context.TransMode, App.Env.Context.GameID);
+
+            Application.Current.MainWindow.Hide();
+        }
+
+        private static ITranslator? CreateTranslator(string name, string desc)
+        {
+            try
+            {
+                var translator = TranslatorCommon.TranslatorFactory.GetTranslator(
+                    name, Common.AppSettings,
+                    (string)Application.Current.Resources[name]);
+
+                if (translator == null)
+                {
+                    Log.Error("{Desc} 初始化失败：TranslatorFactory 返回 null（配置名：{Name}）", desc, name);
+                }
+                else
+                {
+                    Log.Information("{Desc} 初始化成功 → {Type}", desc, translator.GetType().Name);
+                }
+                return translator;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "{Desc} 初始化失败（配置名：{Name}），该翻译器将不可用", desc, name);
+                return null;
+            }
         }
 
         private void StoryBoardInit()
@@ -1220,6 +1263,11 @@ namespace Mikoto
         private void SourceRichTextBox_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             _maxOffset = Math.Max(e.HorizontalOffset, _maxOffset);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Log.Information("翻译窗口已关闭");
         }
     }
 }

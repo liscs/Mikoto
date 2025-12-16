@@ -96,6 +96,7 @@ namespace Mikoto.TextHook
         {
             if (!File.Exists(path))
             {
+                Log.Error("Textractor 初始化失败，文件不存在：{Path}", path);
                 return false;
             }
 
@@ -115,14 +116,26 @@ namespace Mikoto.TextHook
             };
 
             ProcessTextractor.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
+
             try
             {
                 bool res = ProcessTextractor.Start();
                 ProcessTextractor.BeginOutputReadLine();
+
+                if (res)
+                {
+                    Log.Information("Textractor 启动成功，路径：{Path}", path);
+                }
+                else
+                {
+                    Log.Error("Textractor 启动失败，Start 返回 false，路径：{Path}", path);
+                }
+
                 return res;
             }
-            catch (System.ComponentModel.Win32Exception)
+            catch (System.ComponentModel.Win32Exception ex)
             {
+                Log.Error(ex, "Textractor 启动异常，可能为权限或系统限制，路径：{Path}", path);
                 ProcessTextractor.Dispose();
                 ProcessTextractor = null;
                 return false;
@@ -136,9 +149,15 @@ namespace Mikoto.TextHook
         /// <param name="pid"></param>
         public async Task AttachProcessAsync(int pid)
         {
-            if (ProcessTextractor == null) { return; }
+            if (ProcessTextractor == null)
+            {
+                Log.Warning("注入进程失败，Textractor 未初始化，PID={Pid}", pid);
+                return;
+            }
+
             await ProcessTextractor.StandardInput.WriteLineAsync("attach -P" + pid);
             await ProcessTextractor.StandardInput.FlushAsync();
+
         }
 
         /// <summary>
@@ -151,6 +170,7 @@ namespace Mikoto.TextHook
             if (!ProcessHelper.IsProcessRunning(pid)
                 || ProcessTextractor == null)
             {
+                Log.Information("跳过进程分离，进程不存在或 Textractor 未初始化，PID={Pid}", pid);
                 return;
             }
 
@@ -158,9 +178,13 @@ namespace Mikoto.TextHook
             {
                 await ProcessTextractor.StandardInput.WriteLineAsync("detach -P" + pid);
                 await ProcessTextractor.StandardInput.FlushAsync();
+
             }
             //kill已经退出的进程会抛异常，无需处理
-            catch { }
+            catch
+            {
+                Log.Warning("进程分离失败，目标进程可能已退出，PID={Pid}", pid);
+            }
         }
 
         /// <summary>
@@ -170,7 +194,12 @@ namespace Mikoto.TextHook
         /// <param name="pid"></param>
         public async Task AttachProcessByHookCodeAsync(int pid, string HookCode)
         {
-            if (ProcessTextractor == null) { return; }
+            if (ProcessTextractor == null)
+            {
+                Log.Warning("HookCode 注入失败，Textractor 未初始化，PID={Pid}", pid);
+                return;
+            }
+
             await ProcessTextractor.StandardInput.WriteLineAsync(HookCode + " -P" + pid);
             await ProcessTextractor.StandardInput.FlushAsync();
         }
@@ -201,27 +230,45 @@ namespace Mikoto.TextHook
         {
             if (ProcessTextractor != null && ProcessTextractor.HasExited == false)
             {
+                Log.Information("正在关闭 Textractor，并开始解除进程注入");
+
                 if (_handleMode == 1 && ProcessHelper.IsProcessRunning(GamePID))
                 {
                     await DetachProcessAsync(GamePID);
+                    Log.Information("已解除游戏进程注入，PID={GamePID}", GamePID);
                 }
                 else if (_handleMode == 2)
                 {
+                    int detachedCount = 0;
+
                     foreach (var item in _possibleGameProcessList.ToList())
+                    {
                         if (_possibleGameProcessList[item.Key] == true)
                         {
                             if (ProcessHelper.IsProcessRunning(item.Key.Id))
+                            {
                                 await DetachProcessAsync(item.Key.Id);
+                                detachedCount++;
+                            }
                             _possibleGameProcessList[item.Key] = false;
                         }
+                    }
+
+                    Log.Information("已解除多个进程注入，数量={Count}", detachedCount);
                 }
+
                 //kill已经退出的进程会抛异常，无需处理
                 try
                 {
                     ProcessTextractor.Kill();
+                    Log.Information("Textractor 进程已关闭");
                 }
-                catch { }
+                catch
+                {
+                    Log.Warning("关闭 Textractor 进程时发生异常，可能已退出");
+                }
             }
+
             ProcessTextractor = null;
         }
 
@@ -231,9 +278,17 @@ namespace Mikoto.TextHook
         public async Task StartHook(GameInfo gameInfo, bool AutoHook = false)
         {
             _gameInfo = gameInfo;
+
+            Log.Information(
+                "开始进程注入，模式={HandleMode}，智能注入={AutoHook}",
+                _handleMode==1?"单进程":"多进程",
+                AutoHook
+            );
+
             if (_handleMode == 1)
             {
                 await AttachProcessAsync(GamePID);
+                Log.Information("已发送进程注入命令，PID={GamePID}", GamePID);
             }
             else if (_handleMode == 2)
             {
@@ -242,19 +297,34 @@ namespace Mikoto.TextHook
 
                 if (AutoHook == false)
                 {
+                    int attachCount = 0;
+
                     //不进行智能注入
                     foreach (var item in _possibleGameProcessList.ToList())
                     {
                         await AttachProcessAsync(item.Key.Id);
                         _possibleGameProcessList[item.Key] = true;
+                        attachCount++;
                     }
+
+                    Log.Information(
+                        "已发送批量进程注入命令，数量={Count}，主PID={GamePID}",
+                        attachCount,
+                        GamePID
+                    );
                 }
                 else
                 {
                     await AttachProcessAsync(_maxMemoryProcess.Id);
+                    Log.Information(
+                        "已发送智能进程注入命令，PID={GamePID}",
+                        _maxMemoryProcess.Id
+                    );
                 }
             }
         }
+
+
 
         private string _bestMatchCode = string.Empty;
 
@@ -316,12 +386,22 @@ namespace Mikoto.TextHook
 
                         string obtainedMisakaCode1 = obtainedMatch.Groups[1].Value;
 
+                        bool isBestMatchCode = obtainedMisakaCode == _bestMatchCode;
                         //文本去重窗口处理&游戏翻译窗口处理
                         // TODO 寻找更好的Hook Address确定方法
                         if (obtainedMisakaCode1.Length >= 4
-                            && (obtainedMisakaCode == _bestMatchCode || IsMoreMatch(savedMisakaCode, obtainedMisakaCode, _bestMatchCode)))
+                            && (isBestMatchCode || IsMoreMatch(savedMisakaCode, obtainedMisakaCode, _bestMatchCode)))
                         {
-                            _bestMatchCode = obtainedMisakaCode;
+                            if (!isBestMatchCode)
+                            {
+                                Log.Warning(
+                                    "更新最佳匹配 MisakaCode({SavedCode})，旧={OldCode}，新={NewCode}",
+                                    savedMisakaCode,
+                                    _bestMatchCode,
+                                    obtainedMisakaCode
+                                );
+                                _bestMatchCode = obtainedMisakaCode;
+                            }
 
                             SolvedDataReceivedEventArgs e = new()
                             {

@@ -100,7 +100,7 @@ namespace Mikoto
                 {
                     //脚本运行时错误
                     Growl.ErrorGlobal($"{functionName}{Environment.NewLine}{ex.Message}");
-                    Log.Warning($"{functionName}{Environment.NewLine}{ex}");
+                    Log.Warning(ex,$"自定义脚本 {functionName} 运行时异常");
                 }
             }
             return functionName switch

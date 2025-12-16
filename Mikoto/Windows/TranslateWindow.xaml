@@ -16,7 +16,7 @@
         MinWidth="384"
         Closing="Window_Closing"
         Loaded="Window_Loaded"
-        hc:WindowAttach.IsDragElement="True">
+        hc:WindowAttach.IsDragElement="True" Closed="Window_Closed">
     <Window.BorderBrush>
         <LinearGradientBrush StartPoint="0,0"
                              EndPoint="1,1">
