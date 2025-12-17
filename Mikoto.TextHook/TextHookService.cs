@@ -224,9 +224,9 @@ namespace Mikoto.TextHook
         }
 
         /// <summary>
-        /// 关闭Textractor进程，关闭前Detach所有Hook
+        /// 关闭Textractor进程，关闭前调用Detach所有Hook
         /// </summary>
-        public async void CloseTextractor()
+        public void CloseTextractor()
         {
             if (ProcessTextractor != null && ProcessTextractor.HasExited == false)
             {
@@ -234,8 +234,8 @@ namespace Mikoto.TextHook
 
                 if (_handleMode == 1 && ProcessHelper.IsProcessRunning(GamePID))
                 {
-                    await DetachProcessAsync(GamePID);
-                    Log.Information("已解除游戏进程注入，PID={GamePID}", GamePID);
+                    _ = DetachProcessAsync(GamePID);
+                    Log.Information("已调用解除游戏进程注入，PID={GamePID}", GamePID);
                 }
                 else if (_handleMode == 2)
                 {
@@ -247,15 +247,16 @@ namespace Mikoto.TextHook
                         {
                             if (ProcessHelper.IsProcessRunning(item.Key.Id))
                             {
-                                await DetachProcessAsync(item.Key.Id);
+                                _ = DetachProcessAsync(item.Key.Id);
                                 detachedCount++;
                             }
                             _possibleGameProcessList[item.Key] = false;
                         }
                     }
 
-                    Log.Information("已解除多个进程注入，数量={Count}", detachedCount);
+                    Log.Information("已调用解除多个进程注入，数量={Count}", detachedCount);
                 }
+                // 尽量调用detach命令后再kill进程
 
                 //kill已经退出的进程会抛异常，无需处理
                 try
