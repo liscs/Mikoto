@@ -62,14 +62,13 @@ namespace Mikoto
             Application.Current.Resources.MergedDictionaries[1] = languageResource;
         }
 
-
         public void Refresh()
         {
 #if DEBUG
             _viewModel.GameInfoFileButtonVisibility = Visibility.Visible;
 #endif
             _gameInfoList = GameHelper.GetAllCompletedGames();
-            InitGameLibraryPanel();
+            _ = InitGameLibraryPanelAsync();
             if (_gameInfoList.Count!=0)
             {
                 _viewModel.GameInfo = _gameInfoList[_gid];
@@ -111,14 +110,18 @@ namespace Mikoto
         /// <summary>
         /// 游戏库瀑布流初始化（逐个添加）
         /// </summary>
-        private async void InitGameLibraryPanel()
+        private async Task InitGameLibraryPanelAsync()
         {
             _viewModel.GamePanelCollection.Clear();
             for (var i = 0; i < _gameInfoList.Count; i++)
             {
                 await Task.Yield();
-                var gameBorder = CreateGameElement(i);
-                _viewModel.GamePanelCollection.Add(gameBorder);
+                await Application.Current.Dispatcher.BeginInvoke(() =>
+                 {
+                     var gameBorder = CreateGameElement(i);
+                     _viewModel.GamePanelCollection.Add(gameBorder);
+                 });
+
             }
         }
 

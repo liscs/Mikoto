@@ -1,13 +1,10 @@
 ﻿using Mikoto.DataAccess;
 using Mikoto.Helpers.Input;
 using Serilog;
-using Serilog.Core;
-using Serilog.Events;
 using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
 using Windows.Win32;
 using Windows.Win32.Graphics.Gdi;
 
@@ -17,191 +14,197 @@ namespace Mikoto
     {
         public App()
         {
-            //注册开始和退出事件
+            ConfigureLogging();
+
             this.Startup += App_Startup;
             this.Exit += App_Exit;
         }
 
         public static AppEnvironment Env { get; private set; } = new AppEnvironment();
 
+        private static void ConfigureLogging()
+        {
+            var logPath = Path.Combine(DataFolder.Path, "logs", "mikoto-.log");
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File(
+                    logPath,
+                    rollingInterval: RollingInterval.Day,
+                    retainedFileCountLimit: 30,
+                    fileSizeLimitBytes: 10 * 1024 * 1024,
+                    rollOnFileSizeLimit: true,
+                    shared: true,
+                    encoding: Encoding.UTF8
+                )
+                .WriteTo.Sink(new CallbackSink(LogViewer.Sink))
+                .CreateLogger();
+
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
-            Env = new AppEnvironment();
             base.OnStartup(e);
 
-            // 初始化全局快捷键管理
             GlobalKeyboardHook.Initialize();
-
         }
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            //UI线程未捕获异常处理事件
-            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
-            //Task线程内未捕获异常处理事件
-            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
-            //非UI线程未捕获异常处理事件
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            // 统一异常处理注册
+            this.DispatcherUnhandledException += (s, args) =>
+            {
+                args.Handled = true;
+                HandleException(args.Exception, "UI线程异常");
+            };
+
+            TaskScheduler.UnobservedTaskException += (s, args) =>
+            {
+                args.SetObserved();
+                HandleException(args.Exception, "任务线程异常");
+            };
+
+            AppDomain.CurrentDomain.UnhandledException += (s, args) =>
+            {
+                var ex = args.ExceptionObject as Exception
+                    ?? new Exception("未知异常", args.ExceptionObject as Exception);
+                HandleException(ex, "非UI线程异常");
+            };
+
+            // 异步事件未捕获异常（如 async void）
+            SynchronizationContext.SetSynchronizationContext(new ExceptionSynchronizationContext());
 
             SetDefaultFrameRate();
 
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console()
-                .WriteTo.Sink(new CallbackSink(LogViewer.Sink))
-                .CreateLogger();
-            Log.Information("程序启动");
+            Log.Information("程序启动完成");
         }
 
-        /// <summary>
-        /// 设置目标刷新率与系统一致，获取失败则设置为60fps
-        /// </summary>
         private static void SetDefaultFrameRate()
         {
             DEVMODEW dm = new();
             if (PInvoke.EnumDisplaySettings(null, ENUM_DISPLAY_SETTINGS_MODE.ENUM_CURRENT_SETTINGS, ref dm))
             {
-                Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata { DefaultValue = (int)dm.dmDisplayFrequency });
+                Timeline.DesiredFrameRateProperty.OverrideMetadata(
+                    typeof(Timeline),
+                    new FrameworkPropertyMetadata { DefaultValue = (int)dm.dmDisplayFrequency });
             }
             else
             {
-                Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata { DefaultValue = 60 });
+                Timeline.DesiredFrameRateProperty.OverrideMetadata(
+                    typeof(Timeline),
+                    new FrameworkPropertyMetadata { DefaultValue = 60 });
+                Log.Warning("获取系统刷新率失败，使用默认 60Hz");
             }
         }
 
         private void App_Exit(object sender, ExitEventArgs e)
         {
-            //程序退出时检查是否断开Hook
-            EndHook();
-            Log.Information("程序退出");
+            Log.Information("程序退出中");
+            CloseHooksSafe();
+            Log.CloseAndFlush();
         }
 
         /// <summary>
-        /// UI线程未捕获异常处理事件
+        /// 统一异常处理方法
         /// </summary>
-        private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-        {
-            e.Handled = true;
-            PrintErrorMessageToFile(e.Exception);
-            ShowExceptionMessageBox(e.Exception);
-        }
-
-        private static void ShowExceptionMessageBox(object e)
-        {
-            string nowTime = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-            MessageBox.Show($"{Current.Resources["App_Global_ErrorHint_left"]}{nowTime}{Current.Resources["App_Global_ErrorHint_right"]}{Environment.NewLine}{e}",
-                            Current.Resources["MessageBox_Error"].ToString());
-        }
-
-        /// <summary>
-        /// 非UI线程未捕获异常处理事件
-        /// </summary>
-        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            Mikoto.MainWindow.Instance.CloseNotifyIcon();
-
-            PrintErrorMessageToFile(e.ExceptionObject as Exception ??
-                new Exception("Unknown exception: " + e.ExceptionObject));
-
-            ShowExceptionMessageBox(e.ExceptionObject as Exception ??
-                new Exception("Unknown exception: " + e.ExceptionObject));
-
-            EndHook();
-        }
-
-        /// <summary>
-        /// Task线程内未捕获异常处理事件
-        /// </summary>
-        private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
-        {
-            e.SetObserved();
-            Mikoto.MainWindow.Instance.CloseNotifyIcon();
-            PrintErrorMessageToFile(e.Exception);
-            ShowExceptionMessageBox(e.Exception);
-        }
-
-
-        private static readonly int LogReserveDays = 30; // 保留天数（按需调整）
-
-        /// <summary>
-        /// 打印错误信息到文本文件
-        /// </summary>
-        /// <param name="fileName">文件名</param>
-        /// <param name="e">异常</param>
-        private static void PrintErrorMessageToFile(Exception ex)
-        {
-            string time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss_fff"); // 毫秒防冲突
-            string logsFolder = Path.Combine(DataFolder.Path, "logs");
-            try
-            {
-                Directory.CreateDirectory(logsFolder);
-                string logFile = Path.Combine(logsFolder, $"{time}.txt");
-
-                using var sw = new StreamWriter(logFile, false, Encoding.UTF8);
-
-                sw.WriteLine("==============System Info================");
-                sw.WriteLine($"Time: {DateTime.Now:O}");
-                sw.WriteLine($"Operating System: {Environment.OSVersion}");
-                sw.WriteLine($".NET Version: {Environment.Version}");
-                sw.WriteLine($"Mikoto Version: {Common.CurrentVersion}");
-
-                sw.WriteLine();
-                sw.WriteLine("==============Exception Info================");
-                sw.WriteLine(ex.ToString());
-                sw.Flush();
-
-
-                //自动清理旧日志
-                CleanupOldLogs(logsFolder, LogReserveDays);
-            }
-            catch (Exception logEx)
-            {
-                Console.Error.WriteLine("Logging failed: " + logEx);
-            }
-        }
-
-        private static void CleanupOldLogs(string folder, int reserveDays)
+        private static void HandleException(Exception ex, string title)
         {
             try
             {
-                var deadline = DateTime.Now.AddDays(-reserveDays);
+                Log.Fatal(ex, "{Title}：程序发生未处理异常", title);
 
-                foreach (var file in Directory.EnumerateFiles(folder, "*.txt"))
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    var lastWrite = File.GetLastWriteTime(file);
-                    if (lastWrite < deadline)
-                    {
-                        File.Delete(file);
-                    }
-                }
+                    Mikoto.MainWindow.Instance.CloseNotifyIcon();
+                    ShowExceptionMessageBox(ex);
+                });
+
+                CloseHooksSafe();
+            }
+            catch (Exception ex2)
+            {
+                Log.Error(ex2, "异常处理执行失败");
+            }
+        }
+
+        private static void ShowExceptionMessageBox(Exception ex)
+        {
+            string logFile = GetLatestLogFile();
+
+#if DEBUG
+            string message = $"{Current.Resources["App_Global_ErrorHint_left"]}{logFile}{Current.Resources["App_Global_ErrorHint_right"]}{Environment.NewLine}{ex}";
+#else
+    string message = $"{Current.Resources["App_Global_ErrorHint_left"]}{logFile}{Current.Resources["App_Global_ErrorHint_right"]}";
+#endif
+
+            MessageBox.Show(
+                message,
+                Current.Resources["MessageBox_Error"].ToString(),
+                MessageBoxButton.OK,
+                MessageBoxImage.Error
+            );
+        }
+
+        private static string GetLatestLogFile()
+        {
+            string logFolder = Path.Combine(DataFolder.Path, "logs");
+            if (!Directory.Exists(logFolder)) return logFolder; // 返回目录
+
+            var files = Directory.GetFiles(logFolder, "*.log");
+            if (files.Length == 0) return logFolder;
+
+            // 按最后写入时间排序，获取最新日志文件
+            var latestFile = files.OrderByDescending(File.GetLastWriteTime).First();
+            return latestFile;
+        }
+
+
+
+        private static void CloseHooksSafe()
+        {
+            try
+            {
+                Env.TextHookService.Dispose();
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine("Clean log failed: " + ex);
+                Log.Error(ex, "释放文本Hook服务失败");
             }
         }
 
         /// <summary>
-        /// 执行Hook是否完全卸载的检查
+        /// 自定义同步上下文，用于捕获 async void 异常
         /// </summary>
-        private void EndHook()
+        private class ExceptionSynchronizationContext : SynchronizationContext
         {
-            Env.TextHookService.Dispose();
-        }
-    }
+            public override void Post(SendOrPostCallback d, object? state)
+            {
+                base.Post(s =>
+                {
+                    try
+                    {
+                        d(s);
+                    }
+                    catch (Exception ex)
+                    {
+                        HandleException(ex, "异步事件异常 (async void)");
+                    }
+                }, state);
+            }
 
-
-    public class CallbackSink : ILogEventSink
-    {
-        private readonly Action<LogEvent> _onEvent;
-
-        public CallbackSink(Action<LogEvent> onEvent)
-        {
-            _onEvent = onEvent;
-        }
-
-        public void Emit(LogEvent logEvent)
-        {
-            _onEvent(logEvent);
+            public override void Send(SendOrPostCallback d, object? state)
+            {
+                try
+                {
+                    base.Send(d, state);
+                }
+                catch (Exception ex)
+                {
+                    HandleException(ex, "同步事件异常");
+                }
+            }
         }
     }
 }
