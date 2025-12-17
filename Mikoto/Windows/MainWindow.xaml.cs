@@ -15,7 +15,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -64,16 +63,38 @@ namespace Mikoto
             await RefreshUIAsync();
         }
 
-        CancellationTokenSource? _refreshGameCts;
+        private CancellationTokenSource? _refreshGameCts;
+
         private async Task RefreshGameInfoAsync()
         {
             _refreshGameCts?.Cancel();
-            _refreshGameCts?.Dispose();
 
-            _refreshGameCts = new CancellationTokenSource();
-            var token = _refreshGameCts.Token;
-            await Task.Run(() => { _gameInfoList=GameHelper.GetAllCompletedGames(); }, _refreshGameCts.Token);
+            var cts = new CancellationTokenSource();
+            _refreshGameCts = cts;
+            var token = cts.Token;
+
+            try
+            {
+                var result = await Task.Run(() =>
+                {
+                    token.ThrowIfCancellationRequested();
+                    return GameHelper.GetAllCompletedGames();
+                }, token);
+
+                if (!token.IsCancellationRequested)
+                {
+                    _gameInfoList = result;
+                }
+            }
+            catch (OperationCanceledException)
+            {
+            }
+            finally
+            {
+                cts.Dispose();
+            }
         }
+
 
         private static void InitializeLanguage()
         {
@@ -85,44 +106,50 @@ namespace Mikoto
         }
 
         private CancellationTokenSource? _refreshUICts;
-
         private async Task RefreshUIAsync()
         {
 #if DEBUG
             _viewModel.GameInfoFileButtonVisibility = Visibility.Visible;
 #endif
 
-            // 如果上一次刷新未完成，取消它
             _refreshUICts?.Cancel();
-            _refreshUICts?.Dispose();
 
-            _refreshUICts = new CancellationTokenSource();
-            var token = _refreshUICts.Token;
+            var cts = new CancellationTokenSource();
+            _refreshUICts = cts;
+            var token = cts.Token;
 
             try
             {
                 await _gameInfoInitTask;
+
+                token.ThrowIfCancellationRequested();
+
                 if (_gameInfoList.Count > 0)
                 {
-                    _viewModel.GameInfo = _gameInfoList.First();
+                    _viewModel.GameInfo = _gameInfoList[0];
                 }
 
                 await InitGameLibraryPanelAsync(token);
-
             }
             catch (OperationCanceledException)
             {
-                // 刷新被取消，不处理
+                // 正常取消，啥都不用做
+            }
+            finally
+            {
+                cts.Dispose();
             }
         }
+
         private async Task InitGameLibraryPanelAsync(CancellationToken token = default)
         {
             var itemsToAdd = _gameInfoList
                 .Select((info, index) => new { Info = info, Index = index })
                 .ToList();
+            token.ThrowIfCancellationRequested();
 
             // 清空集合（在 UI 线程）
-            await Dispatcher.InvokeAsync(_viewModel.GamePanelCollection.Clear);
+            await Dispatcher.InvokeAsync(_viewModel.GamePanelCollection.Clear, DispatcherPriority.Background);
             const int batchSize = 20;
             for (int i = 0; i < itemsToAdd.Count; i += batchSize)
             {

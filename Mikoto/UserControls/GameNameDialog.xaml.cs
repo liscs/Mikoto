@@ -1,6 +1,5 @@
 ﻿using Mikoto.DataAccess;
 using Mikoto.UserControls;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace Mikoto

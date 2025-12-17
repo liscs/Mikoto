@@ -399,7 +399,7 @@ namespace Mikoto.TextHook
                             {
                                 if (_bestMatchCode=="")
                                 {
-                                    Log.Information("建立匹配 MisakaCode({SavedCode})，匹配={NewCode}",savedMisakaCode,obtainedMisakaCode);
+                                    Log.Information("建立匹配 MisakaCode({SavedCode})，匹配={NewCode}", savedMisakaCode, obtainedMisakaCode);
                                 }
                                 else
                                 {
