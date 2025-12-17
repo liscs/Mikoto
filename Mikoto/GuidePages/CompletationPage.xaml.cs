@@ -15,9 +15,6 @@ namespace Mikoto.GuidePages
 
         private async void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            //刷新主界面
-            await MainWindow.Instance.RefreshAsync();
-
             //使用路由事件机制通知窗口来完成下一步操作
             PageChangeRoutedEventArgs args = new PageChangeRoutedEventArgs(PageChange.PageChangeRoutedEvent, this);
             this.RaiseEvent(args);

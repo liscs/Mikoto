@@ -2,6 +2,7 @@
 using Mikoto.Enums;
 using Mikoto.GuidePages;
 using Mikoto.GuidePages.Hook;
+using Mikoto.Helpers;
 using System.Windows;
 
 namespace Mikoto
@@ -81,6 +82,7 @@ namespace Mikoto
                     case TransMode.Hook:
                         _gameInfoBuilder.GameInfo.LastPlayAt = DateTime.Now;
                         GameHelper.SaveGameInfo(_gameInfoBuilder.GameInfo);
+                        MainWindow.Instance.RefreshAsync().FireAndForget();
                         break;
                     case TransMode.Clipboard:
                         break;

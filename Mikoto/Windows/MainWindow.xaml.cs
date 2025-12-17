@@ -28,9 +28,6 @@ namespace Mikoto
 {
     public partial class MainWindow
     {
-        private List<GameInfo> _gameInfoList = new();
-        private int _gid; //当前选中的顺序，并非游戏ID
-
         public static MainWindow Instance { get; set; } = default!;
 
         private MainWindowViewModel _viewModel = new();
@@ -67,30 +64,26 @@ namespace Mikoto
 
         private async Task RefreshGameInfoAsync()
         {
-            _refreshGameCts?.Cancel();
-
             var cts = new CancellationTokenSource();
-            _refreshGameCts = cts;
+            var oldCts = Interlocked.Exchange(ref _refreshGameCts, cts);
+            oldCts?.Cancel();
+
             var token = cts.Token;
 
             try
             {
-                var result = await Task.Run(() =>
+                await Task.Run(() =>
                 {
                     token.ThrowIfCancellationRequested();
                     return GameHelper.GetAllCompletedGames();
                 }, token);
-
-                if (!token.IsCancellationRequested)
-                {
-                    _gameInfoList = result;
-                }
             }
             catch (OperationCanceledException)
             {
             }
             finally
             {
+                Interlocked.CompareExchange(ref _refreshGameCts, null, cts);
                 cts.Dispose();
             }
         }
@@ -112,10 +105,10 @@ namespace Mikoto
             _viewModel.GameInfoFileButtonVisibility = Visibility.Visible;
 #endif
 
-            _refreshUICts?.Cancel();
-
             var cts = new CancellationTokenSource();
-            _refreshUICts = cts;
+            var oldCts = Interlocked.Exchange(ref _refreshUICts, cts);
+            oldCts?.Cancel();
+
             var token = cts.Token;
 
             try
@@ -124,10 +117,25 @@ namespace Mikoto
 
                 token.ThrowIfCancellationRequested();
 
-                if (_gameInfoList.Count > 0)
+                var dict = GameHelper.AllCompletedGamesIdDict;
+
+                if (dict.Count == 0)
                 {
-                    _viewModel.GameInfo = _gameInfoList[0];
+                    return;
                 }
+
+                var currentId = _viewModel.GameInfo.GameID;
+
+                if (dict.TryGetValue(currentId, out var gameInfo))
+                {
+                    _viewModel.GameInfo = gameInfo;
+                }
+                else
+                {
+                    // 当前不存在，退回任意一个
+                    _viewModel.GameInfo = dict.Values.First();
+                }
+
 
                 await InitGameLibraryPanelAsync(token);
             }
@@ -137,19 +145,21 @@ namespace Mikoto
             }
             finally
             {
+                Interlocked.CompareExchange(ref _refreshUICts, null, cts);
                 cts.Dispose();
             }
         }
 
         private async Task InitGameLibraryPanelAsync(CancellationToken token = default)
         {
-            var itemsToAdd = _gameInfoList
+            var itemsToAdd = GameHelper.AllCompletedGamesIdDict.Values
                 .Select((info, index) => new { Info = info, Index = index })
+                .OrderByDescending(info => info.Info.LastPlayAt)
                 .ToList();
             token.ThrowIfCancellationRequested();
 
             // 清空集合（在 UI 线程）
-            await Dispatcher.InvokeAsync(_viewModel.GamePanelCollection.Clear, DispatcherPriority.Background);
+            await Dispatcher.InvokeAsync(_viewModel.GamePanelCollection.Clear, DispatcherPriority.Background, CancellationToken.None);
             const int batchSize = 20;
             for (int i = 0; i < itemsToAdd.Count; i += batchSize)
             {
@@ -158,7 +168,7 @@ namespace Mikoto
                 // 切回 UI 线程一次性添加一批
                 await Dispatcher.InvokeAsync(() =>
                 {
-                    var elements = batch.Select(x => CreateGameElement(x.Index)).ToList();
+                    var elements = batch.Select(x => CreateGameElement(x.Info)).ToList();
 
                     foreach (var element in elements)
                     {
@@ -174,7 +184,7 @@ namespace Mikoto
         {
             await _gameInfoInitTask;
 
-            if (_gameInfoList.Count <= 5) return;
+            if (GameHelper.AllCompletedGamesIdDict.Count <= 5) return;
             BitmapSource? image = await Task.Run(GetRandomBlurredImage);
             bool isDark = await Task.Run(() => ImageHelper.IsDarkImage(image));
             ApplySearchBarBrushes(isDark);
@@ -191,8 +201,8 @@ namespace Mikoto
 
         private BitmapSource? GetRandomBlurredImage()
         {
-            int randomId = new Random().Next(_gameInfoList.Count);
-            BitmapSource? ico = ImageHelper.GetGameIconSource(_gameInfoList[randomId].FilePath);
+            int randomId = new Random().Next(GameHelper.AllCompletedGamesIdDict.Count);
+            BitmapSource? ico = ImageHelper.GetGameIconSource(GameHelper.AllCompletedGamesIdDict.ElementAt(randomId).Value.FilePath);
             if (ico is null)
             {
                 return null;
@@ -222,9 +232,9 @@ namespace Mikoto
         /// <summary>
         /// 创建单个游戏 UI 元素
         /// </summary>
-        private Border CreateGameElement(int gid)
+        private Border CreateGameElement(GameInfo game)
         {
-            var gameInfo = _gameInfoList[gid];
+            var gameInfo = game;
             string gameName = gameInfo.GameName;
             string filePath = gameInfo.FilePath;
 
@@ -259,7 +269,6 @@ namespace Mikoto
             var border = new Border
             {
                 CornerRadius = new CornerRadius(4),
-                Name = "game" + gid,
                 Width = 150,
                 Height = 120,
                 Child = grid,
@@ -285,7 +294,7 @@ namespace Mikoto
         }
 
         private WeakReference<SettingsWindow>? _settingsWindow;
-        private Task _gameInfoInitTask;
+        private readonly Task _gameInfoInitTask;
 
         private void SettingsBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -348,13 +357,10 @@ namespace Mikoto
             var b = (Border)sender;
             b.Focus();
             var str = b.Name;
-            var temp = str.Remove(0, 4);
-            _gid = int.Parse(temp);
             DrawGameImage.Source = ((b.Child as Grid)?.Children.Cast<UIElement>().First(p => p is Image) as Image)?.Source;
             RenderOptions.SetBitmapScalingMode(DrawGameImage, BitmapScalingMode.HighQuality);
 
-            GameNameTag.Tag = _gid;
-            _viewModel.GameInfo = _gameInfoList[_gid];
+            _viewModel.GameInfo = (GameInfo)b.Tag;
 
             _viewModel.GameInfoDrawerIsOpen = true;
             e?.Handled = true;
@@ -362,7 +368,7 @@ namespace Mikoto
 
         private void GameNameTag_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            string? gameFileDirectory = Path.GetDirectoryName(_gameInfoList[(int)((TextBlock)sender).Tag].FilePath);
+            string? gameFileDirectory = Path.GetDirectoryName(_viewModel.GameInfo?.FilePath);
             if (Directory.Exists(gameFileDirectory))
             {
                 Process.Start(new ProcessStartInfo
@@ -374,7 +380,7 @@ namespace Mikoto
             }
         }
 
-        private async Task StartTranslateByGidAsync(int gid)
+        private async Task StartTranslateByGidAsync()
         {
             List<Process> gameProcessList = new();
             Stopwatch s = Stopwatch.StartNew();
@@ -383,13 +389,13 @@ namespace Mikoto
             {
                 string name;
                 //不以exe结尾的ProcessName不会自动把后缀去掉，因此对exe后缀特殊处理
-                if (Path.GetExtension(_gameInfoList[gid].FilePath).Equals(".exe", StringComparison.OrdinalIgnoreCase))
+                if (Path.GetExtension(_viewModel.GameInfo.FilePath).Equals(".exe", StringComparison.OrdinalIgnoreCase))
                 {
-                    name = Path.GetFileNameWithoutExtension(_gameInfoList[gid].FilePath);
+                    name = Path.GetFileNameWithoutExtension(_viewModel.GameInfo.FilePath);
                 }
                 else
                 {
-                    name = Path.GetFileName(_gameInfoList[gid].FilePath);
+                    name = Path.GetFileName(_viewModel.GameInfo.FilePath);
                 }
 
                 gameProcessList = Process.GetProcessesByName(name).ToList();
@@ -403,30 +409,30 @@ namespace Mikoto
 
             if (gameProcessList.Count == 0)
             {
-                Log.Warning("未检测到游戏进程，GID={Gid}", gid);
+                Log.Warning("未检测到游戏进程，游戏：{Gid}", _viewModel.GameInfo.GameName);
                 MessageBox.Show(
                     Application.Current.Resources["MainWindow_StartError_Hint"].ToString(),
                     Application.Current.Resources["MessageBox_Hint"].ToString());
                 return;
             }
 
-            App.Env.Context.GameID = _gameInfoList[gid].GameID;
+            App.Env.Context.GameID = _viewModel.GameInfo.GameID;
             App.Env.Context.TransMode = TransMode.Hook;
-            App.Env.Context.UsingDstLang = _gameInfoList[gid].DstLang;
-            App.Env.Context.UsingSrcLang = _gameInfoList[gid].SrcLang;
-            App.Env.Context.UsingRepairFunc = _gameInfoList[gid].RepairFunc;
+            App.Env.Context.UsingDstLang = _viewModel.GameInfo.DstLang;
+            App.Env.Context.UsingSrcLang = _viewModel.GameInfo.SrcLang;
+            App.Env.Context.UsingRepairFunc = _viewModel.GameInfo.RepairFunc;
 
             switch (App.Env.Context.UsingRepairFunc)
             {
                 case "RepairFun_RemoveSingleWordRepeat":
-                    Common.RepairSettings.SingleWordRepeatTimes = int.Parse(_gameInfoList[gid].RepairParamA ?? "0");
+                    Common.RepairSettings.SingleWordRepeatTimes = int.Parse(_viewModel.GameInfo.RepairParamA ?? "0");
                     break;
                 case "RepairFun_RemoveSentenceRepeat":
-                    Common.RepairSettings.SentenceRepeatFindCharNum = int.Parse(_gameInfoList[gid].RepairParamA ?? "0");
+                    Common.RepairSettings.SentenceRepeatFindCharNum = int.Parse(_viewModel.GameInfo.RepairParamA ?? "0");
                     break;
                 case "RepairFun_RegexReplace":
-                    Common.RepairSettings.Regex = _gameInfoList[gid].RepairParamA ?? string.Empty;
-                    Common.RepairSettings.Regex_Replace = _gameInfoList[gid].RepairParamB ?? string.Empty;
+                    Common.RepairSettings.Regex = _viewModel.GameInfo.RepairParamA ?? string.Empty;
+                    Common.RepairSettings.Regex_Replace = _viewModel.GameInfo.RepairParamB ?? string.Empty;
                     break;
             }
 
@@ -434,11 +440,11 @@ namespace Mikoto
 
             App.Env.TextHookService =
                 gameProcessList.Count == 1
-                    ? new TextHook.TextHookService(gameProcessList[0].Id)
-                    : new TextHook.TextHookService(gameProcessList, new MaxMemoryProcessSelector());
+                    ? new TextHookService(gameProcessList[0].Id)
+                    : new TextHookService(gameProcessList, new MaxMemoryProcessSelector());
 
             if (!App.Env.TextHookService.Init(
-                    _gameInfoList[gid].Isx64
+                    _viewModel.GameInfo.Isx64
                         ? Common.AppSettings.Textractor_Path64
                         : Common.AppSettings.Textractor_Path32))
             {
@@ -448,11 +454,11 @@ namespace Mikoto
             }
 
             await App.Env.TextHookService.StartHookAsync(
-                _gameInfoList[gid],
+                _viewModel.GameInfo,
                 Convert.ToBoolean(Common.AppSettings.AutoHook));
             Log.Information(
                 "进程注入完成，游戏名={GameName}，进程数={ProcessCount}",
-                 _gameInfoList[gid].GameName,
+                 _viewModel.GameInfo.GameName,
                 gameProcessList.Count);
 
             if (!await App.Env.TextHookService.AutoAddCustomHookToGameAsync())
@@ -536,9 +542,9 @@ namespace Mikoto
 
         private async void StartBtn_Click(object sender, RoutedEventArgs e)
         {
-            GameHelper.UpdateGameInfoByID(_gameInfoList[_gid].GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
+            GameHelper.UpdateGameInfoByID(_viewModel.GameInfo.GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
 
-            string path = GetEntranceFilePath(_gameInfoList[_gid].FilePath);
+            string path = GetEntranceFilePath(_viewModel.GameInfo.FilePath);
             if (!File.Exists(path))
             {
                 MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{path}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
@@ -547,7 +553,7 @@ namespace Mikoto
             Process.Start(path);
             _viewModel.GameInfoDrawerIsOpen = false;
             Log.Information("启动游戏，路径：{Path}", path);
-            await StartTranslateByGidAsync(_gid);
+            await StartTranslateByGidAsync();
             await RefreshAsync();
         }
 
@@ -560,9 +566,9 @@ namespace Mikoto
 
         private async void LEStartBtn_Click(object sender, RoutedEventArgs e)
         {
-            GameHelper.UpdateGameInfoByID(_gameInfoList[_gid].GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
+            GameHelper.UpdateGameInfoByID(_viewModel.GameInfo.GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
 
-            string path = GetEntranceFilePath(_gameInfoList[_gid].FilePath);
+            string path = GetEntranceFilePath(_viewModel.GameInfo.FilePath);
             if (!File.Exists(path))
             {
                 MessageBox.Show(messageBoxText: $"{Application.Current.Resources["GameFileNotExistsCheck"]}{path}", caption: Application.Current.Resources["MessageBox_Error"].ToString(), icon: MessageBoxImage.Error);
@@ -584,7 +590,7 @@ namespace Mikoto
             Process.Start(p);
             _viewModel.GameInfoDrawerIsOpen = false;
             Log.Information("通过 LE 启动游戏，路径：{Path}", path);
-            await StartTranslateByGidAsync(_gid);
+            await StartTranslateByGidAsync();
             RefreshAsync().FireAndForget();
         }
 
@@ -595,8 +601,8 @@ namespace Mikoto
         {
             if (MessageBox.Show(Application.Current.Resources["MainWindow_Drawer_DeleteGameConfirmBox"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                GameHelper.DeleteGameByID(_gameInfoList[_gid].GameID);
-                _viewModel.GamePanelCollection.Remove(_viewModel.GamePanelCollection.Where(p => p.Name == $"game{_gid}").First());
+                GameHelper.DeleteGameByID(_viewModel.GameInfo.GameID);
+                RefreshAsync().FireAndForget();
                 _viewModel.GameInfoDrawerIsOpen = false;
             }
 
@@ -604,7 +610,7 @@ namespace Mikoto
 
         private void UpdateNameBtn_Click(object sender, RoutedEventArgs e)
         {
-            Dialog.Show(new GameNameDialog(_gameInfoList[_gid]));
+            Dialog.Show(new GameNameDialog(_viewModel.GameInfo));
         }
 
         private void BlurWindow_Closing(object sender, CancelEventArgs e)
@@ -660,34 +666,33 @@ namespace Mikoto
 
         private async void AutoStartBtn_Click(object sender, RoutedEventArgs e)
         {
-            int gid = GetRunningGameGid();
-            if (gid == -1)
+            var running = GetRunningGame();
+            if (running == null)
             {
                 Growl.WarningGlobal(Application.Current.Resources["MainWindow_AutoStartError_Hint"].ToString());
             }
             else
             {
-                Log.Information("检测到正在运行的游戏：{GameName}", _gameInfoList[gid].GameName);
-                await StartTranslateByGidAsync(gid);
+                _viewModel.GameInfo=running;
+                Log.Information("检测到正在运行的游戏：{GameName}", _viewModel.GameInfo.GameName);
+                await StartTranslateByGidAsync();
             }
         }
 
         /// <summary>
         /// 寻找任何正在运行中的之前已保存过的游戏
         /// </summary>
-        /// <returns>数组索引（非GameID），-1代表未找到</returns>
-        private int GetRunningGameGid()
+        private static GameInfo? GetRunningGame()
         {
             foreach (string path in ProcessHelper.GetAppPaths())
             {
-                for (int j = 0; j < _gameInfoList.Count; j++)
+                if (GameHelper.AllCompletedGamesPathDict.TryGetValue(path, out var result))
                 {
-                    if (path.Equals(_gameInfoList[j].FilePath, StringComparison.InvariantCultureIgnoreCase))
-                        return j;
+                    return result;
                 }
             }
 
-            return -1;
+            return null;
         }
 
         private void ClipboardGuideBtn_Click(object sender, RoutedEventArgs e)
@@ -780,7 +785,7 @@ namespace Mikoto
 
         private void OpenGameInfoFileBtn_Click(object sender, RoutedEventArgs e)
         {
-            string gameInfoFilePath = Path.Combine(DataFolder.Path, "games", $"{_gameInfoList[_gid].GameID}.json");
+            string gameInfoFilePath = Path.Combine(DataFolder.Path, "games", $"{_viewModel.GameInfo.GameID}.json");
             Process.Start(new ProcessStartInfo(gameInfoFilePath) { UseShellExecute = true });
         }
 
@@ -812,6 +817,30 @@ namespace Mikoto
                 dict["SearchBarBorderFocus"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#88000000"));
             }
         }
+
+        internal void SetGameInfoModel(GameInfo game)
+        {
+            _viewModel.GameInfo=null;
+            _viewModel.GameInfo=game;
+            UpdateBorder(game);
+        }
+
+        private void UpdateBorder(GameInfo game)
+        {
+            for (int i = 0; i < _viewModel.GamePanelCollection.Count; i++)
+            {
+                var border = _viewModel.GamePanelCollection[i];
+                if (((GameInfo)border.Tag).GameID == game.GameID)
+                {
+                    // 创建新的 Border 元素
+                    var newBorder = CreateGameElement(game);
+
+                    // 替换集合里的元素，这样 ObservableCollection 会通知 UI 刷新
+                    _viewModel.GamePanelCollection[i] = newBorder;
+                }
+            }
+        }
+
     }
 }
 

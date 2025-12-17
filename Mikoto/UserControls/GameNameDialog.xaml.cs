@@ -21,7 +21,6 @@ namespace Mikoto
         private async void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             _viewModel.SaveCommand.Execute(null);
-            await MainWindow.Instance.RefreshAsync();
         }
     }
 }

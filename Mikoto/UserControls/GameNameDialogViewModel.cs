@@ -76,7 +76,7 @@ namespace Mikoto.UserControls
             _game.RepairParamA = RepairParamA;
 
             GameHelper.SaveGameInfo(_game);
-
+            MainWindow.Instance.SetGameInfoModel(_game);
         }
     }
 
