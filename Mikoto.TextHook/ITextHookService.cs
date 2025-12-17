@@ -24,6 +24,6 @@ namespace Mikoto.TextHook
         void DetachUnrelatedHooks(int pid, List<string> UsedHookAddress);
         string? GetHookAddressByMisakaCode(string MisakaCode);
         bool Init(string path);
-        Task StartHook(GameInfo gameInfo, bool AutoHook = false);
+        Task StartHookAsync(GameInfo gameInfo, bool AutoHook = false);
     }
 }

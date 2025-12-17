@@ -1,5 +1,6 @@
 ﻿using Mikoto.DataAccess;
 using Mikoto.UserControls;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace Mikoto
@@ -18,10 +19,10 @@ namespace Mikoto
             DataContext = _viewModel;
         }
 
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        private async void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             _viewModel.SaveCommand.Execute(null);
-            MainWindow.Instance.Refresh();
+            await MainWindow.Instance.RefreshAsync();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Mikoto.GuidePages
@@ -13,13 +14,10 @@ namespace Mikoto.GuidePages
             InitializeComponent();
         }
 
-        private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
+        private async void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
             //刷新主界面
-            Dispatcher.BeginInvoke(() =>
-            {
-                MainWindow.Instance.Refresh();
-            });
+            await MainWindow.Instance.RefreshAsync();
 
             //使用路由事件机制通知窗口来完成下一步操作
             PageChangeRoutedEventArgs args = new PageChangeRoutedEventArgs(PageChange.PageChangeRoutedEvent, this);
