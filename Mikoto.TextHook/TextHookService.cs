@@ -276,7 +276,7 @@ namespace Mikoto.TextHook
         /// <summary>
         /// 开始注入，会判断是否智能注入
         /// </summary>
-        public async Task StartHook(GameInfo gameInfo, bool autoHook = false)
+        public async Task StartHookAsync(GameInfo gameInfo, bool autoHook = false)
         {
             _gameInfo = gameInfo;
 

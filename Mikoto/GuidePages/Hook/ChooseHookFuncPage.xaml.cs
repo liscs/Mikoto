@@ -32,7 +32,7 @@ namespace Mikoto.GuidePages.Hook
             HookFunListView.ItemsSource = lstData;
             sum = 0;
             App.Env.TextHookService.HookMessageReceived += FilterAndDisplayData;
-            _ = App.Env.TextHookService.StartHook(_gameInfoBuilder.GameInfo, Convert.ToBoolean(Common.AppSettings.AutoHook));
+            _ = App.Env.TextHookService.StartHookAsync(_gameInfoBuilder.GameInfo, Convert.ToBoolean(Common.AppSettings.AutoHook));
         }
 
         public void FilterAndDisplayData(object sender, HookReceivedEventArgs e)

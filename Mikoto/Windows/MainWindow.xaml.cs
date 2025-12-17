@@ -4,6 +4,7 @@ using HandyControl.Tools.Extension;
 using Mikoto.Config;
 using Mikoto.DataAccess;
 using Mikoto.Enums;
+using Mikoto.Helpers;
 using Mikoto.Helpers.File;
 using Mikoto.Helpers.Graphics;
 using Mikoto.TextHook;
@@ -14,12 +15,14 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace Mikoto
@@ -43,14 +46,33 @@ namespace Mikoto
             InitializeLanguage();
             TranslatorCommon.Refresh(App.Env.ResourceService);
             InitializeComponent();
-
-            Refresh();
+            // 异步获取游戏列表
+            _gameInfoInitTask = RefreshGameInfoAsync();
+            RefreshUIAsync().FireAndForget();
+            SetRandomBlurredBackgroundAsync().FireAndForget();
             GrowlDisableSwitch();
 
             if (Environment.IsPrivilegedProcess)
             {
                 RestartAsAdminBtn.Visibility = Visibility.Collapsed;
             }
+        }
+
+        public async Task RefreshAsync()
+        {
+            await RefreshGameInfoAsync();
+            await RefreshUIAsync();
+        }
+
+        CancellationTokenSource? _refreshGameCts;
+        private async Task RefreshGameInfoAsync()
+        {
+            _refreshGameCts?.Cancel();
+            _refreshGameCts?.Dispose();
+
+            _refreshGameCts = new CancellationTokenSource();
+            var token = _refreshGameCts.Token;
+            await Task.Run(() => { _gameInfoList=GameHelper.GetAllCompletedGames(); }, _refreshGameCts.Token);
         }
 
         private static void InitializeLanguage()
@@ -62,25 +84,72 @@ namespace Mikoto
             Application.Current.Resources.MergedDictionaries[1] = languageResource;
         }
 
-        public void Refresh()
+        private CancellationTokenSource? _refreshUICts;
+
+        private async Task RefreshUIAsync()
         {
 #if DEBUG
             _viewModel.GameInfoFileButtonVisibility = Visibility.Visible;
 #endif
-            _gameInfoList = GameHelper.GetAllCompletedGames();
-            _ = InitGameLibraryPanelAsync();
-            if (_gameInfoList.Count!=0)
+
+            // 如果上一次刷新未完成，取消它
+            _refreshUICts?.Cancel();
+            _refreshUICts?.Dispose();
+
+            _refreshUICts = new CancellationTokenSource();
+            var token = _refreshUICts.Token;
+
+            try
             {
-                _viewModel.GameInfo = _gameInfoList[_gid];
+                await _gameInfoInitTask;
+                if (_gameInfoList.Count > 0)
+                {
+                    _viewModel.GameInfo = _gameInfoList.First();
+                }
+
+                await InitGameLibraryPanelAsync(token);
+
+            }
+            catch (OperationCanceledException)
+            {
+                // 刷新被取消，不处理
+            }
+        }
+        private async Task InitGameLibraryPanelAsync(CancellationToken token = default)
+        {
+            var itemsToAdd = _gameInfoList
+                .Select((info, index) => new { Info = info, Index = index })
+                .ToList();
+
+            // 清空集合（在 UI 线程）
+            await Dispatcher.InvokeAsync(_viewModel.GamePanelCollection.Clear);
+            const int batchSize = 20;
+            for (int i = 0; i < itemsToAdd.Count; i += batchSize)
+            {
+                token.ThrowIfCancellationRequested();
+                var batch = itemsToAdd.Skip(i).Take(batchSize);
+                // 切回 UI 线程一次性添加一批
+                await Dispatcher.InvokeAsync(() =>
+                {
+                    var elements = batch.Select(x => CreateGameElement(x.Index)).ToList();
+
+                    foreach (var element in elements)
+                    {
+                        _viewModel.GamePanelCollection.Add(element);
+                    }
+                });
+                // 让出 UI 线程，让界面有时间渲染
+                await Task.Yield();
             }
         }
 
-        private async void SetRandomBlurredBackground()
+        private async Task SetRandomBlurredBackgroundAsync()
         {
-            if (_gameInfoList.Count <= 5) return;
+            await _gameInfoInitTask;
 
+            if (_gameInfoList.Count <= 5) return;
             BitmapSource? image = await Task.Run(GetRandomBlurredImage);
-            bool isDark = ImageHelper.IsDarkImage(image);
+            bool isDark = await Task.Run(() => ImageHelper.IsDarkImage(image));
             ApplySearchBarBrushes(isDark);
             if (image != null)
             {
@@ -104,24 +173,6 @@ namespace Mikoto
             else
             {
                 return ImageHelper.GetBlurImage(ico);
-            }
-        }
-
-        /// <summary>
-        /// 游戏库瀑布流初始化（逐个添加）
-        /// </summary>
-        private async Task InitGameLibraryPanelAsync()
-        {
-            _viewModel.GamePanelCollection.Clear();
-            for (var i = 0; i < _gameInfoList.Count; i++)
-            {
-                await Task.Yield();
-                await Application.Current.Dispatcher.BeginInvoke(() =>
-                 {
-                     var gameBorder = CreateGameElement(i);
-                     _viewModel.GamePanelCollection.Add(gameBorder);
-                 });
-
             }
         }
 
@@ -207,6 +258,7 @@ namespace Mikoto
         }
 
         private WeakReference<SettingsWindow>? _settingsWindow;
+        private Task _gameInfoInitTask;
 
         private void SettingsBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -295,7 +347,7 @@ namespace Mikoto
             }
         }
 
-        private async Task StartTranslateByGid(int gid)
+        private async Task StartTranslateByGidAsync(int gid)
         {
             List<Process> gameProcessList = new();
             Stopwatch s = Stopwatch.StartNew();
@@ -368,7 +420,7 @@ namespace Mikoto
                 return;
             }
 
-            await App.Env.TextHookService.StartHook(
+            await App.Env.TextHookService.StartHookAsync(
                 _gameInfoList[gid],
                 Convert.ToBoolean(Common.AppSettings.AutoHook));
             Log.Information(
@@ -468,8 +520,8 @@ namespace Mikoto
             Process.Start(path);
             _viewModel.GameInfoDrawerIsOpen = false;
             Log.Information("启动游戏，路径：{Path}", path);
-            await StartTranslateByGid(_gid);
-            Refresh();
+            await StartTranslateByGidAsync(_gid);
+            await RefreshAsync();
         }
 
         private static string GetEntranceFilePath(string filePath)
@@ -505,8 +557,8 @@ namespace Mikoto
             Process.Start(p);
             _viewModel.GameInfoDrawerIsOpen = false;
             Log.Information("通过 LE 启动游戏，路径：{Path}", path);
-            await StartTranslateByGid(_gid);
-            Refresh();
+            await StartTranslateByGidAsync(_gid);
+            RefreshAsync().FireAndForget();
         }
 
         /// <summary>
@@ -589,7 +641,7 @@ namespace Mikoto
             else
             {
                 Log.Information("检测到正在运行的游戏：{GameName}", _gameInfoList[gid].GameName);
-                await StartTranslateByGid(gid);
+                await StartTranslateByGidAsync(gid);
             }
         }
 
@@ -662,12 +714,18 @@ namespace Mikoto
             }
         }
 
-        private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private async void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (e.NewValue is bool newValue && newValue == true)
+            if (e.NewValue is bool visible)
             {
-                SetRandomBlurredBackground();
-                NotifyIconContextContent.Show();
+                if (visible)
+                {
+                    NotifyIconContextContent.Show();
+                }
+                else
+                {
+                    SetRandomBlurredBackgroundAsync().FireAndForget();
+                }
             }
         }
 
