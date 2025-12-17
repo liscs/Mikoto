@@ -375,6 +375,7 @@ namespace Mikoto.TextHook
                         Regex regex = MisakaCodeRegex();
                         //保存的misakacode
                         string savedMisakaCode = _gameInfo.MisakaHookCode;
+
                         //取得的misakacode
                         string obtainedMisakaCode = data.MisakaHookCode;
 
@@ -396,12 +397,20 @@ namespace Mikoto.TextHook
                         {
                             if (!isBestMatchCode)
                             {
-                                Log.Information(
-                                    "更新最佳匹配 MisakaCode({SavedCode})，旧={OldCode}，新={NewCode}",
-                                    savedMisakaCode,
-                                    _bestMatchCode,
-                                    obtainedMisakaCode
-                                );
+                                if (_bestMatchCode=="")
+                                {
+                                    Log.Information("建立匹配 MisakaCode({SavedCode})，匹配={NewCode}",savedMisakaCode,obtainedMisakaCode);
+                                }
+                                else
+                                {
+                                    Log.Warning(
+                                         "更新最佳匹配 MisakaCode({SavedCode})，旧={OldCode}，新={NewCode}",
+                                         savedMisakaCode,
+                                         _bestMatchCode,
+                                         obtainedMisakaCode
+                                     );
+                                }
+
                                 _bestMatchCode = obtainedMisakaCode;
                             }
 
