@@ -75,7 +75,7 @@ namespace Mikoto
                 await Task.Run(() =>
                 {
                     token.ThrowIfCancellationRequested();
-                    return GameHelper.GetAllCompletedGames();
+                    GameHelper.GetAllCompletedGames();
                 }, token);
             }
             catch (OperationCanceledException)
@@ -153,14 +153,13 @@ namespace Mikoto
         private async Task InitGameLibraryPanelAsync(CancellationToken token = default)
         {
             var itemsToAdd = GameHelper.AllCompletedGamesIdDict.Values
-                .Select((info, index) => new { Info = info, Index = index })
-                .OrderByDescending(info => info.Info.LastPlayAt)
+                .OrderByDescending(info => info.LastPlayAt)
                 .ToList();
             token.ThrowIfCancellationRequested();
 
             // 清空集合（在 UI 线程）
             await Dispatcher.InvokeAsync(_viewModel.GamePanelCollection.Clear, DispatcherPriority.Background, CancellationToken.None);
-            const int batchSize = 20;
+            const int batchSize = 30;
             for (int i = 0; i < itemsToAdd.Count; i += batchSize)
             {
                 token.ThrowIfCancellationRequested();
@@ -168,7 +167,7 @@ namespace Mikoto
                 // 切回 UI 线程一次性添加一批
                 await Dispatcher.InvokeAsync(() =>
                 {
-                    var elements = batch.Select(x => CreateGameElement(x.Info)).ToList();
+                    var elements = batch.Select(x => CreateGameElement(x)).ToList();
 
                     foreach (var element in elements)
                     {

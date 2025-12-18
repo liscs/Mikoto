@@ -40,11 +40,10 @@ namespace Mikoto.DataAccess
 
 
         /// <summary>
-        /// 得到游戏库中所有有效游戏的信息
+        /// 得到游戏库中所有有效游戏的信息。同时删除无效游戏信息。
         /// </summary>
-        public static List<GameInfo> GetAllCompletedGames()
+        public static void GetAllCompletedGames()
         {
-            List<GameInfo> list = new();
             AllCompletedGamesIdDict.Clear();
             AllCompletedGamesPathDict.Clear();
             foreach (FileInfo fileInfo in _gameInfoDirectory.GetFiles())
@@ -57,12 +56,10 @@ namespace Mikoto.DataAccess
                         File.Delete(fileInfo.FullName);
                         continue;
                     }
-                    list.Add(gameInfo);
                     AllCompletedGamesIdDict.Add(gameInfo.GameID, gameInfo);
                     AllCompletedGamesPathDict.Add(gameInfo.FilePath, gameInfo);
                 }
             }
-            return list.OrderByDescending(p => p.LastPlayAt).ThenByDescending(p => p.GameName).ToList();
         }
 
 
