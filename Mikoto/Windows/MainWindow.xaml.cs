@@ -75,7 +75,7 @@ namespace Mikoto
                 await Task.Run(() =>
                 {
                     token.ThrowIfCancellationRequested();
-                    GameHelper.GetAllCompletedGames();
+                    App.Env.GameInfoService.GetAllCompletedGames();
                 }, token);
             }
             catch (OperationCanceledException)
@@ -117,7 +117,7 @@ namespace Mikoto
 
                 token.ThrowIfCancellationRequested();
 
-                var dict = GameHelper.AllCompletedGamesIdDict;
+                var dict = App.Env.GameInfoService.AllCompletedGamesIdDict;
 
                 if (dict.Count == 0)
                 {
@@ -152,7 +152,7 @@ namespace Mikoto
 
         private async Task InitGameLibraryPanelAsync(CancellationToken token = default)
         {
-            var itemsToAdd = GameHelper.AllCompletedGamesIdDict.Values
+            var itemsToAdd = App.Env.GameInfoService.AllCompletedGamesIdDict.Values
                 .OrderByDescending(info => info.LastPlayAt)
                 .ToList();
             token.ThrowIfCancellationRequested();
@@ -183,7 +183,7 @@ namespace Mikoto
         {
             await _gameInfoInitTask;
 
-            if (GameHelper.AllCompletedGamesIdDict.Count <= 5) return;
+            if (App.Env.GameInfoService.AllCompletedGamesIdDict.Count <= 5) return;
             BitmapSource? image = await Task.Run(GetRandomBlurredImage);
             bool isDark = await Task.Run(() => ImageHelper.IsDarkImage(image));
             ApplySearchBarBrushes(isDark);
@@ -200,8 +200,8 @@ namespace Mikoto
 
         private BitmapSource? GetRandomBlurredImage()
         {
-            int randomId = new Random().Next(GameHelper.AllCompletedGamesIdDict.Count);
-            BitmapSource? ico = ImageHelper.GetGameIconSource(GameHelper.AllCompletedGamesIdDict.ElementAt(randomId).Value.FilePath);
+            int randomId = new Random().Next(App.Env.GameInfoService.AllCompletedGamesIdDict.Count);
+            BitmapSource? ico = ImageHelper.GetGameIconSource(App.Env.GameInfoService.AllCompletedGamesIdDict.ElementAt(randomId).Value.FilePath);
             if (ico is null)
             {
                 return null;
@@ -541,7 +541,7 @@ namespace Mikoto
 
         private async void StartBtn_Click(object sender, RoutedEventArgs e)
         {
-            GameHelper.UpdateGameInfoByID(_viewModel.GameInfo.GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
+            App.Env.GameInfoService.UpdateGameInfoByID(_viewModel.GameInfo.GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
 
             string path = GetEntranceFilePath(_viewModel.GameInfo.FilePath);
             if (!File.Exists(path))
@@ -565,7 +565,7 @@ namespace Mikoto
 
         private async void LEStartBtn_Click(object sender, RoutedEventArgs e)
         {
-            GameHelper.UpdateGameInfoByID(_viewModel.GameInfo.GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
+            App.Env.GameInfoService.UpdateGameInfoByID(_viewModel.GameInfo.GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
 
             string path = GetEntranceFilePath(_viewModel.GameInfo.FilePath);
             if (!File.Exists(path))
@@ -600,7 +600,7 @@ namespace Mikoto
         {
             if (MessageBox.Show(Application.Current.Resources["MainWindow_Drawer_DeleteGameConfirmBox"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                GameHelper.DeleteGameByID(_viewModel.GameInfo.GameID);
+                App.Env.GameInfoService.DeleteGameByID(_viewModel.GameInfo.GameID);
                 RefreshAsync().FireAndForget();
                 _viewModel.GameInfoDrawerIsOpen = false;
             }
@@ -665,7 +665,7 @@ namespace Mikoto
 
         private async void AutoStartBtn_Click(object sender, RoutedEventArgs e)
         {
-            var running = GetRunningGame();
+            var running = App.Env.GameInfoService.GetRunningGame();
             if (running == null)
             {
                 Growl.WarningGlobal(Application.Current.Resources["MainWindow_AutoStartError_Hint"].ToString());
@@ -678,21 +678,7 @@ namespace Mikoto
             }
         }
 
-        /// <summary>
-        /// 寻找任何正在运行中的之前已保存过的游戏
-        /// </summary>
-        private static GameInfo? GetRunningGame()
-        {
-            foreach (string path in ProcessHelper.GetAppPaths())
-            {
-                if (GameHelper.AllCompletedGamesPathDict.TryGetValue(path, out var result))
-                {
-                    return result;
-                }
-            }
 
-            return null;
-        }
 
         private void ClipboardGuideBtn_Click(object sender, RoutedEventArgs e)
         {

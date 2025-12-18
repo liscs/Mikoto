@@ -1,6 +1,6 @@
 ﻿using HandyControl.Controls;
-using Mikoto.DataAccess;
 using Mikoto.Helpers.Graphics;
+using Mikoto.ProcessInterop;
 using Mikoto.TextHook;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -89,7 +89,7 @@ namespace Mikoto.GuidePages.Hook
                 {
                     _gameInfoBuilder.Reset();
                     _gameInfoBuilder.GameProcessId = pid;
-                    _gameInfoBuilder.GameInfo = GameHelper.GetGameByPath(filepath);
+                    _gameInfoBuilder.GameInfo = App.Env.GameInfoService.GetGameByPath(filepath);
                     App.Env.Context.GameID = _gameInfoBuilder.GameInfo.GameID;
                     _gameInfoBuilder.GameInfo.Isx64 = isx64;
 

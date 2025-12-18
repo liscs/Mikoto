@@ -35,6 +35,7 @@
 		<ProjectReference Include="..\Mikoto.DataAccess\Mikoto.DataAccess.csproj" />
 		<ProjectReference Include="..\Mikoto.Dictionary\Mikoto.Dictionary.csproj" />
 		<ProjectReference Include="..\Mikoto.Mecab\Mikoto.Mecab.csproj" />
+		<ProjectReference Include="..\Mikoto.ProcessInterop\Mikoto.ProcessInterop.csproj" />
 		<ProjectReference Include="..\Mikoto.TextHook\Mikoto.TextHook.csproj" />
 		<ProjectReference Include="..\Mikoto.Translators\Mikoto.Translators.csproj" />
 		<ProjectReference Include="..\Mikoto.TransOptimization\Mikoto.TransOptimization.csproj" />

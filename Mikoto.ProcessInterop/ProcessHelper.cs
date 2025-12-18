@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Mikoto.TextHook
+namespace Mikoto.ProcessInterop
 {
     public static class ProcessHelper
     {

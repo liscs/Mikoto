@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Xunit;
 
-namespace Mikoto.TextHook.Tests;
+namespace Mikoto.ProcessInterop.Tests;
 
 public class ProcessHelperTests
 {

@@ -11,6 +11,7 @@ public class AppEnvironment
     public IResourceService ResourceService { get; }
     public IFileService FileService { get; }
     public HistoryExporter HistoryExporter { get; }
+    public IGameInfoService GameInfoService { get; } = new GameInfoService();
 
     public AppEnvironment()
     {
