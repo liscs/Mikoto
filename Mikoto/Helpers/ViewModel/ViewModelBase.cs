@@ -17,5 +17,14 @@ namespace Mikoto.Helpers.ViewModel
 
             return false;
         }
+
+        /// <summary>
+        /// 手动触发通知的方法
+        /// </summary>
+        protected void RaisePropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }

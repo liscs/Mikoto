@@ -820,8 +820,9 @@ namespace Mikoto
 
         internal void SetGameInfoModel(GameInfo game)
         {
-            _viewModel.GameInfo=null;
             _viewModel.GameInfo=game;
+            // 同一个引用，不会自动刷新视图模型，需要手动触发
+            _viewModel.RefreshGameInfo();
             UpdateBorder(game);
         }
 

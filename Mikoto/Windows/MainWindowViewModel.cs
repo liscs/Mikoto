@@ -27,7 +27,12 @@ namespace Mikoto.Windows
         }
 
         private GameInfo gameInfo = new();
-        public GameInfo GameInfo { get => gameInfo; set => SetProperty(ref gameInfo, value); }
+        public GameInfo GameInfo
+        {
+            get => gameInfo;
+            set => SetProperty(ref gameInfo, value);
+        }
+        public void RefreshGameInfo() => RaisePropertyChanged(nameof(GameInfo));
 
         private Visibility gameInfoFileButtonVisibility = Visibility.Collapsed;
 
