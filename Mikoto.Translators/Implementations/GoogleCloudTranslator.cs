@@ -1,4 +1,5 @@
 ﻿using Mikoto.Translators.Interfaces;
+using Serilog;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -149,16 +150,18 @@ namespace Mikoto.Translators.Implementations
                             errorInfo = $"HTTP Error {response.StatusCode}. Raw Response: {errorDetails}";
                         }
                     }
-                    catch (JsonException)
+                    catch (JsonException ex)
                     {
+                        Log.Error(ex, "解析 Google 翻译接口错误响应的 JSON 失败");
                         errorInfo = $"HTTP Error {response.StatusCode}. Failed to parse error JSON. Raw: {errorDetails}";
                     }
-
+                    Log.Error("Google 翻译接口返回错误，错误信息：{ErrorInfo}", errorInfo);
                     return null; // 错误处理完成，返回 null
                 }
             }
             catch (HttpRequestException ex)
             {
+                Log.Error(ex, "调用 Google 翻译接口时发生 HTTP 请求异常");
                 errorInfo = $"HTTP Request Error: {ex.Message}";
                 return null;
             }
@@ -175,6 +178,7 @@ namespace Mikoto.Translators.Implementations
             }
             catch (JsonException ex)
             {
+                Log.Error(ex, "解析 Google 翻译接口错误响应的 JSON 失败");
                 errorInfo = $"JSON Parse Error: {ex.Message}. Raw: {retString}";
                 return null;
             }
@@ -187,6 +191,7 @@ namespace Mikoto.Translators.Implementations
             }
             else
             {
+                Log.Error("Google 翻译接口返回成功状态，但未包含翻译数据，原始响应：{Raw}", retString);
                 errorInfo = "Google API returned success status, but no translation data found.";
                 return null;
             }
