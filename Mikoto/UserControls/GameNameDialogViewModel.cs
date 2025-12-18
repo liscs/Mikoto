@@ -69,6 +69,7 @@ namespace Mikoto.UserControls
             _game.GameName = GameName;
             _game.FilePath = FilePath;
             _game.DstLang = DstLang;
+            _game.SrcLang = SrcLang;
             _game.HookCode = HookCode;
             _game.MisakaHookCode = MisakaHookCode;
             _game.Isx64 = IsX64;
