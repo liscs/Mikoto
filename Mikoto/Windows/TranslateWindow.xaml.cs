@@ -2,6 +2,7 @@
 using Mikoto.ArtificialTrans;
 using Mikoto.Config;
 using Mikoto.Enums;
+using Mikoto.Helpers;
 using Mikoto.Helpers.Graphics;
 using Mikoto.Mecab;
 using Mikoto.TextHook;
@@ -465,8 +466,8 @@ namespace Mikoto
                 UpdateSourceAsync(repairedText);
 
                 // 分别获取两个翻译结果
-                TranslateApiSubmit(repairedText, 1, isRenew);
-                TranslateApiSubmit(repairedText, 2, isRenew);
+                TranslateApiSubmitAsync(repairedText, _translator1, FirstTransText, isRenew).FireAndForget();
+                TranslateApiSubmitAsync(repairedText, _translator2, SecondTransText, isRenew).FireAndForget();
             }
         }
 
@@ -802,27 +803,10 @@ namespace Mikoto
         /// <param name="repairedText">原文</param>
         /// <param name="tranResultIndex">翻译框序号 (1 or 2)</param>
         /// <param name="isRenew">是否是重新获取翻译</param>
-        private async void TranslateApiSubmit(string repairedText, int tranResultIndex, bool isRenew = false)
+        private async Task TranslateApiSubmitAsync(string repairedText, ITranslator? selectedTranslator,OutlineText controlToUpdate, bool isRenew = false)
         {
             // 4. 翻译前预处理
             string beforeString = _beforeTransHandle.AutoHandle(repairedText);
-
-            ITranslator? selectedTranslator = null;
-            OutlineText targetTextBlock; // Assuming TextBlock, adjust if it's RichTextBox or other
-
-            switch (tranResultIndex)
-            {
-                case 1:
-                    selectedTranslator = _translator1;
-                    targetTextBlock = FirstTransText; // Assuming FirstTransText is a TextBlock
-                    break;
-                case 2:
-                    selectedTranslator = _translator2;
-                    targetTextBlock = SecondTransText; // Assuming SecondTransText is a TextBlock
-                    break;
-                default:
-                    throw new UnreachableException();
-            }
 
             // 5. 提交翻译
             string? transRes = string.Empty;
@@ -833,6 +817,7 @@ namespace Mikoto
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
+                        Log.Warning("{DisplayName}翻译返回值为null，错误信息：{Error}", selectedTranslator.DisplayName,selectedTranslator.GetLastError());
                         Growl.WarningGlobal($"{selectedTranslator.DisplayName} translation failed: {selectedTranslator.GetLastError()}");
                     });
                     return;
@@ -844,18 +829,16 @@ namespace Mikoto
             string afterString = _afterTransHandle.AutoHandle(transRes);
 
             // 7. 翻译结果显示到窗口上
-            // Using BeginInvoke for UI updates is generally good as it doesn't block the current thread
-            // if the UI thread is busy. Send priority ensures it's processed promptly.
-            _ = Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                targetTextBlock.Text = afterString;
-                targetTextBlock.Effect = Common.AppSettings.TF_EnableDropShadow ? _dropShadowEffect : null;
+                controlToUpdate.Text = afterString;
+                controlToUpdate.Effect = Common.AppSettings.TF_EnableDropShadow ? _dropShadowEffect : null;
 
                 if (Common.AppSettings.TF_TransAnimationCheckEnabled)
                 {
-                    StartFadeInAnimation(targetTextBlock); // Assuming StartFadeInAnimation can take a TextBlock
+                    StartFadeInAnimation(controlToUpdate); 
                 }
-            }), DispatcherPriority.Send);
+            }), DispatcherPriority.Send).Task.FireAndForget();
 
 
             if (!isRenew && selectedTranslator != null)
@@ -1132,8 +1115,8 @@ namespace Mikoto
 
         private void Repeat_Item_Click(object sender, RoutedEventArgs e)
         {
-            TranslateApiSubmit(_currentSrcText, 1, true);
-            TranslateApiSubmit(_currentSrcText, 2, true);
+            TranslateApiSubmitAsync(_currentSrcText, _translator1, FirstTransText, true).FireAndForget();
+            TranslateApiSubmitAsync(_currentSrcText, _translator2, SecondTransText, true).FireAndForget();
         }
 
         private void Min_Item_Click(object sender, RoutedEventArgs e)
