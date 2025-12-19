@@ -358,13 +358,25 @@
                         <TextBlock Name="GameNameTag"
                                    Text="{Binding GameInfo.GameName}"
                                    Foreground="{DynamicResource PrimaryForeground}"
-                                   MouseEnter="GameNameTag_MouseEnter"
-                                   MouseLeave="GameNameTag_MouseLeave"
                                    TextAlignment="Center"
                                    Margin="10,0,10,5"
                                    FontSize="{DynamicResource SubHeadFontSize}"
                                    TextWrapping="Wrap"
-                                   PreviewMouseLeftButtonUp="GameNameTag_PreviewMouseLeftButtonUp" />
+                                   PreviewMouseLeftButtonUp="GameNameTag_PreviewMouseLeftButtonUp">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextDecorations"
+                                            Value="None" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="True">
+                                            <Setter Property="TextDecorations"
+                                                    Value="Underline" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                         <TextBlock  Text="{Binding GameInfo.LastPlayAt, Converter={StaticResource LocalDateTimeConverter}}"
                                     Foreground="{DynamicResource PrimaryForeground}"
                                     TextAlignment="Center"

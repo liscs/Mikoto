@@ -746,10 +746,6 @@ namespace Mikoto
             }
         }
 
-        private void GameNameTag_MouseEnter(object sender, MouseEventArgs e) => GameNameTag.TextDecorations = TextDecorations.Underline;
-
-        private void GameNameTag_MouseLeave(object sender, MouseEventArgs e) => GameNameTag.TextDecorations = null;
-
         private void DrawGameImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
