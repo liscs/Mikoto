@@ -61,7 +61,6 @@
   <sys:String x:Key="YandexTransSettingsPage_apiKey">Yandex APIキー</sys:String>
   <sys:String x:Key="YandexTranslator">ヤンデックス翻訳</sys:String>
   <sys:String x:Key="YandexTransSettingsPage_Introduce">Yandex の翻訳にはインターネット接続が必要ですが、海外のサーバーはネットワーク速度が遅いです。翻訳の品質は平均的です。登録にはクレジットカード認証が必要です。</sys:String>
-  <sys:String x:Key="API_testCase">このソフトを使ってくれてありがとう！</sys:String>
   <sys:String x:Key="Hook_Error_Hint">フックのインストールに失敗しました</sys:String>
   <sys:String x:Key="ScreenCaptureWindow_Area">マウスの左ボタンを押したまま、マウスをドラッグして識別する領域を描画します。完了を確認したら、右ボタンをクリックして終了します。</sys:String>
   <sys:String x:Key="SettingsMenu_TranslatorSettings_Baidu">百度翻訳者</sys:String>

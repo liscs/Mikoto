@@ -61,7 +61,6 @@
   <sys:String x:Key="YandexTransSettingsPage_apiKey">Yandex API 키</sys:String>
   <sys:String x:Key="YandexTranslator">Yandex 번역</sys:String>
   <sys:String x:Key="YandexTransSettingsPage_Introduce">Yandex 번역에는 인터넷 연결이 필요하며 외국 서버의 네트워크 속도가 느립니다. 번역 품질은 보통입니다. 등록하려면 신용카드 확인이 필요합니다.</sys:String>
-  <sys:String x:Key="API_testCase">このソフトを使ってくれてありがとう！</sys:String>
   <sys:String x:Key="Hook_Error_Hint">후크를 설치하지 못했습니다.</sys:String>
   <sys:String x:Key="ScreenCaptureWindow_Area">마우스 왼쪽 버튼을 누른 상태에서 마우스를 드래그하여 식별할 영역을 그립니다. 완료를 확인한 후 오른쪽 버튼을 클릭하여 종료합니다.</sys:String>
   <sys:String x:Key="SettingsMenu_TranslatorSettings_Baidu">바이두 번역기</sys:String>

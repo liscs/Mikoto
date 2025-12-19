@@ -10,7 +10,8 @@
                 <ResourceDictionary Source="lang/zh-CN.xaml" />
                 <!--显示用本地化资源-->
                 <ResourceDictionary Source="lang/zh-CN.xaml" />
-
+                <!--语言无关的字符串资源-->
+                <ResourceDictionary Source="lang/invariant.xaml" />
                 <!--主题-->
                 <ResourceDictionary Source="Themes/LightTheme.xaml" />
                 <ResourceDictionary Source="Styles/Styles.xaml" />
