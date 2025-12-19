@@ -1,6 +1,7 @@
 ﻿using Mikoto.DataAccess;
 using Mikoto.Helpers.ViewModel;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,17 +13,17 @@ namespace Mikoto.Windows
     {
         public ObservableCollection<Border> GamePanelCollection { get; set; } = new();
 
-        private Visibility _LEEnabled;
-        public Visibility LEEnabled
+        private Visibility _leStartVisibility;
+        public Visibility LEStartVisibility
         {
             get
             {
-                return _LEEnabled;
+                return _leStartVisibility;
             }
 
             set
             {
-                SetProperty(ref _LEEnabled, value);
+                SetProperty(ref _leStartVisibility, value);
             }
         }
 
@@ -41,7 +42,7 @@ namespace Mikoto.Windows
         private Effect? _gameCollectionEffect = null;
         public Effect? GameCollectionEffect { get => _gameCollectionEffect; set => SetProperty(ref _gameCollectionEffect, value); }
 
-        private BlurEffect _blur = new BlurEffect();
+        private readonly BlurEffect _blur = new();
 
         private bool gameInfoDrawerIsOpen;
         public bool GameInfoDrawerIsOpen
@@ -73,7 +74,7 @@ namespace Mikoto.Windows
             {
                 foreach (var border in GamePanelCollection)
                 {
-                    if (((GameInfo)(border.Tag)).GameName.Contains(searchText))
+                    if (((GameInfo)border.Tag).GameName.Contains(searchText))
                     {
                         border.Visibility = Visibility.Visible;
                     }

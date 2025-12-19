@@ -30,7 +30,7 @@ namespace Mikoto
     {
         public static MainWindow Instance { get; set; } = default!;
 
-        private MainWindowViewModel _viewModel = new();
+        private readonly MainWindowViewModel _viewModel = new();
         public MainWindow()
         {
             TextRepair.InitCustomScripts();
@@ -104,7 +104,7 @@ namespace Mikoto
 #if DEBUG
             _viewModel.GameInfoFileButtonVisibility = Visibility.Visible;
 #endif
-
+            _viewModel.LEStartVisibility= Path.Exists(Common.AppSettings.LEPath) ? Visibility.Visible : Visibility.Collapsed;
             var cts = new CancellationTokenSource();
             var oldCts = Interlocked.Exchange(ref _refreshUICts, cts);
             oldCts?.Cancel();
@@ -827,6 +827,10 @@ namespace Mikoto
             }
         }
 
+        internal void SetLeStartVisibility(Visibility visible)
+        {
+            _viewModel.LEStartVisibility = visible;
+        }
     }
 }
 

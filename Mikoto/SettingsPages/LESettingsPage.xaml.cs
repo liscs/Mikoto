@@ -49,11 +49,11 @@ namespace Mikoto.SettingsPages
             {
                 if (Path.Exists(Common.AppSettings.LEPath))
                 {
-                    mainWindow.LEStartButton.Visibility = Visibility.Visible;
+                    mainWindow.SetLeStartVisibility(Visibility.Visible);
                 }
                 else
                 {
-                    mainWindow.LEStartButton.Visibility = Visibility.Collapsed;
+                    mainWindow.SetLeStartVisibility(Visibility.Collapsed);
                 }
             }
         }
