@@ -75,7 +75,7 @@ namespace Mikoto.Translators
             );
 
             _creatorMap.Add(nameof(AzureTranslator), (settings, displayName) =>
-                new AzureTranslator(displayName, settings.AzureSecretKey, settings.AzureLocation)
+                new AzureTranslator(displayName, settings.AzureSecretKey, settings.AzureLocation, TranslateHttpClient.Instance)
             );
 
             _creatorMap.Add(nameof(ArtificialTranslator), (settings, displayName) =>

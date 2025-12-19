@@ -30,7 +30,7 @@ namespace Mikoto.Translators.Implementations
             object[] body = new object[] { new { Text = textToTranslate } };
             var requestBody = JsonSerializer.Serialize(body);
             AzureTransOutInfo oinfo;
-            var client = TranslateHttpClient.Instance;
+            var client = _httpClient;
             using (var request = new HttpRequestMessage())
             {
                 // Build the request.
@@ -79,13 +79,14 @@ namespace Mikoto.Translators.Implementations
             }
         }
 
-        public AzureTranslator(string displayName, string secretKey, string location)
+        public AzureTranslator(string displayName, string secretKey, string location, HttpClient instance)
         {
             DisplayName = displayName;
             this.secretKey = secretKey;
             this.location = location;
+            _httpClient = instance;
         }
-
+        HttpClient _httpClient;
 
         public string GetLastError()
         {

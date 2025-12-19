@@ -84,7 +84,34 @@ namespace Mikoto
 
         private void Item_AzureTrans_Selected(object sender, RoutedEventArgs e)
         {
-            this.SettingFrame.Navigate(new AzureTransSettingsPage());
+            var config = new ApiConfigDefinition
+            {
+                Introduce = App.Env.ResourceService.Get("AzureTransSettingsPage_Introduce"),
+                SecretKey = new ApiFieldDefinition
+                {
+                    Title = App.Env.ResourceService.Get("AzureTransSettingsPage_secretKey"),
+                    Value = Common.AppSettings.AzureSecretKey,
+                },
+                Region = new ApiFieldDefinition
+                {
+                    Title = App.Env.ResourceService.Get("AzureTransSettingsPage_location"),
+                    Value = Common.AppSettings.AzureLocation,
+                },
+                ApplyUrl = AzureTranslator.GetUrl_API(),
+                DocUrl = AzureTranslator.GetUrl_Doc(),
+                BillingUrl = AzureTranslator.GetUrl_Bill(),
+                LangCodeUrl = AzureTranslator.GetUrl_lang(),
+                ConstructeTranslator = () =>
+                {
+                    return new AzureTranslator(App.Env.ResourceService.Get(nameof(AzureTranslator)), Common.AppSettings.AzureSecretKey, Common.AppSettings.AzureLocation, TranslateHttpClient.Instance);
+                },
+                SaveConfig = (fields) =>
+                {
+                    Common.AppSettings.AzureSecretKey = fields.SecretKey?.Value??string.Empty;
+                    Common.AppSettings.AzureLocation = fields.Region?.Value??string.Empty;
+                }
+            };
+            this.SettingFrame.Navigate(new CommonTranslatorSettingsPage(config));
         }
 
         private void Item_TXOTrans_Selected(object sender, RoutedEventArgs e)
