@@ -3,6 +3,7 @@ using Microsoft.CognitiveServices.Speech;
 using Microsoft.Scripting.Utils;
 using Mikoto.TTS;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -28,9 +29,10 @@ namespace Mikoto.SettingsPages.TTSPages
             _viewModel.EnableAutoSpeak = Common.AppSettings.AzureEnableAutoSpeak;
 
             azureTTS = new(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceVolume, Common.AppSettings.AzureTTSVoiceStyle, Common.AppSettings.AzureTTSProxy);
-            GetVoices(this, null);
+            _initVoiceListTask = GetVoicesAsync();
         }
 
+        private readonly Task _initVoiceListTask;
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -64,8 +66,9 @@ namespace Mikoto.SettingsPages.TTSPages
             Common.AppSettings.AzureTTSProxy = text;
         }
 
-        private void VoiceNameComboBox_SelectionChanged(object sender, RoutedEventArgs e)
+        private async void VoiceNameComboBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
+            await _initVoiceListTask;
             if (_viewModel.Voices.Count == 0) { return; }
         }
 
@@ -75,16 +78,26 @@ namespace Mikoto.SettingsPages.TTSPages
         }
 
 
-        private async void GetVoices(object sender, RoutedEventArgs? e)
+        private async void Voice_Updating(object sender, RoutedEventArgs? e)
+        {
+            bool flowControl = await GetVoicesAsync();
+            if (!flowControl)
+            {
+                return;
+            }
+        }
+
+        private async Task<bool> GetVoicesAsync()
         {
             SynthesisVoicesResult? synthesisVoicesResult = await azureTTS.GetVoices();
             if (synthesisVoicesResult == null)
             {
                 Growl.Info(Application.Current.Resources["TTSSettingsPage_AzureSettingErrorInfo"].ToString());
-                return;
+                return false;
             }
             _viewModel.Voices = synthesisVoicesResult.Voices.ToList();
             SetSavedVoice(Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceStyle);
+            return true;
         }
 
         private void SetSavedVoice(string savedVoice, string savedStyle)
@@ -93,16 +106,18 @@ namespace Mikoto.SettingsPages.TTSPages
             _viewModel.SelectedVoiceStyle = savedStyle;
         }
 
-        private void VoiceLocaleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void VoiceLocaleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            await _initVoiceListTask;
             if (e.AddedItems.Count != 0)
             {
                 _viewModel.VoiceNames = _viewModel.Voices.Where(p => p.Locale == e.AddedItems[0] as string).Select(p => p.LocalName);
             }
         }
 
-        private void VoiceNameComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void VoiceNameComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            await _initVoiceListTask;
             if (e.AddedItems.Count != 0)
             {
                 _viewModel.SelectedVoice = _viewModel.Voices.First(p => p.LocalName == e.AddedItems[0] as string);
@@ -117,5 +132,6 @@ namespace Mikoto.SettingsPages.TTSPages
                 _viewModel.SelectedVoiceStyle = e.AddedItems[0] as string ?? string.Empty;
             }
         }
+
     }
 }

@@ -4,7 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:Mikoto="clr-namespace:Mikoto"
+      xmlns:Mikoto="clr-namespace:Mikoto" xmlns:ttspages="clr-namespace:Mikoto.SettingsPages.TTSPages" 
+      d:DataContext="{d:DesignInstance Type=ttspages:AzureTTSSettingsPageViewModel}"
       mc:Ignorable="d"
       d:DesignHeight="450"
       d:DesignWidth="594"
@@ -28,7 +29,7 @@
                                     hc:InfoElement.Title="{DynamicResource AzureTransSettingsPage_secretKey}"
                                     Name="AzureTTSSecretKeyBox"
                                     hc:InfoElement.ShowClearButton="True"
-                                    LostFocus="GetVoices" />
+                                    LostFocus="Voice_Updating" />
                         <Button Grid.Column="1"
                                 Content="{DynamicResource API_applyBtn}"
                                 Margin="10,0,0,0"
@@ -46,7 +47,7 @@
                                     hc:InfoElement.Title="{DynamicResource AzureTransSettingsPage_location}"
                                     Name="AzureTTSLocationBox"
                                     hc:InfoElement.ShowClearButton="True"
-                                    LostFocus="GetVoices" />
+                                    LostFocus="Voice_Updating" />
                     </Grid>
                     <hc:Divider />
                     <hc:TextBox hc:InfoElement.TitlePlacement="Left"
