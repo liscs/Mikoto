@@ -96,6 +96,11 @@ namespace Mikoto.ProcessInterop
                 // Access issues or process has exited
                 return false;
             }
+            catch (Win32Exception)
+            {
+                // Access denied
+                return false;
+            }
         }
 
         public static bool StartProcessAsAdmin(string fileName)
