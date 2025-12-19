@@ -403,14 +403,6 @@
                                         Background="{DynamicResource InfoBrush}"
                                         Click="LEStartBtn_Click"
                                         BorderBrush="Transparent" />
-                                <Button Content="{DynamicResource MainWindow_Drawer_DeleteGame}"
-                                        Height="50"
-                                        Margin="5"
-                                        Foreground="{DynamicResource ButtonTextColor}"
-                                        FontSize="{DynamicResource SubHeadFontSize}"
-                                        Background="{DynamicResource DangerBrush}"
-                                        Click="DeleteGameBtn_Click"
-                                        BorderBrush="Transparent" />
                                 <Button Content="{DynamicResource MainWindow_Drawer_UpdateName}"
                                         Height="50"
                                         Margin="5"
@@ -418,6 +410,14 @@
                                         FontSize="{DynamicResource SubHeadFontSize}"
                                         Background="{DynamicResource WarningBrush}"
                                         Click="UpdateNameBtn_Click"
+                                        BorderBrush="Transparent" />
+                                <Button Content="{DynamicResource MainWindow_Drawer_DeleteGame}"
+                                        Height="50"
+                                        Margin="5"
+                                        Foreground="{DynamicResource ButtonTextColor}"
+                                        FontSize="{DynamicResource SubHeadFontSize}"
+                                        Background="{DynamicResource DangerBrush}"
+                                        Click="DeleteGameBtn_Click"
                                         BorderBrush="Transparent" />
                             </hc:ButtonGroup>
                         </Border>
