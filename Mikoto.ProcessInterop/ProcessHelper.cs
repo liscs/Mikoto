@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Mikoto.ProcessInterop
 {
@@ -96,6 +97,27 @@ namespace Mikoto.ProcessInterop
                 return false;
             }
         }
+
+        public static bool StartProcessAsAdmin(string fileName)
+        {
+            ProcessStartInfo processStartInfo = new()
+            {
+                FileName = fileName,
+                UseShellExecute = true,
+                Verb = "runas"
+            };
+
+            try
+            {
+                var p = Process.Start(processStartInfo);
+            }
+            catch (Win32Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
 
     }
 }

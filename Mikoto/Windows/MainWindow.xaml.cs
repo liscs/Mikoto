@@ -7,6 +7,7 @@ using Mikoto.Enums;
 using Mikoto.Helpers;
 using Mikoto.Helpers.File;
 using Mikoto.Helpers.Graphics;
+using Mikoto.ProcessInterop;
 using Mikoto.TextHook;
 using Mikoto.Translators;
 using Mikoto.Windows;
@@ -509,31 +510,12 @@ namespace Mikoto
 
         private void RestartAsAdmin()
         {
-            if (StartProcessAsAdmin(Environment.ProcessPath!))
+            if (ProcessHelper.StartProcessAsAdmin(Environment.ProcessPath!))
             {
                 ShutDownApp();
             }
         }
 
-        public static bool StartProcessAsAdmin(string fileName)
-        {
-            ProcessStartInfo processStartInfo = new()
-            {
-                FileName = fileName,
-                UseShellExecute = true,
-                Verb = "runas"
-            };
-
-            try
-            {
-                var p = Process.Start(processStartInfo);
-            }
-            catch (Win32Exception)
-            {
-                return false;
-            }
-            return true;
-        }
         private void CloseDrawerBtn_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.GameInfoDrawerIsOpen = false;
