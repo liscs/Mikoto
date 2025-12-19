@@ -394,7 +394,7 @@
                                         Click="StartBtn_Click"
                                         BorderBrush="Transparent" />
                                 <!--binding会导致xaml 设计器报错-->
-                                <Button Visibility="{Binding LEEnabled}"
+                                <Button Visibility="{Binding LEStartVisibility}"
                                         Content="{DynamicResource MainWindow_Drawer_LEStart}"
                                         Height="50"
                                         Margin="5"
