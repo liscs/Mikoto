@@ -770,8 +770,7 @@ namespace Mikoto
 
         private void OpenGameInfoFileBtn_Click(object sender, RoutedEventArgs e)
         {
-            string gameInfoFilePath = Path.Combine(DataFolder.Path, "games", $"{_viewModel.GameInfo.GameID}.json");
-            Process.Start(new ProcessStartInfo(gameInfoFilePath) { UseShellExecute = true });
+            App.Env.GameInfoService.OpenGameInfoFile(_viewModel.GameInfo);
         }
 
         private void AddGameButton_Click(object sender, RoutedEventArgs e)

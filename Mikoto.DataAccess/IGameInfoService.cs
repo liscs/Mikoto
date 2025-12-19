@@ -11,5 +11,6 @@ namespace Mikoto.DataAccess
         void SaveGameInfo(GameInfo gameInfo);
         bool UpdateGameInfoByID(Guid gameID, string key, object value);
         GameInfo? GetRunningGame();
+        void OpenGameInfoFile(GameInfo gameInfo);
     }
 }
