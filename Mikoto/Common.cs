@@ -2,6 +2,7 @@
 using Mikoto.Config;
 using Mikoto.Enums;
 using Mikoto.Helpers.Network;
+using Mikoto.ProcessInterop;
 using Serilog;
 using System.Diagnostics;
 using System.IO;
@@ -30,7 +31,7 @@ namespace Mikoto
 
             if (dr == MessageBoxResult.OK)
             {
-                Process.Start(new ProcessStartInfo("https://github.com/liscs/Mikoto/releases/latest") { UseShellExecute = true });
+                ProcessHelper.ShellStart("https://github.com/liscs/Mikoto/releases/latest");
                 //点击确认，自动下载最新版并替换重启
                 //DownloadBackground(latestVersion);
             }

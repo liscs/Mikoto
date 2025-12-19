@@ -1,6 +1,6 @@
-﻿using Mikoto.Translators.Implementations;
+﻿using Mikoto.ProcessInterop;
+using Mikoto.Translators.Implementations;
 using Mikoto.Translators.Interfaces;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -35,17 +35,17 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(YoudaoZhiyun.GetUrl_API()) { UseShellExecute = true });
+            ProcessHelper.ShellStart(YoudaoZhiyun.GetUrl_API());
         }
 
         private void DocBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(YoudaoZhiyun.GetUrl_Doc()) { UseShellExecute = true });
+            ProcessHelper.ShellStart(YoudaoZhiyun.GetUrl_Doc());
         }
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(YoudaoZhiyun.GetUrl_Bill()) { UseShellExecute = true });
+            ProcessHelper.ShellStart(YoudaoZhiyun.GetUrl_Bill());
         }
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)

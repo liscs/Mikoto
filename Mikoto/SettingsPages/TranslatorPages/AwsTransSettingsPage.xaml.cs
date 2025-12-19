@@ -1,6 +1,6 @@
-﻿using Mikoto.Translators.Implementations;
+﻿using Mikoto.ProcessInterop;
+using Mikoto.Translators.Implementations;
 using Mikoto.Translators.Interfaces;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -37,21 +37,21 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(AwsTranslator.GetUrl_API()) { UseShellExecute = true });
+            ProcessHelper.ShellStart(AwsTranslator.GetUrl_API());
         }
 
         private void DocBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(AwsTranslator.GetUrl_ErrorCode()) { UseShellExecute = true });
+            ProcessHelper.ShellStart(AwsTranslator.GetUrl_ErrorCode());
         }
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(AwsTranslator.GetUrl_Bill()) { UseShellExecute = true });
+            ProcessHelper.ShellStart(AwsTranslator.GetUrl_Bill());
         }
         private void AwsLangCodeBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(AwsTranslator.GetUrl_Lang()) { UseShellExecute = true });
+            ProcessHelper.ShellStart(AwsTranslator.GetUrl_Lang());
         }
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)

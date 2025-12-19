@@ -1,6 +1,6 @@
+using Mikoto.ProcessInterop;
 using Mikoto.Translators.Implementations;
 using Mikoto.Translators.Interfaces;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -36,17 +36,17 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(IBMTranslator.GetUrl_API()) { UseShellExecute = true });
+            ProcessHelper.ShellStart(IBMTranslator.GetUrl_API());
         }
 
         private void DocBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(IBMTranslator.GetUrl_Doc()) { UseShellExecute = true });
+            ProcessHelper.ShellStart(IBMTranslator.GetUrl_Doc());
         }
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(IBMTranslator.GetUrl_Bill()) { UseShellExecute = true });
+            ProcessHelper.ShellStart(IBMTranslator.GetUrl_Bill());
         }
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)

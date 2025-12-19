@@ -1,7 +1,6 @@
 ﻿using Mikoto.DataAccess;
 using Mikoto.Helpers.ViewModel;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;

@@ -1,9 +1,8 @@
 ﻿using HandyControl.Controls;
 using Microsoft.CognitiveServices.Speech;
 using Microsoft.Scripting.Utils;
+using Mikoto.ProcessInterop;
 using Mikoto.TTS;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -36,12 +35,12 @@ namespace Mikoto.SettingsPages.TTSPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(AzureTTS.GetUrl_API()) { UseShellExecute = true });
+            ProcessHelper.ShellStart(AzureTTS.GetUrl_API());
         }
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(AzureTTS.GetUrl_Bill()) { UseShellExecute = true });
+            ProcessHelper.ShellStart(AzureTTS.GetUrl_Bill());
         }
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)
@@ -74,8 +73,9 @@ namespace Mikoto.SettingsPages.TTSPages
 
         private void VoiceNameQuery_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(AzureTTS.GetUrl_VoiceList()) { UseShellExecute = true });
+            ProcessHelper.ShellStart(AzureTTS.GetUrl_VoiceList());
         }
+
 
 
         private async void Voice_Updating(object sender, RoutedEventArgs? e)

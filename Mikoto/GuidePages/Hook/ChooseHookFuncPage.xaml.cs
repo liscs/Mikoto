@@ -1,6 +1,6 @@
-﻿using Mikoto.TextHook;
+﻿using Mikoto.ProcessInterop;
+using Mikoto.TextHook;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -164,7 +164,7 @@ namespace Mikoto.GuidePages.Hook
 
         private void CannotfindHookBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo("https://github.com/hanmin0822/MisakaHookFinder") { UseShellExecute = true });
+            ProcessHelper.ShellStart("https://github.com/hanmin0822/MisakaHookFinder");
         }
 
         [GeneratedRegex("【0:FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF】|【FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF】")]

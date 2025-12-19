@@ -741,7 +741,7 @@ namespace Mikoto
                         encoder.Frames.Add(BitmapFrame.Create(bitmap));
                         encoder.Save(fileStream);
                     }
-                    Process.Start(new ProcessStartInfo(file) { UseShellExecute = true });
+                    ProcessHelper.ShellStart(file);
                 }
             }
         }

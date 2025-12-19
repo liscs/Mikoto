@@ -1,5 +1,5 @@
-﻿using Mikoto.SettingsPages.TranslatorPages.Models;
-using System.Diagnostics;
+﻿using Mikoto.ProcessInterop;
+using Mikoto.SettingsPages.TranslatorPages.Models;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -23,7 +23,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
         {
             var url = _viewModel?.Definition?.DocUrl;
             if (!string.IsNullOrEmpty(url))
-                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                ProcessHelper.ShellStart(url);
         }
 
         // 打开计费页面
@@ -31,7 +31,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
         {
             var url = _viewModel?.Definition?.BillingUrl;
             if (!string.IsNullOrEmpty(url))
-                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                ProcessHelper.ShellStart(url);
         }
 
         // 测试翻译
@@ -62,7 +62,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
         {
             var url = _viewModel?.Definition?.ApplyUrl;
             if (!string.IsNullOrEmpty(url))
-                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                ProcessHelper.ShellStart(url);
         }
 
         // 查看语言代码
@@ -70,7 +70,7 @@ namespace Mikoto.SettingsPages.TranslatorPages
         {
             var url = _viewModel?.Definition?.LangCodeUrl;
             if (!string.IsNullOrEmpty(url))
-                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                ProcessHelper.ShellStart(url);
         }
     }
 

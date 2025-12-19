@@ -1,6 +1,5 @@
 ﻿using Mikoto.ProcessInterop;
 using Serilog;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text.Encodings.Web;
@@ -93,7 +92,7 @@ namespace Mikoto.DataAccess
         public void OpenGameInfoFile(GameInfo gameInfo)
         {
             string gameInfoFilePath = GetGameInfoPath(gameInfo);
-            Process.Start(new ProcessStartInfo(gameInfoFilePath) { UseShellExecute = true });
+            ProcessHelper.ShellStart(gameInfoFilePath);
         }
 
         /// <summary>

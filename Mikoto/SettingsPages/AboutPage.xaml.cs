@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using Mikoto.ProcessInterop;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -18,12 +18,12 @@ namespace Mikoto.SettingsPages
 
         private void IssueButton_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo("https://github.com/liscs/Mikoto/issues") { UseShellExecute = true });
+            ProcessHelper.ShellStart("https://github.com/liscs/Mikoto/issues");
         }
 
         private void GithubButton_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo("https://github.com/liscs/Mikoto") { UseShellExecute = true });
+            ProcessHelper.ShellStart("https://github.com/liscs/Mikoto");
         }
 
         private async void CheckUpdateButton_Click(object sender, RoutedEventArgs e)

@@ -118,6 +118,9 @@ namespace Mikoto.ProcessInterop
             return true;
         }
 
-
+        public static Process? ShellStart(string filename)
+        {
+            return Process.Start(new ProcessStartInfo(filename) { UseShellExecute = true });
+        }
     }
 }

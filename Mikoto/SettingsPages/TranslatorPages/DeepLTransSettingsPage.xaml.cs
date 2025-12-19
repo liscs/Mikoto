@@ -1,6 +1,6 @@
-﻿using Mikoto.Translators.Implementations;
+﻿using Mikoto.ProcessInterop;
+using Mikoto.Translators.Implementations;
 using Mikoto.Translators.Interfaces;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -34,17 +34,17 @@ namespace Mikoto.SettingsPages.TranslatorPages
 
         private void ApplyBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(DeepLTranslator.SIGN_UP_URL) { UseShellExecute = true });
+            ProcessHelper.ShellStart(DeepLTranslator.SIGN_UP_URL);
         }
 
         private void DocBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(DeepLTranslator.DOCUMENT_URL) { UseShellExecute = true });
+            ProcessHelper.ShellStart(DeepLTranslator.DOCUMENT_URL);
         }
 
         private void BillBtn_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(DeepLTranslator.BILL_URL) { UseShellExecute = true });
+            ProcessHelper.ShellStart(DeepLTranslator.BILL_URL);
         }
 
         private async void TransTestBtn_Click(object sender, RoutedEventArgs e)

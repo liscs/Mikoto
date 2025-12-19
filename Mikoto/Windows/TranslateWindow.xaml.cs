@@ -803,7 +803,7 @@ namespace Mikoto
         /// <param name="repairedText">原文</param>
         /// <param name="tranResultIndex">翻译框序号 (1 or 2)</param>
         /// <param name="isRenew">是否是重新获取翻译</param>
-        private async Task TranslateApiSubmitAsync(string repairedText, ITranslator? selectedTranslator,OutlineText controlToUpdate, bool isRenew = false)
+        private async Task TranslateApiSubmitAsync(string repairedText, ITranslator? selectedTranslator, OutlineText controlToUpdate, bool isRenew = false)
         {
             // 4. 翻译前预处理
             string beforeString = _beforeTransHandle.AutoHandle(repairedText);
@@ -817,7 +817,7 @@ namespace Mikoto
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        Log.Warning("{DisplayName}翻译返回值为null，错误信息：{Error}", selectedTranslator.DisplayName,selectedTranslator.GetLastError());
+                        Log.Warning("{DisplayName}翻译返回值为null，错误信息：{Error}", selectedTranslator.DisplayName, selectedTranslator.GetLastError());
                         Growl.WarningGlobal($"{selectedTranslator.DisplayName} translation failed: {selectedTranslator.GetLastError()}");
                     });
                     return;
@@ -836,7 +836,7 @@ namespace Mikoto
 
                 if (Common.AppSettings.TF_TransAnimationCheckEnabled)
                 {
-                    StartFadeInAnimation(controlToUpdate); 
+                    StartFadeInAnimation(controlToUpdate);
                 }
             }), DispatcherPriority.Send).Task.FireAndForget();
 
