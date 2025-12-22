@@ -1,4 +1,6 @@
-﻿namespace Mikoto.Translators.Interfaces
+﻿using System.Runtime.CompilerServices;
+
+namespace Mikoto.Translators.Interfaces
 {
     /// <summary>
     /// 翻译器接口，继承此接口的类会被代码生成器自动加入到翻译器列表
@@ -24,5 +26,17 @@
         /// </summary>
         /// <returns></returns>
         string GetLastError();
+
+        /// <summary>
+        /// 是否支持真正的流式输出（多 chunk）。
+        /// false 表示 StreamTranslateAsync 只会 yield 一次完整结果。
+        /// </summary>
+        bool IsStreamSupported => false;
+
+        async IAsyncEnumerable<string?> StreamTranslateAsync(string text, string dst, string src, [EnumeratorCancellation] CancellationToken token = default)
+        {
+            var result = await TranslateAsync(text, dst, src).ConfigureAwait(false);
+            yield return result;
+        }
     }
 }

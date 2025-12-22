@@ -1,4 +1,6 @@
 ﻿using Mikoto.Translators.Interfaces;
+using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 
@@ -51,21 +53,7 @@ public class ChatGPTTranslator : ITranslator
         if (sourceText.Length == 0)
             return string.Empty;
 
-        var requestPayload = new
-        {
-            model = openai_model,
-            messages = new[]
-            {
-                new {
-                    role = "system",
-                    content = $"You are a professional multilingual translation engine. " +
-                              $"Translate everything from {srcLang} to {desLang}. " +
-                              $"Preserve meaning, tone, punctuation, spacing, markdown and numbers. " +
-                              $"Do NOT explain, do NOT add comments."
-                },
-                new { role = "user", content = sourceText }
-            }
-        };
+        var requestPayload = GetRequestPayload(sourceText, desLang, srcLang);
 
         string jsonParam = JsonSerializer.Serialize(requestPayload, TranslatorCommon.JsonSerializerOptions);
 
@@ -114,6 +102,25 @@ public class ChatGPTTranslator : ITranslator
         }
     }
 
+    private object GetRequestPayload(string sourceText, string desLang, string srcLang)
+    {
+        return new
+        {
+            model = openai_model,
+            messages = new[]
+            {
+                new {
+                    role = "system",
+                    content = $"You are a professional multilingual translation engine. " +
+                              $"Translate everything from {srcLang} to {desLang}. " +
+                              $"Preserve meaning, tone, punctuation, spacing, markdown and numbers. " +
+                              $"Do NOT explain, do NOT add comments."
+                },
+                new { role = "user", content = sourceText }
+            }
+        };
+    }
+
     private void SetError(string message) => lastErrorMessage = message;
 
     private string? HandleUnknownError(string resp)
@@ -144,6 +151,56 @@ public class ChatGPTTranslator : ITranslator
     public static string GetUrl_Bill() => BILL_URL;
     public static string GetUrl_Doc() => DOCUMENT_URL;
     public static string GetUrl_API() => SIGN_UP_URL;
+
+    public bool IsStreamSupported => true;
+    public async IAsyncEnumerable<string> StreamTranslateAsync(
+    string sourceText,
+    string desLang,
+    string srcLang,
+    [EnumeratorCancellation] CancellationToken token = default)
+    {
+        var payload = GetRequestPayload(sourceText, desLang, srcLang);
+
+        using var request = new HttpRequestMessage(HttpMethod.Post, apiUrl)
+        {
+            Content = JsonContent.Create(payload)
+        };
+
+        // 使用 ResponseHeadersRead 避免预加载整个响应体到内存
+        using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, token);
+
+        // 抛出非成功状态码异常（如 401, 500 等）
+        response.EnsureSuccessStatusCode();
+
+        using var stream = await response.Content.ReadAsStreamAsync(token);
+        // 显式指定枚举器的读取行为
+        using var reader = new StreamReader(stream);
+
+        while (!token.IsCancellationRequested)
+        {
+            var line = await reader.ReadLineAsync(token);
+
+            // 如果 line 为 null，说明流已经关闭（到达末尾）
+            if (line == null)
+            {
+                break;
+            }
+
+            if (string.IsNullOrWhiteSpace(line)) continue;
+
+            if (line.StartsWith("data: "))
+            {
+                var data = line[6..].Trim();
+
+                if (data == "[DONE]")
+                {
+                    yield break;
+                }
+
+                yield return data;
+            }
+        }
+    }
 }
 
 public struct ChatResponse

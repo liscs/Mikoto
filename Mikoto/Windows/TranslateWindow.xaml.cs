@@ -7,6 +7,7 @@ using Mikoto.Helpers.Graphics;
 using Mikoto.Mecab;
 using Mikoto.TextHook;
 using Mikoto.Translators;
+using Mikoto.Translators.Implementations;
 using Mikoto.Translators.Interfaces;
 using Mikoto.TransOptimization;
 using Mikoto.TTS;
@@ -331,15 +332,9 @@ namespace Mikoto
 
             InitTranslateAnimation(FirstTransText);
             InitTranslateAnimation(SecondTransText);
-
-            ViewModelInit();
         }
 
-        private void ViewModelInit()
-        {
-            ViewModel.FirstTextFontWeight = FontWeight.FromOpenTypeWeight(Common.AppSettings.TF_FirstTextFontWeight);
-            ViewModel.SecondTextFontWeight = FontWeight.FromOpenTypeWeight(Common.AppSettings.TF_SecondTextFontWeight);
-        }
+
 
         private DictResWindow? _dictResWindow;
 
@@ -458,12 +453,17 @@ namespace Mikoto
                 _currentSrcText = repairedText;
 
                 // 3. 更新原文
-                UpdateSourceAsync(repairedText);
+                UpdateSourceAsync(repairedText).FireAndForget();
 
                 // 分别获取两个翻译结果
-                TranslateApiSubmitAsync(repairedText, _translator1, FirstTransText, isRenew).FireAndForget();
-                TranslateApiSubmitAsync(repairedText, _translator2, SecondTransText, isRenew).FireAndForget();
+                RequestTranslateAndUpdate(repairedText, isRenew);
             }
+        }
+
+        private void RequestTranslateAndUpdate(string repairedText, bool isRenew)
+        {
+            TranslateApiSubmitAsync(repairedText, _translator1, FirstTransText, isRenew).FireAndForget();
+            TranslateApiSubmitAsync(repairedText, _translator2, SecondTransText, isRenew).FireAndForget();
         }
 
         private static bool IsJaOrZh(string s)
@@ -477,7 +477,7 @@ namespace Mikoto
         /// 注意执行过程中调用了StackPanel等UI组件，必须交回主线程才能执行。
         /// </summary>
         /// <param name="repairedText">原文</param>
-        private async void UpdateSourceAsync(string repairedText)
+        private async Task UpdateSourceAsync(string repairedText)
         {
             _maxOffset = 0;//重置scrollbar最大偏移
             if (!Common.AppSettings.TF_ShowSourceText)
@@ -700,7 +700,7 @@ namespace Mikoto
             TextBlock rubyTextBlock = new()
             {
                 Background = Brushes.Transparent,
-                Foreground = Common.AppSettings.TF_SrcTextColor,
+                Foreground = new BrushConverter().ConvertFromInvariantString(Common.AppSettings.TF_SrcTextColor) as SolidColorBrush,
                 Margin = new Thickness(0),
                 HorizontalAlignment = HorizontalAlignment.Center
             };
@@ -800,20 +800,52 @@ namespace Mikoto
         /// <param name="isRenew">是否是重新获取翻译</param>
         private async Task TranslateApiSubmitAsync(string repairedText, ITranslator? selectedTranslator, OutlineText controlToUpdate, bool isRenew = false)
         {
+            if (selectedTranslator is null)
+            {
+                return;
+            }
+
             // 4. 翻译前预处理
             string beforeString = _beforeTransHandle.AutoHandle(repairedText);
 
             // 5. 提交翻译
-            string? transRes = string.Empty;
-            if (selectedTranslator!=null)
+            string? fullResult;
+
+            if (selectedTranslator.IsStreamSupported)
             {
-                transRes = await selectedTranslator.TranslateAsync(beforeString, App.Env.Context.UsingDstLang, App.Env.Context.UsingSrcLang);
-                if (transRes == null)
+                try
+                {
+                    // 每次开始前清空旧文本
+                    Application.Current.Dispatcher.Invoke(() => controlToUpdate.Text = string.Empty);
+                    fullResult = string.Empty;
+                    await foreach (var chunk in selectedTranslator.StreamTranslateAsync(beforeString, App.Env.Context.UsingDstLang, App.Env.Context.UsingSrcLang))
+                    {
+                        fullResult += chunk; // 累加结果供后续后处理和记录使用
+
+                        // 实时更新 UI
+                        Application.Current.Dispatcher.BeginInvoke(() =>
+                        {
+                            controlToUpdate.Text = fullResult;
+                        }, DispatcherPriority.Background).Task.FireAndForget();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "流式翻译中断");
+                    Growl.WarningGlobal($"{selectedTranslator.DisplayName} failed: {ex.Message}");
+                    return;
+                }
+            }
+            else
+            {
+                fullResult = await selectedTranslator.TranslateAsync(beforeString, App.Env.Context.UsingDstLang, App.Env.Context.UsingSrcLang);
+
+                if (fullResult == null)
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        Log.Warning("{DisplayName}翻译返回值为null，错误信息：{Error}", selectedTranslator.DisplayName, selectedTranslator.GetLastError());
-                        Growl.WarningGlobal($"{selectedTranslator.DisplayName} translation failed: {selectedTranslator.GetLastError()}");
+                        Log.Warning("{DisplayName}翻译返回值为null", selectedTranslator.DisplayName);
+                        Growl.WarningGlobal($"{selectedTranslator.DisplayName} failed: {selectedTranslator.GetLastError()}");
                     });
                     return;
                 }
@@ -821,7 +853,7 @@ namespace Mikoto
 
 
             // 6. 翻译后处理
-            string afterString = _afterTransHandle.AutoHandle(transRes);
+            string afterString = _afterTransHandle.AutoHandle(fullResult);
 
             // 7. 翻译结果显示到窗口上
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
@@ -838,47 +870,51 @@ namespace Mikoto
 
             if (!isRenew && selectedTranslator != null)
             {
-                lock (_saveTransResultLock)
-                {
-                    // 8. 翻译结果记录到队列
-                    // todo: 这是比较粗暴地添加历史记录，可以优化（时间排序等）
-                    if (_gameTextHistory.Count > 1000)
-                    {
-                        _gameTextHistory.Dequeue();
-                    }
-
-                    HistoryInfo historyInfo = new()
-                    {
-                        DateTime = DateTime.Now,
-                        Message = repairedText + Environment.NewLine + afterString,
-                        TranslatorName = selectedTranslator.DisplayName
-                    };
-
-                    _gameTextHistory.Enqueue(historyInfo);
-                    UpdateHistoryWindow();
-
-                    // 9. 翻译原句和结果记录到数据库
-                    if (Common.AppSettings.ATon)
-                    {
-                        bool addRes = _artificialTransHelper.AddTrans(repairedText, afterString);
-                        if (!addRes)
-                        {
-                            Application.Current.Dispatcher.Invoke(() =>
-                            {
-                                HandyControl.Data.GrowlInfo growlInfo = new()
-                                {
-                                    Message = Application.Current.Resources["ArtificialTransAdd_Error_Hint"].ToString(),
-                                    WaitTime = 2
-                                };
-                                Growl.InfoGlobal(growlInfo);
-                            });
-                        }
-                    }
-
-                }
+                SaveTranslateResult(repairedText, selectedTranslator.DisplayName, afterString);
             }
         }
 
+        private void SaveTranslateResult(string srouce, string translatorName, string trans)
+        {
+            lock (_saveTransResultLock)
+            {
+                // 8. 翻译结果记录到队列
+                // todo: 这是比较粗暴地添加历史记录，可以优化（时间排序等）
+                if (_gameTextHistory.Count > 1000)
+                {
+                    _gameTextHistory.Dequeue();
+                }
+
+                HistoryInfo historyInfo = new()
+                {
+                    DateTime = DateTime.Now,
+                    Message = srouce + Environment.NewLine + trans,
+                    TranslatorName = translatorName
+                };
+
+                _gameTextHistory.Enqueue(historyInfo);
+                UpdateHistoryWindow();
+
+                // 9. 翻译原句和结果记录到数据库
+                if (Common.AppSettings.ATon)
+                {
+                    bool addRes = _artificialTransHelper.AddTrans(srouce, trans);
+                    if (!addRes)
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            HandyControl.Data.GrowlInfo growlInfo = new()
+                            {
+                                Message = Application.Current.Resources["ArtificialTransAdd_Error_Hint"].ToString(),
+                                WaitTime = 2
+                            };
+                            Growl.InfoGlobal(growlInfo);
+                        });
+                    }
+                }
+
+            }
+        }
 
         private readonly DoubleAnimation _translateFadeInAnimation = (DoubleAnimation)InitFadeInAnimation().GetAsFrozen();
         private void StartFadeInAnimation(OutlineText outlineText)
@@ -1110,8 +1146,7 @@ namespace Mikoto
 
         private void Repeat_Item_Click(object sender, RoutedEventArgs e)
         {
-            TranslateApiSubmitAsync(_currentSrcText, _translator1, FirstTransText, true).FireAndForget();
-            TranslateApiSubmitAsync(_currentSrcText, _translator2, SecondTransText, true).FireAndForget();
+            RequestTranslateAndUpdate(_currentSrcText, true);
         }
 
         private void Min_Item_Click(object sender, RoutedEventArgs e)
