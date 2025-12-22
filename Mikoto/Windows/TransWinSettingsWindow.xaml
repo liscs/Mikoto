@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:Mikoto"
-        d:DataContext="{d:DesignInstance Type=local:TranslateViewModel}"
+        xmlns:windows="clr-namespace:Mikoto.Windows"
+        d:DataContext="{d:DesignInstance Type=windows:TranslateWindowViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource TransWinSettingsWin_Title}"
         Height="550"
@@ -40,16 +41,16 @@
                 <ScrollViewer>
                     <StackPanel>
                         <hc:ComboBox IsEditable="True"
-                                     Text="{Binding SourceTextFontFamilyString,Mode=OneTime}"
+                                     Text="{Binding AppSettings.TF_SrcTextFont}"
                                      DropDownOpened="Font_ContextMenuOpening"
-                                     SelectedItem="{Binding SourceTextFontFamilyString, Mode=TwoWay}"
+                                     SelectedItem="{Binding AppSettings.TF_SrcTextFont}"
                                      ItemsSource="{Binding FontList}"
                                      hc:InfoElement.TitleWidth="140"
                                      hc:InfoElement.TitlePlacement="Top"
                                      hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}"
                                      Margin="10,10,10,0" />
 
-                        <hc:NumericUpDown Value="{Binding SourceTextFontSize,Mode=TwoWay}"
+                        <hc:NumericUpDown Value="{Binding AppSettings.TF_SrcTextSize}"
                                           Minimum="8"
                                           hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}"
                                           Margin="10,10,10,0"
@@ -102,10 +103,10 @@
                                   Margin="10,10,10,0" />
 
 
-                        <CheckBox IsChecked="{Binding SrcAnimationCheckEnabled,Mode=TwoWay}"
+                        <CheckBox IsChecked="{Binding AppSettings.TF_SrcAnimationCheckEnabled}"
                                   Content="{DynamicResource TransWinSettingsWindow_EnableFadeAnimation}"
                                   Margin="10,10,10,0" />
-                        <CheckBox IsChecked="{Binding SrcSingleLineEnabled,Mode=TwoWay}"
+                        <CheckBox IsChecked="{Binding AppSettings.TF_SrcSingleLineDisplay}"
                                   Content="{DynamicResource TransWinSettingsWindow_SingleLineDisplay}"
                                   Margin="10,10,10,0" />
                         <TextBlock TextWrapping="Wrap"
@@ -119,8 +120,8 @@
                 <ScrollViewer>
                     <StackPanel>
                         <hc:ComboBox IsEditable="True"
-                                     Text="{Binding FirstTextFontFamilyString,Mode=OneTime}"
-                                     SelectedItem="{Binding FirstTextFontFamilyString, Mode=TwoWay}"
+                                     Text="{Binding AppSettings.TF_FirstTransTextFont}"
+                                     SelectedItem="{Binding AppSettings.TF_FirstTransTextFont}"
                                      DropDownOpened="Font_ContextMenuOpening"
                                      ItemsSource="{Binding FontList}"
                                      hc:InfoElement.TitleWidth="140"
@@ -128,7 +129,7 @@
                                      hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}"
                                      Margin="10,10,10,0" />
 
-                        <hc:NumericUpDown Value="{Binding FirstTextFontSize,Mode=TwoWay}"
+                        <hc:NumericUpDown Value="{Binding AppSettings.TF_FirstTransTextSize}"
                                           Minimum="8"
                                           hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}"
                                           Margin="10,10,10,0"
@@ -141,7 +142,7 @@
                                 Height="25"
                                 PreviewMouseDown="ChooseColorBorder_Click"
                                 Style="{DynamicResource ColorBlockBorder}" />
-                        <hc:NumericUpDown Value="{Binding FirstTextStrokeThickness,Mode=TwoWay}"
+                        <hc:NumericUpDown Value="{Binding AppSettings.TF_FirstTextStrokeThickness}"
                                           Minimum="0"
                                           Maximum="1"
                                           hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontStrokeThickness}"
@@ -149,7 +150,7 @@
                                           Increment="0.1"
                                           Margin="10,10,10,0"
                                           Style="{DynamicResource NumericUpDownExtend}" />
-                        <hc:NumericUpDown Value="{Binding FirstTextFontWeightOpenTypeWeight,Mode=TwoWay}"
+                        <hc:NumericUpDown Value="{Binding AppSettings.TF_FirstTextFontWeight}"
                                           Minimum="1"
                                           Maximum="999"
                                           hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontWeight}"
@@ -159,7 +160,7 @@
                         <CheckBox Name="firstWhiteStrokeCheckBox"
                                   Content="{DynamicResource TransWinSettingsWin_enableWhiteStroke}"
                                   Margin="10,10,10,0" />
-                        <CheckBox IsChecked="{Binding TransAnimationCheckEnabled,Mode=TwoWay}"
+                        <CheckBox IsChecked="{Binding AppSettings.TF_TransAnimationCheckEnabled}"
                                   Content="{DynamicResource TransWinSettingsWindow_EnableFadeAnimation}"
                                   Margin="10,10,10,0" />
                     </StackPanel>
@@ -169,8 +170,8 @@
                 <ScrollViewer>
                     <StackPanel>
                         <hc:ComboBox IsEditable="True"
-                                     Text="{Binding SecondTextFontFamilyString,Mode=OneTime}"
-                                     SelectedItem="{Binding SecondTextFontFamilyString,Mode=TwoWay}"
+                                     Text="{Binding AppSettings.TF_SecondTransTextFont}"
+                                     SelectedItem="{Binding AppSettings.TF_SecondTransTextFont}"
                                      DropDownOpened="Font_ContextMenuOpening"
                                      ItemsSource="{Binding FontList}"
                                      hc:InfoElement.TitleWidth="140"
@@ -178,7 +179,7 @@
                                      hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontName}"
                                      Margin="10,10,10,0" />
 
-                        <hc:NumericUpDown Value="{Binding SecondTextFontSize,Mode=TwoWay}"
+                        <hc:NumericUpDown Value="{Binding AppSettings.TF_SecondTransTextSize}"
                                           Minimum="8"
                                           hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontSize}"
                                           Margin="10,10,10,0"
@@ -191,7 +192,7 @@
                                 Margin="10,10,10,0"
                                 PreviewMouseDown="ChooseColorBorder_Click"
                                 Style="{DynamicResource ColorBlockBorder}" />
-                        <hc:NumericUpDown Value="{Binding SecondTextStrokeThickness,Mode=TwoWay}"
+                        <hc:NumericUpDown Value="{Binding AppSettings.TF_SecondTextStrokeThickness}"
                                           Minimum="0"
                                           Maximum="1"
                                           hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontStrokeThickness}"
@@ -199,7 +200,7 @@
                                           Increment="0.1"
                                           Margin="10,10,10,0"
                                           Style="{DynamicResource NumericUpDownExtend}" />
-                        <hc:NumericUpDown Value="{Binding SecondTextFontWeightOpenTypeWeight,Mode=TwoWay}"
+                        <hc:NumericUpDown Value="{Binding AppSettings.TF_SecondTextFontWeight}"
                                           Minimum="1"
                                           Maximum="999"
                                           hc:InfoElement.Title="{DynamicResource TransWinSettingsWin_FontWeight}"

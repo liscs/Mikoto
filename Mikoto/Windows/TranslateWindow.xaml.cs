@@ -337,12 +337,7 @@ namespace Mikoto
 
         private void ViewModelInit()
         {
-            BrushConverter brushConverter = new();
-            ViewModel.SourceTextColor = brushConverter.ConvertFromString(Common.AppSettings.TF_SrcTextColor) as SolidColorBrush ?? Brushes.White;
-
-            ViewModel.FirstTextStrokeThickness = Common.AppSettings.TF_FirstTextStrokeThickness;
             ViewModel.FirstTextFontWeight = FontWeight.FromOpenTypeWeight(Common.AppSettings.TF_FirstTextFontWeight);
-            ViewModel.SecondTextStrokeThickness = Common.AppSettings.TF_SecondTextStrokeThickness;
             ViewModel.SecondTextFontWeight = FontWeight.FromOpenTypeWeight(Common.AppSettings.TF_SecondTextFontWeight);
         }
 
@@ -705,7 +700,7 @@ namespace Mikoto
             TextBlock rubyTextBlock = new()
             {
                 Background = Brushes.Transparent,
-                Foreground = ViewModel.SourceTextColor,
+                Foreground = Common.AppSettings.TF_SrcTextColor,
                 Margin = new Thickness(0),
                 HorizontalAlignment = HorizontalAlignment.Center
             };
@@ -729,9 +724,9 @@ namespace Mikoto
                 _ => info.Hiragana,
             };
 
-            if (ViewModel.SourceTextFontSize - 6.5 > 0)
+            if (Common.AppSettings.TF_SrcTextSize - 6.5 > 0)
             {
-                rubyTextBlock.FontSize = ViewModel.SourceTextFontSize - 6.5;
+                rubyTextBlock.FontSize = Common.AppSettings.TF_SrcTextSize - 6.5;
                 if (Common.AppSettings.TF_EnableSuperBold)
                 {
                     //注音加粗

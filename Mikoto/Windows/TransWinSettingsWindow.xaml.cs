@@ -204,7 +204,7 @@ namespace Mikoto
             }
             else if (sender == sourceColorBlock)
             {
-                picker.SelectedBrush = _viewModel.SourceTextColor;
+                picker.SelectedBrush = brushConverter.ConvertFromString(Common.AppSettings.TF_SrcTextColor) as SolidColorBrush ?? Brushes.White;
             }
 
 
@@ -243,7 +243,7 @@ namespace Mikoto
                 }
                 else if (sender == sourceColorBlock)
                 {
-                    _viewModel.SourceTextColor = picker.SelectedBrush;
+                    Common.AppSettings.TF_SrcTextColor = picker.SelectedBrush.ToString();
                     sourceColorBlock.Background = picker.SelectedBrush;
                 }
                 window.Close();
