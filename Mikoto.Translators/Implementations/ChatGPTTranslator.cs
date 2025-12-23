@@ -1,4 +1,5 @@
 ﻿using Mikoto.Translators.Interfaces;
+using Serilog;
 using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -102,7 +103,7 @@ public class ChatGPTTranslator : ITranslator
         }
     }
 
-    private object GetRequestPayload(string sourceText, string desLang, string srcLang)
+    private object GetRequestPayload(string sourceText, string desLang, string srcLang, bool streamMode = false)
     {
         return new
         {
@@ -117,7 +118,8 @@ public class ChatGPTTranslator : ITranslator
                               $"Do NOT explain, do NOT add comments."
                 },
                 new { role = "user", content = sourceText }
-            }
+            },
+            stream = streamMode
         };
     }
 
@@ -159,13 +161,13 @@ public class ChatGPTTranslator : ITranslator
     string srcLang,
     [EnumeratorCancellation] CancellationToken token = default)
     {
-        var payload = GetRequestPayload(sourceText, desLang, srcLang);
+        var payload = GetRequestPayload(sourceText, desLang, srcLang, true);
 
         using var request = new HttpRequestMessage(HttpMethod.Post, apiUrl)
         {
             Content = JsonContent.Create(payload)
         };
-
+        request.Headers.Authorization = new ("Bearer", apiKey);
         // 使用 ResponseHeadersRead 避免预加载整个响应体到内存
         using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, token);
 
@@ -197,9 +199,34 @@ public class ChatGPTTranslator : ITranslator
                     yield break;
                 }
 
-                yield return data;
+                yield return GetContentFromStreamResponse(data);
             }
         }
+    }
+
+    private static string GetContentFromStreamResponse(string data)
+    {
+        try
+        {
+            // 使用 JsonDocument 解析每一行 data 字符串
+            using var jsonDoc = JsonDocument.Parse(data);
+
+            // 按照路径 choices[0] -> delta -> content 提取文本
+            if (jsonDoc.RootElement.TryGetProperty("choices", out var choices) &&
+                choices.GetArrayLength() > 0 &&
+                choices[0].TryGetProperty("delta", out var delta) &&
+                delta.TryGetProperty("content", out var content))
+            {
+                return content.GetString()??string.Empty;
+            }
+        }
+        catch (JsonException ex)
+        {
+            Log.Warning(ex, "解析流响应json失败");
+            return string.Empty;
+        }
+
+        return string.Empty;
     }
 }
 
