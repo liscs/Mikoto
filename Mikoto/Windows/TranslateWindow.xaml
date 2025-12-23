@@ -35,7 +35,9 @@
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
-
+    <Window.Resources>
+        <local:IntToFontWeightConverter x:Key="IntToFontWeightConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -205,12 +207,12 @@
                 </RichTextBox>
             </hc:SimplePanel>
             <hc:OutlineText Text="{DynamicResource TranslateWin_WaitingSource}"
-                            FontFamily="{Binding FirstTextFontFamilyString}"
+                            FontFamily="{Binding AppSettings.TF_FirstTransTextFont}"
                             FontSize="{Binding AppSettings.TF_FirstTransTextSize}"
                             Fill="White"
                             Stroke="Black"
                             StrokeThickness="{Binding AppSettings.TF_FirstTextStrokeThickness}"
-                            FontWeight="{Binding FirstTextFontWeight}"
+                            FontWeight="{Binding AppSettings.TF_FirstTextFontWeight, Converter={StaticResource IntToFontWeightConverter}}"
                             Name="FirstTransText"
                             Margin="10,10,10,0"
                             TextWrapping="Wrap"
@@ -223,7 +225,7 @@
                             Fill="White"
                             Stroke="Black"
                             StrokeThickness="{Binding AppSettings.TF_SecondTextStrokeThickness}"
-                            FontWeight="{Binding SecondTextFontWeight}"
+                            FontWeight="{Binding AppSettings.TF_SecondTextFontWeight, Converter={StaticResource IntToFontWeightConverter}}"
                             Name="SecondTransText"
                             Margin="10,10,10,0"
                             TextWrapping="Wrap"
