@@ -33,7 +33,7 @@
   <sys:String x:Key="DeepLTransSettingsPage_Introduce">DeepL は英語、日本語、中国語の翻訳をサポートしており、インターネットに接続する必要があります。まず DeepL 翻訳サービスに申し込み、キーを取得し、以下の対応する位置に記入して、テスト認証を実行する必要があります。認証にエラーがあります。DeepL が正式に解決策を取得するためにアクセスしてください。DeepL API の一部のバージョンでは、特定の料金が発生する場合があります。制限クエリ ボタンを使用してコンソールに入り、確認することができます。</sys:String>
   <sys:String x:Key="BtnHookGuide">フックモードゲームガイド</sys:String>
   <sys:String x:Key="ChooseHookFuncPage_Drawer_HookCodeBox">フック特殊コード</sys:String>
-  <sys:String x:Key="GeneralTransSettingsPage_HttpProxy">HTTP プロキシ アドレス (空白のままにした場合は使用されません)</sys:String>
+    <sys:String x:Key="GeneralTransSettingsPage_HttpProxy">プロキシ アドレス (空白のままにした場合は使用されません)</sys:String>
   <sys:String x:Key="SettingsMenu_TranslatorSettings_IBM">IBM</sys:String>
   <sys:String x:Key="IBMTransSettingsPage_apiKey">IBM APIキー</sys:String>
   <sys:String x:Key="IBMTransSettingsPage_Introduce">IBM Language Translator はインターネットに接続する必要がありますが、海外ではサーバーのネットワーク速度が遅くなります。このプロジェクトでは英語と他の言語間の翻訳のみがサポートされていますが、移行のために内部で英語に変換され、文字数は 2 倍になります。登録時にクレジット カードや携帯電話を認証する必要はなく、Lite パッケージの料金はかかりません。</sys:String>

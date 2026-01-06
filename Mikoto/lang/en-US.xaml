@@ -60,7 +60,7 @@
     <sys:String x:Key="GeneralTransSettingsPage_Introduce">Set general options for all translation here. A real-time translation window supports up to two different translation sources; you can specify which APIs to use, their display order, and whether to use line-by-line translation; more personalized translation options can be configured in the real-time translation window. Public APIs have quota limits and cannot be used frequently.</sys:String>
     <sys:String x:Key="GeneralTransSettingsPage_FirstTranslator">Primary translation source</sys:String>
     <sys:String x:Key="GeneralTransSettingsPage_SecondTranslator">Secondary translation source</sys:String>
-    <sys:String x:Key="GeneralTransSettingsPage_HttpProxy">HTTP proxy address (default uses system settings)</sys:String>
+    <sys:String x:Key="GeneralTransSettingsPage_HttpProxy">Proxy address (default uses system settings)</sys:String>
     <sys:String x:Key="GeneralTransSettingsPage_EachRowTransCheckBox">Use line-by-line translation</sys:String>
     <sys:String x:Key="GeneralTransSettingsPage_TransSourceHint">Note: Using multiple online APIs simultaneously may affect efficiency</sys:String>
     <sys:String x:Key="GeneralTransSettingsPage_EachRowTransHint">Without line-by-line translation, the software will merge the read text into a single sentence for translation, which may improve translation quality for some games.</sys:String>

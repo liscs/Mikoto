@@ -108,8 +108,8 @@ namespace Mikoto
 
             if (!string.IsNullOrEmpty(Common.AppSettings.HttpProxy))
             {
-                TranslateHttpClient.SetHttpProxiedClient(Common.AppSettings.HttpProxy);
-                Log.Information("已启用 HTTP 代理：{Proxy}", Common.AppSettings.HttpProxy);
+                TranslateHttpClient.SetProxy(Common.AppSettings.HttpProxy);
+                Log.Information("已启用代理：{Proxy}", Common.AppSettings.HttpProxy);
             }
 
             _translator1 = CreateTranslator(Common.AppSettings.FirstTranslator, "主翻译器");

@@ -33,7 +33,7 @@
   <sys:String x:Key="DeepLTransSettingsPage_Introduce">DeepL은 영어, 일본어, 중국어 번역을 잘 지원하며 인터넷에 연결되어 있어야 합니다. 먼저 DeepL 번역 서비스를 신청하고 키를 얻은 후 아래 해당 위치를 입력하고 테스트 인증을 수행해야 합니다. 인증에 오류가 있는 경우 DeepL로 이동하여 공식적으로 솔루션을 얻으십시오. 일부 DeepL API 버전에는 제한 쿼리 버튼을 사용하여 콘솔에 들어가 확인할 수 있습니다.</sys:String>
   <sys:String x:Key="BtnHookGuide">후크 모드 게임 가이드</sys:String>
   <sys:String x:Key="ChooseHookFuncPage_Drawer_HookCodeBox">후크 특수 코드</sys:String>
-  <sys:String x:Key="GeneralTransSettingsPage_HttpProxy">HTTP 프록시 주소(공백으로 두면 사용되지 않음)</sys:String>
+    <sys:String x:Key="GeneralTransSettingsPage_HttpProxy">프록시 주소(공백으로 두면 사용되지 않음)</sys:String>
   <sys:String x:Key="SettingsMenu_TranslatorSettings_IBM">IBM</sys:String>
   <sys:String x:Key="IBMTransSettingsPage_apiKey">IBM API 키</sys:String>
   <sys:String x:Key="IBMTransSettingsPage_Introduce">IBM Language Translator는 인터넷에 연결되어 있어야 하며, 해외 서버의 네트워크 속도는 느립니다. 기본적으로 영어와 다른 언어 간의 번역만 지원합니다. 이 프로젝트는 영어가 아닌 언어 간의 번역을 허용하지만 전환을 위해 내부적으로 영어로 변환됩니다. 번역 품질은 평균이며 글자 수는 두 배로 늘어납니다. 회원가입 시 신용카드, 휴대폰 인증이 필요 없으며, Lite 패키지 이용 시 수수료도 없습니다.</sys:String>
