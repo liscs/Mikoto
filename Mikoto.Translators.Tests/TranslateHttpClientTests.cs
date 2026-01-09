@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using Xunit;
+﻿using Xunit;
 
 namespace Mikoto.Translators.Tests;
 

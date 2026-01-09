@@ -8,7 +8,6 @@ using Mikoto.Helpers.Graphics;
 using Mikoto.Mecab;
 using Mikoto.TextHook;
 using Mikoto.Translators;
-using Mikoto.Translators.Implementations;
 using Mikoto.Translators.Interfaces;
 using Mikoto.TransOptimization;
 using Mikoto.TTS;
@@ -352,7 +351,7 @@ namespace Mikoto
 
         private SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new();
         private readonly AsyncLwwTask _translationTask = new();
-        
+
         /// <summary>
         /// Hook/Clipboard模式下调用的事件
         /// </summary>

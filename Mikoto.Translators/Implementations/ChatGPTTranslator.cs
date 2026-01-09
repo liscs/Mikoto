@@ -167,7 +167,7 @@ public class ChatGPTTranslator : ITranslator
         {
             Content = JsonContent.Create(payload)
         };
-        request.Headers.Authorization = new ("Bearer", apiKey);
+        request.Headers.Authorization = new("Bearer", apiKey);
         // 使用 ResponseHeadersRead 避免预加载整个响应体到内存
         using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, token);
 
