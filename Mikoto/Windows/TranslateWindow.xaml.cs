@@ -307,15 +307,8 @@ namespace Mikoto
         /// </summary>
         private void UI_Init()
         {
-            //TODO MVVM重写
             FirstTransText.Stroke = Common.AppSettings.TF_FirstWhiteStrokeIsChecked ? Brushes.White : Brushes.Black;
             SecondTransText.Stroke = Common.AppSettings.TF_SecondWhiteStrokeIsChecked ? Brushes.White : Brushes.Black;
-
-            BrushConverter brushConverter = new();
-            FirstTransText.Fill = brushConverter.ConvertFromString(Common.AppSettings.TF_FirstTransTextColor) as Brush;
-            SecondTransText.Fill = brushConverter.ConvertFromString(Common.AppSettings.TF_SecondTransTextColor) as Brush;
-
-            this.Background = brushConverter.ConvertFromString(Common.AppSettings.TF_BackColor) as Brush;
 
             if (int.Parse(Common.AppSettings.TF_LocX) != -1 && int.Parse(Common.AppSettings.TF_SizeW) != 0)
             {

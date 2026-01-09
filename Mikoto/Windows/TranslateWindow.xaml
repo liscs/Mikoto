@@ -16,7 +16,8 @@
         MinWidth="384"
         Closing="Window_Closing"
         Loaded="Window_Loaded"
-        hc:WindowAttach.IsDragElement="True">
+        hc:WindowAttach.IsDragElement="True"
+        Background="{Binding AppSettings.TF_BackColor}">
     <Window.BorderBrush>
         <LinearGradientBrush StartPoint="0,0"
                              EndPoint="1,1">
@@ -209,7 +210,7 @@
             <hc:OutlineText Text="{DynamicResource TranslateWin_WaitingSource}"
                             FontFamily="{Binding AppSettings.TF_FirstTransTextFont}"
                             FontSize="{Binding AppSettings.TF_FirstTransTextSize}"
-                            Fill="White"
+                            Fill="{Binding AppSettings.TF_FirstTransTextColor}"
                             Stroke="Black"
                             StrokeThickness="{Binding AppSettings.TF_FirstTextStrokeThickness}"
                             FontWeight="{Binding AppSettings.TF_FirstTextFontWeight, Converter={StaticResource IntToFontWeightConverter}}"
@@ -222,7 +223,7 @@
             <hc:OutlineText Text=""
                             FontFamily="{Binding AppSettings.TF_SecondTransTextFont}"
                             FontSize="{Binding AppSettings.TF_SecondTransTextSize}"
-                            Fill="White"
+                            Fill="{Binding AppSettings.TF_SecondTransTextColor}"
                             Stroke="Black"
                             StrokeThickness="{Binding AppSettings.TF_SecondTextStrokeThickness}"
                             FontWeight="{Binding AppSettings.TF_SecondTextFontWeight, Converter={StaticResource IntToFontWeightConverter}}"
