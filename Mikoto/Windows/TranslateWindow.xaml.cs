@@ -372,7 +372,12 @@ namespace Mikoto
 
         private static string CleanText(string? text)
         {
-            string repairedText = text??string.Empty;
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return string.Empty;
+            }
+
+            string repairedText = text;
             if (!string.IsNullOrWhiteSpace(App.Env.Context.UsingRepairFunc))
             {
                 repairedText = TextRepair.PreProcessSrc(App.Env.Context.UsingRepairFunc, repairedText);
@@ -393,7 +398,7 @@ namespace Mikoto
             {
                 repairedText = repairedText.Trim();
             }
-
+            Log.Debug("原文处理完成，模式：{Mode}。原文本长度: {RawLen} -> 处理后长度: {HandleLen}", App.Env.Context.UsingRepairFunc, text.Length, repairedText.Length);
             return repairedText;
         }
 
@@ -804,8 +809,7 @@ namespace Mikoto
 
             // 4. 翻译前预处理
             string beforeString = _beforeTransHandle.AutoHandle(repairedText);
-            Log.Debug("[{Name}] 翻译前预处理完成。原文本长度: {RawLen} -> 处理后长度: {HandleLen}",
-                selectedTranslator.DisplayName, repairedText.Length, beforeString.Length);
+
 
             // 5. 提交翻译
             string? fullResult = null;

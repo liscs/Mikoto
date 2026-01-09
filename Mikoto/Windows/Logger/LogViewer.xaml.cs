@@ -31,6 +31,20 @@ namespace Mikoto
         }
         internal void AppendLog(LogEntry logEntry)
         {
+            var blocks = LogRichTextBox.Document.Blocks;
+
+            // 当达到 5000 条时，删除最早的 100 条（批量删除比逐条删除性能更好）
+            if (blocks.Count >= 5000)
+            {
+                for (int i = 0; i < 100; i++)
+                {
+                    if (blocks.FirstBlock != null)
+                    {
+                        blocks.Remove(blocks.FirstBlock);
+                    }
+                }
+            }
+
             var paragraph = new Paragraph { Margin = new Thickness(0) };
 
             // 时间
@@ -42,13 +56,13 @@ namespace Mikoto
             // 日志消息
             paragraph.Inlines.Add(new Run(logEntry.Message) { Foreground = logEntry.Color });
 
-            LogRichTextBox.Document.Blocks.Add(paragraph);
+            blocks.Add(paragraph);
 
             // 自动滚动到底部
             LogRichTextBox.ScrollToEnd();
 
-            // 更新日志数量显示
-            LogCountTextBlock.Text = $"{LogRichTextBox.Document.Blocks.Count} Items";
+            // 更新界面显示
+            LogCountTextBlock.Text = $"{blocks.Count} Items";
         }
 
         private LogViewer()
