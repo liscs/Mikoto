@@ -345,13 +345,13 @@ namespace Mikoto.TextHook
         {
             _lastMessageStopwatch.Restart();
             if (outLine.Data == null) { return; }
+
             AddTextractorHistory(outLine.Data);
             if (Paused) { return; }
             _textHookData = TextractorOutputParser.DealTextratorOutput(outLine.Data, _textHookData);
             if (_textHookData != null)
             {
                 TextHookData data = _textHookData;
-
                 if (data.HookFunc != "Console" && data.HookFunc != "Clipboard" && data.HookFunc != "")
                 {
                     //Hook入口选择窗口处理
@@ -374,14 +374,18 @@ namespace Mikoto.TextHook
                     if (_gameInfo?.HookCode == data.HookCode)
                     {
                         Regex regex = MisakaCodeRegex();
-                        //保存的misakacode
                         string savedMisakaCode = _gameInfo.MisakaHookCode;
-
-                        //取得的misakacode
                         string obtainedMisakaCode = data.MisakaHookCode;
 
                         Match obtainedMatch = regex.Match(obtainedMisakaCode);
-                        Debug.Assert(obtainedMatch.Success);//传入值应该合法
+
+                        // 4. 异常数据预警
+                        if (!obtainedMatch.Success)
+                        {
+                            Log.Warning("MisakaCode 格式不合法: {Code}", obtainedMisakaCode);
+                        }
+                        Debug.Assert(obtainedMatch.Success);
+
                         if (InvalidMisakaCodeRegex().IsMatch(obtainedMisakaCode))
                         {
                             //无效返回
@@ -404,21 +408,15 @@ namespace Mikoto.TextHook
                                 }
                                 else
                                 {
-                                    Log.Warning(
-                                         "更新最佳匹配 MisakaCode({SavedCode})，旧={OldCode}，新={NewCode}",
-                                         savedMisakaCode,
-                                         _bestMatchCode,
-                                         obtainedMisakaCode
-                                     );
+                                    Log.Warning("更新最佳匹配 MisakaCode({SavedCode})，旧={OldCode}，新={NewCode}",
+                                                 savedMisakaCode, _bestMatchCode, obtainedMisakaCode);
                                 }
-
                                 _bestMatchCode = obtainedMisakaCode;
                             }
 
-                            SolvedDataReceivedEventArgs e = new()
-                            {
-                                Data = data
-                            };
+                            Log.Debug("Textractor 原始输出: {RawData}，命中目标 Hook 地址，触发 MeetHookAddressMessageReceived", outLine.Data);
+
+                            SolvedDataReceivedEventArgs e = new() { Data = data };
                             MeetHookAddressMessageReceived?.Invoke(this, e);
                         }
                     }

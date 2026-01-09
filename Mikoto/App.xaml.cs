@@ -27,7 +27,11 @@ namespace Mikoto
             var logPath = Path.Combine(DataFolder.Path, "logs", "mikoto-.log");
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
+#if DEBUG
+                .MinimumLevel.Debug() // 调试模式下开启详细细节
+#else
+                .MinimumLevel.Information() // 发布模式下只保留重要信息，节省 IO 性能
+#endif
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .WriteTo.File(

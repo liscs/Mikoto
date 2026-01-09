@@ -798,22 +798,29 @@ namespace Mikoto
         {
             if (selectedTranslator is null)
             {
+                Log.Warning("翻译请求取消：未指定翻译器。原文: {Text}", repairedText);
                 return;
             }
 
             // 4. 翻译前预处理
             string beforeString = _beforeTransHandle.AutoHandle(repairedText);
+            Log.Debug("[{Name}] 翻译前预处理完成。原文本长度: {RawLen} -> 处理后长度: {HandleLen}",
+                selectedTranslator.DisplayName, repairedText.Length, beforeString.Length);
 
             // 5. 提交翻译
-            string? fullResult;
+            string? fullResult = null;
+            var watch = Stopwatch.StartNew(); // 计时翻译耗时
 
             if (selectedTranslator.IsStreamSupported)
             {
                 try
                 {
+                    Log.Information("[{Name}] 开始流式翻译请求...", selectedTranslator.DisplayName);
+
                     // 每次开始前清空旧文本
                     Application.Current.Dispatcher.Invoke(() => controlToUpdate.Text = string.Empty);
                     fullResult = string.Empty;
+
                     await foreach (var chunk in selectedTranslator.StreamTranslateAsync(beforeString, App.Env.Context.UsingDstLang, App.Env.Context.UsingSrcLang))
                     {
                         fullResult += chunk; // 累加结果供后续后处理和记录使用
@@ -824,27 +831,32 @@ namespace Mikoto
                             controlToUpdate.Text = fullResult;
                         }, DispatcherPriority.Background).Task.FireAndForget();
                     }
+                    watch.Stop();
+                    Log.Debug("[{Name}] 流式翻译接收完毕，总耗时: {Elapsed}ms", selectedTranslator.DisplayName, watch.ElapsedMilliseconds);
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex, "流式翻译中断");
+                    Log.Error(ex, "[{Name}] 流式翻译中断", selectedTranslator.DisplayName);
                     Growl.WarningGlobal($"{selectedTranslator.DisplayName} failed: {ex.Message}");
                     return;
                 }
             }
             else
             {
+                Log.Debug("[{Name}] 发起普通翻译请求...", selectedTranslator.DisplayName);
                 fullResult = await selectedTranslator.TranslateAsync(beforeString, App.Env.Context.UsingDstLang, App.Env.Context.UsingSrcLang);
+                watch.Stop();
 
                 if (fullResult == null)
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        Log.Warning("{DisplayName}翻译返回值为null", selectedTranslator.DisplayName);
+                        Log.Warning("[{DisplayName}] 翻译返回值为null。耗时: {Elapsed}ms", selectedTranslator.DisplayName, watch.ElapsedMilliseconds);
                         Growl.WarningGlobal($"{selectedTranslator.DisplayName} failed: {selectedTranslator.GetLastError()}");
                     });
                     return;
                 }
+                Log.Debug("[{Name}] 翻译请求成功，耗时: {Elapsed}ms", selectedTranslator.DisplayName, watch.ElapsedMilliseconds);
             }
 
 
@@ -866,10 +878,11 @@ namespace Mikoto
 
             if (!isRenew && selectedTranslator != null)
             {
+                Log.Debug("[{Name}] 翻译流程结束。结果已保存。结果预览: {Result}",
+                    selectedTranslator.DisplayName, afterString);
                 SaveTranslateResult(repairedText, selectedTranslator.DisplayName, afterString);
             }
         }
-
         private void SaveTranslateResult(string srouce, string translatorName, string trans)
         {
             lock (_saveTransResultLock)
