@@ -3,6 +3,7 @@ using Mikoto.ArtificialTrans;
 using Mikoto.Config;
 using Mikoto.Enums;
 using Mikoto.Helpers;
+using Mikoto.Helpers.Async;
 using Mikoto.Helpers.Graphics;
 using Mikoto.Mecab;
 using Mikoto.TextHook;
@@ -350,30 +351,39 @@ namespace Mikoto
         }
 
         private SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new();
-        private string? _tempData;
-
+        private readonly AsyncLwwTask _translationTask = new();
+        
         /// <summary>
         /// Hook/Clipboard模式下调用的事件
         /// </summary>
         public async void ProcessAndDisplayTranslation(object sender, SolvedDataReceivedEventArgs e)
         {
             //1.得到原句
-            _tempData = e.Data.Data;
-
-            //延迟极短的一段时间，针对Escu:de hook多段返回的特殊处理
-            //延迟会导致收到两个内容相同的e
-            await Task.Yield();
-            if (_tempData == null || e.Data == _lastSolvedDataReceivedEventArgs.Data || _tempData != e.Data.Data)
+            string? currentData = e.Data.Data; // 局部变量捕获当前快照
+            //LWW逻辑处理短时间并发调用
+            //只处理最新的一次调用
+            await _translationTask.ExecuteAsync(async () =>
             {
-                return;
-            }
-            _lastSolvedDataReceivedEventArgs = e;
+                if (currentData == _lastSolvedDataReceivedEventArgs.Data?.Data) return;
+                _lastSolvedDataReceivedEventArgs = e;
+                string repairedText = CleanText(currentData);
+                Dispatcher.Invoke(SetWindowTopMost);
 
-            //2.进行去重
-            string repairedText = _tempData;
+                if (Common.AppSettings.AzureEnableAutoSpeak)
+                {
+                    SpeakIfNoGameVoiceAsync(repairedText).FireAndForget();
+                }
+                TranslateText(repairedText);
+            });
+
+        }
+
+        private static string CleanText(string? text)
+        {
+            string repairedText = text??string.Empty;
             if (!string.IsNullOrWhiteSpace(App.Env.Context.UsingRepairFunc))
             {
-                repairedText = TextRepair.PreProcessSrc(App.Env.Context.UsingRepairFunc, _tempData);
+                repairedText = TextRepair.PreProcessSrc(App.Env.Context.UsingRepairFunc, repairedText);
             }
 
             if (!Common.AppSettings.EachRowTrans) // 不启用分行翻译
@@ -392,13 +402,7 @@ namespace Mikoto
                 repairedText = repairedText.Trim();
             }
 
-            Dispatcher.Invoke(SetWindowTopMost);
-
-            if (Common.AppSettings.AzureEnableAutoSpeak)
-            {
-                _ = SpeakIfNoGameVoiceAsync(repairedText);
-            }
-            TranslateText(repairedText);
+            return repairedText;
         }
 
         private async Task SpeakIfNoGameVoiceAsync(string text)
