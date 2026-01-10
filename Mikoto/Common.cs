@@ -21,8 +21,6 @@ namespace Mikoto
     public static class Common
     {
         public static IAppSettings AppSettings { get; set; } = default!;//应用设置
-        public static IRepeatRepairSettings RepairSettings { get; set; } = default!; //去重方法参数
-
         private static void ShowUpdateMessageBox(Version latestVersion)
         {
             MessageBoxResult dr = MessageBox.Show($"{CurrentVersion.ToString(3)}->{latestVersion}{Environment.NewLine}{Application.Current.Resources["MainWindow_AutoUpdateCheck"]}",

@@ -38,7 +38,6 @@ namespace Mikoto
             DataContext = _viewModel;
             Instance = this;
             Common.AppSettings = new ConfigurationBuilder<IAppSettings>().UseIniFile(Path.Combine(DataFolder.Path, "settings", "settings.ini")).Build();
-            Common.RepairSettings = new ConfigurationBuilder<IRepeatRepairSettings>().UseIniFile(Path.Combine(DataFolder.Path, "settings", "RepairSettings.ini")).Build();
 
             InitializeLanguage();
             TranslatorCommon.Refresh(App.Env.ResourceService);
@@ -416,27 +415,7 @@ namespace Mikoto
                 return;
             }
 
-            App.Env.Context.GameID = _viewModel.GameInfo.GameID;
-            App.Env.Context.TransMode = TransMode.Hook;
-            App.Env.Context.UsingDstLang = _viewModel.GameInfo.DstLang;
-            App.Env.Context.UsingSrcLang = _viewModel.GameInfo.SrcLang;
-            App.Env.Context.UsingRepairFunc = _viewModel.GameInfo.RepairFunc;
-
-            switch (App.Env.Context.UsingRepairFunc)
-            {
-                case "RepairFun_RemoveSingleWordRepeat":
-                    Common.RepairSettings.SingleWordRepeatTimes = int.Parse(_viewModel.GameInfo.RepairParamA ?? "0");
-                    break;
-                case "RepairFun_RemoveSentenceRepeat":
-                    Common.RepairSettings.SentenceRepeatFindCharNum = int.Parse(_viewModel.GameInfo.RepairParamA ?? "0");
-                    break;
-                case "RepairFun_RegexReplace":
-                    Common.RepairSettings.Regex = _viewModel.GameInfo.RepairParamA ?? string.Empty;
-                    Common.RepairSettings.Regex_Replace = _viewModel.GameInfo.RepairParamB ?? string.Empty;
-                    break;
-            }
-
-            TextRepair.RepairFuncInit();
+            App.Env.Context.GameInfo = _viewModel.GameInfo;
 
             App.Env.TextHookService =
                 gameProcessList.Count == 1
@@ -664,9 +643,9 @@ namespace Mikoto
 
         private void ClipboardGuideBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.Env.TextHookService = new TextHook.TextHookService();
-            App.Env.Context.GameID = Guid.Empty;
-            App.Env.Context.TransMode = TransMode.Hook;
+            App.Env.TextHookService = new TextHookService();
+            App.Env.Context.GameInfo.GameID = Guid.Empty;
+            App.Env.Context.GameInfo.TransMode = (int)TransMode.Hook;
             App.Env.TextHookService.AddClipBoardWatcher();
 
             var ggw = new GameGuideWindow(TransMode.Clipboard);

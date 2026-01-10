@@ -62,27 +62,27 @@ namespace Mikoto.GuidePages.Hook
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
             string selectedItem = RepairFuncComboBox.SelectedValue!.ToString()!;
-            App.Env.Context.UsingRepairFunc = TextRepair.DisplayNameToNameDict.Value[selectedItem];
+            App.Env.Context.GameInfo.RepairFunc = TextRepair.DisplayNameToNameDict.Value[selectedItem];
 
             //写入去重方法
 
             switch (TextRepair.DisplayNameToNameDict.Value[selectedItem])
             {
                 case nameof(TextRepair.RepairFun_RemoveSingleWordRepeat):
-                    _gameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.UsingRepairFunc;
-                    _gameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.SingleWordRepeatTimes.ToString();
+                    _gameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.GameInfo.RepairFunc;
+                    _gameInfoBuilder.GameInfo.RepairParamA = App.Env.Context.GameInfo.RepairParamA;
                     break;
                 case nameof(TextRepair.RepairFun_RemoveSentenceRepeat):
-                    _gameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.UsingRepairFunc;
-                    _gameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.SentenceRepeatFindCharNum.ToString();
+                    _gameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.GameInfo.RepairFunc;
+                    _gameInfoBuilder.GameInfo.RepairParamA = App.Env.Context.GameInfo.RepairParamA;
                     break;
                 case nameof(TextRepair.RepairFun_RegexReplace):
-                    _gameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.UsingRepairFunc;
-                    _gameInfoBuilder.GameInfo.RepairParamA = Common.RepairSettings.Regex.ToString();
-                    _gameInfoBuilder.GameInfo.RepairParamB = Common.RepairSettings.Regex_Replace.ToString();
+                    _gameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.GameInfo.RepairFunc;
+                    _gameInfoBuilder.GameInfo.RepairParamA = App.Env.Context.GameInfo.RepairParamA;
+                    _gameInfoBuilder.GameInfo.RepairParamB = App.Env.Context.GameInfo.RepairParamB;
                     break;
                 default:
-                    _gameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.UsingRepairFunc;
+                    _gameInfoBuilder.GameInfo.RepairFunc = App.Env.Context.GameInfo.RepairFunc;
                     break;
             }
             //使用路由事件机制通知窗口来完成下一步操作
@@ -97,9 +97,8 @@ namespace Mikoto.GuidePages.Hook
         {
             if (!int.TryParse(Single_TextBox.Text, out int times))
                 return;
-            Common.RepairSettings.SingleWordRepeatTimes = times;
-            TextRepair.RepairFuncInit();
-            repairedTextBox.Text = TextRepair.RepairFun_RemoveSingleWordRepeat(sourceTextBox.Text);
+            App.Env.Context.GameInfo.RepairParamA = times.ToString();
+            repairedTextBox.Text = TextRepair.RepairFun_RemoveSingleWordRepeat(sourceTextBox.Text, times);
             Single_InputDrawer.IsOpen = false;
         }
 
@@ -107,18 +106,16 @@ namespace Mikoto.GuidePages.Hook
         {
             if (!int.TryParse(Sentence_TextBox.Text, out int num))
                 return;
-            Common.RepairSettings.SentenceRepeatFindCharNum = num;
-            TextRepair.RepairFuncInit();
-            repairedTextBox.Text = TextRepair.RepairFun_RemoveSentenceRepeat(sourceTextBox.Text);
+            App.Env.Context.GameInfo.RepairParamA = num.ToString();
+            repairedTextBox.Text = TextRepair.RepairFun_RemoveSentenceRepeat(sourceTextBox.Text, num);
             Sentence_InputDrawer.IsOpen = false;
         }
 
         private void RegexConfirm_Click(object sender, RoutedEventArgs e)
         {
-            Common.RepairSettings.Regex = Regex_TextBox.Text;
-            Common.RepairSettings.Regex_Replace = Replace_TextBox.Text;
-            TextRepair.RepairFuncInit();
-            repairedTextBox.Text = TextRepair.RepairFun_RegexReplace(sourceTextBox.Text);
+            App.Env.Context.GameInfo.RepairParamA = Regex_TextBox.Text;
+            App.Env.Context.GameInfo.RepairParamB = Replace_TextBox.Text;
+            repairedTextBox.Text = TextRepair.RepairFun_RegexReplace(sourceTextBox.Text, Regex_TextBox.Text, Replace_TextBox.Text);
             Regex_InputDrawer.IsOpen = false;
         }
 

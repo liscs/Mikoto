@@ -75,7 +75,7 @@ namespace Mikoto
             }
             else if (args.Page == null)
             {
-                App.Env.Context.TransMode = _transMode;
+                App.Env.Context.GameInfo.TransMode = (int)_transMode;
                 switch (_transMode)
                 {
                     case TransMode.Hook:

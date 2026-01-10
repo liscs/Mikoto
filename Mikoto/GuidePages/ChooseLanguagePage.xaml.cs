@@ -32,12 +32,12 @@ namespace Mikoto.GuidePages
             }
             else
             {
-                App.Env.Context.UsingSrcLang = TranslatorCommon.LanguageDict[_langList[SrcLangComboBox.SelectedIndex]];
-                App.Env.Context.UsingDstLang = TranslatorCommon.LanguageDict[_langList[DstLangComboBox.SelectedIndex]];
+                App.Env.Context.GameInfo.SrcLang = TranslatorCommon.LanguageDict[_langList[SrcLangComboBox.SelectedIndex]];
+                App.Env.Context.GameInfo.DstLang = TranslatorCommon.LanguageDict[_langList[DstLangComboBox.SelectedIndex]];
 
                 //写游戏信息
-                _gameInfoBuilder.GameInfo.SrcLang = App.Env.Context.UsingSrcLang;
-                _gameInfoBuilder.GameInfo.DstLang = App.Env.Context.UsingDstLang;
+                _gameInfoBuilder.GameInfo.SrcLang = App.Env.Context.GameInfo.SrcLang;
+                _gameInfoBuilder.GameInfo.DstLang = App.Env.Context.GameInfo.DstLang;
 
                 //使用路由事件机制通知窗口来完成下一步操作
                 PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)

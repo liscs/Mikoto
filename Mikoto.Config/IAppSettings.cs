@@ -530,35 +530,4 @@ namespace Mikoto.Config
         [Option(Alias = "Textractor.Path64", DefaultValue = "")]
         string Textractor_Path64 { get; set; }
     }
-
-    public interface IRepeatRepairSettings
-    {
-        [Option(Alias = "RepairFun_RemoveSingleWordRepeat.RepeatTimes", DefaultValue = 0)]
-        int SingleWordRepeatTimes
-        {
-            get;
-            set;
-        }
-
-        [Option(Alias = "RepairFun_RemoveSentenceRepeat.FindCharNum", DefaultValue = 4)]
-        int SentenceRepeatFindCharNum
-        {
-            get;
-            set;
-        }
-
-        [Option(Alias = "RepairFun_Regex.Regex", DefaultValue = "")]
-        string Regex
-        {
-            get;
-            set;
-        }
-
-        [Option(Alias = "RepairFun_Regex.Replace", DefaultValue = "")]
-        string Regex_Replace
-        {
-            get;
-            set;
-        }
-    }
 }

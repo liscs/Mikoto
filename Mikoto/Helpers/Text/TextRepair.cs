@@ -13,16 +13,6 @@ namespace Mikoto
     public static partial class TextRepair
     {
         public static Task CustomScriptInitTask { get; private set; } = default!;
-
-        public static string? RegexReplacement { get; set; }
-        public static string? RegexPattern { get; set; }
-        /// <summary>
-        /// 检测重复句子时使用的最小字符数。
-        /// 若字符串末尾存在长度不少于该值的重复部分，则视为重复句子。
-        /// </summary>
-        public static int SentenceRepeatFindCharNum { get; set; }
-        public static int SingleWordRepeatTimes { get; set; }
-
         private static readonly Lazy<Dictionary<string, string>> defaultDisplayNameDict = new(() => new() {
             { Application.Current.Resources["NoDeal"].ToString()!, nameof(RepairFun_NoDeal) },
             { Application.Current.Resources["RemoveSingleWordRepeat"].ToString()!, nameof(RepairFun_RemoveSingleWordRepeat) },
@@ -106,11 +96,11 @@ namespace Mikoto
             return functionName switch
             {
                 nameof(RepairFun_NoDeal) => RepairFun_NoDeal(sourceText),
-                nameof(RepairFun_RemoveSingleWordRepeat) => RepairFun_RemoveSingleWordRepeat(sourceText),
-                nameof(RepairFun_RemoveSentenceRepeat) => RepairFun_RemoveSentenceRepeat(sourceText),
+                nameof(RepairFun_RemoveSingleWordRepeat) => RepairFun_RemoveSingleWordRepeat(sourceText, Convert.ToInt32(App.Env.Context.GameInfo.RepairParamA)),
+                nameof(RepairFun_RemoveSentenceRepeat) => RepairFun_RemoveSentenceRepeat(sourceText, Convert.ToInt32(App.Env.Context.GameInfo.RepairParamA)),
                 nameof(RepairFun_RemoveLetterNumber) => RepairFun_RemoveLetterNumber(sourceText),
                 nameof(RepairFun_RemoveHTML) => RepairFun_RemoveHTML(sourceText),
-                nameof(RepairFun_RegexReplace) => RepairFun_RegexReplace(sourceText),
+                nameof(RepairFun_RegexReplace) => RepairFun_RegexReplace(sourceText, App.Env.Context.GameInfo.RepairParamA, App.Env.Context.GameInfo.RepairParamB),
                 _ => Application.Current.Resources["MethodError"].ToString()!,
             };
         }
@@ -123,14 +113,13 @@ namespace Mikoto
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string RepairFun_RemoveSingleWordRepeat(string source)
+        public static string RepairFun_RemoveSingleWordRepeat(string source, int repeatTimes)
         {
             if (source == string.Empty)
             {
                 return string.Empty;
             }
 
-            int repeatTimes = SingleWordRepeatTimes;
             int flag = 0;
             string ret = string.Empty;
 
@@ -179,13 +168,11 @@ namespace Mikoto
         /// </summary>
         /// <param name="source">源字符串</param>
         /// <returns>处理后的字符串</returns>
-        public static string RepairFun_RemoveSentenceRepeat(string source)
+        public static string RepairFun_RemoveSentenceRepeat(string source, int repeatStartIndex)
         {
-            // 确保变量 SentenceRepeatFindCharNum 已定义
+            if (repeatStartIndex <= 1) return source;
 
-            if (SentenceRepeatFindCharNum <= 1) return source;
-
-            if (string.IsNullOrEmpty(source) || source.Length < SentenceRepeatFindCharNum)
+            if (string.IsNullOrEmpty(source) || source.Length < repeatStartIndex)
             {
                 return source;
             }
@@ -196,10 +183,10 @@ namespace Mikoto
             string reversedText = new(arr);
 
             // 提取检查子串
-            string cmp = reversedText.Substring(0, SentenceRepeatFindCharNum);
+            string cmp = reversedText.Substring(0, repeatStartIndex);
 
             // 检查是否存在重复
-            int pos = reversedText.IndexOf(cmp, SentenceRepeatFindCharNum);
+            int pos = reversedText.IndexOf(cmp, repeatStartIndex);
             if (pos == -1)
             {
                 return Application.Current.Resources["SentenceRepeatError"].ToString()!;
@@ -249,27 +236,14 @@ namespace Mikoto
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string RepairFun_RegexReplace(string source)
+        public static string RepairFun_RegexReplace(string source, string? pattern, string? replace)
         {
-            if (RegexPattern == null || RegexReplacement == null || source == string.Empty)
+            if (pattern == null || replace == null || source == string.Empty)
             {
                 return string.Empty;
             }
-            return Regex.Replace(source, RegexPattern, RegexReplacement);
+            return Regex.Replace(source, pattern, replace);
         }
-
-        /// <summary>
-        /// 文本去重方法初始化
-        /// </summary>
-        public static void RepairFuncInit()
-        {
-            TextRepair.SingleWordRepeatTimes = Common.RepairSettings.SingleWordRepeatTimes;
-            TextRepair.SentenceRepeatFindCharNum = Common.RepairSettings.SentenceRepeatFindCharNum;
-            TextRepair.RegexPattern = Common.RepairSettings.Regex;
-            TextRepair.RegexReplacement = Common.RepairSettings.Regex_Replace;
-        }
-
-
     }
 
 }

@@ -33,8 +33,8 @@ namespace Mikoto
         {
             var blocks = LogRichTextBox.Document.Blocks;
 
-            // 当达到 5000 条时，删除最早的 100 条（批量删除比逐条删除性能更好）
-            if (blocks.Count >= 5000)
+            // 当达到 1000 条时，删除最早的 100 条（批量删除比逐条删除性能更好）
+            if (blocks.Count >= 1000)
             {
                 for (int i = 0; i < 100; i++)
                 {

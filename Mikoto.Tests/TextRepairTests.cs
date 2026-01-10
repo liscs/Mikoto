@@ -6,15 +6,13 @@ public class TextRepairTests
 {
     private void TestSingleWordRepeat(int repeat, string src, string expected)
     {
-        TextRepair.SingleWordRepeatTimes = repeat;
-        string actual = TextRepair.RepairFun_RemoveSingleWordRepeat(src);
+        string actual = TextRepair.RepairFun_RemoveSingleWordRepeat(src, repeat);
         Assert.Equal(expected, actual);
     }
 
     private void TestSentenceRepeat(int repeat, string src, string expected)
     {
-        TextRepair.SentenceRepeatFindCharNum = repeat;
-        string actual = TextRepair.RepairFun_RemoveSentenceRepeat(src);
+        string actual = TextRepair.RepairFun_RemoveSentenceRepeat(src, repeat);
         Assert.Equal(expected, actual);
     }
 

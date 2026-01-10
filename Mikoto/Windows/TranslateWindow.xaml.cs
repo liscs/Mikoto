@@ -117,12 +117,12 @@ namespace Mikoto
 
 
 
-            _beforeTransHandle = new BeforeTransHandle(App.Env.Context.GameID.ToString(), App.Env.Context.UsingSrcLang, App.Env.Context.UsingDstLang);
+            _beforeTransHandle = new BeforeTransHandle(App.Env.Context.GameInfo.GameID.ToString(), App.Env.Context.GameInfo.SrcLang, App.Env.Context.GameInfo.DstLang);
             _afterTransHandle = new AfterTransHandle(_beforeTransHandle);
-            _artificialTransHelper = new ArtificialTransHelper(App.Env.Context.GameID.ToString());
+            _artificialTransHelper = new ArtificialTransHelper(App.Env.Context.GameInfo.GameID.ToString());
             App.Env.TextHookService.MeetHookAddressMessageReceived += ProcessAndDisplayTranslation;
 
-            if (App.Env.Context.TransMode == TransMode.Hook)
+            if (App.Env.Context.GameInfo.TransMode == (int)TransMode.Hook)
             {
                 _gameProcess = Process.GetProcessById(App.Env.TextHookService.GamePID);
                 Log.Information("翻译窗口已绑定游戏进程 → {ProcessName} (PID: {PID})", _gameProcess.ProcessName, _gameProcess.Id);
@@ -147,7 +147,7 @@ namespace Mikoto
 
             sw.Stop();
             Log.Information("翻译窗口初始化完成，耗时 {ElapsedMs}ms | 模式：{Mode}",
-                sw.ElapsedMilliseconds, App.Env.Context.TransMode);
+                sw.ElapsedMilliseconds, App.Env.Context.GameInfo.TransMode);
 
             Application.Current.MainWindow.Hide();
         }
@@ -282,7 +282,7 @@ namespace Mikoto
                         )
                     {
                         _tts = new AzureTTS(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, Common.AppSettings.AzureTTSVoice, Common.AppSettings.AzureTTSVoiceVolume, Common.AppSettings.AzureTTSVoiceStyle, Common.AppSettings.AzureTTSProxy);
-                        _voiceDetector = new AzureVoiceDetector(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, App.Env.Context.UsingSrcLang);
+                        _voiceDetector = new AzureVoiceDetector(Common.AppSettings.AzureTTSSecretKey, Common.AppSettings.AzureTTSLocation, App.Env.Context.GameInfo.SrcLang);
                     }
                     else
                     {
@@ -378,14 +378,14 @@ namespace Mikoto
             }
 
             string repairedText = text;
-            if (!string.IsNullOrWhiteSpace(App.Env.Context.UsingRepairFunc))
+            if (!string.IsNullOrWhiteSpace(App.Env.Context.GameInfo.RepairFunc))
             {
-                repairedText = TextRepair.PreProcessSrc(App.Env.Context.UsingRepairFunc, repairedText);
+                repairedText = TextRepair.PreProcessSrc(App.Env.Context.GameInfo.RepairFunc, repairedText);
             }
 
             if (!Common.AppSettings.EachRowTrans) // 不启用分行翻译
             {
-                if (IsJaOrZh(App.Env.Context.UsingSrcLang))
+                if (IsJaOrZh(App.Env.Context.GameInfo.SrcLang))
                 {
                     repairedText = new string(repairedText.Where(p => !char.IsWhiteSpace(p)).ToArray()).Replace("<br>", "").Replace("</br>", "").Trim();
                 }
@@ -398,7 +398,22 @@ namespace Mikoto
             {
                 repairedText = repairedText.Trim();
             }
-            Log.Debug("原文处理完成，模式：{Mode}。原文本长度: {RawLen} -> 处理后长度: {HandleLen}", App.Env.Context.UsingRepairFunc, text.Length, repairedText.Length);
+            StringBuilder repairMode = new($"{App.Env.Context.GameInfo.RepairFunc}");
+            if (!string.IsNullOrWhiteSpace(App.Env.Context.GameInfo.RepairParamA))
+            {
+                repairMode.Append($" | {App.Env.Context.GameInfo.RepairParamA}");
+            }
+            if (!string.IsNullOrWhiteSpace(App.Env.Context.GameInfo.RepairParamB))
+            {
+                repairMode.Append($" | {App.Env.Context.GameInfo.RepairParamB}");
+            }
+
+            Log.Debug("原文去重完成 [模式: {Mode}] 长度变化: {RawLen} -> {HandleLen} (Δ{Diff})，结果预览: 「{Text}」",
+                repairMode,
+                text.Length,
+                repairedText.Length,
+                repairedText.Length - text.Length,
+                repairedText);
             return repairedText;
         }
 
@@ -446,8 +461,8 @@ namespace Mikoto
             //补充:如果去重之后的文本长度超过指定值（默认100），直接不翻译、不显示
             //补充2：如果去重后文本长度为0，则不翻译不显示
             if (repairedText.Length != 0
-                && ((repairedText.Length <= Common.AppSettings.TransLimitNums && IsJaOrZh(App.Env.Context.UsingSrcLang))
-                || (repairedText.Split(' ').Length <= Common.AppSettings.TransLimitNums && !IsJaOrZh(App.Env.Context.UsingSrcLang)))
+                && ((repairedText.Length <= Common.AppSettings.TransLimitNums && IsJaOrZh(App.Env.Context.GameInfo.SrcLang))
+                || (repairedText.Split(' ').Length <= Common.AppSettings.TransLimitNums && !IsJaOrZh(App.Env.Context.GameInfo.SrcLang)))
                 )
             {
 
@@ -488,7 +503,7 @@ namespace Mikoto
             await Task.Run(() =>
             {
                 //3.分词
-                if (App.Env.Context.UsingSrcLang == "ja"
+                if (App.Env.Context.GameInfo.SrcLang == "ja"
                     && _mecabTokenizer.EnableMecab
                     && (Common.AppSettings.TF_EnablePhoneticNotation || Common.AppSettings.TF_EnableColorful))
                 {
@@ -825,7 +840,7 @@ namespace Mikoto
                     Application.Current.Dispatcher.Invoke(() => controlToUpdate.Text = string.Empty);
                     fullResult = string.Empty;
 
-                    await foreach (var chunk in selectedTranslator.StreamTranslateAsync(beforeString, App.Env.Context.UsingDstLang, App.Env.Context.UsingSrcLang))
+                    await foreach (var chunk in selectedTranslator.StreamTranslateAsync(beforeString, App.Env.Context.GameInfo.DstLang, App.Env.Context.GameInfo.SrcLang))
                     {
                         fullResult += chunk; // 累加结果供后续后处理和记录使用
 
@@ -848,7 +863,7 @@ namespace Mikoto
             else
             {
                 Log.Debug("[{Name}] 发起普通翻译请求...", selectedTranslator.DisplayName);
-                fullResult = await selectedTranslator.TranslateAsync(beforeString, App.Env.Context.UsingDstLang, App.Env.Context.UsingSrcLang);
+                fullResult = await selectedTranslator.TranslateAsync(beforeString, App.Env.Context.GameInfo.DstLang, App.Env.Context.GameInfo.SrcLang);
                 watch.Stop();
 
                 if (fullResult == null)
@@ -987,7 +1002,7 @@ namespace Mikoto
 
         private void Pause_Item_Click(object sender, RoutedEventArgs e)
         {
-            if (App.Env.Context.TransMode == TransMode.Hook)
+            if (App.Env.Context.GameInfo.TransMode == (int)TransMode.Hook)
             {
                 if (App.Env.TextHookService.Paused)
                 {
