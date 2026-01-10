@@ -1,28 +1,19 @@
-﻿using Mikoto.Helpers.ViewModel;
-using System.Diagnostics;
-using System.Windows.Media;
+﻿using Serilog.Events;
 namespace Mikoto.Windows.Logger
 {
-    internal class LogEntry : ViewModelBase
+    public class LogEntry
     {
-        private static int index = 0;
-        public string DateTime { get; set; } = System.DateTime.Now.ToString();
-
-        public int Index
+        public LogEntry() { }
+        public LogEntry(int index, DateTime timestamp, string message, LogEventLevel level)
         {
-            get
-            {
-                index++;
-                return index;
-            }
-            set
-            {
-                throw new UnreachableException();
-            }
+            Index = index;
+            Timestamp = timestamp;
+            Message = message;
+            Level = level;
         }
-
-        public string Message { get; set; } = string.Empty;
-
-        public SolidColorBrush Color { get; set; } = Brushes.AliceBlue;
+        public DateTime Timestamp { get; init; } = DateTime.Now;
+        public int Index { get; init; }
+        public string Message { get; init; } = string.Empty;
+        public LogEventLevel Level { get; init; }
     }
 }

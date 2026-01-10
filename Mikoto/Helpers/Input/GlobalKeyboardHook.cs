@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using Mikoto.Windows.Logger;
+using System.Windows.Input;
 
 namespace Mikoto.Helpers.Input;
 

@@ -1,5 +1,6 @@
 ﻿using Mikoto.DataAccess;
 using Mikoto.Helpers.Input;
+using Mikoto.Windows.Logger;
 using Serilog;
 using System.IO;
 using System.Text;

@@ -1,20 +1,17 @@
-﻿//来自 https://stackoverflow.com/questions/16743804/implementing-a-log-viewer-with-wpf
-
-using Mikoto.Windows.Logger;
-using Serilog.Events;
+﻿using Serilog.Events;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace Mikoto
+namespace Mikoto.Windows.Logger
 {
-    /// <summary>
-    /// LogViewer.xaml 的交互逻辑
-    /// </summary>
-    public partial class LogViewer
+    public partial class LogViewer : Window
     {
         private static LogViewer? logWindow;
+
+        // 绑定 ViewModel
+        internal LogViewerViewModel ViewModel { get; } = new();
 
         public static LogViewer LogWindow
         {
@@ -25,49 +22,61 @@ namespace Mikoto
                     logWindow = new LogViewer();
                     logWindow.LogRichTextBox.Document.Blocks.Clear();
                 }
-
                 return logWindow;
             }
-        }
-        internal void AppendLog(LogEntry logEntry)
-        {
-            var blocks = LogRichTextBox.Document.Blocks;
-
-            // 当达到 1000 条时，删除最早的 100 条（批量删除比逐条删除性能更好）
-            if (blocks.Count >= 1000)
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    if (blocks.FirstBlock != null)
-                    {
-                        blocks.Remove(blocks.FirstBlock);
-                    }
-                }
-            }
-
-            var paragraph = new Paragraph { Margin = new Thickness(0) };
-
-            // 时间
-            paragraph.Inlines.Add(new Run($"[{logEntry.DateTime:HH:mm:ss}] ") { Foreground = Brushes.Gray });
-
-            // 索引
-            paragraph.Inlines.Add(new Run($"# {logEntry.Index}: ") { Foreground = Brushes.LightGray });
-
-            // 日志消息
-            paragraph.Inlines.Add(new Run(logEntry.Message) { Foreground = logEntry.Color });
-
-            blocks.Add(paragraph);
-
-            // 自动滚动到底部
-            LogRichTextBox.ScrollToEnd();
-
-            // 更新界面显示
-            LogCountTextBlock.Text = $"{blocks.Count} Items";
         }
 
         private LogViewer()
         {
             InitializeComponent();
+            // 设置 DataContext 以便 XAML 绑定 LogCountText
+            this.DataContext = ViewModel;
+
+            // 订阅 ViewModel 的集合变化，实现自动渲染到 RichTextBox
+            ((System.Collections.Specialized.INotifyCollectionChanged)ViewModel.Logs).CollectionChanged += (s, e) =>
+            {
+                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add && e.NewItems != null)
+                {
+                    foreach (LogEntry entry in e.NewItems)
+                    {
+                        AppendLogInternal(entry);
+                    }
+                }
+            };
+        }
+
+        // 核心渲染逻辑：将数据转换为 UI 元素
+        private void AppendLogInternal(LogEntry logEntry)
+        {
+            var blocks = LogRichTextBox.Document.Blocks;
+
+            // 批量删除旧块逻辑
+            if (blocks.Count >= 1000)
+            {
+                for (int i = 0; i < 100; i++)
+                {
+                    if (blocks.FirstBlock != null) blocks.Remove(blocks.FirstBlock);
+                }
+            }
+
+            var paragraph = new Paragraph { Margin = new Thickness(0) };
+
+            paragraph.Inlines.Add(new Run($"[{logEntry.Timestamp:HH:mm:ss}] ") { Foreground = Brushes.Gray });
+
+            string levelText = $"[{logEntry.Level.ToString().Substring(0, 1).ToUpper()}] ";
+            paragraph.Inlines.Add(new Run(levelText)
+            {
+                Foreground = GetBrush(logEntry.Level),
+            });
+
+            paragraph.Inlines.Add(new Run(logEntry.Message)
+            {
+                Foreground = GetBrush(logEntry.Level)
+            });
+
+            blocks.Add(paragraph);
+
+            LogRichTextBox.ScrollToEnd();
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -76,20 +85,14 @@ namespace Mikoto
             Hide();
         }
 
-
         internal static void Sink(LogEvent logEvent)
         {
-            var brush = GetBrush(logEvent.Level);
             var message = logEvent.RenderMessage();
+            var level = logEvent.Level;
 
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
-                var entry = new LogEntry
-                {
-                    Message = message,
-                    Color = brush
-                };
-                LogWindow.AppendLog(entry);
+                LogWindow.ViewModel.AddLog(message, level);
             });
         }
 
@@ -103,7 +106,7 @@ namespace Mikoto
                 LogEventLevel.Warning => Brushes.Yellow,
                 LogEventLevel.Error => Brushes.Red,
                 LogEventLevel.Fatal => Brushes.DarkRed,
-                _ => Brushes.Black
+                _ => Brushes.AliceBlue
             };
         }
     }

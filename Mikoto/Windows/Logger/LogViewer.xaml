@@ -1,11 +1,16 @@
-﻿<Window x:Class="Mikoto.LogViewer"
+﻿<Window x:Class="Mikoto.Windows.Logger.LogViewer"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:local="clr-namespace:Mikoto.Windows.Logger" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" 
         Title="LogViewer"
-        Height="500"
+        Height="500" 
         Width="800"
-        Background="#1E1E1E"
-        Foreground="White">
+        Background="#1E1E1E" 
+        Foreground="White"
+        d:DataContext="{d:DesignInstance Type=local:LogViewerViewModel, IsDesignTimeCreatable=True}">
 
     <DockPanel LastChildFill="True">
         <!-- 顶部显示日志数量 -->
@@ -13,7 +18,7 @@
                    DockPanel.Dock="Top"
                    Margin="5"
                    Foreground="LightGray"
-                   Text="0 Items" />
+                   Text="{Binding LogCountText}" />
 
         <!-- 日志显示区域 -->
         <RichTextBox Name="LogRichTextBox"
@@ -27,7 +32,10 @@
                      AcceptsReturn="True"
                      AcceptsTab="True" 
                      BorderThickness="0"
-                     Margin="0"
-                     Padding="0"/>
+                     Margin="0,0,0,10"
+                     Padding="0" >
+            
+            
+        </RichTextBox>
     </DockPanel>
 </Window>
