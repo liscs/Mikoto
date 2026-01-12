@@ -1,4 +1,5 @@
-﻿using Mikoto.ProcessInterop;
+﻿using Mikoto.Helpers;
+using Mikoto.ProcessInterop;
 using Mikoto.TextHook;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
@@ -32,7 +33,7 @@ namespace Mikoto.GuidePages.Hook
             HookFunListView.ItemsSource = lstData;
             sum = 0;
             App.Env.TextHookService.HookMessageReceived += FilterAndDisplayData;
-            _ = App.Env.TextHookService.StartHookAsync(_gameInfoBuilder.GameInfo, Convert.ToBoolean(Common.AppSettings.AutoHook));
+            App.Env.TextHookService.StartHookAsync(_gameInfoBuilder.GameInfo, Convert.ToBoolean(Common.AppSettings.AutoHook)).FireAndForget();
         }
 
         public void FilterAndDisplayData(object sender, HookReceivedEventArgs e)
@@ -40,7 +41,7 @@ namespace Mikoto.GuidePages.Hook
             //加一步判断防止卡顿，部分不可能使用的方法刷新速度过快，在几秒之内就能刷新超过100个，这时候就停止对他们的刷新,直接卸载这个方法
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
-                if (InvalidMisakaCodeRegex().Match(e.Data.MisakaHookCode).Success)
+                if (InvalidMisakaCodeRegex().IsMatch(e.Data.MisakaHookCode))
                 {
                     e.Data.MisakaHookCode = string.Empty;
                 }

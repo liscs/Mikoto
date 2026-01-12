@@ -5,11 +5,9 @@ namespace Mikoto.DataAccess
     {
         Dictionary<Guid, GameInfo> AllCompletedGamesIdDict { get; set; }
         Dictionary<string, GameInfo> AllCompletedGamesPathDict { get; set; }
-        bool DeleteGameByID(Guid gameID);
+        bool DeleteGameInfo(GameInfo gameInfo);
         void GetAllCompletedGames();
-        GameInfo GetGameByPath(string gamePath);
         void SaveGameInfo(GameInfo gameInfo);
-        bool UpdateGameInfoByID(Guid gameID, string key, object value);
         GameInfo? GetRunningGame();
         void OpenGameInfoFile(GameInfo gameInfo);
     }

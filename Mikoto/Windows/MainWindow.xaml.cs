@@ -502,7 +502,7 @@ namespace Mikoto
 
         private async void StartBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.Env.GameInfoService.UpdateGameInfoByID(_viewModel.GameInfo.GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
+            UpdateLastPlayAt();
 
             string path = GetEntranceFilePath(_viewModel.GameInfo.FilePath);
             if (!File.Exists(path))
@@ -517,6 +517,12 @@ namespace Mikoto
             await RefreshAsync();
         }
 
+        private void UpdateLastPlayAt()
+        {
+            _viewModel.GameInfo.LastPlayAt = DateTime.Now;
+            App.Env.GameInfoService.SaveGameInfo(_viewModel.GameInfo);
+        }
+
         private static string GetEntranceFilePath(string filePath)
         {
             //hook文件可能与需要打开的文件不是同一个，需要进行转换
@@ -526,8 +532,7 @@ namespace Mikoto
 
         private async void LEStartBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.Env.GameInfoService.UpdateGameInfoByID(_viewModel.GameInfo.GameID, nameof(GameInfo.LastPlayAt), DateTime.Now);
-
+            UpdateLastPlayAt();
             string path = GetEntranceFilePath(_viewModel.GameInfo.FilePath);
             if (!File.Exists(path))
             {
@@ -561,7 +566,7 @@ namespace Mikoto
         {
             if (MessageBox.Show(Application.Current.Resources["MainWindow_Drawer_DeleteGameConfirmBox"].ToString(), Application.Current.Resources["MessageBox_Ask"].ToString(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                App.Env.GameInfoService.DeleteGameByID(_viewModel.GameInfo.GameID);
+                App.Env.GameInfoService.DeleteGameInfo(_viewModel.GameInfo);
                 RefreshAsync().FireAndForget();
                 _viewModel.GameInfoDrawerIsOpen = false;
             }

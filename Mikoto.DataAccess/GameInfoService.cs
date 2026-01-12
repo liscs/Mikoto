@@ -1,7 +1,6 @@
 ﻿using Mikoto.ProcessInterop;
 using Serilog;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
@@ -11,34 +10,9 @@ namespace Mikoto.DataAccess
     public class GameInfoService : IGameInfoService
     {
         //游戏信息文件夹
-        private readonly DirectoryInfo _gameInfoDirectory = Directory.CreateDirectory($"{DataFolder.Path}\\games\\");
+        private static readonly DirectoryInfo gameInfoDirectory = Directory.CreateDirectory($"{DataFolder.Path}\\games\\");
         public Dictionary<Guid, GameInfo> AllCompletedGamesIdDict { get; set; } = new();
         public Dictionary<string, GameInfo> AllCompletedGamesPathDict { get; set; } = new();
-
-        /// <summary>
-        /// 得到一个游戏的GameInfo
-        /// 如果游戏已经存在，则直接返回GameInfo，否则追加新游戏路径并返回新GameInfo
-        /// </summary>
-        public GameInfo GetGameByPath(string gamePath)
-        {
-            if (AllCompletedGamesPathDict.TryGetValue(gamePath, out GameInfo? value))
-            {
-                return value;
-            }
-            else
-            {
-                string name = Path.GetFileName(Path.GetDirectoryName(gamePath))!;
-                Guid id = Guid.NewGuid();
-                GameInfo gameInfo = new()
-                {
-                    GameID = id,
-                    GameName = name,
-                    FilePath = gamePath,
-                };
-                return gameInfo;
-            }
-        }
-
 
         /// <summary>
         /// 得到游戏库中所有有效游戏的信息。同时删除无效游戏信息。
@@ -47,7 +21,7 @@ namespace Mikoto.DataAccess
         {
             AllCompletedGamesIdDict.Clear();
             AllCompletedGamesPathDict.Clear();
-            foreach (FileInfo fileInfo in _gameInfoDirectory.GetFiles())
+            foreach (FileInfo fileInfo in gameInfoDirectory.GetFiles())
             {
                 if (TryLoadGameInfo(fileInfo.FullName, out GameInfo? gameInfo))
                 {
@@ -64,29 +38,27 @@ namespace Mikoto.DataAccess
             }
         }
 
-
-
         /// <summary>
         /// 删除游戏信息
         /// </summary>
-        public bool DeleteGameByID(Guid gameID)
+        public bool DeleteGameInfo(GameInfo gameInfo)
         {
+            var path = GetGameInfoPath(gameInfo);
             try
             {
-                GameInfo gameInfo = AllCompletedGamesIdDict[gameID];
-                File.Delete(GetGameInfoPath(gameInfo));
+                File.Delete(path);
                 return true;
             }
-            catch (IOException ex)
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
-                Log.Error(ex, "删除游戏信息失败，GameID：{GameID}", gameID);
+                Log.Error(ex, "删除游戏信息失败。GameName: {GameName}, Path: {Path}", gameInfo.GameName, path);
                 return false;
             }
         }
 
-        private string GetGameInfoPath(GameInfo gameInfo)
+        private static string GetGameInfoPath(GameInfo gameInfo)
         {
-            return $"{_gameInfoDirectory.FullName}\\{gameInfo.GameID}.json";
+            return $"{gameInfoDirectory.FullName}\\{gameInfo.GameID}.json";
         }
 
         public void OpenGameInfoFile(GameInfo gameInfo)
@@ -95,34 +67,8 @@ namespace Mikoto.DataAccess
             ProcessHelper.ShellStart(gameInfoFilePath);
         }
 
-        /// <summary>
-        /// 修改游戏信息
-        /// </summary>
-        /// <param name="property">属性名</param>
-        /// <param name="value">属性值</param>
-        public bool UpdateGameInfoByID(Guid gameID, string property, object value)
-        {
-            if (AllCompletedGamesIdDict.TryGetValue(gameID, out GameInfo? gameInfo))
-            {
-                File.Delete(GetGameInfoPath(gameInfo));
-                PropertyInfo? pinfo = typeof(GameInfo).GetProperty(property);
-                if (pinfo == null)
-                {
-                    Log.Warning("更新游戏信息失败，未找到需要修改的属性：{Property}", property);
-                    return false;
-                }
-                pinfo.SetValue(gameInfo, value);
-                SaveGameInfo(gameInfo);
-                return true;
-            }
-            else
-            {
-                Log.Warning("更新游戏信息失败，未找到对应的 GameID：{GameID}", gameID);
-                return false;
-            }
-        }
 
-        private readonly JsonSerializerOptions options = new JsonSerializerOptions
+        private readonly JsonSerializerOptions options = new()
         {
             WriteIndented = true,
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),

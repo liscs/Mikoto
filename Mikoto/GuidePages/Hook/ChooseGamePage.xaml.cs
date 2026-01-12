@@ -88,8 +88,6 @@ namespace Mikoto.GuidePages.Hook
                 {
                     _gameInfoBuilder.Reset();
                     _gameInfoBuilder.GameProcessId = pid;
-                    _gameInfoBuilder.GameInfo = App.Env.GameInfoService.GetGameByPath(filepath);
-                    App.Env.Context.GameInfo.GameID = _gameInfoBuilder.GameInfo.GameID;
                     _gameInfoBuilder.GameInfo.Isx64 = isx64;
 
                     //使用路由事件机制通知窗口来完成下一步操作

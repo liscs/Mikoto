@@ -9,7 +9,7 @@ namespace Mikoto.GuidePages
             GameInfo = new GameInfo();
             GameProcessId = -1;
         }
-        public GameInfo GameInfo { get; set; } = new GameInfo();
+        public GameInfo GameInfo { get; private set; } = new GameInfo();
         public int GameProcessId { get; set; }
     }
 }

@@ -81,6 +81,7 @@ namespace Mikoto
                     case TransMode.Hook:
                         _gameInfoBuilder.GameInfo.LastPlayAt = DateTime.Now;
                         App.Env.GameInfoService.SaveGameInfo(_gameInfoBuilder.GameInfo);
+                        App.Env.Context.GameInfo = _gameInfoBuilder.GameInfo;
                         MainWindow.Instance.RefreshAsync().FireAndForget();
                         break;
                     case TransMode.Clipboard:
