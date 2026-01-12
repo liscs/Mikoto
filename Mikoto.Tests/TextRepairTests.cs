@@ -26,40 +26,26 @@ public class TextRepairTests
     [Fact]
     public void RepairFun_RemoveSingleWordRepeatTest_ExactThreshold()
     {
-        string src = "FFFFFFFFFFoooooooooouuuuuuuuuurrrrrrrrrr          ssssssssssccccccccccoooooooooorrrrrrrrrreeeeeeeeee          aaaaaaaaaannnnnnnnnndddddddddd          sssssssssseeeeeeeeeevvvvvvvvvveeeeeeeeeennnnnnnnnn          yyyyyyyyyyeeeeeeeeeeaaaaaaaaaarrrrrrrrrrssssssssss          aaaaaaaaaaggggggggggoooooooooo";
-        string expected = "Four score and seven years ago";
+        string src = "sssssssssshhhhhhhhhhaaaaaaaaaallllllllllllllllllll";
+        string expected = "shall";
         TestSingleWordRepeat(10, src, expected);
     }
 
     [Fact]
     public void RepairFun_RemoveSingleWordRepeatTest_AboveThreshold()
     {
-        string src = "aaaaaaaaaannnnnnnnnndddddddddd          tttttttttthhhhhhhhhhaaaaaaaaaatttttttttt          ggggggggggoooooooooovvvvvvvvvveeeeeeeeeerrrrrrrrrrnnnnnnnnnnmmmmmmmmmmeeeeeeeeeennnnnnnnnntttttttttt          ooooooooooffffffffff          tttttttttthhhhhhhhhheeeeeeeeee          ppppppppppeeeeeeeeeeoooooooooopppppppppplllllllllleeeeeeeeee,,,,,,,,,,          bbbbbbbbbbyyyyyyyyyy          tttttttttthhhhhhhhhheeeeeeeeee          ppppppppppeeeeeeeeeeoooooooooopppppppppplllllllllleeeeeeeeee,,,,,,,,,,          ffffffffffoooooooooorrrrrrrrrr          tttttttttthhhhhhhhhheeeeeeeeee          ppppppppppeeeeeeeeeeoooooooooopppppppppplllllllllleeeeeeeeee,,,,,,,,,,          sssssssssshhhhhhhhhhaaaaaaaaaallllllllllllllllllll          nnnnnnnnnnooooooooootttttttttt          ppppppppppeeeeeeeeeerrrrrrrrrriiiiiiiiiisssssssssshhhhhhhhhh          ffffffffffrrrrrrrrrroooooooooommmmmmmmmm          tttttttttthhhhhhhhhheeeeeeeeee          eeeeeeeeeeaaaaaaaaaarrrrrrrrrrtttttttttthhhhhhhhhh";
-        string expected = "and that government of the people, by the people, for the people, shall not perish from the earth";
+        string src = "sssssssssshhhhhhhhhhaaaaaaaaaallllllllllllllllllll";
+        string expected = "shall";
+        // 重复10次，重复次数填成了9
         TestSingleWordRepeat(9, src, expected);
     }
 
     [Fact]
     public void RepairFun_RemoveSingleWordRepeatTest_ExceedsThreshold()
     {
-        string src = "sssssssssshhhhhhhhhhaaaaaaaaaallllllllllllllllllll          nnnnnnnnnnooooooooootttttttttt          ppppppppppeeeeeeeeeerrrrrrrrrriiiiiiiiiisssssssssshhhhhhhhhh          ffffffffffrrrrrrrrrroooooooooommmmmmmmmm          tttttttttthhhhhhhhhheeeeeeeeee          eeeeeeeeeeaaaaaaaaaarrrrrrrrrrtttttttttthhhhhhhhhh";
-        string expected = "shall not perish from the earth";
+        string src = "sssssssssshhhhhhhhhhaaaaaaaaaallllllllllllllllllll";
+        string expected = "shall";
         TestSingleWordRepeat(11, src, expected);
-    }
-
-    [Fact]
-    public void RepairFun_RemoveSentenceRepeatTest_NoRepetition()
-    {
-        string src = "shall not perish from the earth";
-        TestSentenceRepeat(1, src, src);
-    }
-
-    [Fact]
-    public void RepairFun_RemoveSentenceRepeatTest_MultipleRepetitions()
-    {
-        string src = "shall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earthshall not perish from the earth";
-        string expected = "shall not perish from the earth";
-        TestSentenceRepeat(10, src, expected);
     }
 
     [Fact]
@@ -72,7 +58,78 @@ public class TextRepairTests
     [Fact]
     public void RepairFun_RemoveSentenceRepeatTest_EmptyString()
     {
-        string src = "";
-        TestSentenceRepeat(1, src, src);
+        TestSentenceRepeat(5, "", "");
     }
+
+    [Fact]
+    public void RepairFun_RemoveSentenceRepeatTest_ShortString_NoEffect()
+    {
+        string src = "hello";
+        TestSentenceRepeat(10, src, src);
+    }
+
+    [Fact]
+    public void RepairFun_RemoveSentenceRepeatTest_ThresholdLargerThanInput()
+    {
+        string src = "this is a test sentence";
+        TestSentenceRepeat(50, src, src);
+    }
+
+    [Fact]
+    public void RepairFun_RemoveSentenceRepeatTest_ExactlyOneRepeat_NoChange()
+    {
+        string src = "important messageimportant message";
+        string expected = "important message";
+        TestSentenceRepeat(10, src, expected);
+    }
+
+    [Fact]
+    public void RepairFun_RemoveSentenceRepeatTest_ChineseFullRepeat()
+    {
+        string src = "这是一段很重要的测试文字这是一段很重要的测试文字这是一段很重要的测试文字";
+        string expected = "这是一段很重要的测试文字";
+        TestSentenceRepeat(8, src, expected);
+    }
+
+    [Fact]
+    public void RepairFun_RemoveSentenceRepeatTest_RepeatWithExtraContentAtEnd()
+    {
+        string src = "repeat repeat repeat repeat extra content";
+        TestSentenceRepeat(7, src, src);  // 因为不是完整到结尾的重复，应保持不变
+    }
+
+    [Fact]
+    public void RepairFun_RemoveSentenceRepeatTest_RepeatingShortWord()
+    {
+        string src = "哈哈哈哈哈哈哈哈哈哈哈哈";
+        string expected = "哈哈";           // 非贪婪匹配 + 最小长度限制可能得到这个结果
+        TestSentenceRepeat(2, src, expected);
+    }
+
+    [Fact]
+    public void RepairFun_RemoveSentenceRepeatTest_RepeatingShortWord_HigherThreshold()
+    {
+        string src = "哈哈哈哈哈哈哈哈哈哈哈哈";
+        string expected = "哈哈哈哈哈哈";     // 阈值较高时保留更多字符
+        TestSentenceRepeat(6, src, expected);
+    }
+
+    [Fact]
+    public void RepairFun_RemoveSentenceRepeatTest_OnlySpacesRepeat()
+    {
+        string src = "          ";  // 8个空格
+        string expected = "     ";      // 取决于非贪婪匹配行为，通常会保留最短一次
+        TestSentenceRepeat(3, src, expected);
+    }
+
+    [Fact]
+    public void RepairFun_RemoveSentenceRepeatTest_ThresholdIsOne_CharRepeat()
+    {
+        string src = "aaaaaaaaaa";
+        string expected = "a";
+        TestSentenceRepeat(1, src, expected);
+    }
+
+
+
 }

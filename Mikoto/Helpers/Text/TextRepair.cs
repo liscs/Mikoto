@@ -3,6 +3,7 @@ using Microsoft.Scripting.Utils;
 using Mikoto.Helpers.Container;
 using Mikoto.Helpers.Text.ScriptInfos;
 using Serilog;
+using System.Buffers;
 using System.Text.RegularExpressions;
 using System.Windows;
 
@@ -111,91 +112,88 @@ namespace Mikoto
         /// 处理单字重复，置0以自动检测处理单字重复
         /// 可以设置重复次数更准确的进行去重
         /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
         public static string RepairFun_RemoveSingleWordRepeat(string source, int repeatTimes)
         {
-            if (source == string.Empty)
-            {
-                return string.Empty;
-            }
+            char[]? destinationArray = null;
 
-            int flag = 0;
-            string ret = string.Empty;
-
-            if (repeatTimes <= 1)
+            try
             {
-                //未设置固定重复次数时，逢重复就删
-                for (int i = 1; i < source.Length; i++)
+                if (string.IsNullOrWhiteSpace(source))
                 {
-                    if (source[i] != source[flag])
-                    {
-                        ret += source[flag];
-                        flag = i;
-                    }
+                    return string.Empty;
                 }
-                ret += source[source.Length - 1];
-            }
-            else
-            {
-                //设置了固定重复次数且重复次数大于等于1的情况
-                int r = 0;
-                for (int i = 1; i < source.Length; i++)
+
+                int flag = 0;
+                ReadOnlySpan<char> input = source.AsSpan();
+                Span<char> destination = input.Length <= 256
+                ? stackalloc char[input.Length]
+                : (destinationArray = ArrayPool<char>.Shared.Rent(input.Length));
+                int destIndex = 0;
+
+                if (repeatTimes <= 1)
                 {
-                    if (source[i] == source[flag])
+                    //未设置固定重复次数时，逢重复就删
+                    for (int i = 1; i < input.Length; i++)
                     {
-                        r++;
-                        if (r > repeatTimes)
+                        if (input[i] != input[flag])
                         {
-                            ret += source[i];
+                            destination[destIndex] = input[flag];
+                            destIndex++;
+                            flag = i;
+                        }
+                    }
+                    destination[destIndex] = input[input.Length - 1];
+                    destIndex++;
+                }
+                else
+                {
+                    //设置了固定重复次数且重复次数大于等于1的情况
+                    int r = 0;
+                    for (int i = 1; i < input.Length; i++)
+                    {
+                        if (input[i] == input[flag])
+                        {
+                            r++;
+                            if (r > repeatTimes)
+                            {
+                                destination[destIndex] = input[flag];
+                                destIndex++;
+                                r = 0;
+                            }
+                        }
+                        else
+                        {
+                            destination[destIndex] = input[flag];
+                            destIndex++;
+                            flag = i;
                             r = 0;
                         }
                     }
-                    else
-                    {
-                        ret += source[flag];
-                        flag = i;
-                        r = 0;
-                    }
+                    destination[destIndex] = input[input.Length - 1];
+                    destIndex++;
                 }
-                ret += source[source.Length - 1];
+                return destination[..destIndex].ToString();
             }
-            return ret;
+            finally
+            {
+                // 必须归还从 ArrayPool 借出的内存
+                if (destinationArray != null)
+                {
+                    ArrayPool<char>.Shared.Return(destinationArray);
+                }
+            }
         }
 
         /// <summary>
         /// 句子重复处理
         /// </summary>
         /// <param name="source">源字符串</param>
+        /// <param name="threshold">重复句子长度阈值</param>
         /// <returns>处理后的字符串</returns>
-        public static string RepairFun_RemoveSentenceRepeat(string source, int repeatStartIndex)
+        public static string RepairFun_RemoveSentenceRepeat(string source, int threshold)
         {
-            if (repeatStartIndex <= 1) return source;
-
-            if (string.IsNullOrEmpty(source) || source.Length < repeatStartIndex)
-            {
-                return source;
-            }
-
-            // 逆序字符串
-            char[] arr = source.ToCharArray();
-            Array.Reverse(arr);
-            string reversedText = new(arr);
-
-            // 提取检查子串
-            string cmp = reversedText.Substring(0, repeatStartIndex);
-
-            // 检查是否存在重复
-            int pos = reversedText.IndexOf(cmp, repeatStartIndex);
-            if (pos == -1)
-            {
-                return Application.Current.Resources["SentenceRepeatError"].ToString()!;
-            }
-
-            string trimmedText = reversedText.Substring(0, pos);
-            char[] trimmedArr = trimmedText.ToCharArray();
-            Array.Reverse(trimmedArr);
-            return new string(trimmedArr);
+            string pattern = $@"^(.{{{threshold},}}?)\1+$";
+            return Regex.Replace(source, pattern, "$1");
         }
 
 
