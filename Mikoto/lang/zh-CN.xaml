@@ -337,8 +337,8 @@
     <sys:String x:Key="SoftwareSettingsPage_Minimize">最小化到系统托盘</sys:String>
     <sys:String x:Key="SoftwareSettingsPage_Exit">退出 Mikoto</sys:String>
     <sys:String x:Key="SoftwareSettingsPage_Enable">启用</sys:String>
+    <sys:String x:Key="SoftwareSettingsPage_ConfigFolder">配置文件夹</sys:String>
 
-    <!--补充-->
     <sys:String x:Key="AddOptWindow_PersonName">人名</sys:String>
     <sys:String x:Key="AddOptWindow_PlaceName">地名</sys:String>
     <sys:String x:Key="ComicTranslator_TransOne">翻译一：</sys:String>
