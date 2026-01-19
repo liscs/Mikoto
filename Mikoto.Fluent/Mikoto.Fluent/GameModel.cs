@@ -1,14 +1,21 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace Mikoto.Fluent
 {
     public partial class GameModel : ObservableObject
     {
-        [ObservableProperty] private string _gameName;
-        [ObservableProperty] private ImageSource _gameIcon;
-        [ObservableProperty] private DateTime _lastPlayAt;
+        [ObservableProperty]
+        public partial string? GameName { get; set; }
 
-        public string ExePath { get; set; } // 路径一般不改，不需要 Observable
+        [ObservableProperty]
+        public partial ImageSource? GameIcon { get; set; }
+
+        [ObservableProperty]
+        public partial DateTime LastPlayAt { get; set; }
+
+        [ObservableProperty]
+        public partial string ExePath { get; set; }
     }
 }

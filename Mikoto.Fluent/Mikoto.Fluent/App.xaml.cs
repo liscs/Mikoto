@@ -19,6 +19,11 @@ namespace Mikoto.Fluent
         public App()
         {
             InitializeComponent();
+            this.UnhandledException += (s, e) =>
+            {
+                var message = e.Message;
+                System.Diagnostics.Debug.WriteLine($"Unhandled Error: {message}");
+            };
         }
 
         public static AppEnvironment Env { get; } = new AppEnvironment();

@@ -9,7 +9,7 @@ internal class IconHelper
 {
     internal static async Task<ImageSource> GetIconFromExeAsync(string exePath)
     {
-        if (string.IsNullOrWhiteSpace(exePath)) return null;
+        if (string.IsNullOrWhiteSpace(exePath)) return new BitmapImage();
 
         try
         {

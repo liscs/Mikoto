@@ -9,7 +9,7 @@ namespace Mikoto.Fluent
     public partial class MainViewModel : ObservableObject
     {
         [ObservableProperty]
-        private string _searchQuery;
+        public partial string SearchQuery { get; set; }
 
         public ObservableCollection<GameInfo> Games { get; } = new();
 
