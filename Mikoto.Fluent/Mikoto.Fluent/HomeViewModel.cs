@@ -1,9 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Mikoto.DataAccess;
 using Mikoto.Fluent.AddGamePages;
-using Mikoto.ProcessInterop;
+using Mikoto.Fluent.Messages;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 namespace Mikoto.Fluent
@@ -33,6 +32,10 @@ namespace Mikoto.Fluent
             }
 
             Process.Start(hookPath);
+
+            //打开之后切换到翻译页面
+            WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(TranslatePage), game.ToEntity()));
+
         }
     }
 }

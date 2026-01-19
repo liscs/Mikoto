@@ -25,5 +25,6 @@ namespace Mikoto.TextHook
         string? GetHookAddressByMisakaCode(string MisakaCode);
         bool Init(string path);
         Task StartHookAsync(GameInfo gameInfo, bool AutoHook = false);
+        Task StartAsync(string textractorPath, int pid, GameInfo filePath);
     }
 }

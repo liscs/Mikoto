@@ -599,5 +599,15 @@ namespace Mikoto.TextHook
 
         public void ClearHistory()
             => TextractorOutPutHistory.Clear();
+
+        public async Task StartAsync(string textractorPath, int pid, GameInfo game)
+        {
+            if (Init(textractorPath))
+            {
+                GamePID = pid;
+                await StartHookAsync(game);
+            }
+            Log.Error("Textractor 初始化失败，无法开始 Hook");
+        }
     }
 }

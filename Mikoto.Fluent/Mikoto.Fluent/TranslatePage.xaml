@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Mikoto.Fluent.TranslatePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Mikoto.Fluent"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="24">
+        <StackPanel Spacing="20" HorizontalAlignment="Stretch">
+
+            <TextBox Header="游戏原文"
+                 Text="{x:Bind ViewModel.CurrentGame.GameName, Mode=OneWay}"
+                 IsReadOnly="True"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 MinHeight="100" 
+                 HorizontalAlignment="Stretch"
+                 PlaceholderText="暂无原文信息"/>
+
+            <TextBox Header="翻译"
+                 Text=""
+                                      IsReadOnly="True"
+
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 MinHeight="100"
+                 HorizontalAlignment="Stretch"
+                 PlaceholderText="翻译内容..."/>
+
+        </StackPanel>
+    </Grid>
+</Page>

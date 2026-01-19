@@ -20,6 +20,7 @@
 	<ItemGroup>
 	  <None Remove="AddGamePage.xaml" />
 	  <None Remove="HomePage.xaml" />
+	  <None Remove="TranslatePage.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -30,7 +31,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\Mikoto.Config\Mikoto.Config.csproj" />
 	  <ProjectReference Include="..\..\Mikoto.DataAccess\Mikoto.DataAccess.csproj" />
+	  <ProjectReference Include="..\..\Mikoto.TextHook\Mikoto.TextHook.csproj" />
+	  <ProjectReference Include="..\..\Mikoto.Translators\Mikoto.Translators.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -47,5 +51,11 @@
 
 	<ItemGroup>
 	  <Folder Include="AddGamePages\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="TranslatePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 </Project>
