@@ -4,6 +4,7 @@ using Mikoto.ProcessInterop;
 using Mikoto.TextHook;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using Windows.Win32;
@@ -89,6 +90,8 @@ namespace Mikoto.GuidePages.Hook
                     _gameInfoBuilder.Reset();
                     _gameInfoBuilder.GameProcessId = pid;
                     _gameInfoBuilder.GameInfo.Isx64 = isx64;
+                    _gameInfoBuilder.GameInfo.FilePath = filepath;
+                    _gameInfoBuilder.GameInfo.GameName = Path.GetFileName(Path.GetDirectoryName(filepath))??Path.GetFileName(filepath);
 
                     //使用路由事件机制通知窗口来完成下一步操作
                     PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
