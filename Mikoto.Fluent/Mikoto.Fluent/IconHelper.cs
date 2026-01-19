@@ -38,6 +38,6 @@ internal class IconHelper
         }
 
         // 5. 兜底处理：如果提取失败，返回一个默认的占位图（需确保 Assets 下有这个文件）
-        return new BitmapImage(new Uri("ms-appx:///Assets/StoreLogo.png"));
+        return new BitmapImage();
     }
 }

@@ -17,11 +17,6 @@ public sealed partial class HomePage : Page
         InitializeComponent();
     }
 
-    private void QuickStart_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
-
     // 2. 当页面加载完成后触发
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
@@ -50,7 +45,8 @@ public sealed partial class HomePage : Page
                 GameName = data.GameName,
                 ExePath = data.FilePath,
                 GameIcon = icon,
-                LastPlayAt = data.LastPlayAt 
+                LastPlayAt = data.LastPlayAt,
+                Parent = ViewModel,
             };
         });
 

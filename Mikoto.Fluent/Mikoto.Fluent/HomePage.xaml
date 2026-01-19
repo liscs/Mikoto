@@ -38,51 +38,61 @@
 
             </Button>
 
-            <Button Content="快速启动"
-                    Click="QuickStart_Click" />
+            <Button Content="快速启动"/>
 
         </StackPanel>
 
 
 
         <GridView Grid.Row="1"
-                  ItemsSource="{x:Bind ViewModel.Games}"
-                  SelectionMode="None">
-
+          ItemsSource="{x:Bind ViewModel.Games}"
+          SelectionMode="None">
             <GridView.ItemTemplate>
-
                 <DataTemplate x:DataType="local:GameModel">
+                    <Button Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Width="200"
+                    Padding="12">
 
-                    <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                            BorderThickness="1"
-                            CornerRadius="8"
-                            Width="200"
-                            Padding="12">
+                        <Button.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="打开"
+                                                Command="{x:Bind Parent.StartGameCommand}"
+                                                CommandParameter="{x:Bind}"
+                                                Icon="Play" />
+
+                                <MenuFlyoutItem Text="LE打开"
+                                        Icon="World" />
+
+                                <MenuFlyoutSeparator />
+
+                                <MenuFlyoutItem Text="编辑"
+                                        Icon="Edit" />
+
+                                <MenuFlyoutItem Text="删除"
+                                        Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                                        Icon="Delete" />
+                            </MenuFlyout>
+                        </Button.ContextFlyout>
 
                         <StackPanel Spacing="8">
-
                             <Image Source="{x:Bind GameIcon}"
-                                   Height="120"
-                                   Width="120"
-                                   Stretch="UniformToFill" />
-
+                           Height="120"
+                           Width="120"
+                           Stretch="UniformToFill" />
                             <TextBlock Text="{x:Bind GameName}"
-                                       Style="{StaticResource BodyStrongTextBlockStyle}" />
-
+                               Style="{StaticResource BodyStrongTextBlockStyle}" />
                             <TextBlock Text="{x:Bind LastPlayAt}"
-                                       Style="{StaticResource CaptionTextBlockStyle}"
-                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                         </StackPanel>
-
-                    </Border>
-
+                    </Button>
                 </DataTemplate>
-
             </GridView.ItemTemplate>
-
         </GridView>
+
 
     </Grid>
 </Page>
