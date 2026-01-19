@@ -44,5 +44,11 @@ namespace Mikoto.SettingsPages
         {
             Common.AppSettings.GrowlEnabled = GrowlEnabledCheckBox.IsChecked ?? true;
         }
+
+        private void OpenConfigButton_Click(object sender, RoutedEventArgs e)
+        {
+            string folder = DataAccess.DataFolder.Path;
+            ProcessInterop.ProcessHelper.ShellStart(folder);
+        }
     }
 }
