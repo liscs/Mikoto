@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="Mikoto.Fluent.AddGamePages.AddGamePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Mikoto.Fluent"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="40">
+        <StackPanel Spacing="20"
+                    MaxWidth="500"
+                    HorizontalAlignment="Left">
+            <TextBlock Text="添加新游戏"
+                       Style="{StaticResource TitleTextBlockStyle}" />
+
+            <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
+                    Padding="24"
+                    CornerRadius="8"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <StackPanel x:Name="StepContainer"
+                            Spacing="16">
+                    <TextBlock x:Name="StepTitle"
+                               Text="第一步：选择游戏程序"
+                               Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <TextBox x:Name="PathBox"
+                             Header="文件路径"
+                             PlaceholderText="选择 .exe 文件" />
+                </StackPanel>
+            </Border>
+
+            <StackPanel Orientation="Horizontal"
+                        Spacing="12">
+                <Button x:Name="NextButton"
+                        Content="下一步"
+                        Style="{StaticResource AccentButtonStyle}"
+                        Click="Next_Click" />
+                <Button Content="取消"
+                        Click="Cancel_Click" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

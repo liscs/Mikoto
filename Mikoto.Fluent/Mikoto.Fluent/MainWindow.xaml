@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="Mikoto.Fluent.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:Mikoto.Fluent"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local1="using:Mikoto.DataAccess"
+        mc:Ignorable="d"
+        Title="Mikoto.Fluent">
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop Kind="BaseAlt" />
+    </Window.SystemBackdrop>
+
+    <NavigationView x:Name="RootNav"
+                    PaneDisplayMode="Left"
+                    IsSettingsVisible="True"
+                    IsPaneOpen="False"
+                    IsBackButtonVisible="Visible"
+                    BackRequested="RootNav_BackRequested">
+
+        <NavigationView.AutoSuggestBox>
+            <AutoSuggestBox QueryIcon="Find"
+                            PlaceholderText="搜索游戏..." />
+        </NavigationView.AutoSuggestBox>
+
+        <Frame x:Name="ContentFrame">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <NavigationThemeTransition />
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+        </Frame>
+    </NavigationView>
+</Window>
