@@ -8,7 +8,7 @@ namespace Mikoto.Fluent;
 public class AppEnvironment
 {
     public IGameInfoService GameInfoService { get; } = new GameInfoService();
-    public ITextHookService TextHookService { get; set; } = new TextHookService();
+    public ITextHookService TextHookService { get; set; } = new TextHookService() { HandleMode = 1 };
     public IAppSettings AppSettings { get; }
 
     public AppEnvironment()

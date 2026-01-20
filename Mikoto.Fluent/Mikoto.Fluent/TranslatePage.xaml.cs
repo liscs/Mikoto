@@ -22,7 +22,7 @@ public sealed partial class TranslatePage : Page
     {
         base.OnNavigatedTo(e);
 
-        // 1. 这里的 e.Parameter 就是你从 HomeViewModel 发送过来的 GameModel
+        // 1. 这里的 e.Parameter 是从 HomeViewModel 发送过来的 GameModel
         if (e.Parameter is GameInfo game)
         {
             // 2. 将数据交给 ViewModel 处理

@@ -13,12 +13,21 @@ namespace Mikoto.Fluent;
 
 public partial class TranslateViewModel : ObservableObject
 {
+    private readonly Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
+
+    public TranslateViewModel()
+    {
+        // 获取当前线程的 DispatcherQueue（必须在 UI 线程执行构造时调用）
+        _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
+    }
+
+
     public GameInfo CurrentGame { get; internal set; } = new GameInfo();
 
     [ObservableProperty]
-    public partial string OriginalText { get; set; }
+    public partial string OriginalText { get; set; } = string.Empty;
     [ObservableProperty]
-    public partial string TranslateText { get; set; }
+    public partial string TranslateText { get; set; } = string.Empty;
 
     #region Notification Bar Properties
     // 控制是否显示
@@ -27,7 +36,7 @@ public partial class TranslateViewModel : ObservableObject
 
     // 通知内容
     [ObservableProperty]
-    public partial string NotificationMessage { get; set; }
+    public partial string NotificationMessage { get; set; } = string.Empty;
 
     // 通知严重程度 (Error, Warning, Informational, Success)
     [ObservableProperty]
@@ -35,7 +44,7 @@ public partial class TranslateViewModel : ObservableObject
     #endregion
 
     [RelayCommand]
-    public void InitializeTranslation()
+    public async Task InitializeTranslation()
     {
         // hook
         Task hookTask = App.Env.TextHookService.StartAsync(App.Env.AppSettings.Textractor_Path64, GetGamePid(CurrentGame), CurrentGame);
@@ -43,9 +52,10 @@ public partial class TranslateViewModel : ObservableObject
 
         // translatorinit
         _translator = TranslatorCommon.TranslatorFactory.GetTranslator(
-                App.Env.AppSettings.FirstTranslator, App.Env.AppSettings,
-                "");
-
+                App.Env.AppSettings.FirstTranslator,
+                App.Env.AppSettings,
+                App.Env.AppSettings.FirstTranslator);
+        await hookTask;
     }
 
     private SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new();
@@ -61,7 +71,7 @@ public partial class TranslateViewModel : ObservableObject
         await _translationTask.ExecuteAsync(async () =>
         {
             if (currentData == _lastSolvedDataReceivedEventArgs.Data?.Data
-            ||_translator==null)
+                || _translator==null)
             {
                 return;
             }
@@ -73,7 +83,11 @@ public partial class TranslateViewModel : ObservableObject
                                               CurrentGame.DstLang);
             //取得原文和翻译后的文本后，触发UI更新
             Log.Debug("原文：{OriginalText}\n译文：{TranslatedText}", preProcessedText, translatedText);
-            UpdateUI(preProcessedText, translatedText, _translator.GetLastError());
+
+            _dispatcherQueue.TryEnqueue(() =>
+            {
+                UpdateUI(preProcessedText, translatedText, _translator.GetLastError());
+            });
         });
 
     }

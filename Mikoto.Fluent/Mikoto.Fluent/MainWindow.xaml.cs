@@ -28,7 +28,7 @@ namespace Mikoto.Fluent
             // ¼àÌıµ¼º½ÏûÏ¢
             WeakReferenceMessenger.Default.Register<NavigationMessage>(this, (r, m) =>
             {
-                ContentFrame.Navigate(m.PageType);
+                ContentFrame.Navigate(m.PageType, m.Parameter);
             });
 
             WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(HomePage)));
