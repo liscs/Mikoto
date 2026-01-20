@@ -35,11 +35,11 @@ namespace Mikoto.Fluent.AddGamePages
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(CanGoBack))]
-        [NotifyPropertyChangedFor(nameof(CanGoNext))]
+        [NotifyPropertyChangedFor(nameof(IsLastStep))]
+        [NotifyPropertyChangedFor(nameof(NextButtonText))]
         public partial int CurrentStepIndex { get; set; }
 
         public bool CanGoBack => CurrentStepIndex > 0;
-        public bool CanGoNext => CurrentStepIndex < Steps.Count - 1;
 
         [ObservableProperty]
         public partial object? CurrentStepTitle { get; set; }
@@ -50,22 +50,31 @@ namespace Mikoto.Fluent.AddGamePages
         [RelayCommand]
         private void MoveNext()
         {
-            // 发送消息，并把配置对象传过去
-            // 我们期待子页面收到这个消息后，把数据填进 DraftConfig
-            // 会触发子页面的 SaveData 方法
-            WeakReferenceMessenger.Default.Send(new RequestSaveDataMessage(DraftConfig, (isSuccess) =>
+            // 无论当前是哪一步，都需要先保存当前页面的数据到 DraftConfig
+            WeakReferenceMessenger.Default.Send(new RequestSaveDataMessage(DraftConfig, async (isSuccess) =>
             {
-                // 只有当子页面返回 true 时，才执行跳转
-                if (isSuccess)
+                if (!isSuccess) return; // 子页面校验失败（如未选路径），拦截跳转
+
+                if (CurrentStepIndex < Steps.Count - 1)
                 {
-                    if (CurrentStepIndex < Steps.Count - 1)
-                    {
-                        BreadcrumbItems.Add(Steps[CurrentStepIndex + 1].Title);
-                        CurrentStepIndex++;
-                    }
+                    // --- 情况 A: 还在中间步骤，继续下一步 ---
+                    CurrentStepIndex++;
+                    // 同步更新面包屑
+                    BreadcrumbItems.Add(Steps[CurrentStepIndex].Title);
+                }
+                else
+                {
+                    // --- 情况 B: 已经是最后一步，点击了“完成” ---
+                    await Task.Run(() => App.Env.GameInfoService.SaveGameInfo(DraftConfig));
                 }
             }));
         }
+
+        // 是否处于最后一步
+        public bool IsLastStep => CurrentStepIndex == Steps.Count - 1;
+
+        // 动态按钮文字
+        public string NextButtonText => IsLastStep ? "完成" : "下一步";
 
         [RelayCommand]
         public void MoveBack()

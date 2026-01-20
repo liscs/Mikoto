@@ -20,17 +20,17 @@
                Padding="20" />
 
         <StackPanel Grid.Row="2"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Spacing="10"
-                    Margin="0,20,0,0">
+            Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            Spacing="10"
+            Margin="0,20,0,0">
             <Button Content="上一步"
-                    Command="{x:Bind ViewModel.MoveBackCommand}"
-                    IsEnabled="{x:Bind ViewModel.CanGoBack, Mode=OneWay}"/>
-            <Button Content="下一步"
-                    Command="{x:Bind ViewModel.MoveNextCommand}"
-                    IsEnabled="{x:Bind ViewModel.CanGoNext, Mode=OneWay}"
-                    />
+            Command="{x:Bind ViewModel.MoveBackCommand}"
+            IsEnabled="{x:Bind ViewModel.CanGoBack, Mode=OneWay}"/>
+
+            <Button Content="{x:Bind ViewModel.NextButtonText, Mode=OneWay}"
+            Command="{x:Bind ViewModel.MoveNextCommand}"
+            Style="{StaticResource AccentButtonStyle}"/>
         </StackPanel>
     </Grid>
 </Page>

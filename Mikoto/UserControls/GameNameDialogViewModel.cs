@@ -75,6 +75,7 @@ namespace Mikoto.UserControls
             _game.Isx64 = IsX64;
             _game.RepairFunc = SelectedRepairFunc;
             _game.RepairParamA = RepairParamA;
+            _game.RepairParamB = RepairParamB;
 
             App.Env.GameInfoService.SaveGameInfo(_game);
             MainWindow.Instance.SetGameInfoModel(_game);

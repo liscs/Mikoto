@@ -73,7 +73,7 @@ namespace Mikoto.DataAccess
         public void SaveGameInfo(GameInfo gameInfo)
         {
             string fileName = GetGameInfoPath(gameInfo);
-            string jsonString = JsonSerializer.Serialize(gameInfo, AppJsonContext.Default.GameInfo);
+            string jsonString = JsonSerializer.Serialize(gameInfo, AppJsonContext.AotSafeContext.GameInfo);
             File.WriteAllText(fileName, jsonString);
         }
 

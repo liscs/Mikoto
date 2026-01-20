@@ -24,6 +24,7 @@ namespace Mikoto.Fluent.AddGamePages
     /// </summary>
     public sealed partial class LanguagePage
     {
+        public LanguageViewModel ViewModel { get; } = new LanguageViewModel();
         public LanguagePage()
         {
             InitializeComponent();
@@ -31,6 +32,8 @@ namespace Mikoto.Fluent.AddGamePages
 
         protected override bool SaveData(GameInfo config)
         {
+            config.SrcLang = ViewModel.SelectedSourceLanguage.LanguageCode;
+            config.DstLang = ViewModel.SelectedTargetLanguage.LanguageCode;
             return true;
         }
     }

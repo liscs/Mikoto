@@ -31,14 +31,29 @@ public sealed partial class AddGamePage : Page
         NavigateWithTransition(false);
     }
 
+    private int _lastStepIndex;
     private void NavigateWithTransition(bool useSlide)
     {
-        var step = ViewModel.Steps[ViewModel.CurrentStepIndex];
+        var currentIndex = ViewModel.CurrentStepIndex;
+        var step = ViewModel.Steps[currentIndex];
 
-        NavigationTransitionInfo transition = useSlide
-            ? new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight }
-            : new EntranceNavigationTransitionInfo();
+        NavigationTransitionInfo transition;
 
+        if (!useSlide)
+        {
+            transition = new EntranceNavigationTransitionInfo();
+        }
+        else
+        {
+            // 动态判断方向：如果当前索引大于上次，说明是向后走
+            var effect = currentIndex > _lastStepIndex
+                ? SlideNavigationTransitionEffect.FromRight
+                : SlideNavigationTransitionEffect.FromLeft;
+
+            transition = new SlideNavigationTransitionInfo { Effect = effect };
+        }
+
+        _lastStepIndex = currentIndex;
         ContentFrame.Navigate(step.PageType, ViewModel, transition);
     }
 }

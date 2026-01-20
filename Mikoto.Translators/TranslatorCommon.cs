@@ -85,7 +85,6 @@ namespace Mikoto.Translators
         public static Dictionary<string, string> TranslatorNameDisplayNameDict { get; } = new();
     }
 
-    [JsonSourceGenerationOptions(IncludeFields = true,WriteIndented = false)]
     [JsonSerializable(typeof(JsonNode))]
     [JsonSerializable(typeof(JsonObject))]
     [JsonSerializable(typeof(JsonArray))]
@@ -114,7 +113,6 @@ namespace Mikoto.Translators
         {
             IncludeFields = true,
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-            ReadCommentHandling = JsonCommentHandling.Skip
         });
     }
 }

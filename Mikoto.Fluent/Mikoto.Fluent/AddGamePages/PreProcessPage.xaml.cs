@@ -32,6 +32,9 @@ namespace Mikoto.Fluent.AddGamePages
 
         protected override bool SaveData(GameInfo config)
         {
+            config.RepairFunc= ViewModel.SelectedFuncName;
+            config.RepairParamA= ViewModel.ParamA;
+            config.RepairParamB  = ViewModel.ParamB;
             return true;
         }
 

@@ -8,8 +8,42 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock>LLL</TextBlock>
+    <Grid x:Name="ContentGrid" Margin="40,20,40,0">
+        <StackPanel Spacing="20" MaxWidth="600" HorizontalAlignment="Left">
 
+            <TextBlock Text="配置语言选项" Style="{StaticResource TitleTextBlockStyle}" Margin="0,0,0,10"/>
+
+            <StackPanel Spacing="8">
+                <TextBlock Text="游戏原文语言" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                <ComboBox x:Name="SourceLanguageCombo" 
+                          HorizontalAlignment="Stretch"
+                          PlaceholderText="选择游戏内显示的语言..."
+                          ItemsSource="{x:Bind ViewModel.SupportedLanguages}"
+                          SelectedItem="{x:Bind ViewModel.SelectedSourceLanguage, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="local:LanguageItem">
+                            <TextBlock Text="{x:Bind DisplayName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock Text="通常日本视觉小说选择'日文'。" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+            </StackPanel>
+
+            <StackPanel Spacing="8">
+                <TextBlock Text="目标翻译语言" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                <ComboBox x:Name="TargetLanguageCombo" 
+                          HorizontalAlignment="Stretch"
+                          PlaceholderText="选择你希望翻译成的语言..."
+                          ItemsSource="{x:Bind ViewModel.SupportedLanguages}"
+                          SelectedItem="{x:Bind ViewModel.SelectedTargetLanguage, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="local:LanguageItem">
+                            <TextBlock Text="{x:Bind DisplayName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+        </StackPanel>
     </Grid>
 </local:BaseStepPage>
