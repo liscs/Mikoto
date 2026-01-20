@@ -24,7 +24,6 @@ namespace Mikoto.Fluent.AddGamePages;
 /// </summary>
 public sealed partial class SelectProcessPage : BaseStepPage
 {
-    // ¶ÀÁ¢ÊµÀý
     public SelectProcessViewModel ViewModel { get; } = new();
     public SelectProcessPage()
     {

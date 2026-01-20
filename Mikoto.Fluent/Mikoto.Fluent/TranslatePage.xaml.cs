@@ -31,4 +31,11 @@ public sealed partial class TranslatePage : Page
             ViewModel.InitializeTranslationCommand.Execute(null);
         }
     }
+
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        base.OnNavigatedFrom(e);
+
+        App.Env.TextHookService.CloseTextractor();
+    }
 }

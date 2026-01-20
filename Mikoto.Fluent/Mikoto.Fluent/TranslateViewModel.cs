@@ -46,8 +46,13 @@ public partial class TranslateViewModel : ObservableObject
     [RelayCommand]
     public async Task InitializeTranslation()
     {
+        string? textractorPath = App.Env.AppSettings.Textractor_Path32;
+        if (CurrentGame.Isx64)
+        {
+            textractorPath = App.Env.AppSettings.Textractor_Path64;
+        }
         // hook
-        Task hookTask = App.Env.TextHookService.StartAsync(App.Env.AppSettings.Textractor_Path64, GetGamePid(CurrentGame), CurrentGame);
+        Task hookTask = App.Env.TextHookService.AutoStartAsync(textractorPath, GameProcessHelper.GetGamePid(CurrentGame), CurrentGame);
         App.Env.TextHookService.MeetHookAddressMessageReceived += Hook_Output;
 
         // translatorinit
@@ -116,23 +121,5 @@ public partial class TranslateViewModel : ObservableObject
         return currentData.Trim();
     }
 
-    private static int GetGamePid(GameInfo currentGame)
-    {
-        string name;
-        if (Path.GetExtension(currentGame.FilePath).Equals(".exe", StringComparison.OrdinalIgnoreCase))
-        {
-            name = Path.GetFileNameWithoutExtension(currentGame.FilePath);
-        }
-        else
-        {
-            name = Path.GetFileName(currentGame.FilePath);
-        }
 
-        List<Process> gameProcessList = Process.GetProcessesByName(name).ToList();
-        if (gameProcessList.Count == 0)
-        {
-            throw new Exception("Game process not found.");
-        }
-        return gameProcessList[0].Id;
-    }
 }

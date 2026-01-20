@@ -1,14 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<local:BaseStepPage
-    x:Class="Mikoto.Fluent.AddGamePages.HookSettingsPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Mikoto.Fluent.AddGamePages"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+<local:BaseStepPage x:Class="Mikoto.Fluent.AddGamePages.HookSettingsPage"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="using:Mikoto.Fluent.AddGamePages"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock>hhhhhhhh</TextBlock>
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    Spacing="8"
+                    Margin="0,0,0,24">
+            <TextBlock Text="请从下表中选择要挂钩的函数"
+                       Style="{StaticResource SubtitleTextBlockStyle}" />
+
+            <InfoBar Title="权限提示"
+                     Message="检测到无管理员权限，建议以管理员身份运行本程序。"
+                     Severity="Warning"
+                     IsOpen="{x:Bind ViewModel.IsAdminWarningVisible, Mode=OneWay}"
+                     IsClosable="False" />
+        </StackPanel>
+
+        <ListView Name="HookFunListView"
+                  Grid.Row="1"
+                  SelectionMode="Single"
+                  ItemsSource="{x:Bind ViewModel.HookFunctions, Mode=OneWay}"
+                  SelectedItem="{x:Bind ViewModel.SelectedFunction, Mode=TwoWay}"
+                  BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                  BorderThickness="1"
+                  CornerRadius="8"
+                  Background="{ThemeResource LayerFillColorDefaultBrush}">
+
+            <ListView.Header>
+                <Grid Padding="16,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                               Text="PID"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <TextBlock Grid.Column="1"
+                               Text="函数名"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <TextBlock Grid.Column="2"
+                               Text="Hook 码"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                    <TextBlock Grid.Column="3"
+                               Text="预览"
+                               Style="{StaticResource CaptionTextBlockStyle}" />
+                </Grid>
+            </ListView.Header>
+
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:HookFuncItem">
+                    <Grid Padding="4,8"
+                          Background="Transparent"
+                          ToolTipService.ToolTip="{x:Bind MisakaHookCode}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Text="{x:Bind GamePID}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <TextBlock Grid.Column="1"
+                                   Text="{x:Bind HookFunc}"
+                                   VerticalAlignment="Center"
+                                   FontWeight="SemiBold" />
+                        <TextBlock Grid.Column="2"
+                                   Text="{x:Bind MisakaHookCode}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                        <TextBlock Grid.Column="3"
+                                   Text="{x:Bind Data}"
+                                   TextTrimming="CharacterEllipsis"
+                                   VerticalAlignment="Center"
+                                   Opacity="0.8" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </local:BaseStepPage>

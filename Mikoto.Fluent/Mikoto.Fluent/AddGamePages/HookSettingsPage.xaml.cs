@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Mikoto.DataAccess;
+using Mikoto.Helpers.Async;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +25,7 @@ namespace Mikoto.Fluent.AddGamePages
     /// </summary>
     public sealed partial class HookSettingsPage
     {
+        public HookSettingsViewModel ViewModel { get; private set; } = default!;
         public HookSettingsPage()
         {
             InitializeComponent();
@@ -32,6 +34,20 @@ namespace Mikoto.Fluent.AddGamePages
         protected override bool SaveData(GameInfo config)
         {
             return true;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            ViewModel = new HookSettingsViewModel();
+            ViewModel.StartHookingAsync(BaseViewModel.DraftConfig).FireAndForget();
+        }
+
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            App.Env.TextHookService.CloseTextractor();
         }
     }
 }

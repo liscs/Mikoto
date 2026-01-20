@@ -603,7 +603,7 @@ namespace Mikoto.TextHook
         public void ClearHistory()
             => TextractorOutPutHistory.Clear();
 
-        public async Task StartAsync(string textractorPath, int pid, GameInfo game)
+        public async Task AutoStartAsync(string textractorPath, int pid, GameInfo game)
         {
             if (Init(textractorPath))
             {

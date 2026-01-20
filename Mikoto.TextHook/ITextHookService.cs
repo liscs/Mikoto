@@ -15,16 +15,16 @@ namespace Mikoto.TextHook
 
         void AddClipBoardWatcher();
         void AddTextractorHistory(string output);
-        Task AttachProcessAsync(int pid);
         Task AttachProcessByHookCodeAsync(int pid, string HookCode);
         Task<bool> AutoAddCustomHookToGameAsync();
         void CloseTextractor();
-        Task DetachProcessAsync(int pid);
-        Task DetachProcessByHookAddressAsync(int pid, string HookAddress);
         void DetachUnrelatedHooks(int pid, List<string> UsedHookAddress);
         string? GetHookAddressByMisakaCode(string MisakaCode);
         bool Init(string path);
         Task StartHookAsync(GameInfo gameInfo, bool AutoHook = false);
-        Task StartAsync(string textractorPath, int pid, GameInfo filePath);
+        /// <summary>
+        /// 自动启动 Textractor 并附加到指定进程
+        /// </summary>
+        Task AutoStartAsync(string textractorPath, int pid, GameInfo gameInfo);
     }
 }
