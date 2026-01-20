@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Mikoto.DataAccess;
 using Mikoto.Fluent.AddGamePages;
 using Mikoto.Fluent.Messages;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 namespace Mikoto.Fluent
@@ -35,6 +37,20 @@ namespace Mikoto.Fluent
 
             //打开之后切换到翻译页面
             WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(TranslatePage), game.ToEntity()));
+        }
+
+        [RelayCommand]
+        private void AutoAttachGame()
+        {
+            GameInfo? gameInfo = App.Env.GameInfoService.GetRunningGame();
+            if (gameInfo!=null)
+            {
+                WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(TranslatePage), gameInfo));
+            }
+            else
+            {
+                Log.Information("没有找到正在运行的已保存游戏，无法自动附加");
+            }
 
         }
     }

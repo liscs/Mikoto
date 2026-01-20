@@ -38,7 +38,8 @@
 
             </Button>
 
-            <Button Content="快速启动"/>
+            <Button Content="快速启动"
+                    Command="{x:Bind ViewModel.AutoAttachGameCommand}" />
 
         </StackPanel>
 
