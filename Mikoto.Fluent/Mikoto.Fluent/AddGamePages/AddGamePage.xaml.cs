@@ -35,7 +35,6 @@ public sealed partial class AddGamePage : Page
     {
         var step = ViewModel.Steps[ViewModel.CurrentStepIndex];
 
-        // 建议：传递 ViewModel 实例给子页面，实现数据共享
         NavigationTransitionInfo transition = useSlide
             ? new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight }
             : new EntranceNavigationTransitionInfo();

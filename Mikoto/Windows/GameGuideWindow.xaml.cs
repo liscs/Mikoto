@@ -1,7 +1,7 @@
 ﻿using Mikoto.Enums;
 using Mikoto.GuidePages;
 using Mikoto.GuidePages.Hook;
-using Mikoto.Helpers;
+using Mikoto.Helpers.Async;
 using System.Windows;
 
 namespace Mikoto

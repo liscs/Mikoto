@@ -127,5 +127,11 @@ namespace Mikoto.ProcessInterop
         {
             return Process.Start(new ProcessStartInfo(filename) { UseShellExecute = true });
         }
+
+        public static bool Is64BitProcess(int pid)
+        {
+            Windows.Win32.PInvoke.IsWow64Process(Process.GetProcessById(pid).SafeHandle, out Windows.Win32.Foundation.BOOL result);
+            return !result;
+        }
     }
 }

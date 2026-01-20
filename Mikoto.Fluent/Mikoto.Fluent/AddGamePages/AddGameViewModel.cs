@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Mikoto.DataAccess;
 using System;
 using System.Collections.Generic;
@@ -47,13 +48,23 @@ namespace Mikoto.Fluent.AddGamePages
         public ObservableCollection<string> BreadcrumbItems { get; } = new();
 
         [RelayCommand]
-        public void MoveNext()
+        private void MoveNext()
         {
-            if (CurrentStepIndex < Steps.Count - 1)
+            // 发送消息，并把配置对象传过去
+            // 我们期待子页面收到这个消息后，把数据填进 DraftConfig
+            // 会触发子页面的 SaveData 方法
+            WeakReferenceMessenger.Default.Send(new RequestSaveDataMessage(DraftConfig, (isSuccess) =>
             {
-                BreadcrumbItems.Add(Steps[CurrentStepIndex+1].Title);
-                CurrentStepIndex++;
-            }
+                // 只有当子页面返回 true 时，才执行跳转
+                if (isSuccess)
+                {
+                    if (CurrentStepIndex < Steps.Count - 1)
+                    {
+                        BreadcrumbItems.Add(Steps[CurrentStepIndex + 1].Title);
+                        CurrentStepIndex++;
+                    }
+                }
+            }));
         }
 
         [RelayCommand]

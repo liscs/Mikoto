@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Mikoto.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,6 +27,11 @@ namespace Mikoto.Fluent.AddGamePages
         public LanguagePage()
         {
             InitializeComponent();
+        }
+
+        protected override bool SaveData(GameInfo config)
+        {
+            return true;
         }
     }
 }

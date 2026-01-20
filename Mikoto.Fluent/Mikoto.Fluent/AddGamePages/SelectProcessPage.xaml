@@ -9,7 +9,31 @@
     mc:Ignorable="d">
 
     <Grid>
-        <TextBlock>SSS</TextBlock>
-
+        <ListView ItemsSource="{x:Bind ViewModel.Processes, Mode=OneWay}"
+                  SelectedItem="{x:Bind ViewModel.SelectedProcess, Mode=TwoWay}"
+                  SelectionMode="Single">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:ProcessItem">
+                    <StackPanel Margin="0,4">
+                        <TextBlock Text="{x:Bind Title}"
+                                   FontWeight="SemiBold" />
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="8">
+                            <TextBlock Text="{x:Bind Name}"
+                                       Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                            <TextBlock Text="{x:Bind Id}"
+                                       Opacity="0.6" />
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <InfoBar x:Name="SelectionErrorBar"
+                 Title="未选择进程"
+                 Message="请先从列表中选择一个要添加的游戏进程。"
+                 Severity="Error"
+                 IsOpen="{x:Bind ViewModel.ShowError, Mode=TwoWay}"
+                 VerticalAlignment="Top"
+                 Canvas.ZIndex="1" />
     </Grid>
 </local:BaseStepPage>

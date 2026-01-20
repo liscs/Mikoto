@@ -80,7 +80,7 @@ namespace Mikoto.GuidePages.Hook
                 App.Env.TextHookService = new TextHook.TextHookService(_sameNameGameProcessList, new MaxMemoryProcessSelector());
             }
 
-            bool isx64 = Is64BitProcess(pid);
+            bool isx64 = ProcessHelper.Is64BitProcess(pid);
             if (App.Env.TextHookService.Init(isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
             {
                 string filepath = ProcessHelper.FindProcessPath(pid);
@@ -104,11 +104,7 @@ namespace Mikoto.GuidePages.Hook
             }
         }
 
-        private static bool Is64BitProcess(int pid)
-        {
-            PInvoke.IsWow64Process((global::Windows.Win32.Foundation.HANDLE)Process.GetProcessById(pid).Handle, out global::Windows.Win32.Foundation.BOOL result);
-            return !result;
-        }
+
 
     }
 }

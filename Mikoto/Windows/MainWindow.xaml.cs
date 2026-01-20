@@ -4,7 +4,7 @@ using HandyControl.Tools.Extension;
 using Mikoto.Config;
 using Mikoto.DataAccess;
 using Mikoto.Enums;
-using Mikoto.Helpers;
+using Mikoto.Helpers.Async;
 using Mikoto.Helpers.File;
 using Mikoto.Helpers.Graphics;
 using Mikoto.ProcessInterop;
