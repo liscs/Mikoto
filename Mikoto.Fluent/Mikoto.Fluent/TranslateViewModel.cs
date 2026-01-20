@@ -47,21 +47,39 @@ public partial class TranslateViewModel : ObservableObject
     [RelayCommand]
     public async Task InitializeTranslation()
     {
-        string? textractorPath = App.Env.AppSettings.Textractor_Path32;
-        if (CurrentGame.Isx64)
-        {
-            textractorPath = App.Env.AppSettings.Textractor_Path64;
-        }
-        // hook
-        Task hookTask = App.Env.TextHookService.AutoStartAsync(textractorPath, GameProcessHelper.GetGamePid(CurrentGame), CurrentGame);
-        App.Env.TextHookService.MeetHookAddressMessageReceived += Hook_Output;
+        Log.Information("正在初始化游戏 {GameName} 的翻译流程, 游戏PID: {PID}",
+            CurrentGame.GameName, GameProcessHelper.GetGamePid(CurrentGame));
 
-        // translatorinit
-        _translator = TranslatorCommon.TranslatorFactory.GetTranslator(
-                App.Env.AppSettings.FirstTranslator,
-                App.Env.AppSettings,
-                App.Env.AppSettings.FirstTranslator);
-        await hookTask;
+        try
+        {
+            string? textractorPath = CurrentGame.Isx64
+                ? App.Env.AppSettings.Textractor_Path64
+                : App.Env.AppSettings.Textractor_Path32;
+
+            if (string.IsNullOrEmpty(textractorPath))
+            {
+                Log.Warning("Textractor 路径未配置，初始化可能失败");
+            }
+
+            // Hook 启动日志
+            Log.Debug("正在启动 TextHookService, 路径: {Path}", textractorPath);
+            Task hookTask = App.Env.TextHookService.AutoStartAsync(textractorPath, GameProcessHelper.GetGamePid(CurrentGame), CurrentGame);
+            App.Env.TextHookService.MeetHookAddressMessageReceived += Hook_Output;
+
+            // 翻译器初始化日志
+            _translator = TranslatorCommon.TranslatorFactory.GetTranslator(
+                    App.Env.AppSettings.FirstTranslator,
+                    App.Env.AppSettings,
+                    App.Env.AppSettings.FirstTranslator);
+
+
+            await hookTask;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "初始化翻译流程时发生异常");
+            ShowNotification("初始化失败", InfoBarSeverity.Error);
+        }
     }
 
     private SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new();
@@ -70,38 +88,66 @@ public partial class TranslateViewModel : ObservableObject
 
     private async void Hook_Output(object sender, SolvedDataReceivedEventArgs e)
     {
-        //1.得到原句
-        string? currentData = e.Data.Data; // 局部变量捕获当前快照
-                                           //LWW逻辑处理短时间并发调用
-                                           //只处理最新的一次调用
+        string? currentData = e.Data.Data;
+
         await _translationTask.ExecuteAsync(async () =>
         {
-            if (currentData == _lastSolvedDataReceivedEventArgs.Data?.Data
-                || _translator==null)
+            // 过滤重复数据
+            if (currentData == _lastSolvedDataReceivedEventArgs.Data?.Data || _translator == null)
             {
                 return;
             }
+
             _lastSolvedDataReceivedEventArgs = e;
+
+            // 1. 文本预处理
             string preProcessedText = PreProcessText(currentData);
-            string? translatedText =
-            await _translator.TranslateAsync(preProcessedText,
-                                              CurrentGame.DstLang,
-                                              CurrentGame.SrcLang);
-            //取得原文和翻译后的文本后，触发UI更新
-            Log.Debug("原文：{OriginalText}\n译文：{TranslatedText}", preProcessedText, translatedText);
 
-            _dispatcherQueue.TryEnqueue(() =>
+            // 2. 开始翻译并计时
+            var sw = Stopwatch.StartNew();
+            try
             {
-                UpdateUI(preProcessedText, translatedText, _translator.GetLastError());
-            });
-        });
+                string? translatedText = await _translator.TranslateAsync(
+                    preProcessedText,
+                    CurrentGame.DstLang,
+                    CurrentGame.SrcLang);
 
+                sw.Stop();
+
+                if (translatedText != null)
+                {
+                    // 记录成功日志，包含耗时
+                    Log.Debug("翻译成功 [耗时: {Elapsed}ms] 原文: {Original} 译文: {Translated}",
+                        sw.ElapsedMilliseconds, preProcessedText, translatedText);
+
+                    _dispatcherQueue.TryEnqueue(() =>
+                    {
+                        UpdateUI(preProcessedText, translatedText, string.Empty);
+                    });
+                }
+                else
+                {
+                    string error = _translator.GetLastError();
+                    Log.Warning("翻译失败 [耗时: {Elapsed}ms] 错误原因: {Error}", sw.ElapsedMilliseconds, error);
+
+                    _dispatcherQueue.TryEnqueue(() =>
+                    {
+                        UpdateUI(preProcessedText, null, error);
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                sw.Stop();
+                Log.Error(ex, "翻译过程抛出未处理异常 [原文: {Text}]", preProcessedText);
+            }
+        });
     }
 
     private void UpdateUI(string preProcessedText, string? translatedText, string error)
     {
         OriginalText = preProcessedText;
-        if (translatedText!=null)
+        if (translatedText != null)
         {
             TranslateText = translatedText;
         }
@@ -113,6 +159,16 @@ public partial class TranslateViewModel : ObservableObject
         }
     }
 
+    // 封装一个简单的通知方法
+    private void ShowNotification(string message, InfoBarSeverity severity)
+    {
+        _dispatcherQueue.TryEnqueue(() =>
+        {
+            IsNotificationOpen = true;
+            NotificationMessage = message;
+            NotificationSeverity = severity;
+        });
+    }
     private string PreProcessText(string? currentData)
     {
         var funcName = CurrentGame.RepairFunc;
