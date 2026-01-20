@@ -7,38 +7,30 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Padding="40">
-        <StackPanel Spacing="20"
-                    MaxWidth="500"
-                    HorizontalAlignment="Left">
-            <TextBlock Text="添加新游戏"
-                       Style="{StaticResource TitleTextBlockStyle}" />
+    <Grid RowDefinitions="Auto, *, Auto"
+          Padding="20">
+        <BreadcrumbBar Grid.Row="0"
+                       ItemsSource="{x:Bind ViewModel.BreadcrumbItems, Mode=OneWay}"
+                       Margin="0,0,0,20" />
 
-            <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
-                    Padding="24"
-                    CornerRadius="8"
-                    BorderThickness="1"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
-                <StackPanel x:Name="StepContainer"
-                            Spacing="16">
-                    <TextBlock x:Name="StepTitle"
-                               Text="第一步：选择游戏程序"
-                               Style="{StaticResource BodyStrongTextBlockStyle}" />
-                    <TextBox x:Name="PathBox"
-                             Header="文件路径"
-                             PlaceholderText="选择 .exe 文件" />
-                </StackPanel>
-            </Border>
+        <Frame Grid.Row="1"
+               x:Name="ContentFrame"
+               Background="{ThemeResource LayerFillColorDefaultBrush}"
+               CornerRadius="8"
+               Padding="20" />
 
-            <StackPanel Orientation="Horizontal"
-                        Spacing="12">
-                <Button x:Name="NextButton"
-                        Content="下一步"
-                        Style="{StaticResource AccentButtonStyle}"
-                        Click="Next_Click" />
-                <Button Content="取消"
-                        Click="Cancel_Click" />
-            </StackPanel>
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="10"
+                    Margin="0,20,0,0">
+            <Button Content="上一步"
+                    Command="{x:Bind ViewModel.MoveBackCommand}"
+                    IsEnabled="{x:Bind ViewModel.CanGoBack, Mode=OneWay}"/>
+            <Button Content="下一步"
+                    Command="{x:Bind ViewModel.MoveNextCommand}"
+                    IsEnabled="{x:Bind ViewModel.CanGoNext, Mode=OneWay}"
+                    />
         </StackPanel>
     </Grid>
 </Page>

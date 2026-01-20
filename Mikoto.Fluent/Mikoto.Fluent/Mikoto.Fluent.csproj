@@ -19,6 +19,10 @@
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="AddGamePage.xaml" />
+	  <None Remove="AddGamePages\HookSettingsPage.xaml" />
+	  <None Remove="AddGamePages\LanguagePage.xaml" />
+	  <None Remove="AddGamePages\PreProcessPage.xaml" />
+	  <None Remove="AddGamePages\SelectProcessPage.xaml" />
 	  <None Remove="HomePage.xaml" />
 	  <None Remove="TranslatePage.xaml" />
 	</ItemGroup>
@@ -40,6 +44,30 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Page Update="AddGamePages\LanguagePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="AddGamePages\PreProcessPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="AddGamePages\HookSettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="AddGamePages\SelectProcessPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Page Update="AddGamePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
@@ -49,10 +77,6 @@
 	  <Page Update="HomePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="AddGamePages\" />
 	</ItemGroup>
 
 	<ItemGroup>
