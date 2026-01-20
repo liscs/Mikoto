@@ -92,5 +92,13 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
+        <InfoBar x:Name="SelectionErrorBar"
+                 Title="未选择Hook方法"
+                 Message="请先从列表中选择一个Hook方法。"
+                 Severity="Error"
+                 IsOpen="{x:Bind ViewModel.ShowError, Mode=TwoWay}"
+                 VerticalAlignment="Top"
+                 Canvas.ZIndex="1" />
     </Grid>
 </local:BaseStepPage>

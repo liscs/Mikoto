@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Mikoto.DataAccess;
+using Mikoto.Helpers.Async;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,8 +15,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+
 
 namespace Mikoto.Fluent.AddGamePages
 {
@@ -24,6 +24,7 @@ namespace Mikoto.Fluent.AddGamePages
     /// </summary>
     public sealed partial class PreProcessPage
     {
+        public PreProcessViewModel ViewModel { get; private set; } = default!;
         public PreProcessPage()
         {
             InitializeComponent();
@@ -32,6 +33,20 @@ namespace Mikoto.Fluent.AddGamePages
         protected override bool SaveData(GameInfo config)
         {
             return true;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            ViewModel = new PreProcessViewModel();
+            ViewModel.StartHookingAsync(BaseViewModel.DraftConfig).FireAndForget();
+        }
+
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            App.Env.TextHookService.CloseTextractor();
         }
     }
 }

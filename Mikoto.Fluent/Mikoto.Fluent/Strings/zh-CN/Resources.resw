@@ -117,22 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-	<data name="NoDeal" xml:space="preserve">
+	<data name="RepairFun_NoDeal" xml:space="preserve">
     <value>不处理</value>
   </data>
-	<data name="RemoveSingleWordRepeat" xml:space="preserve">
+	<data name="RepairFun_RemoveSingleWordRepeat" xml:space="preserve">
     <value>单字去重</value>
   </data>
-	<data name="RemoveSentenceRepeat" xml:space="preserve">
+	<data name="RepairFun_RemoveSentenceRepeat" xml:space="preserve">
     <value>句子去重</value>
   </data>
-	<data name="RemoveLetterNumber" xml:space="preserve">
+	<data name="RepairFun_RemoveLetterNumber" xml:space="preserve">
     <value>去除字母数字</value>
   </data>
-	<data name="RemoveHTML" xml:space="preserve">
+	<data name="RepairFun_RemoveHTML" xml:space="preserve">
     <value>去除HTML标签</value>
   </data>
-	<data name="RegexReplace" xml:space="preserve">
+	<data name="RepairFun_RegexReplace" xml:space="preserve">
     <value>正则表达式替换</value>
   </data>
 </root>

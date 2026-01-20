@@ -9,6 +9,7 @@ namespace Mikoto.Fluent.AddGamePages
     {
         public int GamePID { get; set; }
         public string HookFunc { get; set; } = string.Empty;
+        public string HookCode { get; set; } = string.Empty;
         public string MisakaHookCode { get; set; } = string.Empty;
         public string Data { get; set; } = string.Empty;
     }

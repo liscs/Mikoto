@@ -33,7 +33,15 @@ namespace Mikoto.Fluent.AddGamePages
 
         protected override bool SaveData(GameInfo config)
         {
-            return true;
+            if (ViewModel.SelectedFunction != null)
+            {
+                config.HookCode = ViewModel.SelectedFunction.HookCode;
+                config.MisakaHookCode = ViewModel.SelectedFunction.MisakaHookCode;
+                return true;
+            }
+
+            ViewModel.ShowError =true;
+            return false;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

@@ -60,6 +60,7 @@ namespace Mikoto.Fluent.AddGamePages
                     Data = data.Data??string.Empty,
                     GamePID = data.GamePID,
                     MisakaHookCode = data.MisakaHookCode,
+                    HookCode = data.HookCode,
                     HookFunc = data.HookFunc,
                 };
 
@@ -84,5 +85,8 @@ namespace Mikoto.Fluent.AddGamePages
 
         [GeneratedRegex(@"【0:FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF】|【FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF】", RegexOptions.Compiled)]
         private static partial Regex InvalidCodeRegex();
+
+        [ObservableProperty]
+        public partial bool ShowError { get; set; }
     }
 }

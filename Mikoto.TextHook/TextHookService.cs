@@ -386,8 +386,8 @@ namespace Mikoto.TextHook
                         if (!obtainedMatch.Success)
                         {
                             Log.Warning("MisakaCode 格式不合法: {Code}", obtainedMisakaCode);
+                            return;
                         }
-                        Debug.Assert(obtainedMatch.Success);
 
                         if (InvalidMisakaCodeRegex().IsMatch(obtainedMisakaCode))
                         {

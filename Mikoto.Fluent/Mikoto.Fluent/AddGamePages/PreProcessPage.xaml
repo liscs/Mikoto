@@ -1,15 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
 <local:BaseStepPage
     x:Class="Mikoto.Fluent.AddGamePages.PreProcessPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Mikoto.Fluent.AddGamePages"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    >
 
-    <Grid>
-        <TextBlock>PPP</TextBlock>
+    <ScrollViewer>
+        <StackPanel Spacing="16" Margin="20">
+            <TextBox x:Uid="SourceTextHeader" 
+                     Header="原文预览 (用于测试)"
+                     Text="{x:Bind ViewModel.SourceText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True" TextWrapping="Wrap" MinHeight="80"/>
 
-    </Grid>
+            <ComboBox x:Uid="RepairFuncHeader"
+                      Header="处理函数"
+                      HorizontalAlignment="Stretch"
+                      ItemsSource="{x:Bind ViewModel.RepairFunctions}"
+                      DisplayMemberPath="DisplayName"
+                      SelectedValuePath="MethodName"
+                      SelectedValue="{x:Bind ViewModel.SelectedFuncName, Mode=TwoWay}"/>
+
+            <StackPanel Spacing="8">
+                <TextBox Header="参数 A (阈值/正则)" 
+                         Text="{x:Bind ViewModel.ParamA, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Header="参数 B (替换值)" 
+                         Visibility="{x:Bind ViewModel.IsParamBVisible, Mode=OneWay}"
+                         Text="{x:Bind ViewModel.ParamB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <MenuFlyoutSeparator />
+
+            <TextBlock Text="处理结果预览" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+            <Border Background="{ThemeResource LayerFillColorDefaultBrush}" 
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1" CornerRadius="4" Padding="12">
+                <TextBlock Text="{x:Bind ViewModel.PreviewResult, Mode=OneWay}" 
+                           TextWrapping="Wrap" IsTextSelectionEnabled="True" MinHeight="40"/>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
 </local:BaseStepPage>
