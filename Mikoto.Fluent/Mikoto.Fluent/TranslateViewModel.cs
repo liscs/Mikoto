@@ -8,7 +8,6 @@ using Mikoto.Translators;
 using Mikoto.Translators.Interfaces;
 using Serilog;
 using System.Diagnostics;
-using System.Xml.Linq;
 
 namespace Mikoto.Fluent;
 

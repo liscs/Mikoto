@@ -1,8 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-
+	<PropertyGroup>
+		<EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
+	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Config.Net" Version="5.2.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.2" />
 	</ItemGroup>
 
 </Project>
