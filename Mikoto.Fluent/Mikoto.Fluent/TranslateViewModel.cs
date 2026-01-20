@@ -84,8 +84,8 @@ public partial class TranslateViewModel : ObservableObject
             string preProcessedText = PreProcessText(currentData);
             string? translatedText =
             await _translator.TranslateAsync(preProcessedText,
-                                              CurrentGame.SrcLang,
-                                              CurrentGame.DstLang);
+                                              CurrentGame.DstLang,
+                                              CurrentGame.SrcLang);
             //取得原文和翻译后的文本后，触发UI更新
             Log.Debug("原文：{OriginalText}\n译文：{TranslatedText}", preProcessedText, translatedText);
 

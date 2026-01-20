@@ -38,13 +38,14 @@ namespace Mikoto.Translators.Implementations
 
             const string host = serviceName + "." + regionName + ".amazonaws.com";
 
-            var obj = new
+            var obj = new JsonObject
             {
-                SourceLanguageCode = sourceLang,
-                TargetLanguageCode = targetLang,
-                Text = text
+                ["SourceLanguageCode"] = sourceLang,
+                ["TargetLanguageCode"] = targetLang,
+                ["Text"] = text
             };
-            var requestPayload = JsonSerializer.Serialize(obj);
+
+            var requestPayload = obj.ToJsonString(TranslatorJsonContext.AotSafeContext.Options);
 
             var hashedRequestPayload = HexEncode(Hash(ToBytes(requestPayload)));
 
@@ -132,7 +133,7 @@ namespace Mikoto.Translators.Implementations
             }
 
             string responseJson = await httpResponseMessage.Content.ReadAsStringAsync();
-            JsonNode? jsonNode = JsonSerializer.Deserialize<JsonNode>(responseJson);
+            JsonNode? jsonNode = JsonSerializer.Deserialize(responseJson,TranslatorJsonContext.AotSafeContext.JsonNode);
             string? result = jsonNode?["TranslatedText"]?.GetValue<string>();
             if (result == null)
             {

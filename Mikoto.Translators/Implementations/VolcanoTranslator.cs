@@ -69,7 +69,10 @@ namespace Mikoto.Translators.Implementations
             {
                 SourceLanguage = sourceLanguage,
             };
-            return JsonSerializer.Serialize(volcanoRequest);
+            return JsonSerializer.Serialize(
+                volcanoRequest,
+                TranslatorJsonContext.AotSafeContext.VolcanoRequest
+            );
         }
 
         private static string BuildRequestJson(string[] text, string sourceLanguage, string TargetLanguage)
@@ -78,7 +81,10 @@ namespace Mikoto.Translators.Implementations
             {
                 SourceLanguage = sourceLanguage,
             };
-            return JsonSerializer.Serialize(volcanoRequest);
+            return JsonSerializer.Serialize(
+                volcanoRequest,
+                TranslatorJsonContext.AotSafeContext.VolcanoRequest
+            );
         }
 
 
@@ -138,7 +144,7 @@ namespace Mikoto.Translators.Implementations
             string responseJson = await httpResponseMessage.Content.ReadAsStringAsync();
             try
             {
-                JsonNode? jsonNode = JsonSerializer.Deserialize<JsonNode>(responseJson);
+                JsonNode? jsonNode = JsonSerializer.Deserialize<JsonNode>(responseJson, TranslatorJsonContext.AotSafeContext.JsonNode);
                 string? result = jsonNode?["TranslationList"]?[0]?["Translation"]?.GetValue<string>();
                 if (result == null)
                 {

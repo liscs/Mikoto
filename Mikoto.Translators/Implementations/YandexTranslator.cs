@@ -26,7 +26,7 @@ namespace Mikoto.Translators.Implementations
             try
             {
                 string retString = await hc.GetStringAsync(apiurl + HttpUtility.UrlEncode(sourceText));
-                var doc = JsonSerializer.Deserialize<Result>(retString, TranslatorCommon.JsonSerializerOptions);
+                var doc = JsonSerializer.Deserialize<Result>(retString, TranslatorJsonContext.AotSafeContext.YandexResult);
                 return doc.text[0];
             }
             catch (HttpRequestException ex)
@@ -75,7 +75,7 @@ namespace Mikoto.Translators.Implementations
         }
 
 #pragma warning disable 0649
-        private struct Result
+        public struct Result
         {
             public int code;
             public string[] text;

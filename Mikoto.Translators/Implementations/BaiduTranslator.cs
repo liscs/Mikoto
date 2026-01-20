@@ -62,7 +62,7 @@ namespace Mikoto.Translators.Implementations
                 return null;
             }
 
-            BaiduTransOutInfo oinfo = JsonSerializer.Deserialize<BaiduTransOutInfo>(retString, TranslatorCommon.JsonSerializerOptions);
+            BaiduTransOutInfo oinfo = JsonSerializer.Deserialize(retString, TranslatorJsonContext.AotSafeContext.BaiduTransOutInfo);
 
             if (oinfo.error_code == null || oinfo.error_code == "52000")
             {

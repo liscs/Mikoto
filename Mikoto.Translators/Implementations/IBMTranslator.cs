@@ -1,6 +1,7 @@
 using Mikoto.Translators.Interfaces;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Mikoto.Translators.Implementations
 {
@@ -34,11 +35,13 @@ namespace Mikoto.Translators.Implementations
             HttpResponseMessage resp;
             var hc = TranslateHttpClient.Instance;
             var req = new HttpRequestMessage(HttpMethod.Post, URL);
-            string jsonParam = JsonSerializer.Serialize(new Dictionary<string, object>
+            var root = new JsonObject
             {
-                {"text", new string[] {sourceText}},
-                {"model_id", srcLang + "-" + desLang}
-            });
+                ["text"] = new JsonArray(sourceText), // JsonNode 体系在 AOT 下是安全的
+                ["model_id"] = $"{srcLang}-{desLang}"
+            };
+
+            string jsonParam = root.ToJsonString(TranslatorJsonContext.AotSafeContext.Options);
             req.Content = new StringContent(jsonParam, null, "application/json");
             req.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(ApiKey ?? string.Empty)));
 
@@ -62,7 +65,7 @@ namespace Mikoto.Translators.Implementations
             }
 
             string retString = await resp.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<Result>(retString, TranslatorCommon.JsonSerializerOptions);
+            var result = JsonSerializer.Deserialize<Result>(retString, TranslatorJsonContext.AotSafeContext.IBMResult);
 
             if (!resp.IsSuccessStatusCode)
             {
@@ -108,13 +111,13 @@ namespace Mikoto.Translators.Implementations
         }
 
 #pragma warning disable 0649
-        private struct Result
+        public struct Result
         {
             public Translations[] translations;
             public string error;
         }
 
-        private struct Translations
+        public struct Translations
         {
             public string translation;
         }

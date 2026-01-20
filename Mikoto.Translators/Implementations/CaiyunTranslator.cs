@@ -1,5 +1,6 @@
 ﻿using Mikoto.Translators.Interfaces;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 
 namespace Mikoto.Translators.Implementations
@@ -32,13 +33,16 @@ namespace Mikoto.Translators.Implementations
 
             string url = "https://api.interpreter.caiyunai.com/v1/translator";
             //json参数
-            string jsonParam = JsonSerializer.Serialize(new Dictionary<string, object>
+            var root = new JsonObject
             {
-                {"source", new string[] {q}},
-                {"trans_type", trans_type},
-                {"request_id", "demo"},
-                {"detect", true}
-            });
+                ["source"] = new JsonArray(q),      // 对应 string[] {q}
+                ["trans_type"] = trans_type,
+                ["request_id"] = "demo",
+                ["detect"] = true
+            };
+
+            // 使用 Context 中已有的 JsonObject 元数据进行序列化
+            string jsonParam = root.ToJsonString(TranslatorJsonContext.AotSafeContext.Options);
 
             var hc = TranslateHttpClient.Instance;
             var req = new StringContent(jsonParam, null, "application/json");
@@ -65,7 +69,7 @@ namespace Mikoto.Translators.Implementations
             CaiyunTransResult oinfo;
             try
             {
-                oinfo = JsonSerializer.Deserialize<CaiyunTransResult>(retString, TranslatorCommon.JsonSerializerOptions);
+                oinfo = JsonSerializer.Deserialize(retString, TranslatorJsonContext.AotSafeContext.CaiyunTransResult);
             }
             catch
             {

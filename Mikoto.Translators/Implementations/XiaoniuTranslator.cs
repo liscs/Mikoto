@@ -52,7 +52,7 @@ namespace Mikoto.Translators.Implementations
                 return null;
             }
 
-            XiaoniuTransOutInfo oinfo = JsonSerializer.Deserialize<XiaoniuTransOutInfo>(retString, TranslatorCommon.JsonSerializerOptions);
+            XiaoniuTransOutInfo oinfo = JsonSerializer.Deserialize(retString, TranslatorJsonContext.AotSafeContext.XiaoniuTransOutInfo);
 
             if (oinfo.error_code == null || oinfo.error_code == "52000")
             {
