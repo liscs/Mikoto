@@ -19,27 +19,43 @@
                 <ThemeShadow />
             </InfoBar.Shadow>
         </InfoBar>
-        <StackPanel Spacing="20"
-                    HorizontalAlignment="Stretch">
 
-            <TextBox Header="游戏原文"
+        <Grid RowDefinitions="Auto, *" RowSpacing="20">
+
+            <TextBox Grid.Row="0"
+                     Header="游戏原文"
                      Text="{x:Bind ViewModel.OriginalText, Mode=OneWay}"
                      IsReadOnly="True"
-                     TextWrapping="Wrap"
-                     AcceptsReturn="True"
-                     MinHeight="100"
-                     HorizontalAlignment="Stretch"
+                     TextWrapping="NoWrap"
+                     AcceptsReturn="False"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     ScrollViewer.HorizontalScrollMode="Enabled"
                      PlaceholderText="暂无原文信息" />
 
-            <TextBox Header="翻译"
-                     Text="{x:Bind ViewModel.TranslateText,Mode=OneWay}"
-                     IsReadOnly="True"
-                     TextWrapping="Wrap"
-                     AcceptsReturn="True"
-                     MinHeight="100"
-                     HorizontalAlignment="Stretch"
-                     PlaceholderText="翻译内容..." />
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{x:Bind ViewModel.MultiTranslateResults, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="local:TranslationResult">
+                            <Grid Margin="0,0,0,16">
+                                <TextBox Header="{x:Bind TranslatorName}"
+                                         Text="{x:Bind ResultText, Mode=OneWay}"
+                                         IsReadOnly="True"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"
+                                         MinHeight="80"
+                                         HorizontalAlignment="Stretch"
+                                         PlaceholderText="正在翻译..." />
 
-        </StackPanel>
+                                <ProgressRing IsActive="{x:Bind IsLoading, Mode=OneWay}" 
+                                              HorizontalAlignment="Right" 
+                                              VerticalAlignment="Top" 
+                                              Margin="0,35,10,0"
+                                              Width="16" Height="16"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Page>
