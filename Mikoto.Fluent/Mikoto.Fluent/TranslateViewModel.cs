@@ -89,7 +89,6 @@ public partial class TranslateViewModel : ObservableObject
                 _dispatcherQueue.TryEnqueue(() =>
                 {
                     item.IsLoading = true;
-                    item.ResultText = string.Empty;
                     item.ErrorMessage = null;
                 });
 
