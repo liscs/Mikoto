@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using Mikoto.DataAccess;
 using Mikoto.Helpers.Async;
+using Mikoto.Helpers.Text;
 using Mikoto.TextHook;
 using Mikoto.Translators;
 using Mikoto.Translators.Interfaces;
@@ -112,13 +113,18 @@ public partial class TranslateViewModel : ObservableObject
         }
     }
 
-    private static string PreProcessText(string? currentData)
+    private string PreProcessText(string? currentData)
     {
-        if (string.IsNullOrWhiteSpace(currentData))
+        var funcName = CurrentGame.RepairFunc;
+
+        if (string.IsNullOrWhiteSpace(currentData)||string.IsNullOrWhiteSpace(funcName))
         {
-            return string.Empty;
+            return currentData??string.Empty;
         }
-        return currentData.Trim();
+
+        var paramA = CurrentGame.RepairParamA;
+        var paramB = CurrentGame.RepairParamB;
+        return TextProcessor.PreProcessSrc(funcName, currentData, paramA, paramB);
     }
 
 
