@@ -33,6 +33,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Mikoto.Config\Mikoto.Config.csproj" />
 	  <ProjectReference Include="..\..\Mikoto.DataAccess\Mikoto.DataAccess.csproj" />
+	  <ProjectReference Include="..\..\Mikoto.Helpers\Mikoto.Helpers.csproj" />
 	  <ProjectReference Include="..\..\Mikoto.TextHook\Mikoto.TextHook.csproj" />
 	  <ProjectReference Include="..\..\Mikoto.Translators\Mikoto.Translators.csproj" />
 	</ItemGroup>

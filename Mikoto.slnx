@@ -31,16 +31,13 @@
   <Project Path="Mikoto.Dictionary/Mikoto.Dictionary.csproj">
     <BuildDependency Project="Mikoto.DataAccess/Mikoto.DataAccess.csproj" />
   </Project>
-  <Project Path="Mikoto.Fluent/Mikoto.Fluent (Package)/Mikoto.Fluent (Package).wapproj" Type="c7167f0d-bc9f-4e6e-afe1-012c56b48db5" Id="fa779534-8ac3-4fce-aeee-3fddfee1581f">
-    <Platform Solution="*|Any CPU" Project="x64" />
-    <Deploy />
-  </Project>
   <Project Path="Mikoto.Fluent/Mikoto.Fluent/Mikoto.Fluent.csproj" Id="ac74bad1-f9e0-404e-ba1a-addcb55dc5b4">
     <Platform Solution="*|Any CPU" Project="x64" />
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
+  <Project Path="Mikoto.Helpers/Mikoto.Helpers.csproj" Id="006c0784-8216-45b5-9c73-727f30ddc47d" />
   <Project Path="Mikoto.LocalizationTool/Mikoto.LocalizationTool.csproj" />
   <Project Path="Mikoto.Mecab.Tests/Mikoto.Mecab.Tests.csproj" />
   <Project Path="Mikoto.Mecab/Mikoto.Mecab.csproj" />

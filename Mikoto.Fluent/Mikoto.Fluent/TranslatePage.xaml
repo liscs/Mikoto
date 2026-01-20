@@ -9,6 +9,17 @@
     mc:Ignorable="d">
 
     <Grid Padding="24">
+        <InfoBar x:Name="GlobalInfoBar"
+                 Message="{x:Bind ViewModel.NotificationMessage, Mode=OneWay}"
+                 IsOpen="{x:Bind ViewModel.IsNotificationOpen, Mode=TwoWay}"
+                 Severity="{x:Bind ViewModel.NotificationSeverity, Mode=OneWay}"
+                 VerticalAlignment="Top"
+                 Margin="20,10,20,0"
+                 Canvas.ZIndex="999">
+            <InfoBar.Shadow>
+                <ThemeShadow />
+            </InfoBar.Shadow>
+        </InfoBar>
         <StackPanel Spacing="20" HorizontalAlignment="Stretch">
 
             <TextBox Header="游戏原文"
