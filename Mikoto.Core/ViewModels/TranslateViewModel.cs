@@ -1,21 +1,21 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Xaml.Controls;
+using Mikoto.Core.Interfaces;
+using Mikoto.Core.Models;
 using Mikoto.DataAccess;
 using Mikoto.Helpers.Async;
 using Mikoto.Helpers.Text;
 using Mikoto.TextHook;
 using Mikoto.Translators;
-using Mikoto.Translators.Interfaces;
 using Serilog;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
-namespace Mikoto.Fluent;
+namespace Mikoto.Core.ViewModels;
 
 public partial class TranslateViewModel : ObservableObject
 {
-    private readonly Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
+    private readonly IMainThreadService _mainThreadService;
     private readonly AsyncLwwTask _translationTask = new();
     private SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new();
 
@@ -23,19 +23,21 @@ public partial class TranslateViewModel : ObservableObject
     [ObservableProperty]
     public partial ObservableCollection<TranslationResult> MultiTranslateResults { get; set; } = new();
 
-    public GameInfo CurrentGame { get; internal set; } = new GameInfo();
+    public GameInfo CurrentGame { get; set; } = new GameInfo();
 
     [ObservableProperty] public partial string OriginalText { get; set; } = string.Empty;
 
     #region Notification Properties
     [ObservableProperty] public partial bool IsNotificationOpen { get; set; }
     [ObservableProperty] public partial string NotificationMessage { get; set; } = string.Empty;
-    [ObservableProperty] public partial InfoBarSeverity NotificationSeverity { get; set; }
+    [ObservableProperty] public partial InfoSeverity NotificationSeverity { get; set; }
     #endregion
 
-    public TranslateViewModel()
+    IAppEnvironment _env;
+    public TranslateViewModel(IAppEnvironment env, IMainThreadService mainThreadService)
     {
-        _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
+        _env = env;
+        _mainThreadService = mainThreadService;
     }
 
     [RelayCommand]
@@ -45,14 +47,14 @@ public partial class TranslateViewModel : ObservableObject
         try
         {
             // 1. 初始化 Hook
-            string? textractorPath = CurrentGame.Isx64 ? App.Env.AppSettings.Textractor_Path64 : App.Env.AppSettings.Textractor_Path32;
-            Task hookTask = App.Env.TextHookService.AutoStartAsync(textractorPath, GameProcessHelper.GetGamePid(CurrentGame), CurrentGame);
-            App.Env.TextHookService.MeetHookAddressMessageReceived += Hook_Output;
+            string? textractorPath = CurrentGame.Isx64 ? _env.AppSettings.Textractor_Path64 : _env.AppSettings.Textractor_Path32;
+            Task hookTask = _env.TextHookService.AutoStartAsync(textractorPath, GameProcessHelper.GetGamePid(CurrentGame), CurrentGame);
+            _env.TextHookService.MeetHookAddressMessageReceived += Hook_Output;
 
             // 2. 预先根据配置初始化翻译结果列表 (例如从配置加载选中的翻译器)
             var enabledTranslators = new List<string> {
-                App.Env.AppSettings.FirstTranslator,
-                App.Env.AppSettings.SecondTranslator,
+                _env.AppSettings.FirstTranslator,
+                _env.AppSettings.SecondTranslator,
             };
             MultiTranslateResults.Clear();
             foreach (var name in enabledTranslators)
@@ -65,7 +67,7 @@ public partial class TranslateViewModel : ObservableObject
         catch (Exception ex)
         {
             Log.Error(ex, "初始化失败");
-            ShowNotification("初始化失败", InfoBarSeverity.Error);
+            ShowNotification("初始化失败", InfoSeverity.Error);
         }
     }
 
@@ -81,12 +83,12 @@ public partial class TranslateViewModel : ObservableObject
             string preProcessedText = PreProcessText(currentData);
 
             // 更新 UI 原文
-            _dispatcherQueue.TryEnqueue(() => OriginalText = preProcessedText);
+            _mainThreadService.RunOnMainThread(() => OriginalText = preProcessedText);
 
             // 3. 并行触发所有翻译任务
             var tasks = MultiTranslateResults.Select(async item =>
             {
-                _dispatcherQueue.TryEnqueue(() =>
+                _mainThreadService.RunOnMainThread(() =>
                 {
                     item.IsLoading = true;
                     item.ErrorMessage = null;
@@ -96,13 +98,13 @@ public partial class TranslateViewModel : ObservableObject
                 try
                 {
                     // 1. 获取翻译器实例
-                    var translator = TranslatorCommon.TranslatorFactory.GetTranslator(item.TranslatorName, App.Env.AppSettings, item.TranslatorName);
+                    var translator = TranslatorCommon.TranslatorFactory.GetTranslator(item.TranslatorName, _env.AppSettings, item.TranslatorName);
 
                     // 2. 检查翻译器是否获取成功
                     if (translator == null)
                     {
                         Log.Warning("无法创建翻译器实例: {Name}", item.TranslatorName);
-                        _dispatcherQueue.TryEnqueue(() =>
+                        _mainThreadService.RunOnMainThread(() =>
                         {
                             item.IsLoading = false;
                             item.ErrorMessage = "翻译器初始化失败";
@@ -114,7 +116,7 @@ public partial class TranslateViewModel : ObservableObject
                     string? result = await translator.TranslateAsync(preProcessedText, CurrentGame.DstLang, CurrentGame.SrcLang);
                     sw.Stop();
 
-                    _dispatcherQueue.TryEnqueue(() =>
+                    _mainThreadService.RunOnMainThread(() =>
                     {
                         item.IsLoading = false;
                         if (result != null)
@@ -133,7 +135,7 @@ public partial class TranslateViewModel : ObservableObject
                 catch (Exception ex)
                 {
                     Log.Error(ex, "翻译器 {Name} 崩溃", item.TranslatorName);
-                    _dispatcherQueue.TryEnqueue(() => { item.IsLoading = false; item.ErrorMessage = "插件异常"; });
+                    _mainThreadService.RunOnMainThread(() => { item.IsLoading = false; item.ErrorMessage = "插件异常"; });
                 }
             });
 
@@ -143,7 +145,7 @@ public partial class TranslateViewModel : ObservableObject
     }
 
     private CancellationTokenSource? _notificationTokenSource;
-    private async void ShowNotification(string message, InfoBarSeverity severity, int durationMs = 3000)
+    private async void ShowNotification(string message, InfoSeverity severity, int durationMs = 3000)
     {
         // 1. 取消上一次正在进行的“自动关闭”计时任务
         _notificationTokenSource?.Cancel();

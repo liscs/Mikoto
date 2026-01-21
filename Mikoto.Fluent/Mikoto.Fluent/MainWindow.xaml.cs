@@ -1,7 +1,12 @@
 using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Mikoto.Fluent.Messages;
+using Mikoto.Core.Messages;
+using Mikoto.Core.ViewModels;
+using Mikoto.Core.ViewModels.AddGamePages;
+using Mikoto.Fluent.AddGamePages;
+using System.Diagnostics;
 
 namespace Mikoto.Fluent;
 
@@ -10,7 +15,7 @@ namespace Mikoto.Fluent;
 /// </summary>
 public sealed partial class MainWindow : Window
 {
-    MainViewModel ViewModel = new MainViewModel();
+    MainViewModel ViewModel = App.Services.GetRequiredService<MainViewModel>();
     public MainWindow()
     {
         InitializeComponent();
@@ -25,12 +30,15 @@ public sealed partial class MainWindow : Window
         // 监听导航消息
         WeakReferenceMessenger.Default.Register<NavigationMessage>(this, (r, m) =>
         {
-            ContentFrame.Navigate(m.PageType, m.Parameter);
+            var pageType = App.GetViewFromViewModel(m.ViewModelType);
+            ContentFrame.Navigate(pageType, m.Parameter);
         });
 
-        WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(HomePage)));
+        WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(HomeViewModel)));
 
     }
+
+
 
     // 处理左上角返回按钮
     private void RootNav_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)

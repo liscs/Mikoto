@@ -1,13 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Mikoto.Config;
+using Mikoto.Core.Interfaces;
 using Mikoto.DataAccess;
 using Mikoto.TextHook;
 using Serilog;
 using System.Text;
 
-namespace Mikoto.Fluent;
+namespace Mikoto.Fluent.Services;
 
-public class AppEnvironment
+public class AppEnvironment : IAppEnvironment
 {
     public IGameInfoService GameInfoService { get; } = new GameInfoService();
     public ITextHookService TextHookService { get; set; } = new TextHookService() { HandleMode = 1 };

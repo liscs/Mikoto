@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Mikoto.Fluent.AddGamePages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local1="using:Mikoto.Core.Models"
     mc:Ignorable="d">
 
     <Grid>
@@ -13,7 +13,7 @@
                   SelectedItem="{x:Bind ViewModel.SelectedProcess, Mode=TwoWay}"
                   SelectionMode="Single">
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="local:ProcessItem">
+                <DataTemplate x:DataType="local1:ProcessItem">
                     <StackPanel Margin="0,4">
                         <TextBlock Text="{x:Bind Title}"
                                    FontWeight="SemiBold" />

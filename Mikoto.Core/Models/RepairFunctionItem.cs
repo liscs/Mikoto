@@ -1,6 +1,6 @@
 ﻿using WinRT;
 
-namespace Mikoto.Fluent.TextProcess;
+namespace Mikoto.Core.Models;
 
 [GeneratedBindableCustomProperty]
 public partial record RepairFunctionItem(string DisplayName, string MethodName);

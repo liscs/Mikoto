@@ -1,10 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using Mikoto.Core.ViewModels.AddGamePages;
 using Mikoto.DataAccess;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Mikoto.Fluent.AddGamePages;
 

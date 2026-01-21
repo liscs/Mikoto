@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Mikoto.Fluent;
+namespace Mikoto.Core.Models;
 
 public partial class TranslationResult : ObservableObject
 {

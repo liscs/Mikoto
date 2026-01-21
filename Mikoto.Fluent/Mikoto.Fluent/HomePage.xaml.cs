@@ -1,5 +1,11 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
+using Mikoto.Core;
+using Mikoto.Core.Interfaces;
+using Mikoto.Core.ViewModels;
+using Windows.Storage.Streams;
 
 namespace Mikoto.Fluent;
 
@@ -8,7 +14,7 @@ namespace Mikoto.Fluent;
 /// </summary>
 public sealed partial class HomePage : Page
 {
-    HomeViewModel ViewModel = new HomeViewModel();
+    HomeViewModel ViewModel = App.Services.GetRequiredService<HomeViewModel>();
 
     public HomePage()
     {
@@ -30,8 +36,8 @@ public sealed partial class HomePage : Page
     private async Task LoadGamesAsync()
     {
         // 1. 获取原始数据 (Service 层)
-        App.Env.GameInfoService.GetAllCompletedGames();
-        var savedData = App.Env.GameInfoService.AllCompletedGamesIdDict.Values;
+        App.Services.GetRequiredService<IAppEnvironment>().GameInfoService.GetAllCompletedGames();
+        var savedData = App.Services.GetRequiredService<IAppEnvironment>().GameInfoService.AllCompletedGamesIdDict.Values;
         // 2. 并行创建所有任务（此时图标提取已经开始并发执行）
         var loadTasks = savedData.Select(async data =>
         {
@@ -56,5 +62,23 @@ public sealed partial class HomePage : Page
         {
             ViewModel.Games.Add(model);
         }
+    }
+
+
+    public async Task<BitmapImage?> ConvertBytesToImage(byte[]? bytes)
+    {
+        if (bytes == null || bytes.Length == 0) return null;
+
+        var image = new BitmapImage();
+        using (var stream = new InMemoryRandomAccessStream())
+        {
+            using (var writer = new DataWriter(stream.GetOutputStreamAt(0)))
+            {
+                writer.WriteBytes(bytes);
+                await writer.StoreAsync();
+            }
+            await image.SetSourceAsync(stream);
+        }
+        return image;
     }
 }

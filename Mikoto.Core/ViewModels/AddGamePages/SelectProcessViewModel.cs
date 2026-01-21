@@ -1,12 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
+using Mikoto.Core.Models;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Mikoto.Fluent.AddGamePages;
+namespace Mikoto.Core.ViewModels.AddGamePages;
 
 public partial class SelectProcessViewModel : ObservableObject
 {

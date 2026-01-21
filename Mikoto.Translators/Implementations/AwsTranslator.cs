@@ -133,7 +133,7 @@ namespace Mikoto.Translators.Implementations
             }
 
             string responseJson = await httpResponseMessage.Content.ReadAsStringAsync();
-            JsonNode? jsonNode = JsonSerializer.Deserialize(responseJson,TranslatorJsonContext.AotSafeContext.JsonNode);
+            JsonNode? jsonNode = JsonSerializer.Deserialize(responseJson, TranslatorJsonContext.AotSafeContext.JsonNode);
             string? result = jsonNode?["TranslatedText"]?.GetValue<string>();
             if (result == null)
             {

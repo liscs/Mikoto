@@ -4,14 +4,16 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="using:Mikoto.Fluent"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local1="using:Mikoto.Core.Models" xmlns:cvter="using:Mikoto.Fluent.Converters"
       mc:Ignorable="d">
-
+    <Page.Resources>
+        <cvter:NotifySeverityConverter x:Key="NotifySeverityConverter" />
+    </Page.Resources>
     <Grid Padding="24">
         <InfoBar x:Name="GlobalInfoBar"
                  Message="{x:Bind ViewModel.NotificationMessage, Mode=OneWay}"
                  IsOpen="{x:Bind ViewModel.IsNotificationOpen, Mode=TwoWay}"
-                 Severity="{x:Bind ViewModel.NotificationSeverity, Mode=OneWay}"
+                 Severity="{x:Bind ViewModel.NotificationSeverity, Converter={StaticResource NotifySeverityConverter}, Mode=OneWay}"
                  VerticalAlignment="Top"
                  Margin="20,10,20,0"
                  Canvas.ZIndex="999">
@@ -35,7 +37,7 @@
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{x:Bind ViewModel.MultiTranslateResults, Mode=OneWay}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="local:TranslationResult">
+                        <DataTemplate x:DataType="local1:TranslationResult">
                             <Grid Margin="0,0,0,16">
                                 <TextBox Header="{x:Bind TranslatorName}"
                                          Text="{x:Bind ResultText, Mode=OneWay}"

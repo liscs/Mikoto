@@ -3,8 +3,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Mikoto.Fluent.AddGamePages"
+    xmlns:cvter="using:Mikoto.Fluent.Converters"
     >
-
+    <Page.Resources>
+        <cvter:BoolToVisibilityConverter x:Key="MyBoolToVisibilityConverter" />
+    </Page.Resources>
     <ScrollViewer>
         <StackPanel Spacing="16" Margin="20">
             <TextBox x:Uid="SourceTextHeader" 
@@ -24,7 +27,7 @@
                 <TextBox Header="参数 A (阈值/正则)" 
                          Text="{x:Bind ViewModel.ParamA, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBox Header="参数 B (替换值)" 
-                         Visibility="{x:Bind ViewModel.IsParamBVisible, Mode=OneWay}"
+Visibility="{x:Bind ViewModel.IsParamBVisible, Converter={StaticResource MyBoolToVisibilityConverter}, Mode=OneWay}"
                          Text="{x:Bind ViewModel.ParamB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 

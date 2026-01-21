@@ -29,8 +29,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Ini" Version="10.0.2" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.2" />
 		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" /><!--支持aot必须要引用这个包-->
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7463" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
@@ -40,6 +41,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Mikoto.Config\Mikoto.Config.csproj" />
+	  <ProjectReference Include="..\..\Mikoto.Core\Mikoto.Core.csproj" />
 	  <ProjectReference Include="..\..\Mikoto.DataAccess\Mikoto.DataAccess.csproj" />
 	  <ProjectReference Include="..\..\Mikoto.Helpers\Mikoto.Helpers.csproj" />
 	  <ProjectReference Include="..\..\Mikoto.TextHook\Mikoto.TextHook.csproj" />

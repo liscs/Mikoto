@@ -1,22 +1,23 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Mikoto.Core.Interfaces;
+using Mikoto.Core.Models;
 using Mikoto.DataAccess;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net.ServerSentEvents;
-using System.Text;
 
-namespace Mikoto.Fluent.AddGamePages
+namespace Mikoto.Core.ViewModels.AddGamePages
 {
     public partial class AddGameViewModel : ObservableObject
     {
+        private IAppEnvironment _env;
+
         // 这个就是我们要初始化的对象，所有步骤都会往这里写数据
         public GameInfo DraftConfig { get; } = new();
 
-        public AddGameViewModel()
+        public AddGameViewModel(IAppEnvironment env)
         {
+            _env = env;
             // 初始化面包屑
             if (Steps.Count > 0)
             {
@@ -27,10 +28,10 @@ namespace Mikoto.Fluent.AddGamePages
         // 定义所有的步骤
         public List<StepItem> Steps { get; } = new()
     {
-        new StepItem { Title = "选择进程", PageType = typeof(SelectProcessPage) },
-        new StepItem { Title = "Hook配置", PageType = typeof(HookSettingsPage) },
-        new StepItem { Title = "文本处理", PageType = typeof(PreProcessPage) },
-        new StepItem { Title = "语言设置", PageType = typeof(LanguagePage) }
+        new StepItem { Title = "选择进程", ViewModelType = typeof(SelectProcessViewModel) },
+        new StepItem { Title = "Hook配置", ViewModelType = typeof(HookSettingsViewModel) },
+        new StepItem { Title = "文本处理", ViewModelType = typeof(PreProcessViewModel) },
+        new StepItem { Title = "语言设置", ViewModelType = typeof(LanguageViewModel) }
     };
 
         [ObservableProperty]
@@ -65,7 +66,7 @@ namespace Mikoto.Fluent.AddGamePages
                 else
                 {
                     // --- 情况 B: 已经是最后一步，点击了“完成” ---
-                    await Task.Run(() => App.Env.GameInfoService.SaveGameInfo(DraftConfig));
+                    await Task.Run(() => _env.GameInfoService.SaveGameInfo(DraftConfig));
                 }
             }));
         }

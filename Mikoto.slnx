@@ -43,6 +43,7 @@
   <Project Path="Mikoto.Mecab/Mikoto.Mecab.csproj" />
   <Project Path="Mikoto.ProcessInterop.Tests/Mikoto.ProcessInterop.Tests.csproj" Id="dfa74ef9-5284-48d1-a0fc-945321dccae9" />
   <Project Path="Mikoto.ProcessInterop/Mikoto.ProcessInterop.csproj" Id="2d723fd2-6f49-4444-a391-7bf59e633661" />
+  <Project Path="Mikoto.Resource/Mikoto.Resource.csproj" Id="067408f2-db38-457c-a0fa-b060a893919e" />
   <Project Path="Mikoto.Tests/Mikoto.Tests.csproj" />
   <Project Path="Mikoto.TextHook.Tests/Mikoto.TextHook.Tests.csproj" />
   <Project Path="Mikoto.TextHook/Mikoto.TextHook.csproj" />

@@ -1,5 +1,8 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using Mikoto.Core.Interfaces;
+using Mikoto.Core.ViewModels;
 using Mikoto.DataAccess;
 
 
@@ -11,7 +14,7 @@ namespace Mikoto.Fluent;
 /// </summary>
 public sealed partial class TranslatePage : Page
 {
-    public TranslateViewModel ViewModel { get; } = new();
+    public TranslateViewModel ViewModel { get; } = App.Services.GetRequiredService<TranslateViewModel>();
 
     public TranslatePage()
     {
@@ -36,6 +39,6 @@ public sealed partial class TranslatePage : Page
     {
         base.OnNavigatedFrom(e);
 
-        App.Env.TextHookService.CloseTextractor();
+        App.Services.GetRequiredService<IAppEnvironment>().TextHookService.CloseTextractor();
     }
 }

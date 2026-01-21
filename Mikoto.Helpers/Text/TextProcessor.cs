@@ -19,7 +19,7 @@ public partial class TextProcessor
         if (string.IsNullOrEmpty(sourceText)) return string.Empty;
 
         // 1. 优先处理自定义脚本
-        if (CustomMethodsDict.TryGetValue(functionName, out Func<string,string>? function))
+        if (CustomMethodsDict.TryGetValue(functionName, out Func<string, string>? function))
         {
             try
             {

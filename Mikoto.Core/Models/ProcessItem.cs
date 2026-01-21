@@ -1,4 +1,4 @@
-﻿namespace Mikoto.Fluent.AddGamePages
+﻿namespace Mikoto.Core.Models
 {
     public record ProcessItem(string Name, string Title, int Id, string ImagePath);
 }

@@ -5,9 +5,13 @@
       xmlns:local="using:Mikoto.Fluent"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:local1="using:Mikoto.DataAccess"
+      xmlns:local1="using:Mikoto.DataAccess" xmlns:local11="using:Mikoto.Core"
+      xmlns:local2="using:Mikoto.Fluent.Converters"
       mc:Ignorable="d">
-
+    <Page.Resources>
+        <local2:ByteToImageConverter x:Key="MyByteToImageConverter" />
+    </Page.Resources>
+    
     <Grid Padding="24">
 
         <Grid.RowDefinitions>
@@ -49,7 +53,7 @@
           ItemsSource="{x:Bind ViewModel.Games}"
           SelectionMode="None">
             <GridView.ItemTemplate>
-                <DataTemplate x:DataType="local:GameModel">
+                <DataTemplate x:DataType="local11:GameModel">
                     <Button Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
@@ -79,7 +83,7 @@
                         </Button.ContextFlyout>
 
                         <StackPanel Spacing="8">
-                            <Image Source="{x:Bind GameIcon}"
+                            <Image Source="{x:Bind GameIcon, Converter={StaticResource MyByteToImageConverter}, Mode=OneWay}"
                            Height="120"
                            Width="120"
                            Stretch="UniformToFill" />

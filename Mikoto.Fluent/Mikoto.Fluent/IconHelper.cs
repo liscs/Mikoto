@@ -1,43 +1,156 @@
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
+using System.Runtime.InteropServices;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 
 namespace Mikoto.Fluent;
 
-internal class IconHelper
+public static class IconHelper
 {
-    internal static async Task<ImageSource> GetIconFromExeAsync(string exePath)
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    struct SHFILEINFO
     {
-        if (string.IsNullOrWhiteSpace(exePath)) return new BitmapImage();
+        public IntPtr hIcon;
+        public int iIcon;
+        public uint dwAttributes;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+        public string szDisplayName;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
+        public string szTypeName;
+    }
+
+    [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+    static extern IntPtr SHGetFileInfo(
+        string pszPath,
+        uint dwFileAttributes,
+        out SHFILEINFO psfi,
+        uint cbFileInfo,
+        uint uFlags);
+
+    const uint SHGFI_ICONLOCATION = 0x000001000;
+
+
+    static (string modulePath, int iconIndex) GetIconLocation(string filePath)
+    {
+        SHFILEINFO info;
+        SHGetFileInfo(
+            filePath,
+            0,
+            out info,
+            (uint)Marshal.SizeOf<SHFILEINFO>(),
+            SHGFI_ICONLOCATION);
+
+        return (info.szDisplayName, info.iIcon);
+    }
+
+
+    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    static extern IntPtr LoadLibraryEx(string lpFileName, IntPtr hFile, uint dwFlags);
+
+    [DllImport("kernel32.dll")]
+    static extern bool FreeLibrary(IntPtr hModule);
+
+    [DllImport("kernel32.dll")]
+    static extern IntPtr FindResource(IntPtr hModule, IntPtr lpName, IntPtr lpType);
+
+    [DllImport("kernel32.dll")]
+    static extern IntPtr LoadResource(IntPtr hModule, IntPtr hResInfo);
+
+    [DllImport("kernel32.dll")]
+    static extern IntPtr LockResource(IntPtr hResData);
+
+    [DllImport("kernel32.dll")]
+    static extern uint SizeofResource(IntPtr hModule, IntPtr hResInfo);
+
+    const uint LOAD_LIBRARY_AS_DATAFILE = 0x00000002;
+    static readonly IntPtr RT_GROUP_ICON = (IntPtr)14;
+    static readonly IntPtr RT_ICON = (IntPtr)3;
+
+
+    public static byte[] ReadFileIconBytes_NoSystemDrawing(string filePath)
+    {
+        var (module, index) = GetIconLocation(filePath);
+        if (string.IsNullOrEmpty(module)) module = filePath; // 兜底使用原文件路径
+
+        IntPtr hModule = LoadLibraryEx(module, IntPtr.Zero, LOAD_LIBRARY_AS_DATAFILE);
+        if (hModule == IntPtr.Zero) return Array.Empty<byte>();
 
         try
         {
-            // 1. 获取文件对象
-            StorageFile file = await StorageFile.GetFileFromPathAsync(exePath);
+            // 游戏图标 ID 映射逻辑通常较复杂
+            // 如果 index 是正数，它通常是索引；如果是负数，它是资源的绝对 ID (取反)
+            IntPtr resId = index >= 0 ? (IntPtr)(index + 1) : (IntPtr)(-index);
 
-            // 2. 提取缩略图 (256像素通常是 .exe 包含的最大高清图标)
-            // ThumbnailMode.SingleItem 专门用于获取单个文件的图标
-            using var thumbnail = await file.GetThumbnailAsync(ThumbnailMode.SingleItem, 256);
+            IntPtr hGroup = FindResource(hModule, resId, RT_GROUP_ICON);
+            if (hGroup == IntPtr.Zero) return Array.Empty<byte>(); // 找不到资源时返回空
 
-            if (thumbnail != null)
-            {
-                // 3. 在内存中创建 BitmapImage
-                BitmapImage bitmapImage = new BitmapImage();
+            IntPtr hGroupData = LoadResource(hModule, hGroup);
+            IntPtr pGroup = LockResource(hGroupData);
+            uint size = SizeofResource(hModule, hGroup);
 
-                // 4. 将缩略图流直接设置给图片源（完全不经过磁盘，纯内存操作）
-                await bitmapImage.SetSourceAsync(thumbnail);
+            byte[] groupData = new byte[size];
+            Marshal.Copy(pGroup, groupData, 0, (int)size);
 
-                return bitmapImage;
-            }
+            return BuildIco(hModule, groupData);
         }
-        catch (Exception ex)
+        catch
         {
-            // 打印错误方便调试，比如路径权限问题或文件不存在
-            System.Diagnostics.Debug.WriteLine($"图标提取失败: {ex.Message}");
+            return Array.Empty<byte>();
+        }
+        finally
+        {
+            FreeLibrary(hModule);
+        }
+    }
+
+    static byte[] BuildIco(IntPtr hModule, byte[] groupData)
+    {
+        using var ms = new MemoryStream();
+        using var bw = new BinaryWriter(ms);
+
+        // ICONDIR
+        bw.Write((ushort)0); // reserved
+        bw.Write((ushort)1); // type
+        ushort count = BitConverter.ToUInt16(groupData, 4);
+        bw.Write(count);
+
+        int entryOffset = 6;
+        int imageOffset = 6 + 16 * count;
+
+        var imageDataList = new List<byte[]>();
+
+        for (int i = 0; i < count; i++)
+        {
+            bw.Write(groupData, entryOffset, 12);
+
+            ushort iconId = BitConverter.ToUInt16(groupData, entryOffset + 12);
+            IntPtr hIcon = FindResource(hModule, (IntPtr)iconId, RT_ICON);
+            IntPtr hData = LoadResource(hModule, hIcon);
+            IntPtr pData = LockResource(hData);
+            uint size = SizeofResource(hModule, hIcon);
+
+            byte[] img = new byte[size];
+            Marshal.Copy(pData, img, 0, (int)size);
+            imageDataList.Add(img);
+
+            bw.Write((uint)size);
+            bw.Write((uint)imageOffset);
+
+            imageOffset += img.Length;
+            entryOffset += 14;
         }
 
-        // 5. 兜底处理：如果提取失败，返回一个默认的占位图（需确保 Assets 下有这个文件）
-        return new BitmapImage();
+        foreach (var img in imageDataList)
+            bw.Write(img);
+
+        return ms.ToArray();
+    }
+
+    internal static Task<byte[]> GetIconFromExeAsync(string filePath)
+    {
+        return Task.Run(() => ReadFileIconBytes_NoSystemDrawing(filePath));
     }
 }

@@ -1,6 +1,9 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
+using Microsoft.UI.Xaml.Navigation;
+using Mikoto.Core.ViewModels.AddGamePages;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -12,7 +15,7 @@ namespace Mikoto.Fluent.AddGamePages;
 /// </summary>
 public sealed partial class AddGamePage : Page
 {
-    public AddGameViewModel ViewModel { get; } = new AddGameViewModel();
+    public AddGameViewModel ViewModel { get; } = App.Services.GetRequiredService<AddGameViewModel>();
 
     public AddGamePage()
     {
@@ -27,9 +30,9 @@ public sealed partial class AddGamePage : Page
             }
         };
 
-        // 2. 关键：初始化时加载第一步
-        NavigateWithTransition(false);
+
     }
+
 
     private int _lastStepIndex;
     private void NavigateWithTransition(bool useSlide)
@@ -53,7 +56,14 @@ public sealed partial class AddGamePage : Page
             transition = new SlideNavigationTransitionInfo { Effect = effect };
         }
 
-        _lastStepIndex = currentIndex;
-        ContentFrame.Navigate(step.PageType, ViewModel, transition);
+        _lastStepIndex = currentIndex; 
+
+        ContentFrame.Navigate(App.GetViewFromViewModel(step.ViewModelType), ViewModel, transition);
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        // 2. 关键：初始化时加载第一步
+        NavigateWithTransition(false);
     }
 }
