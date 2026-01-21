@@ -135,4 +135,55 @@
 	<data name="RepairFun_RegexReplace" xml:space="preserve">
     <value>正则表达式替换</value>
   </data>
+	<data name="AzureTranslator" xml:space="preserve">
+    <value>Azure</value>
+  </data>
+	<data name="BaiduTranslator" xml:space="preserve">
+    <value>百度翻译</value>
+  </data>
+	<data name="GoogleCloudTranslator" xml:space="preserve">
+    <value>Google Cloud Translation V2</value>
+  </data>
+	<data name="CaiyunTranslator" xml:space="preserve">
+    <value>彩云小译</value>
+  </data>
+	<data name="ChatGPTTranslator" xml:space="preserve">
+    <value>ChatGPT</value>
+  </data>
+	<data name="DeepLTranslator" xml:space="preserve">
+    <value>DeepL</value>
+  </data>
+	<data name="DreyeTranslator" xml:space="preserve">
+    <value>译典通</value>
+  </data>
+	<data name="GoogleCNTranslator" xml:space="preserve">
+    <value>谷歌翻译(公共接口)</value>
+  </data>
+	<data name="IBMTranslator" xml:space="preserve">
+    <value>IBM翻译</value>
+  </data>
+	<data name="JBeijingTranslator" xml:space="preserve">
+    <value>JBeijing</value>
+  </data>
+	<data name="KingsoftFastAITTranslator" xml:space="preserve">
+    <value>金山快译</value>
+  </data>
+	<data name="NoTranslator" xml:space="preserve">
+    <value>无翻译</value>
+  </data>
+	<data name="TencentOldTranslator" xml:space="preserve">
+    <value>腾讯云翻译</value>
+  </data>
+	<data name="VolcanoTranslator" xml:space="preserve">
+    <value>火山翻译</value>
+  </data>
+	<data name="XiaoniuTranslator" xml:space="preserve">
+    <value>小牛翻译</value>
+  </data>
+	<data name="YandexTranslator" xml:space="preserve">
+    <value>Yandex翻译</value>
+  </data>
+	<data name="YoudaoZhiyun" xml:space="preserve">
+    <value>有道智云</value>
+  </data>
 </root>

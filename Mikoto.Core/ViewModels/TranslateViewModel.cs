@@ -57,7 +57,11 @@ public partial class TranslateViewModel : ObservableObject
             MultiTranslateResults.Clear();
             foreach (var name in enabledTranslators)
             {
-                MultiTranslateResults.Add(new TranslationResult { TranslatorName = name });
+                MultiTranslateResults.Add(new TranslationResult
+                {
+                    TranslatorName = name,
+                    TranslatorDisplayName = _env.ResourceService.Get(name)
+                });
             }
 
             await hookTask;
@@ -96,7 +100,7 @@ public partial class TranslateViewModel : ObservableObject
                 try
                 {
                     // 1. 获取翻译器实例
-                    var translator = TranslatorCommon.TranslatorFactory.GetTranslator(item.TranslatorName, _env.AppSettings, item.TranslatorName);
+                    var translator = TranslatorCommon.TranslatorFactory.GetTranslator(item.TranslatorName, _env.AppSettings, _env.ResourceService.Get(item.TranslatorName));
 
                     // 2. 检查翻译器是否获取成功
                     if (translator == null)
@@ -120,13 +124,13 @@ public partial class TranslateViewModel : ObservableObject
                         if (result != null)
                         {
                             item.ResultText = result;
-                            Log.Debug("[{Name}] 耗时: {Ms}ms", item.TranslatorName, sw.ElapsedMilliseconds);
+                            Log.Debug("[{Name}] 耗时: {Ms}ms", item.TranslatorDisplayName, sw.ElapsedMilliseconds);
                         }
                         else
                         {
                             // 使用 ?. 确保 translator 不为空，或者直接复用上面已经校验过的变量
                             item.ErrorMessage = translator?.GetLastError() ?? "未知错误";
-                            Log.Warning("[{Name}] 失败: {Err}", item.TranslatorName, item.ErrorMessage);
+                            Log.Warning("[{Name}] 失败: {Err}", item.TranslatorDisplayName, item.ErrorMessage);
                         }
                     });
                 }

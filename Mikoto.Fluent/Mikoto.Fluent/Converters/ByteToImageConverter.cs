@@ -1,9 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
-using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
 using Windows.Storage.Streams;
 
 namespace Mikoto.Fluent.Converters

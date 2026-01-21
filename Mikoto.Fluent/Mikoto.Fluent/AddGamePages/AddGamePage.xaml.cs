@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
@@ -56,7 +55,7 @@ public sealed partial class AddGamePage : Page
             transition = new SlideNavigationTransitionInfo { Effect = effect };
         }
 
-        _lastStepIndex = currentIndex; 
+        _lastStepIndex = currentIndex;
 
         ContentFrame.Navigate(App.GetViewFromViewModel(step.ViewModelType), ViewModel, transition);
     }

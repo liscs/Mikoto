@@ -39,7 +39,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="local1:TranslationResult">
                             <Grid Margin="0,0,0,16">
-                                <TextBox Header="{x:Bind TranslatorName}"
+                                <TextBox Header="{x:Bind TranslatorDisplayName}"
                                          Text="{x:Bind ResultText, Mode=OneWay}"
                                          IsReadOnly="True"
                                          TextWrapping="Wrap"

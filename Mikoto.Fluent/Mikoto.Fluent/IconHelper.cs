@@ -1,8 +1,4 @@
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
 using System.Runtime.InteropServices;
-using Windows.Storage;
-using Windows.Storage.FileProperties;
 
 namespace Mikoto.Fluent;
 
