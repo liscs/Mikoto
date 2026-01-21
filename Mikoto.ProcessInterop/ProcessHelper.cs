@@ -61,6 +61,29 @@ namespace Mikoto.ProcessInterop
         }
 
         /// <summary>
+        /// 根据进程路径找到程序所在PID
+        /// </summary>
+        public static int GetPid(string exePath)
+        {
+            string name;
+            if (Path.GetExtension(exePath).Equals(".exe", StringComparison.OrdinalIgnoreCase))
+            {
+                name = Path.GetFileNameWithoutExtension(exePath);
+            }
+            else
+            {
+                name = Path.GetFileName(exePath);
+            }
+
+            List<Process> list = Process.GetProcessesByName(name).ToList();
+            if (list.Count == 0)
+            {
+                throw new Exception($"No running process found for exe file {exePath}.");
+            }
+            return list[0].Id;
+        }
+
+        /// <summary>
         /// 返回 pid,绝对路径 的列表
         /// </summary>
         public static List<string> GetAppPaths()

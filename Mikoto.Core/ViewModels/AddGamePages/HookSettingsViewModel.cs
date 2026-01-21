@@ -45,7 +45,8 @@ public partial class HookSettingsViewModel : ObservableObject
             textractorPath = _env.AppSettings.Textractor_Path64;
         }
         // hook
-        Task hookTask = _env.TextHookService.AutoStartAsync(textractorPath, GameProcessHelper.GetGamePid(config), config);
+        // TODO 这里需要加进程未启动的失败处理
+        Task hookTask = _env.TextHookService.AutoStartAsync(textractorPath, ProcessInterop.ProcessHelper.GetPid(config.FilePath), config);
     }
 
     private void AllHook_Output(object sender, HookReceivedEventArgs e)

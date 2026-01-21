@@ -75,7 +75,7 @@ public partial class PreProcessViewModel : ObservableObject
 
         _env.TextHookService.MeetHookAddressMessageReceived += Hook_Output;
 
-        await _env.TextHookService.AutoStartAsync(textractorPath, GameProcessHelper.GetGamePid(draftConfig), draftConfig);
+        await _env.TextHookService.AutoStartAsync(textractorPath, ProcessInterop.ProcessHelper.GetPid(draftConfig.FilePath), draftConfig);
     }
 
     private void Hook_Output(object sender, SolvedDataReceivedEventArgs e)

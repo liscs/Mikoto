@@ -48,7 +48,7 @@ public partial class TranslateViewModel : ObservableObject
         {
             // 1. 初始化 Hook
             string? textractorPath = CurrentGame.Isx64 ? _env.AppSettings.Textractor_Path64 : _env.AppSettings.Textractor_Path32;
-            Task hookTask = _env.TextHookService.AutoStartAsync(textractorPath, GameProcessHelper.GetGamePid(CurrentGame), CurrentGame);
+            Task hookTask = _env.TextHookService.AutoStartAsync(textractorPath, ProcessInterop.ProcessHelper.GetPid(CurrentGame.FilePath), CurrentGame);
             _env.TextHookService.MeetHookAddressMessageReceived += Hook_Output;
 
             // 2. 预先根据配置初始化翻译结果列表 (例如从配置加载选中的翻译器)
