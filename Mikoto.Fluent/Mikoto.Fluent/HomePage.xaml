@@ -6,12 +6,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:local1="using:Mikoto.DataAccess" xmlns:local11="using:Mikoto.Core"
-      xmlns:local2="using:Mikoto.Fluent.Converters"
+      xmlns:local2="using:Mikoto.Fluent.Converters" xmlns:inter="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       mc:Ignorable="d">
-    <Page.Resources>
-        <local2:ByteToImageConverter x:Key="MyByteToImageConverter" />
-    </Page.Resources>
-    
+
     <Grid Padding="24">
 
         <Grid.RowDefinitions>
@@ -83,7 +80,7 @@
                         </Button.ContextFlyout>
 
                         <StackPanel Spacing="8">
-                            <Image Source="{x:Bind GameIcon, Converter={StaticResource MyByteToImageConverter}, Mode=OneWay}"
+                            <Image Source="{x:Bind (inter:ImageSource)GameIcon, Mode=OneWay}"
                            Height="120"
                            Width="120"
                            Stretch="UniformToFill" />

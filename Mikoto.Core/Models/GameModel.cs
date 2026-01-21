@@ -13,7 +13,7 @@ public partial class GameModel : ObservableObject
     public partial string GameName { get; set; }
 
     [ObservableProperty]
-    public partial byte[]? GameIcon { get; set; }
+    public partial object? GameIcon { get; set; }
 
     [ObservableProperty]
     public partial DateTime LastPlayAt { get; set; }
