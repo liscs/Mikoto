@@ -50,12 +50,6 @@ namespace Mikoto.Fluent
                     // 注册环境配置 (你的 AppEnvironment 逻辑)
                     services.AddSingleton<IAppEnvironment>(new AppEnvironment());
 
-                    // 注册线程服务 (这里的实现是 WinUI 特有的)
-                    services.AddSingleton<IMainThreadService, WinUIMainThreadService>();
-
-                    // 注册资源服务
-                    services.AddSingleton<IResourceService, WinUIResourceService>();
-
                     // --- 注册 ViewModels (这样它们就能通过构造函数拿服务了) ---
                     RegisterNavigation<AddGameViewModel, AddGamePage>(services);
                     RegisterNavigation<PreProcessViewModel, PreProcessPage>(services);

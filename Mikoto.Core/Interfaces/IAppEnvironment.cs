@@ -7,6 +7,8 @@ namespace Mikoto.Core.Interfaces;
 public interface IAppEnvironment
 {
     public IGameInfoService GameInfoService { get; }
-    public ITextHookService TextHookService { get; set; }
+    public ITextHookService TextHookService { get; }
     public IAppSettings AppSettings { get; }
+    public IResourceService ResourceService { get; }
+    public IMainThreadService MainThreadService { get; }
 }

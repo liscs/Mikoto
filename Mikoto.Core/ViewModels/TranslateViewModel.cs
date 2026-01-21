@@ -15,7 +15,6 @@ namespace Mikoto.Core.ViewModels;
 
 public partial class TranslateViewModel : ObservableObject
 {
-    private readonly IMainThreadService _mainThreadService;
     private readonly AsyncLwwTask _translationTask = new();
     private SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new();
 
@@ -34,10 +33,9 @@ public partial class TranslateViewModel : ObservableObject
     #endregion
 
     IAppEnvironment _env;
-    public TranslateViewModel(IAppEnvironment env, IMainThreadService mainThreadService)
+    public TranslateViewModel(IAppEnvironment env)
     {
         _env = env;
-        _mainThreadService = mainThreadService;
     }
 
     [RelayCommand]
@@ -83,12 +81,12 @@ public partial class TranslateViewModel : ObservableObject
             string preProcessedText = PreProcessText(currentData);
 
             // 更新 UI 原文
-            _mainThreadService.RunOnMainThread(() => OriginalText = preProcessedText);
+            _env.MainThreadService.RunOnMainThread(() => OriginalText = preProcessedText);
 
             // 3. 并行触发所有翻译任务
             var tasks = MultiTranslateResults.Select(async item =>
             {
-                _mainThreadService.RunOnMainThread(() =>
+                _env.MainThreadService.RunOnMainThread(() =>
                 {
                     item.IsLoading = true;
                     item.ErrorMessage = null;
@@ -104,7 +102,7 @@ public partial class TranslateViewModel : ObservableObject
                     if (translator == null)
                     {
                         Log.Warning("无法创建翻译器实例: {Name}", item.TranslatorName);
-                        _mainThreadService.RunOnMainThread(() =>
+                        _env.MainThreadService.RunOnMainThread(() =>
                         {
                             item.IsLoading = false;
                             item.ErrorMessage = "翻译器初始化失败";
@@ -116,7 +114,7 @@ public partial class TranslateViewModel : ObservableObject
                     string? result = await translator.TranslateAsync(preProcessedText, CurrentGame.DstLang, CurrentGame.SrcLang);
                     sw.Stop();
 
-                    _mainThreadService.RunOnMainThread(() =>
+                    _env.MainThreadService.RunOnMainThread(() =>
                     {
                         item.IsLoading = false;
                         if (result != null)
@@ -135,7 +133,7 @@ public partial class TranslateViewModel : ObservableObject
                 catch (Exception ex)
                 {
                     Log.Error(ex, "翻译器 {Name} 崩溃", item.TranslatorName);
-                    _mainThreadService.RunOnMainThread(() => { item.IsLoading = false; item.ErrorMessage = "插件异常"; });
+                    _env.MainThreadService.RunOnMainThread(() => { item.IsLoading = false; item.ErrorMessage = "插件异常"; });
                 }
             });
 

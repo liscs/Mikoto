@@ -32,15 +32,13 @@ public partial class PreProcessViewModel : ObservableObject
     }
 
 
-    private readonly IMainThreadService _mainThreadService;
     public ObservableCollection<RepairFunctionItem> RepairFunctions { get; }
 
     IAppEnvironment _env;
-    public PreProcessViewModel(IAppEnvironment env, IMainThreadService mainThreadService, IResourceService resourceService)
+    public PreProcessViewModel(IAppEnvironment env)
     {
         _env =env;
-        _mainThreadService = mainThreadService;
-        RepairFunctions = new(GetFunctionList(resourceService));
+        RepairFunctions = new(GetFunctionList(env.ResourceService));
         SourceText = "这这这是一是一段测试测测试文本。";
     }
 
@@ -85,7 +83,7 @@ public partial class PreProcessViewModel : ObservableObject
 
         // 回到 UI 线程更新 SourceText
         // 一旦 SourceText 更新，PreviewResult 会因为 NotifyPropertyChangedFor 自动重新计算
-        _mainThreadService.RunOnMainThread(() =>
+        _env.MainThreadService.RunOnMainThread(() =>
         {
             SourceText = currentData;
         });

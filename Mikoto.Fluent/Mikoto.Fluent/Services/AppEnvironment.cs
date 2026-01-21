@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Mikoto.Config;
+using Mikoto.Core;
 using Mikoto.Core.Interfaces;
 using Mikoto.DataAccess;
 using Mikoto.TextHook;
@@ -11,8 +12,12 @@ namespace Mikoto.Fluent.Services;
 public class AppEnvironment : IAppEnvironment
 {
     public IGameInfoService GameInfoService { get; } = new GameInfoService();
-    public ITextHookService TextHookService { get; set; } = new TextHookService() { HandleMode = 1 };
+    public ITextHookService TextHookService { get; } = new TextHookService() { HandleMode = 1 };
     public IAppSettings AppSettings { get; }
+
+    public IResourceService ResourceService { get; } = new WinUIResourceService();
+
+    public IMainThreadService MainThreadService { get; } = new WinUIMainThreadService();
 
     public AppEnvironment()
     {

@@ -10,14 +10,12 @@ namespace Mikoto.Core.ViewModels.AddGamePages;
 
 public partial class HookSettingsViewModel : ObservableObject
 {
-    private readonly IMainThreadService _mainThreadService;
     private IAppEnvironment _env;
-    public HookSettingsViewModel(IAppEnvironment env, IMainThreadService mainThreadService)
+    public HookSettingsViewModel(IAppEnvironment env)
     {
         _env = env;
         // 检查权限状态
         IsAdminWarningVisible = !Environment.IsPrivilegedProcess;
-        _mainThreadService = mainThreadService;
     }
 
     public ObservableCollection<HookFuncItem> HookFunctions { get; } = new();
@@ -53,7 +51,7 @@ public partial class HookSettingsViewModel : ObservableObject
     {
         // WinUI 3 的 ObservableCollection 必须在 UI 线程修改
         // 使用 Microsoft.UI.Dispatching.DispatcherQueue
-        _mainThreadService.RunOnMainThread(() =>
+        _env.MainThreadService.RunOnMainThread(() =>
         {
             TextHookData? data = e.Data;
             HookFuncItem hookFuncItem = new()
