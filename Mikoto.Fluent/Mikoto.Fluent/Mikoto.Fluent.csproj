@@ -16,6 +16,7 @@
 		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
 		<AppxGeneratePriEnabled>true</AppxGeneratePriEnabled>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<DefaultLanguage>zh-CN</DefaultLanguage>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="AddGamePage.xaml" />
