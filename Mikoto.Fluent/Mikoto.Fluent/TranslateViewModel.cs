@@ -44,7 +44,7 @@ public partial class TranslateViewModel : ObservableObject
         Log.Information("正在初始化多翻译流程: {GameName}", CurrentGame.GameName);
         try
         {
-            // 1. 初始化 Hook (保持原有逻辑)
+            // 1. 初始化 Hook
             string? textractorPath = CurrentGame.Isx64 ? App.Env.AppSettings.Textractor_Path64 : App.Env.AppSettings.Textractor_Path32;
             Task hookTask = App.Env.TextHookService.AutoStartAsync(textractorPath, GameProcessHelper.GetGamePid(CurrentGame), CurrentGame);
             App.Env.TextHookService.MeetHookAddressMessageReceived += Hook_Output;
@@ -95,8 +95,22 @@ public partial class TranslateViewModel : ObservableObject
                 var sw = Stopwatch.StartNew();
                 try
                 {
-                    // 获取对应的翻译器实例
+                    // 1. 获取翻译器实例
                     var translator = TranslatorCommon.TranslatorFactory.GetTranslator(item.TranslatorName, App.Env.AppSettings, item.TranslatorName);
+
+                    // 2. 检查翻译器是否获取成功
+                    if (translator == null)
+                    {
+                        Log.Warning("无法创建翻译器实例: {Name}", item.TranslatorName);
+                        _dispatcherQueue.TryEnqueue(() =>
+                        {
+                            item.IsLoading = false;
+                            item.ErrorMessage = "翻译器初始化失败";
+                        });
+                        return; // 提前退出
+                    }
+
+                    // 3. 执行异步翻译
                     string? result = await translator.TranslateAsync(preProcessedText, CurrentGame.DstLang, CurrentGame.SrcLang);
                     sw.Stop();
 
@@ -110,7 +124,8 @@ public partial class TranslateViewModel : ObservableObject
                         }
                         else
                         {
-                            item.ErrorMessage = translator.GetLastError();
+                            // 使用 ?. 确保 translator 不为空，或者直接复用上面已经校验过的变量
+                            item.ErrorMessage = translator?.GetLastError() ?? "未知错误";
                             Log.Warning("[{Name}] 失败: {Err}", item.TranslatorName, item.ErrorMessage);
                         }
                     });
