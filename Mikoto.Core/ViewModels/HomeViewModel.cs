@@ -12,7 +12,7 @@ namespace Mikoto.Core.ViewModels;
 
 public partial class HomeViewModel : ObservableObject
 {
-    IAppEnvironment _env;
+    private readonly IAppEnvironment _env;
 
     public HomeViewModel(IAppEnvironment env)
     {

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using Mikoto.Core.Interfaces;
 using Mikoto.Core.Models;
 using Mikoto.DataAccess;
@@ -72,12 +73,15 @@ public partial class PreProcessViewModel : ObservableObject
             ? _env.AppSettings.Textractor_Path64
             : _env.AppSettings.Textractor_Path32;
 
-        _env.TextHookService.MeetHookAddressMessageReceived += Hook_Output;
+        WeakReferenceMessenger.Default.Register<MeetHookMessage>(this, (r, m) =>
+        {
+            Hook_Output(m.SolvedDataReceivedEventArgs);
+        });
 
         await _env.TextHookService.AutoStartAsync(textractorPath, ProcessInterop.ProcessHelper.GetPid(draftConfig.FilePath), draftConfig);
     }
 
-    private void Hook_Output(object sender, SolvedDataReceivedEventArgs e)
+    private void Hook_Output(SolvedDataReceivedEventArgs e)
     {
         string? currentData = e.Data.Data;
         if (string.IsNullOrEmpty(currentData)) return;

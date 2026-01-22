@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.Messaging;
 using Mikoto.DataAccess;
 using Mikoto.ProcessInterop;
 using Serilog;
@@ -364,6 +365,7 @@ namespace Mikoto.TextHook
                         e.Index = _textractorFunIndexList[data.MisakaHookCode];
                         e.Data = data;
                         HookMessageReceived?.Invoke(this, e);
+                        WeakReferenceMessenger.Default.Send(new HookMessage(e));
                     }
                     else
                     {
@@ -372,6 +374,7 @@ namespace Mikoto.TextHook
                         e.Index = _textractorFunIndexList[data.MisakaHookCode];
                         e.Data = data;
                         HookMessageReceived?.Invoke(this, e);
+                        WeakReferenceMessenger.Default.Send(new HookMessage(e));
                         listIndex++;
                     }
                     if (_gameInfo?.HookCode == data.HookCode)
@@ -421,6 +424,7 @@ namespace Mikoto.TextHook
 
                             SolvedDataReceivedEventArgs e = new() { Data = data };
                             MeetHookAddressMessageReceived?.Invoke(this, e);
+                            WeakReferenceMessenger.Default.Send(new MeetHookMessage(e));
                         }
                     }
                 }
@@ -556,6 +560,7 @@ namespace Mikoto.TextHook
                 }
             };
             MeetHookAddressMessageReceived?.Invoke(this, e);
+            WeakReferenceMessenger.Default.Send(new MeetHookMessage(e));
         }
 
         [GeneratedRegex("【(.+):(.+):(.+)】")]

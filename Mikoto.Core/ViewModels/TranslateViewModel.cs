@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Mikoto.Core.Interfaces;
 using Mikoto.Core.Models;
 using Mikoto.DataAccess;
@@ -47,7 +48,10 @@ public partial class TranslateViewModel : ObservableObject
             // 1. 初始化 Hook
             string? textractorPath = CurrentGame.Isx64 ? _env.AppSettings.Textractor_Path64 : _env.AppSettings.Textractor_Path32;
             Task hookTask = _env.TextHookService.AutoStartAsync(textractorPath, ProcessInterop.ProcessHelper.GetPid(CurrentGame.FilePath), CurrentGame);
-            _env.TextHookService.MeetHookAddressMessageReceived += Hook_Output;
+            WeakReferenceMessenger.Default.Register<MeetHookMessage>(this, (r, m) =>
+            {
+                Hook_Output(m.SolvedDataReceivedEventArgs);
+            });
 
             // 2. 预先根据配置初始化翻译结果列表 (例如从配置加载选中的翻译器)
             var enabledTranslators = new List<string> {
@@ -73,7 +77,7 @@ public partial class TranslateViewModel : ObservableObject
         }
     }
 
-    private async void Hook_Output(object sender, SolvedDataReceivedEventArgs e)
+    private async void Hook_Output(SolvedDataReceivedEventArgs e)
     {
         string? currentData = e.Data.Data;
 

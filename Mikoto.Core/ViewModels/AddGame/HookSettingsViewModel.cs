@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using Mikoto.Core.Interfaces;
 using Mikoto.DataAccess;
 using Mikoto.TextHook;
@@ -33,7 +34,10 @@ public partial class HookSettingsViewModel : ObservableObject
         HookFunctions.Clear();
 
         // 订阅事件
-        _env.TextHookService.HookMessageReceived += AllHook_Output;
+        WeakReferenceMessenger.Default.Register<HookMessage>(this, (r, m) =>
+        {
+            AllHook_Output(m.HookReceivedEventArgs);
+        });
 
         // 异步启动，FireAndForget 模式
         string? textractorPath = _env.AppSettings.Textractor_Path32;
@@ -46,7 +50,7 @@ public partial class HookSettingsViewModel : ObservableObject
         Task hookTask = _env.TextHookService.AutoStartAsync(textractorPath, ProcessInterop.ProcessHelper.GetPid(config.FilePath), config);
     }
 
-    private void AllHook_Output(object sender, HookReceivedEventArgs e)
+    private void AllHook_Output(HookReceivedEventArgs e)
     {
         // WinUI 3 的 ObservableCollection 必须在 UI 线程修改
         // 使用 Microsoft.UI.Dispatching.DispatcherQueue
