@@ -1,4 +1,4 @@
-﻿namespace Mikoto.Fluent
+﻿namespace Mikoto.Core.ViewModels.Exceptions
 {
     public class ViewModelMappingNotFoundException : Exception
     {

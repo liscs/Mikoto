@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml;
 using Mikoto.Core.Interfaces;
 using Mikoto.Core.ViewModels;
 using Mikoto.Core.ViewModels.AddGame;
+using Mikoto.Core.ViewModels.Exceptions;
 using Mikoto.Fluent.AddGamePages;
 using Mikoto.Fluent.Services;
 using Serilog;
