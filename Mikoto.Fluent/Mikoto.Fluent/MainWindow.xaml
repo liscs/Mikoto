@@ -16,6 +16,7 @@
     <NavigationView x:Name="RootNav"
                     PaneDisplayMode="Left"
                     IsSettingsVisible="True"
+                    ItemInvoked="RootNav_ItemInvoked"
                     IsPaneOpen="False"
                     IsBackButtonVisible="Visible"
                     BackRequested="RootNav_BackRequested">
@@ -24,13 +25,26 @@
             <AutoSuggestBox QueryIcon="Find"
                             PlaceholderText="搜索游戏..." />
         </NavigationView.AutoSuggestBox>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0"
+                  x:Name="AppTitleBar"
+                  VerticalAlignment="Top"
+                  Height="32"
+                  Background="Transparent" />
 
-        <Frame x:Name="ContentFrame">
-            <Frame.ContentTransitions>
-                <TransitionCollection>
-                    <NavigationThemeTransition />
-                </TransitionCollection>
-            </Frame.ContentTransitions>
-        </Frame>
+            <Frame x:Name="ContentFrame"
+                   Grid.Row="1">
+                <Frame.ContentTransitions>
+                    <TransitionCollection>
+                        <NavigationThemeTransition />
+                    </TransitionCollection>
+                </Frame.ContentTransitions>
+            </Frame>
+        </Grid>
     </NavigationView>
+
 </Window>

@@ -23,7 +23,7 @@ public sealed partial class AddGamePage : Page
             }
         };
 
-
+        NavigateWithTransition(false);
     }
 
 
@@ -54,9 +54,4 @@ public sealed partial class AddGamePage : Page
         ContentFrame.Navigate(App.GetViewFromViewModel(step.ViewModelType), ViewModel, transition);
     }
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        // 2. 关键：初始化时加载第一步
-        NavigateWithTransition(false);
-    }
 }

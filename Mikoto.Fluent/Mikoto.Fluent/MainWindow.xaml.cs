@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Mikoto.Core.Models;
 using Mikoto.Core.ViewModels;
+using Mikoto.Fluent.AddGamePages;
 
 namespace Mikoto.Fluent;
 
@@ -16,6 +17,10 @@ public sealed partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        // 1. 让内容延伸进标题栏
+        ExtendsContentIntoTitleBar = true;
+        // 2. 将侧边栏的空白区域设为标题栏的可拖拽区域
+        SetTitleBar(AppTitleBar);
 
         // 监听 Frame 的导航完成事件
         ContentFrame.Navigated += (s, e) =>
@@ -43,6 +48,15 @@ public sealed partial class MainWindow : Window
         if (ContentFrame.CanGoBack)
         {
             ContentFrame.GoBack();
+        }
+    }
+
+    private void RootNav_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+    {
+        // 1. 判断是否点击了设置按钮
+        if (args.IsSettingsInvoked)
+        {
+            ContentFrame.Navigate(typeof(SettingsPage)); // 跳转到你的设置页面
         }
     }
 }

@@ -73,6 +73,7 @@ public partial class App : Application
         RegisterNavigation<MainViewModel, MainWindow>(services);
         RegisterNavigation<HomeViewModel, HomePage>(services);
         RegisterNavigation<TranslateViewModel, TranslatePage>(services);
+        RegisterNavigation<SettingsViewModel, SettingsPage>(services);
 
         Services = services.BuildServiceProvider();
     }
