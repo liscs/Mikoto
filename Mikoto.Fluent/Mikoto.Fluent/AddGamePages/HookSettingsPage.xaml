@@ -21,12 +21,6 @@
                     Margin="0,0,0,24">
             <TextBlock Text="请从下表中选择要挂钩的函数"
                        Style="{StaticResource SubtitleTextBlockStyle}" />
-
-            <InfoBar Title="权限提示"
-                     Message="检测到无管理员权限，建议以管理员身份运行本程序。"
-                     Severity="Warning"
-                     IsOpen="{x:Bind ViewModel.IsAdminWarningVisible, Mode=OneWay}"
-                     IsClosable="False" />
         </StackPanel>
 
         <ListView Name="HookFunListView"

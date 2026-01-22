@@ -14,17 +14,12 @@ public partial class HookSettingsViewModel : ObservableObject
     public HookSettingsViewModel(IAppEnvironment env)
     {
         _env = env;
-        // 检查权限状态
-        IsAdminWarningVisible = !Environment.IsPrivilegedProcess;
     }
 
     public ObservableCollection<HookFuncItemViewModel> HookFunctions { get; } = new();
 
     [ObservableProperty]
     public partial HookFuncItemViewModel? SelectedFunction { get; set; }
-
-    [ObservableProperty]
-    public partial bool IsAdminWarningVisible { get; set; }
 
     /// <summary>
     /// 启动 Hook 服务

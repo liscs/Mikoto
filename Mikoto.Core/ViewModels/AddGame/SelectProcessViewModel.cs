@@ -8,6 +8,10 @@ namespace Mikoto.Core.ViewModels.AddGame;
 
 public partial class SelectProcessViewModel : ObservableObject
 {
+
+    [ObservableProperty]
+    public partial bool IsAdminWarningVisible { get; set; } = !Environment.IsPrivilegedProcess;
+
     // 存储所有发现的进程
     public ObservableCollection<ProcessItem> Processes { get; } = new();
 
