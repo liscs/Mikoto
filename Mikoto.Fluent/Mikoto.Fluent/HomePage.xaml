@@ -68,11 +68,15 @@
                                                 Icon="Play" />
 
                                 <MenuFlyoutItem Text="LE打开"
+                                                Command="{x:Bind Parent.LEStartGameCommand}"
+                                                CommandParameter="{x:Bind}"
                                                 Icon="World" />
 
                                 <MenuFlyoutSeparator />
 
                                 <MenuFlyoutItem Text="编辑"
+                                                Command="{x:Bind Parent.EditGameCommand}"
+                                                CommandParameter="{x:Bind}"
                                                 Icon="Edit" />
 
                                 <MenuFlyoutItem Text="删除"
@@ -86,9 +90,9 @@
                                    Height="120"
                                    Width="120"
                                    Stretch="UniformToFill" />
-                            <TextBlock Text="{x:Bind GameName}"
+                            <TextBlock Text="{x:Bind GameInfo.GameName}"
                                        Style="{StaticResource BodyStrongTextBlockStyle}" />
-                            <TextBlock Text="{x:Bind LastPlayAt}"
+                            <TextBlock Text="{x:Bind GameInfo.LastPlayAt}"
                                        Style="{StaticResource CaptionTextBlockStyle}"
                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                         </StackPanel>

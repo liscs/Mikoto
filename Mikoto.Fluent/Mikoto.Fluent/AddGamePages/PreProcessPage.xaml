@@ -3,8 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Mikoto.Fluent.AddGamePages"
-    xmlns:cvter="using:Mikoto.Fluent.Converters"
-    >
+    xmlns:cvter="using:Mikoto.Fluent.Converters" xmlns:local1="using:Mikoto.Core.Models">
     <Page.Resources>
         <cvter:BoolToVisibilityConverter x:Key="MyBoolToVisibilityConverter" />
     </Page.Resources>
@@ -18,10 +17,14 @@
             <ComboBox x:Uid="RepairFuncHeader"
                       Header="处理函数"
                       HorizontalAlignment="Stretch"
-                      ItemsSource="{x:Bind ViewModel.RepairFunctions}"
-                      DisplayMemberPath="DisplayName"
-                      SelectedValuePath="MethodName"
-                      SelectedValue="{x:Bind ViewModel.SelectedFuncName, Mode=TwoWay}"/>
+                      ItemsSource="{x:Bind ViewModel.RepairFunctionViewModel.FunctionList}"
+                      SelectedValue="{x:Bind ViewModel.RepairFunctionViewModel.SelectedRepairFunction, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="local1:RepairFunctionItem">
+                        <TextBlock Text="{x:Bind DisplayName}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
             <StackPanel Spacing="8">
                 <TextBox Header="参数 A (阈值/正则)" 

@@ -24,6 +24,7 @@
 	  <None Remove="AddGamePages\LanguagePage.xaml" />
 	  <None Remove="AddGamePages\PreProcessPage.xaml" />
 	  <None Remove="AddGamePages\SelectProcessPage.xaml" />
+	  <None Remove="EditGamePage.xaml" />
 	  <None Remove="HomePage.xaml" />
 	  <None Remove="SettingsPage.xaml" />
 	  <None Remove="TranslatePage.xaml" />
@@ -55,6 +56,12 @@
 	  <ProjectReference Include="..\..\Mikoto.Helpers\Mikoto.Helpers.csproj" />
 	  <ProjectReference Include="..\..\Mikoto.TextHook\Mikoto.TextHook.csproj" />
 	  <ProjectReference Include="..\..\Mikoto.Translators\Mikoto.Translators.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="EditGamePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 
 	<ItemGroup>

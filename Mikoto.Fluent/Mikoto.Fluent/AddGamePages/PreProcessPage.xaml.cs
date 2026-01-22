@@ -19,7 +19,7 @@ public sealed partial class PreProcessPage
 
     protected override bool SaveData(GameInfo config)
     {
-        config.RepairFunc= ViewModel.SelectedFuncName;
+        config.RepairFunc= ViewModel.RepairFunctionViewModel.SelectedRepairFunction.MethodName;
         config.RepairParamA= ViewModel.ParamA;
         config.RepairParamB  = ViewModel.ParamB;
         return true;

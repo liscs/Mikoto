@@ -34,13 +34,11 @@ public partial class HomeViewModel : ObservableObject
         {
             var icon = await getIconFunc(data.FilePath);
 
-            return new GameItemViewModel(_env)
+            return new GameItemViewModel()
             {
                 Parent = this, // 这里的 Parent 就是 HomeViewModel 自己
-                GameName = data.GameName,
-                ExePath = data.FilePath,
+                GameInfo = data,
                 GameIcon = icon,
-                LastPlayAt = data.LastPlayAt,
             };
         });
 
@@ -49,7 +47,7 @@ public partial class HomeViewModel : ObservableObject
 
         // 4. 清理旧数据并添加新数据
         Games.Clear();
-        foreach (var model in loadedModels.OrderByDescending(p => p.LastPlayAt))
+        foreach (var model in loadedModels.OrderByDescending(p => p.GameInfo.LastPlayAt))
         {
             Games.Add(model);
         }
@@ -65,17 +63,28 @@ public partial class HomeViewModel : ObservableObject
 
 
     [RelayCommand]
-    public void StartGame(GameItemViewModel game) // 添加参数
+    public void StartGame(GameItemViewModel game)
     {
         if (game == null) return;
-
-        string hookPath = HookFileHelper.ToEntranceFilePath(game.ExePath);
+        string hookPath = HookFileHelper.ToEntranceFilePath(game.GameInfo.FilePath);
 
 
         Process.Start(hookPath);
 
         //打开之后切换到翻译页面
-        WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(TranslateViewModel), game.ToEntity()));
+        WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(TranslateViewModel), game.GameInfo));
+    }
+
+    [RelayCommand]
+    public void LEStartGame(GameItemViewModel game)
+    {
+
+    }
+
+    [RelayCommand]
+    public void EditGame(GameItemViewModel game)
+    {
+        WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(EditGameViewModel), game));
     }
 
     [RelayCommand]

@@ -74,7 +74,8 @@ public partial class App : Application
         RegisterNavigation<HomeViewModel, HomePage>(services);
         RegisterNavigation<TranslateViewModel, TranslatePage>(services);
         RegisterNavigation<SettingsViewModel, SettingsPage>(services);
-
+        RegisterNavigation<EditGameViewModel, EditGamePage>(services);
+        services.AddTransient<RepairFunctionViewModel>();
         Services = services.BuildServiceProvider();
     }
 

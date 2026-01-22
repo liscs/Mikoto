@@ -6,8 +6,8 @@
     xmlns:local="using:Mikoto.Fluent.AddGamePages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-                    xmlns:local11="using:Mikoto.Core.ViewModels.AddGame"
-                    mc:Ignorable="d">
+                    xmlns:local11="using:Mikoto.Core.ViewModels.AddGame" xmlns:local112="using:Mikoto.Core.Models.AddGame"
+    mc:Ignorable="d">
 
     <Grid x:Name="ContentGrid" Margin="40,20,40,0">
         <StackPanel Spacing="20" MaxWidth="600" HorizontalAlignment="Left">
@@ -19,10 +19,10 @@
                 <ComboBox x:Name="SourceLanguageCombo" 
                           HorizontalAlignment="Stretch"
                           PlaceholderText="选择游戏内显示的语言..."
-                          ItemsSource="{x:Bind ViewModel.SupportedLanguages}"
+                          ItemsSource="{x:Bind ViewModel.LangList}"
                           SelectedItem="{x:Bind ViewModel.SelectedSourceLanguage, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="local11:LanguageItem">
+                        <DataTemplate x:DataType="local112:LanguageItem">
                             <TextBlock Text="{x:Bind DisplayName}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
@@ -35,10 +35,10 @@
                 <ComboBox x:Name="TargetLanguageCombo" 
                           HorizontalAlignment="Stretch"
                           PlaceholderText="选择你希望翻译成的语言..."
-                          ItemsSource="{x:Bind ViewModel.SupportedLanguages}"
+                          ItemsSource="{x:Bind ViewModel.LangList}"
                           SelectedItem="{x:Bind ViewModel.SelectedTargetLanguage, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="local11:LanguageItem">
+                        <DataTemplate x:DataType="local112:LanguageItem">
                             <TextBlock Text="{x:Bind DisplayName}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>

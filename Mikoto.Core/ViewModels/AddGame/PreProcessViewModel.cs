@@ -1,57 +1,38 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Mikoto.Core.Interfaces;
-using Mikoto.Core.Models;
+using Mikoto.Core.Models.AddGame;
 using Mikoto.DataAccess;
 using Mikoto.Helpers.Text;
-using Mikoto.Resource;
 using Mikoto.TextHook;
-using System.Collections.ObjectModel;
 
 namespace Mikoto.Core.ViewModels.AddGame;
 
 public partial class PreProcessViewModel : ObservableObject
 {
-    public static List<RepairFunctionItem> GetFunctionList(IResourceService resourceService)
+    private IAppEnvironment _env;
+
+    public PreProcessViewModel(IAppEnvironment env, RepairFunctionViewModel repairFunctionViewModel)
     {
-        var list = new List<RepairFunctionItem>
+        _env = env;
+        RepairFunctionViewModel = repairFunctionViewModel;
+        // 订阅子 ViewModel 的属性变更
+        WeakReferenceMessenger.Default.Register<RepairFunctionChangedMessage>(this, (r, m) =>
         {
-            new(resourceService.Get(nameof(TextProcessor.RepairFun_NoDeal)), nameof(TextProcessor.RepairFun_NoDeal)),
-            new(resourceService.Get(nameof(TextProcessor.RepairFun_RemoveSingleWordRepeat)), nameof(TextProcessor.RepairFun_RemoveSingleWordRepeat)),
-            new(resourceService.Get(nameof(TextProcessor.RepairFun_RemoveSentenceRepeat)), nameof(TextProcessor.RepairFun_RemoveSentenceRepeat)),
-            new(resourceService.Get(nameof(TextProcessor.RepairFun_RemoveLetterNumber)), nameof(TextProcessor.RepairFun_RemoveLetterNumber)),
-            new(resourceService.Get(nameof(TextProcessor.RepairFun_RemoveHTML)), nameof(TextProcessor.RepairFun_RemoveHTML)),
-            new(resourceService.Get(nameof(TextProcessor.RepairFun_RegexReplace)), nameof(TextProcessor.RepairFun_RegexReplace))
-        };
-
-        // 合并用户自定义脚本
-        foreach (var key in TextProcessor.CustomMethodsDict.Keys)
-        {
-            list.Add(new RepairFunctionItem(key, key));
-        }
-
-        return list;
+            OnPropertyChanged(nameof(RepairFunctionViewModel));
+            OnPropertyChanged(nameof(PreviewResult));
+            OnPropertyChanged(nameof(IsParamBVisible));
+        });
     }
-
-
-    public ObservableCollection<RepairFunctionItem> RepairFunctions { get; }
-
-    IAppEnvironment _env;
-    public PreProcessViewModel(IAppEnvironment env)
-    {
-        _env =env;
-        RepairFunctions = new(GetFunctionList(env.ResourceService));
-        SourceText = "这这这是一是一段测试测测试文本。";
-    }
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(PreviewResult))]
-    public partial string SourceText { get; set; } = "";
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(PreviewResult))]
     [NotifyPropertyChangedFor(nameof(IsParamBVisible))]
-    public partial string SelectedFuncName { get; set; } = nameof(TextProcessor.RepairFun_NoDeal);
+    public partial RepairFunctionViewModel RepairFunctionViewModel { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(PreviewResult))]
+    public partial string SourceText { get; set; } = "这这这是一是一段测试测测试文本。";
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(PreviewResult))]
@@ -62,10 +43,10 @@ public partial class PreProcessViewModel : ObservableObject
     public partial string ParamB { get; set; } = "";
 
     // 实时计算预览结果（依赖属性改变会自动触发刷新）
-    public string PreviewResult => TextProcessor.PreProcessSrc(SelectedFuncName, SourceText, ParamA, ParamB);
+    public string PreviewResult => TextProcessor.PreProcessSrc(RepairFunctionViewModel.SelectedRepairFunction.MethodName, SourceText, ParamA, ParamB);
 
     // 只有选择正则替换时才显示参数B的输入框
-    public bool IsParamBVisible => SelectedFuncName == nameof(TextProcessor.RepairFun_RegexReplace);
+    public bool IsParamBVisible => RepairFunctionViewModel.SelectedRepairFunction.MethodName == nameof(TextProcessor.RepairFun_RegexReplace);
 
     public async Task StartHookingAsync(GameInfo draftConfig)
     {
