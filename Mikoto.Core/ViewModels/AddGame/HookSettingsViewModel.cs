@@ -3,7 +3,9 @@ using CommunityToolkit.Mvvm.Messaging;
 using Mikoto.Core.Interfaces;
 using Mikoto.DataAccess;
 using Mikoto.TextHook;
+using Serilog;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace Mikoto.Core.ViewModels.AddGame;
@@ -46,35 +48,42 @@ public partial class HookSettingsViewModel : ObservableObject
 
     private void AllHook_Output(HookReceivedEventArgs e)
     {
-        // WinUI 3 的 ObservableCollection 必须在 UI 线程修改
-        // 使用 Microsoft.UI.Dispatching.DispatcherQueue
+        TextHookData? data = e.Data;
+        HookFuncItemViewModel hookFuncItem = new()
+        {
+            Data = data.Data??string.Empty,
+            GamePID = data.GamePID,
+            MisakaHookCode = data.MisakaHookCode,
+            HookCode = data.HookCode,
+            HookFunc = data.HookFunc,
+        };
+
+        // 正则过滤
+        if (InvalidCodeRegex().IsMatch(data.MisakaHookCode))
+        {
+            data.MisakaHookCode = string.Empty;
+        }
+
         _env.MainThreadService.RunOnMainThread(() =>
         {
-            TextHookData? data = e.Data;
-            HookFuncItemViewModel hookFuncItem = new()
+            try
             {
-                Data = data.Data??string.Empty,
-                GamePID = data.GamePID,
-                MisakaHookCode = data.MisakaHookCode,
-                HookCode = data.HookCode,
-                HookFunc = data.HookFunc,
-            };
+                // 检查 VM 是否已经被清理
+                if (HookFunctions == null) return;
 
-            // 正则过滤
-            if (InvalidCodeRegex().IsMatch(data.MisakaHookCode))
-            {
-                data.MisakaHookCode = string.Empty;
+                if (e.Index < HookFunctions.Count)
+                {
+                    // 这里最容易报 ObjectDisposedException
+                    HookFunctions[e.Index] = hookFuncItem;
+                }
+                else
+                {
+                    HookFunctions.Add(hookFuncItem);
+                }
             }
-
-            if (e.Index < HookFunctions.Count)
+            catch (ObjectDisposedException ex)
             {
-                // 更新现有项
-                HookFunctions[e.Index] = hookFuncItem;
-            }
-            else
-            {
-                // 添加新项
-                HookFunctions.Add(hookFuncItem);
+                Log.Debug(ex, "UI 对象已销毁，停止更新集合 {HookFunctions} 。", HookFunctions);
             }
         });
     }
