@@ -2,9 +2,11 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Mikoto.Core.Interfaces;
+using Mikoto.Core.Models;
 using Mikoto.Core.Models.AddGame;
 using Mikoto.DataAccess;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Mikoto.Core.ViewModels.AddGame
 {
@@ -27,12 +29,12 @@ namespace Mikoto.Core.ViewModels.AddGame
 
         // 定义所有的步骤
         public List<StepItem> Steps { get; } = new()
-    {
-        new StepItem { Title = "选择进程", ViewModelType = typeof(SelectProcessViewModel) },
-        new StepItem { Title = "Hook配置", ViewModelType = typeof(HookSettingsViewModel) },
-        new StepItem { Title = "文本处理", ViewModelType = typeof(PreProcessViewModel) },
-        new StepItem { Title = "语言设置", ViewModelType = typeof(LanguageViewModel) }
-    };
+        {
+            new StepItem { Title = "选择进程", ViewModelType = typeof(SelectProcessViewModel) },
+            new StepItem { Title = "Hook配置", ViewModelType = typeof(HookSettingsViewModel) },
+            new StepItem { Title = "文本处理", ViewModelType = typeof(PreProcessViewModel) },
+            new StepItem { Title = "语言设置", ViewModelType = typeof(LanguageViewModel) }
+        };
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(CanGoBack))]
@@ -85,6 +87,19 @@ namespace Mikoto.Core.ViewModels.AddGame
                 BreadcrumbItems.Remove(Steps[CurrentStepIndex].Title);
                 CurrentStepIndex--;
             }
+        }
+
+        /// <summary>
+        /// 持有游戏进程引用，防止被GC。
+        /// </summary>
+        public Process? GameProcess { get; set; }
+        /// <summary>
+        /// 游戏进程中途退出，重置状态。
+        /// </summary>
+        [RelayCommand]
+        public void ResetState()
+        {
+            WeakReferenceMessenger.Default.Send(new SetNavigationViewMessage(typeof(AddGameViewModel)));
         }
     }
 }

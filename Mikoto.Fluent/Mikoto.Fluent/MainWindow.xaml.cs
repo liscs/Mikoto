@@ -35,6 +35,16 @@ public sealed partial class MainWindow : Window
             var pageType = App.GetViewFromViewModel(m.ViewModelType);
             ContentFrame.Navigate(pageType, m.Parameter);
         });
+        WeakReferenceMessenger.Default.Register<SetNavigationViewMessage>(this, (r, m) =>
+        {
+            var pageType = App.GetViewFromViewModel(m.ViewModelType);
+
+            ContentFrame.Navigate(pageType, m.Parameter);
+            if (ContentFrame.BackStack.Count > 0)
+            {
+                ContentFrame.BackStack.RemoveAt(ContentFrame.BackStack.Count - 1);
+            }
+        });
 
         WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(HomeViewModel)));
 

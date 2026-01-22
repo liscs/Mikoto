@@ -46,7 +46,6 @@ public partial class HookSettingsViewModel : ObservableObject
             textractorPath = _env.AppSettings.Textractor_Path64;
         }
         // hook
-        // TODO 这里需要加进程未启动的失败处理
         Task hookTask = _env.TextHookService.AutoStartAsync(textractorPath, ProcessInterop.ProcessHelper.GetPid(config.FilePath), config);
     }
 

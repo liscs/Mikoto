@@ -1,8 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Navigation;
+using Mikoto.Core.Interfaces;
 using Mikoto.Core.ViewModels.AddGame;
 using Mikoto.DataAccess;
 using Mikoto.Helpers.Async;
+using System.Diagnostics;
 
 
 namespace Mikoto.Fluent.AddGamePages;
@@ -18,8 +20,21 @@ public sealed partial class SelectProcessPage : BaseStepPage
     protected override bool SaveData(GameInfo config)
     {
         //获取到选择的进程路径
-        if (ViewModel.SelectedProcess!=null)
+        if (ViewModel.SelectedProcess != null)
         {
+            // 绑定进程退出后重置状态命令
+            BaseViewModel.GameProcess = Process.GetProcessById(ViewModel.SelectedProcess.Id);
+            BaseViewModel.GameProcess.EnableRaisingEvents = true;
+            BaseViewModel.GameProcess.Exited+=delegate
+            {
+                App.Services.GetRequiredService<IAppEnvironment>().MainThreadService.RunOnMainThread(() =>
+                {
+                    BaseViewModel.ResetStateCommand.Execute(null);
+                });
+                BaseViewModel.GameProcess.Dispose(); 
+                BaseViewModel.GameProcess = null;
+            };
+
             string filePath = ViewModel.SelectedProcess.ImagePath;
             config.GameID = Guid.NewGuid();
             config.FilePath = filePath;
