@@ -1,5 +1,5 @@
 ﻿using Microsoft.Windows.ApplicationModel.Resources;
-using Mikoto.Core;
+using Mikoto.Resource;
 
 namespace Mikoto.Fluent.Services
 {

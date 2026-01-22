@@ -1,5 +1,6 @@
 ﻿using Mikoto.Config;
 using Mikoto.DataAccess;
+using Mikoto.Resource;
 using Mikoto.TextHook;
 
 namespace Mikoto.Core.Interfaces;

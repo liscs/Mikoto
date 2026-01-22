@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Mikoto.Config;
-using Mikoto.Core;
 using Mikoto.Core.Interfaces;
 using Mikoto.DataAccess;
+using Mikoto.Resource;
 using Mikoto.TextHook;
 using Serilog;
 using System.Text;

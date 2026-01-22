@@ -3,6 +3,7 @@ using Mikoto.Core.Interfaces;
 using Mikoto.Core.Models;
 using Mikoto.DataAccess;
 using Mikoto.Helpers.Text;
+using Mikoto.Resource;
 using Mikoto.TextHook;
 using System.Collections.ObjectModel;
 
