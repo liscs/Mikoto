@@ -4,6 +4,8 @@ using Microsoft.UI.Xaml.Navigation;
 using Mikoto.Core.Interfaces;
 using Mikoto.Core.ViewModels;
 using Mikoto.DataAccess;
+using Serilog;
+using System.Diagnostics;
 
 
 
@@ -25,13 +27,18 @@ public sealed partial class TranslatePage : Page
     {
         base.OnNavigatedTo(e);
 
-        // 1. 这里的 e.Parameter 是从 HomeViewModel 发送过来的 GameModel
+        // 1. 这里的 e.Parameter 是从 HomeViewModel 发送过来的 GameInfo
         if (e.Parameter is GameInfo game)
         {
             // 2. 将数据交给 ViewModel 处理
             ViewModel.CurrentGame = game;
 
             ViewModel.InitializeTranslationCommand.Execute(null);
+        }
+        else
+        {
+            Log.Fatal("导航到 TranslatePage 时，参数类型不正确。预期 GameInfo，实际收到: {ParameterType}。", e.Parameter?.GetType().Name);
+            Debug.Assert(false, $"导航到 TranslatePage 时，参数类型不正确。预期 GameInfo，实际收到: {e.Parameter?.GetType().Name}。");
         }
     }
 

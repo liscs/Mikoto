@@ -78,7 +78,7 @@ public partial class HomeViewModel : ObservableObject
         Process.Start(hookPath);
 
         //打开之后切换到翻译页面
-        WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(TranslateViewModel), game));
+        WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(TranslateViewModel), game.ToEntity()));
     }
 
     [RelayCommand]
