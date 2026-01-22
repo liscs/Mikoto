@@ -31,7 +31,7 @@ public sealed partial class SelectProcessPage : BaseStepPage
                 {
                     BaseViewModel.ResetStateCommand.Execute(null);
                 });
-                BaseViewModel.GameProcess.Dispose(); 
+                BaseViewModel.GameProcess.Dispose();
                 BaseViewModel.GameProcess = null;
             };
 

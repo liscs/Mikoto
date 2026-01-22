@@ -1,0 +1,9 @@
+HWND_TOPMOST
+ENUM_DISPLAY_SETTINGS_MODE
+HICON
+IMAGE_FLAGS
+DEVMODEW
+
+PrivateExtractIcons
+SetWindowPos
+EnumDisplaySettings

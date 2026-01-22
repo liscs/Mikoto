@@ -5,7 +5,6 @@ using Mikoto.DataAccess;
 using Mikoto.TextHook;
 using Serilog;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace Mikoto.Core.ViewModels.AddGame;

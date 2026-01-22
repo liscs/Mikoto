@@ -5,7 +5,6 @@ using Mikoto.Config;
 using Mikoto.DataAccess;
 using Mikoto.Enums;
 using Mikoto.Helpers.Async;
-using Mikoto.Helpers.File;
 using Mikoto.Helpers.Graphics;
 using Mikoto.ProcessInterop;
 using Mikoto.TextHook;

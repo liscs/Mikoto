@@ -1,5 +1,5 @@
 ﻿using Mikoto.Enums;
-using Mikoto.Helpers.File;
+using Mikoto.TextHook;
 using Serilog;
 using System.IO;
 using System.Runtime.Versioning;

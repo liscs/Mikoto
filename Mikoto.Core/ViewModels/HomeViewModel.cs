@@ -5,6 +5,7 @@ using Mikoto.Core.Interfaces;
 using Mikoto.Core.Models;
 using Mikoto.Core.ViewModels.AddGame;
 using Mikoto.DataAccess;
+using Mikoto.TextHook;
 using Serilog;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -68,12 +69,8 @@ public partial class HomeViewModel : ObservableObject
     {
         if (game == null) return;
 
-        string hookPath = game.ExePath; // 直接从参数获取，不再依赖 SelectedGame
+        string hookPath = HookFileHelper.ToEntranceFilePath(game.ExePath);
 
-        if (Path.GetExtension(hookPath) == ".log")
-        {
-            hookPath = Path.ChangeExtension(hookPath, ".exe");
-        }
 
         Process.Start(hookPath);
 
