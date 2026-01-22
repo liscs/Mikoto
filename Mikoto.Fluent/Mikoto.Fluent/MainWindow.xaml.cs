@@ -2,7 +2,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Mikoto.Core.Messages;
+using Mikoto.Core.Models;
 using Mikoto.Core.ViewModels;
 
 namespace Mikoto.Fluent;

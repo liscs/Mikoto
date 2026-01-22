@@ -5,8 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Mikoto.Fluent.AddGamePages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local1="using:Mikoto.Core.ViewModels.AddGamePages"
-    mc:Ignorable="d">
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                    xmlns:local11="using:Mikoto.Core.ViewModels.AddGame"
+                    mc:Ignorable="d">
 
     <Grid x:Name="ContentGrid" Margin="40,20,40,0">
         <StackPanel Spacing="20" MaxWidth="600" HorizontalAlignment="Left">
@@ -21,7 +22,7 @@
                           ItemsSource="{x:Bind ViewModel.SupportedLanguages}"
                           SelectedItem="{x:Bind ViewModel.SelectedSourceLanguage, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="local1:LanguageItem">
+                        <DataTemplate x:DataType="local11:LanguageItem">
                             <TextBlock Text="{x:Bind DisplayName}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
@@ -37,7 +38,7 @@
                           ItemsSource="{x:Bind ViewModel.SupportedLanguages}"
                           SelectedItem="{x:Bind ViewModel.SelectedTargetLanguage, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="local1:LanguageItem">
+                        <DataTemplate x:DataType="local11:LanguageItem">
                             <TextBlock Text="{x:Bind DisplayName}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>

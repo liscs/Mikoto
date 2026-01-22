@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Mikoto.Core.Models;
+namespace Mikoto.Core.ViewModels.AddGame;
 
-public partial class HookFuncItem : ObservableObject
+public partial class HookFuncItemViewModel : ObservableObject
 {
     public int GamePID { get; set; }
     public string HookFunc { get; set; } = string.Empty;

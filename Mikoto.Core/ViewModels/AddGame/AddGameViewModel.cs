@@ -2,11 +2,11 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Mikoto.Core.Interfaces;
-using Mikoto.Core.Models;
+using Mikoto.Core.Models.AddGame;
 using Mikoto.DataAccess;
 using System.Collections.ObjectModel;
 
-namespace Mikoto.Core.ViewModels.AddGamePages
+namespace Mikoto.Core.ViewModels.AddGame
 {
     public partial class AddGameViewModel : ObservableObject
     {

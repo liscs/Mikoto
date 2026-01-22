@@ -5,7 +5,8 @@
       xmlns:local="using:Mikoto.Fluent"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:local1="using:Mikoto.DataAccess" xmlns:local11="using:Mikoto.Core"
+      xmlns:local1="using:Mikoto.DataAccess"
+      xmlns:vm="using:Mikoto.Core.ViewModels"
       xmlns:local2="using:Mikoto.Fluent.Converters" xmlns:inter="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       mc:Ignorable="d">
 
@@ -50,7 +51,7 @@
           ItemsSource="{x:Bind ViewModel.Games}"
           SelectionMode="None">
             <GridView.ItemTemplate>
-                <DataTemplate x:DataType="local11:GameModel">
+                <DataTemplate x:DataType="vm:GameItemViewModel">
                     <Button Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"

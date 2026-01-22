@@ -1,4 +1,4 @@
-namespace Mikoto.Core.Messages
+namespace Mikoto.Core.Models
 {
     public record NavigationMessage(Type ViewModelType, object? Parameter = null);
 }

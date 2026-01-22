@@ -1,12 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Mikoto.Core.Interfaces;
-using Mikoto.Core.Models;
 using Mikoto.DataAccess;
 using Mikoto.TextHook;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
-namespace Mikoto.Core.ViewModels.AddGamePages;
+namespace Mikoto.Core.ViewModels.AddGame;
 
 public partial class HookSettingsViewModel : ObservableObject
 {
@@ -18,10 +17,10 @@ public partial class HookSettingsViewModel : ObservableObject
         IsAdminWarningVisible = !Environment.IsPrivilegedProcess;
     }
 
-    public ObservableCollection<HookFuncItem> HookFunctions { get; } = new();
+    public ObservableCollection<HookFuncItemViewModel> HookFunctions { get; } = new();
 
     [ObservableProperty]
-    public partial HookFuncItem? SelectedFunction { get; set; }
+    public partial HookFuncItemViewModel? SelectedFunction { get; set; }
 
     [ObservableProperty]
     public partial bool IsAdminWarningVisible { get; set; }
@@ -54,7 +53,7 @@ public partial class HookSettingsViewModel : ObservableObject
         _env.MainThreadService.RunOnMainThread(() =>
         {
             TextHookData? data = e.Data;
-            HookFuncItem hookFuncItem = new()
+            HookFuncItemViewModel hookFuncItem = new()
             {
                 Data = data.Data??string.Empty,
                 GamePID = data.GamePID,

@@ -1,45 +1,41 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Navigation;
 using Mikoto.Core.Interfaces;
-using Mikoto.Core.ViewModels.AddGamePages;
+using Mikoto.Core.ViewModels.AddGame;
 using Mikoto.DataAccess;
 using Mikoto.Helpers.Async;
 
 
 
-namespace Mikoto.Fluent.AddGamePages
+namespace Mikoto.Fluent.AddGamePages;
+
+public sealed partial class PreProcessPage
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class PreProcessPage
+    public PreProcessViewModel ViewModel { get; private set; } = default!;
+    public PreProcessPage()
     {
-        public PreProcessViewModel ViewModel { get; private set; } = default!;
-        public PreProcessPage()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        protected override bool SaveData(GameInfo config)
-        {
-            config.RepairFunc= ViewModel.SelectedFuncName;
-            config.RepairParamA= ViewModel.ParamA;
-            config.RepairParamB  = ViewModel.ParamB;
-            return true;
-        }
+    protected override bool SaveData(GameInfo config)
+    {
+        config.RepairFunc= ViewModel.SelectedFuncName;
+        config.RepairParamA= ViewModel.ParamA;
+        config.RepairParamB  = ViewModel.ParamB;
+        return true;
+    }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            ViewModel = App.Services.GetRequiredService<PreProcessViewModel>();
-            ViewModel.StartHookingAsync(BaseViewModel.DraftConfig).FireAndForget();
-        }
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+        ViewModel = App.Services.GetRequiredService<PreProcessViewModel>();
+        ViewModel.StartHookingAsync(BaseViewModel.DraftConfig).FireAndForget();
+    }
 
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            base.OnNavigatedFrom(e);
-            App.Services.GetRequiredService<IAppEnvironment>().TextHookService.CloseTextractor();
-        }
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        base.OnNavigatedFrom(e);
+        App.Services.GetRequiredService<IAppEnvironment>().TextHookService.CloseTextractor();
     }
 }

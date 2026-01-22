@@ -7,7 +7,7 @@ using Mikoto.Resource;
 using Mikoto.TextHook;
 using System.Collections.ObjectModel;
 
-namespace Mikoto.Core.ViewModels.AddGamePages;
+namespace Mikoto.Core.ViewModels.AddGame;
 
 public partial class PreProcessViewModel : ObservableObject
 {

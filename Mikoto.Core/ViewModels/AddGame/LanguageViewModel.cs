@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 
-namespace Mikoto.Core.ViewModels.AddGamePages;
+namespace Mikoto.Core.ViewModels.AddGame;
 
 public record LanguageItem(string DisplayName, string LanguageCode);
 

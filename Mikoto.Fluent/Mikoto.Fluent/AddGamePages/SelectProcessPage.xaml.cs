@@ -1,15 +1,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Navigation;
-using Mikoto.Core.ViewModels.AddGamePages;
+using Mikoto.Core.ViewModels.AddGame;
 using Mikoto.DataAccess;
 using Mikoto.Helpers.Async;
 
 
 namespace Mikoto.Fluent.AddGamePages;
 
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class SelectProcessPage : BaseStepPage
 {
     public SelectProcessViewModel ViewModel { get; } = App.Services.GetRequiredService<SelectProcessViewModel>();

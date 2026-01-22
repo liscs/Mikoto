@@ -1,4 +1,4 @@
-﻿namespace Mikoto.Core.Models
+﻿namespace Mikoto.Core.Models.AddGame
 {
     public class StepItem
     {

@@ -1,13 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Mikoto.Core.ViewModels;
+using Mikoto.Core.Interfaces;
 using Mikoto.DataAccess;
 
-namespace Mikoto.Core;
+namespace Mikoto.Core.ViewModels;
 
-public partial class GameModel : ObservableObject
+public partial class GameItemViewModel(IAppEnvironment env) : ObservableObject
 {
-    // 在加载游戏列表时，把 ViewModel 的引用塞给每个模型
-    public HomeViewModel? Parent { get; init; }
+    public required HomeViewModel Parent { get; init; }
 
     [ObservableProperty]
     public partial string GameName { get; set; }
@@ -21,11 +20,10 @@ public partial class GameModel : ObservableObject
     [ObservableProperty]
     public partial string ExePath { get; set; }
 
-
-    public GameInfo ToEntity(IGameInfoService gameInfoService)
+    public GameInfo ToEntity()
     {
         // 1. 尝试从全局字典中获取现有的实体对象
-        if (!gameInfoService.AllCompletedGamesPathDict.TryGetValue(ExePath, out GameInfo? game))
+        if (!env.GameInfoService.AllCompletedGamesPathDict.TryGetValue(this.ExePath, out GameInfo? game))
         {
             // 如果字典里没有，说明是新游戏，创建一个新实例
             game = new GameInfo();
@@ -41,4 +39,5 @@ public partial class GameModel : ObservableObject
 
         return game;
     }
+
 }
