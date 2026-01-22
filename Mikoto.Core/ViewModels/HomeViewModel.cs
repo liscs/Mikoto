@@ -49,7 +49,7 @@ public partial class HomeViewModel : ObservableObject
 
         // 4. 清理旧数据并添加新数据
         Games.Clear();
-        foreach (var model in loadedModels)
+        foreach (var model in loadedModels.OrderByDescending(p => p.LastPlayAt))
         {
             Games.Add(model);
         }

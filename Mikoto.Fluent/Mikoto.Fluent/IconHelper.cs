@@ -1,9 +1,9 @@
 using Microsoft.UI.Xaml.Media.Imaging;
 using Mikoto.TextHook;
-using Windows.Win32;
-using Windows.Win32.UI.WindowsAndMessaging;
-using Windows.Win32.Foundation;
 using Serilog;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace Mikoto.Fluent;
 
@@ -36,7 +36,7 @@ internal class IconHelper
         }
         catch (Exception ex)
         {
-            Log.Debug(ex,"读取ICO目录失败: {Message}",ex.Message);
+            Log.Debug(ex, "读取ICO目录失败: {Message}", ex.Message);
         }
 
         // 2. 如果没找到 .ico，则从 .exe 中提取图标
