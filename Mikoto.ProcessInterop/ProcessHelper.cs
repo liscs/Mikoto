@@ -156,5 +156,36 @@ namespace Mikoto.ProcessInterop
             Windows.Win32.PInvoke.IsWow64Process(Process.GetProcessById(pid).SafeHandle, out Windows.Win32.Foundation.BOOL result);
             return !result;
         }
+
+        public static async Task<Process[]> WaitProcessStartAsync(string filePath, TimeSpan timeout)
+        {
+            // --- 统一逻辑：模仿 GetPid 的判断 ---
+            string name;
+            string extension = Path.GetExtension(filePath);
+
+            if (extension.Equals(".exe", StringComparison.OrdinalIgnoreCase))
+            {
+                name = Path.GetFileNameWithoutExtension(filePath);
+            }
+            else
+            {
+                // 如果是 .dat 等非标准后缀，可能需要保留文件名全称
+                name = Path.GetFileName(filePath);
+            }
+
+            var startTime = DateTime.Now;
+            while (DateTime.Now - startTime < timeout)
+            {
+                var processes = Process.GetProcessesByName(name);
+                if (processes.Length > 0)
+                {
+                    return processes;
+                }
+
+                await Task.Delay(500); // 异步等待，不卡死 UI
+            }
+
+            return []; // 超时返回 -1，由调用方决定提示什么
+        }
     }
 }

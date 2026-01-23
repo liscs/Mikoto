@@ -608,11 +608,29 @@ namespace Mikoto.TextHook
         public void ClearHistory()
             => TextractorOutPutHistory.Clear();
 
-        public async Task AutoStartAsync(string textractorPath, int pid, GameInfo game)
+        public async Task AutoStartAsync(string textractorPath, GameInfo game)
         {
             if (Init(textractorPath))
             {
-                GamePID = pid;
+                Process[] gameProcesses = await ProcessHelper.WaitProcessStartAsync(game.FilePath, TimeSpan.FromSeconds(5));
+                if (gameProcesses.Length == 0)
+                {
+                    throw new Exception("未找到游戏进程");
+                }
+
+                if (gameProcesses.Length == 1)
+                {
+                    HandleMode = 1;
+                    GamePID = gameProcesses.First().Id;
+                }
+                else
+                {
+                    _possibleGameProcessList = gameProcesses.ToDictionary(p => p, p => false);
+                    _maxMemoryProcess = new MaxMemoryProcessSelector().SelectMainProcess(gameProcesses.ToList());
+                    HandleMode = 2;
+                    GamePID = _maxMemoryProcess.Id;
+                }
+
                 await StartHookAsync(game);
             }
             else

@@ -25,6 +25,6 @@ namespace Mikoto.TextHook
         /// <summary>
         /// 自动启动 Textractor 并附加到指定进程
         /// </summary>
-        Task AutoStartAsync(string textractorPath, int pid, GameInfo gameInfo);
+        Task AutoStartAsync(string textractorPath,  GameInfo gameInfo);
     }
 }

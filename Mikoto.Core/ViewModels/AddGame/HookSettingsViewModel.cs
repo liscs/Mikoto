@@ -42,7 +42,7 @@ public partial class HookSettingsViewModel : ObservableObject
             textractorPath = _env.AppSettings.Textractor_Path64;
         }
         // hook
-        Task hookTask = _env.TextHookService.AutoStartAsync(textractorPath, ProcessInterop.ProcessHelper.GetPid(config.FilePath), config);
+        Task hookTask = _env.TextHookService.AutoStartAsync(textractorPath, config);
     }
 
     private void AllHook_Output(HookReceivedEventArgs e)

@@ -47,7 +47,7 @@ public partial class TranslateViewModel : ObservableObject
         {
             // 1. 初始化 Hook
             string? textractorPath = CurrentGame.Isx64 ? _env.AppSettings.Textractor_Path64 : _env.AppSettings.Textractor_Path32;
-            Task hookTask = _env.TextHookService.AutoStartAsync(textractorPath, ProcessInterop.ProcessHelper.GetPid(CurrentGame.FilePath), CurrentGame);
+            Task hookTask = _env.TextHookService.AutoStartAsync(textractorPath, CurrentGame);
             WeakReferenceMessenger.Default.Register<MeetHookMessage>(this, (r, m) =>
             {
                 Hook_Output(m.SolvedDataReceivedEventArgs);

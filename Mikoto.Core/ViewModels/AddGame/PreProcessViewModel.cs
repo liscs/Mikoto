@@ -59,7 +59,7 @@ public partial class PreProcessViewModel : ObservableObject
             Hook_Output(m.SolvedDataReceivedEventArgs);
         });
 
-        await _env.TextHookService.AutoStartAsync(textractorPath, ProcessInterop.ProcessHelper.GetPid(draftConfig.FilePath), draftConfig);
+        await _env.TextHookService.AutoStartAsync(textractorPath, draftConfig);
     }
 
     private void Hook_Output(SolvedDataReceivedEventArgs e)
