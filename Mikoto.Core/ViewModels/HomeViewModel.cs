@@ -32,7 +32,7 @@ public partial class HomeViewModel : ObservableObject
         {
             var icon = await getIconFunc(data.FilePath);
 
-            return new GameItemViewModel()
+            return new GameItemViewModel(_env)
             {
                 GameInfo = data,
                 GameIcon = icon,
