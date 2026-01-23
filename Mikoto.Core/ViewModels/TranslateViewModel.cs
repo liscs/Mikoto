@@ -6,6 +6,7 @@ using Mikoto.Core.Models;
 using Mikoto.DataAccess;
 using Mikoto.Helpers.Async;
 using Mikoto.Helpers.Text;
+using Mikoto.ProcessInterop;
 using Mikoto.TextHook;
 using Mikoto.Translators;
 using Serilog;
@@ -69,6 +70,20 @@ public partial class TranslateViewModel : ObservableObject
             }
 
             await hookTask;
+
+            // 挂载游戏进程退出返回主页
+            int pid = ProcessHelper.GetPid(CurrentGame.FilePath);
+            _process = Process.GetProcessById(pid);
+            _process.EnableRaisingEvents = true;
+            _process.Exited += (s, e) =>
+            {
+                _process.Dispose();
+                _env.MainThreadService.RunOnMainThread(() =>
+                {
+                    //这里退出就不应该再能返回了
+                    WeakReferenceMessenger.Default.Send(new SetNavigationViewMessage(typeof(HomeViewModel)));
+                });
+            };
         }
         catch (Exception ex)
         {
@@ -90,6 +105,15 @@ public partial class TranslateViewModel : ObservableObject
 
             // 更新 UI 原文
             _env.MainThreadService.RunOnMainThread(() => OriginalText = preProcessedText);
+
+            // 如果原文过长，则不进行翻译
+            // 对字母不公平，但暂时不处理
+            if (preProcessedText.Length > _env.AppSettings.TransLimitNums)
+            {
+                Log.Information("文本过长，跳过翻译，长度: {Length}", preProcessedText.Length);
+                ShowNotification("文本过长，跳过翻译", InfoSeverity.Informational);
+                return;
+            }
 
             // 3. 并行触发所有翻译任务
             var tasks = MultiTranslateResults.Select(async item =>
@@ -151,6 +175,8 @@ public partial class TranslateViewModel : ObservableObject
     }
 
     private CancellationTokenSource? _notificationTokenSource;
+    private Process? _process;// 用于监视游戏进程退出，持有引用防止被回收
+
     private async void ShowNotification(string message, InfoSeverity severity, int durationMs = 3000)
     {
         // 1. 取消上一次正在进行的“自动关闭”计时任务

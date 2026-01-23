@@ -173,8 +173,8 @@ namespace Mikoto.ProcessInterop
                 name = Path.GetFileName(filePath);
             }
 
-            var startTime = DateTime.Now;
-            while (DateTime.Now - startTime < timeout)
+            var sw = Stopwatch.StartNew();
+            while (sw.Elapsed < timeout)
             {
                 var processes = Process.GetProcessesByName(name);
                 if (processes.Length > 0)
