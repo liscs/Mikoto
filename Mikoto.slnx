@@ -25,6 +25,7 @@
   </Project>
   <Project Path="Mikoto.Benchmark/Mikoto.Benchmark.csproj" />
   <Project Path="Mikoto.Config/Mikoto.Config.csproj" />
+  <Project Path="Mikoto.Core.Tests/Mikoto.Core.Tests.csproj" Id="5683b2ec-15a9-4f72-93bf-51e95f9826fd" />
   <Project Path="Mikoto.Core/Mikoto.Core.csproj" />
   <Project Path="Mikoto.DataAccess.Tests/Mikoto.DataAccess.Tests.csproj" />
   <Project Path="Mikoto.DataAccess/Mikoto.DataAccess.csproj" />

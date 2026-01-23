@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\Mikoto.Fluent\Mikoto.Fluent\Mikoto.Fluent.csproj" />
+  </ItemGroup>
+	<PropertyGroup>
+		<PlatformTarget>x64</PlatformTarget>
+	</PropertyGroup>
+</Project>
