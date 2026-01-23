@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Mikoto.Core.Interfaces;
 using Mikoto.Core.Models;
-using Mikoto.Core.Models.AddGame;
 using Mikoto.Core.ViewModels.AddGame;
 
 namespace Mikoto.Core.ViewModels
@@ -18,7 +17,7 @@ namespace Mikoto.Core.ViewModels
 
         [ObservableProperty]
         public partial LanguageViewModel LanguageViewModel { get; set; } = new();
-        
+
         [ObservableProperty]
         public partial bool ShowSuccessInfo { get; set; }
 

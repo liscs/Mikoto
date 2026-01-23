@@ -59,25 +59,25 @@
                             CornerRadius="8"
                             Width="200"
                             Padding="12"
-                            Command="{x:Bind Parent.EditGameCommand}"
+                            Command="{x:Bind EditGameCommand}"
                             CommandParameter="{x:Bind}">
 
                         <Button.ContextFlyout>
                             <MenuFlyout>
                                 <MenuFlyoutItem Text="打开"
-                                                Command="{x:Bind Parent.StartGameCommand}"
+                                                Command="{x:Bind StartGameCommand}"
                                                 CommandParameter="{x:Bind}"
                                                 Icon="Play" />
 
                                 <MenuFlyoutItem Text="LE打开"
-                                                Command="{x:Bind Parent.LEStartGameCommand}"
+                                                Command="{x:Bind LEStartGameCommand}"
                                                 CommandParameter="{x:Bind}"
                                                 Icon="World" />
 
                                 <MenuFlyoutSeparator />
 
                                 <MenuFlyoutItem Text="编辑"
-                                                Command="{x:Bind Parent.EditGameCommand}"
+                                                Command="{x:Bind EditGameCommand}"
                                                 CommandParameter="{x:Bind}"
                                                 Icon="Edit" />
 

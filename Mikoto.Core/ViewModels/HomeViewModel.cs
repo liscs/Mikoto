@@ -5,10 +5,8 @@ using Mikoto.Core.Interfaces;
 using Mikoto.Core.Models;
 using Mikoto.Core.ViewModels.AddGame;
 using Mikoto.DataAccess;
-using Mikoto.TextHook;
 using Serilog;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 namespace Mikoto.Core.ViewModels;
 
 public partial class HomeViewModel : ObservableObject
@@ -36,7 +34,6 @@ public partial class HomeViewModel : ObservableObject
 
             return new GameItemViewModel()
             {
-                Parent = this, // 这里的 Parent 就是 HomeViewModel 自己
                 GameInfo = data,
                 GameIcon = icon,
             };
@@ -62,30 +59,6 @@ public partial class HomeViewModel : ObservableObject
     }
 
 
-    [RelayCommand]
-    public void StartGame(GameItemViewModel game)
-    {
-        if (game == null) return;
-        string hookPath = HookFileHelper.ToEntranceFilePath(game.GameInfo.FilePath);
-
-
-        Process.Start(hookPath);
-
-        //打开之后切换到翻译页面
-        WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(TranslateViewModel), game.GameInfo));
-    }
-
-    [RelayCommand]
-    public void LEStartGame(GameItemViewModel game)
-    {
-
-    }
-
-    [RelayCommand]
-    public void EditGame(GameItemViewModel game)
-    {
-        WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(EditGameViewModel), game));
-    }
 
     [RelayCommand]
     public void AutoAttachGame()
