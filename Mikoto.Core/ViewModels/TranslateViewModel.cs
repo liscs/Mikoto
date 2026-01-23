@@ -177,27 +177,31 @@ public partial class TranslateViewModel : ObservableObject
     private CancellationTokenSource? _notificationTokenSource;
     private Process? _process;// 用于监视游戏进程退出，持有引用防止被回收
 
-    private async void ShowNotification(string message, InfoSeverity severity, int durationMs = 3000)
+    private async void ShowNotification(string message, InfoSeverity severity, int durationMs = 5000)
     {
-        // 1. 取消上一次正在进行的“自动关闭”计时任务
+        // 1. 取消上一次的任务
         _notificationTokenSource?.Cancel();
         _notificationTokenSource = new CancellationTokenSource();
         var token = _notificationTokenSource.Token;
 
-        // 2. 更新通知内容并显示
-        NotificationMessage = message;
-        NotificationSeverity = severity;
-        IsNotificationOpen = true;
+        // 2. 更新内容并显示 (必须全部在主线程执行)
+        _env.MainThreadService.RunOnMainThread(() =>
+        {
+            NotificationMessage = message;
+            NotificationSeverity = severity;
+            IsNotificationOpen = true;
+        });
+
         try
         {
-            // 3. 等待指定时间
             await Task.Delay(durationMs, token);
-            // 4. 时间到，关闭通知
-            IsNotificationOpen = false;
+
+            // 4. 关闭通知
+            _env.MainThreadService.RunOnMainThread(() => { IsNotificationOpen = false; });
         }
         catch (TaskCanceledException)
         {
-            // 如果任务被取消（说明有新通知进来了），不做任何处理，让新任务接管
+            // 正常取消，不处理
         }
     }
 

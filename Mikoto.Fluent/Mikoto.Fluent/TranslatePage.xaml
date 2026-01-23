@@ -9,17 +9,12 @@
     <Page.Resources>
         <cvter:NotifySeverityConverter x:Key="NotifySeverityConverter" />
     </Page.Resources>
-    <Grid Padding="24">
+    <StackPanel Padding="24" Spacing="10">
         <InfoBar x:Name="GlobalInfoBar"
                  Message="{x:Bind ViewModel.NotificationMessage, Mode=OneWay}"
                  IsOpen="{x:Bind ViewModel.IsNotificationOpen, Mode=TwoWay}"
                  Severity="{x:Bind ViewModel.NotificationSeverity, Converter={StaticResource NotifySeverityConverter}, Mode=OneWay}"
-                 VerticalAlignment="Top"
-                 Margin="20,10,20,0"
-                 Canvas.ZIndex="999">
-            <InfoBar.Shadow>
-                <ThemeShadow />
-            </InfoBar.Shadow>
+                 VerticalAlignment="Top">
         </InfoBar>
 
         <Grid RowDefinitions="Auto, *" RowSpacing="20">
@@ -59,5 +54,5 @@
                 </ItemsControl>
             </ScrollViewer>
         </Grid>
-    </Grid>
+    </StackPanel>
 </Page>
