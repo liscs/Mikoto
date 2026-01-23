@@ -58,7 +58,9 @@
                             BorderThickness="1"
                             CornerRadius="8"
                             Width="200"
-                            Padding="12">
+                            Padding="12"
+                            Command="{x:Bind Parent.EditGameCommand}"
+                            CommandParameter="{x:Bind}">
 
                         <Button.ContextFlyout>
                             <MenuFlyout>

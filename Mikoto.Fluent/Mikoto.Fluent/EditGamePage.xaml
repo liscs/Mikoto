@@ -1,130 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Page
-    x:Class="Mikoto.Fluent.EditGamePage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Mikoto.Fluent"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:local11="using:Mikoto.Core.ViewModels.AddGame" xmlns:local111="using:Mikoto.Core.Models" xmlns:local112="using:Mikoto.Core.Models.AddGame"
-    mc:Ignorable="d">
+<Page x:Class="Mikoto.Fluent.EditGamePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:Mikoto.Fluent"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:local11="using:Mikoto.Core.ViewModels.AddGame"
+      xmlns:local111="using:Mikoto.Core.Models"
+      xmlns:local112="using:Mikoto.Core.Models.AddGame"
+      mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid>
         <ScrollViewer Padding="32,24">
             <StackPanel Spacing="24">
 
-                <StackPanel Spacing="8" Margin="0,0,0,12">
-                    <TextBlock Text="配置游戏参数" Style="{StaticResource TitleTextBlockStyle}" FontWeight="Bold"/>
-                    <TextBlock Text="修改 Hook 注入信息及文本修复算法。配置不当可能导致游戏崩溃或文本提取失败。" 
-                               Style="{StaticResource CaptionTextBlockStyle}" 
-                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                <StackPanel Spacing="8"
+                            Margin="0,0,0,12">
+                    <TextBlock Text="配置游戏参数"
+                               Style="{StaticResource TitleTextBlockStyle}"
+                               FontWeight="Bold" />
+                    <TextBlock Text="修改 Hook 注入信息及文本修复算法。配置不当可能导致游戏崩溃或文本提取失败。"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                 </StackPanel>
 
-                <Border Background="{ThemeResource LayerFillColorDefaultBrush}" 
-                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
-                        BorderThickness="1" CornerRadius="8">
-                    <StackPanel Spacing="16" Padding="20">
-                        <TextBlock Text="基本信息" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                    <StackPanel Spacing="16"
+                                Padding="20">
+                        <TextBlock Text="基本信息"
+                                   Style="{StaticResource BodyStrongTextBlockStyle}" />
                         <Grid ColumnDefinitions="Auto, *">
-                            <Border Width="72" Height="72" CornerRadius="4" Margin="0,0,20,0" Background="{ThemeResource SubtleFillColorSecondaryBrush}">
-                                <Image x:Name="GameIcon" Source="{x:Bind (ImageSource)ViewModel.GameItem.GameIcon, Mode=OneWay}" Stretch="UniformToFill"/>
+                            <Border Width="72"
+                                    Height="72"
+                                    CornerRadius="4"
+                                    Margin="0,0,20,0"
+                                    Background="{ThemeResource SubtleFillColorSecondaryBrush}">
+                                <Image x:Name="GameIcon"
+                                       Source="{x:Bind (ImageSource)ViewModel.GameItem.GameIcon, Mode=OneWay}"
+                                       Stretch="UniformToFill" />
                             </Border>
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="12">
-                                <TextBox Header="游戏名称" 
-                                         Text="{x:Bind ViewModel.GameItem.GameInfo.GameName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                         HorizontalAlignment="Stretch"/>
+                            <StackPanel Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        Spacing="12">
+                                <TextBox Header="游戏名称"
+                                         Text="{x:Bind ViewModel.GameItem.GameInfo.GameName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         HorizontalAlignment="Stretch" />
                             </StackPanel>
                         </Grid>
-                        <TextBox Header="可执行文件路径" 
-                                 Text="{x:Bind ViewModel.GameItem.GameInfo.FilePath, Mode=OneWay}" 
-                                 IsReadOnly="True" 
-                                 Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
+                        <TextBox Header="可执行文件路径"
+                                 Text="{x:Bind ViewModel.GameItem.GameInfo.FilePath, Mode=OneWay}"
+                                 IsReadOnly="True"
+                                 Foreground="{ThemeResource TextFillColorDisabledBrush}" />
                     </StackPanel>
                 </Border>
 
-                <Border Background="{ThemeResource LayerFillColorDefaultBrush}" 
-                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
-                        BorderThickness="1" CornerRadius="8">
-                    <StackPanel Padding="20" Spacing="20">
-                        <TextBlock Text="翻译设置" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                    <StackPanel Padding="20"
+                                Spacing="20">
+                        <TextBlock Text="翻译设置"
+                                   Style="{StaticResource BodyStrongTextBlockStyle}" />
 
-                        <Grid ColumnDefinitions="*, *" ColumnSpacing="16">
-                            <ComboBox Header="源语言" ItemsSource="{x:Bind ViewModel.LanguageViewModel.LangList}" 
-                                      SelectedItem="{x:Bind ViewModel.LanguageViewModel.SelectedSourceLanguage, Mode=TwoWay}" 
+                        <Grid ColumnDefinitions="*, *"
+                              ColumnSpacing="16">
+                            <ComboBox Header="源语言"
+                                      ItemsSource="{x:Bind ViewModel.LanguageViewModel.LangList}"
+                                      SelectedItem="{x:Bind ViewModel.LanguageViewModel.SelectedSourceLanguage, Mode=TwoWay}"
                                       HorizontalAlignment="Stretch">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate x:DataType="local112:LanguageItem">
-                                        <TextBlock Text="{x:Bind DisplayName}"/>
+                                        <TextBlock Text="{x:Bind DisplayName}" />
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
 
                             </ComboBox>
-                            <ComboBox Grid.Column="1" Header="目标语言" ItemsSource="{x:Bind ViewModel.LanguageViewModel.LangList}" 
-                                      SelectedItem="{x:Bind ViewModel.LanguageViewModel.SelectedTargetLanguage, Mode=TwoWay}" 
+                            <ComboBox Grid.Column="1"
+                                      Header="目标语言"
+                                      ItemsSource="{x:Bind ViewModel.LanguageViewModel.LangList}"
+                                      SelectedItem="{x:Bind ViewModel.LanguageViewModel.SelectedTargetLanguage, Mode=TwoWay}"
                                       HorizontalAlignment="Stretch">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate x:DataType="local112:LanguageItem">
-                                        <TextBlock Text="{x:Bind DisplayName}"/>
+                                        <TextBlock Text="{x:Bind DisplayName}" />
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
                         </Grid>
 
-                        <Grid ColumnDefinitions="*, *" ColumnSpacing="16">
-                            <TextBox Header="HookCode" 
-                                     Text="{x:Bind ViewModel.GameItem.GameInfo.HookCode, Mode=TwoWay}" 
-                                     FontFamily="Consolas" 
+                        <Grid ColumnDefinitions="*, *"
+                              ColumnSpacing="16">
+                            <TextBox Header="HookCode"
+                                     Text="{x:Bind ViewModel.GameItem.GameInfo.HookCode, Mode=TwoWay}"
+                                     FontFamily="Consolas"
                                      PlaceholderText="/H..."
-                                     IsSpellCheckEnabled="False"/>
-                            <TextBox Grid.Column="1" Header="MisakaHookCode" 
-                                     Text="{x:Bind ViewModel.GameItem.GameInfo.MisakaHookCode, Mode=TwoWay}" 
+                                     IsSpellCheckEnabled="False" />
+                            <TextBox Grid.Column="1"
+                                     Header="MisakaHookCode"
+                                     Text="{x:Bind ViewModel.GameItem.GameInfo.MisakaHookCode, Mode=TwoWay}"
                                      FontFamily="Consolas"
                                      PlaceholderText="可选特殊指令"
-                                     IsSpellCheckEnabled="False"/>
+                                     IsSpellCheckEnabled="False" />
                         </Grid>
 
-                        <ToggleSwitch Header="运行环境" 
-                                      OnContent="64 位进程 (x64)" 
+                        <ToggleSwitch Header="运行环境"
+                                      OnContent="64 位进程 (x64)"
                                       OffContent="32 位进程 (x86)"
-                                      IsOn="{x:Bind ViewModel.GameItem.GameInfo.Isx64, Mode=TwoWay}"/>
+                                      IsOn="{x:Bind ViewModel.GameItem.GameInfo.Isx64, Mode=TwoWay}" />
                     </StackPanel>
                 </Border>
 
-                <Border Background="{ThemeResource LayerFillColorDefaultBrush}" 
-                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
-                        BorderThickness="1" CornerRadius="8">
-                    <StackPanel Padding="20" Spacing="20">
-                        <TextBlock Text="后处理算法" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                    <StackPanel Padding="20"
+                                Spacing="20">
+                        <TextBlock Text="预处理算法"
+                                   Style="{StaticResource BodyStrongTextBlockStyle}" />
 
-                        <ComboBox Header="修复函数类型" 
-                                  ItemsSource="{x:Bind ViewModel.RepairFunctionViewModel.FunctionList}" 
-                                  SelectedItem="{x:Bind ViewModel.RepairFunctionViewModel.SelectedRepairFunction, Mode=TwoWay}" 
+                        <ComboBox Header="修复函数类型"
+                                  ItemsSource="{x:Bind ViewModel.RepairFunctionViewModel.FunctionList}"
+                                  SelectedItem="{x:Bind ViewModel.RepairFunctionViewModel.SelectedRepairFunction, Mode=TwoWay}"
                                   HorizontalAlignment="Stretch">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate x:DataType="local111:RepairFunctionItem">
-                                    <TextBlock Text="{x:Bind DisplayName}"/>
+                                    <TextBlock Text="{x:Bind DisplayName}" />
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <Grid ColumnDefinitions="*, *" ColumnSpacing="16">
-                            <TextBox Header="参数 A" 
-                                     Text="{x:Bind ViewModel.GameItem.GameInfo.RepairParamA, Mode=TwoWay}" 
+                        <Grid ColumnDefinitions="*, *"
+                              ColumnSpacing="16">
+                            <TextBox Header="参数 A"
+                                     Text="{x:Bind ViewModel.GameItem.GameInfo.RepairParamA, Mode=TwoWay}"
                                      FontFamily="Consolas"
-                                     IsSpellCheckEnabled="False"/>
-                            <TextBox Grid.Column="1" Header="参数 B" 
-                                     Text="{x:Bind ViewModel.GameItem.GameInfo.RepairParamB, Mode=TwoWay}" 
+                                     IsSpellCheckEnabled="False" />
+                            <TextBox Grid.Column="1"
+                                     Header="参数 B"
+                                     Text="{x:Bind ViewModel.GameItem.GameInfo.RepairParamB, Mode=TwoWay}"
                                      FontFamily="Consolas"
-                                     IsSpellCheckEnabled="False"/>
+                                     IsSpellCheckEnabled="False" />
                         </Grid>
                     </StackPanel>
                 </Border>
 
-                <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,12,0,40">
-                    <Button x:Name="SaveButton" Content="保存设置" 
-                            Style="{StaticResource AccentButtonStyle}" 
-                            Width="140" Height="36" Click="Save_Click"/>
-                    <Button Content="放弃修改" Width="140" Height="36" Click="Cancel_Click"/>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="12"
+                            Margin="0,12,0,40">
+                    <Button x:Name="SaveButton"
+                            Content="保存设置"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Width="140"
+                            Height="36"
+                            Command="{x:Bind ViewModel.SaveCommand}" />
+                    <Button Content="放弃修改"
+                            Width="140"
+                            Height="36"
+                            Command="{x:Bind ViewModel.CancelCommand}" 
+                            />
+                    <InfoBar x:Name="SuccessInfoBar"
+                             Title="操作成功"
+                             Message="您的设置已成功保存。"
+                             Severity="Success"
+                             IsOpen="{x:Bind ViewModel.ShowSuccessInfo,Mode=TwoWay}"
+                             IsClosable="True" />
                 </StackPanel>
 
             </StackPanel>
