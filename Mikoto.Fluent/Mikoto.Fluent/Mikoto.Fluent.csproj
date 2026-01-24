@@ -27,6 +27,7 @@
 	  <None Remove="EditGamePage.xaml" />
 	  <None Remove="HomePage.xaml" />
 	  <None Remove="SettingsPage.xaml" />
+	  <None Remove="TranslateFlowWindow.xaml" />
 	  <None Remove="TranslatePage.xaml" />
 	</ItemGroup>
 	<ItemGroup>
@@ -42,11 +43,10 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" /><!--支持aot必须要引用这个包-->
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7463" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
 		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
 		<PackageReference Include="System.Drawing.Common" Version="10.0.2" />
+		<PackageReference Include="WinUIEx" Version="2.9.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -56,6 +56,12 @@
 	  <ProjectReference Include="..\..\Mikoto.Helpers\Mikoto.Helpers.csproj" />
 	  <ProjectReference Include="..\..\Mikoto.TextHook\Mikoto.TextHook.csproj" />
 	  <ProjectReference Include="..\..\Mikoto.Translators\Mikoto.Translators.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="TranslateFlowWindow.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 
 	<ItemGroup>

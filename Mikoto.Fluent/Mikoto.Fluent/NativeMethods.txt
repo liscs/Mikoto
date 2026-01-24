@@ -7,3 +7,7 @@ DEVMODEW
 PrivateExtractIcons
 SetWindowPos
 EnumDisplaySettings
+
+ReleaseCapture
+SendMessage
+GetCursorPos

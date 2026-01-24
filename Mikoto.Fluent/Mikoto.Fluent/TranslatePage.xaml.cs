@@ -17,7 +17,7 @@ namespace Mikoto.Fluent;
 public sealed partial class TranslatePage : Page
 {
     public TranslateViewModel ViewModel { get; } = App.Services.GetRequiredService<TranslateViewModel>();
-
+    private TranslateFlowWindow? _translateFlowWindow;
     public TranslatePage()
     {
         this.InitializeComponent();
@@ -32,7 +32,8 @@ public sealed partial class TranslatePage : Page
         {
             // 2. 将数据交给 ViewModel 处理
             ViewModel.CurrentGame = game;
-
+            _translateFlowWindow = new TranslateFlowWindow(ViewModel);
+            _translateFlowWindow.Activate();
             ViewModel.InitializeTranslationCommand.Execute(null);
         }
         else
@@ -45,7 +46,8 @@ public sealed partial class TranslatePage : Page
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
         base.OnNavigatedFrom(e);
-
+        _translateFlowWindow?.Close();
         App.Services.GetRequiredService<IAppEnvironment>().TextHookService.CloseTextractor();
+        ViewModel.Dispose();
     }
 }

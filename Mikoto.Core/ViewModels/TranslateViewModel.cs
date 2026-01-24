@@ -15,7 +15,7 @@ using System.Diagnostics;
 
 namespace Mikoto.Core.ViewModels;
 
-public partial class TranslateViewModel : ObservableObject
+public partial class TranslateViewModel : ObservableObject, IDisposable
 {
     private readonly AsyncLwwTask _translationTask = new();
     private SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new();
@@ -34,10 +34,10 @@ public partial class TranslateViewModel : ObservableObject
     [ObservableProperty] public partial InfoSeverity NotificationSeverity { get; set; }
     #endregion
 
-    IAppEnvironment _env;
+    public IAppEnvironment Env { get; }
     public TranslateViewModel(IAppEnvironment env)
     {
-        _env = env;
+        Env = env;
     }
 
     [RelayCommand]
@@ -47,8 +47,8 @@ public partial class TranslateViewModel : ObservableObject
         try
         {
             // 1. 初始化 Hook
-            string? textractorPath = CurrentGame.Isx64 ? _env.AppSettings.Textractor_Path64 : _env.AppSettings.Textractor_Path32;
-            Task hookTask = _env.TextHookService.AutoStartAsync(textractorPath, CurrentGame);
+            string? textractorPath = CurrentGame.Isx64 ? Env.AppSettings.Textractor_Path64 : Env.AppSettings.Textractor_Path32;
+            Task hookTask = Env.TextHookService.AutoStartAsync(textractorPath, CurrentGame);
             WeakReferenceMessenger.Default.Register<MeetHookMessage>(this, (r, m) =>
             {
                 Hook_Output(m.SolvedDataReceivedEventArgs);
@@ -56,8 +56,8 @@ public partial class TranslateViewModel : ObservableObject
 
             // 2. 预先根据配置初始化翻译结果列表 (例如从配置加载选中的翻译器)
             var enabledTranslators = new List<string> {
-                _env.AppSettings.FirstTranslator,
-                _env.AppSettings.SecondTranslator,
+                Env.AppSettings.FirstTranslator,
+                Env.AppSettings.SecondTranslator,
             };
             MultiTranslateResults.Clear();
             foreach (var name in enabledTranslators)
@@ -65,7 +65,7 @@ public partial class TranslateViewModel : ObservableObject
                 MultiTranslateResults.Add(new TranslationResult
                 {
                     TranslatorName = name,
-                    TranslatorDisplayName = _env.ResourceService.Get(name)
+                    TranslatorDisplayName = Env.ResourceService.Get(name)
                 });
             }
 
@@ -78,7 +78,7 @@ public partial class TranslateViewModel : ObservableObject
             _process.Exited += (s, e) =>
             {
                 _process.Dispose();
-                _env.MainThreadService.RunOnMainThread(() =>
+                Env.MainThreadService.RunOnMainThread(() =>
                 {
                     //这里退出就不应该再能返回了
                     WeakReferenceMessenger.Default.Send(new SetNavigationViewMessage(typeof(HomeViewModel)));
@@ -94,21 +94,23 @@ public partial class TranslateViewModel : ObservableObject
 
     private async void Hook_Output(SolvedDataReceivedEventArgs e)
     {
+        if (disposedValue) return;
         string? currentData = e.Data.Data;
 
         await _translationTask.ExecuteAsync(async () =>
         {
+            if (disposedValue) return;
             if (currentData == _lastSolvedDataReceivedEventArgs.Data?.Data) return;
             _lastSolvedDataReceivedEventArgs = e;
 
             string preProcessedText = PreProcessText(currentData);
 
             // 更新 UI 原文
-            _env.MainThreadService.RunOnMainThread(() => OriginalText = preProcessedText);
+            Env.MainThreadService.RunOnMainThread(() => OriginalText = preProcessedText);
 
             // 如果原文过长，则不进行翻译
             // 对字母不公平，但暂时不处理
-            if (preProcessedText.Length > _env.AppSettings.TransLimitNums)
+            if (preProcessedText.Length > Env.AppSettings.TransLimitNums)
             {
                 Log.Information("文本过长，跳过翻译，长度: {Length}", preProcessedText.Length);
                 ShowNotification("文本过长，跳过翻译", InfoSeverity.Informational);
@@ -118,7 +120,7 @@ public partial class TranslateViewModel : ObservableObject
             // 3. 并行触发所有翻译任务
             var tasks = MultiTranslateResults.Select(async item =>
             {
-                _env.MainThreadService.RunOnMainThread(() =>
+                Env.MainThreadService.RunOnMainThread(() =>
                 {
                     item.IsLoading = true;
                     item.ErrorMessage = null;
@@ -128,13 +130,13 @@ public partial class TranslateViewModel : ObservableObject
                 try
                 {
                     // 1. 获取翻译器实例
-                    var translator = TranslatorCommon.TranslatorFactory.GetTranslator(item.TranslatorName, _env.AppSettings, _env.ResourceService.Get(item.TranslatorName));
+                    var translator = TranslatorCommon.TranslatorFactory.GetTranslator(item.TranslatorName, Env.AppSettings, Env.ResourceService.Get(item.TranslatorName));
 
                     // 2. 检查翻译器是否获取成功
                     if (translator == null)
                     {
                         Log.Warning("无法创建翻译器实例: {Name}", item.TranslatorName);
-                        _env.MainThreadService.RunOnMainThread(() =>
+                        Env.MainThreadService.RunOnMainThread(() =>
                         {
                             item.IsLoading = false;
                             item.ErrorMessage = "翻译器初始化失败";
@@ -146,7 +148,7 @@ public partial class TranslateViewModel : ObservableObject
                     string? result = await translator.TranslateAsync(preProcessedText, CurrentGame.DstLang, CurrentGame.SrcLang);
                     sw.Stop();
 
-                    _env.MainThreadService.RunOnMainThread(() =>
+                    Env.MainThreadService.RunOnMainThread(() =>
                     {
                         item.IsLoading = false;
                         if (result != null)
@@ -165,7 +167,7 @@ public partial class TranslateViewModel : ObservableObject
                 catch (Exception ex)
                 {
                     Log.Error(ex, "翻译器 {Name} 崩溃", item.TranslatorName);
-                    _env.MainThreadService.RunOnMainThread(() => { item.IsLoading = false; item.ErrorMessage = "插件异常"; });
+                    Env.MainThreadService.RunOnMainThread(() => { item.IsLoading = false; item.ErrorMessage = "插件异常"; });
                 }
             });
 
@@ -176,6 +178,7 @@ public partial class TranslateViewModel : ObservableObject
 
     private CancellationTokenSource? _notificationTokenSource;
     private Process? _process;// 用于监视游戏进程退出，持有引用防止被回收
+    private bool disposedValue;
 
     private async void ShowNotification(string message, InfoSeverity severity, int durationMs = 5000)
     {
@@ -185,7 +188,7 @@ public partial class TranslateViewModel : ObservableObject
         var token = _notificationTokenSource.Token;
 
         // 2. 更新内容并显示 (必须全部在主线程执行)
-        _env.MainThreadService.RunOnMainThread(() =>
+        Env.MainThreadService.RunOnMainThread(() =>
         {
             NotificationMessage = message;
             NotificationSeverity = severity;
@@ -197,7 +200,7 @@ public partial class TranslateViewModel : ObservableObject
             await Task.Delay(durationMs, token);
 
             // 4. 关闭通知
-            _env.MainThreadService.RunOnMainThread(() => { IsNotificationOpen = false; });
+            Env.MainThreadService.RunOnMainThread(() => { IsNotificationOpen = false; });
         }
         catch (TaskCanceledException)
         {
@@ -217,4 +220,24 @@ public partial class TranslateViewModel : ObservableObject
         return TextProcessor.PreProcessSrc(funcName, currentData, paramA, paramB);
     }
 
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposedValue)
+        {
+            if (disposing)
+            {
+                WeakReferenceMessenger.Default.UnregisterAll(this);
+                _notificationTokenSource?.Dispose();
+                _process?.Dispose();
+            }
+            disposedValue=true;
+        }
+    }
+
+    public void Dispose()
+    {
+        // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
 }

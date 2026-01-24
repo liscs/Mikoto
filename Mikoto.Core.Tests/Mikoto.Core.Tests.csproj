@@ -4,5 +4,7 @@
   </ItemGroup>
 	<PropertyGroup>
 		<PlatformTarget>x64</PlatformTarget>
+		<Platforms>x64</Platforms>
+		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
 	</PropertyGroup>
 </Project>
