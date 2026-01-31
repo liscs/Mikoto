@@ -5,6 +5,7 @@ using Mikoto.Core.Interfaces;
 using Mikoto.Core.Models;
 using Mikoto.DataAccess;
 using Mikoto.TextHook;
+using Mikoto.Vndb;
 using Serilog;
 using System.Diagnostics;
 
@@ -94,5 +95,25 @@ public partial class GameItemViewModel(IAppEnvironment env) : ObservableObject
     public void EditGame()
     {
         WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(EditGameViewModel), this));
+    }
+
+    [RelayCommand]
+    public async Task SearchMetadataAsync()
+    {
+        IsSearchingMetadata = true;
+        GameMetadata = await VndbService.QueryDataAsync(GameInfo);
+        IsSearchingMetadata = false;
+    }
+
+    [ObservableProperty]
+    public partial GameMetadata GameMetadata { get; set; } = new GameMetadata();
+
+    [ObservableProperty]
+    public partial bool IsSearchingMetadata { get; set; } = false;
+
+    [RelayCommand]
+    public async Task OpenVndbWebAsync()
+    {
+        ProcessInterop.ProcessHelper.ShellStart($"https://vndb.org/{GameMetadata.VndbId}");
     }
 }

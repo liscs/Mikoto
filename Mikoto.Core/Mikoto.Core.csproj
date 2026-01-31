@@ -13,5 +13,6 @@
 	  <ProjectReference Include="..\Mikoto.Helpers\Mikoto.Helpers.csproj" />
 	  <ProjectReference Include="..\Mikoto.TextHook\Mikoto.TextHook.csproj" />
 	  <ProjectReference Include="..\Mikoto.Translators\Mikoto.Translators.csproj" />
+	  <ProjectReference Include="..\Mikoto.Vndb\Mikoto.Vndb.csproj" />
 	</ItemGroup>
 </Project>

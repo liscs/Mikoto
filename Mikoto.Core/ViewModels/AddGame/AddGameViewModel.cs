@@ -69,6 +69,7 @@ namespace Mikoto.Core.ViewModels.AddGame
                 {
                     // --- 情况 B: 已经是最后一步，点击了“完成” ---
                     await Task.Run(() => _env.GameInfoService.SaveGameInfo(DraftConfig));
+                    WeakReferenceMessenger.Default.Send(new SetNavigationViewMessage(typeof(TranslateViewModel), DraftConfig));
                 }
             }));
         }

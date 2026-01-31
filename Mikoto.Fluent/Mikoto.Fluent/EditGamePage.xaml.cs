@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Mikoto.Core.ViewModels;
 using Mikoto.Core.ViewModels.AddGame;
+using Mikoto.Helpers.Async;
 
 
 namespace Mikoto.Fluent
@@ -22,6 +23,7 @@ namespace Mikoto.Fluent
             if (e.Parameter is GameItemViewModel vm)
             {
                 ViewModel.GameItem = vm;
+                ViewModel.GameItem.SearchMetadataAsync().FireAndForget();
                 ViewModel.RepairFunctionViewModel = App.Services.GetRequiredService<RepairFunctionViewModel>();
                 ViewModel.RepairFunctionViewModel.SelectedRepairFunction = ViewModel.RepairFunctionViewModel.FunctionList.FirstOrDefault(x => x.MethodName == vm.GameInfo.RepairFunc)??ViewModel.RepairFunctionViewModel.FunctionList.First();
                 ViewModel.LanguageViewModel = new LanguageViewModel();

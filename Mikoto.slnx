@@ -55,6 +55,7 @@
     <BuildDependency Project="Mikoto.DataAccess/Mikoto.DataAccess.csproj" />
   </Project>
   <Project Path="Mikoto.TTS/Mikoto.TTS.csproj" />
+  <Project Path="Mikoto.Vndb/Mikoto.Vndb.csproj" Id="f228dc78-4694-4c54-85fc-38735c7aabcc" />
   <Project Path="Mikoto/Mikoto.csproj">
     <Deploy Solution="*|Any CPU" />
   </Project>
