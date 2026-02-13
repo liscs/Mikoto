@@ -25,6 +25,14 @@
             <AutoSuggestBox QueryIcon="Find"
                             PlaceholderText="搜索游戏..." />
         </NavigationView.AutoSuggestBox>
+        <NavigationView.MenuItems>
+            <NavigationViewItem Content="翻译 API"
+                                Tag="TranslateAPI">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xF17F;" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+        </NavigationView.MenuItems>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
