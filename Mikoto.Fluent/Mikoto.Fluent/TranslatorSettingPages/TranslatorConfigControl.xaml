@@ -71,8 +71,8 @@
             </Grid>
         </StackPanel>
 
-        <VariableSizedWrapGrid Orientation="Horizontal"
-                               HorizontalAlignment="Right">
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right">
             <Button Content="申请地址"
                     Visibility="{x:Bind ViewModel.ApplyVisible, Converter={StaticResource MyBoolToVisibilityConverter}, Mode=OneWay}"
                     Margin="4"
@@ -92,7 +92,7 @@
                     Visibility="{x:Bind ViewModel.BillVisible, Converter={StaticResource MyBoolToVisibilityConverter}, Mode=OneWay}"
                     Margin="4"
                     Click="BillingBtn_Click" />
-        </VariableSizedWrapGrid>
+        </StackPanel>
 
     </StackPanel>
 </UserControl>

@@ -9,7 +9,6 @@
 
     <ScrollViewer Padding="24">
         <StackPanel Spacing="4"
-                    MaxWidth="1000"
                     HorizontalAlignment="Left">
 
             <TextBlock Text="翻译服务设置"
