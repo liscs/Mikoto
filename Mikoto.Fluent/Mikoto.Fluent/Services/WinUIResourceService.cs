@@ -1,5 +1,6 @@
 ﻿using Microsoft.Windows.ApplicationModel.Resources;
 using Mikoto.Resource;
+using Serilog;
 
 namespace Mikoto.Fluent.Services
 {
@@ -19,8 +20,9 @@ namespace Mikoto.Fluent.Services
                     return value;
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                Log.Warning(ex, "读取资源失败，键：{Key}", key);
                 // 资源不存在时 ResourceLoader 可能抛出异常或返回空
             }
 

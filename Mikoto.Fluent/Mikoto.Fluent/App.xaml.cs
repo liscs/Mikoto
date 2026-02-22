@@ -4,8 +4,10 @@ using Mikoto.Core.Interfaces;
 using Mikoto.Core.ViewModels;
 using Mikoto.Core.ViewModels.AddGame;
 using Mikoto.Core.ViewModels.Exceptions;
+using Mikoto.Core.ViewModels.TranslatorSetting;
 using Mikoto.Fluent.AddGamePages;
 using Mikoto.Fluent.Services;
+using Mikoto.Fluent.TranslatorSettingPages;
 using Serilog;
 using System.Diagnostics.CodeAnalysis;
 
@@ -75,6 +77,7 @@ public partial class App : Application
         RegisterNavigation<TranslateViewModel, TranslatePage>(services);
         RegisterNavigation<SettingsViewModel, SettingsPage>(services);
         RegisterNavigation<EditGameViewModel, EditGamePage>(services);
+        RegisterNavigation<TranslatorSettingViewModel, TranslatorSettingPage>(services);
         services.AddTransient<RepairFunctionViewModel>();
         Services = services.BuildServiceProvider();
     }

@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Mikoto.Core.Models;
 using Mikoto.Core.ViewModels;
+using Mikoto.Fluent.TranslatorSettingPages;
 
 namespace Mikoto.Fluent;
 
@@ -62,10 +63,26 @@ public sealed partial class MainWindow : Window
 
     private void RootNav_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
-        // 1. 判断是否点击了设置按钮
+        // 1. 判断是否点击了系统内置的“设置”按钮
         if (args.IsSettingsInvoked)
         {
-            ContentFrame.Navigate(typeof(SettingsPage)); // 跳转到你的设置页面
+            ContentFrame.Navigate(typeof(SettingsPage));
+            return;
+        }
+
+        // 2. 获取被点击容器的 Tag
+        var itemTag = args.InvokedItemContainer?.Tag?.ToString();
+
+        switch (itemTag)
+        {
+            case "TranslateAPI":
+                // 跳转到翻译 API 对应的页面
+                ContentFrame.Navigate(typeof(TranslatorSettingPage));
+                break;
+
+            case "OtherPage":
+                // ContentFrame.Navigate(typeof(OtherPage));
+                break;
         }
     }
 }
