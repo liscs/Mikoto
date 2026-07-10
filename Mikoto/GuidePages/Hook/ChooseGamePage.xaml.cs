@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using Windows.Win32;
 
 
 
@@ -81,7 +80,7 @@ namespace Mikoto.GuidePages.Hook
                 App.Env.TextHookService = new TextHook.TextHookService(_sameNameGameProcessList, new MaxMemoryProcessSelector());
             }
 
-            bool isx64 = Is64BitProcess(pid);
+            bool isx64 = ProcessHelper.Is64BitProcess(pid);
             if (App.Env.TextHookService.Init(isx64 ? Common.AppSettings.Textractor_Path64 : Common.AppSettings.Textractor_Path32))
             {
                 string filepath = ProcessHelper.FindProcessPath(pid);
@@ -91,7 +90,8 @@ namespace Mikoto.GuidePages.Hook
                     _gameInfoBuilder.GameProcessId = pid;
                     _gameInfoBuilder.GameInfo.Isx64 = isx64;
                     _gameInfoBuilder.GameInfo.FilePath = filepath;
-                    _gameInfoBuilder.GameInfo.GameName = Path.GetFileName(Path.GetDirectoryName(filepath))??Path.GetFileName(filepath);
+                    _gameInfoBuilder.GameInfo.GameName = Path.GetFileName(Path.GetDirectoryName(filepath))??Path.GetFileNameWithoutExtension(filepath);
+                    _gameInfoBuilder.GameInfo.GameID = Guid.NewGuid();
 
                     //使用路由事件机制通知窗口来完成下一步操作
                     PageChangeRoutedEventArgs args = new(PageChange.PageChangeRoutedEvent, this)
@@ -107,11 +107,7 @@ namespace Mikoto.GuidePages.Hook
             }
         }
 
-        private static bool Is64BitProcess(int pid)
-        {
-            PInvoke.IsWow64Process((global::Windows.Win32.Foundation.HANDLE)Process.GetProcessById(pid).Handle, out global::Windows.Win32.Foundation.BOOL result);
-            return !result;
-        }
+
 
     }
 }

@@ -2,7 +2,6 @@
 using Mikoto.ArtificialTrans;
 using Mikoto.Config;
 using Mikoto.Enums;
-using Mikoto.Helpers;
 using Mikoto.Helpers.Async;
 using Mikoto.Helpers.Graphics;
 using Mikoto.Mecab;

@@ -104,14 +104,14 @@ namespace Mikoto.Translators.Implementations
             dstLang = GetLanguageCode(new CultureInfo(dstLang));
 
             DateTime date = DateTime.UtcNow;
-            string requestPayload = JsonSerializer.Serialize(new
+            var obj = new JsonObject
             {
-                SourceText = text,
-                Source = srcLang,
-                Target = dstLang,
-                ProjectId = 0
-
-            });
+                ["SourceText"] = text,
+                ["Source"] = srcLang,
+                ["Target"] = dstLang,
+                ["ProjectId"] = 0
+            };
+            string requestPayload = obj.ToJsonString(TranslatorJsonContext.AotSafeContext.Options);
 
             Dictionary<string, string> headers = BuildHeaders(SecretId!, SecretKey!, SERVICE, ENDPOINT, REGION, ACTION,
                                                               VERSION, date, requestPayload);
@@ -145,7 +145,7 @@ namespace Mikoto.Translators.Implementations
             string responseJson = await httpResponseMessage.Content.ReadAsStringAsync();
             try
             {
-                JsonNode? jsonNode = JsonSerializer.Deserialize<JsonNode>(responseJson);
+                JsonNode? jsonNode = JsonSerializer.Deserialize<JsonNode>(responseJson, TranslatorJsonContext.AotSafeContext.JsonNode);
                 string? result = jsonNode?["Response"]?["TargetText"]?.GetValue<string>();
                 if (result == null)
                 {

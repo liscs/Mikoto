@@ -4,6 +4,7 @@ using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 // ChatGPT translator integration
 // Original Author: bychv, Modified by Mikoto
@@ -56,7 +57,7 @@ public class ChatGPTTranslator : ITranslator
 
         var requestPayload = GetRequestPayload(sourceText, desLang, srcLang);
 
-        string jsonParam = JsonSerializer.Serialize(requestPayload, TranslatorCommon.JsonSerializerOptions);
+        string jsonParam = requestPayload.ToJsonString(TranslatorJsonContext.AotSafeContext.Options);
 
         try
         {
@@ -75,7 +76,7 @@ public class ChatGPTTranslator : ITranslator
             }
 
             // 解析正常返回
-            if (JsonSerializer.Deserialize<ChatResponse>(respString, TranslatorCommon.JsonSerializerOptions) is { } info)
+            if (JsonSerializer.Deserialize<ChatResponse>(respString, TranslatorJsonContext.AotSafeContext.ChatResponse) is { } info)
             {
                 var msg = info.choices?.FirstOrDefault().message.content;
                 if (!string.IsNullOrEmpty(msg))
@@ -103,23 +104,21 @@ public class ChatGPTTranslator : ITranslator
         }
     }
 
-    private object GetRequestPayload(string sourceText, string desLang, string srcLang, bool streamMode = false)
+    private JsonObject GetRequestPayload(string sourceText, string desLang, string srcLang, bool streamMode = false)
     {
-        return new
+        return new JsonObject
         {
-            model = openai_model,
-            messages = new[]
+            ["model"] = openai_model,
+            ["messages"] = new JsonArray
+        {
+            new JsonObject
             {
-                new {
-                    role = "system",
-                    content = $"You are a professional multilingual translation engine. " +
-                              $"Translate everything from {srcLang} to {desLang}. " +
-                              $"Preserve meaning, tone, punctuation, spacing, markdown and numbers. " +
-                              $"Do NOT explain, do NOT add comments."
-                },
-                new { role = "user", content = sourceText }
+                ["role"] = "system",
+                ["content"] = $"You are a professional translation engine. Translate from {srcLang} to {desLang}."
             },
-            stream = streamMode
+            new JsonObject { ["role"] = "user", ["content"] = sourceText }
+        },
+            ["stream"] = streamMode
         };
     }
 
@@ -135,7 +134,7 @@ public class ChatGPTTranslator : ITranslator
     {
         try
         {
-            ChatResErr errObj = JsonSerializer.Deserialize<ChatResErr>(errorContent, TranslatorCommon.JsonSerializerOptions);
+            ChatResErr errObj = JsonSerializer.Deserialize<ChatResErr>(errorContent, TranslatorJsonContext.AotSafeContext.ChatResErr);
             if (!string.IsNullOrWhiteSpace(errObj.error.message))
             {
                 SetError(errObj.error.message);

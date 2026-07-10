@@ -1,9 +1,7 @@
 ﻿using Mikoto.ProcessInterop;
 using Serilog;
 using System.Diagnostics.CodeAnalysis;
-using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.Unicode;
 
 namespace Mikoto.DataAccess
 {
@@ -67,14 +65,6 @@ namespace Mikoto.DataAccess
             ProcessHelper.ShellStart(gameInfoFilePath);
         }
 
-
-        private readonly JsonSerializerOptions options = new()
-        {
-            WriteIndented = true,
-            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-            ReadCommentHandling = JsonCommentHandling.Skip
-        };
-
         /// <summary>
         /// 保存GameInfo
         /// </summary>
@@ -83,7 +73,7 @@ namespace Mikoto.DataAccess
         public void SaveGameInfo(GameInfo gameInfo)
         {
             string fileName = GetGameInfoPath(gameInfo);
-            string jsonString = JsonSerializer.Serialize(gameInfo, options);
+            string jsonString = JsonSerializer.Serialize(gameInfo, AppJsonContext.AotSafeContext.GameInfo);
             File.WriteAllText(fileName, jsonString);
         }
 
@@ -93,7 +83,7 @@ namespace Mikoto.DataAccess
             try
             {
                 string jsonString = File.ReadAllText(path);
-                gameInfo = JsonSerializer.Deserialize<GameInfo>(jsonString, options);
+                gameInfo = JsonSerializer.Deserialize(jsonString, AppJsonContext.Default.GameInfo);
                 if (gameInfo != null)
                 {
                     return true;

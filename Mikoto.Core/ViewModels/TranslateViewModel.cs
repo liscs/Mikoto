@@ -1,0 +1,243 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Mikoto.Core.Interfaces;
+using Mikoto.Core.Models;
+using Mikoto.DataAccess;
+using Mikoto.Helpers.Async;
+using Mikoto.Helpers.Text;
+using Mikoto.ProcessInterop;
+using Mikoto.TextHook;
+using Mikoto.Translators;
+using Serilog;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+
+namespace Mikoto.Core.ViewModels;
+
+public partial class TranslateViewModel : ObservableObject, IDisposable
+{
+    private readonly AsyncLwwTask _translationTask = new();
+    private SolvedDataReceivedEventArgs _lastSolvedDataReceivedEventArgs = new();
+
+    // 存储多个翻译结果的集合
+    [ObservableProperty]
+    public partial ObservableCollection<TranslationResult> MultiTranslateResults { get; set; } = new();
+
+    public GameInfo CurrentGame { get; set; } = new GameInfo();
+
+    [ObservableProperty] public partial string OriginalText { get; set; } = string.Empty;
+
+    #region Notification Properties
+    [ObservableProperty] public partial bool IsNotificationOpen { get; set; }
+    [ObservableProperty] public partial string NotificationMessage { get; set; } = string.Empty;
+    [ObservableProperty] public partial InfoSeverity NotificationSeverity { get; set; }
+    #endregion
+
+    public IAppEnvironment Env { get; }
+    public TranslateViewModel(IAppEnvironment env)
+    {
+        Env = env;
+    }
+
+    [RelayCommand]
+    public async Task InitializeTranslation()
+    {
+        Log.Information("正在初始化多翻译流程: {GameName}", CurrentGame.GameName);
+        try
+        {
+            // 1. 初始化 Hook
+            string? textractorPath = CurrentGame.Isx64 ? Env.AppSettings.Textractor_Path64 : Env.AppSettings.Textractor_Path32;
+            Task hookTask = Env.TextHookService.AutoStartAsync(textractorPath, CurrentGame);
+            WeakReferenceMessenger.Default.Register<MeetHookMessage>(this, (r, m) =>
+            {
+                Hook_Output(m.SolvedDataReceivedEventArgs);
+            });
+
+            // 2. 预先根据配置初始化翻译结果列表 (例如从配置加载选中的翻译器)
+            var enabledTranslators = new List<string> {
+                Env.AppSettings.FirstTranslator,
+                Env.AppSettings.SecondTranslator,
+            };
+            MultiTranslateResults.Clear();
+            foreach (var name in enabledTranslators)
+            {
+                MultiTranslateResults.Add(new TranslationResult
+                {
+                    TranslatorName = name,
+                    TranslatorDisplayName = Env.ResourceService.Get(name)
+                });
+            }
+
+            await hookTask;
+
+            // 挂载游戏进程退出返回主页
+            int pid = ProcessHelper.GetPid(CurrentGame.FilePath);
+            _process = Process.GetProcessById(pid);
+            _process.EnableRaisingEvents = true;
+            _process.Exited += (s, e) =>
+            {
+                _process.Dispose();
+                Env.MainThreadService.RunOnMainThread(() =>
+                {
+                    //这里退出就不应该再能返回了
+                    WeakReferenceMessenger.Default.Send(new SetNavigationViewMessage(typeof(HomeViewModel)));
+                });
+            };
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "初始化失败");
+            ShowNotification("初始化失败", InfoSeverity.Error);
+        }
+    }
+
+    private async void Hook_Output(SolvedDataReceivedEventArgs e)
+    {
+        if (disposedValue) return;
+        string? currentData = e.Data.Data;
+
+        await _translationTask.ExecuteAsync(async () =>
+        {
+            if (disposedValue) return;
+            if (currentData == _lastSolvedDataReceivedEventArgs.Data?.Data) return;
+            _lastSolvedDataReceivedEventArgs = e;
+
+            string preProcessedText = PreProcessText(currentData);
+
+            // 更新 UI 原文
+            Env.MainThreadService.RunOnMainThread(() => OriginalText = preProcessedText);
+
+            // 如果原文过长，则不进行翻译
+            // 对字母不公平，但暂时不处理
+            if (preProcessedText.Length > Env.AppSettings.TransLimitNums)
+            {
+                Log.Information("文本过长，跳过翻译，长度: {Length}", preProcessedText.Length);
+                ShowNotification("文本过长，跳过翻译", InfoSeverity.Informational);
+                return;
+            }
+
+            // 3. 并行触发所有翻译任务
+            var tasks = MultiTranslateResults.Select(async item =>
+            {
+                Env.MainThreadService.RunOnMainThread(() =>
+                {
+                    item.IsLoading = true;
+                    item.ErrorMessage = null;
+                });
+
+                var sw = Stopwatch.StartNew();
+                try
+                {
+                    // 1. 获取翻译器实例
+                    var translator = TranslatorCommon.TranslatorFactory.GetTranslator(item.TranslatorName, Env.AppSettings, Env.ResourceService.Get(item.TranslatorName));
+
+                    // 2. 检查翻译器是否获取成功
+                    if (translator == null)
+                    {
+                        Log.Warning("无法创建翻译器实例: {Name}", item.TranslatorName);
+                        Env.MainThreadService.RunOnMainThread(() =>
+                        {
+                            item.IsLoading = false;
+                            item.ErrorMessage = "翻译器初始化失败";
+                        });
+                        return; // 提前退出
+                    }
+
+                    // 3. 执行异步翻译
+                    string? result = await translator.TranslateAsync(preProcessedText, CurrentGame.DstLang, CurrentGame.SrcLang);
+                    sw.Stop();
+
+                    Env.MainThreadService.RunOnMainThread(() =>
+                    {
+                        item.IsLoading = false;
+                        if (result != null)
+                        {
+                            item.ResultText = result;
+                            Log.Debug("[{Name}] 耗时: {Ms}ms", item.TranslatorDisplayName, sw.ElapsedMilliseconds);
+                        }
+                        else
+                        {
+                            // 使用 ?. 确保 translator 不为空，或者直接复用上面已经校验过的变量
+                            item.ErrorMessage = translator?.GetLastError() ?? "未知错误";
+                            Log.Warning("[{Name}] 失败: {Err}", item.TranslatorDisplayName, item.ErrorMessage);
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "翻译器 {Name} 崩溃", item.TranslatorName);
+                    Env.MainThreadService.RunOnMainThread(() => { item.IsLoading = false; item.ErrorMessage = "插件异常"; });
+                }
+            });
+
+            // 同时运行所有翻译，不阻塞 Hook 接收
+            await Task.WhenAll(tasks);
+        });
+    }
+
+    private CancellationTokenSource? _notificationTokenSource;
+    private Process? _process;// 用于监视游戏进程退出，持有引用防止被回收
+    private bool disposedValue;
+
+    private async void ShowNotification(string message, InfoSeverity severity, int durationMs = 5000)
+    {
+        // 1. 取消上一次的任务
+        _notificationTokenSource?.Cancel();
+        _notificationTokenSource = new CancellationTokenSource();
+        var token = _notificationTokenSource.Token;
+
+        // 2. 更新内容并显示 (必须全部在主线程执行)
+        Env.MainThreadService.RunOnMainThread(() =>
+        {
+            NotificationMessage = message;
+            NotificationSeverity = severity;
+            IsNotificationOpen = true;
+        });
+
+        try
+        {
+            await Task.Delay(durationMs, token);
+
+            // 4. 关闭通知
+            Env.MainThreadService.RunOnMainThread(() => { IsNotificationOpen = false; });
+        }
+        catch (TaskCanceledException)
+        {
+            // 正常取消，不处理
+        }
+    }
+
+    private string PreProcessText(string? currentData)
+    {
+        var funcName = CurrentGame.RepairFunc;
+        if (string.IsNullOrWhiteSpace(currentData)||string.IsNullOrWhiteSpace(funcName))
+        {
+            return currentData??string.Empty;
+        }
+        var paramA = CurrentGame.RepairParamA;
+        var paramB = CurrentGame.RepairParamB;
+        return TextProcessor.PreProcessSrc(funcName, currentData, paramA, paramB);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposedValue)
+        {
+            if (disposing)
+            {
+                WeakReferenceMessenger.Default.UnregisterAll(this);
+                _notificationTokenSource?.Dispose();
+                _process?.Dispose();
+            }
+            disposedValue=true;
+        }
+    }
+
+    public void Dispose()
+    {
+        // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+}

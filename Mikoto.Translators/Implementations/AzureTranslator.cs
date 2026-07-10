@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Mikoto.Translators.Implementations
 {
@@ -27,8 +28,14 @@ namespace Mikoto.Translators.Implementations
             // Input and output languages are defined as parameters.
             string route = $"/translate?api-version=3.0&from={srcLang}&to={desLang}";
             string textToTranslate = sourceText;
-            object[] body = new object[] { new { Text = textToTranslate } };
-            var requestBody = JsonSerializer.Serialize(body);
+            // 构建对象数组结构
+            var body = new JsonArray
+            {
+                new JsonObject { ["Text"] = textToTranslate }
+            };
+
+            // 使用 Context 中已有的 Options 进行序列化
+            var requestBody = body.ToJsonString(TranslatorJsonContext.AotSafeContext.Options);
             AzureTransOutInfo oinfo;
             var client = _httpClient;
             using (var request = new HttpRequestMessage())
@@ -46,7 +53,7 @@ namespace Mikoto.Translators.Implementations
                     string result = await response.Content.ReadAsStringAsync();
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        oinfo = JsonSerializer.Deserialize<List<AzureTransOutInfo>>(result, TranslatorCommon.JsonSerializerOptions)!.ElementAt(0);
+                        oinfo = JsonSerializer.Deserialize<List<AzureTransOutInfo>>(result, TranslatorJsonContext.AotSafeContext.ListAzureTransOutInfo)!.ElementAt(0);
                         if (oinfo.translations.Length == 0)
                             return string.Empty;
                         else if (oinfo.translations.Length == 1)
@@ -61,7 +68,7 @@ namespace Mikoto.Translators.Implementations
                     }
                     else
                     {
-                        oinfo = JsonSerializer.Deserialize<AzureTransOutInfo>(result, TranslatorCommon.JsonSerializerOptions);
+                        oinfo = JsonSerializer.Deserialize<AzureTransOutInfo>(result, TranslatorJsonContext.AotSafeContext.AzureTransOutInfo);
                         errorInfo = $"ErrorCode: {oinfo.error.code}, Message: {oinfo.error.message}";
                         return null;
                     }

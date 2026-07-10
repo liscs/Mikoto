@@ -3,4 +3,5 @@
     <ProjectReference Include="..\Mikoto.Core\Mikoto.Core.csproj" />
     <ProjectReference Include="..\Mikoto.TextHook\Mikoto.TextHook.csproj" />
   </ItemGroup>
+
 </Project>

@@ -1,4 +1,4 @@
-﻿using Mikoto.Core;
+﻿using Mikoto.Resource;
 using System.Windows;
 
 namespace Mikoto;

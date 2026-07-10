@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="Mikoto.Fluent.AddGamePages.AddGamePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Mikoto.Fluent"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid RowDefinitions="Auto, *, Auto"
+          Padding="20">
+        <BreadcrumbBar Grid.Row="0"
+                       ItemsSource="{x:Bind ViewModel.BreadcrumbItems, Mode=OneWay}"
+                       Margin="0,0,0,20" />
+
+        <Frame Grid.Row="1"
+               x:Name="ContentFrame"
+               Background="{ThemeResource LayerFillColorDefaultBrush}"
+               CornerRadius="8"
+               Padding="20" />
+
+        <StackPanel Grid.Row="2"
+            Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            Spacing="10"
+            Margin="0,20,0,0">
+            <Button Content="上一步"
+            Command="{x:Bind ViewModel.MoveBackCommand}"
+            IsEnabled="{x:Bind ViewModel.CanGoBack, Mode=OneWay}"/>
+
+            <Button Content="{x:Bind ViewModel.NextButtonText, Mode=OneWay}"
+            Command="{x:Bind ViewModel.MoveNextCommand}"
+            Style="{StaticResource AccentButtonStyle}"/>
+        </StackPanel>
+    </Grid>
+</Page>

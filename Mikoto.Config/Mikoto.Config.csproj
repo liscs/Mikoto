@@ -1,8 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-
+	<PropertyGroup>
+		<EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
+	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Config.Net" Version="5.2.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.9" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Update="Serilog" Version="4.4.0" />
 	</ItemGroup>
 
 </Project>

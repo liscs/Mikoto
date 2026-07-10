@@ -1,5 +1,5 @@
 ﻿using Mikoto.Enums;
-using Mikoto.Helpers.File;
+using Mikoto.TextHook;
 using Serilog;
 using System.IO;
 using System.Runtime.Versioning;
@@ -330,33 +330,37 @@ namespace Mikoto.Helpers.Graphics
         {
             HICON hIcon = HICON.Null;
 
-            uint count = PInvoke.PrivateExtractIcons(
-                filepath,
-                0,      // 第一个图标
-                256,
-                256,
-                &hIcon,
-                out _,
-                1,      // 只取一个
-                (uint)IMAGE_FLAGS.LR_DEFAULTCOLOR
-            );
-
-            if (count == 0 || count == 0xFFFFFFFF || hIcon == HICON.Null)
-                return null;
-
-            try
+            fixed (char* pFilepath = filepath)
             {
-                var src = Imaging.CreateBitmapSourceFromHIcon(
-                    hIcon,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions()
+                uint count = PInvoke.PrivateExtractIcons(
+                    pFilepath, // 此时 char* 会自动转换为 PCWSTR
+                    0,
+                    256,
+                    256,
+                    &hIcon,
+                    null,   // 结合上一步修改后的指针
+                    1,
+                    (uint)IMAGE_FLAGS.LR_DEFAULTCOLOR
                 );
-                src.Freeze();
-                return src;
-            }
-            finally
-            {
-                PInvoke.DestroyIcon(hIcon);
+
+
+                if (count == 0 || count == 0xFFFFFFFF || hIcon == HICON.Null)
+                    return null;
+
+                try
+                {
+                    var src = Imaging.CreateBitmapSourceFromHIcon(
+                        hIcon,
+                        Int32Rect.Empty,
+                        BitmapSizeOptions.FromEmptyOptions()
+                    );
+                    src.Freeze();
+                    return src;
+                }
+                finally
+                {
+                    PInvoke.DestroyIcon(hIcon);
+                }
             }
         }
 

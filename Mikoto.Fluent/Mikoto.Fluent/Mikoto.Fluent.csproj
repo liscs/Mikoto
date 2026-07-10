@@ -1,0 +1,138 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<LangVersion>preview</LangVersion>
+		<RootNamespace>Mikoto.Fluent</RootNamespace>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<Platforms>x86;x64;ARM64</Platforms>
+		<UseWinUI>true</UseWinUI>
+		<Nullable>enable</Nullable>
+		<PublishAot>true</PublishAot>
+		<IsAotCompatible>true</IsAotCompatible>
+		<PublishTrimmed>true</PublishTrimmed>
+		<TrimMode>full</TrimMode>
+		<EnableMsixTooling>true</EnableMsixTooling>
+		<WindowsPackageType>None</WindowsPackageType>
+		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+		<AppxGeneratePriEnabled>true</AppxGeneratePriEnabled>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<DefaultLanguage>zh-CN</DefaultLanguage>
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="AddGamePage.xaml" />
+	  <None Remove="AddGamePages\HookSettingsPage.xaml" />
+	  <None Remove="AddGamePages\LanguagePage.xaml" />
+	  <None Remove="AddGamePages\PreProcessPage.xaml" />
+	  <None Remove="AddGamePages\SelectProcessPage.xaml" />
+	  <None Remove="EditGamePage.xaml" />
+	  <None Remove="HomePage.xaml" />
+	  <None Remove="TranslatorSettingPages\TranslatorConfigControl.xaml" />
+	  <None Remove="TranslatorSettingPages\TranslatorSettingPage.xaml" />
+	  <None Remove="SettingsPage.xaml" />
+	  <None Remove="TranslateFlowWindow.xaml" />
+	  <None Remove="TranslatePage.xaml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <AdditionalFiles Include="NativeMethods.txt" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration.Ini" Version="10.0.9" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.9" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.9" />
+		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.298">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" /><!--支持aot必须要引用这个包-->
+		<PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+		<PackageReference Include="System.Drawing.Common" Version="10.0.9" />
+		<PackageReference Include="WinUIEx" Version="2.9.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Mikoto.Config\Mikoto.Config.csproj" />
+	  <ProjectReference Include="..\..\Mikoto.Core\Mikoto.Core.csproj" />
+	  <ProjectReference Include="..\..\Mikoto.DataAccess\Mikoto.DataAccess.csproj" />
+	  <ProjectReference Include="..\..\Mikoto.Helpers\Mikoto.Helpers.csproj" />
+	  <ProjectReference Include="..\..\Mikoto.TextHook\Mikoto.TextHook.csproj" />
+	  <ProjectReference Include="..\..\Mikoto.Translators\Mikoto.Translators.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="TranslatorSettingPages\TranslatorConfigControl.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="TranslateFlowWindow.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="EditGamePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="SettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="AddGamePages\LanguagePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="AddGamePages\PreProcessPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="AddGamePages\HookSettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="AddGamePages\SelectProcessPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="AddGamePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="HomePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="TranslatePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="SettingPages\TranslatorSettingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Serilog" Version="4.4.0" />
+	</ItemGroup>
+</Project>

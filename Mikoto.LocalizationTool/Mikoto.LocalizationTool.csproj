@@ -5,7 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EPPlus" Version="8.3.0" />
+    <PackageReference Include="EPPlus" Version="8.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Serilog" Version="4.4.0" />
   </ItemGroup>
 
 </Project>

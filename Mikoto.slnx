@@ -1,4 +1,10 @@
 <Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path="README.md" />
@@ -19,17 +25,26 @@
   </Project>
   <Project Path="Mikoto.Benchmark/Mikoto.Benchmark.csproj" />
   <Project Path="Mikoto.Config/Mikoto.Config.csproj" />
+  <Project Path="Mikoto.Core.Tests/Mikoto.Core.Tests.csproj" Id="5683b2ec-15a9-4f72-93bf-51e95f9826fd" />
   <Project Path="Mikoto.Core/Mikoto.Core.csproj" />
   <Project Path="Mikoto.DataAccess.Tests/Mikoto.DataAccess.Tests.csproj" />
   <Project Path="Mikoto.DataAccess/Mikoto.DataAccess.csproj" />
   <Project Path="Mikoto.Dictionary/Mikoto.Dictionary.csproj">
     <BuildDependency Project="Mikoto.DataAccess/Mikoto.DataAccess.csproj" />
   </Project>
+  <Project Path="Mikoto.Fluent/Mikoto.Fluent/Mikoto.Fluent.csproj" Id="ac74bad1-f9e0-404e-ba1a-addcb55dc5b4">
+    <Platform Solution="*|Any CPU" Project="x64" />
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="Mikoto.Helpers/Mikoto.Helpers.csproj" Id="006c0784-8216-45b5-9c73-727f30ddc47d" />
   <Project Path="Mikoto.LocalizationTool/Mikoto.LocalizationTool.csproj" />
   <Project Path="Mikoto.Mecab.Tests/Mikoto.Mecab.Tests.csproj" />
   <Project Path="Mikoto.Mecab/Mikoto.Mecab.csproj" />
   <Project Path="Mikoto.ProcessInterop.Tests/Mikoto.ProcessInterop.Tests.csproj" Id="dfa74ef9-5284-48d1-a0fc-945321dccae9" />
   <Project Path="Mikoto.ProcessInterop/Mikoto.ProcessInterop.csproj" Id="2d723fd2-6f49-4444-a391-7bf59e633661" />
+  <Project Path="Mikoto.Resource/Mikoto.Resource.csproj" Id="067408f2-db38-457c-a0fa-b060a893919e" />
   <Project Path="Mikoto.Tests/Mikoto.Tests.csproj" />
   <Project Path="Mikoto.TextHook.Tests/Mikoto.TextHook.Tests.csproj" />
   <Project Path="Mikoto.TextHook/Mikoto.TextHook.csproj" />
@@ -40,7 +55,8 @@
     <BuildDependency Project="Mikoto.DataAccess/Mikoto.DataAccess.csproj" />
   </Project>
   <Project Path="Mikoto.TTS/Mikoto.TTS.csproj" />
+  <Project Path="Mikoto.Vndb/Mikoto.Vndb.csproj" Id="f228dc78-4694-4c54-85fc-38735c7aabcc" />
   <Project Path="Mikoto/Mikoto.csproj">
-    <Deploy />
+    <Deploy Solution="*|Any CPU" />
   </Project>
 </Solution>

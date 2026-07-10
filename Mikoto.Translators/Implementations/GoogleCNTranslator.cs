@@ -31,7 +31,7 @@ namespace Mikoto.Translators.Implementations
                 var hc = TranslateHttpClient.Instance;
                 var json = await hc.GetStringAsync(url);
 
-                JsonNode? root = JsonSerializer.Deserialize<JsonNode?>(json, TranslatorCommon.JsonSerializerOptions);
+                JsonNode? root = JsonSerializer.Deserialize<JsonNode?>(json, TranslatorJsonContext.AotSafeContext.JsonNode);
 
                 if (root == null || root[0] == null)
                 {

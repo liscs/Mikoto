@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.Messaging;
 using Mikoto.DataAccess;
 using Mikoto.ProcessInterop;
 using Serilog;
@@ -40,7 +41,10 @@ namespace Mikoto.TextHook
         public Queue<string> TextractorOutPutHistory { get; private set; } = new Queue<string>();
 
         public int GamePID { get; set; }//能够获取到文本的游戏进程ID
+
         private Dictionary<Process, bool> _possibleGameProcessList = new Dictionary<Process, bool>();//与gamePID进程同名的进程列表
+        public int HandleMode { get => _handleMode; set => _handleMode=value; }
+
         private int _handleMode;//处理的方式 1=已确定的单个进程 2=多个进程寻找能搜到文本的进程
         private Process? _maxMemoryProcess;//最大内存进程，用于智能处理时单独注入这个进程而不是PossibleGameProcessList中的每个进程都注入
 
@@ -56,7 +60,7 @@ namespace Mikoto.TextHook
             GamePID = gamePID;
             _possibleGameProcessList = new Dictionary<Process, bool>();
             TextractorOutPutHistory = new Queue<string>(1000);
-            _handleMode = 1;
+            HandleMode = 1;
             listIndex = 0;
             _textractorFunIndexList = new Dictionary<string, int>();
         }
@@ -72,7 +76,7 @@ namespace Mikoto.TextHook
 
             _maxMemoryProcess = selector.SelectMainProcess(gameProcesses);
 
-            _handleMode = 2;
+            HandleMode = 2;
             listIndex = 0;
             _textractorFunIndexList = new Dictionary<string, int>();
         }
@@ -84,7 +88,7 @@ namespace Mikoto.TextHook
             GamePID = -1;
             _possibleGameProcessList = new Dictionary<Process, bool>();
             TextractorOutPutHistory = new Queue<string>(1000);
-            _handleMode = 3;
+            HandleMode = 3;
             listIndex = 0;
             _textractorFunIndexList = new Dictionary<string, int>();
         }
@@ -233,12 +237,12 @@ namespace Mikoto.TextHook
             {
                 Log.Information("正在关闭 Textractor，并开始解除进程注入");
 
-                if (_handleMode == 1 && ProcessHelper.IsProcessRunning(GamePID))
+                if (HandleMode == 1 && ProcessHelper.IsProcessRunning(GamePID))
                 {
                     _ = DetachProcessAsync(GamePID);
                     Log.Information("已调用解除游戏进程注入，PID={GamePID}", GamePID);
                 }
-                else if (_handleMode == 2)
+                else if (HandleMode == 2)
                 {
                     int detachedCount = 0;
 
@@ -283,17 +287,17 @@ namespace Mikoto.TextHook
 
             Log.Information(
                 "开始进程注入，模式={HandleMode}，智能注入={AutoHook}，进程路径：{FilePath}",
-                _handleMode==1 ? "单进程" : "多进程",
+                HandleMode==1 ? "单进程" : "多进程",
                 autoHook,
                 gameInfo.FilePath
             );
 
-            if (_handleMode == 1)
+            if (HandleMode == 1)
             {
                 await AttachProcessAsync(GamePID);
                 Log.Information("已发送进程注入命令，PID={GamePID}", GamePID);
             }
-            else if (_handleMode == 2)
+            else if (HandleMode == 2)
             {
                 //不管是否进行智能注入，为了保证再次开启游戏时某些用户自定义特殊码能直接导入，这里强制让游戏ID为最大进程ID
                 GamePID = _maxMemoryProcess!.Id;
@@ -361,6 +365,7 @@ namespace Mikoto.TextHook
                         e.Index = _textractorFunIndexList[data.MisakaHookCode];
                         e.Data = data;
                         HookMessageReceived?.Invoke(this, e);
+                        WeakReferenceMessenger.Default.Send(new HookMessage(e));
                     }
                     else
                     {
@@ -369,6 +374,7 @@ namespace Mikoto.TextHook
                         e.Index = _textractorFunIndexList[data.MisakaHookCode];
                         e.Data = data;
                         HookMessageReceived?.Invoke(this, e);
+                        WeakReferenceMessenger.Default.Send(new HookMessage(e));
                         listIndex++;
                     }
                     if (_gameInfo?.HookCode == data.HookCode)
@@ -383,8 +389,8 @@ namespace Mikoto.TextHook
                         if (!obtainedMatch.Success)
                         {
                             Log.Warning("MisakaCode 格式不合法: {Code}", obtainedMisakaCode);
+                            return;
                         }
-                        Debug.Assert(obtainedMatch.Success);
 
                         if (InvalidMisakaCodeRegex().IsMatch(obtainedMisakaCode))
                         {
@@ -418,6 +424,7 @@ namespace Mikoto.TextHook
 
                             SolvedDataReceivedEventArgs e = new() { Data = data };
                             MeetHookAddressMessageReceived?.Invoke(this, e);
+                            WeakReferenceMessenger.Default.Send(new MeetHookMessage(e));
                         }
                     }
                 }
@@ -553,6 +560,7 @@ namespace Mikoto.TextHook
                 }
             };
             MeetHookAddressMessageReceived?.Invoke(this, e);
+            WeakReferenceMessenger.Default.Send(new MeetHookMessage(e));
         }
 
         [GeneratedRegex("【(.+):(.+):(.+)】")]
@@ -599,5 +607,36 @@ namespace Mikoto.TextHook
 
         public void ClearHistory()
             => TextractorOutPutHistory.Clear();
+
+        public async Task AutoStartAsync(string textractorPath, GameInfo game)
+        {
+            if (Init(textractorPath))
+            {
+                Process[] gameProcesses = await ProcessHelper.WaitProcessStartAsync(game.FilePath, TimeSpan.FromSeconds(5));
+                if (gameProcesses.Length == 0)
+                {
+                    throw new Exception("未找到游戏进程");
+                }
+
+                if (gameProcesses.Length == 1)
+                {
+                    HandleMode = 1;
+                    GamePID = gameProcesses.First().Id;
+                }
+                else
+                {
+                    _possibleGameProcessList = gameProcesses.ToDictionary(p => p, p => false);
+                    _maxMemoryProcess = new MaxMemoryProcessSelector().SelectMainProcess(gameProcesses.ToList());
+                    HandleMode = 2;
+                    GamePID = _maxMemoryProcess.Id;
+                }
+
+                await StartHookAsync(game);
+            }
+            else
+            {
+                Log.Error("Textractor 初始化失败，无法开始 Hook");
+            }
+        }
     }
 }

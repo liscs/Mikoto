@@ -1,5 +1,5 @@
-﻿using Mikoto.Core;
-using Mikoto.DataAccess;
+﻿using Mikoto.DataAccess;
+using Mikoto.Resource;
 using Mikoto.TextHook;
 
 namespace Mikoto;

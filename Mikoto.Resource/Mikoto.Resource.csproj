@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Update="Serilog" Version="4.4.0" />
+  </ItemGroup>
+</Project>

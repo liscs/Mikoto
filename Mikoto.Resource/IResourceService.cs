@@ -1,4 +1,4 @@
-﻿namespace Mikoto.Core;
+﻿namespace Mikoto.Resource;
 
 public interface IResourceService
 {

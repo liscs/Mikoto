@@ -61,6 +61,29 @@ namespace Mikoto.ProcessInterop
         }
 
         /// <summary>
+        /// 根据进程路径找到程序所在PID
+        /// </summary>
+        public static int GetPid(string exePath)
+        {
+            string name;
+            if (Path.GetExtension(exePath).Equals(".exe", StringComparison.OrdinalIgnoreCase))
+            {
+                name = Path.GetFileNameWithoutExtension(exePath);
+            }
+            else
+            {
+                name = Path.GetFileName(exePath);
+            }
+
+            List<Process> list = Process.GetProcessesByName(name).ToList();
+            if (list.Count == 0)
+            {
+                throw new Exception($"No running process found for exe file {exePath}.");
+            }
+            return list[0].Id;
+        }
+
+        /// <summary>
         /// 返回 pid,绝对路径 的列表
         /// </summary>
         public static List<string> GetAppPaths()
@@ -126,6 +149,43 @@ namespace Mikoto.ProcessInterop
         public static Process? ShellStart(string filename)
         {
             return Process.Start(new ProcessStartInfo(filename) { UseShellExecute = true });
+        }
+
+        public static bool Is64BitProcess(int pid)
+        {
+            Windows.Win32.PInvoke.IsWow64Process(Process.GetProcessById(pid).SafeHandle, out Windows.Win32.Foundation.BOOL result);
+            return !result;
+        }
+
+        public static async Task<Process[]> WaitProcessStartAsync(string filePath, TimeSpan timeout)
+        {
+            // --- 统一逻辑：模仿 GetPid 的判断 ---
+            string name;
+            string extension = Path.GetExtension(filePath);
+
+            if (extension.Equals(".exe", StringComparison.OrdinalIgnoreCase))
+            {
+                name = Path.GetFileNameWithoutExtension(filePath);
+            }
+            else
+            {
+                // 如果是 .dat 等非标准后缀，可能需要保留文件名全称
+                name = Path.GetFileName(filePath);
+            }
+
+            var sw = Stopwatch.StartNew();
+            while (sw.Elapsed < timeout)
+            {
+                var processes = Process.GetProcessesByName(name);
+                if (processes.Length > 0)
+                {
+                    return processes;
+                }
+
+                await Task.Delay(500); // 异步等待，不卡死 UI
+            }
+
+            return []; // 超时返回 -1，由调用方决定提示什么
         }
     }
 }

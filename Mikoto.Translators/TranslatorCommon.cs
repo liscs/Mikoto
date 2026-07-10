@@ -1,8 +1,12 @@
 ﻿using Mikoto.Config;
-using Mikoto.Core;
+using Mikoto.Resource;
 using Mikoto.Translators.Implementations;
 using Mikoto.Translators.Interfaces;
 using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
 
 namespace Mikoto.Translators
 {
@@ -75,7 +79,40 @@ namespace Mikoto.Translators
         {
             IncludeFields = true,
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            // 核心：告诉 Options 使用 Source Generator 生成的类型信息，而不是反射
+            TypeInfoResolver = TranslatorJsonContext.Default
         };
         public static Dictionary<string, string> TranslatorNameDisplayNameDict { get; } = new();
+    }
+
+    [JsonSerializable(typeof(JsonNode))]
+    [JsonSerializable(typeof(JsonObject))]
+    [JsonSerializable(typeof(JsonArray))]
+    [JsonSerializable(typeof(XiaoniuTransOutInfo))]
+    [JsonSerializable(typeof(List<AzureTransOutInfo>))]
+    [JsonSerializable(typeof(BaiduTransOutInfo))]
+    [JsonSerializable(typeof(CaiyunTransResult))]
+    [JsonSerializable(typeof(ChatResponse))]
+    [JsonSerializable(typeof(ChatResErr))]
+    [JsonSerializable(typeof(DeepLTranslateResult))]
+    [JsonSerializable(typeof(GoogleApiErrorResponse))]
+    [JsonSerializable(typeof(GoogleTranslateResponse))]
+    // 为 IBM 的 Result 指定一个唯一的属性名
+    [JsonSerializable(typeof(IBMTranslator.Result), TypeInfoPropertyName = "IBMResult")]
+    // 为 Yandex 的 Result 指定一个唯一的属性名
+    [JsonSerializable(typeof(YandexTranslator.Result), TypeInfoPropertyName = "YandexResult")]
+    [JsonSerializable(typeof(YoudaoZhiyunResult))]
+    [JsonSerializable(typeof(GoogleTranslateRequest))]
+    [JsonSerializable(typeof(VolcanoRequest))]
+    internal partial class TranslatorJsonContext : JsonSerializerContext
+    {
+        // 定义一个私有静态变量来缓存实例
+        private static TranslatorJsonContext? _aotSafeContext;
+
+        public static TranslatorJsonContext AotSafeContext => _aotSafeContext ??= new TranslatorJsonContext(new JsonSerializerOptions
+        {
+            IncludeFields = true,
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+        });
     }
 }

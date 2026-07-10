@@ -1,5 +1,5 @@
 ﻿using Mikoto.Config;
-using Mikoto.Core;
+using Mikoto.Resource;
 using Mikoto.Translators.Implementations;
 using Moq;
 using Xunit;

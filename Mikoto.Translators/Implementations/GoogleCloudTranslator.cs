@@ -106,7 +106,10 @@ namespace Mikoto.Translators.Implementations
                 SourceLanguage = srcLang
             };
 
-            string jsonContent = JsonSerializer.Serialize(requestBody, TranslatorCommon.JsonSerializerOptions);
+            string jsonContent = JsonSerializer.Serialize(
+                requestBody,
+                TranslatorJsonContext.AotSafeContext.GoogleTranslateRequest // 显式提供 TypeInfo
+            );
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
             string retString;
@@ -125,7 +128,7 @@ namespace Mikoto.Translators.Implementations
                     string errorDetails = await response.Content.ReadAsStringAsync();
                     try
                     {
-                        var errorResponse = JsonSerializer.Deserialize<GoogleApiErrorResponse>(errorDetails);
+                        var errorResponse = JsonSerializer.Deserialize<GoogleApiErrorResponse>(errorDetails, TranslatorJsonContext.AotSafeContext.GoogleApiErrorResponse);
                         if (errorResponse?.Error != null)
                         {
                             string primaryMessage = $"HTTP {errorResponse.Error.Code} ({response.StatusCode}) - {errorResponse.Error.Message}";
@@ -174,7 +177,7 @@ namespace Mikoto.Translators.Implementations
             GoogleTranslateResponse? gResponse;
             try
             {
-                gResponse = JsonSerializer.Deserialize<GoogleTranslateResponse>(retString);
+                gResponse = JsonSerializer.Deserialize<GoogleTranslateResponse>(retString, TranslatorJsonContext.AotSafeContext.GoogleTranslateResponse);
             }
             catch (JsonException ex)
             {

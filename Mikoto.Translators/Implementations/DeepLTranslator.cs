@@ -51,7 +51,7 @@ namespace Mikoto.Translators.Implementations
                 if (response.IsSuccessStatusCode)
                 {
                     string resultStr = await response.Content.ReadAsStringAsync();
-                    DeepLTranslateResult translateResult = JsonSerializer.Deserialize<DeepLTranslateResult>(resultStr, TranslatorCommon.JsonSerializerOptions);
+                    DeepLTranslateResult translateResult = JsonSerializer.Deserialize<DeepLTranslateResult>(resultStr, TranslatorJsonContext.AotSafeContext.DeepLTranslateResult);
                     if (translateResult.translations?.Length > 0)
                     {
                         return translateResult.translations[0].text;
