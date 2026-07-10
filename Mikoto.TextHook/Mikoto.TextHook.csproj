@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.250">
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.298">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
@@ -14,6 +14,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Mikoto.DataAccess\Mikoto.DataAccess.csproj" />
     <ProjectReference Include="..\Mikoto.Resource\Mikoto.Resource.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Serilog" Version="4.4.0" />
   </ItemGroup>
 
 </Project>

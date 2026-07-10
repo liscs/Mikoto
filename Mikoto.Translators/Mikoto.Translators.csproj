@@ -6,4 +6,7 @@
     <ProjectReference Include="..\Mikoto.Resource\Mikoto.Resource.csproj" />
 	  <ProjectReference Include="..\Mikoto.TranslatorGenerator\Mikoto.TranslatorGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
+
+
+
 </Project>

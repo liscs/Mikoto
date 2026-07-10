@@ -5,11 +5,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="BenchmarkDotNet" Version="0.15.6" />
+		<PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Mikoto.Mecab\Mikoto.Mecab.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Serilog" Version="4.4.0" />
 	</ItemGroup>
 
 </Project>

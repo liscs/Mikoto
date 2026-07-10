@@ -3,7 +3,7 @@
 		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
 		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
 	</ItemGroup>
@@ -14,5 +14,8 @@
 	  <ProjectReference Include="..\Mikoto.TextHook\Mikoto.TextHook.csproj" />
 	  <ProjectReference Include="..\Mikoto.Translators\Mikoto.Translators.csproj" />
 	  <ProjectReference Include="..\Mikoto.Vndb\Mikoto.Vndb.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Update="Serilog" Version="4.4.0" />
 	</ItemGroup>
 </Project>

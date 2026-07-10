@@ -37,18 +37,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Configuration.Ini" Version="10.0.2" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.2" />
-		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.269">
+		<PackageReference Include="Microsoft.Extensions.Configuration.Ini" Version="10.0.9" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.9" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.9" />
+		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.298">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" /><!--支持aot必须要引用这个包-->
 		<PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
 		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
-		<PackageReference Include="System.Drawing.Common" Version="10.0.2" />
-		<PackageReference Include="WinUIEx" Version="2.9.0" />
+		<PackageReference Include="System.Drawing.Common" Version="10.0.9" />
+		<PackageReference Include="WinUIEx" Version="2.9.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -130,5 +130,9 @@
 	  <Page Update="SettingPages\TranslatorSettingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Serilog" Version="4.4.0" />
 	</ItemGroup>
 </Project>
